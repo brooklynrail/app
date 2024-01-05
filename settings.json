@@ -1,0 +1,42 @@
+// https://dev.to/robertcoopercode/using-eslint-and-prettier-in-a-typescript-project-53jb This is why formatOnSave is off for JS and TS
+{
+  "javascript.validate.enable": false,
+  "editor.tabSize": 2,
+  "search.exclude": {
+    "**/*.js": true,
+    "**/*.map": true,
+    "**/node_modules": true,
+    "build": true,
+  },
+  "files.exclude": {
+    "**/.vscode/": true,
+    "**/node_modules": true,
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true
+  },
+  "eslint.validate": ["javascript", { "language": "typescript", "autoFix": true }],
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true,
+  "tailwindcss.colorDecorators": null,
+  "tailwindcss.links": null,
+  "tailwindcss.validate": true,
+  "tailwindcss.diagnostics.emptyClass": true,
+  "tailwindcss.diagnostics.emptyGroup": true,
+  "tailwindcss.diagnostics.conflict": "strict",
+  "tailwindcss.preferVariantWithParentheses": false,
+  "tailwindcss.fallbackDefaultConfig": true
+}
