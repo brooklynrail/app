@@ -1,0 +1,238 @@
+// Content styles
+// Everything that goes in the body of article pages
+
+// For shortcode guidance, see:
+// https://docs.google.com/document/d/1ScL2EDzSrxuO0VWAfH-QDrvKoZI146ktMNwi3cNvqW8/edit#
+
+.content{
+  @include u-margin-y(2);
+  @include u-font('serif', 'md');
+  @include u-line-height('sans', 2);
+  overflow-wrap: break-word; 
+
+  // [dropcap letter="A"]
+  .dropcap{
+    margin-right: .1em;
+    @include u-font('sans', 'md');
+    font-size: 3.55em;
+    line-height: 0.91em;
+    float: left;
+  }
+
+  // [lead] text goes here [/lead]
+  .lead *{
+    max-width: 45ch;
+    @include u-font('serif', 'lg');
+    @include u-line-height('sans', 3);
+    .dropcap{
+      font-size: 2.9em;
+    }
+  }
+
+
+  // This is a reset of USWDS, to apply margin to the bottom of <p> tags
+  p{
+    @include u-margin(0);
+    @include u-margin-bottom('205');
+  }
+
+  blockquote,
+  li,
+  p{
+    @include u-measure(5);
+    @include u-line-height('sans', 5);
+  }
+
+  // [blockquote cite="name" url=""]...[/blockquote]
+  blockquote{
+    @include u-margin-left(0);
+    @include u-padding-left(4);
+    @include u-padding-right(1);
+    @include at-media('tablet') {
+      @include u-padding-left(6);
+      @include u-padding-right(3);
+    }
+    cite{
+      @include u-margin-top(1);
+      @include u-margin-right('205');
+      @include u-display('block');
+      @include u-text('right');
+      @include u-text('italic');
+    }
+  }
+
+  // [center] text goes here [/center]
+  .text-align-center > *{
+    @include u-padding-x(4);
+    text-align: center;
+  }
+  // [right] text goes here [/right]
+  .text-align-right > *{
+    @include u-padding-left(4);
+    text-align: right;
+  }
+
+
+  // Headings
+  h1{
+    @include u-display('none');
+  }
+  h2{
+    @include u-font('sans', 'xl');
+  }
+  h3{
+    @include u-font('sans', 'lg');
+  }
+  h4{
+    @include u-font('sans', 'md');
+  }
+  h5{
+    @include u-margin-bottom('105');
+    @include u-font('sans', 'sm');
+    @include u-text('heavy');
+  }
+  h6{
+    @include u-margin-bottom('105');
+    @include u-font('sans', 'xs');
+    @include u-text('uppercase');
+    @include u-text('light');
+  }
+
+  // [promo type="free-text"] text goes here [/promo]
+  .promo{
+    @include u-margin-top(0);
+    @include u-margin-left(2);
+    @include u-padding(2);
+    @include u-bg('gray-5');
+    @include u-font('sans', 'xs');
+    @include u-line-height('sans', 3);
+    @include u-text('light');
+    @include u-float('right');
+    clear:both;
+
+    @include at-media('tablet') {
+      @include u-font('sans', 'sm');
+      @include u-line-height('sans', 4);
+    }
+
+    h6{
+      @include u-margin-top(0);
+      @include u-margin-bottom('05');
+      @include u-font('sans', '2xs');
+    }
+  }
+
+  // [pullquote cite="" url=""] ... [/pullquote]
+  .pullquote {
+    @include u-margin-top('105');
+    @include u-margin-left(2);
+    @include u-margin-bottom(3);
+    @include u-padding-top('105');
+    @include u-float('right');
+    @include u-border-top('2px', 'black', 'solid');
+    @include u-font('sans', 'md');
+    @include u-line-height('sans', 2);
+    @include u-text('heavy');
+
+    @include at-media('tablet') {
+      @include u-font('sans', 'lg');
+      @include u-line-height('sans', 3);
+    }
+    cite{
+      @include u-margin-top('105');
+      @include u-display('block');
+      @include u-text('right');
+      @include u-text('light');
+      @include u-text('italic');
+      @include u-font('sans', 'sm');
+      @include at-media('tablet') {
+        @include u-font('sans', 'md');
+      }
+    }
+  }
+
+  // [rule]
+  hr{
+    margin:2em 0;
+    border:0;
+    border-top:1px #555 solid;
+    clear: both;
+  }
+  hr.sm{
+    margin-left:auto;
+    margin-right:auto;
+    width: 25%;
+  }
+  hr.md{
+    margin-left:auto;
+    margin-right:auto;
+    width: 50%;
+  }
+  hr.lg{
+    margin-left:auto;
+    margin-right:auto;
+    width: 75%;
+  }
+  hr.xl{
+    width: 100%;
+  }
+
+
+  pre {
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    @include u-padding(2);
+    @include u-measure(2);
+    @include u-radius('sm');
+    @include u-bg('gray-warm-4');
+    @include u-font('mono', 'sm');
+    @include u-text('red-70');
+    code{
+      background: none;
+      @include u-padding(0);
+    }
+  }
+  code{
+    @include u-padding-y('2px');
+    @include u-padding-x('05');
+    @include u-bg('gray-warm-4');
+    @include u-text('red-70');
+    @include u-font('mono', 'sm');
+    @include u-radius('sm');
+  }
+
+  // Footnotes & Endnotes
+  .endnote{
+    @include u-font('sans', 'sm');
+    @include u-text('normal');
+    @include u-text('left');
+  }
+
+  .poetry{
+    @include u-margin-bottom(2);
+    @include u-border('1px','solid','gray-cool-10');
+    @include u-bg('gray-cool-1');
+    @include u-font('serif', 'sm');
+    @include u-radius('sm');
+    overflow-x: scroll;
+    .poem{
+      @include u-padding(3);
+      width:62.1rem;
+
+    }
+    p{
+      @include u-margin-bottom('105');
+      @include u-maxw('full');
+    }
+  }
+  .poetry-indented{
+    p{
+      @include u-margin-left(7);
+      @include u-text-indent('neg-7');
+    }
+  }
+
+}

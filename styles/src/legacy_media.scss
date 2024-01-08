@@ -1,0 +1,84 @@
+/* Legacy Media CSS */
+// These styles support the new media and image shortcodes inside old article page templates.
+// This file uses the design system to generate a legacy_media.css file that is only included on old layouts
+
+// This article is a good test: https://brooklynrail.org/2018/11/art/KEN-PRICE-with-Douglas-Dreishpoon
+
+#article #body {
+	.media{
+		clear:both;
+		.frame {
+			margin: 0;
+			width: 100%;
+		}
+		.media-aspect{
+			position: relative;
+			a{
+				// cursor: default;
+			}
+		}
+		img{
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			left: 0;
+			width: 100%;
+			-webkit-transition: opacity 1s,background-image 1s;
+			transition: opacity 1s,background-image 1s;
+		}
+		figcaption{
+			width: 100%;
+		}
+		figcaption,
+		figcaption p{
+			margin-top: 10px;
+			font-family: verdana;
+		  font-size: 11px;
+		  line-height: 140%;
+			color: #666;
+		}
+	}
+
+	.width-lg{
+		margin:0 0 1.8em 0;
+		width: 100%;
+	}
+	.width-md{
+		margin:0 0 1.8em 1em;
+		width: 42.8%;
+		float: right;
+	}
+	.width-sm{
+		margin:0 0 1.8em .65em;
+		width: 19.9%;
+		float: right;
+	}
+}
+
+
+
+// This is where we'll keep the CSS that we're using to override all the old hacks the Rail team used to format media in articles.
+
+// These are not intended to be used going forward, and might even get cleaned up going backward.
+
+
+// --------------------
+// Around 95 images are wrapped in this div with inline css
+// <div class="image" style="float:left;width:300px">!!img2!!</div>
+// This CSS un-does that...
+
+.image{
+	float: left !important;
+	width: 42.8% !important;
+	margin-right: 1.5em;
+	.media{
+		width: 100%;
+		img{
+			// border: 5px solid #1bf010;
+		}
+	}
+	.media.width-md{
+		width: 100% !important;
+	}
+}

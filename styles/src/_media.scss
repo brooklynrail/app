@@ -1,0 +1,180 @@
+// Media Styles
+// These styles support the new media and image shortcodes in the new Rail design system
+
+.media {
+	position: relative;
+	clear: both;
+	a{
+		cursor: default;
+		&:hover {
+	  	outline: 3px solid red;
+		}
+	}
+
+	.media-aspect {
+		position: relative;
+	}
+	img {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	  opacity: 0;
+	  transition: opacity 1s, background-image 1s;
+		@include u-width('full');
+		// @media print {
+		// 	page-break-inside: avoid;
+		// }
+	}
+	figcaption,
+	figcaption p{
+		@include u-margin-y('105');
+		@include u-padding-x('2px');
+	  @include u-font('sans', 'xs');
+	  @include u-line-height('sans', 3);
+		@include u-color('gray-cool-70');
+		@include u-text('normal');
+	}
+}
+
+.media.width-auto{
+	img{
+		width:auto;
+	}
+}
+
+// ----------------------------------------
+// sm — images
+// [img name="img1" type="sm" /]
+
+.media.width-sm{
+	@include u-margin-top(1);
+	@include u-margin-left(1);
+	@include u-margin-bottom(2);
+	@include u-float('right');
+	figcaption{
+		@include u-font('sans', '2xs');
+	}
+}
+
+
+// ----------------------------------------
+// md — images
+// [img name="img1" type="md" /]
+
+.media.width-md{
+	@include u-margin-top(1);
+	@include u-margin-left(2);
+	@include at-media('tablet') {
+		@include u-margin-left(3);
+	}
+	@include u-margin-bottom(2);
+	@include u-float('right');
+}
+
+
+
+// ----------------------------------------
+// lg — images
+// [img name="img1" type="lg" /]
+
+.media.width-lg{
+	@include u-margin-bottom(2);
+}
+
+
+
+// ----------------------------------------
+// xl — images
+// [img name="img1" type="xl" /]
+
+.media.width-xl{
+	@include u-width('full');
+	.frame{
+		@include u-width('full');
+	}
+	figcaption{
+		@include u-width('full');
+	}
+}
+
+
+
+// Common Widths and their responsive logic
+// These classes are used in images, videos, promos, pull quotes and other media that get inserted into the body of articles
+
+.width-sm{
+	@include u-width('card');
+	@include at-media('desktop') {
+		@include u-width('card-lg');
+	}
+}
+
+.width-md{
+	@include u-width('card');
+	@include at-media('tablet') {
+		@include u-width('mobile');
+	}
+	@include at-media('desktop-lg') {
+		@include u-width('mobile-lg');
+	}
+}
+
+.width-lg{
+	@include u-width('full');
+	@include at-media('desktop-lg') {
+		width: 50rem;
+	}
+}
+
+.width-xl{
+	@include u-width('full');
+}
+
+.instagram{
+	@include u-margin-top(1);
+	@include u-margin-left(2);
+	@include u-margin-bottom(2);
+	@include u-float('right');
+	@include u-width('full');
+	@include at-media('tablet') {
+		@include u-margin-left(3);
+		@include u-width('mobile');
+		@include u-float('right');
+	}
+	@include at-media('desktop-lg') {
+		@include u-width('mobile-lg');
+	}
+}
+
+// This is where we'll keep the CSS that we're using to override all the old hacks the Rail team used to format media in articles.
+
+// These are not intended to be used going forward, and might even get cleaned up going backward.
+
+
+// --------------------
+// Around 95 images are wrapped in this div with inline css
+// <div class="image" style="float:left;width:300px">!!img2!!</div>
+// This CSS un-does that...
+
+.image{
+	@include u-margin-top(0);
+	float: left !important;
+	@include u-width('card' !important);
+	@include at-media('tablet') {
+		@include u-width('mobile' !important);
+	}
+	@include u-margin-right(2);
+	.media.width-md{
+		@include u-margin-left(0);
+	}
+	.media,
+	.width-md{
+		@include u-float('none');
+		@include u-width('card' !important);
+		@include at-media('tablet') {
+			@include u-width('mobile' !important);
+		}
+	}
+}

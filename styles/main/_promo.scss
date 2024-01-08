@@ -1,0 +1,207 @@
+// Promo styles
+// Promos are small packages of single stories, usually containing headline, featured image and an excerpt
+
+.collection{
+	@include u-padding-y('105');
+	@include u-border-top('1px', 'dotted', 'base');
+	&:first-child{
+		@include u-padding-top(0);
+		@include u-border-top(0);
+	}
+	h2{
+		@include u-margin-bottom(2);
+		@include u-font('sans', 'md');
+		@include u-text('black');
+		@include u-text('bold');
+		@include u-text('no-uppercase');
+	}
+	h3{
+		@include u-margin-bottom(1);
+		@include u-font('sans', 'sm');
+		@include u-text('black');
+		@include u-text('bold');
+		@include u-text('no-uppercase');
+	}
+	div.promo:first-of-type{
+		@include u-border-top(0);
+		@include u-padding-y(0);
+	}
+	div.promo:last-of-type{
+		@include u-margin-bottom(0);
+	}
+}
+
+.promo{
+	@include u-margin-bottom('105');
+	@include u-padding-y('105');
+	@include u-border-top('1px', 'dotted', 'base');
+	&:first-child{
+		@include u-padding-top(0);
+		@include u-border-top(0);
+	}
+	.article_type{
+		@include u-margin-bottom('05');
+		@include u-font('sans', '2xs');
+		@include u-text('normal');
+		@include u-display('flex');
+		.section{
+			@include u-margin-right('1px');
+			@include u-text('black');
+			@include u-text('bold');
+			@include u-text('no-uppercase');
+		}
+		.divider{
+			@include u-margin-y('2px');
+			@include u-margin-x(1);
+			@include u-border-left('1px', 'solid', 'base');
+		}
+		.type{
+			@include u-text('red-50v');
+			@include u-text('uppercase');
+		}
+	}
+	.media{
+		@include u-margin-bottom(1);
+	}
+
+	h3{
+		a{
+			@include u-text('black');
+			&:hover{
+				@include u-text('black');
+				@include u-text('underline');
+			}
+		}
+	}
+	h4{
+		@include u-margin-bottom(1);
+		@include u-font('sans', 'md');
+		@include u-line-height('sans', 2);
+		@include u-text('normal');
+		a{
+			@include u-text('black');
+			&:hover{
+				@include u-text('black');
+				@include u-text('underline');
+			}
+		}
+	}
+	.deck{
+		@include u-font('sans', 'md');
+		@include u-line-height('sans', 2);
+		@include u-text('light');
+	}
+	.byline{
+		@include u-margin-y('05');
+		@include u-margin-bottom(1);
+		@include u-font('sans', '3xs');
+		@include u-display('block');
+		@include u-text('base-darker');
+	}
+	p{
+		@include u-text('black');
+	}
+	.excerpt{
+		@include u-font('serif', '3xs');
+	}
+	.description{
+		@include u-margin-bottom(1);
+		@include u-font('sans', '3xs');
+		@include u-text('light');
+		a{
+			@include u-text('red-50v');
+		}
+	}
+	.more{
+		@include u-margin-top(1);
+		@include u-font('sans', '3xs');
+		a{
+			@include u-text('black');
+			&:hover{
+				span{
+					@include u-border-bottom('1px', 'solid', 'black');
+				}
+			}
+		}
+	}
+	ul{
+		@include u-margin-y('05');
+		@include add-list-reset();
+		@include u-padding-left(2);
+		li{
+			@include u-margin-y('05');
+			@include u-font('sans', '2xs');
+		}
+	}
+	a{
+		@include u-text('black');
+		&:hover{
+			@include u-text('no-underline');
+			span{
+				@include u-border-bottom('1px', 'solid', 'black');
+			}
+		}
+	}
+}
+
+.promo-standard{
+	.media{
+		img{
+			width:316px;
+		}
+	}
+}
+
+.promo-section{
+	h4{
+		@include u-margin-bottom(1);
+		@include u-font('sans', 'lg');
+		@include u-text('light');
+	}
+	.byline{
+		@include u-font('sans', '2xs');
+	}
+	.excerpt{
+		@include u-font('serif', 'sm');
+		@include u-line-height('sans', 3);
+	}
+}
+.promo-thumb{
+	.media{
+		@include u-float('right');
+		@include u-margin-left(1);
+		@include u-margin-bottom(1);
+		img{
+			width:60px;
+		}
+	}
+}
+.promo-slim{
+	@include u-margin(0);
+	@include u-padding-y(1);
+	@include u-padding-x('05');
+	@include u-border-top(0);
+	h4{
+		@include u-font('sans', '3xs');
+		@include u-display('inline');
+		@include u-text('black');
+		@include u-text('medium');
+	}
+	.byline{
+		@include u-display('inline');
+	}
+}
+.promo-slim-alt{
+	@include u-bg('base-lighter');
+}
+
+.promo-intranslation{
+	.article_type{
+		.type{
+			@include u-text('no-uppercase');
+		}
+	}
+	ul{
+		list-style-type: disc;
+	}
+}

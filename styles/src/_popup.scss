@@ -1,0 +1,265 @@
+// popup
+
+
+
+#rail_popup {
+  @include u-display('none');
+  @include u-position('fixed');
+  @include u-top(0);
+  @include u-left(0);
+  @include u-right(0);
+  @include u-z(200);
+
+  .popup-overlay {
+    background: rgba(0, 0, 0, 0.85);
+    @include u-width('full');
+    @include u-height('full');
+    @include u-position('fixed');
+    @include u-top(0);
+    @include u-left(0);
+    @include u-z(100);
+  }
+
+  .popup-frame{
+    @include u-margin-top(1);
+    @include u-margin-x(2);
+    @include u-position('relative');
+    @include u-z(100);
+    @include at-media('tablet') {
+      @include u-margin-top(7);
+      @include u-margin-x('auto');
+      @include u-padding-x(9);
+      @include u-width('tablet');
+    }
+    
+    .popup-close{
+      @include u-display('flex');
+      @include u-flex('row');
+      @include u-flex('justify-end');
+    }
+    .popup-close div{
+      @include u-text('base-lightest');
+      @include u-text('right');
+      @include u-text('light');
+      @include u-text('white');
+      @include u-text('uppercase');
+      @include u-font('sans', '2xs');
+      @include at-media('tablet-lg') {
+        @include u-font('sans', 'xs');
+      }
+      cursor: pointer;
+      
+      @include u-display('flex');
+      @include u-flex('row');
+      @include u-margin-bottom(1);
+      @include u-padding-y('05');
+      @include u-padding-x('105');
+      @include u-radius('pill');
+      @include u-display('inline-block');
+      background-color: rgba(255, 255, 255, 0.35);
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.45);
+      }
+
+      
+      i{
+        @include u-position('relative');
+        @include u-top(0);
+        @include u-font('sans', 'md');
+        @include u-text('no-italic');
+      }
+    }
+
+  }
+
+  .popup{
+    @include u-text('black');
+    @include u-padding(2);
+    @include u-bg('white');
+    @include u-radius('lg');
+    @include at-media('tablet') {
+      @include u-padding(4);
+    }
+
+    .head {
+      @include u-margin-bottom(2);
+      @include u-font('sans', '2xl');
+      @include u-text('heavy');
+      @include u-text('green-cool-80v');
+      @include u-text('center');
+      @include at-media('tablet-lg') {
+        span{
+          @include u-text('heavy');
+        }
+      }
+    }
+    .deck{
+      @include u-text('center');
+      @include u-font('sans', 'lg');
+      @include u-text('light');
+      p{
+        span{
+          @include u-text('medium');
+          @include u-text('green-cool-70v');
+          span{
+            @include u-border-bottom('green-cool-40v');
+          }
+        }
+      }
+    }
+    .progress-bar{
+      @include u-margin-top(4);
+      @include u-margin-bottom(2);
+      @include u-bg('green-cool-10v');
+      @include u-radius('pill');
+      @include u-width('full');
+      @include u-height(4);
+      .amt{
+        @include u-bg('green-cool-40v');
+        @include u-height('full');
+        @include u-radius-left('pill');
+        @include u-display('flex');
+        @include u-flex('justify-end');
+        span{
+          @include u-width(0);
+          @include u-height(0);
+          @include u-position('relative');
+          right:-16px;
+          @include u-display('inline-block');
+          border-top: 16px solid transparent;
+          border-bottom: 16px solid transparent;
+          border-left: 16px solid green;
+          @include u-border-left('green-cool-40v');
+        }
+      }
+    }
+    .text{
+      @include u-text('center');
+      @include u-font('sans', 'md');
+      @include u-text('light');
+      p{
+        span{
+          @include u-text('medium');
+          @include u-text('green-cool-70v');
+          span{
+            @include u-border-bottom('green-cool-40v');
+          }
+        }
+      }
+    }
+
+    .btn{
+      @include u-margin-top(4);
+      @include u-margin-x('auto');
+      @include u-padding-y(1);
+      @include u-padding-x(2);
+      @include u-width('full');
+      @include u-radius('pill');
+      @include u-text('no-underline');
+      @include u-text('white');
+      @include u-text('center');
+      @include u-display('block');
+      @include u-bg('red-50v');
+      @include u-bg('green-cool-50v');
+      @include u-font('sans', 'md');
+      @include u-width('card-lg');
+      @include u-text('medium');
+      @include u-border('2px', 'solid', 'green-cool-50v');
+      &:hover{
+        span{
+          @include u-border-bottom('2px', 'solid', 'white');
+        }
+      }
+    }
+  }
+}
+#rail_popup.newsletter{
+  bottom:0;
+  top:auto;
+  .popup-overlay {
+    background: rgba(0, 0, 0, 0.55);
+  }
+  .popup-frame {
+    @include u-margin(0);
+    @include u-padding(0);
+    @include u-width('full');
+    @include u-display('flex');
+    @include u-flex('column');
+    @include u-flex('align-end');
+    
+    .popup{
+      @include u-padding-x(0);
+      @include u-width('full');
+      .head,
+      .text p {
+        @include u-text('left');
+      }
+      .head{
+        @include u-margin(0);
+        @include u-display('flex');
+        img{
+          @include u-margin-right(2);
+          @include u-width(8);
+          @include u-height(8);
+          @include at-media('tablet-lg') {
+            @include u-margin-right(2);
+            @include u-width(10);
+            @include u-height(10);
+          }
+        }
+        .copy{
+          @include u-display('flex');
+          @include u-flex('column');
+          @include u-flex('justify-center');
+          h2{
+            @include u-margin(0);
+            @include u-margin-bottom(1);
+            @include u-font('sans', 'lg');
+            @include u-text('bold');
+            @include at-media('tablet-lg') {
+              @include u-font('sans', 'lg');
+            }
+          }
+          p{
+            @include u-margin(0);
+            @include u-font('sans', 'md');
+            @include u-line-height('sans', 3);
+            @include u-text('light');
+            @include at-media('tablet-lg') {
+              @include u-font('sans', 'md');
+            }
+          }
+        }
+      }
+      .btn-box{
+        @include u-margin-top(2);
+        @include u-height('full');
+        @include u-display('flex');
+        @include u-flex('column');
+        @include u-flex('justify-center');
+        @include u-flex('align-end');
+        @include at-media('tablet') {
+          @include u-margin-top(0);
+        }
+        .btn {
+          @include at-media('tablet-lg') {
+            @include u-margin-top(0);
+          }
+          @include u-margin(0);
+          @include u-padding-y('205');
+          @include u-display('block');
+          @include u-font('sans', 'md');
+          @include u-radius('md');
+          @include u-width('full');
+          @include u-bg('indigo-cool-60v');
+          @include u-border('2px', 'solid', 'indigo-cool-60v');
+          &:hover{
+            @include u-bg('indigo-cool-70v');
+            @include u-border('2px', 'solid', 'indigo-cool-70v');
+          }
+        }
+      }
+    }
+  }
+  
+}

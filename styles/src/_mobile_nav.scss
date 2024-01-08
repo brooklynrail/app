@@ -1,0 +1,128 @@
+// Mobile Nav
+
+// Controls the way .paper slides open
+.paper{
+  -webkit-transition: margin .2s;
+  transition: margin .2s;
+  z-index: 20;
+  position: relative;
+  width: 100%;
+}
+.paper.open{
+  margin-left: 85%;
+  @include at-media('tablet') {
+    margin-left: 50%;
+  }
+  width: 100%;
+  position: fixed;
+}
+.paper .screen{
+  display: none;
+  -webkit-box-shadow: -3px 0px 10px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: -3px 0px 10px 0px rgba(0,0,0,0.5);
+  box-shadow: -3px 0px 10px 0px rgba(0,0,0,0.5);
+}
+.paper.open .screen{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  display: block;
+  z-index: 12;
+}
+
+.paper .mobile_nav{
+  margin-left: -85%;
+  @include at-media('tablet') {
+    margin-left: -50%;
+  }
+  -webkit-transition: margin .2s;
+  transition: margin .2s;
+}
+
+.paper.open .mobile_nav{
+  margin-left: 0;
+}
+
+// mobile_nav styles
+.mobile_nav{
+  @include u-bg('blue-warm-80');
+  width: 85%;
+  @include at-media('tablet') {
+    width: 50%;
+  }
+  @include u-height('full');
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  a{
+    @include u-color('white');
+  }
+
+  .close{
+    @include u-margin-top('105');
+    @include u-margin-right(1);
+    @include u-padding-y('05');
+    @include u-padding-x('105');
+    @include u-font('sans', '2xs');
+    @include u-line-height('sans', 1);
+    @include u-text('no-underline');
+    @include u-float('right');
+    i{
+      @include u-position('relative');
+      @include u-top('1px');
+    }
+  }
+
+  // Main navigation — at the top of the mobile_nav
+  .main_nav{
+    @include list-reset();
+    @include u-padding('205');
+    @include u-font('sans', 'md');
+    ul{
+      @include add-list-reset();
+      li{
+        @include u-margin-bottom('105');
+        &:last-child{
+          @include u-margin-bottom(0);
+        }
+        a{
+          @include u-text('no-underline');
+          @include u-text('normal');
+        }
+      }
+    }
+  }
+  #rail{
+    @include u-position('relative');
+    @include u-bg('gray-cool-3');
+    #rail-header{
+      @include u-display('none');
+    }
+    .issue-header{
+      @include u-display('block');
+      @include u-position('sticky');
+      @include u-top(0);
+      // background: none;
+    }
+    .issue-details{
+      @include u-display('block');
+    }
+    .issue-index{
+      overflow:unset;
+      @include u-height('full');
+      @include u-position('relative');
+      @include u-display('block');
+      h4{
+        @include u-font('sans', 'xs');
+      }
+      cite{
+        @include u-font('sans', '2xs');
+      }
+    }
+  }
+
+}

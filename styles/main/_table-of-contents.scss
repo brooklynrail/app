@@ -1,0 +1,22 @@
+// Promo styles
+// Promos are small packages of single stories, usually containing headline, featured image and an excerpt
+
+.table-of-contents{
+	h3{
+		@include u-padding-y('05');
+		@include u-border-top('1px', 'dotted', 'base');
+		a{
+			@include u-text('black');
+			&:hover{
+				@include u-text('black');
+			}
+		}
+	}
+	ul{
+		@include u-margin-bottom(2);
+	}
+	.promo{
+		@include u-padding-y('05');
+		@include u-padding-x(0);
+	}
+}

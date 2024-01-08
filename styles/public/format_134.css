@@ -1,0 +1,77 @@
+/*
+//  formats_134.css
+//
+//	Visual styles for Brooklyn Rail site. Override for Art Criticism in Europe Issue.
+//
+//  Created by Chris Johanesen on 2005-12-27. Updated by David Giglio.
+*/
+
+
+#topnavsub-CONTACT-US-drop{ left:257px; }
+
+a { color: #E35803; }
+a:hover { color: #45607B; }
+
+
+/*     ISSUE COLUMN
+******************************************************/
+
+#main #issuecolumn div.section-list li a{color:white;background-color:#45607B;}
+#main #issuecolumn div.section-list li.full-contents a{color:white;background-color:#45607B; }
+#main #issuecolumn div.section-list li a:hover{color:white;background-color:#E35803;}
+#main #issuecolumn div.section-list li a.current{color:white;background-color:#E35803;}
+
+/*     FULL CONTENTS
+******************************************************/
+
+#main #contentcolumn #full-contents h1.sectionhead { color: #fff; }
+#main #contentcolumn #full-contents .section h2, #main #contentcolumn #related-articles .section h2 {
+	color:#45607B;
+}
+#full-contents cite{ color: #45607B; }
+#main #contentcolumn .sectionhead_featured {
+	color: #45607B;
+	font-weight:normal;
+	font-family: Georgia,Serif,"Times New Roman";
+}
+
+img.europe_map{border:1px solid #ccc; }
+table.country_list{
+	margin-bottom:2rem;
+	width:100%;
+	text-align:center;
+	color: #E35803;
+	font-size:16px;
+	font-weight:normal;
+	font-family: Georgia,Serif,"Times New Roman";
+}
+table.country_list td{
+	padding:.25em 0;
+	width:25%;
+}
+
+/* TABLE OF CONTENTS
+******************************************************/
+.toc_subhead{ color:#45607B; font-family: Georgia,Serif,"Times New Roman"; }
+
+
+/* FEATURED ARTICLE
+***************************************************/
+
+#main .featured-article, #main .artseen {
+	border-bottom: none;
+}
+
+#main .w40 .featured-article h1 a { color: #45607B; }
+#main .w40 .featured-article h1 a:hover { color: #E35803; }
+#main .w60 .featured-article h1 a { color: #E35803; }
+#main .w60 .featured-article h1 a:hover { color: #45607B; }
+
+.article_type{ color:#45607B; font-family: Georgia,Serif,"Times New Roman"; font-size:18px; }
+
+/* ARTICLE
+***************************************************/
+
+#article #body .article-image img:hover{
+    border:1px solid #E35803;
+}

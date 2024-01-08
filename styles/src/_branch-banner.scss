@@ -1,0 +1,27 @@
+@mixin warning-banners {
+  @include u-padding-y('105');
+  @include u-padding-x(0);
+  @include u-color('black');
+  @include u-text('center');
+  @include u-font('sans', 'md');
+  a{
+    @include u-color('blue-60v');
+    @include u-text('no-underline');
+    &:hover{
+      @include u-border-bottom('blue-70v');
+      @include u-border-bottom('2px');
+    }
+  }
+}
+
+// Branch Preview Banner
+.branch-banner {
+  @include warning-banners;
+  @include u-bg('yellow-20v');
+}
+
+// Unpublished Banner
+.unpublished-banner {
+  @include warning-banners;
+  @include u-bg($theme-color-info-light);
+}

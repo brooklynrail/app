@@ -1,0 +1,32 @@
+// Editorial Tools that appear on the front-end of the website when logged in.
+
+.edit-tools{
+  @include u-position('sticky');
+  bottom:65px;
+  @include u-right(0);
+  @include u-float('right');
+  z-index: 99;
+  @include u-display('none');
+  @include at-media('tablet-lg') {
+		@include u-display('block');
+	}
+  .edit-btn{
+    a{
+      @include u-display('flex');
+      @include u-flex('column');
+      @include u-flex('align-center');
+      @include u-flex('justify-center');
+      @include u-font('sans', 'md');
+      @include u-text('no-underline');
+      @include u-circle(8);
+      @include u-shadow(4);
+      @include u-color('white');
+      @include u-bg('blue-40v');
+      -webkit-transition: background-color .25s;
+      transition: background-color .25s;
+      &:hover{
+        @include u-bg('blue-50v');
+      }
+    }
+  }
+}
