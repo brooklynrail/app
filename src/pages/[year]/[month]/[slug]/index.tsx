@@ -85,13 +85,18 @@ export async function getStaticProps({ params }: any) {
 // the path has not been generated.
 export async function getStaticPaths() {
   const articles = await directus.request(
-    readItems("issues", {
-      fields: ["year", "month", "slug"],
+    readItems("articles", {
+      fields: ["title", "slug", "sections.sections_id.slug", "issues.issues_id.year", "issues.issues_id.month"],
     }),
   )
 
   const paths = articles.map((article) => ({
-    params: { year: String(article.year), month: String(article.month), slug: article.slug },
+    params: {
+      year: String(article.issues[0].issues_id.year),
+      month: String(article.issues[0].issues_id.month),
+      section: String(article.sections[0].sections_id.slug),
+      slug: article.slug,
+    },
   }))
 
   // We'll pre-render only these paths at build time.
