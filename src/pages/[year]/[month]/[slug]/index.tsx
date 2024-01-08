@@ -42,7 +42,14 @@ export async function getStaticProps({ params }: any) {
 
   const articlesData = await directus.request(
     readItems("articles", {
-      fields: ["*.*,images.thumbnails.*"],
+      fields: [
+        "*.*",
+        "images.thumbnails.*",
+        "contributors.contributors_id.first_name",
+        "contributors.contributors_id.last_name",
+        "contributors.contributors_id.slug",
+        "contributors.contributors_id.bio",
+      ],
       filter: {
         _and: [
           { slug: { _eq: slug } },

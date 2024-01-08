@@ -1,8 +1,34 @@
 import Link from "next/link"
 import IssueRail from "../issueRail"
-const Article = (props: any) => {
-  const { id, title, deck, body } = props.article
 
+const Contributors = (contributors: any) => {
+  console.log(contributors.contributors)
+  return (
+    <cite>
+      {contributors.contributors.map((contributor: any, i: number) => {
+        return (
+          <>
+            <footer>
+              <section className="contributors">
+                <h3>Contributor</h3>
+
+                <h4>
+                  <Link href={`/contributor/${contributor.contributors_id.slug}`}>
+                    {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
+                  </Link>
+                </h4>
+                <div dangerouslySetInnerHTML={{ __html: contributor.contributors_id.bio }} />
+              </section>
+            </footer>
+          </>
+        )
+      })}
+    </cite>
+  )
+}
+
+const Article = (props: any) => {
+  const { id, title, deck, body, contributors } = props.article
   return (
     <>
       <div className="paper">
@@ -90,23 +116,9 @@ const Article = (props: any) => {
                     </div>
                   </header>
 
-                  <section className="content">
-                    <div dangerouslySetInnerHTML={{ __html: body }} />
-                  </section>
+                  <section className="content">{/* <div dangerouslySetInnerHTML={{ __html: body }} /> */}</section>
 
-                  <footer>
-                    <section className="contributors">
-                      <h3>Contributor</h3>
-
-                      <h4>
-                        <a href="/contributor/phong-bui">Phong Bui </a>
-                      </h4>
-                      <p>
-                        <strong>Phong H. Bui</strong> is the Publisher and Artistic Director of the{" "}
-                        <em>Brooklyn Rail</em>.{" "}
-                      </p>
-                    </section>
-                  </footer>
+                  <Contributors contributors={contributors} />
 
                   <div id="edit-tools" className="edit-tools" style={{ display: "none" }}>
                     <div className="edit-btn">
