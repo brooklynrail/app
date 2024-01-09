@@ -1,6 +1,6 @@
-import directus from "../../../../../lib/directus"
+import directus from "../../../../../../lib/directus"
 import { readItems } from "@directus/sdk"
-import Article from "../../../../components/article"
+import Article from "../../../../../components/article"
 
 function ArticleController(props: any) {
   return <Article {...props} />
@@ -18,7 +18,7 @@ export async function getStaticProps({ params }: any) {
 
   const sectionsData = await directus.request(
     readItems("sections", {
-      fields: ["name", "id"],
+      fields: ["name", "id", "slug"],
     }),
   )
 
@@ -51,14 +51,7 @@ export async function getStaticProps({ params }: any) {
         "contributors.contributors_id.bio",
       ],
       filter: {
-        _and: [
-          { slug: { _eq: slug } },
-          {
-            issues: {
-              id: { _in: [3] },
-            },
-          },
-        ],
+        _and: [{ slug: { _eq: slug } }],
       },
     }),
   )
@@ -86,9 +79,11 @@ export async function getStaticProps({ params }: any) {
 export async function getStaticPaths() {
   const articles = await directus.request(
     readItems("articles", {
-      fields: ["title", "slug", "sections.sections_id.slug", "issues.issues_id.year", "issues.issues_id.month"],
+      fields: ["slug", "sections.sections_id.slug", "issues.issues_id.year", "issues.issues_id.month"],
     }),
   )
+
+  // console.log("articles ======= ", articles)
 
   const paths = articles.map((article) => ({
     params: {
