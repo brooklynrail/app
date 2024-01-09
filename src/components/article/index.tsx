@@ -2,25 +2,23 @@ import Link from "next/link"
 import IssueRail from "../issueRail"
 
 const Contributors = (contributors: any) => {
-  console.log(contributors.contributors)
+  // console.log(contributors.contributors)
   return (
     <cite>
       {contributors.contributors.map((contributor: any, i: number) => {
         return (
-          <>
-            <footer>
-              <section className="contributors">
-                <h3>Contributor</h3>
+          <footer key={i}>
+            <section className="contributors">
+              <h3>Contributor</h3>
 
-                <h4>
-                  <Link href={`/contributor/${contributor.contributors_id.slug}`}>
-                    {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
-                  </Link>
-                </h4>
-                <div dangerouslySetInnerHTML={{ __html: contributor.contributors_id.bio }} />
-              </section>
-            </footer>
-          </>
+              <h4>
+                <Link href={`/contributor/${contributor.contributors_id.slug}`}>
+                  {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
+                </Link>
+              </h4>
+              <div dangerouslySetInnerHTML={{ __html: contributor.contributors_id.bio }} />
+            </section>
+          </footer>
         )
       })}
     </cite>
@@ -28,6 +26,7 @@ const Contributors = (contributors: any) => {
 }
 
 const Article = (props: any) => {
+  // console.log("props ---", props)
   const { id, title, deck, body, contributors } = props.article
   return (
     <>
