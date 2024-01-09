@@ -54,7 +54,7 @@ const ArticleList = ({ articles, sections }: any) => {
               {sectionArticles.map((article: any, j: number) => (
                 <li key={j}>
                   <h4>
-                    <Link href="/2023/12/artseen/Picasso-in-Fontainebleau">
+                    <Link href={`/2023/12/${section.slug}/${article.articles_id.slug}`}>
                       <span dangerouslySetInnerHTML={{ __html: article.articles_id.title }} />
                     </Link>
                   </h4>
