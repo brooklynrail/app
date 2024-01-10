@@ -12,7 +12,6 @@ const Contributors = (contributors: any) => {
           <footer key={i}>
             <section className="contributors">
               <h3>Contributor</h3>
-
               <h4>
                 <Link href={`/contributor/${contributor.contributors_id.slug}`}>
                   {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
@@ -48,15 +47,24 @@ const ArticleHead = (props: any) => {
   const permalink = `/${year}/${month}/${primarySection.slug}/${slug}/`
   const permalinkEncoded = `https://brooklynrail.org${permalink}`
 
-  const kickerBlock = (
-    <h6 className="kicker">
-      <a href={`/${year}/${month}/${primarySection.slug}/`} title={`Go to the ${primarySection.name} section`}>
-        {primarySection.name}
-      </a>
-      <span className="divider"></span>
-      <span>{kicker}</span>
-    </h6>
-  )
+  const kickerBlock = () => {
+    if (!sections && !kicker) {
+      return <></>
+    }
+    return (
+      <h6 className="kicker">
+        {sections && (
+          <>
+            <a href={`/${year}/${month}/${primarySection.slug}/`} title={`Go to the ${primarySection.name} section`}>
+              {primarySection.name}
+            </a>
+            <span className="divider"></span>
+          </>
+        )}
+        {kicker && <span>{kicker}</span>}
+      </h6>
+    )
+  }
 
   const articleMeta = (
     <div className="article-meta">
