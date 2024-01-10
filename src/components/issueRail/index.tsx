@@ -70,7 +70,8 @@ const ArticleList = ({ articles, sections }: any) => {
 }
 
 const IssueRail = (props: any) => {
-  const { id, slug, title, deck, body } = props.issues
+  const primaryIssue = props.issues[0]
+  const { id, slug, title, deck, body, articles } = primaryIssue
 
   return (
     <section id="rail">
@@ -140,23 +141,12 @@ const IssueRail = (props: any) => {
                     </a>
                   </p>
                 </div>
-
-                <p>
-                  <a
-                    href="/2023/12/publishersmessage/Dear-Friends-and-Readers-dec-23"
-                    title="A message from Publisher and Artistic Director, Phong Bui"
-                  >
-                    <strong>A message from Phong Bui</strong>
-                  </a>
-                  <br />
-                  <em>Publisher and Artistic Director</em>
-                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <ArticleList articles={props.issues.articles} sections={props.sections} />
+        <ArticleList articles={articles} sections={props.sections} />
       </nav>
     </section>
   )
