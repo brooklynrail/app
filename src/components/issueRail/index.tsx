@@ -33,7 +33,7 @@ const Bylines = ({ contributors }: any) => {
 const ArticleList = ({ articles, sections }: any) => {
   // Create a map where each key is a section ID and each value is an array of articles for that section
   const articlesBySection = articles.reduce((acc: any, article: any) => {
-    const sectionId = article.articles_id.sections[0].sections_id.id
+    const sectionId = article.articles_slug.sections[0].sections_id.id
     if (!acc[sectionId]) {
       acc[sectionId] = []
     }
@@ -57,11 +57,11 @@ const ArticleList = ({ articles, sections }: any) => {
               {sectionArticles.map((article: any, j: number) => (
                 <li key={j}>
                   <h4>
-                    <Link href={`/2023/12/${section.slug}/${article.articles_id.slug}`}>
-                      <span dangerouslySetInnerHTML={{ __html: article.articles_id.title }} />
+                    <Link href={`/2023/12/${section.slug}/${article.articles_slug.slug}`}>
+                      <span dangerouslySetInnerHTML={{ __html: article.articles_slug.title }} />
                     </Link>
                   </h4>
-                  <Bylines contributors={article.articles_id.contributors} />
+                  <Bylines contributors={article.articles_slug.contributors} />
                 </li>
               ))}
             </ul>
@@ -121,7 +121,6 @@ const CoverImage = (props: CoverImagesProps) => {
 
 const IssueRail = (props: any) => {
   const primaryIssue = props.issues[0]
-  console.log("primaryIssue", primaryIssue)
   const { slug, title, articles, cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = primaryIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
 

@@ -1,5 +1,5 @@
 import directus from "../../../../../../lib/directus"
-import { readItems } from "@directus/sdk"
+import { readItems, readItem } from "@directus/sdk"
 import Article from "../../../../../components/article"
 
 function ArticleController(props: any) {
@@ -27,12 +27,12 @@ export async function getStaticProps({ params }: any) {
       fields: [
         "*.*", // Selects all fields from the issues
         "images.thumbnails.*", // Selects all thumbnail images
-        "articles.articles_id.title", // Selects the title of each article
-        "articles.articles_id.slug", // Selects the slug of each article
-        "articles.articles_id.contributors.contributors_id.first_name",
-        "articles.articles_id.contributors.contributors_id.last_name",
-        "articles.articles_id.sections.sections_id.name", // Selects the section for each article
-        "articles.articles_id.sections.sections_id.id", // Selects the section Id
+        "articles.articles_slug.title", // Selects the title of each article
+        "articles.articles_slug.slug", // Selects the slug of each article
+        "articles.articles_slug.contributors.contributors_id.first_name",
+        "articles.articles_slug.contributors.contributors_id.last_name",
+        "articles.articles_slug.sections.sections_id.name", // Selects the section for each article
+        "articles.articles_slug.sections.sections_id.id", // Selects the section Id
       ],
       filter: {
         _and: [{ year: { _eq: year } }, { month: { _eq: month } }],
@@ -40,8 +40,8 @@ export async function getStaticProps({ params }: any) {
     }),
   )
 
-  const articlesData = await directus.request(
-    readItems("articles", {
+  const articleData = await directus.request(
+    readItem("articles", slug, {
       fields: [
         "*.*",
         "images.thumbnails.*",
@@ -52,13 +52,10 @@ export async function getStaticProps({ params }: any) {
         "sections.sections_id.slug", // Selects the section Id
         "sections.sections_id.name", // Selects the section Id
       ],
-      filter: {
-        _and: [{ slug: { _eq: slug } }],
-      },
     }),
   )
 
-  const article = articlesData[0]
+  const article = articleData
   const issues = issuesData
   const sections = sectionsData
 
