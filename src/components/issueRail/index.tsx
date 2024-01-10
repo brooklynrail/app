@@ -1,4 +1,7 @@
 import Link from "next/link"
+import Image from "next/image"
+import { useEffect, useState } from "react"
+import { usePopup } from "./popupProvider"
 
 const Bylines = ({ contributors }: any) => {
   return (
@@ -69,9 +72,58 @@ const ArticleList = ({ articles, sections }: any) => {
   )
 }
 
+interface CoverImagesProps {
+  cover_1: any
+  cover_2: any
+  cover_3: any
+  cover_4: any
+  cover_5: any
+  cover_6: any
+}
+
+const CoverImage = (props: CoverImagesProps) => {
+  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = props
+  const covers = [cover_1, cover_2, cover_3, cover_4, cover_5, cover_6]
+
+  const { setShowPopup, setImages } = usePopup()
+
+  const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.preventDefault()
+    setImages(covers)
+    setShowPopup(true)
+  }
+
+  const FirstCover = () => {
+    const width = (cover_1.width * 200) / cover_1.height
+    const height = (cover_1.height * width) / cover_1.width
+    const src = `http://localhost:8055/assets/${cover_1.filename_disk}`
+    const alt = cover_1.description ? cover_1.description.replace(/(<([^>]+)>)/gi, "") : "The Brooklyn Rail"
+
+    return (
+      <div>
+        <Image
+          src={src}
+          width={width}
+          height={height}
+          alt={alt}
+          onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className={`issue-covers`}>
+      <FirstCover />
+    </div>
+  )
+}
+
 const IssueRail = (props: any) => {
   const primaryIssue = props.issues[0]
-  const { id, slug, title, deck, body, articles } = primaryIssue
+  console.log("primaryIssue", primaryIssue)
+  const { slug, title, articles, cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = primaryIssue
+  const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
 
   return (
     <section id="rail">
@@ -96,33 +148,10 @@ const IssueRail = (props: any) => {
       <nav className="issue-index">
         <div className="issue-details">
           <div className="grid-row">
-            <div className="grid-col-4">
-              <div className="issue-covers">
-                <Link href={`/${slug}/`}>
-                  <img
-                    className="cover"
-                    src="https://brooklynrail.imgix.net/content/issue/cover_image/241/br-dec-jan-rirkrit.jpg?w=200&q=80&fit=max"
-                    alt="Rirkrit Tiravanija, &lt;em&gt;untitled 2017 (fear eats the soul) (white flag)&lt;/em&gt;, 2017. Flag, 72 feet ? 10 feet 6 inches. Courtesy the artist."
-                  />
-                  <img
-                    className="cover2 hidden"
-                    src="https://brooklynrail.imgix.net/content/issue/cover_image/241/br-dec-jan-emin.jpg?w=200&q=80&fit=max"
-                    alt="Tracey Emin, &lt;em&gt;Dreaming of Another World,&lt;/em&gt; 2022. Acrylic on canvas, 36 x 48 1/16 inches. Courtesy the artist and White Cube."
-                  />
-                  <img
-                    className="cover3 hidden"
-                    src="https://brooklynrail.imgix.net/content/issue/cover_image/241/br-dec-jan-rosen.jpg?w=200&q=80&fit=max"
-                    alt="Kay Rosen, &lt;em&gt;This Means War?!&lt;/em&gt;, 2016 - 2023, Billboard (1 of 10). Installation view: &lt;em&gt;Kay Rosen: Now and Then&lt;/em&gt;, Weserburg Museum for Modern Art, Bremen, Germany. Photo: Tobias Hubel."
-                  />
-                  <img
-                    className="cover4 hidden"
-                    src="https://brooklynrail.imgix.net/content/issue/cover_image/241/br-dec-jan-bechara.jpg?w=200&q=80&fit=max"
-                    alt="Tony Bechara, &lt;em&gt;Random 28 (Red version),&lt;/em&gt; 2023. Acrylic on canvas, 24 x 24 inches. ? Tony Bechara. Courtesy Lisson Gallery."
-                  />
-                </Link>
-              </div>
+            <div className="grid-col-6">
+              <CoverImage {...coverImageProps} />
             </div>
-            <div className="grid-col-8">
+            <div className="grid-col-6">
               <div className="issue-links">
                 <div className="related">
                   <p>

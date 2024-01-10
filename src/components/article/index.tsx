@@ -2,9 +2,9 @@ import Link from "next/link"
 import IssueRail from "../issueRail"
 import Image from "next/image"
 import Footer from "../footer"
+import CoversPopup from "../issueRail/coversPopup"
 
 const Contributors = (contributors: any) => {
-  // console.log(contributors.contributors)
   return (
     <cite>
       {contributors.contributors.map((contributor: any, i: number) => {
@@ -136,6 +136,7 @@ const Article = (props: any) => {
         </main>
         <Footer />
       </div>
+      <CoversPopup />
     </>
   )
 }
