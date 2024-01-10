@@ -40,14 +40,73 @@ const FeaturedImage = (props: any) => {
   )
 }
 
-const Article = (props: any) => {
-  const { id, title, deck, kicker, body, contributors, slug, sections, featured_image } = props.article
+const ArticleHead = (props: any) => {
+  const { kicker, sections, title, deck, featured_image, slug, header_type } = props.article
   const primarySection = sections[0].sections_id
   const primaryIssue = props.issues[0]
   const { year, month } = primaryIssue
-
   const permalink = `/${year}/${month}/${primarySection.slug}/${slug}/`
   const permalinkEncoded = `https://brooklynrail.org${permalink}`
+
+  const kickerBlock = (
+    <h6 className="kicker">
+      <a href={`/${year}/${month}/${primarySection.slug}/`} title={`Go to the ${primarySection.name} section`}>
+        {primarySection.name}
+      </a>
+      <span className="divider"></span>
+      <span>{kicker}</span>
+    </h6>
+  )
+
+  const articleMeta = (
+    <div className="article-meta">
+      <div className="date">{props.issues.title}</div>
+
+      <div className="share-tools">
+        <a className="twitter" href={`https://twitter.com/share?url=${permalinkEncoded}`}>
+          <i className="fab fa-twitter"></i>
+        </a>
+        <a className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalinkEncoded}`}>
+          <i className="fab fa-facebook-f"></i>
+        </a>
+      </div>
+    </div>
+  )
+
+  if (header_type === "diptych") {
+    return (
+      <header className="diptych">
+        <div className="grid-row grid-gap-4">
+          <div className="grid-col-12 tablet:grid-col-7">
+            {kickerBlock}
+            <h1 dangerouslySetInnerHTML={{ __html: title }} />
+            {deck && <h2 className="deck">{deck}</h2>}
+            {articleMeta}
+          </div>
+
+          <div className="grid-col-12 tablet:grid-col-5">
+            {featured_image ? <FeaturedImage {...featured_image} /> : null}
+          </div>
+        </div>
+      </header>
+    )
+  }
+
+  return (
+    <header>
+      {kickerBlock}
+      <h1 dangerouslySetInnerHTML={{ __html: title }} />
+      {deck && <h2 className="deck">{deck}</h2>}
+      <div className="article-meta">
+        <div className="date">DEC 23-JAN 24</div>
+      </div>
+    </header>
+  )
+}
+
+const Article = (props: any) => {
+  const { body, contributors } = props.article
+
   return (
     <>
       <div className="paper">
@@ -90,43 +149,11 @@ const Article = (props: any) => {
                 </div>
 
                 <article className="article">
-                  <header className="diptych">
-                    <div className="grid-row grid-gap-4">
-                      <div className="grid-col-12 tablet:grid-col-7">
-                        <h6 className="kicker">
-                          <a
-                            href={`/${year}/${month}/${primarySection.slug}/`}
-                            title={`Go to the ${primarySection.name} section`}
-                          >
-                            {primarySection.name}
-                          </a>
-                          <span className="divider"></span>
-                          <span>{kicker}</span>
-                        </h6>
+                  <ArticleHead {...props} />
 
-                        <h1 dangerouslySetInnerHTML={{ __html: title }} />
-
-                        <div className="article-meta">
-                          <div className="date">{props.issues.title}</div>
-
-                          <div className="share-tools">
-                            <a className="twitter" href={`https://twitter.com/share?url=${permalinkEncoded}`}>
-                              <i className="fab fa-twitter"></i>
-                            </a>
-                            <a className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalinkEncoded}`}>
-                              <i className="fab fa-facebook-f"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="grid-col-12 tablet:grid-col-5">
-                        {featured_image ? <FeaturedImage {...featured_image} /> : null}
-                      </div>
-                    </div>
-                  </header>
-
-                  <section className="content">{/* <div dangerouslySetInnerHTML={{ __html: body }} /> */}</section>
+                  <section className="content">
+                    <div dangerouslySetInnerHTML={{ __html: body }} />
+                  </section>
 
                   <Contributors contributors={contributors} />
                 </article>
