@@ -49,6 +49,8 @@ export async function getStaticProps({ params }: any) {
         "contributors.contributors_id.last_name",
         "contributors.contributors_id.slug",
         "contributors.contributors_id.bio",
+        "sections.sections_id.slug", // Selects the section Id
+        "sections.sections_id.name", // Selects the section Id
       ],
       filter: {
         _and: [{ slug: { _eq: slug } }],
@@ -57,7 +59,7 @@ export async function getStaticProps({ params }: any) {
   )
 
   const article = articlesData[0]
-  const issues = issuesData[0]
+  const issues = issuesData
   const sections = sectionsData
 
   return {
