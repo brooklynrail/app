@@ -94,6 +94,9 @@ const CoverImage = (props: CoverImagesProps) => {
   }
 
   const FirstCover = () => {
+    if (!cover_1) {
+      return <></>
+    }
     const width = (cover_1.width * 200) / cover_1.height
     const height = (cover_1.height * width) / cover_1.width
     const src = `http://localhost:8055/assets/${cover_1.filename_disk}`
