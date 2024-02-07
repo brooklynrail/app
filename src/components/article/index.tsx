@@ -1,8 +1,11 @@
 import Link from "next/link"
+import parse from "html-react-parser"
 import IssueRail from "../issueRail"
 import Image from "next/image"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
+import BodyText from "./bodyText"
+import BodyCode from "./bodyCode"
 
 const Contributors = (contributors: any) => {
   return (
@@ -39,6 +42,26 @@ const FeaturedImage = (props: any) => {
   )
 }
 
+export const Kicker = (props: any) => {
+  const { sections, kicker, year, month, primarySection } = props
+  if (!sections && !kicker) {
+    return <></>
+  }
+  return (
+    <h6 className="kicker">
+      {sections && (
+        <>
+          <a href={`/${year}/${month}/${primarySection.slug}/`} title={`Go to the ${primarySection.name} section`}>
+            {primarySection.name}
+          </a>
+          <span className="divider"></span>
+        </>
+      )}
+      {kicker && <span>{kicker}</span>}
+    </h6>
+  )
+}
+
 const ArticleHead = (props: any) => {
   const { kicker, sections, title, deck, featured_image, slug, header_type } = props.article
   const primarySection = sections[0].sections_id
@@ -46,25 +69,6 @@ const ArticleHead = (props: any) => {
   const { year, month } = primaryIssue
   const permalink = `/${year}/${month}/${primarySection.slug}/${slug}/`
   const permalinkEncoded = `https://brooklynrail.org${permalink}`
-
-  const kickerBlock = () => {
-    if (!sections && !kicker) {
-      return <></>
-    }
-    return (
-      <h6 className="kicker">
-        {sections && (
-          <>
-            <a href={`/${year}/${month}/${primarySection.slug}/`} title={`Go to the ${primarySection.name} section`}>
-              {primarySection.name}
-            </a>
-            <span className="divider"></span>
-          </>
-        )}
-        {kicker && <span>{kicker}</span>}
-      </h6>
-    )
-  }
 
   const articleMeta = (
     <div className="article-meta">
@@ -83,12 +87,12 @@ const ArticleHead = (props: any) => {
 
   if (header_type === "diptych") {
     return (
-      <header className="diptych">
+      <header className="article-header diptych">
         <div className="grid-row grid-gap-4">
           <div className="grid-col-12 tablet:grid-col-7">
-            {kickerBlock}
-            <h1 dangerouslySetInnerHTML={{ __html: title }} />
-            {deck && <h2 className="deck">{deck}</h2>}
+            <Kicker {...{ sections, kicker, year, month, primarySection }} />
+            <h1>{parse(title)}</h1>
+            {deck && <h2 className="deck">{parse(deck)}</h2>}
             {articleMeta}
           </div>
 
@@ -101,10 +105,10 @@ const ArticleHead = (props: any) => {
   }
 
   return (
-    <header>
-      {kickerBlock}
-      <h1 dangerouslySetInnerHTML={{ __html: title }} />
-      {deck && <h2 className="deck">{deck}</h2>}
+    <header className="article-header">
+      <Kicker {...{ sections, kicker, year, month, primarySection }} />
+      <h1>{parse(title)}</h1>
+      {deck && <h2 className="deck">{parse(deck)}</h2>}
       <div className="article-meta">
         <div className="date">DEC 23-JAN 24</div>
       </div>
@@ -112,8 +116,77 @@ const ArticleHead = (props: any) => {
   )
 }
 
+export const ArticleBody = (props: any) => {
+  const { body_type } = props.article
+  const { type } = props
+  console.log(body_type)
+
+  switch (type ? type : body_type) {
+    case `body_text`:
+      return (
+        <>
+          <p className="body-label">Body Text</p>
+          <BodyText {...props.article} />
+        </>
+      )
+    case `body_code`:
+      return (
+        <>
+          <p className="body-label">Body Code</p>
+          <BodyCode {...props.article} />
+        </>
+      )
+    default:
+      return <></>
+  }
+}
+
+export const NextPrev = (props: any) => {
+  const { slug } = props.article
+  const diff = props.diff ? `diff/` : ``
+  const primaryIssue = props.issues[0]
+  const articles = props.issues[0].articles
+  const currentArticle = articles.find((article: any) => article.articles_slug.slug === slug)
+  const currentIndex = articles.indexOf(currentArticle)
+
+  const prevLink = () => {
+    if (currentIndex == 0) {
+      return <div className="prev"></div>
+    }
+    const prev = articles[currentIndex - 1].articles_slug
+    const prevPrimarySection = prev.sections[0].sections_id
+    const prevPermalink = `/${primaryIssue.year}/${primaryIssue.month}/${prevPrimarySection.slug}/${prev.slug}/${diff}`
+    return (
+      <div className="prev">
+        <a href={prevPermalink}>
+          <span>Previous</span>
+          <h3>{prev.title}</h3>
+        </a>
+      </div>
+    )
+  }
+
+  const next = articles[currentIndex + 1].articles_slug
+  const nextPrimarySection = next.sections[0].sections_id
+  const nextPermalink = `/${primaryIssue.year}/${primaryIssue.month}/${nextPrimarySection.slug}/${next.slug}/${diff}`
+
+  return (
+    <nav className="next-prev">
+      {prevLink()}
+      {next && (
+        <div className="next">
+          <a href={nextPermalink}>
+            <span>Next</span>
+            <h3>{next.title}</h3>
+          </a>
+        </div>
+      )}
+    </nav>
+  )
+}
+
 const Article = (props: any) => {
-  const { body, contributors } = props.article
+  const { contributors } = props.article
 
   return (
     <>
@@ -157,11 +230,9 @@ const Article = (props: any) => {
                 </div>
 
                 <article className="article">
+                  <NextPrev diff={false} {...props} />
                   <ArticleHead {...props} />
-
-                  <section className="content">
-                    <div dangerouslySetInnerHTML={{ __html: body }} />
-                  </section>
+                  <ArticleBody {...props} />
 
                   <Contributors contributors={contributors} />
                 </article>
