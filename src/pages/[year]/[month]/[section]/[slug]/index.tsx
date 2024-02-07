@@ -12,9 +12,9 @@ export default ArticleController
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps({ params }: any) {
-  const slug = params.slug
-  const year = params.year
-  const month = params.month
+  const slug: string | number = params.slug
+  const year: number = params.year
+  const month: number = params.month
 
   const sectionsData = await directus.request(
     readItems("sections", {
@@ -33,6 +33,7 @@ export async function getStaticProps({ params }: any) {
         "articles.articles_slug.contributors.contributors_id.last_name",
         "articles.articles_slug.sections.sections_id.name", // Selects the section for each article
         "articles.articles_slug.sections.sections_id.id", // Selects the section Id
+        "articles.articles_slug.sections.sections_id.slug", // Selects the section slug
       ],
       filter: {
         _and: [{ year: { _eq: year } }, { month: { _eq: month } }],
@@ -44,7 +45,7 @@ export async function getStaticProps({ params }: any) {
     readItem("articles", slug, {
       fields: [
         "*.*",
-        "images.thumbnails.*",
+        "images.directus_files_id.*",
         "contributors.contributors_id.first_name",
         "contributors.contributors_id.last_name",
         "contributors.contributors_id.slug",
@@ -81,8 +82,6 @@ export async function getStaticPaths() {
       fields: ["slug", "sections.sections_id.slug", "issues.issues_id.year", "issues.issues_id.month"],
     }),
   )
-
-  // console.log("articles ======= ", articles)
 
   const paths = articles.map((article) => ({
     params: {
