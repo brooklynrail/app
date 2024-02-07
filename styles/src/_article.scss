@@ -1,53 +1,123 @@
-article.article{
+article.article {
   @include u-margin-x(0);
-  @include at-media('tablet-lg') {
+  @include at-media("tablet-lg") {
     @include u-margin-x(1);
-    @include u-margin-right('105');
+    @include u-margin-right("105");
   }
-  @include at-media('desktop') {
+  @include at-media("desktop") {
     @include u-margin-x(2);
-    @include u-margin-right('205');
+    @include u-margin-right("205");
   }
-  @include at-media('desktop-lg') {
-    @include u-margin-x('205');
+  @include at-media("desktop-lg") {
+    @include u-margin-x("205");
     @include u-margin-right(3);
   }
-  @include at-media('widescreen') {
+  @include at-media("widescreen") {
     @include u-margin-right(2);
   }
   @include u-padding-top(3);
-
 
   // see article-header.scss for header styles
 
   // see content.scss for content styles
 
-
-  footer{
-    .contributors{
+  footer {
+    .contributors {
       @include u-margin-bottom(9);
-      @include u-border-top('black', '2px', 'dotted');
-      @include u-font('sans', 'sm');
-      h3{
+      @include u-border-top("black", "2px", "dotted");
+      @include u-font("sans", "sm");
+      h3 {
         @include u-margin-y(2);
       }
-      h4{
+      h4 {
         @include u-margin(0);
         @include u-margin-bottom(1);
       }
-      p{
+      p {
         @include u-margin-top(0);
         @include u-measure(1);
-        @include u-line-height('sans', 5);
+        @include u-line-height("sans", 5);
       }
-      a{
-        @include u-color('red-50v');
-        @include u-text('no-underline');
-        &:hover{
-          @include u-text('underline');
+      a {
+        @include u-color("red-50v");
+        @include u-text("no-underline");
+        &:hover {
+          @include u-text("underline");
         }
       }
     }
   }
+}
+article.article-diff {
+  overflow-x: scroll;
+  @include u-bg("white");
+}
 
+.body-type-label {
+  @include u-display("inline-block");
+  @include u-bg("gray-cool-80");
+  @include u-color("white");
+  @include u-padding(1);
+  @include u-font("sans", "2xs");
+  @include u-text("uppercase");
+  @include u-text("bold");
+  @include u-text("center");
+  @include u-margin-bottom(1);
+}
+
+.next-prev {
+  @include u-display("flex");
+  @include u-flex("justify");
+  @include u-border-bottom("black", "2px", "dotted");
+  @include u-margin-bottom(4);
+  a {
+    @include u-padding-bottom(3);
+    @include u-display("block");
+    @include u-text("no-underline");
+    @include u-text("black");
+    &:hover {
+      h3 {
+        @include u-text("underline");
+      }
+    }
+    span {
+      @include u-text("uppercase");
+      @include u-font("sans", "2xs");
+      @include u-text("light");
+    }
+    h3 {
+      @include u-margin(0);
+      @include u-font("sans", "sm");
+      @include u-text("medium");
+    }
+  }
+  .next {
+    @include u-text("right");
+  }
+}
+
+.body-label {
+  @include u-display("inline-block");
+  @include u-bg("gray-cool-80");
+  @include u-color("white");
+  @include u-padding(1);
+  @include u-font("sans", "xs");
+  @include u-text("uppercase");
+  @include u-text("bold");
+  @include u-text("center");
+  @include u-margin-bottom(1);
+}
+
+.diff {
+  @include u-position("relative");
+}
+.guide {
+  @include u-position("fixed");
+  top: 50vh;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 999;
+  @include u-border-top("red-50v", "1px", "solid");
+  //top
 }

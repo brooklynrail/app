@@ -1,144 +1,143 @@
-
-article.article{
-
-  // Default Article Header
-  header{
-    h6.kicker{
-      @include u-margin(0);
-      @include u-margin-bottom('105');
-      @include u-font('sans', 'md');
-      @include u-text('heavy');
-      a{
-        @include u-color('black');
-        @include u-text('no-underline');
-      }
-
-      // defines the type styles for the article_type
-      // e.g., In Conversation
-      span{
-        @include u-text('light');
-      }
-
-      // defines the type styles for the divider between article_type and section
-      .divider{
-        margin: 0 .5em 0 .3em;
-        border-left:1px #000 solid;
-      }
-
-      .issue_btn{
-        padding: 1px 5px;
-        @include u-color('red-50v');
-        @include u-text('heavy');
-        border: 2px red solid;
-      }
+// Default Article Header
+.article-header {
+  h6.kicker {
+    @include u-margin(0);
+    @include u-margin-bottom("105");
+    @include u-font("sans", "md");
+    @include u-text("heavy");
+    a {
+      @include u-color("black");
+      @include u-text("no-underline");
     }
 
-    h1{
-      @include u-margin(0);
+    // defines the type styles for the article_type
+    // e.g., In Conversation
+    span {
+      @include u-text("light");
+    }
+
+    // defines the type styles for the divider between article_type and section
+    .divider {
+      margin: 0 0.5em 0 0.3em;
+      border-left: 1px #000 solid;
+    }
+
+    .issue_btn {
+      padding: 1px 5px;
+      @include u-color("red-50v");
+      @include u-text("heavy");
+      border: 2px red solid;
+    }
+  }
+
+  h1 {
+    @include u-margin(0);
+    @include u-margin-bottom(1);
+    @include u-font("sans", "2xl");
+    @include u-line-height("sans", 1);
+    @include u-text("thin");
+    @include u-maxw("tablet-lg");
+
+    @include at-media("desktop-lg") {
+      @include u-font("sans", "2xl");
+    }
+  }
+  .deck {
+    @include u-margin-top(1);
+    @include u-margin-bottom("105");
+    @include u-font("sans", "xl");
+    @include u-text("thin");
+    @include u-line-height("sans", 3);
+    @include u-maxw("tablet-lg");
+  }
+
+  .article-meta {
+    @include u-margin-bottom(3);
+    @include u-padding-y(1);
+    @include u-display("flex");
+    @include u-flex("wrap");
+    @include u-flex("justify");
+    @include at-media("tablet-lg") {
+      @include u-padding-y(2);
+    }
+    .date {
+      @include u-font("sans", "sm");
+      @include u-color("black");
+      @include u-display("none");
+    }
+    cite.byline {
       @include u-margin-bottom(1);
-      @include u-font('sans', '2xl');
-      @include u-line-height('sans', 1);
-      @include u-text('thin');
-      @include u-maxw('tablet-lg');
-
-      @include at-media('desktop-lg') {
-        @include u-font('sans', '2xl');
-      }
-    }
-    .deck{
-      @include u-margin-top(1);
-      @include u-margin-bottom('105');
-      @include u-font('sans', 'xl');
-      @include u-text('thin');
-      @include u-line-height('sans', 3);
-      @include u-maxw('tablet-lg');
-    }
-
-    .article-meta{
-      @include u-margin-bottom(3);
-      @include u-padding-y(1);
-      @include u-display('flex');
-      @include u-flex('wrap');
-      @include u-flex('justify');
-      @include at-media('tablet-lg') {
-        @include u-padding-y(2);
-      }
-      .date{
-        @include u-font('sans', 'sm');
-        @include u-color('black');
-        @include u-display('none');
-      }
-      cite.byline{
-        @include u-margin-bottom(1);
-        @include u-font('sans', 'sm');
-        @include u-text('normal');
-        a{
-          @include u-color('red-50v');
-          @include u-text('no-underline');
-          &:hover{
-            @include u-border-bottom('red-50v', '1px', 'solid');
-          }
+      @include u-font("sans", "sm");
+      @include u-text("normal");
+      a {
+        @include u-color("red-50v");
+        @include u-text("no-underline");
+        &:hover {
+          @include u-border-bottom("red-50v", "1px", "solid");
         }
       }
-      .share-tools{
-        // see share-tools.scss
-      }
+    }
+    .share-tools {
+      // see share-tools.scss
     }
   }
+}
 
-  // diptych header
-  header.diptych{
-    h6{
-      @include u-margin-bottom(3);
-      @include u-text('center');
+// diptych header
+.article-header.diptych {
+  h6 {
+    @include u-margin-bottom(3);
+    @include u-text("center");
+  }
+  h1 {
+    @include u-margin-bottom(2);
+    @include u-font("sans", "2xl");
+    @include u-text("center");
+    @include at-media("tablet") {
+      @include u-font("sans", "2xl");
     }
-    h1{
+    @include at-media("desktop-lg") {
+      @include u-font("sans", "3xl");
+    }
+  }
+  .deck {
+    @include u-margin-x(0);
+    @include u-font("sans", "lg");
+    @include u-text("center");
+    @include at-media("tablet-lg") {
+      @include u-font("sans", "lg");
+    }
+    @include at-media("desktop") {
+      @include u-margin-x(4);
+      @include u-font("sans", "xl");
+    }
+  }
+  figcaption,
+  figcaption p {
+    @include u-margin-y("2px");
+    @include u-padding-x("2px");
+    @include u-font("sans", "xs");
+    @include u-line-height("sans", 3);
+    @include u-color("gray-cool-70");
+    @include u-text("normal");
+  }
+  .article-meta {
+    @include u-flex("column");
+    @include u-flex("align-center");
+    .date {
+      // @include u-display('block');
+    }
+    cite.byline {
       @include u-margin-bottom(2);
-      @include u-font('sans', '2xl');
-      @include u-text('center');
-      @include at-media('tablet') {
-        @include u-font('sans', '2xl');
-      }
-      @include at-media('desktop-lg') {
-        @include u-font('sans', '3xl');
+    }
+    .share-tools {
+      // see share-tools.scss
+      @include at-media("tablet-lg") {
       }
     }
-    .deck{
-      @include u-margin-x(0);
-      @include u-font('sans', 'lg');
-      @include u-text('center');
-      @include at-media('tablet-lg') {
-        @include u-font('sans', 'lg');
-      }
-      @include at-media('desktop') {
-        @include u-margin-x(4);
-        @include u-font('sans', 'xl');
-      }
-    }
-    figcaption,
-  	figcaption p{
-      @include u-margin-y('2px');
-      @include u-padding-x('2px');
-      @include u-font('sans', 'xs');
-      @include u-line-height('sans', 3);
-      @include u-color('gray-cool-70');
-      @include u-text('normal');
-  	}
-    .article-meta{
-      @include u-flex('column');
-      @include u-flex('align-center');
-      .date{
-        // @include u-display('block');
-      }
-      cite.byline{
-        @include u-margin-bottom(2);
-      }
-      .share-tools{
-        // see share-tools.scss
-        @include at-media('tablet-lg') {
-        }
-      }
-    }
-
   }
+}
+
+.diff .article-header {
+  @include u-padding-top(4);
 }
