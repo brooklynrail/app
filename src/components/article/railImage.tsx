@@ -6,9 +6,8 @@ const RailImage = (props: any) => {
 
   // Find the `name` in the `images` array
   const image = images.find((image: any) => image.directus_files_id.shortcode_key === name)
-  console.log("image ---", image)
   if (!image) {
-    return <>Image not found!</>
+    return <></>
   }
   const src = `http://localhost:8055/assets/${image.directus_files_id.id}`
 
