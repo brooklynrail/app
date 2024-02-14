@@ -1,14 +1,31 @@
 import directus from "../../lib/directus"
 import { readItems, readItem } from "@directus/sdk"
 import Homepage from "@/components/homepage"
+import { Articles, Issues, Sections } from "../../lib/types"
 
-function HomepageController(props: any) {
+interface HomepageProps {
+  allIssues: Array<Issues>
+  currentIssue: Issues
+  currentSections: Array<Sections>
+  inConversation: Articles
+}
+
+function HomepageController(props: HomepageProps) {
   return <Homepage {...props} />
 }
 
 export default HomepageController
 
-export async function getStaticProps({ params }: any) {
+export async function getStaticProps() {
+  const allIssues = await directus.request(
+    readItems("issues", {
+      fields: ["year", "month", "title", "slug"],
+      filter: {
+        _and: [{ status: { _eq: "published" } }],
+      },
+    }),
+  )
+
   // Get the most recent published issue
   const currentIssueData = await directus.request(
     readItems("issues", {
@@ -50,11 +67,13 @@ export async function getStaticProps({ params }: any) {
   // console.log("currentSections", currentSections)
   // console.log("currentIssue", currentIssue)
   // console.log("inConversation", inConversation)
+  // console.log("allIssues", allIssues)
   // console.log("===============")
 
   const currentIssue = currentIssueData[0]
   return {
     props: {
+      allIssues,
       currentIssue,
       currentSections,
       inConversation,
