@@ -73,6 +73,7 @@
     .issue-covers {
       @include u-margin-right(1);
       img {
+        cursor: pointer;
         @include u-display("none");
         &:first-of-type {
           @include u-display("block");

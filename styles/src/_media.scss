@@ -5,10 +5,7 @@
   position: relative;
   clear: both;
   a {
-    cursor: default;
-    &:hover {
-      outline: 3px solid red;
-    }
+    cursor: pointer;
   }
 
   .media-aspect {
