@@ -6,389 +6,456 @@
 //  Created by Chris Johanesen on 2005-12-27.
 //  Copyright 2005 Chris Johanesen. All rights reserved.
 */
-ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input { margin:0; padding:0 }
-:link,:visited { text-decoration:none }
-ul,ol { list-style:none }
-h1,h2,h3,h4,h5,h6,pre,code { font-size:1em; }
-a img,:link img,:visited img, iframe { border:none; }
-:focus { outline: 0; }
-
-
-.wrapper{
-  @include u-margin-x('auto');
-  @include u-width('desktop');
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+body,
+html,
+p,
+blockquote,
+fieldset,
+input {
+  margin: 0;
+  padding: 0;
+}
+:link,
+:visited {
+  text-decoration: none;
+}
+ul,
+ol {
+  list-style: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code {
+  font-size: 1em;
+}
+a img,
+:link img,
+:visited img,
+iframe {
+  border: none;
+}
+:focus {
+  outline: 0;
 }
 
-.ad_column{
-  @include u-border-left('1px', 'dotted', 'base-light');
+.wrapper {
+  @include u-margin-x("auto");
+  @include u-width("desktop");
 }
 
-.contents_column{
-  width:670px;
+.ad_column {
+  @include u-border-left("1px", "dotted", "base-light");
 }
 
+.contents_column {
+  width: 670px;
+}
 
 #container {
-	position:relative;
-	width: 1030px;
-	margin: 0 auto;
-	background: #fff;
+  position: relative;
+  width: 1030px;
+  margin: 0 auto;
+  background: #fff;
 }
-
-
 
 #pagewrap {
-	position:relative;
-	width: 1000px;
-	margin: 0 auto;
-	background: #fff;
+  position: relative;
+  width: 1000px;
+  margin: 0 auto;
+  background: #fff;
 }
-
 
 /*     HEADER
 ******************************************************/
 
 #header {
-	position:relative;
-	height: 80px;
+  position: relative;
+  height: 80px;
 }
 
 /* flag */
 #header #flag {
-	position:absolute;
-	left:0;
-	top:0;
-	margin: 13px 0 8px 0px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 13px 0 8px 0px;
 }
 
 #header #flag span {
-	display:none;
+  display: none;
 }
 
 #header #flag a:hover {
-	background: none;
+  background: none;
 }
 
 /* nav */
 #header #nav {
-	position:absolute;
-	right:-8px;
-	top:0;
-	width: 720px;
+  position: absolute;
+  right: -8px;
+  top: 0;
+  width: 720px;
 }
 
 #header #nav ul {
-
 }
 
 #header #nav ul li {
-	float: right; /* pushed nav buttons to right side */
-	cursor:pointer;
-	margin: 0 9px;
+  float: right; /* pushed nav buttons to right side */
+  cursor: pointer;
+  margin: 0 9px;
 }
 
-#topnavsub-CONTACT-US-drop{
-	position:absolute;
-	top:30px;
-	left:135px;
-	width:250px;
+#topnavsub-CONTACT-US-drop {
+  position: absolute;
+  top: 30px;
+  left: 135px;
+  width: 250px;
 }
 
-#topnavsub-CONTACT-US-drop a{
-	text-decoration:none;
-	text-align:left;
-	margin-right:8px;
+#topnavsub-CONTACT-US-drop a {
+  text-decoration: none;
+  text-align: left;
+  margin-right: 8px;
 }
 
-#topnavsub-CONTACT-US-drop img{
-	height:9px;
-	margin-bottom:5px;
+#topnavsub-CONTACT-US-drop img {
+  height: 9px;
+  margin-bottom: 5px;
 }
 
 .searchbox {
-	width:139px;
+  width: 139px;
 }
 
-#social-media{
-	position:absolute;
-	bottom:10px;
-	right:0;
+#social-media {
+  position: absolute;
+  bottom: 10px;
+  right: 0;
 }
 
-#social-media .social-media{
-	float:right;
-	margin-left:8px;
+#social-media .social-media {
+  float: right;
+  margin-left: 8px;
 }
 
 /*Homepage AD banner
 ******************************************************/
 
-.banner-new-social-environment{
-  @include u-bg('gray-warm-10');
+.banner-new-social-environment {
+  @include u-bg("gray-warm-10");
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e6e6e2+35,fdb8ae+100 */
   background: #e6e6e2; /* Old browsers */
-  background: -moz-linear-gradient(-45deg,  #e6e6e2 35%, #fdb8ae 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(-45deg,  #e6e6e2 35%,#fdb8ae 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(135deg,  #e6e6e2 35%,#fdb8ae 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: -moz-linear-gradient(-45deg, #e6e6e2 35%, #fdb8ae 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #e6e6e2 35%, #fdb8ae 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #e6e6e2 35%, #fdb8ae 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e2', endColorstr='#fdb8ae',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
-	@include u-margin-y('05');
-	@include u-margin-bottom('105');
-	@include u-text('black');
-	@include u-radius('md');
-  a{
-    @include u-font('sans', 'lg');
-    @include u-line-height('sans', 5);
-    @include u-display('block');
+  @include u-margin-y("05");
+  @include u-margin-bottom("105");
+  @include u-text("black");
+  @include u-radius("md");
+  a {
+    @include u-font("sans", "lg");
+    @include u-line-height("sans", 5);
+    @include u-display("block");
     @include u-padding-y(2);
-    @include u-padding-x('205');
-    @include u-text('black');
-    @include u-text('normal');
-    span{
-      @include u-padding-top('2px');
-      @include u-padding-bottom('2px');
-      @include u-padding-x('2px');
-      @include u-radius('sm');
-      @include u-bg('white');
-      @include u-text('black');
+    @include u-padding-x("205");
+    @include u-text("black");
+    @include u-text("normal");
+    span {
+      @include u-padding-top("2px");
+      @include u-padding-bottom("2px");
+      @include u-padding-x("2px");
+      @include u-radius("sm");
+      @include u-bg("white");
+      @include u-text("black");
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
-      @include at-media('tablet-lg') {
-        @include u-padding-top('1px');
-        @include u-padding-x('05');
+      @include at-media("tablet-lg") {
+        @include u-padding-top("1px");
+        @include u-padding-x("05");
       }
     }
-    span.time{
-      @include u-bg('indigo-cool-60v');
-      @include u-text('white');
-      @include u-padding-top('2px');
-      @include u-padding-bottom('2px');
-      @include u-padding-x('05');
-      @include at-media('tablet-lg') {
-        @include u-padding-top('1px');
+    span.time {
+      @include u-bg("indigo-cool-60v");
+      @include u-text("white");
+      @include u-padding-top("2px");
+      @include u-padding-bottom("2px");
+      @include u-padding-x("05");
+      @include at-media("tablet-lg") {
+        @include u-padding-top("1px");
         @include u-padding-x(1);
       }
     }
-    &:hover{
-      @include u-text('black');
-      @include u-text('no-underline');
-      span.time{
-        @include u-bg('indigo-cool-60v');
-        @include u-text('white');
+    &:hover {
+      @include u-text("black");
+      @include u-text("no-underline");
+      span.time {
+        @include u-bg("indigo-cool-60v");
+        @include u-text("white");
       }
     }
   }
 }
-
-
 
 /*     ISSUE COLUMN
 ******************************************************/
 
-
 /* section list */
-#main #issuecolumn div.section-list {  }
+#main #issuecolumn div.section-list {
+}
 
 #main #issuecolumn div.section-list:after {
-	content: '';
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 } /* EASY CLEAR */
 
-#main #issuecolumn div.section-list  li {
-	float: left;
+#main #issuecolumn div.section-list li {
+  float: left;
 }
 
 #main #issuecolumn div.section-list li a {
-	display:block;
-	margin: 0;
-  @include u-text('black');
+  display: block;
+  margin: 0;
+  @include u-text("black");
 }
 
 /* leftnav-list */
-#main #issuecolumn ul.leftnav-list { height:1%; width:100%; }
-#main #issuecolumn ul.leftnav-list:after {	content: ''; display: block; height: 0;	clear: both; visibility: hidden; } /* EASY CLEAR */
-#main #issuecolumn ul.leftnav-list  li {
-	float: left;
-	width: 100%;
+#main #issuecolumn ul.leftnav-list {
+  height: 1%;
+  width: 100%;
+}
+#main #issuecolumn ul.leftnav-list:after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+} /* EASY CLEAR */
+#main #issuecolumn ul.leftnav-list li {
+  float: left;
+  width: 100%;
 }
 #main #issuecolumn ul.leftnav-list li a {
-	display:block;
-	margin: 0;
+  display: block;
+  margin: 0;
 }
 
 /* nav2 list */
-#main #issuecolumn ul.nav2 { height:1%; }
-#main #issuecolumn ul.nav2:after {	content: ''; display: block; height: 0;	clear: both; visibility: hidden; } /* EASY CLEAR */
-#main #issuecolumn ul.nav2  li {
-	float: left;
+#main #issuecolumn ul.nav2 {
+  height: 1%;
+}
+#main #issuecolumn ul.nav2:after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+} /* EASY CLEAR */
+#main #issuecolumn ul.nav2 li {
+  float: left;
 }
 #main #issuecolumn ul.nav2 li a {
-	display:block;
-	margin: 0;
+  display: block;
+  margin: 0;
 }
 
 #main #issuecolumn {
+  .issue-covers {
+    @include u-margin-y(1);
+    cursor: pointer;
+  }
+}
+#main #issuecolumn {
   .search_btn,
-  .archives_btn{
+  .archives_btn {
     @include u-margin-y(1);
     @include u-margin-right(0);
-    @include u-padding-y('05');
-    @include u-display('block');
-    @include u-font('sans', 'xs');
-    @include u-text('medium');
-    @include u-text('center');
-    @include u-text('black');
-    @include u-border('1px','black', 'solid');
-    @include u-radius('sm');
-    &:hover{
-      @include u-text('black');
-      @include u-text('no-underline');
-      span{
-        @include u-border-bottom('1px','black', 'solid');
+    @include u-padding-y("05");
+    @include u-display("block");
+    @include u-font("sans", "xs");
+    @include u-text("medium");
+    @include u-text("center");
+    @include u-text("black");
+    @include u-border("1px", "black", "solid");
+    @include u-radius("sm");
+    &:hover {
+      @include u-text("black");
+      @include u-text("no-underline");
+      span {
+        @include u-border-bottom("1px", "black", "solid");
       }
     }
   }
-  .archives_btn{
+  .archives_btn {
     @include u-margin-bottom(3);
   }
 }
 
-#main #issuecolumn .related{
-  @include u-bg('white');
-  @include u-margin-bottom('105');
-  @include u-padding('105');
-  a{
+#main #issuecolumn .related {
+  @include u-bg("white");
+  @include u-margin-bottom("105");
+  @include u-padding("105");
+  a {
     @include u-margin-bottom(3);
-    @include u-display('block');
-    &:last-child{
+    @include u-display("block");
+    &:last-child {
       @include u-margin-bottom(0);
     }
   }
-  h5{
-	@include u-margin-y(1);
-	@include u-text('center');
-	@include u-text('medium');
-	@include u-text('uppercase');
-	@include u-font('sans', '2xs');
+  h5 {
+    @include u-margin-y(1);
+    @include u-text("center");
+    @include u-text("medium");
+    @include u-text("uppercase");
+    @include u-font("sans", "2xs");
   }
 }
 
-#main #issuecolumn .rail_projects{
-	@include u-border('1px','black', 'solid');
-	@include u-radius('sm');
-	img{
-		@include u-width(15);
-	}
+#main #issuecolumn .rail_projects {
+  @include u-border("1px", "black", "solid");
+  @include u-radius("sm");
+  img {
+    @include u-width(15);
+  }
 }
 
 /* BANNER
 ******************************************************/
 
-.bannerblock{
-	height:8px; width:100%;	cursor:pointer;
+.bannerblock {
+  height: 8px;
+  width: 100%;
+  cursor: pointer;
 }
 
-.bannerselect{
-	background-color:#E00000;
+.bannerselect {
+  background-color: #e00000;
 }
 
-#banner-next{
-	display:none;
+#banner-next {
+  display: none;
 }
 
-#banner-prev{
-	display:none;
+#banner-prev {
+  display: none;
 }
 
-a.banner:link{ color:#FFF; text-decoration:none; }
-a.banner:active{ color:#FFF; text-decoration:none; }
-a.banner:visited{ color:#FFF; text-decoration:none; }
-a.banner:hover{ color:#FFF; text-decoration:none; }
-
+a.banner:link {
+  color: #fff;
+  text-decoration: none;
+}
+a.banner:active {
+  color: #fff;
+  text-decoration: none;
+}
+a.banner:visited {
+  color: #fff;
+  text-decoration: none;
+}
+a.banner:hover {
+  color: #fff;
+  text-decoration: none;
+}
 
 /*  EXTRA COLUMN
 ******************************************************/
 
-#extra #ads{
-	 text-align:left;
+#extra #ads {
+  text-align: left;
 }
 
-#extra #ads .ad_label{
-	border-bottom: 1px dotted #CCC;
-	height:17px;
-	padding:0 0 8px 0;
-	margin-bottom:14px;
+#extra #ads .ad_label {
+  border-bottom: 1px dotted #ccc;
+  height: 17px;
+  padding: 0 0 8px 0;
+  margin-bottom: 14px;
 }
-
-
 
 /*  HIDDEN (iFRAMES, DIALOGS, ETC...)
 ******************************************************/
 
-.iframe-open{
-	float:right;
-	width:300px;
-	margin-right:30px;
-	cursor:pointer;
+.iframe-open {
+  float: right;
+  width: 300px;
+  margin-right: 30px;
+  cursor: pointer;
 }
 
 /* Extra article styles
 ********************************/
 
 .blockquote {
-	font-size: 10pt !important;
-	margin-left: 20px !important;
+  font-size: 10pt !important;
+  margin-left: 20px !important;
 }
 
 .blockquote-poetry {
-	font-size: 10pt !important;
-	margin-left: 20px !important;
-	margin-top: -1.5em !important;
+  font-size: 10pt !important;
+  margin-left: 20px !important;
+  margin-top: -1.5em !important;
 }
 
 .quote-attribution {
-	margin-top: -1em !important;
-	font-size: 10pt !important;
-	text-align: right !important;
+  margin-top: -1em !important;
+  font-size: 10pt !important;
+  text-align: right !important;
 }
 
 .theater-name {
-	text-align: center !important;
-	font-size: 9pt !important;
-	font-weight: bold !important;
+  text-align: center !important;
+  font-size: 9pt !important;
+  font-weight: bold !important;
 }
 
 .endnote {
-	font-size: 8pt !important;
-	font-weight: bold !important;
+  font-size: 8pt !important;
+  font-weight: bold !important;
 }
 
 .artseen-info {
-	text-transform: uppercase !important;
-	text-align: center !important;
+  text-transform: uppercase !important;
+  text-align: center !important;
 }
 
 .book-info {
-	text-align: center !important;
-	font-weight: bold !important;
+  text-align: center !important;
+  font-weight: bold !important;
 }
 
 .title-sm {
-	font-size: 80% !important;
+  font-size: 80% !important;
 }
 
 .title-xs {
-	font-size: 65% !important;
+  font-size: 65% !important;
 }
 
 .subtitle {
-	font-size: 14pt !important;
+  font-size: 14pt !important;
 }
 
 .subtitle-cent {
-	font-size: 14pt !important;
-	text-align: center !important;
+  font-size: 14pt !important;
+  text-align: center !important;
 }
