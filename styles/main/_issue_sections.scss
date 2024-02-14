@@ -1,14 +1,21 @@
-.issue_sections{
+.issue_sections {
   @include u-margin-y(1);
   @include u-margin-bottom(2);
-  ul{
-    li{
-      @include u-padding-y('05');
-      @include u-font('sans', '2xs');
-      @include u-text('medium');
-      @include u-border-bottom('base', '1px', 'dotted');
-      &:last-child{
+  ul {
+    li {
+      @include u-padding-y("05");
+      @include u-font("sans", "2xs");
+      @include u-text("medium");
+      @include u-border-bottom("base", "1px", "dotted");
+      &:last-child {
         @include u-border-bottom(0);
+      }
+      a {
+        @include u-color("black");
+        @include u-text("no-underline");
+        &:hover {
+          @include u-text("underline");
+        }
       }
     }
   }
