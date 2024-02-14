@@ -2,35 +2,57 @@ import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
 import Footer from "../footer"
 import InConversation from "./inConversation"
+import { useState } from "react"
+import { Issues } from "../../../lib/types"
 
+interface IssueSelectProps {
+  allIssues: Array<Issues>
+}
+const IssueSelect = (props: IssueSelectProps) => {
+  const { allIssues } = props
+  const [selectedIssue, setSelectedIssue] = useState<Issues>(allIssues[0])
+
+  const handleIssueChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value
+    const selectedIssue = allIssues.find((issue) => issue.slug === selectedValue)
+    if (selectedIssue) {
+      setSelectedIssue(selectedIssue)
+      window.location.href = selectedValue
+    }
+  }
+
+  if (!selectedIssue.slug || !Array.isArray(allIssues)) return null
+  return (
+    <select id="issue_select" value={selectedIssue.slug} onChange={handleIssueChange}>
+      {allIssues.map((issue) => {
+        if (!issue.slug) return <></>
+        return (
+          <option key={issue.slug} value={issue.slug}>
+            {issue.title}
+          </option>
+        )
+      })}
+    </select>
+  )
+}
 const CurrentSections = (props: any) => {
   const { currentIssue, currentSections } = props
   const { year, month } = currentIssue
+  const dateSlug = `${year}/${month}`
 
   return (
     <>
       <div className="issue_sections">
         <ul>
+          <li>
+            <a href={`/${dateSlug}/`} title="Go to the Issue home">
+              Issue Home
+            </a>
+          </li>
           {currentSections.map((section: any, i: number) => {
-            if (i === 0) {
-              return (
-                <>
-                  <li key={i}>
-                    <a href={`/${year}/${month}/`} title="Go to the Issue home">
-                      Issue Home
-                    </a>
-                  </li>
-                  <li key={i}>
-                    <a href={`/${year}/${month}/${section.slug}/`} title={`Go to the ${section.name} section`}>
-                      {section.name}
-                    </a>
-                  </li>
-                </>
-              )
-            }
             return (
-              <li key={i}>
-                <a href={`/${year}/${month}/${section.slug}/`} title={`Go to the ${section.name} section`}>
+              <li key={`${i}-${dateSlug}/${section.slug}/`}>
+                <a href={`/${dateSlug}/${section.slug}/`} title={`Go to the ${section.name} section`}>
                   {section.name}
                 </a>
               </li>
@@ -42,7 +64,13 @@ const CurrentSections = (props: any) => {
   )
 }
 
-const Homepage = (props: any) => {
+interface HomepageProps {
+  allIssues: Array<Issues>
+  currentIssue: Issues
+}
+
+const Homepage = (props: HomepageProps) => {
+  const allIssues = props.allIssues
   const currentIssue = props.currentIssue
   const { slug, title, articles, cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
@@ -150,236 +178,7 @@ const Homepage = (props: any) => {
                 <div className="grid-col-2">
                   <div id="issuecolumn">
                     <div className="youarehereissue">
-                      <select id="issue_select" name="issue">
-                        <option selected value="/2024/02/">
-                          FEB 2024
-                        </option>
-                        <option value="/2023/12/">DEC 23-JAN 24</option>
-                        <option value="/2023/11/">NOV 2023</option>
-                        <option value="/2023/10/">OCT 2023</option>
-                        <option value="/2023/09/">SEPT 2023</option>
-                        <option value="/2023/07/">JULY/AUG 2023</option>
-                        <option value="/2023/06/">JUNE 2023</option>
-                        <option value="/2023/05/">MAY 2023</option>
-                        <option value="/2023/04/">APRIL 2023</option>
-                        <option value="/2023/03/">MARCH 2023</option>
-                        <option value="/2023/02/">FEB 2023</option>
-                        <option value="/2022/12/">DEC 22–JAN 23</option>
-                        <option value="/2022/11/">NOV 2022</option>
-                        <option value="/2022/10/">OCT 2022</option>
-                        <option value="/2022/09/">SEPT 2022</option>
-                        <option value="/2022/07/">JUL-AUG 2022</option>
-                        <option value="/2022/06/">JUNE 2022</option>
-                        <option value="/2022/05/">MAY 2022</option>
-                        <option value="/2022/04/">APRIL 2022</option>
-                        <option value="/2022/03/">MARCH 2022</option>
-                        <option value="/2022/02/">FEB 2022</option>
-                        <option value="/2021/12/">DEC 21-JAN 22</option>
-                        <option value="/2021/11/">NOV 2021</option>
-                        <option value="/2021/10/">OCT 2021</option>
-                        <option value="/2021/09/">SEPT 2021</option>
-                        <option value="/special/River_Rail_Puerto_Rico/">River Rail Puerto Rico</option>
-                        <option value="/2021/07/">JUL-AUG 2021</option>
-                        <option value="/2021/06/">JUNE 2021</option>
-                        <option value="/2021/05/">MAY 2021</option>
-                        <option value="/2021/04/">APRIL 2021</option>
-                        <option value="/2021/03/">MARCH 2021</option>
-                        <option value="/2021/02/">FEB 2021</option>
-                        <option value="/2020/12/">DEC 20-JAN 21</option>
-                        <option value="/2020/11/">NOV 2020</option>
-                        <option value="/2020/10/">OCT 2020</option>
-                        <option value="/2020/09/">SEPT 2020</option>
-                        <option value="/2020/07/">JUL-AUG 2020</option>
-                        <option value="/2020/06/">JUNE 2020</option>
-                        <option value="/2020/05/">MAY 2020</option>
-                        <option value="/2020/04/">APRIL 2020</option>
-                        <option value="/2020/03/">MAR 2020</option>
-                        <option value="/2020/02/">FEB 2020</option>
-                        <option value="/2019/12/">DEC 19-JAN 20</option>
-                        <option value="/2019/11/">NOV 2019</option>
-                        <option value="/2019/10/">OCT 2019</option>
-                        <option value="/special/River_Rail_Colby/">River Rail Colby</option>
-                        <option value="/2019/09/">SEPT 2019</option>
-                        <option value="/2019/07/">JUL-AUG 2019</option>
-                        <option value="/2019/06/">JUNE 2019</option>
-                        <option value="/2019/05/">MAY 2019</option>
-                        <option value="/2019/04/">APR 2019</option>
-                        <option value="/2019/03/">MAR 2019</option>
-                        <option value="/2019/02/">FEB 2019</option>
-                        <option value="/2018/12/">DEC 18-JAN 19</option>
-                        <option value="/2018/11/">NOV 2018</option>
-                        <option value="/2018/10/">OCT 2018</option>
-                        <option value="/2018/09/">SEPT 2018</option>
-                        <option value="/2018/07/">JUL-AUG 2018</option>
-                        <option value="/2018/06/">JUNE 2018</option>
-                        <option value="/2018/05/">MAY 2018</option>
-                        <option value="/2018/04/">APR 2018</option>
-                        <option value="/2018/03/">MAR 2018</option>
-                        <option value="/2018/02/">FEB 2018</option>
-                        <option value="/special/RIVER_RAIL/">RIVER RAIL</option>
-                        <option value="/2017/12/">DEC 17-JAN 18</option>
-                        <option value="/2017/11/">NOV 2017</option>
-                        <option value="/2017/10/">OCT 2017</option>
-                        <option value="/2017/09/">SEPT 2017</option>
-                        <option value="/2017/07/">JUL-AUG 2017</option>
-                        <option value="/special/I_LOVE_JOHN_GIORNO/">I LOVE JOHN GIORNO</option>
-                        <option value="/2017/06/">JUNE 2017</option>
-                        <option value="/2017/05/">MAY 2017</option>
-                        <option value="/2017/04/">APR 2017</option>
-                        <option value="/2017/03/">MAR 2017</option>
-                        <option value="/2017/02/">FEB 2017</option>
-                        <option value="/2016/12/">DEC 16-JAN 17</option>
-                        <option value="/2016/11/">NOV 2016</option>
-                        <option value="/2016/10/">OCT 2016</option>
-                        <option value="/2016/09/">SEPT 2016</option>
-                        <option value="/2016/07/">JUL-AUG 2016</option>
-                        <option value="/2016/06/">JUNE 2016</option>
-                        <option value="/2016/05/">MAY 2016</option>
-                        <option value="/2016/04/">APR 2016</option>
-                        <option value="/2016/03/">MAR 2016</option>
-                        <option value="/2016/02/">FEB 2016</option>
-                        <option value="/2015/12/">DEC 15-JAN 16</option>
-                        <option value="/2015/11/">NOV 2015</option>
-                        <option value="/2015/10/">OCT 2015</option>
-                        <option value="/2015/09/">SEPT 2015</option>
-                        <option value="/2015/07/">JUL-AUG 2015</option>
-                        <option value="/2015/06/">JUNE 2015</option>
-                        <option value="/2015/05/">MAY 2015</option>
-                        <option value="/2015/04/">APR 2015</option>
-                        <option value="/2015/03/">MAR 2015</option>
-                        <option value="/2015/02/">FEB 2015</option>
-                        <option value="/2014/12/">DEC 14-JAN 15</option>
-                        <option value="/2014/11/">NOV 2014</option>
-                        <option value="/2014/10/">OCT 2014</option>
-                        <option value="/2014/09/">SEPT 2014</option>
-                        <option value="/2014/07/">JUL-AUG 2014</option>
-                        <option value="/2014/06/">JUNE 2014</option>
-                        <option value="/2014/05/">MAY 2014</option>
-                        <option value="/special/ART_CRIT_EUROPE/">ART CRIT EUROPE</option>
-                        <option value="/2014/04/">APR 2014</option>
-                        <option value="/2014/03/">MAR 2014</option>
-                        <option value="/2014/02/">FEB 2014</option>
-                        <option value="/special/AD_REINHARDT/">AD REINHARDT</option>
-                        <option value="/2013/12/">DEC 13-JAN 14</option>
-                        <option value="/2013/11/">NOV 2013</option>
-                        <option value="/2013/10/">OCT 2013</option>
-                        <option value="/2013/09/">SEPT 2013</option>
-                        <option value="/2013/07/">JUL-AUG 2013</option>
-                        <option value="/2013/06/">JUNE 2013</option>
-                        <option value="/2013/05/">MAY 2013</option>
-                        <option value="/2013/04/">APR 2013</option>
-                        <option value="/2013/03/">MAR 2013</option>
-                        <option value="/2013/02/">FEB 2013</option>
-                        <option value="/2012/12/">DEC 12-JAN 13</option>
-                        <option value="/2012/11/">NOV 2012</option>
-                        <option value="/2012/10/">OCT 2012</option>
-                        <option value="/2012/09/">SEPT 2012</option>
-                        <option value="/2012/08/">JUL-AUG 2012</option>
-                        <option value="/2012/06/">JUNE 2012</option>
-                        <option value="/2012/05/">MAY 2012</option>
-                        <option value="/2012/04/">APR 2012</option>
-                        <option value="/2012/03/">MAR 2012</option>
-                        <option value="/2012/02/">FEB 2012</option>
-                        <option value="/2011/12/">DEC 11-JAN 12</option>
-                        <option value="/2011/11/">NOV 2011</option>
-                        <option value="/2011/10/">OCT 2011</option>
-                        <option value="/2011/09/">SEPT 2011</option>
-                        <option value="/2011/07/">JUL-AUG 2011</option>
-                        <option value="/2011/06/">JUNE 2011</option>
-                        <option value="/2011/05/">MAY 2011</option>
-                        <option value="/2011/04/">APR 2011</option>
-                        <option value="/2011/03/">MAR 2011</option>
-                        <option value="/2011/02/">FEB 2011</option>
-                        <option value="/2010/12/">DEC 10-JAN 11</option>
-                        <option value="/2010/11/">NOV 2010</option>
-                        <option value="/2010/10/">OCT 2010</option>
-                        <option value="/2010/09/">SEPT 2010</option>
-                        <option value="/2010/07/">JUL-AUG 2010</option>
-                        <option value="/2010/06/">JUNE 2010</option>
-                        <option value="/2010/05/">MAY 2010</option>
-                        <option value="/2010/04/">APR 2010</option>
-                        <option value="/2010/03/">MAR 2010</option>
-                        <option value="/2010/02/">FEB 2010</option>
-                        <option value="/2009/12/">DEC 09-JAN 10</option>
-                        <option value="/2009/11/">NOV 2009</option>
-                        <option value="/2009/10/">OCT 2009</option>
-                        <option value="/2009/09/">SEPT 2009</option>
-                        <option value="/2009/07/">JUL-AUG 2009</option>
-                        <option value="/2009/06/">JUNE 2009</option>
-                        <option value="/2009/05/">MAY 2009</option>
-                        <option value="/2009/04/">APRIL 2009</option>
-                        <option value="/2009/03/">MARCH 2009</option>
-                        <option value="/2009/02/">FEB 2009</option>
-                        <option value="/2008/12/">DEC 08-JAN 09</option>
-                        <option value="/2008/11/">NOV 2008</option>
-                        <option value="/2008/10/">OCT 2008</option>
-                        <option value="/2008/09/">SEPT 2008</option>
-                        <option value="/2008/07/">JUL-AUG 2008</option>
-                        <option value="/2008/06/">JUN 2008</option>
-                        <option value="/2008/05/">MAY 2008</option>
-                        <option value="/2008/04/">APR 2008</option>
-                        <option value="/2008/03/">MAR 2008</option>
-                        <option value="/2008/02/">FEB 2008</option>
-                        <option value="/2007/12/">DEC 07-JAN 08</option>
-                        <option value="/2007/11/">NOV 2007</option>
-                        <option value="/2007/10/">OCT 2007</option>
-                        <option value="/2007/09/">SEPT 2007</option>
-                        <option value="/2007/07/">JUL-AUG 2007</option>
-                        <option value="/2007/06/">JUN 2007</option>
-                        <option value="/2007/05/">MAY 2007</option>
-                        <option value="/2007/04/">APR 2007</option>
-                        <option value="/2007/03/">MAR 2007</option>
-                        <option value="/2007/02/">FEB 2007</option>
-                        <option value="/2006/12/">DEC 06-JAN 07</option>
-                        <option value="/2006/11/">NOV 2006</option>
-                        <option value="/2006/10/">OCT 2006</option>
-                        <option value="/2006/09/">SEPT 2006</option>
-                        <option value="/2006/07/">JUL-AUG 2006</option>
-                        <option value="/2006/06/">JUN 2006</option>
-                        <option value="/2006/05/">MAY 2006</option>
-                        <option value="/2006/04/">APR 2006</option>
-                        <option value="/2006/03/">MAR 2006</option>
-                        <option value="/2006/02/">FEB 2006</option>
-                        <option value="/2005/12/">DEC 05-JAN 06</option>
-                        <option value="/2005/11/">NOV 2005</option>
-                        <option value="/2005/10/">OCT 2005</option>
-                        <option value="/2005/09/">SEPT 2005</option>
-                        <option value="/2005/07/">JUL-AUG 2005</option>
-                        <option value="/2005/06/">JUN 2005</option>
-                        <option value="/2005/05/">MAY 2005</option>
-                        <option value="/2005/04/">APR 2005</option>
-                        <option value="/2005/03/">MAR 2005</option>
-                        <option value="/2005/02/">FEB 2005</option>
-                        <option value="/2005/01/">DEC 04-JAN 05</option>
-                        <option value="/2004/11/">NOV 2004</option>
-                        <option value="/2004/10/">OCT 2004</option>
-                        <option value="/2004/09/">SEPT 2004</option>
-                        <option value="/2004/07/">JUL-AUG 2004</option>
-                        <option value="/2004/06/">JUN 2004</option>
-                        <option value="/2004/05/">MAY 2004</option>
-                        <option value="/2004/04/">APR 2004</option>
-                        <option value="/2004/03/">MAR 2004</option>
-                        <option value="/2004/02/">FEB 2004</option>
-                        <option value="/2004/01/">DEC 03-JAN 04</option>
-                        <option value="/2003/12/">WINTER 2003</option>
-                        <option value="/2003/11/">NOV 2003</option>
-                        <option value="/2003/10/">OCT 2003</option>
-                        <option value="/2003/08/">AUG-SEPT 2003</option>
-                        <option value="/2003/07/">SUMMER 03</option>
-                        <option value="/2003/06/">JUN-JUL 2003</option>
-                        <option value="/2003/04/">APR-MAY 2003</option>
-                        <option value="/2002/10/">AUTUMN 2002</option>
-                        <option value="/2002/08/">AUG-SEPT 2002</option>
-                        <option value="/2002/07/">EARLY SUMMER 2002</option>
-                        <option value="/2002/03/">MARCH-APRIL 2002</option>
-                        <option value="/2002/01/">JAN-FEB 2002</option>
-                        <option value="/2001/10/">OCT-NOV 01</option>
-                        <option value="/2001/08/">JULY-AUG 2001</option>
-                        <option value="/2001/05/">MAY-JUNE 2001</option>
-                        <option value="/2001/02/">FEB-MARCH 2001</option>
-                        <option value="/2000/12/">DEC 00-JAN 01</option>
-                        <option value="/2000/10/">OCT-NOV 2000</option>
-                      </select>
+                      <IssueSelect allIssues={allIssues} />
                       <CoverImage {...coverImageProps} />
                     </div>
 
