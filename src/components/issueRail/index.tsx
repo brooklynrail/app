@@ -81,7 +81,7 @@ interface CoverImagesProps {
   cover_6: any
 }
 
-const CoverImage = (props: CoverImagesProps) => {
+export const CoverImage = (props: CoverImagesProps) => {
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = props
   const covers = [cover_1, cover_2, cover_3, cover_4, cover_5, cover_6]
 
