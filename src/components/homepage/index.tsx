@@ -1,10 +1,69 @@
 import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
 import Footer from "../footer"
+import Image from "next/image"
 import InConversation from "./inConversation"
 import { useState } from "react"
-import { Issues } from "../../../lib/types"
+import { Ads, Issues } from "../../../lib/types"
 
+const PublishersMessage = (props: any) => {
+  const { currentIssue } = props
+  const { year, month, excerpt } = currentIssue
+  const dateSlug = `${year}/${month}`
+
+  return (
+    <div className="collection">
+      <h3>Publisher's Message</h3>
+      <div className="promo promo-thumb">
+        <div className="media media-thumb">
+          <a href={`/${dateSlug}/publishersmessage/`}>
+            <img src="https://placehold.co/316x96/C57AFF/9D20FF" alt="" />
+          </a>
+        </div>
+        <h4>
+          <a href={`/${dateSlug}/publishersmessage/`}>Publisher's Message</a>
+        </h4>
+        <cite className="byline">By The Publisher</cite>
+        <p className="excerpt">{excerpt}</p>
+      </div>
+    </div>
+  )
+}
+
+interface AdsTileProps {
+  ads: Array<Ads>
+}
+
+const AdsTile = (props: AdsTileProps) => {
+  const { ads } = props
+
+  // limit ads to any 5 from the array
+  const limitedAds = ads.slice(0, 5)
+
+  return (
+    <>
+      {limitedAds.map((ad: Ads, i: number) => {
+        if (!ad.image || !ad.ad_url) {
+          return <></>
+        }
+        const width = ad.image.width ?? 0
+        const height = ad.image.height ?? 0
+        const src = `http://localhost:8055/assets/${ad.image.filename_disk}`
+        const size = 147
+        const scaledWidth = width > size ? size : width
+        const scaledHeight = width > size ? (size * height) / width : (height * scaledWidth) / width
+
+        return (
+          <div key={i} className="ad">
+            <a href={ad.ad_url} target="_blank">
+              <Image src={src} width={scaledWidth} height={scaledHeight} alt={`description`} />
+            </a>
+          </div>
+        )
+      })}
+    </>
+  )
+}
 interface IssueSelectProps {
   allIssues: Array<Issues>
 }
@@ -67,12 +126,16 @@ const CurrentSections = (props: any) => {
 interface HomepageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
+  ads: Ads
+  publishersMessage: any
 }
 
 const Homepage = (props: HomepageProps) => {
   const allIssues = props.allIssues
   const currentIssue = props.currentIssue
-  const { slug, title, articles, cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
+  const ads = props.ads
+  console.log("ads", ads)
+  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
 
   return (
@@ -385,27 +448,7 @@ const Homepage = (props: HomepageProps) => {
                       <InConversation {...props} />
                     </div>
                     <div className="grid-col-6">
-                      <div className="collection">
-                        <h3>From the Publisher &amp; Artistic Director</h3>
-
-                        <div className="promo promo-thumb">
-                          <h4>
-                            <a href="/2024/02/publishersmessage/Dear-Friends-and-Readers-feb-24" itemProp="name">
-                              Dear Friends and Readers
-                            </a>
-                          </h4>
-
-                          <cite className="byline">By Phong Bui </cite>
-
-                          <p className="excerpt" itemProp="about">
-                            Though the advent of social media has created a brilliant democratic openness, those same
-                            social media also carry a lot of destructive tendencies. Many of us remember that we once
-                            received thoughtful letters from people who agreed or disagreed with what we may have voiced
-                            in an essay, an exhibition, or a lecture; and we knew that those complimentary or dissenting
-                            responses each required a certain amount of time to compose.{" "}
-                          </p>
-                        </div>
-                      </div>
+                      <PublishersMessage {...props} />
 
                       <div className="collection">
                         <h3>Editor's Message</h3>
@@ -1886,75 +1929,7 @@ const Homepage = (props: HomepageProps) => {
                     <div id="ads">
                       <div className="ad_label">ADVERTISEMENTS</div>
                       <div className="ads_container">
-                        <div className="ad">
-                          <a
-                            href="http://www.bettycuninghamgallery.com/exhibitions/the-last-picture-show"
-                            target="_blank"
-                          >
-                            <img
-                              className="image_desktop"
-                              alt="Advertisement: Cuningham"
-                              src="https://v5.airtableusercontent.com/v3/u/25/25/1707890400000/2iAKMbRwT7h2oI3V3IRHVw/iIAv9DZGzJkvaHQP3DOCDjNdrodVFxgOqQ5LMKg8kiYyKMUk8oGSRSfCxfKrQtvDnF-zuI9xCHmlwvB_XXDMP0bwBuzAi4qDqqoUBpcArNYkcCZGUhEMN9QH1blEKw_lp9jMk2TKD7hZUzKLdDtxvHboGw8dNuEMCmWuLd7Cpy0/X6xdEnJ5Jbhkz3DQP8cgRnW0iFCxBS-WhnUTqyCAySo"
-                            />
-                          </a>
-                        </div>
-                        <div className="ad">
-                          <a href="https://fairfield.edu/museum/christy-rupp/" target="_blank">
-                            <img
-                              className="image_desktop"
-                              alt="Advertisement: Fairfield University Museum"
-                              src="https://v5.airtableusercontent.com/v3/u/25/25/1707890400000/CZGR8AQeuZV7GmyFQ9XZ4g/o_Fi1To4gpGZsn4iEjXSqAj_r7aR9z7JlxSGEnfXxtR7RtqHVeED3U1G6FO2xfdhlgX_ZFDnac8vRdijGaKjsCh6Plq8WbpgMnrZ4FaTjPBV4eNDfrGDJyl36nducFMj9kJlGxk0XTur3MF6UDiRAhmtX1muAvW8z7fSZOFWsov5aNcY71jjez8sIadwv_cI/PYK3WRaMXsseWImlYjOR8pfQoVUop6BowTIcfRGiaW8"
-                            />
-                          </a>
-                        </div>
-                        <div className="ad">
-                          <a href="https://www.highnoongallery.com/aletheia" target="_blank">
-                            <img
-                              className="image_desktop"
-                              alt="Advertisement: High Noon"
-                              src="https://v5.airtableusercontent.com/v3/u/25/25/1707890400000/U1RHmy8vJFeP3Qyenb_Suw/9g4dtT4sSroc7FWuSMG1C1EBITIBgtTEPDlyxJKTk5vzibdqrPHgGdVZOp33F_XIiyoK5HPpGuAQbUQbKUNd2CF9dhcHm8Gs044BGoRGAc-xVStEw5hAiUikrjnOGd8yR5tNY70WxnBCv1HuCNsipC82GBEY-2vmRhXB5Q6HCk4/4puBUFLplFpcHlrHqKKFq-M4W3HOiRbbyscPcuiuXe8"
-                            />
-                          </a>
-                        </div>
-                        <div className="ad">
-                          <a href="https://www.studioinstitute.org/" target="_blank">
-                            <img
-                              className="image_desktop"
-                              alt="Advertisement: studio"
-                              src="https://v5.airtableusercontent.com/v3/u/25/25/1707890400000/2MR6sLBeBiGaEj39J77LVw/BNF9Uat0oFuDvVbS5ZSbADYqNKYQBCQTiXX1d0N4B8WlEes_pEBfSwD_BWfgUbTRy3giVgG0IVzzAu1Rc1HEL7IaBenvQ6V1cViHabCbbErKnKpS6SLK_zqv8tcweCx_ABbdqUYBdnl83Q7qI8oK7eup3v3yPdksG_iHG-xaR-YpEhyKat0j0fSiskG2Qkz_/rnxZkZ8o7Wl4VeGF1gFqajKaVYRbRSr0Gf5Z8t5mmSE"
-                            />
-                          </a>
-                        </div>
-                        <div className="ad">
-                          <a href="https://www.tibordenagy.com/exhibitions/ken-aptekar" target="_blank">
-                            <img
-                              className="image_desktop"
-                              alt="Advertisement: Tibor De Nagy"
-                              src="https://v5.airtableusercontent.com/v3/u/25/25/1707890400000/nfEsxm42_lGy4hG3eP5LBQ/SAq1-gJ3mrN5EIFydCES1wTKOPhMTpqzF9b1I1nC5wCZG85YBWBCQu6XijZSBu6pb1vFUtuozI4OUrCQeOnCCJPNQRlcjU1oEdppAoIlNkzFqBSMwg8XzO0NTv_UqIG4ENkhK85Xsf1maMlbW5a1AQ/AJ-Oh9ycE8eveM_TTO4pu_F7xqPkgIqO7Fbc1nhwG9E"
-                            />
-                          </a>
-                        </div>
-                        <div className="ad">
-                          <a href="https://www.eleventhhourart.com/george" target="_blank">
-                            <img
-                              className="image_desktop"
-                              alt="Advertisement: Andrew george"
-                              src="https://v5.airtableusercontent.com/v3/u/25/25/1707890400000/ZjSeUZOFQ_dpZIqQSHIbzA/jeNXv3LBE5mZ1ajvFLcwO24wpNUs3yHygn6YNOSqrmrVOnh8pK8SaNPjzp2VADgOagrEYZ8FepdgbPVHDwEGv9miQnjYfXb-s1nOgHt1XsIKmnpuUiiySPb6jkDDH36xxDWEiX3-XLxTjv_NzVFD8A/M4_QlrQLb0nkd1NJ9ivk_Szf-vEE8qVCheKuDOZLCfg"
-                            />
-                          </a>
-                        </div>
-                        <div className="ad">
-                          <a
-                            href="https://www.amazon.com/Backseat-Driver-James-Croak/dp/0988393360#immersive-view_1707348212765"
-                            target="_blank"
-                          >
-                            <img
-                              className="image_desktop"
-                              alt="Advertisement: James Croak"
-                              src="https://v5.airtableusercontent.com/v3/u/25/25/1707890400000/UuWtRiZzD5b3dSbQz8ktrw/LBm35_rN1CzRqolZsqh1NeArJ4Xh9OtBQfk8Uh2FpA8PRtpcu2XGNWh_PfI3O-wZ0dUoGqqqY-l2-6jQKEBMmD1M21A2fv9PVhnh_ZUjS3fPHsoocTOhFeuEzP2dTbg5xRkZbfpyacTK67Vk1535BA/toCBdixakPnS3X0lJiqezXMAJMzYNcAYYCFhZyhE4Do"
-                            />
-                          </a>
-                        </div>
+                        <AdsTile ads={ads} />
                       </div>
                     </div>
                   </div>
