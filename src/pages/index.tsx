@@ -1,13 +1,15 @@
 import directus from "../../lib/directus"
 import { readItems, readItem } from "@directus/sdk"
 import Homepage from "@/components/homepage"
-import { Articles, Issues, Sections } from "../../lib/types"
+import { Ads, Articles, Issues, Sections } from "../../lib/types"
 
 interface HomepageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
   currentSections: Array<Sections>
   inConversation: Articles
+  ads: Ads
+  publishersMessage: Articles
 }
 
 function HomepageController(props: HomepageProps) {
@@ -37,6 +39,7 @@ export async function getStaticProps() {
     }),
   )
 
+  // Get the sections for the current issue
   const currentSections = await directus.request(
     readItems("sections", {
       fields: ["*.*"],
@@ -47,6 +50,16 @@ export async function getStaticProps() {
             _and: [{ slug: { _neq: "editorsmessage" } }, { slug: { _neq: "publishersmessage" } }],
           },
         ],
+      },
+    }),
+  )
+
+  // Get the published Ads
+  const ads = await directus.request(
+    readItems("ads", {
+      fields: ["*.*"],
+      filter: {
+        _and: [{ status: { _eq: "published" }, start_date: { _gte: "2021-01-01" }, ad_url: { _nnull: true } }],
       },
     }),
   )
@@ -64,19 +77,38 @@ export async function getStaticProps() {
     }),
   )
 
+  // Get the articles for PublishersMessage
+  const publishersMessage = await directus.request(
+    readItems("articles", {
+      fields: ["title", "kicker", "excerpt", "slug"],
+      filter: {
+        _and: [
+          { sections: { sections_id: { slug: { _eq: "publishersmessage" } } } },
+          { issues: { issues_id: { id: { _eq: currentIssueData[0].id } } } },
+        ],
+      },
+      limit: 1,
+    }),
+  )
+
   // console.log("currentSections", currentSections)
   // console.log("currentIssue", currentIssue)
   // console.log("inConversation", inConversation)
   // console.log("allIssues", allIssues)
-  // console.log("===============")
+  console.log("ads", ads)
+  // console.log("publishersMessage", publishersMessage)
+  console.log("===============")
 
   const currentIssue = currentIssueData[0]
+
   return {
     props: {
       allIssues,
       currentIssue,
       currentSections,
       inConversation,
+      publishersMessage,
+      ads,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
