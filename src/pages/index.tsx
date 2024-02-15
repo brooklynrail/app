@@ -9,7 +9,8 @@ interface HomepageProps {
   currentSections: Array<Sections>
   inConversation: Articles
   ads: Ads
-  publishersMessage: Articles
+  publishersMessage: Array<Articles>
+  editorsMessage: Array<Articles>
 }
 
 function HomepageController(props: HomepageProps) {
@@ -80,7 +81,15 @@ export async function getStaticProps() {
   // Get the articles for PublishersMessage
   const publishersMessage = await directus.request(
     readItems("articles", {
-      fields: ["title", "kicker", "excerpt", "slug"],
+      fields: [
+        "title",
+        "kicker",
+        "excerpt",
+        "slug",
+        "contributors.contributors_id.first_name",
+        "contributors.contributors_id.last_name",
+        "contributors.contributors_id.slug",
+      ],
       filter: {
         _and: [
           { sections: { sections_id: { slug: { _eq: "publishersmessage" } } } },
@@ -91,13 +100,58 @@ export async function getStaticProps() {
     }),
   )
 
+  // Get the articles for PublishersMessage
+  const editorsMessage = await directus.request(
+    readItems("articles", {
+      fields: [
+        "title",
+        "kicker",
+        "excerpt",
+        "slug",
+        "contributors.contributors_id.first_name",
+        "contributors.contributors_id.last_name",
+        "contributors.contributors_id.slug",
+      ],
+      filter: {
+        _and: [
+          { sections: { sections_id: { slug: { _eq: "editorsmessage" } } } },
+          { issues: { issues_id: { id: { _eq: currentIssueData[0].id } } } },
+        ],
+      },
+      limit: 1,
+    }),
+  )
+
+  // Get the articles for PublishersMessage
+  const criticsPage = await directus.request(
+    readItems("articles", {
+      fields: [
+        "title",
+        "kicker",
+        "excerpt",
+        "slug",
+        "contributors.contributors_id.first_name",
+        "contributors.contributors_id.last_name",
+        "contributors.contributors_id.slug",
+      ],
+      filter: {
+        _and: [
+          { sections: { sections_id: { slug: { _eq: "criticspage" } } } },
+          { issues: { issues_id: { id: { _eq: currentIssueData[0].id } } } },
+        ],
+      },
+    }),
+  )
+
   // console.log("currentSections", currentSections)
   // console.log("currentIssue", currentIssue)
   // console.log("inConversation", inConversation)
   // console.log("allIssues", allIssues)
-  console.log("ads", ads)
+  // console.log("ads", ads)
   // console.log("publishersMessage", publishersMessage)
-  console.log("===============")
+  // console.log("editorsMessage", editorsMessage)
+  // console.log("criticsPage", criticsPage)
+  // console.log("===============")
 
   const currentIssue = currentIssueData[0]
 
@@ -108,6 +162,8 @@ export async function getStaticProps() {
       currentSections,
       inConversation,
       publishersMessage,
+      editorsMessage,
+      criticsPage,
       ads,
     },
     // Next.js will attempt to re-generate the page:

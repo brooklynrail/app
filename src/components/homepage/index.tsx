@@ -4,26 +4,98 @@ import Footer from "../footer"
 import Image from "next/image"
 import InConversation from "./inConversation"
 import { useState } from "react"
-import { Ads, Issues } from "../../../lib/types"
+import { Ads, Articles, Issues } from "../../../lib/types"
 
-const PublishersMessage = (props: any) => {
-  const { currentIssue } = props
-  const { year, month, excerpt } = currentIssue
+const CriticsPage = (props: HomepageProps) => {
+  const { currentIssue, criticsPage } = props
+  const { year, month } = currentIssue
   const dateSlug = `${year}/${month}`
 
+  const { title, excerpt, contributors } = criticsPage[0]
+  const { first_name, last_name } = contributors[0].contributors_id
+  return (
+    <>
+      <h3>Critics Page</h3>
+      <ul>
+        <>
+          {criticsPage.map((article: Articles, i: number) => {
+            const { title, contributors } = article
+            const { first_name, last_name } = contributors[0].contributors_id
+
+            return (
+              <li
+                className={`promo promo-slim ${i % 2 === 0 ? "" : "promo-slim-alt"}`}
+                itemType="http://schema.org/Article"
+              >
+                <h4>
+                  <a href={`/2024/02/criticspage/${title}`} itemProp="name">
+                    {title}
+                  </a>
+                </h4>
+                <cite className="byline">
+                  – By {first_name} {last_name}
+                </cite>
+              </li>
+            )
+          })}
+        </>
+      </ul>
+    </>
+  )
+}
+
+const EditorsMessage = (props: HomepageProps) => {
+  const { currentIssue, editorsMessage } = props
+  const { year, month } = currentIssue
+  const dateSlug = `${year}/${month}`
+
+  const { title, excerpt, contributors } = editorsMessage[0]
+  const { first_name, last_name } = contributors[0].contributors_id
   return (
     <div className="collection">
-      <h3>Publisher's Message</h3>
+      <h3>Editor's Message</h3>
       <div className="promo promo-thumb">
         <div className="media media-thumb">
           <a href={`/${dateSlug}/publishersmessage/`}>
-            <img src="https://placehold.co/316x96/C57AFF/9D20FF" alt="" />
+            <img src="https://placehold.co/60x60/C57AFF/9D20FF" alt="" />
           </a>
         </div>
         <h4>
-          <a href={`/${dateSlug}/publishersmessage/`}>Publisher's Message</a>
+          <a href={`/${dateSlug}/editorsMessage/`}>{title}</a>
         </h4>
-        <cite className="byline">By The Publisher</cite>
+        <cite className="byline">
+          By {first_name} {last_name}
+        </cite>
+        <p className="excerpt">{excerpt}</p>
+      </div>
+    </div>
+  )
+}
+
+const PublishersMessage = (props: HomepageProps) => {
+  const { currentIssue, publishersMessage } = props
+  const { year, month } = currentIssue
+  const dateSlug = `${year}/${month}`
+
+  console.log("publishersMessage Props", publishersMessage[0])
+  const { title, excerpt, contributors } = publishersMessage[0]
+  const { first_name, last_name } = contributors[0].contributors_id
+
+  return (
+    <div className="collection">
+      <h3>From the Publisher & Artistic Director</h3>
+      <div className="promo promo-thumb">
+        <div className="media media-thumb">
+          <a href={`/${dateSlug}/publishersmessage/`}>
+            <img src="https://placehold.co/60x60/C57AFF/9D20FF" alt="" />
+          </a>
+        </div>
+        <h4>
+          <a href={`/${dateSlug}/publishersmessage/`}>{title}</a>
+        </h4>
+        <cite className="byline">
+          By {first_name} {last_name}
+        </cite>
         <p className="excerpt">{excerpt}</p>
       </div>
     </div>
@@ -127,14 +199,15 @@ interface HomepageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
   ads: Ads
-  publishersMessage: any
+  publishersMessage: Array<Articles>
+  editorsMessage: Array<Articles>
+  criticsPage: Array<Articles>
 }
 
 const Homepage = (props: HomepageProps) => {
   const allIssues = props.allIssues
   const currentIssue = props.currentIssue
   const ads = props.ads
-  console.log("ads", ads)
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
 
@@ -448,150 +521,16 @@ const Homepage = (props: HomepageProps) => {
                       <InConversation {...props} />
                     </div>
                     <div className="grid-col-6">
-                      <PublishersMessage {...props} />
-
                       <div className="collection">
-                        <h3>Editor's Message</h3>
-
-                        <div className="promo promo-thumb">
-                          <div className="media media-thumb">
-                            <a href="/2024/02/editorsmessage/Captives-of-Heartbrache">
-                              <img
-                                src="https://brooklynrail.imgix.net/content/article/thumb_image/20893/soboleva-ksenia-thmb.jpg?"
-                                alt=""
-                              />
-                            </a>
-                          </div>
-
-                          <h4>
-                            <a href="/2024/02/editorsmessage/Captives-of-Heartbrache" itemProp="name">
-                              Captives of Heartbr(ache)
-                            </a>
-                          </h4>
-
-                          <cite className="byline">By Ksenia Soboleva </cite>
-
-                          <p className="excerpt" itemProp="about">
-                            I’m writing the introduction to this month’s Critics Page as the year 2023 is coming to an
-                            end, a year in which I’ve spent much time with the idea of queer heartbr(ache). It began
-                            when my friend and cosmic mirror (our birthdays are exactly six months apart) Le’Andra
-                            LeSeur and I had our first significant heart to heart about recent breakups that had left us
-                            tender.
-                          </p>
-                        </div>
+                        <PublishersMessage {...props} />
                       </div>
 
                       <div className="collection">
-                        <h3>Critics Page</h3>
-                        <ul>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/Borderlands" itemProp="name">
-                                Borderlands{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Andrea Geyer </cite>
-                          </li>
+                        <EditorsMessage {...props} />
+                      </div>
 
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/Knotted-Lives" itemProp="name">
-                                Knotted Lives{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Cassie Packard </cite>
-                          </li>
-
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/Untitled-M4U-The-Eulogists" itemProp="name">
-                                Untitled (M4U: The Eulogists){" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Elliott Jerome Brown Jr. </cite>
-                          </li>
-
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/Wasnt-there-always-a-war" itemProp="name">
-                                Wasn’t there always a war?{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Gala Mukomolova </cite>
-                          </li>
-
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/Dear-Lina" itemProp="name">
-                                Dear Lina,{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Jill H. Casid </cite>
-                          </li>
-
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/That-body-of-a-reflection-of-the-sky" itemProp="name">
-                                That body of (a reflection of the sky){" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Le’Andra LeSeur </cite>
-                          </li>
-
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/Slow-Abandon" itemProp="name">
-                                Slow Abandon{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Mev Luna </cite>
-                          </li>
-
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/Insufficient-Memory" itemProp="name">
-                                Insufficient Memory{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Sean Fader </cite>
-                          </li>
-
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/A-White-Rose-in-a-Mirror-of-Silver" itemProp="name">
-                                A White Rose in a Mirror of Silver{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Rachel Stern </cite>
-                          </li>
-
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/Nancy-Brooks-Brody-1" itemProp="name">
-                                Nancy Brooks Brody{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By fierce pussy </cite>
-                          </li>
-
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/The-ant" itemProp="name">
-                                The ant{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Timmy Straw </cite>
-                          </li>
-
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/criticspage/Complicity-1" itemProp="name">
-                                Complicity #1{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Wendy Lotterman </cite>
-                          </li>
-                        </ul>
+                      <div className="collection">
+                        <CriticsPage {...props} />
                       </div>
 
                       <div className="collection">
