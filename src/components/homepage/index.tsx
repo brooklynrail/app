@@ -13,6 +13,8 @@ import CurrentSections from "./currentSections"
 import RailPartners from "./railPartners"
 import RailProjects from "./railProjects"
 import Header from "./header"
+import Ad970 from "./ad970"
+import SlideShow from "./slideshow"
 
 const Homepage = (props: HomepageProps) => {
   const { allIssues, currentIssue, currentSections } = props
@@ -40,28 +42,7 @@ const Homepage = (props: HomepageProps) => {
             <div className="grid-container grid-container-desktop">
               <div className="grid-row">
                 <div className="grid-col-12">
-                  <div className="ad ad_970 visible">
-                    <p>Advertisement</p>
-                    <div>
-                      <div className="ad">
-                        <a
-                          href=" https://goldenartistcolors.com/products/qor-artist-watercolors-ali-cavanaugh-portrait-colors-set"
-                          target="_blank"
-                        >
-                          <img
-                            className="image_desktop"
-                            alt="Advertisement: Golden Paint"
-                            src="https://v5.airtableusercontent.com/v3/u/25/25/1707890400000/WPRHHsf09kftsowSoocwdw/bFfgTXwUcSXU_KF-bns9k9cC17wLV7bUTLxqzLPdIS5s_kzE-MwVfRDQlw1Fi4ebAoH3TriX1fucMASdR71tIged4YryIsSoSTwmZR6mN09gotzN8nAfbDqtVeZu-6yvkKs00pBg9R2-5WORpyM9gsL_UklFQ2WgFsFl3K_jutk/ze9x4wGsY8b1gtwCVVg3JHuwUpL9RRWZE5Qma1wRFUs"
-                          />
-                          <img
-                            className="image_mobile"
-                            alt="Advertisement: Golden Paint"
-                            src="https://v5.airtableusercontent.com/v3/u/25/25/1707890400000/wikViUKRbFNARAlP535NxQ/Y3gZJWISdLBtIXs_yE-4JR1ZE7UCHEuxu8MUCDw4wbUm-pUU2zkHGB5GvR--qcwFqfVW8s6HQISMEf0Xd_4uSTZ9Zc49EwZ9jE7eu18NAXKQz3kVBzIPq99i3bKVs3FdY9ssReTnZ05-nZ7pPLyDNDdiVGrOqJXyU1WUlTcKpLM/amEK1rNRESuTmjSEMZxMTQkU7vkpgl84WP5G9bBVbzQ"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+                  <Ad970 ads={ads} />
                 </div>
               </div>
             </div>
@@ -93,124 +74,7 @@ const Homepage = (props: HomepageProps) => {
                 <div className="grid-col-8">
                   <div className="grid-row">
                     <div className="grid-col-12">
-                      <div id="bannercontainer">
-                        <div id="banner">
-                          <div id="bannerimg-container">
-                            <a className="banner" href="/2024/02/art/Paul-Pfeiffer-with-Jonathan-TD-Neil">
-                              <img
-                                className="bannerimg"
-                                src="https://storage.googleapis.com/rail-legacy-media/production/content/article/banner_image/20851/pfeiffer-homepage.jpg"
-                                style={{ display: "none" }}
-                              />
-                            </a>
-                            <a className="banner" href="/2024/02/art/Kyungmi-Shin-with-Andrew-Woolbright">
-                              <img
-                                className="bannerimg"
-                                style={{ display: "none" }}
-                                src="https://storage.googleapis.com/rail-legacy-media/production/content/article/banner_image/20853/shin-homepage.jpg"
-                              />
-                            </a>
-                            <a className="banner" href="/2024/02/art/Christopher-Rothko-with-Phong-H-Bui">
-                              <img
-                                className="bannerimg"
-                                style={{ display: "none" }}
-                                src="https://storage.googleapis.com/rail-legacy-media/production/content/article/banner_image/20889/rothko-homepage.jpg"
-                              />
-                            </a>
-                            <a className="banner" href="/2024/02/art/James-Welling-with-Robert-Slifkin">
-                              <img
-                                className="bannerimg"
-                                style={{ display: "none" }}
-                                src="https://storage.googleapis.com/rail-legacy-media/production/content/article/banner_image/20852/welling-homepage.jpg"
-                              />
-                            </a>
-                            <a className="banner" href="/2024/02/art/In-Conversation-Sherman-Sam-with-Barry-Schwabsky">
-                              <img
-                                className="bannerimg"
-                                src="https://storage.googleapis.com/rail-legacy-media/production/content/article/banner_image/20914/sam-homepage.jpg"
-                              />
-                            </a>
-                          </div>
-
-                          <div
-                            id="banner-prev"
-                            className="bannercontrols"
-                            style={{ display: "none", overflow: "hidden" }}
-                          >
-                            <img width="25" src="/images/banner-prev.png" />
-                          </div>
-
-                          <div
-                            id="banner-next"
-                            className="bannercontrols"
-                            style={{ display: "none", overflow: "hidden" }}
-                          >
-                            <img width="25" src="/images/banner-next.png" />
-                          </div>
-
-                          <div id="banner-indicator">
-                            <table className="fullbannerblock" width="100%" cellPadding="0" cellSpacing="0">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <div className="bannerblock"></div>
-                                  </td>
-                                  <td>
-                                    <div className="bannerblock"></div>
-                                  </td>
-                                  <td>
-                                    <div className="bannerblock"></div>
-                                  </td>
-                                  <td>
-                                    <div className="bannerblock"></div>
-                                  </td>
-                                  <td>
-                                    <div className="bannerblock showing"></div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-
-                        <div id="banner-textblock">
-                          <div className="bannertext" itemType="http://schema.org/Article" style={{ display: "none" }}>
-                            <a className="banner" href="/2024/02/art/Paul-Pfeiffer-with-Jonathan-TD-Neil">
-                              <div className="bannertitle">
-                                <span itemProp="name">Paul Pfeiffer with Jonathan T.D. Neil </span>
-                              </div>
-                            </a>
-                          </div>
-                          <div className="bannertext" style={{ display: "none" }} itemType="http://schema.org/Article">
-                            <a className="banner" href="/2024/02/art/Kyungmi-Shin-with-Andrew-Woolbright">
-                              <div className="bannertitle">
-                                <span itemProp="name">Kyungmi Shin with Andrew Woolbright </span>
-                              </div>
-                            </a>
-                          </div>
-                          <div className="bannertext" style={{ display: "none" }} itemType="http://schema.org/Article">
-                            <a className="banner" href="/2024/02/art/Christopher-Rothko-with-Phong-H-Bui">
-                              <div className="bannertitle">
-                                <span itemProp="name">Christopher Rothko with Phong H. Bui </span>
-                              </div>
-                            </a>
-                          </div>
-                          <div className="bannertext" style={{ display: "none" }} itemType="http://schema.org/Article">
-                            <a className="banner" href="/2024/02/art/James-Welling-with-Robert-Slifkin">
-                              <div className="bannertitle">
-                                <span itemProp="name">James Welling with Robert Slifkin </span>
-                              </div>
-                            </a>
-                          </div>
-                          <div className="bannertext" itemType="http://schema.org/Article">
-                            <a className="banner" href="/2024/02/art/In-Conversation-Sherman-Sam-with-Barry-Schwabsky">
-                              <div className="bannertitle">
-                                <span itemProp="name">Sherman Sam with Barry Schwabsky </span>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+                      <SlideShow {...props} />
                     </div>
                   </div>
 
