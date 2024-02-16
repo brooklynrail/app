@@ -3,14 +3,15 @@ import { readItems, readItem } from "@directus/sdk"
 import Homepage from "@/components/homepage"
 import { Ads, Articles, Issues, Sections } from "../../lib/types"
 
-interface HomepageProps {
+export interface HomepageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
-  currentSections: Array<Sections>
-  inConversation: Articles
-  ads: Ads
+  inConversation: Array<Articles>
+  ads: Array<Ads>
   publishersMessage: Array<Articles>
   editorsMessage: Array<Articles>
+  criticsPage: Array<Articles>
+  artSeen: Array<Articles>
 }
 
 function HomepageController(props: HomepageProps) {
@@ -162,6 +163,8 @@ export async function getStaticProps() {
         "contributors.contributors_id.first_name",
         "contributors.contributors_id.last_name",
         "contributors.contributors_id.slug",
+        "sections.sections_id.slug",
+        "sections.sections_id.name",
       ],
       filter: {
         _and: [
