@@ -2,22 +2,28 @@ import parse from "html-react-parser"
 import { Articles } from "../../../lib/types"
 import { stripHtml } from "string-strip-html"
 
-interface PromoStandardProps {
+export interface PromoProps {
   article: Articles
   dateSlug: string
+  showImage: boolean
+  showSection: boolean
 }
 
-const PromoStandard = (props: PromoStandardProps) => {
+export const PromoSection = (props: PromoProps) => {
   const { dateSlug, article } = props
-  const { title, excerpt, slug, sections } = article
+  const { sections, kicker } = article
   const sectionSlug = sections[0].sections_id.slug
   const sectionName = sections[0].sections_id.name
-  const articleType = (
+  return (
     <p className="article_type">
-      <a className="section" href={`/${dateSlug}/${sectionSlug}`} title={`Go to the ${sectionName} section`}>
+      <a
+        className="section"
+        href={`/${dateSlug}/${sectionSlug}`}
+        title={`Go to the ${stripHtml(sectionName).result} section`}
+      >
         {sectionName}
       </a>
-      {article.kicker && (
+      {kicker && (
         <>
           <span className="divider"></span>
           <span className="type">{article.kicker}</span>
@@ -25,18 +31,25 @@ const PromoStandard = (props: PromoStandardProps) => {
       )}
     </p>
   )
+}
 
+const PromoStandard = (props: PromoProps) => {
+  const { dateSlug, article, showSection, showImage } = props
+  const { title, excerpt, slug, sections } = article
+  const sectionSlug = sections[0].sections_id.slug
   const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
 
   return (
     <>
       <div className="promo promo-standard" itemType="http://schema.org/Article">
-        {sections && articleType}
-        <div className="media">
-          <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
-            <img src="https://placehold.co/316x96/C57AFF/9D20FF" alt="" />
-          </a>
-        </div>
+        {showSection && <PromoSection {...props} />}
+        {showImage && (
+          <div className="media">
+            <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
+              <img src="https://placehold.co/316x96/C57AFF/9D20FF" alt="" />
+            </a>
+          </div>
+        )}
         <h4>
           <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
             {parse(title)}
