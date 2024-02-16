@@ -5,42 +5,8 @@ import Image from "next/image"
 import InConversation from "./inConversation"
 import { useState } from "react"
 import { Ads, Articles, Contributors, Issues } from "../../../lib/types"
-
-const ArtSeen = (props: HomepageProps) => {
-  const { currentIssue, artSeen } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
-
-  return (
-    <>
-      <h3>ArtSeen</h3>
-      <ul>
-        <>
-          {artSeen.map((article: Articles, i: number) => {
-            const { title, contributors } = article
-            const { first_name, last_name } = contributors[0].contributors_id
-
-            return (
-              <li
-                className={`promo promo-slim ${i % 2 === 0 ? "" : "promo-slim-alt"}`}
-                itemType="http://schema.org/Article"
-              >
-                <h4>
-                  <a href={`/${dateSlug}/artseen/${title}`} itemProp="name">
-                    {title}
-                  </a>
-                </h4>
-                <cite className="byline">
-                  – By {first_name} {last_name}
-                </cite>
-              </li>
-            )
-          })}
-        </>
-      </ul>
-    </>
-  )
-}
+import ArtSeen from "./artSeen"
+import { HomepageProps } from "@/pages"
 
 const CriticsPage = (props: HomepageProps) => {
   const { currentIssue, criticsPage } = props
@@ -229,16 +195,6 @@ const CurrentSections = (props: any) => {
       </div>
     </>
   )
-}
-
-interface HomepageProps {
-  allIssues: Array<Issues>
-  currentIssue: Issues
-  ads: Array<Ads>
-  publishersMessage: Array<Articles>
-  editorsMessage: Array<Articles>
-  criticsPage: Array<Articles>
-  artSeen: Array<Articles>
 }
 
 const Homepage = (props: HomepageProps) => {
