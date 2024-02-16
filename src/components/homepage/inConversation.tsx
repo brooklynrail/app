@@ -1,6 +1,7 @@
+import { HomepageProps } from "@/pages"
 import PromoStandard from "../promo/standard"
 
-const InConversation = (props: any) => {
+const InConversation = (props: HomepageProps) => {
   const { inConversation, currentIssue } = props
   const { year, month } = currentIssue
   const dateSlug = `${year}/${month}`
