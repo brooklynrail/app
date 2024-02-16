@@ -9,11 +9,9 @@ const ArtSeen = (props: HomepageProps) => {
     <>
       <h3>ArtSeen</h3>
       <ul>
-        <>
-          {artSeen.map((article: Articles, i: number) => {
-            return <PromoSlim key={i} i={i} article={article} dateSlug={dateSlug} />
-          })}
-        </>
+        {artSeen.map((article: Articles, i: number) => {
+          return <PromoSlim key={`artseen-${i}`} i={i} article={article} dateSlug={dateSlug} />
+        })}
       </ul>
     </>
   )

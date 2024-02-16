@@ -17,22 +17,20 @@ const PromoSlim = (props: PromoSlimProps) => {
   const names = contributors.map((contributor: any, i: number) => {
     const { first_name, last_name } = contributor.contributors_id
     const name = `${first_name} ${last_name}`
-    return <>{name}</>
+    return <span key={`first_name-last_name-${i}`}>{name}</span>
   })
 
   const altClass = i % 2 === 0 ? "" : "promo-slim-alt"
 
   return (
-    <>
-      <li className={`promo promo-slim ${altClass}`} itemType="http://schema.org/Article">
-        <h4>
-          <a href={permalink} itemProp="name" title={`Visit ${stripHtml(title).result}`}>
-            {parse(title)}
-          </a>
-        </h4>
-        <cite className="byline">– By {names}</cite>
-      </li>
-    </>
+    <li className={`promo promo-slim ${altClass}`} itemType="http://schema.org/Article">
+      <h4>
+        <a href={permalink} itemProp="name" title={`Visit ${stripHtml(title).result}`}>
+          {parse(title)}
+        </a>
+      </h4>
+      <cite className="byline">– By {names}</cite>
+    </li>
   )
 }
 export default PromoSlim

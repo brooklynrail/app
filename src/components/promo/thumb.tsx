@@ -10,7 +10,7 @@ const PromoThumb = (props: PromoProps) => {
   const names = article.contributors.map((contributor: any, i: number) => {
     const { first_name, last_name } = contributor.contributors_id
     const name = `${first_name} ${last_name}`
-    return <>{name}</>
+    return <span key={`first_name-last_name-${i}`}>{name}</span>
   })
 
   return (
