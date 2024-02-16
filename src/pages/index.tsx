@@ -6,6 +6,7 @@ import { Ads, Articles, Issues, Sections } from "../../lib/types"
 export interface HomepageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
+  currentSections: Array<Sections>
   inConversation: Array<Articles>
   ads: Array<Ads>
   publishersMessage: Array<Articles>
