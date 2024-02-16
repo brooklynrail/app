@@ -5,11 +5,11 @@ import { stripHtml } from "string-strip-html"
 interface PromoSlimProps {
   article: Articles
   dateSlug: string
-  i: number
+  i?: number
 }
 
 const PromoSlim = (props: PromoSlimProps) => {
-  const { dateSlug, article, i } = props
+  const { dateSlug, article, i = 0 } = props
   const { title, slug, sections, contributors } = article
   const sectionSlug = sections[0].sections_id.slug
   const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
@@ -20,9 +20,11 @@ const PromoSlim = (props: PromoSlimProps) => {
     return <>{name}</>
   })
 
+  const altClass = i % 2 === 0 ? "" : "promo-slim-alt"
+
   return (
     <>
-      <li className={`promo promo-slim ${i % 2 === 0 ? "" : "promo-slim-alt"}`} itemType="http://schema.org/Article">
+      <li className={`promo promo-slim ${altClass}`} itemType="http://schema.org/Article">
         <h4>
           <a href={permalink} itemProp="name" title={`Visit ${stripHtml(title).result}`}>
             {parse(title)}
