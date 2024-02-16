@@ -4,21 +4,19 @@ import Footer from "../footer"
 import Image from "next/image"
 import InConversation from "./inConversation"
 import { useState } from "react"
-import { Ads, Articles, Issues } from "../../../lib/types"
+import { Ads, Articles, Contributors, Issues } from "../../../lib/types"
 
-const CriticsPage = (props: HomepageProps) => {
-  const { currentIssue, criticsPage } = props
+const ArtSeen = (props: HomepageProps) => {
+  const { currentIssue, artSeen } = props
   const { year, month } = currentIssue
   const dateSlug = `${year}/${month}`
 
-  const { title, excerpt, contributors } = criticsPage[0]
-  const { first_name, last_name } = contributors[0].contributors_id
   return (
     <>
-      <h3>Critics Page</h3>
+      <h3>ArtSeen</h3>
       <ul>
         <>
-          {criticsPage.map((article: Articles, i: number) => {
+          {artSeen.map((article: Articles, i: number) => {
             const { title, contributors } = article
             const { first_name, last_name } = contributors[0].contributors_id
 
@@ -28,13 +26,51 @@ const CriticsPage = (props: HomepageProps) => {
                 itemType="http://schema.org/Article"
               >
                 <h4>
-                  <a href={`/2024/02/criticspage/${title}`} itemProp="name">
+                  <a href={`/${dateSlug}/artseen/${title}`} itemProp="name">
                     {title}
                   </a>
                 </h4>
                 <cite className="byline">
                   – By {first_name} {last_name}
                 </cite>
+              </li>
+            )
+          })}
+        </>
+      </ul>
+    </>
+  )
+}
+
+const CriticsPage = (props: HomepageProps) => {
+  const { currentIssue, criticsPage } = props
+  const { year, month } = currentIssue
+  const dateSlug = `${year}/${month}`
+
+  return (
+    <>
+      <h3>Critics Page</h3>
+      <ul>
+        <>
+          {criticsPage.map((article: Articles, i: number) => {
+            const { title, contributors } = article
+            const names = contributors.map((contributor: any, i: number) => {
+              const { first_name, last_name } = contributor.contributors_id
+              const name = `${first_name} ${last_name}`
+              return <>{name}</>
+            })
+
+            return (
+              <li
+                className={`promo promo-slim ${i % 2 === 0 ? "" : "promo-slim-alt"}`}
+                itemType="http://schema.org/Article"
+              >
+                <h4>
+                  <a href={`/${dateSlug}/criticspage/${title}`} itemProp="name">
+                    {title}
+                  </a>
+                </h4>
+                <cite className="byline">– By {names}</cite>
               </li>
             )
           })}
@@ -202,6 +238,7 @@ interface HomepageProps {
   publishersMessage: Array<Articles>
   editorsMessage: Array<Articles>
   criticsPage: Array<Articles>
+  artSeen: Array<Articles>
 }
 
 const Homepage = (props: HomepageProps) => {
@@ -534,281 +571,7 @@ const Homepage = (props: HomepageProps) => {
                       </div>
 
                       <div className="collection">
-                        <h3>ArtSeen</h3>
-                        <ul>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Faith-Ringgold-American-People-Baker" itemProp="name">
-                                Faith Ringgold:<em> American People</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Chenoa Baker </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/James-Welling-Thought-Objects" itemProp="name">
-                                James Welling: <em>Thought Objects</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Michael Shorris </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/George-Rickey-Wall-Reliefs-and-Mark-Yang-Birth" itemProp="name">
-                                George Rickey: <em>Wall Reliefs</em> <br />
-                                and Mark Yang: <em>Birth</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Mary Ann Caws </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Tamara-Gonzales-Amplifiers" itemProp="name">
-                                Tamara Gonzales: <em>Amplifiers</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Charles Schultz </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a
-                                href="/2024/02/artseen/Daniel-Guzmn-the-man-who-should-be-dead-notes-on-the-dead-house-the-fire-and-the-tale"
-                                itemProp="name"
-                              >
-                                Daniel Guzmán:{" "}
-                                <em>the man who should be dead: notes on the dead house, the fire and the tale</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Nicholas Heskes </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a
-                                href="/2024/02/artseen/Raphaela-Vogel-In-The-Expanded-Penalty-Box-Did-You-Happen-to-See-the-Most-Beautiful-Fox"
-                                itemProp="name"
-                              >
-                                Raphaela Vogel:{" "}
-                                <em>In The Expanded Penalty Box: Did You Happen to See the Most Beautiful Fox?</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Cassie Packard </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Sarah-Rosalena-In-All-Directions" itemProp="name">
-                                Sarah Rosalena:<em> In All Directions </em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Lindsay Caplan </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/John-Hoyland-Thresholds-Paintings-1965-1970" itemProp="name">
-                                John Hoyland: <em>Thresholds: Paintings 1965-1970</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Alex Grimley </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a
-                                href="/2024/02/artseen/Richard-Artschwager-Boxed-In-Celebrating-the-Artists-Centennial"
-                                itemProp="name"
-                              >
-                                Richard Artschwager:{" "}
-                                <em>
-                                  Boxed In <br /> Celebrating the Artist’s Centennial
-                                </em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Alfred Mac Adam </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a
-                                href="/2024/02/artseen/Chicago-Architectural-Biennial-5-This-is-a-Rehearsal"
-                                itemProp="name"
-                              >
-                                <em>Chicago Architectural Biennial 5: This is a Rehearsal</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Pia Singh </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Ed-Ruscha-Works-on-Paper" itemProp="name">
-                                Ed Ruscha: <em>Works on Paper</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Ekin Erkan </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Stephen-Antonakos-Neon-and-Geometry" itemProp="name">
-                                Stephen Antonakos: <em>Neon and Geometry</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Vincent Katz </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Trespassers-James-Prosek-and-the-Texas-Prairie" itemProp="name">
-                                <em>Trespassers: James Prosek and the Texas Prairie</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Andrew Paul Woolbright </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Mark-Rothko-Paintings-on-Paper" itemProp="name">
-                                Mark Rothko: <em>Paintings on Paper</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Amanda Millet-Sorsa </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Amy-Butowicz-Rapture-in-the-Fold" itemProp="name">
-                                Amy Butowicz: <em>Rapture in the Fold</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Elizabeth Buhe </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Lois-Dodd-Outside-In" itemProp="name">
-                                Lois Dodd: <em>Outside In</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Louis Block </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Abstract-Flash-Unseen-Andrew-Wyeth" itemProp="name">
-                                <em>Abstract Flash: Unseen Andrew Wyeth</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By James Welling </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Saul-Leiter-Centennial" itemProp="name">
-                                Saul Leiter: <em>Centennial</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Michael Shorris </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a
-                                href="/2024/02/artseen/Sandra-Cinto-May-I-Know-How-to-be-the-Sun-on-Cloudy-Days"
-                                itemProp="name"
-                              >
-                                Sandra Cinto: <em>May I Know How to be the Sun on Cloudy Days</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Annabel Keenan </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Suneil-Sanzgiri-Here-the-Earth-Grows-Gold" itemProp="name">
-                                Suneil Sanzgiri: <em>Here the Earth Grows Gold</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Dina A. Ramadan </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Ash-Arder-Flesh-Tones" itemProp="name">
-                                Ash Arder: <em>Flesh Tones</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Steve Panton </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Eileen-Agar-Flowering-of-a-Wing-Works-19361989" itemProp="name">
-                                Eileen Agar: <em>Flowering of a Wing, Works: 1936–1989</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Ann C. Collins </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Carey-Young-Appearance-1" itemProp="name">
-                                Carey Young: <em>Appearance</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By William Corwin </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Julian-Charrire-Buried-Sunshine" itemProp="name">
-                                Julian Charrière: <em>Buried Sunshine</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Ekin Erkan </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a
-                                href="/2024/02/artseen/This-Isnt-Who-It-Would-Be-If-It-Wasnt-Who-It-Is"
-                                itemProp="name"
-                              >
-                                <em>This Isn’t Who It Would Be, If It Wasn’t Who It Is</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Alfred Mac Adam </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Yoonhee-Ryoony-Suh-Memory-Gap" itemProp="name">
-                                Yoonhee Ryoony Suh: <em>Memory Gap</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Jessica Holmes </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Leon-Polk-Smith-1940-1961" itemProp="name">
-                                <em>Leon Polk Smith: 1940–1961</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Tom McGlynn </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Robert-Grosvenor-1" itemProp="name">
-                                Robert Grosvenor{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By William Corwin </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/David-Rhodes-ALETHEIA" itemProp="name">
-                                David Rhodes: <em>Aletheia</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Saul Ostrow </cite>
-                          </li>
-                          <li className="promo promo-slim promo-slim-alt" itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/John-OConnor-Man-Bites-Dog-Bites-Man" itemProp="name">
-                                John O’Connor: <em>Man Bites Dog Bites Man</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Andrew Paul Woolbright </cite>
-                          </li>
-                          <li className="promo promo-slim " itemType="http://schema.org/Article">
-                            <h4>
-                              <a href="/2024/02/artseen/Stanley-Whitney-Dear-Paris" itemProp="name">
-                                Stanley Whitney: <em>Dear Paris</em>{" "}
-                              </a>
-                            </h4>
-                            <cite className="byline">– By Jacob Bromberg </cite>
-                          </li>
-                        </ul>
+                        <ArtSeen {...props} />
                       </div>
                     </div>
                   </div>
