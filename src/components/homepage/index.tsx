@@ -2,8 +2,6 @@ import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
 import Footer from "../footer"
 import InConversation from "./inConversation"
-import { useState } from "react"
-import { Ads, Issues } from "../../../lib/types"
 import ArtSeen from "./artSeen"
 import { HomepageProps } from "@/pages"
 import CriticsPage from "./criticsPage"
@@ -14,6 +12,7 @@ import IssueSelect from "./issueSelect"
 import CurrentSections from "./currentSections"
 import RailPartners from "./railPartners"
 import RailProjects from "./railProjects"
+import Header from "./header"
 
 const Homepage = (props: HomepageProps) => {
   const { allIssues, currentIssue, currentSections } = props
@@ -31,58 +30,7 @@ const Homepage = (props: HomepageProps) => {
             <div className="grid-container grid-container-desktop">
               <div className="grid-row">
                 <div className="grid-col-12">
-                  <div id="header_section">
-                    <div className="logo">
-                      <div id="textflag">
-                        <h1>The Brooklyn Rail </h1>
-                        <h2>Critical Perspectives on Art, Politics and Culture</h2>
-                        <h3>FEB 2024</h3>
-                      </div>
-                      <a href="/">
-                        <img
-                          src="/images/brooklynrail-logo-ex.svg"
-                          height="68"
-                          alt="The Brooklyn Rail"
-                          title="Brooklyn Rail Home"
-                        />
-                      </a>
-                    </div>
-
-                    <nav>
-                      <ul>
-                        <li>
-                          <a href="/about?h" title="About">
-                            <span>About</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://brooklynrail.org/events?h" title="Events">
-                            <span>Events</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://mailchi.mp/brooklynrail/join/?h" title="Subscribe to our newsletter">
-                            <span>Newsletter</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://shop.brooklynrail.org/products/subscription?h" title="Subscribe">
-                            <span>Subscribe</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a target="_blank" href="https://shop.brooklynrail.org?h" title="Shop">
-                            <span>Shop</span>
-                          </a>
-                        </li>
-                        <li className="btn btn-donate">
-                          <a href="https://brooklynrail.org/donate?h" title="Donate">
-                            <span>Donate</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
+                  <Header />
                 </div>
               </div>
             </div>
