@@ -7,44 +7,7 @@ import { useState } from "react"
 import { Ads, Articles, Contributors, Issues } from "../../../lib/types"
 import ArtSeen from "./artSeen"
 import { HomepageProps } from "@/pages"
-
-const CriticsPage = (props: HomepageProps) => {
-  const { currentIssue, criticsPage } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
-
-  return (
-    <>
-      <h3>Critics Page</h3>
-      <ul>
-        <>
-          {criticsPage.map((article: Articles, i: number) => {
-            const { title, contributors } = article
-            const names = contributors.map((contributor: any, i: number) => {
-              const { first_name, last_name } = contributor.contributors_id
-              const name = `${first_name} ${last_name}`
-              return <>{name}</>
-            })
-
-            return (
-              <li
-                className={`promo promo-slim ${i % 2 === 0 ? "" : "promo-slim-alt"}`}
-                itemType="http://schema.org/Article"
-              >
-                <h4>
-                  <a href={`/${dateSlug}/criticspage/${title}`} itemProp="name">
-                    {title}
-                  </a>
-                </h4>
-                <cite className="byline">– By {names}</cite>
-              </li>
-            )
-          })}
-        </>
-      </ul>
-    </>
-  )
-}
+import CriticsPage from "./criticsPage"
 
 const EditorsMessage = (props: HomepageProps) => {
   const { currentIssue, editorsMessage } = props
