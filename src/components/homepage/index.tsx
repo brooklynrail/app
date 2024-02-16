@@ -23,6 +23,7 @@ const Homepage = (props: HomepageProps) => {
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
   const currentSectionsProps = { currentIssue, currentSections, dateSlug }
+  const tocProps = { currentIssue, currentSections, dateSlug }
 
   return (
     <>
@@ -111,7 +112,7 @@ const Homepage = (props: HomepageProps) => {
               <div className="grid-row grid-gap-3">
                 <div className="grid-row">
                   <div className="grid-col-8 grid-offset-2">
-                    <TableOfContents />
+                    <TableOfContents {...tocProps} />
                   </div>
                 </div>
 
