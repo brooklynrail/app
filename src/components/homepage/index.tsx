@@ -9,36 +9,7 @@ import ArtSeen from "./artSeen"
 import { HomepageProps } from "@/pages"
 import CriticsPage from "./criticsPage"
 import EditorsMessage from "./editorsMessage"
-
-const PublishersMessage = (props: HomepageProps) => {
-  const { currentIssue, publishersMessage } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
-
-  console.log("publishersMessage Props", publishersMessage[0])
-  const { title, excerpt, contributors } = publishersMessage[0]
-  const { first_name, last_name } = contributors[0].contributors_id
-
-  return (
-    <div className="collection">
-      <h3>From the Publisher & Artistic Director</h3>
-      <div className="promo promo-thumb">
-        <div className="media media-thumb">
-          <a href={`/${dateSlug}/publishersmessage/`}>
-            <img src="https://placehold.co/60x60/C57AFF/9D20FF" alt="" />
-          </a>
-        </div>
-        <h4>
-          <a href={`/${dateSlug}/publishersmessage/`}>{title}</a>
-        </h4>
-        <cite className="byline">
-          By {first_name} {last_name}
-        </cite>
-        <p className="excerpt">{excerpt}</p>
-      </div>
-    </div>
-  )
-}
+import PublishersMessage from "./publishersMessage"
 
 interface AdsTileProps {
   ads: Array<Ads>
