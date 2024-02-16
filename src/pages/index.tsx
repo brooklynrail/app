@@ -68,7 +68,15 @@ export async function getStaticProps() {
   // Get the articles for InConversation
   const inConversation = await directus.request(
     readItems("articles", {
-      fields: ["title", "kicker", "excerpt", "slug"],
+      fields: [
+        "title",
+        "kicker",
+        "excerpt",
+        "slug",
+        "kicker",
+        "sections.sections_id.slug",
+        "sections.sections_id.name",
+      ],
       filter: {
         _and: [
           { sections: { sections_id: { slug: { _eq: "art" } } } },
@@ -100,7 +108,7 @@ export async function getStaticProps() {
     }),
   )
 
-  // Get the articles for PublishersMessage
+  // Get the articles for EditorsMessage
   const editorsMessage = await directus.request(
     readItems("articles", {
       fields: [
@@ -122,7 +130,7 @@ export async function getStaticProps() {
     }),
   )
 
-  // Get the articles for PublishersMessage
+  // Get the articles for CriticsPage
   const criticsPage = await directus.request(
     readItems("articles", {
       fields: [
@@ -137,6 +145,27 @@ export async function getStaticProps() {
       filter: {
         _and: [
           { sections: { sections_id: { slug: { _eq: "criticspage" } } } },
+          { issues: { issues_id: { id: { _eq: currentIssueData[0].id } } } },
+        ],
+      },
+    }),
+  )
+
+  // Get the articles for ArtSeen
+  const artSeen = await directus.request(
+    readItems("articles", {
+      fields: [
+        "title",
+        "kicker",
+        "excerpt",
+        "slug",
+        "contributors.contributors_id.first_name",
+        "contributors.contributors_id.last_name",
+        "contributors.contributors_id.slug",
+      ],
+      filter: {
+        _and: [
+          { sections: { sections_id: { slug: { _eq: "artseen" } } } },
           { issues: { issues_id: { id: { _eq: currentIssueData[0].id } } } },
         ],
       },
@@ -164,6 +193,7 @@ export async function getStaticProps() {
       publishersMessage,
       editorsMessage,
       criticsPage,
+      artSeen,
       ads,
     },
     // Next.js will attempt to re-generate the page:
