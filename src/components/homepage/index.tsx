@@ -4,38 +4,11 @@ import Footer from "../footer"
 import Image from "next/image"
 import InConversation from "./inConversation"
 import { useState } from "react"
-import { Ads, Articles, Contributors, Issues } from "../../../lib/types"
+import { Ads, Issues } from "../../../lib/types"
 import ArtSeen from "./artSeen"
 import { HomepageProps } from "@/pages"
 import CriticsPage from "./criticsPage"
-
-const EditorsMessage = (props: HomepageProps) => {
-  const { currentIssue, editorsMessage } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
-
-  const { title, excerpt, contributors } = editorsMessage[0]
-  const { first_name, last_name } = contributors[0].contributors_id
-  return (
-    <div className="collection">
-      <h3>Editor's Message</h3>
-      <div className="promo promo-thumb">
-        <div className="media media-thumb">
-          <a href={`/${dateSlug}/publishersmessage/`}>
-            <img src="https://placehold.co/60x60/C57AFF/9D20FF" alt="" />
-          </a>
-        </div>
-        <h4>
-          <a href={`/${dateSlug}/editorsMessage/`}>{title}</a>
-        </h4>
-        <cite className="byline">
-          By {first_name} {last_name}
-        </cite>
-        <p className="excerpt">{excerpt}</p>
-      </div>
-    </div>
-  )
-}
+import EditorsMessage from "./editorsMessage"
 
 const PublishersMessage = (props: HomepageProps) => {
   const { currentIssue, publishersMessage } = props
