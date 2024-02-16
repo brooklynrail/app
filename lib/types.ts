@@ -25,7 +25,7 @@ export type Articles = {
   date_created?: string | null
   date_updated?: string | null
   deck?: string | null
-  excerpt?: string | null
+  excerpt: string
   featured_image?: string | DirectusFiles | null
   header_type?: string | null
   images: any[] | ArticlesFiles[]
@@ -37,7 +37,7 @@ export type Articles = {
   slug: string
   sort?: number | null
   status: string
-  title?: string | null
+  title: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
