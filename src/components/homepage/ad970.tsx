@@ -1,11 +1,11 @@
 import { Ads } from "../../../lib/types"
 import Image from "next/image"
 
-interface AdsTileProps {
+interface Ad970Props {
   ads: Array<Ads>
 }
 
-const Ad970 = (props: AdsTileProps) => {
+const Ad970 = (props: Ad970Props) => {
   const { ads } = props
   const src = `https://placehold.co/1008x101/C57AFF/9D20FF`
   const src_mobile = `https://placehold.co/1008x101/C57AFF/9D20FF`
