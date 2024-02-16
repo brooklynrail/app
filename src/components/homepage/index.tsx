@@ -11,42 +11,14 @@ import EditorsMessage from "./editorsMessage"
 import PublishersMessage from "./publishersMessage"
 import AdsTile from "./adsTile"
 import IssueSelect from "./issueSelect"
-
-const CurrentSections = (props: any) => {
-  const { currentIssue, currentSections } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
-
-  return (
-    <>
-      <div className="issue_sections">
-        <ul>
-          <li>
-            <a href={`/${dateSlug}/`} title="Go to the Issue home">
-              Issue Home
-            </a>
-          </li>
-          {currentSections.map((section: any, i: number) => {
-            return (
-              <li key={`${i}-${dateSlug}/${section.slug}/`}>
-                <a href={`/${dateSlug}/${section.slug}/`} title={`Go to the ${section.name} section`}>
-                  {section.name}
-                </a>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-    </>
-  )
-}
+import CurrentSections from "./currentSections"
 
 const Homepage = (props: HomepageProps) => {
-  const allIssues = props.allIssues
-  const currentIssue = props.currentIssue
+  const { allIssues, currentIssue, currentSections } = props
   const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
+  const currentSectionsProps = { currentIssue, currentSections }
 
   return (
     <>
@@ -155,7 +127,7 @@ const Homepage = (props: HomepageProps) => {
                       <CoverImage {...coverImageProps} />
                     </div>
 
-                    <CurrentSections {...props} />
+                    <CurrentSections {...currentSectionsProps} />
 
                     <a className="search_btn" href="/search" title="Search All Issues">
                       <span>Search</span> <i className="fas fa-search"></i>
