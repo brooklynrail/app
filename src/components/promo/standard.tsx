@@ -42,7 +42,6 @@ const PromoStandard = (props: PromoStandardProps) => {
             {parse(title)}
           </a>
         </h4>
-        <p className="excerpt">{stripHtml(excerpt).result}</p>
         <p className="excerpt">{parse(excerpt)}</p>
       </div>
     </>
