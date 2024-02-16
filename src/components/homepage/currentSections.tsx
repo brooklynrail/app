@@ -3,12 +3,11 @@ import { Issues, Sections } from "../../../lib/types"
 interface CurrentSectionsProps {
   currentIssue: Issues
   currentSections: Array<Sections>
+  dateSlug: string
 }
 
 const CurrentSections = (props: CurrentSectionsProps) => {
-  const { currentIssue, currentSections } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
+  const { dateSlug, currentSections } = props
 
   return (
     <>

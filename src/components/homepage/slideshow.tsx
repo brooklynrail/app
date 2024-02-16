@@ -1,34 +1,49 @@
 import { HomepageProps } from "@/pages"
+import { stripHtml } from "string-strip-html"
 
-const SlideImage = (props: { showSlide: boolean }) => {
-  const { showSlide } = props
+const SlideImage = (props: { show: boolean }) => {
+  const { show } = props
   const src = `https://placehold.co/664x282/C57AFF/9D20FF`
-  return <img className="bannerimg" src={src} style={{ display: showSlide ? "none" : "block" }} />
+  return <img className="bannerimg" src={src} style={{ display: show ? "none" : "block" }} />
 }
+
+const SlideTitle = (props: { show: boolean; permalink: string; title: string }) => {
+  const { show, permalink, title } = props
+  return (
+    <div className="bannertext" itemType="http://schema.org/Article" style={{ display: show ? "none" : "block" }}>
+      <a className="banner" href={permalink}>
+        <div className="bannertitle">
+          <span itemProp="name">{title}</span>
+        </div>
+      </a>
+    </div>
+  )
+}
+
 const SlideShow = (props: HomepageProps) => {
-  const { currentIssue, criticsPage } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
+  const { dateSlug } = props
+  const permalink = `/${dateSlug}/${`sectionSlug`}/${`slug`}`
+  const title = `Article Title`
 
   return (
     <>
       <div id="bannercontainer">
         <div id="banner">
           <div id="bannerimg-container">
-            <a className="banner" href="/2024/02/art/Paul-Pfeiffer-with-Jonathan-TD-Neil">
-              <SlideImage showSlide={false} />
+            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
+              <SlideImage show={false} />
             </a>
-            <a className="banner" href="/2024/02/art/Kyungmi-Shin-with-Andrew-Woolbright">
-              <SlideImage showSlide={false} />
+            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
+              <SlideImage show={false} />
             </a>
-            <a className="banner" href="/2024/02/art/Christopher-Rothko-with-Phong-H-Bui">
-              <SlideImage showSlide={false} />
+            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
+              <SlideImage show={false} />
             </a>
-            <a className="banner" href="/2024/02/art/James-Welling-with-Robert-Slifkin">
-              <SlideImage showSlide={false} />
+            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
+              <SlideImage show={false} />
             </a>
-            <a className="banner" href="/2024/02/art/In-Conversation-Sherman-Sam-with-Barry-Schwabsky">
-              <SlideImage showSlide={true} />
+            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
+              <SlideImage show={false} />
             </a>
           </div>
 
@@ -66,41 +81,11 @@ const SlideShow = (props: HomepageProps) => {
         </div>
 
         <div id="banner-textblock">
-          <div className="bannertext" itemType="http://schema.org/Article" style={{ display: "none" }}>
-            <a className="banner" href="/2024/02/art/Paul-Pfeiffer-with-Jonathan-TD-Neil">
-              <div className="bannertitle">
-                <span itemProp="name">Paul Pfeiffer with Jonathan T.D. Neil </span>
-              </div>
-            </a>
-          </div>
-          <div className="bannertext" style={{ display: "none" }} itemType="http://schema.org/Article">
-            <a className="banner" href="/2024/02/art/Kyungmi-Shin-with-Andrew-Woolbright">
-              <div className="bannertitle">
-                <span itemProp="name">Kyungmi Shin with Andrew Woolbright </span>
-              </div>
-            </a>
-          </div>
-          <div className="bannertext" style={{ display: "none" }} itemType="http://schema.org/Article">
-            <a className="banner" href="/2024/02/art/Christopher-Rothko-with-Phong-H-Bui">
-              <div className="bannertitle">
-                <span itemProp="name">Christopher Rothko with Phong H. Bui </span>
-              </div>
-            </a>
-          </div>
-          <div className="bannertext" style={{ display: "none" }} itemType="http://schema.org/Article">
-            <a className="banner" href="/2024/02/art/James-Welling-with-Robert-Slifkin">
-              <div className="bannertitle">
-                <span itemProp="name">James Welling with Robert Slifkin </span>
-              </div>
-            </a>
-          </div>
-          <div className="bannertext" itemType="http://schema.org/Article">
-            <a className="banner" href="/2024/02/art/In-Conversation-Sherman-Sam-with-Barry-Schwabsky">
-              <div className="bannertitle">
-                <span itemProp="name">Sherman Sam with Barry Schwabsky </span>
-              </div>
-            </a>
-          </div>
+          <SlideTitle show={false} permalink={permalink} title={title} />
+          <SlideTitle show={false} permalink={permalink} title={title} />
+          <SlideTitle show={false} permalink={permalink} title={title} />
+          <SlideTitle show={false} permalink={permalink} title={title} />
+          <SlideTitle show={true} permalink={permalink} title={title} />
         </div>
       </div>
     </>

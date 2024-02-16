@@ -3,9 +3,7 @@ import { Articles } from "../../../lib/types"
 import PromoSlim from "../promo/slim"
 
 const CriticsPage = (props: HomepageProps) => {
-  const { currentIssue, criticsPage } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
+  const { dateSlug, criticsPage } = props
 
   return (
     <>

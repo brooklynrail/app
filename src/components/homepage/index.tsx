@@ -17,11 +17,11 @@ import Ad970 from "./ad970"
 import SlideShow from "./slideshow"
 
 const Homepage = (props: HomepageProps) => {
-  const { allIssues, currentIssue, currentSections } = props
+  const { allIssues, currentIssue, currentSections, dateSlug } = props
   const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
-  const currentSectionsProps = { currentIssue, currentSections }
+  const currentSectionsProps = { currentIssue, currentSections, dateSlug }
 
   return (
     <>

@@ -2,9 +2,7 @@ import { HomepageProps } from "@/pages"
 import PromoThumb from "../promo/thumb"
 
 const EditorsMessage = (props: HomepageProps) => {
-  const { currentIssue, editorsMessage } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
+  const { editorsMessage, dateSlug } = props
 
   return (
     <div className="collection">

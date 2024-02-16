@@ -2,9 +2,7 @@ import { HomepageProps } from "@/pages"
 import PromoStandard from "../promo/standard"
 
 const InConversation = (props: HomepageProps) => {
-  const { inConversation, currentIssue } = props
-  const { year, month } = currentIssue
-  const dateSlug = `${year}/${month}`
+  const { inConversation, dateSlug } = props
 
   return (
     <section className="collection">

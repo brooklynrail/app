@@ -6,6 +6,7 @@ import { Ads, Articles, Issues, Sections } from "../../lib/types"
 export interface HomepageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
+  dateSlug: string
   currentSections: Array<Sections>
   inConversation: Array<Articles>
   ads: Array<Ads>
@@ -193,11 +194,13 @@ export async function getStaticProps() {
   // console.log("===============")
 
   const currentIssue = currentIssueData[0]
+  const dateSlug = `${currentIssue.year}/${currentIssue.month}`
 
   return {
     props: {
       allIssues,
       currentIssue,
+      dateSlug,
       currentSections,
       inConversation,
       publishersMessage,
