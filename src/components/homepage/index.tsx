@@ -234,7 +234,7 @@ const CurrentSections = (props: any) => {
 interface HomepageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
-  ads: Ads
+  ads: Array<Ads>
   publishersMessage: Array<Articles>
   editorsMessage: Array<Articles>
   criticsPage: Array<Articles>
