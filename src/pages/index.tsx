@@ -98,6 +98,8 @@ export async function getStaticProps() {
         "contributors.contributors_id.first_name",
         "contributors.contributors_id.last_name",
         "contributors.contributors_id.slug",
+        "sections.sections_id.slug",
+        "sections.sections_id.name",
       ],
       filter: {
         _and: [
