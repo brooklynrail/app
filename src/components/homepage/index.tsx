@@ -114,10 +114,7 @@ const Homepage = (props: HomepageProps) => {
                   <div className="grid-col-8 grid-offset-2">
                     <TableOfContents {...tocProps} />
                   </div>
-                </div>
-
-                <div className="grid-row">
-                  <div className="grid-col-12">
+                  <div className="grid-col-8 grid-offset-2">
                     <div style={{ margin: "25px 0px 25px 30px" }}>
                       <a href="/subscribe">
                         <img src="/images/subscribe-footer.png" />
@@ -125,9 +122,6 @@ const Homepage = (props: HomepageProps) => {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="ad_column grid-col-2">
-                <AdsTile ads={ads} />
               </div>
             </div>
           </section>
