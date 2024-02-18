@@ -35,9 +35,14 @@ export const PromoSection = (props: PromoProps) => {
 
 const PromoStandard = (props: PromoProps) => {
   const { dateSlug, article, showSection, showImage } = props
-  const { title, excerpt, slug, sections } = article
+  const { title, excerpt, slug, sections, sort } = article
   const sectionSlug = sections[0].sections_id.slug
   const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
+  const sortNum = (
+    <span className="sort">
+      <span>{sort}</span>
+    </span>
+  )
 
   return (
     <>
@@ -51,6 +56,7 @@ const PromoStandard = (props: PromoProps) => {
           </div>
         )}
         <h4>
+          {sortNum}
           <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
             {parse(title)}
           </a>

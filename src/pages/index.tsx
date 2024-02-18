@@ -46,17 +46,46 @@ export async function getStaticProps() {
   // Get the sections for the current issue
   const currentSections = await directus.request(
     readItems("sections", {
-      fields: ["*.*"],
+      fields: [
+        "*.*",
+        "articles.articles_slug.title",
+        "articles.articles_slug.slug",
+        "articles.articles_slug.sections",
+        "articles.articles_slug.sort",
+        "articles.articles_slug.contributors.contributors_id.first_name",
+        "articles.articles_slug.contributors.contributors_id.last_name",
+        "articles.articles_slug.contributors.contributors_id.slug",
+        "articles.articles_slug.sections.sections_id.slug",
+        "articles.articles_slug.sections.sections_id.name",
+        "articles.articles_slug.issues.issues_id.id",
+      ],
       filter: {
         _and: [
           {
-            articles: { articles_slug: { issues: { issues_id: { _eq: currentIssueData[0].id } } } },
+            articles: {
+              articles_slug: {
+                issues: { issues_id: { _eq: currentIssueData[0].id } },
+              },
+            },
             _and: [{ slug: { _neq: "editorsmessage" } }, { slug: { _neq: "publishersmessage" } }],
           },
         ],
       },
     }),
   )
+
+  // Filter the articles within each section to only include those that are in the current issue
+  currentSections.forEach((section: any) => {
+    section.articles = section.articles.filter(
+      (article: any) => article.articles_slug.issues[0].issues_id.id === currentIssueData[0].id,
+    )
+  })
+
+  // Sort the articles within each section by their `sort` order
+  // Note: the `sort` field is nested under `articles_slug`
+  currentSections.forEach((section: any) => {
+    section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
+  })
 
   // Get the published Ads
   const ads = await directus.request(
@@ -77,9 +106,11 @@ export async function getStaticProps() {
         "excerpt",
         "slug",
         "kicker",
+        "sort",
         "sections.sections_id.slug",
         "sections.sections_id.name",
       ],
+      sort: ["sort"],
       filter: {
         _and: [
           { sections: { sections_id: { slug: { _eq: "art" } } } },
@@ -97,6 +128,7 @@ export async function getStaticProps() {
         "kicker",
         "excerpt",
         "slug",
+        "sort",
         "contributors.contributors_id.first_name",
         "contributors.contributors_id.last_name",
         "contributors.contributors_id.slug",
@@ -121,6 +153,7 @@ export async function getStaticProps() {
         "kicker",
         "excerpt",
         "slug",
+        "sort",
         "contributors.contributors_id.first_name",
         "contributors.contributors_id.last_name",
         "contributors.contributors_id.slug",
@@ -145,12 +178,14 @@ export async function getStaticProps() {
         "kicker",
         "excerpt",
         "slug",
+        "sort",
         "contributors.contributors_id.first_name",
         "contributors.contributors_id.last_name",
         "contributors.contributors_id.slug",
         "sections.sections_id.slug",
         "sections.sections_id.name",
       ],
+      sort: ["sort"],
       filter: {
         _and: [
           { sections: { sections_id: { slug: { _eq: "criticspage" } } } },
@@ -168,12 +203,14 @@ export async function getStaticProps() {
         "kicker",
         "excerpt",
         "slug",
+        "sort",
         "contributors.contributors_id.first_name",
         "contributors.contributors_id.last_name",
         "contributors.contributors_id.slug",
         "sections.sections_id.slug",
         "sections.sections_id.name",
       ],
+      sort: ["sort"],
       filter: {
         _and: [
           { sections: { sections_id: { slug: { _eq: "artseen" } } } },

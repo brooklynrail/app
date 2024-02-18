@@ -10,7 +10,7 @@ interface PromoSlimProps {
 
 const PromoSlim = (props: PromoSlimProps) => {
   const { dateSlug, article, i = 0 } = props
-  const { title, slug, sections, contributors } = article
+  const { title, slug, sections, contributors, sort } = article
   const sectionSlug = sections[0].sections_id.slug
   const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
 
@@ -20,11 +20,18 @@ const PromoSlim = (props: PromoSlimProps) => {
     return <span key={`first_name-last_name-${i}`}>{name}</span>
   })
 
+  const sortNum = (
+    <span className="sort">
+      <span>{sort}</span>
+    </span>
+  )
+
   const altClass = i % 2 === 0 ? "" : "promo-slim-alt"
 
   return (
     <li className={`promo promo-slim ${altClass}`} itemType="http://schema.org/Article">
       <h4>
+        {sortNum}
         <a href={permalink} itemProp="name" title={`Visit ${stripHtml(title).result}`}>
           {parse(title)}
         </a>

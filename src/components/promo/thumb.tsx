@@ -4,7 +4,7 @@ import { PromoProps, PromoSection } from "./standard"
 
 const PromoThumb = (props: PromoProps) => {
   const { dateSlug, article, showImage, showSection } = props
-  const { title, excerpt, slug, sections } = article
+  const { title, excerpt, slug, sections, sort } = article
   const sectionSlug = sections[0].sections_id.slug
   const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
   const names = article.contributors.map((contributor: any, i: number) => {
@@ -12,6 +12,12 @@ const PromoThumb = (props: PromoProps) => {
     const name = `${first_name} ${last_name}`
     return <span key={`first_name-last_name-${i}`}>{name}</span>
   })
+
+  const sortNum = (
+    <span className="sort">
+      <span>{sort}</span>
+    </span>
+  )
 
   return (
     <>
@@ -25,6 +31,7 @@ const PromoThumb = (props: PromoProps) => {
           </div>
         )}
         <h4>
+          {sortNum}
           <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
             {parse(title)}
           </a>
