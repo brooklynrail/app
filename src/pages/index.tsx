@@ -77,7 +77,8 @@ export async function getStaticProps() {
   // Filter the articles within each section to only include those that are in the current issue
   currentSections.forEach((section: any) => {
     section.articles = section.articles.filter(
-      (article: any) => article.articles_slug.issues[0].issues_id.id === currentIssueData[0].id,
+      (article: any) =>
+        article.articles_slug && article.articles_slug.issues[0].issues_id.id === currentIssueData[0].id,
     )
   })
 
