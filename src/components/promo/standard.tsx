@@ -1,6 +1,7 @@
 import parse from "html-react-parser"
-import { Articles } from "../../../lib/types"
+import { Articles, DirectusFiles } from "../../../lib/types"
 import { stripHtml } from "string-strip-html"
+import Image from "next/image"
 
 export interface PromoProps {
   article: Articles
@@ -33,9 +34,15 @@ export const PromoSection = (props: PromoProps) => {
   )
 }
 
+const PromoBanner = (props: DirectusFiles) => {
+  const { filename_disk } = props
+  const src = `http://localhost:8055/assets/${filename_disk}?key=promo-banner`
+  return <Image src={src} width={316} height={96} alt={"tktk"} />
+}
+
 const PromoStandard = (props: PromoProps) => {
   const { dateSlug, article, showSection, showImage } = props
-  const { title, excerpt, slug, sections, sort } = article
+  const { title, excerpt, slug, sections, sort, promo_banner } = article
   const sectionSlug = sections[0].sections_id.slug
   const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
   const sortNum = (
@@ -48,10 +55,10 @@ const PromoStandard = (props: PromoProps) => {
     <>
       <div className="promo promo-standard" itemType="http://schema.org/Article">
         {showSection && <PromoSection {...props} />}
-        {showImage && (
-          <div className="media">
+        {showImage && promo_banner && (
+          <div className={`media media-thumb`}>
             <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <img src="https://placehold.co/316x96/C57AFF/9D20FF" alt="" />
+              <PromoBanner {...promo_banner} />
             </a>
           </div>
         )}

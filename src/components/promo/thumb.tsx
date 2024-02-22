@@ -1,10 +1,18 @@
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
 import { PromoProps, PromoSection } from "./standard"
+import { DirectusFiles } from "../../../lib/types"
+import Image from "next/image"
+
+const Thumb = (props: DirectusFiles) => {
+  const { filename_disk } = props
+  const src = `http://localhost:8055/assets/${filename_disk}?key=promo-thumb`
+  return <Image src={src} width={60} height={60} alt={"tktk"} />
+}
 
 const PromoThumb = (props: PromoProps) => {
   const { dateSlug, article, showImage, showSection } = props
-  const { title, excerpt, slug, sections, sort } = article
+  const { title, excerpt, slug, sections, sort, promo_thumb } = article
   const sectionSlug = sections[0].sections_id.slug
   const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
   const names = article.contributors.map((contributor: any, i: number) => {
@@ -23,10 +31,10 @@ const PromoThumb = (props: PromoProps) => {
     <>
       <div className="promo promo-thumb" itemType="http://schema.org/Article">
         {showSection && <PromoSection {...props} />}
-        {showImage && (
+        {showImage && promo_thumb && (
           <div className={`media media-thumb`}>
             <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <img src="https://placehold.co/60x60/C57AFF/9D20FF" alt="" />
+              <Thumb {...promo_thumb} />
             </a>
           </div>
         )}
