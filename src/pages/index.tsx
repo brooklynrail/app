@@ -8,7 +8,6 @@ export interface HomepageProps {
   currentIssue: Issues
   dateSlug: string
   currentSections: Array<Sections>
-  featuredArticles: Array<Articles>
   ads: Array<Ads>
   publishersMessage: Array<Articles>
   editorsMessage: Array<Articles>
@@ -50,8 +49,12 @@ export async function getStaticProps() {
         "*.*",
         "articles.articles_slug.title",
         "articles.articles_slug.slug",
+        "articles.articles_slug.featured",
+        "articles.articles_slug.excerpt",
         "articles.articles_slug.sections",
         "articles.articles_slug.sort",
+        "articles.articles_slug.promo_thumb.*",
+        "articles.articles_slug.promo_banner.*",
         "articles.articles_slug.contributors.contributors_id.first_name",
         "articles.articles_slug.contributors.contributors_id.last_name",
         "articles.articles_slug.contributors.contributors_id.slug",
@@ -94,31 +97,6 @@ export async function getStaticProps() {
       fields: ["*.*"],
       filter: {
         _and: [{ status: { _eq: "published" }, start_date: { _gte: "2021-01-01" }, ad_url: { _nnull: true } }],
-      },
-    }),
-  )
-
-  // Get the articles for InConversation
-  const featuredArticles = await directus.request(
-    readItems("articles", {
-      fields: [
-        "title",
-        "kicker",
-        "excerpt",
-        "slug",
-        "kicker",
-        "sort",
-        "promo_thumb.*",
-        "promo_banner.*",
-        "contributors.contributors_id.first_name",
-        "contributors.contributors_id.last_name",
-        "contributors.contributors_id.slug",
-        "sections.sections_id.slug",
-        "sections.sections_id.name",
-      ],
-      sort: ["sort"],
-      filter: {
-        _and: [{ featured: { _eq: true } }, { issues: { issues_id: { id: { _eq: currentIssueData[0].id } } } }],
       },
     }),
   )
@@ -248,7 +226,6 @@ export async function getStaticProps() {
       currentIssue,
       dateSlug,
       currentSections,
-      featuredArticles,
       publishersMessage,
       editorsMessage,
       criticsPage,

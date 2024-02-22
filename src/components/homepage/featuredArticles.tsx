@@ -1,8 +1,22 @@
-import { HomepageProps } from "@/pages"
 import PromoStandard from "../promo/standard"
+import { Articles, Sections } from "../../../lib/types"
 
-const FeaturedArticles = (props: HomepageProps) => {
-  const { featuredArticles, dateSlug } = props
+interface FeaturedArticlesProps {
+  currentSections: Array<Sections>
+  dateSlug: string
+}
+const FeaturedArticles = (props: FeaturedArticlesProps) => {
+  const { currentSections, dateSlug } = props
+
+  // Get only the Featured articles from each section in currentSections
+  const featuredArticles: Array<Articles> = []
+  currentSections.forEach((section) => {
+    section.articles.forEach((article) => {
+      if (article.articles_slug.featured) {
+        featuredArticles.push(article.articles_slug)
+      }
+    })
+  })
 
   return (
     <section className="collection">

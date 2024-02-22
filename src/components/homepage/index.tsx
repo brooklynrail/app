@@ -25,6 +25,8 @@ const Homepage = (props: HomepageProps) => {
   const currentSectionsProps = { currentIssue, currentSections, dateSlug }
   const tocProps = { currentIssue, currentSections, dateSlug }
 
+  const promoProps = { currentSections, dateSlug }
+
   return (
     <>
       <div className="paper">
@@ -82,7 +84,7 @@ const Homepage = (props: HomepageProps) => {
 
                   <div className="grid-row grid-gap-4">
                     <div className="grid-col-6">
-                      <FeaturedArticles {...props} />
+                      <FeaturedArticles {...promoProps} />
                     </div>
                     <div className="grid-col-6">
                       <div className="collection">
