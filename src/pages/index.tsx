@@ -8,7 +8,7 @@ export interface HomepageProps {
   currentIssue: Issues
   dateSlug: string
   currentSections: Array<Sections>
-  inConversation: Array<Articles>
+  featuredArticles: Array<Articles>
   ads: Array<Ads>
   publishersMessage: Array<Articles>
   editorsMessage: Array<Articles>
@@ -99,7 +99,7 @@ export async function getStaticProps() {
   )
 
   // Get the articles for InConversation
-  const inConversation = await directus.request(
+  const featuredArticles = await directus.request(
     readItems("articles", {
       fields: [
         "title",
@@ -118,10 +118,7 @@ export async function getStaticProps() {
       ],
       sort: ["sort"],
       filter: {
-        _and: [
-          { sections: { sections_id: { slug: { _eq: "art" } } } },
-          { issues: { issues_id: { id: { _eq: currentIssueData[0].id } } } },
-        ],
+        _and: [{ featured: { _eq: true } }, { issues: { issues_id: { id: { _eq: currentIssueData[0].id } } } }],
       },
     }),
   )
@@ -251,7 +248,7 @@ export async function getStaticProps() {
       currentIssue,
       dateSlug,
       currentSections,
-      inConversation,
+      featuredArticles,
       publishersMessage,
       editorsMessage,
       criticsPage,

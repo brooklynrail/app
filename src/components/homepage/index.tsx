@@ -1,7 +1,6 @@
 import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
 import Footer from "../footer"
-import InConversation from "./inConversation"
 import ArtSeen from "./artSeen"
 import { HomepageProps } from "@/pages"
 import CriticsPage from "./criticsPage"
@@ -16,6 +15,7 @@ import Header from "./header"
 import Ad970 from "./ad970"
 import SlideShow from "./slideshow"
 import TableOfContents from "./tableOfContents"
+import FeaturedArticles from "./featuredArticles"
 
 const Homepage = (props: HomepageProps) => {
   const { allIssues, currentIssue, currentSections, dateSlug } = props
@@ -82,7 +82,7 @@ const Homepage = (props: HomepageProps) => {
 
                   <div className="grid-row grid-gap-4">
                     <div className="grid-col-6">
-                      <InConversation {...props} />
+                      <FeaturedArticles {...props} />
                     </div>
                     <div className="grid-col-6">
                       <div className="collection">

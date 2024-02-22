@@ -1,15 +1,15 @@
 import { HomepageProps } from "@/pages"
 import PromoStandard from "../promo/standard"
 
-const InConversation = (props: HomepageProps) => {
-  const { inConversation, dateSlug } = props
+const FeaturedArticles = (props: HomepageProps) => {
+  const { featuredArticles, dateSlug } = props
 
   return (
     <section className="collection">
-      {inConversation.map((article: any, i: number) => {
+      {featuredArticles.map((article: any, i: number) => {
         return (
           <PromoStandard
-            key={`inconversation-${i}`}
+            key={`featured-${i}`}
             article={article}
             dateSlug={dateSlug}
             showImage={true}
@@ -21,4 +21,4 @@ const InConversation = (props: HomepageProps) => {
   )
 }
 
-export default InConversation
+export default FeaturedArticles
