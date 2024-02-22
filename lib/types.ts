@@ -5,13 +5,13 @@ export type Ads = {
   date_updated?: string | null
   end_date: string
   id: number
-  image?: DirectusFiles | null
+  image?: string | DirectusFiles | null
   image_mobile?: string | DirectusFiles | null
   old_id?: number | null
   sort?: number | null
   start_date: string
   status: string
-  title?: string | null
+  title: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
@@ -26,14 +26,19 @@ export type Articles = {
   date_updated?: string | null
   deck?: string | null
   excerpt: string
+  featured: boolean
   featured_image?: string | DirectusFiles | null
   header_type?: string | null
   images: any[] | ArticlesFiles[]
+  Images: string
   in_print?: boolean | null
   issues: any[] | ArticlesIssues[]
   kicker?: string | null
   old_id?: number | null
+  promo_banner?: DirectusFiles
+  promo_thumb?: DirectusFiles
   sections: any[] | ArticlesSections[]
+  slideshow_image?: string | DirectusFiles | null
   slug: string
   sort?: number | null
   status: string
@@ -162,7 +167,7 @@ export type DirectusFields = {
 
 export type DirectusFiles = {
   ads: any[] | Ads[]
-  articles: any[] | ArticlesFiles[]
+  articles: any[] | Articles[]
   caption?: string | null
   charset?: string | null
   description?: string | null
