@@ -450,7 +450,7 @@ export type DirectusWebhooks = {
 }
 
 export type Issues = {
-  articles: any[] | ArticlesIssues[]
+  articles: Articles[] | ArticlesIssues[]
   cover_1?: string | DirectusFiles | null
   cover_2?: string | DirectusFiles | null
   cover_3?: string | DirectusFiles | null

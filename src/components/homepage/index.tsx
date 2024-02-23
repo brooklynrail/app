@@ -16,17 +16,22 @@ import Ad970 from "./ad970"
 import SlideShow from "./slideshow"
 import TableOfContents from "./tableOfContents"
 import FeaturedArticles from "./featuredArticles"
+import { Articles, Issues, Sections } from "../../../lib/types"
+
+export interface PromoProps {
+  currentArticles: Array<Articles>
+  dateSlug: string
+}
 
 const Homepage = (props: HomepageProps) => {
-  const { allIssues, currentIssue, currentSections, dateSlug } = props
+  const { allIssues, currentIssue, currentSections, currentArticles, dateSlug } = props
   const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
   const currentSectionsProps = { currentIssue, currentSections, dateSlug }
-  const tocProps = { currentIssue, currentSections, dateSlug }
+  const tocProps = { currentIssue, currentSections, currentArticles, dateSlug }
 
-  const promoProps = { currentSections, dateSlug }
-
+  const promoProps = { currentArticles, dateSlug }
   return (
     <>
       <div className="paper">
@@ -88,19 +93,19 @@ const Homepage = (props: HomepageProps) => {
                     </div>
                     <div className="grid-col-6">
                       <div className="collection">
-                        <PublishersMessage {...props} />
+                        <PublishersMessage {...promoProps} />
                       </div>
 
                       <div className="collection">
-                        <EditorsMessage {...props} />
+                        <EditorsMessage {...promoProps} />
                       </div>
 
                       <div className="collection">
-                        <CriticsPage {...props} />
+                        <CriticsPage {...promoProps} />
                       </div>
 
                       <div className="collection">
-                        <ArtSeen {...props} />
+                        <ArtSeen {...promoProps} />
                       </div>
                     </div>
                   </div>

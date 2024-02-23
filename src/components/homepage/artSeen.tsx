@@ -1,9 +1,17 @@
-import { HomepageProps } from "@/pages"
 import { Articles } from "../../../lib/types"
 import PromoSlim from "../promo/slim"
+import { PromoProps } from "."
 
-const ArtSeen = (props: HomepageProps) => {
-  const { artSeen, dateSlug } = props
+const ArtSeen = (props: PromoProps) => {
+  const { dateSlug, currentArticles } = props
+
+  // Get only the articles that are in the `criticspage` section from the currentArticles
+  const artSeen: Array<Articles> = []
+  currentArticles.forEach((article: Articles) => {
+    if (article.sections[0].sections_id.slug === "artseen") {
+      artSeen.push(article)
+    }
+  })
 
   return (
     <>

@@ -119,7 +119,6 @@ const ArticleHead = (props: any) => {
 export const ArticleBody = (props: any) => {
   const { body_type } = props.article
   const { type } = props
-  console.log(body_type)
 
   switch (type ? type : body_type) {
     case `body_text`:

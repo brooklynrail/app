@@ -1,26 +1,21 @@
 import PromoStandard from "../promo/standard"
-import { Articles, Sections } from "../../../lib/types"
+import { Articles } from "../../../lib/types"
+import { PromoProps } from "."
 
-interface FeaturedArticlesProps {
-  currentSections: Array<Sections>
-  dateSlug: string
-}
-const FeaturedArticles = (props: FeaturedArticlesProps) => {
-  const { currentSections, dateSlug } = props
+const FeaturedArticles = (props: PromoProps) => {
+  const { dateSlug, currentArticles } = props
 
-  // Get only the Featured articles from each section in currentSections
+  // Get only the Featured articles from currentArticles
   const featuredArticles: Array<Articles> = []
-  currentSections.forEach((section) => {
-    section.articles.forEach((article) => {
-      if (article.articles_slug.featured) {
-        featuredArticles.push(article.articles_slug)
-      }
-    })
+  currentArticles.forEach((article: Articles) => {
+    if (article.featured) {
+      featuredArticles.push(article)
+    }
   })
 
   return (
     <section className="collection">
-      {featuredArticles.map((article: any, i: number) => {
+      {featuredArticles.map((article: Articles, i: number) => {
         return (
           <PromoStandard
             key={`featured-${i}`}
