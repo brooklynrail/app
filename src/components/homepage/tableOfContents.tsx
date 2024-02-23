@@ -28,7 +28,6 @@ const IssueSection = (props: IssueSectionProps) => {
       </h3>
       <ul>
         {articles.map((article, i) => {
-          console.log("article", article)
           return <PromoSlim key={`toc-article-${i}`} article={article} dateSlug={dateSlug} />
         })}
       </ul>
