@@ -22,7 +22,7 @@ const EditorsMessage = (props: PromoProps) => {
             key={`publishersmessage-${i}`}
             article={article}
             dateSlug={dateSlug}
-            showImage={false}
+            showImage={true}
             showSection={false}
           />
         )
