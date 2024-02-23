@@ -94,6 +94,7 @@ export async function getStaticProps() {
         "title",
         "slug",
         "excerpt",
+        "kicker",
         "promo_thumb.*",
         "promo_banner.*",
         "featured",
