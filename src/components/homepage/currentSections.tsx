@@ -8,6 +8,7 @@ interface CurrentSectionsProps {
 
 const CurrentSections = (props: CurrentSectionsProps) => {
   const { dateSlug, currentSections } = props
+  const sectionsToRemove = ["publishersmessage", "editorsmessage"]
 
   return (
     <>
@@ -19,6 +20,9 @@ const CurrentSections = (props: CurrentSectionsProps) => {
             </a>
           </li>
           {currentSections.map((section: any, i: number) => {
+            if (sectionsToRemove.includes(section.slug)) {
+              return
+            }
             return (
               <li key={`${i}-${dateSlug}/${section.slug}/`}>
                 <a href={`/${dateSlug}/${section.slug}/`} title={`Go to the ${section.name} section`}>
