@@ -38,7 +38,7 @@ export type Articles = {
   promo_banner?: DirectusFiles
   promo_thumb?: DirectusFiles
   sections: any[] | ArticlesSections[]
-  slideshow_image?: string | DirectusFiles | null
+  slideshow_image?: DirectusFiles | null
   slug: string
   sort?: number | null
   status: string

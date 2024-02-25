@@ -9,6 +9,7 @@ export interface HomepageProps {
   dateSlug: string
   currentSections: Array<Sections>
   currentArticles: Array<Articles>
+  currentSlides: Array<Articles>
   ads: Array<Ads>
 }
 
@@ -97,6 +98,7 @@ export async function getStaticProps() {
         "kicker",
         "promo_thumb.*",
         "promo_banner.*",
+        "slideshow_image.*",
         "featured",
         "sort",
         "contributors.contributors_id.first_name",
@@ -122,12 +124,10 @@ export async function getStaticProps() {
     }),
   )
 
-  // console.log("currentSections", currentSections)
-  // console.log("currentIssue", currentIssue)
-  // console.log("inConversation", inConversation)
-  // console.log("allIssues", allIssues)
-  // console.log("ads", ads)
-  // console.log("===============")
+  // Get only the articles from `currentArticles` that have a `slideshow_image`
+  const currentSlides = currentArticles.filter((article) => {
+    return article.slideshow_image
+  })
 
   const currentIssue = currentIssueData[0]
   const dateSlug = `${currentIssue.year}/${currentIssue.month}`
@@ -136,6 +136,7 @@ export async function getStaticProps() {
     props: {
       allIssues,
       dateSlug,
+      currentSlides,
       currentIssue,
       currentSections,
       currentArticles,

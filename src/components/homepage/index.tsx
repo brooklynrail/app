@@ -16,7 +16,7 @@ import Ad970 from "./ad970"
 import SlideShow from "./slideshow"
 import TableOfContents from "./tableOfContents"
 import FeaturedArticles from "./featuredArticles"
-import { Articles, Issues, Sections } from "../../../lib/types"
+import { Articles } from "../../../lib/types"
 
 export interface PromoProps {
   currentArticles: Array<Articles>
@@ -24,12 +24,13 @@ export interface PromoProps {
 }
 
 const Homepage = (props: HomepageProps) => {
-  const { allIssues, currentIssue, currentSections, currentArticles, dateSlug } = props
+  const { allIssues, currentIssue, currentSections, currentArticles, currentSlides, dateSlug } = props
   const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
-  const currentSectionsProps = { currentIssue, currentSections, dateSlug }
-  const tocProps = { currentIssue, currentSections, currentArticles, dateSlug }
+  const currentSectionsProps = { currentSections, dateSlug }
+  const slideshowProps = { currentSlides, dateSlug }
+  const tocProps = { currentSections, currentArticles, dateSlug }
 
   const promoProps = { currentArticles, dateSlug }
   return (
@@ -83,7 +84,7 @@ const Homepage = (props: HomepageProps) => {
                 <div className="grid-col-8">
                   <div className="grid-row">
                     <div className="grid-col-12">
-                      <SlideShow {...props} />
+                      <SlideShow {...slideshowProps} />
                     </div>
                   </div>
 

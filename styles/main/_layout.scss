@@ -344,8 +344,8 @@ iframe {
 ******************************************************/
 
 .bannerblock {
-  height: 8px;
-  width: 100%;
+  @include u-margin-x(1);
+  @include u-circle("105");
   cursor: pointer;
 }
 
@@ -353,28 +353,19 @@ iframe {
   background-color: #e00000;
 }
 
-#banner-next {
-  display: none;
-}
-
-#banner-prev {
-  display: none;
-}
-
 a.banner:link {
-  color: #fff;
+  @include u-text("black");
   text-decoration: none;
+  display: block;
 }
 a.banner:active {
-  color: #fff;
   text-decoration: none;
 }
 a.banner:visited {
-  color: #fff;
   text-decoration: none;
 }
 a.banner:hover {
-  color: #fff;
+  @include u-text("black");
   text-decoration: none;
 }
 

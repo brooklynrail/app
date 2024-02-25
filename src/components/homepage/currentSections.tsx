@@ -1,7 +1,6 @@
-import { Issues, Sections } from "../../../lib/types"
+import { Sections } from "../../../lib/types"
 
 interface CurrentSectionsProps {
-  currentIssue: Issues
   currentSections: Array<Sections>
   dateSlug: string
 }

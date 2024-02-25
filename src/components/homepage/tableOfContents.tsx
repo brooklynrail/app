@@ -2,7 +2,6 @@ import { Articles, ArticlesIssues, Issues, Sections } from "../../../lib/types"
 import PromoSlim from "../promo/slim"
 
 interface TableOfContentsProps {
-  currentIssue: Issues
   currentSections: Array<Sections>
   currentArticles: Array<Articles>
   dateSlug: string
@@ -36,7 +35,7 @@ const IssueSection = (props: IssueSectionProps) => {
 }
 
 const TableOfContents = (props: TableOfContentsProps) => {
-  const { currentSections, currentIssue, currentArticles, dateSlug } = props
+  const { currentSections, currentArticles, dateSlug } = props
 
   return (
     <div className="collection table-of-contents">

@@ -1,94 +1,78 @@
-import { HomepageProps } from "@/pages"
 import { stripHtml } from "string-strip-html"
+import { Articles, DirectusFiles } from "../../../lib/types"
+import Image from "next/image"
+import { useState } from "react"
 
-const SlideImage = (props: { show: boolean }) => {
-  const { show } = props
-  const src = `https://placehold.co/664x282/C57AFF/9D20FF`
-  return <img className="bannerimg" src={src} style={{ display: show ? "none" : "block" }} />
+interface SlideImageProps {
+  slideshow_image: DirectusFiles
 }
 
-const SlideTitle = (props: { show: boolean; permalink: string; title: string }) => {
-  const { show, permalink, title } = props
-  return (
-    <div className="bannertext" itemType="http://schema.org/Article" style={{ display: show ? "none" : "block" }}>
-      <a className="banner" href={permalink}>
-        <div className="bannertitle">
-          <span itemProp="name">{title}</span>
-        </div>
-      </a>
-    </div>
-  )
+const SlideImage = (props: SlideImageProps) => {
+  const { slideshow_image } = props
+  const src = `http://localhost:8055/assets/${slideshow_image.filename_disk}?key=slideshow-image`
+  return <Image className="bannerimg" width={664} height={282} alt={``} src={src} />
 }
 
-const SlideShow = (props: HomepageProps) => {
-  const { dateSlug } = props
-  const permalink = `/${dateSlug}/${`sectionSlug`}/${`slug`}`
-  const title = `Article Title`
+interface SlideshowProps {
+  dateSlug: string
+  currentSlides: Array<Articles>
+}
+
+const SlideShow = (props: SlideshowProps) => {
+  const { dateSlug, currentSlides } = props
+  const slideCount = currentSlides.length
+  const [slidePosition, setSlidePosition] = useState<number>(0)
+
+  const handlePrevSlide = () => {
+    setSlidePosition((prevPosition) => (prevPosition - 1 + slideCount) % slideCount)
+  }
+
+  const handleNextSlide = () => {
+    setSlidePosition((prevPosition) => (prevPosition + 1) % slideCount)
+  }
+
+  const slides = currentSlides.map((article: Articles, i: number) => {
+    const { title, slug, sections } = article
+    const sectionSlug = sections[0].slug
+    const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
+    if (article.slideshow_image === null || article.slideshow_image === undefined) {
+      return
+    }
+
+    if (i != slidePosition) {
+      return
+    }
+
+    return (
+      <>
+        <a key={i} className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
+          <SlideImage slideshow_image={article.slideshow_image} />
+          <h2>{title}</h2>
+        </a>
+      </>
+    )
+  })
+
+  const indicator = currentSlides.map((article: Articles, i: number) => {
+    const show = i === slidePosition ? "show" : ""
+    return <div key={i} className={`bannerblock ${show}`} onClick={() => setSlidePosition(i)}></div>
+  })
 
   return (
-    <>
-      <div id="bannercontainer">
-        <div id="banner">
-          <div id="bannerimg-container">
-            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <SlideImage show={false} />
-            </a>
-            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <SlideImage show={false} />
-            </a>
-            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <SlideImage show={false} />
-            </a>
-            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <SlideImage show={false} />
-            </a>
-            <a className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <SlideImage show={false} />
-            </a>
-          </div>
+    <div id="bannercontainer">
+      <div id="banner">
+        <div id="bannerimg-container">{slides}</div>
+        <div id="banner-indicator">{indicator}</div>
 
-          <div id="banner-prev" className="bannercontrols" style={{ display: "none", overflow: "hidden" }}>
-            <img width="25" src="/images/banner-prev.png" />
-          </div>
-
-          <div id="banner-next" className="bannercontrols" style={{ display: "none", overflow: "hidden" }}>
-            <img width="25" src="/images/banner-next.png" />
-          </div>
-
-          <div id="banner-indicator">
-            <table className="fullbannerblock" width="100%" cellPadding="0" cellSpacing="0">
-              <tbody>
-                <tr>
-                  <td>
-                    <div className="bannerblock"></div>
-                  </td>
-                  <td>
-                    <div className="bannerblock"></div>
-                  </td>
-                  <td>
-                    <div className="bannerblock"></div>
-                  </td>
-                  <td>
-                    <div className="bannerblock"></div>
-                  </td>
-                  <td>
-                    <div className="bannerblock showing"></div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div id="banner-prev" className="bannercontrols" onClick={handlePrevSlide}>
+          <img width="25" src="/images/banner-prev.png" />
         </div>
 
-        <div id="banner-textblock">
-          <SlideTitle show={false} permalink={permalink} title={title} />
-          <SlideTitle show={false} permalink={permalink} title={title} />
-          <SlideTitle show={false} permalink={permalink} title={title} />
-          <SlideTitle show={false} permalink={permalink} title={title} />
-          <SlideTitle show={true} permalink={permalink} title={title} />
+        <div id="banner-next" className="bannercontrols" onClick={handleNextSlide}>
+          <img width="25" src="/images/banner-next.png" />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
