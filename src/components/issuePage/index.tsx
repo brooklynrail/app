@@ -2,7 +2,7 @@ import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
 import Footer from "../footer"
 import ArtSeen from "./artSeen"
-import { HomepageProps } from "@/pages"
+import { IssuePageProps } from "@/pages"
 import CriticsPage from "./criticsPage"
 import EditorsMessage from "./editorsMessage"
 import PublishersMessage from "./publishersMessage"
@@ -17,13 +17,14 @@ import SlideShow from "./slideshow"
 import TableOfContents from "./tableOfContents"
 import FeaturedArticles from "./featuredArticles"
 import { Articles } from "../../../lib/types"
+import Issue from "@/pages/[year]/[month]"
 
 export interface PromoProps {
   currentArticles: Array<Articles>
   dateSlug: string
 }
 
-const Homepage = (props: HomepageProps) => {
+const IssuePage = (props: IssuePageProps) => {
   const { allIssues, currentIssue, currentSections, currentArticles, currentSlides, dateSlug } = props
   const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
@@ -141,4 +142,4 @@ const Homepage = (props: HomepageProps) => {
   )
 }
 
-export default Homepage
+export default IssuePage

@@ -1,25 +1,18 @@
-import directus from "../../lib/directus"
-import { readItems, readItem } from "@directus/sdk"
-import { Ads, Articles, Issues, Sections } from "../../lib/types"
+import directus from "../../../../../lib/directus"
+import { readItems } from "@directus/sdk"
 import IssuePage from "@/components/issuePage"
+import { IssuePageProps } from "@/pages"
 
-export interface IssuePageProps {
-  allIssues: Array<Issues>
-  currentIssue: Issues
-  dateSlug: string
-  currentSections: Array<Sections>
-  currentArticles: Array<Articles>
-  currentSlides: Array<Articles>
-  ads: Array<Ads>
-}
-
-function HomepageController(props: IssuePageProps) {
+function Issue(props: IssuePageProps) {
   return <IssuePage {...props} />
 }
 
-export default HomepageController
+export default Issue
 
-export async function getStaticProps() {
+export async function getStaticProps({ params }: any) {
+  const year = params.year
+  const month = params.month
+
   const allIssues = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "title", "slug"],
@@ -29,29 +22,10 @@ export async function getStaticProps() {
     }),
   )
 
-  // Get the most recent published issue
   const issueData = await directus.request(
     readItems("issues", {
-      fields: [
-        "*.*",
-        "articles.articles_slug.title",
-        "articles.articles_slug.slug",
-        "articles.articles_slug.featured",
-        "articles.articles_slug.excerpt",
-        "articles.articles_slug.sections",
-        "articles.articles_slug.sort",
-        "articles.articles_slug.promo_thumb.*",
-        "articles.articles_slug.promo_banner.*",
-        "articles.articles_slug.contributors.contributors_id.first_name",
-        "articles.articles_slug.contributors.contributors_id.last_name",
-        "articles.articles_slug.contributors.contributors_id.slug",
-        "articles.articles_slug.sections.sections_id.slug",
-        "articles.articles_slug.sections.sections_id.name",
-      ],
-      filter: {
-        _and: [{ status: { _eq: "published" } }],
-      },
-      limit: 1, // Limits the result to only the first (most recent) published issue
+      fields: ["*.*"],
+      filter: { _and: [{ year: { _eq: year } }, { month: { _eq: month } }, { status: { _eq: "published" } }] },
     }),
   )
 
@@ -134,16 +108,39 @@ export async function getStaticProps() {
   return {
     props: {
       allIssues,
-      dateSlug,
-      currentSlides,
       currentIssue,
       currentSections,
       currentArticles,
+      currentSlides,
       ads,
+      dateSlug,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every 10 seconds
     revalidate: 10, // In seconds
   }
+}
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// the path has not been generated.
+export async function getStaticPaths() {
+  const issues = await directus.request(
+    readItems("issues", {
+      fields: ["year", "month"],
+    }),
+  )
+
+  const paths = issues.map((issue) => ({
+    params: {
+      year: String(issue.year),
+      month: String(issue.month).padStart(2, "0"), // Adds leading zero to single-digit months
+    },
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: 'blocking' } will server-render pages
+  // on-demand if the path doesn't exist.
+  return { paths, fallback: "blocking" }
 }

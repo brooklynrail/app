@@ -1,10 +1,10 @@
 import directus from "../../../../lib/directus"
 import { readItems } from "@directus/sdk"
-import { HomepageProps } from "@/pages"
-import Homepage from "@/components/homepage"
+import IssuePage from "@/components/issuePage"
+import { IssuePageProps } from "@/pages"
 
-function Issue(props: HomepageProps) {
-  return <Homepage {...props} />
+function Issue(props: IssuePageProps) {
+  return <IssuePage {...props} />
 }
 
 export default Issue
