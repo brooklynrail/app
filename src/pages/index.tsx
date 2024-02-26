@@ -30,7 +30,7 @@ export async function getStaticProps() {
   )
 
   // Get the most recent published issue
-  const currentIssueData = await directus.request(
+  const issueData = await directus.request(
     readItems("issues", {
       fields: [
         "*.*",
@@ -64,7 +64,7 @@ export async function getStaticProps() {
           {
             articles: {
               articles_slug: {
-                issues: { issues_id: { _eq: currentIssueData[0].id } },
+                issues: { issues_id: { _eq: issueData[0].id } },
               },
             },
           },
@@ -76,8 +76,7 @@ export async function getStaticProps() {
   // Filter the articles within each section to only include those that are in the current issue
   currentSections.map((section: any) => {
     const filteredArticles = section.articles.filter(
-      (article: any) =>
-        article.articles_slug && article.articles_slug.issues[0].issues_id.id === currentIssueData[0].id,
+      (article: any) => article.articles_slug && article.articles_slug.issues[0].issues_id.id === issueData[0].id,
     )
     return { ...section, articles: filteredArticles }
   })
@@ -108,7 +107,7 @@ export async function getStaticProps() {
         "sections.sections_id.name",
       ],
       filter: {
-        _and: [{ issues: { issues_id: { _eq: currentIssueData[0].id } } }],
+        _and: [{ issues: { issues_id: { _eq: issueData[0].id } } }],
       },
       limit: -1,
     }),
@@ -129,7 +128,7 @@ export async function getStaticProps() {
     return article.slideshow_image
   })
 
-  const currentIssue = currentIssueData[0]
+  const currentIssue = issueData[0]
   const dateSlug = `${currentIssue.year}/${currentIssue.month}`
 
   return {

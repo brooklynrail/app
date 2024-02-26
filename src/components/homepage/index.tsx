@@ -31,6 +31,7 @@ const Homepage = (props: HomepageProps) => {
   const currentSectionsProps = { currentSections, dateSlug }
   const slideshowProps = { currentSlides, dateSlug }
   const tocProps = { currentSections, currentArticles, dateSlug }
+  const currentIssueSlug = currentIssue.slug
 
   const promoProps = { currentArticles, dateSlug }
   return (
@@ -64,7 +65,7 @@ const Homepage = (props: HomepageProps) => {
                 <div className="grid-col-2">
                   <div id="issuecolumn">
                     <div className="youarehereissue">
-                      <IssueSelect allIssues={allIssues} />
+                      <IssueSelect allIssues={allIssues} currentIssueSlug={currentIssueSlug} />
                       <CoverImage {...coverImageProps} />
                     </div>
 

@@ -3,24 +3,27 @@ import { useState } from "react"
 
 interface IssueSelectProps {
   allIssues: Array<Issues>
+  currentIssueSlug?: string
 }
 
 const IssueSelect = (props: IssueSelectProps) => {
-  const { allIssues } = props
-  const [selectedIssue, setSelectedIssue] = useState<Issues>(allIssues[0])
+  const { allIssues, currentIssueSlug } = props
+  const [selectedIssueSlug, setSelectedIssueSlug] = useState<string>(
+    currentIssueSlug ? currentIssueSlug : allIssues[0].slug,
+  )
 
   const handleIssueChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value
     const selectedIssue = allIssues.find((issue) => issue.slug === selectedValue)
     if (selectedIssue) {
-      setSelectedIssue(selectedIssue)
-      window.location.href = selectedValue
+      setSelectedIssueSlug(selectedIssue.slug)
+      window.location.href = `/${selectedValue}`
     }
   }
 
-  if (!selectedIssue.slug || !Array.isArray(allIssues)) return null
+  if (!selectedIssueSlug || !Array.isArray(allIssues)) return null
   return (
-    <select id="issue_select" value={selectedIssue.slug} onChange={handleIssueChange}>
+    <select id="issue_select" value={selectedIssueSlug} onChange={handleIssueChange}>
       {allIssues.map((issue) => {
         if (!issue.slug) return <></>
         return (

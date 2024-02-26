@@ -460,15 +460,15 @@ export type Issues = {
   date_created?: string | null
   date_updated?: string | null
   id: number
-  month?: number | null
-  slug?: string | null
+  month: number
+  slug: string
   sort?: number | null
   special_issue?: boolean | null
   status: string
   title?: string | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
-  year?: number | null
+  year: number
 }
 
 export type Pages = {
