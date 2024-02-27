@@ -52,7 +52,7 @@ export function getSectionsByIssueId(issueId: number) {
   return sections
 }
 
-export function getArticlesSection(issueId: number, section: string) {
+export function getArticlesSection(issueId: number, section?: string) {
   const currentArticles = directus.request(
     readItems("articles", {
       fields: [
@@ -76,7 +76,8 @@ export function getArticlesSection(issueId: number, section: string) {
         _and: [
           {
             issues: { issues_id: { _eq: issueId } },
-            sections: { sections_id: { slug: { _eq: section } } },
+            // section pages need to filter by section
+            sections: section ? { sections_id: { slug: { _eq: section } } } : undefined,
           },
         ],
       },
