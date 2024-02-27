@@ -97,22 +97,6 @@ const SectionPage = (props: IssuePageProps) => {
                 </div>
               </div>
             </div>
-            <div className="grid-container grid-container-desktop">
-              <div className="grid-row grid-gap-3">
-                <div className="grid-row">
-                  <div className="grid-col-8 grid-offset-2">
-                    <TableOfContents {...tocProps} />
-                  </div>
-                  <div className="grid-col-8 grid-offset-2">
-                    <div style={{ margin: "25px 0px 25px 30px" }}>
-                      <a href="/subscribe">
-                        <img src="/images/subscribe-footer.png" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </section>
         </div>
       </div>
