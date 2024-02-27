@@ -27,7 +27,7 @@ export type Articles = {
   deck?: string | null
   excerpt: string
   featured: boolean
-  featured_image?: string | DirectusFiles | null
+  featured_image?: DirectusFiles
   header_type?: string | null
   images: any[] | ArticlesFiles[]
   Images: string
