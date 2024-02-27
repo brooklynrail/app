@@ -1,51 +1,32 @@
 import directus from "../../../../../lib/directus"
 import { readItems } from "@directus/sdk"
-import IssuePage from "@/components/issuePage"
 import { IssuePageProps } from "@/pages"
+import {
+  getAds,
+  getArticlesSection,
+  getIssueData,
+  getIssues,
+  getIssuesSelect,
+  getSectionsByIssueId,
+} from "../../../../../lib/utils"
+import SectionPage from "@/components/sectionPage"
 
-function Issue(props: IssuePageProps) {
-  return <IssuePage {...props} />
+function Section(props: IssuePageProps) {
+  return <SectionPage {...props} />
 }
 
-export default Issue
+export default Section
 
 export async function getStaticProps({ params }: any) {
   const year = params.year
   const month = params.month
+  const section = params.section
 
-  const allIssues = await directus.request(
-    readItems("issues", {
-      fields: ["year", "month", "title", "slug"],
-      filter: {
-        _and: [{ status: { _eq: "published" } }],
-      },
-    }),
-  )
+  const allIssues = await getIssuesSelect()
+  const issueData = await getIssueData(year, month)
 
-  const issueData = await directus.request(
-    readItems("issues", {
-      fields: ["*.*"],
-      filter: { _and: [{ year: { _eq: year } }, { month: { _eq: month } }, { status: { _eq: "published" } }] },
-    }),
-  )
-
-  // Get the sections for the current issue
-  const currentSections = await directus.request(
-    readItems("sections", {
-      fields: ["name", "slug", "articles.articles_slug.issues.issues_id.id"],
-      filter: {
-        _and: [
-          {
-            articles: {
-              articles_slug: {
-                issues: { issues_id: { _eq: issueData[0].id } },
-              },
-            },
-          },
-        ],
-      },
-    }),
-  )
+  // Get only the sections that are used in the articles in the current issue
+  const currentSections = await getSectionsByIssueId(issueData[0].id)
 
   // Filter the articles within each section to only include those that are in the current issue
   currentSections.map((section: any) => {
@@ -61,46 +42,10 @@ export async function getStaticProps({ params }: any) {
     section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
   })
 
-  // Get the published Ads
-  const currentArticles = await directus.request(
-    readItems("articles", {
-      fields: [
-        "title",
-        "slug",
-        "excerpt",
-        "kicker",
-        "promo_thumb.*",
-        "promo_banner.*",
-        "slideshow_image.*",
-        "featured",
-        "sort",
-        "contributors.contributors_id.first_name",
-        "contributors.contributors_id.last_name",
-        "contributors.contributors_id.slug",
-        "sections.sections_id.slug",
-        "sections.sections_id.name",
-      ],
-      filter: {
-        _and: [{ issues: { issues_id: { _eq: issueData[0].id } } }],
-      },
-      limit: -1,
-    }),
-  )
+  const currentArticles = await getArticlesSection(issueData[0].id, section)
 
   // Get the published Ads
-  const ads = await directus.request(
-    readItems("ads", {
-      fields: ["*.*"],
-      filter: {
-        _and: [{ status: { _eq: "published" }, start_date: { _gte: "2021-01-01" }, ad_url: { _nnull: true } }],
-      },
-    }),
-  )
-
-  // Get only the articles from `currentArticles` that have a `slideshow_image`
-  const currentSlides = currentArticles.filter((article) => {
-    return article.slideshow_image
-  })
+  const ads = await getAds()
 
   const currentIssue = issueData[0]
   const dateSlug = `${currentIssue.year}/${currentIssue.month}`
@@ -111,7 +56,6 @@ export async function getStaticProps({ params }: any) {
       currentIssue,
       currentSections,
       currentArticles,
-      currentSlides,
       ads,
       dateSlug,
     },
@@ -122,25 +66,32 @@ export async function getStaticProps({ params }: any) {
   }
 }
 
-// This function gets called at build time on server-side.
-// It may be called again, on a serverless function, if
-// the path has not been generated.
 export async function getStaticPaths() {
-  const issues = await directus.request(
-    readItems("issues", {
-      fields: ["year", "month"],
-    }),
-  )
+  try {
+    // Fetch all issues
+    const issues = await getIssues()
 
-  const paths = issues.map((issue) => ({
-    params: {
-      year: String(issue.year),
-      month: String(issue.month).padStart(2, "0"), // Adds leading zero to single-digit months
-    },
-  }))
+    let paths: any = []
 
-  // We'll pre-render only these paths at build time.
-  // { fallback: 'blocking' } will server-render pages
-  // on-demand if the path doesn't exist.
-  return { paths, fallback: "blocking" }
+    // Iterate over each issue to fetch related sections
+    for (const issue of issues) {
+      const sections = await getSectionsByIssueId(issue.id)
+
+      // Map sections to paths
+      const issuePaths = sections.map((section) => ({
+        params: {
+          year: String(issue.year),
+          month: String(issue.month),
+          section: section.slug,
+        },
+      }))
+
+      paths = paths.concat(issuePaths) // Concatenate to the main paths array
+    }
+
+    return { paths, fallback: "blocking" }
+  } catch (error) {
+    console.error("Error fetching paths", error)
+    return { paths: [], fallback: "blocking" }
+  }
 }
