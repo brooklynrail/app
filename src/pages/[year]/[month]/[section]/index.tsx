@@ -1,5 +1,3 @@
-import directus from "../../../../../lib/directus"
-import { readItems } from "@directus/sdk"
 import { IssuePageProps } from "@/pages"
 import {
   getAds,
