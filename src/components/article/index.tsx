@@ -6,6 +6,7 @@ import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
 import BodyText from "./bodyText"
 import BodyCode from "./bodyCode"
+import { DirectusFiles } from "../../../lib/types"
 
 const Contributors = (contributors: any) => {
   return (
@@ -29,14 +30,14 @@ const Contributors = (contributors: any) => {
   )
 }
 
-const FeaturedImage = (props: any) => {
-  const { description, filename_disk } = props
+const FeaturedImage = (props: DirectusFiles) => {
+  const { description, filename_disk, caption } = props
   const src = `http://localhost:8055/assets/${filename_disk}`
-  const desc = description ? <figcaption>{description}</figcaption> : null
+  const desc = caption ? <figcaption>{caption}</figcaption> : null
 
   return (
     <>
-      <Image src={src} width={500} height={500} alt={description} />
+      <Image src={src} width={500} height={500} alt={caption ? caption : ""} />
       {desc}
     </>
   )
