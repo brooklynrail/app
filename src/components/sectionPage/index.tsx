@@ -11,6 +11,7 @@ import Ad970 from "../issuePage/ad970"
 import TableOfContents from "../issuePage/tableOfContents"
 import { Articles } from "../../../lib/types"
 import AdsTile from "../issuePage/adsTile"
+import SectionArticles from "./sectionArticles"
 
 export interface PromoProps {
   currentArticles: Array<Articles>
@@ -83,6 +84,11 @@ const SectionPage = (props: IssuePageProps) => {
                       <header className="section">
                         <h2>Section Name</h2>
                       </header>
+                    </div>
+                  </div>
+                  <div className="grid-row grid-gap-4">
+                    <div className="grid-col-12">
+                      <SectionArticles currentArticles={currentArticles} dateSlug={dateSlug} />
                     </div>
                   </div>
                 </div>
