@@ -1,5 +1,5 @@
 import directus from "../../lib/directus"
-import { readItems, readItem } from "@directus/sdk"
+import { readItems } from "@directus/sdk"
 import { Ads, Articles, Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
 
@@ -9,7 +9,7 @@ export interface IssuePageProps {
   dateSlug: string
   currentSections: Array<Sections>
   currentArticles: Array<Articles>
-  currentSlides: Array<Articles>
+  currentSlides?: Array<Articles>
   ads: Array<Ads>
 }
 

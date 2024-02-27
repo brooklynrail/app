@@ -17,7 +17,6 @@ import SlideShow from "./slideshow"
 import TableOfContents from "./tableOfContents"
 import FeaturedArticles from "./featuredArticles"
 import { Articles } from "../../../lib/types"
-import Issue from "@/pages/[year]/[month]"
 
 export interface PromoProps {
   currentArticles: Array<Articles>
@@ -30,7 +29,6 @@ const IssuePage = (props: IssuePageProps) => {
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
   const currentSectionsProps = { currentSections, dateSlug }
-  const slideshowProps = { currentSlides, dateSlug }
   const tocProps = { currentSections, currentArticles, dateSlug }
   const currentIssueSlug = currentIssue.slug
 
@@ -86,7 +84,7 @@ const IssuePage = (props: IssuePageProps) => {
                 <div className="grid-col-8">
                   <div className="grid-row">
                     <div className="grid-col-12">
-                      <SlideShow {...slideshowProps} />
+                      {currentSlides && <SlideShow currentSlides={currentSlides} dateSlug={dateSlug} />}
                     </div>
                   </div>
 
