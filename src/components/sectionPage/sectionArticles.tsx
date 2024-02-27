@@ -1,5 +1,5 @@
 import { Articles } from "../../../lib/types"
-import { PromoProps } from "."
+import { PromoProps } from "../issuePage"
 import PromoSection from "../promo/section"
 
 const SectionArticles = (props: PromoProps) => {

@@ -8,28 +8,17 @@ import RailPartners from "../issuePage/railPartners"
 import RailProjects from "../issuePage/railProjects"
 import Header from "../issuePage/header"
 import Ad970 from "../issuePage/ad970"
-import TableOfContents from "../issuePage/tableOfContents"
-import { Articles } from "../../../lib/types"
 import AdsTile from "../issuePage/adsTile"
 import SectionArticles from "./sectionArticles"
 
-export interface PromoProps {
-  currentArticles: Array<Articles>
-  dateSlug: string
-}
-
 const SectionPage = (props: IssuePageProps) => {
   const { allIssues, currentIssue, currentSections, currentArticles, currentSlides, dateSlug } = props
-  console.log("props", props)
   const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
   const currentSectionsProps = { currentSections, dateSlug }
-  const slideshowProps = { currentSlides, dateSlug }
-  const tocProps = { currentSections, currentArticles, dateSlug }
   const currentIssueSlug = currentIssue.slug
 
-  const promoProps = { currentArticles, dateSlug }
   return (
     <>
       <div className="paper">
