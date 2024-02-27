@@ -1,7 +1,7 @@
 import { IssuePageProps } from "@/pages"
 import {
   getAds,
-  getArticlesSection,
+  getArticles,
   getIssueData,
   getIssues,
   getIssuesSelect,
@@ -40,7 +40,7 @@ export async function getStaticProps({ params }: any) {
     section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
   })
 
-  const currentArticles = await getArticlesSection(issueData[0].id, section)
+  const currentArticles = await getArticles(issueData[0].id, section)
 
   // Get the published Ads
   const ads = await getAds()

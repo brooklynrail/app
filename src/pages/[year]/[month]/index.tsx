@@ -2,7 +2,7 @@ import directus from "../../../../lib/directus"
 import { readItems } from "@directus/sdk"
 import IssuePage from "@/components/issuePage"
 import { IssuePageProps } from "@/pages"
-import { getAds, getArticlesSection, getIssueData, getIssuesSelect, getSectionsByIssueId } from "../../../../lib/utils"
+import { getAds, getArticles, getIssueData, getIssuesSelect, getSectionsByIssueId } from "../../../../lib/utils"
 
 function Issue(props: IssuePageProps) {
   return <IssuePage {...props} />
@@ -34,7 +34,7 @@ export async function getStaticProps({ params }: any) {
     section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
   })
 
-  const currentArticles = await getArticlesSection(issueData[0].id)
+  const currentArticles = await getArticles(issueData[0].id)
 
   // Get the published Ads
   const ads = await getAds()

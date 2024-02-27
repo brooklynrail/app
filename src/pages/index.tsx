@@ -1,7 +1,6 @@
-import directus from "../../lib/directus"
-import { readItems } from "@directus/sdk"
 import { Ads, Articles, Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
+import { getAds, getArticles, getIssueData, getIssuesSelect, getSectionsByIssueId } from "../../lib/utils"
 
 export interface IssuePageProps {
   allIssues: Array<Issues>
@@ -20,58 +19,13 @@ function HomepageController(props: IssuePageProps) {
 export default HomepageController
 
 export async function getStaticProps() {
-  const allIssues = await directus.request(
-    readItems("issues", {
-      fields: ["year", "month", "title", "slug"],
-      filter: {
-        _and: [{ status: { _eq: "published" } }],
-      },
-    }),
-  )
+  const allIssues = await getIssuesSelect()
 
   // Get the most recent published issue
-  const issueData = await directus.request(
-    readItems("issues", {
-      fields: [
-        "*.*",
-        "articles.articles_slug.title",
-        "articles.articles_slug.slug",
-        "articles.articles_slug.featured",
-        "articles.articles_slug.excerpt",
-        "articles.articles_slug.sections",
-        "articles.articles_slug.sort",
-        "articles.articles_slug.promo_thumb.*",
-        "articles.articles_slug.promo_banner.*",
-        "articles.articles_slug.contributors.contributors_id.first_name",
-        "articles.articles_slug.contributors.contributors_id.last_name",
-        "articles.articles_slug.contributors.contributors_id.slug",
-        "articles.articles_slug.sections.sections_id.slug",
-        "articles.articles_slug.sections.sections_id.name",
-      ],
-      filter: {
-        _and: [{ status: { _eq: "published" } }],
-      },
-      limit: 1, // Limits the result to only the first (most recent) published issue
-    }),
-  )
+  const issueData = await getIssueData()
 
-  // Get the sections for the current issue
-  const currentSections = await directus.request(
-    readItems("sections", {
-      fields: ["name", "slug", "articles.articles_slug.issues.issues_id.id"],
-      filter: {
-        _and: [
-          {
-            articles: {
-              articles_slug: {
-                issues: { issues_id: { _eq: issueData[0].id } },
-              },
-            },
-          },
-        ],
-      },
-    }),
-  )
+  // Get only the sections that are used in the articles in the current issue
+  const currentSections = await getSectionsByIssueId(issueData[0].id)
 
   // Filter the articles within each section to only include those that are in the current issue
   currentSections.map((section: any) => {
@@ -87,41 +41,10 @@ export async function getStaticProps() {
     section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
   })
 
-  // Get the published Ads
-  const currentArticles = await directus.request(
-    readItems("articles", {
-      fields: [
-        "title",
-        "slug",
-        "excerpt",
-        "kicker",
-        "promo_thumb.*",
-        "promo_banner.*",
-        "slideshow_image.*",
-        "featured",
-        "sort",
-        "contributors.contributors_id.first_name",
-        "contributors.contributors_id.last_name",
-        "contributors.contributors_id.slug",
-        "sections.sections_id.slug",
-        "sections.sections_id.name",
-      ],
-      filter: {
-        _and: [{ issues: { issues_id: { _eq: issueData[0].id } } }],
-      },
-      limit: -1,
-    }),
-  )
+  const currentArticles = await getArticles(issueData[0].id)
 
   // Get the published Ads
-  const ads = await directus.request(
-    readItems("ads", {
-      fields: ["*.*"],
-      filter: {
-        _and: [{ status: { _eq: "published" }, start_date: { _gte: "2021-01-01" }, ad_url: { _nnull: true } }],
-      },
-    }),
-  )
+  const ads = await getAds()
 
   // Get only the articles from `currentArticles` that have a `slideshow_image`
   const currentSlides = currentArticles.filter((article) => {

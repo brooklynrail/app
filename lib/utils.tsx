@@ -22,11 +22,17 @@ export async function getIssuesSelect() {
   return allIssues
 }
 
-export async function getIssueData(year: number, month: number) {
+export async function getIssueData(year?: number, month?: number) {
   const issueData = await directus.request(
     readItems("issues", {
       fields: ["*.*"],
-      filter: { _and: [{ year: { _eq: year } }, { month: { _eq: month } }, { status: { _eq: "published" } }] },
+      filter: {
+        _and: [
+          { year: year && month ? { _eq: year } : undefined },
+          { month: month && year ? { _eq: month } : undefined },
+          { status: { _eq: "published" } },
+        ],
+      },
     }),
   )
   return issueData
@@ -52,7 +58,7 @@ export function getSectionsByIssueId(issueId: number) {
   return sections
 }
 
-export function getArticlesSection(issueId: number, section?: string) {
+export function getArticles(issueId: number, section?: string) {
   const currentArticles = directus.request(
     readItems("articles", {
       fields: [
