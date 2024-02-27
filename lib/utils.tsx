@@ -63,6 +63,7 @@ export function getArticlesSection(issueId: number, section: string) {
         "promo_thumb.*",
         "promo_banner.*",
         "slideshow_image.*",
+        "featured_image.*",
         "featured",
         "sort",
         "contributors.contributors_id.first_name",
