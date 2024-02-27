@@ -1,6 +1,6 @@
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
-import { PromoProps, PromoSection } from "./standard"
+import { PromoProps, PromoSectionName } from "./standard"
 import { DirectusFiles } from "../../../lib/types"
 import Image from "next/image"
 
@@ -30,7 +30,7 @@ const PromoThumb = (props: PromoProps) => {
   return (
     <>
       <div className="promo promo-thumb" itemType="http://schema.org/Article">
-        {showSection && <PromoSection {...props} />}
+        {showSection && <PromoSectionName {...props} />}
         {showImage && promo_thumb && (
           <div className={`media media-thumb`}>
             <a href={permalink} title={`Visit ${stripHtml(title).result}`}>

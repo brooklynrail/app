@@ -10,7 +10,7 @@ export interface PromoProps {
   showSection: boolean
 }
 
-export const PromoSection = (props: PromoProps) => {
+export const PromoSectionName = (props: PromoProps) => {
   const { dateSlug, article } = props
   const { sections, kicker } = article
   const sectionSlug = sections[0].sections_id.slug
@@ -54,7 +54,7 @@ const PromoStandard = (props: PromoProps) => {
   return (
     <>
       <div className="promo promo-standard" itemType="http://schema.org/Article">
-        {showSection && <PromoSection {...props} />}
+        {showSection && <PromoSectionName {...props} />}
         {showImage && promo_banner && (
           <div className={`media media-thumb`}>
             <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
