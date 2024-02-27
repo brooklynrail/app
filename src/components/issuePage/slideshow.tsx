@@ -44,12 +44,10 @@ const SlideShow = (props: SlideshowProps) => {
     }
 
     return (
-      <>
-        <a key={i} className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
-          <SlideImage slideshow_image={article.slideshow_image} />
-          <h2>{title}</h2>
-        </a>
-      </>
+      <a key={i} className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
+        <SlideImage slideshow_image={article.slideshow_image} />
+        <h2>{title}</h2>
+      </a>
     )
   })
 
