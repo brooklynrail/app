@@ -5,7 +5,7 @@ export type Ads = {
   date_updated?: string | null
   end_date: string
   id: number
-  image?: string | DirectusFiles | null
+  image?: DirectusFiles | null
   image_mobile?: string | DirectusFiles | null
   old_id?: number | null
   sort?: number | null
