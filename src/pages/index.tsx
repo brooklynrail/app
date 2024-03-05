@@ -25,10 +25,10 @@ export async function getStaticProps() {
   const issueData = await getIssueData()
 
   // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(issueData[0].id)
+  const allSections = await getSectionsByIssueId(issueData[0].id)
 
   // Filter the articles within each section to only include those that are in the current issue
-  currentSections.map((section: any) => {
+  const currentSections = allSections.map((section: any) => {
     const filteredArticles = section.articles.filter(
       (article: any) => article.articles_slug && article.articles_slug.issues[0].issues_id.id === issueData[0].id,
     )
