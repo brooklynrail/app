@@ -7,23 +7,48 @@ interface Ad970Props {
 
 const Ad970 = (props: Ad970Props) => {
   const { ads } = props
-  const src = `https://placehold.co/1008x101/C57AFF/9D20FF`
-  const src_mobile = `https://placehold.co/1008x101/C57AFF/9D20FF`
-  const alt = `alt text for ad970`
-  const href = `https://example.com`
+
+  const filteredAds = ads.filter((ad) => ad.ad_type === "banner")
+  const banners = filteredAds.map((ad: Ads, i: number) => {
+    if (!ad.banner_image || !ad.banner_image_mobile || !ad.ad_url) {
+      return
+    }
+    const alt = ad.title
+    const desktopImage = ad.banner_image
+    const srcDesktop = `http://localhost:8055/assets/${desktopImage.filename_disk}`
+    const desktopSize = 1008
+    const dwidth = desktopImage.width ?? 0
+    const dheight = desktopImage.height ?? 0
+    const desktopWidth = dwidth > desktopSize ? desktopSize : dwidth
+    const desktopHeight = dwidth > desktopSize ? (desktopSize * dheight) / dwidth : (dheight * desktopWidth) / dwidth
+
+    const mobileImage = ad.banner_image_mobile
+    const srcMobile = `http://localhost:8055/assets/${mobileImage.filename_disk}`
+    const mwidth = mobileImage.width ?? 0
+    const mheight = mobileImage.height ?? 0
+    const mobileSize = 640
+    const mobileWidth = mwidth > mobileSize ? mobileSize : mwidth
+    const mobileHeight = mwidth > mobileSize ? (mobileSize * mheight) / mwidth : (mheight * mobileWidth) / mwidth
+
+    if (!filteredAds) {
+      return <></>
+    }
+
+    return (
+      <div key={`adtile-${i}`} className="ad">
+        <a href={ad.ad_url} target="_blank">
+          <Image className="image_desktop" src={srcDesktop} width={desktopWidth} height={desktopHeight} alt={alt} />
+          <Image className="image_mobile" src={srcMobile} width={mobileWidth} height={mobileHeight} alt={alt} />
+        </a>
+      </div>
+    )
+  })
 
   return (
     <>
       <div className="ad ad_970 visible">
         <p>Advertisement</p>
-        <div>
-          <div className="ad">
-            <a href={href} target="_blank">
-              <img className="image_desktop" alt={alt} src={src} />
-              <img className="image_mobile" alt={alt} src={src_mobile} />
-            </a>
-          </div>
-        </div>
+        <div>{banners}</div>
       </div>
     </>
   )

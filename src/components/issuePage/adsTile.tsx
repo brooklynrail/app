@@ -1,4 +1,4 @@
-import { Ads, DirectusFiles } from "../../../lib/types"
+import { Ads } from "../../../lib/types"
 import Image from "next/image"
 
 interface AdsTileProps {
@@ -11,13 +11,13 @@ const AdsTile = (props: AdsTileProps) => {
   // limit ads to any 5 from the array
   const limitedAds = ads.slice(0, 5)
   const tiles = limitedAds.map((ad: Ads, i: number) => {
-    if (!ad.image || !ad.ad_url) {
+    if (!ad.tile_image || !ad.ad_url) {
       return
     }
-    const adImage: DirectusFiles = ad.image
+    const adImage = ad.tile_image
     const width = adImage.width ?? 0
     const height = adImage.height ?? 0
-    const src = `http://localhost:8055/assets/${ad.image.filename_disk}`
+    const src = `http://localhost:8055/assets/${ad.tile_image.filename_disk}`
     const size = 147
     const scaledWidth = width > size ? size : width
     const scaledHeight = width > size ? (size * height) / width : (height * scaledWidth) / width
