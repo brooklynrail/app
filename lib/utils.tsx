@@ -1,5 +1,7 @@
 import directus from "./directus"
 import { readItems } from "@directus/sdk"
+import { DirectusFiles } from "./types"
+import { stripHtml } from "string-strip-html"
 
 export async function getIssues() {
   const issues = await directus.request(
@@ -33,22 +35,22 @@ export async function getIssueData(year?: number, month?: number) {
         "month",
         "status",
         {
-          cover_1: ["caption", "filename_disk", "width", "height"],
+          cover_1: ["caption", "filename_disk", "width", "height", "type"],
         },
         {
-          cover_2: ["caption", "filename_disk", "width", "height"],
+          cover_2: ["caption", "filename_disk", "width", "height", "type"],
         },
         {
-          cover_3: ["caption", "filename_disk", "width", "height"],
+          cover_3: ["caption", "filename_disk", "width", "height", "type"],
         },
         {
-          cover_4: ["caption", "filename_disk", "width", "height"],
+          cover_4: ["caption", "filename_disk", "width", "height", "type"],
         },
         {
-          cover_5: ["caption", "filename_disk", "width", "height"],
+          cover_5: ["caption", "filename_disk", "width", "height", "type"],
         },
         {
-          cover_6: ["caption", "filename_disk", "width", "height"],
+          cover_6: ["caption", "filename_disk", "width", "height", "type"],
         },
       ],
       filter: {
@@ -187,4 +189,32 @@ export function getAds() {
     }),
   )
   return ads
+}
+
+interface OGImageProps {
+  ogimage?: DirectusFiles
+  title: string
+}
+
+export function getOGImage(props: OGImageProps) {
+  const { ogimage, title } = props
+  return ogimage !== undefined
+    ? [
+        {
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/${ogimage.filename_disk}`,
+          width: ogimage.width,
+          height: ogimage.height,
+          alt: ogimage.caption ? stripHtml(ogimage.caption).result : `${stripHtml(title).result} - The Brooklyn Rail`,
+          type: ogimage.type ? ogimage.type : "image/jpeg",
+        },
+      ]
+    : [
+        {
+          url: "https://brooklynrail.org/material/img/brooklynrail-card-3.png",
+          width: 2000,
+          height: 1200,
+          alt: "The Brooklyn Rail",
+          type: "image/png",
+        },
+      ]
 }
