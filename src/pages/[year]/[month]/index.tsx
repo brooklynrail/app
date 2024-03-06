@@ -15,8 +15,8 @@ import { stripHtml } from "string-strip-html"
 
 function Issue(props: IssuePageProps) {
   const { title, cover_1, issue_number, slug } = props.currentIssue
-  const ogtitle = `${stripHtml(title).result} — The Brooklyn Rail`
-  const ogdescription = `The #${issue_number} issue of The Brooklyn Rail`
+  const ogtitle = `${stripHtml(title).result} | The Brooklyn Rail`
+  const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { image: cover_1, title }
   const ogimages = getOGImage(ogimageprops)
 

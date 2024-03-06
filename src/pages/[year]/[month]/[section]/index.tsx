@@ -5,17 +5,46 @@ import {
   getIssueData,
   getIssues,
   getIssuesSelect,
+  getOGImage,
   getSectionsByIssueId,
 } from "../../../../../lib/utils"
 import SectionPage from "@/components/sectionPage"
+import { NextSeo } from "next-seo"
+import { stripHtml } from "string-strip-html"
+import { Sections } from "../../../../../lib/types"
 
-function Section(props: IssuePageProps) {
-  return <SectionPage {...props} />
+interface SectionProps {
+  currentSection: Sections
+}
+function Section(props: IssuePageProps & SectionProps) {
+  const { name } = props.currentSection
+  const { title, cover_1, issue_number, slug } = props.currentIssue
+  const ogtitle = `${name} – ${stripHtml(title).result} | The Brooklyn Rail`
+  const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
+  const ogimageprops = { image: cover_1, title }
+  const ogimages = getOGImage(ogimageprops)
+  return (
+    <>
+      <NextSeo
+        title={ogtitle}
+        description={ogdescription}
+        canonical={`${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/${props.currentSection.slug}/`}
+        openGraph={{
+          title: ogtitle,
+          description: ogdescription,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/${props.currentSection.slug}/`,
+          images: ogimages,
+        }}
+      />
+      <SectionPage {...props} />
+    </>
+  )
 }
 
 export default Section
 
 export async function getStaticProps({ params }: any) {
+  console.log("Section params", params)
   const year = params.year
   const month = params.month
   const section = params.section
@@ -41,6 +70,7 @@ export async function getStaticProps({ params }: any) {
   })
 
   const currentArticles = await getArticles(issueData[0].id, section)
+  const currentSection = currentSections.find((s: any) => s.slug === section)
 
   // Get the published Ads
   const ads = await getAds()
@@ -53,6 +83,7 @@ export async function getStaticProps({ params }: any) {
       allIssues,
       currentIssue,
       currentSections,
+      currentSection,
       currentArticles,
       ads,
       dateSlug,
