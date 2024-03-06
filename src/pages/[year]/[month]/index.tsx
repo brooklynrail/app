@@ -2,10 +2,40 @@ import directus from "../../../../lib/directus"
 import { readItems } from "@directus/sdk"
 import IssuePage from "@/components/issuePage"
 import { IssuePageProps } from "@/pages"
-import { getAds, getArticles, getIssueData, getIssuesSelect, getSectionsByIssueId } from "../../../../lib/utils"
+import {
+  getAds,
+  getArticles,
+  getIssueData,
+  getIssuesSelect,
+  getOGImage,
+  getSectionsByIssueId,
+} from "../../../../lib/utils"
+import { NextSeo } from "next-seo"
+import { stripHtml } from "string-strip-html"
 
 function Issue(props: IssuePageProps) {
-  return <IssuePage {...props} />
+  const { title, cover_1, issue_number, slug } = props.currentIssue
+  const ogtitle = `${stripHtml(title).result} — The Brooklyn Rail`
+  const ogdescription = `The #${issue_number} issue of The Brooklyn Rail`
+  const ogimageprops = { image: cover_1, title }
+  const ogimages = getOGImage(ogimageprops)
+
+  return (
+    <>
+      <NextSeo
+        title={ogtitle}
+        description={ogdescription}
+        canonical={`${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/`}
+        openGraph={{
+          title: ogtitle,
+          description: ogdescription,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/`,
+          images: ogimages,
+        }}
+      />
+      <IssuePage {...props} />
+    </>
+  )
 }
 
 export default Issue
