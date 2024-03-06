@@ -6,7 +6,7 @@ import Image from "next/image"
 
 const Thumb = (props: DirectusFiles) => {
   const { filename_disk } = props
-  const src = `http://localhost:8055/assets/${filename_disk}?key=promo-thumb`
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=promo-thumb`
   return <Image src={src} width={60} height={60} alt={"tktk"} />
 }
 

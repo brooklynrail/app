@@ -9,7 +9,7 @@ interface SlideImageProps {
 
 const SlideImage = (props: SlideImageProps) => {
   const { slideshow_image } = props
-  const src = `http://localhost:8055/assets/${slideshow_image.filename_disk}?key=slideshow-image`
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${slideshow_image.filename_disk}?key=slideshow-image`
   return <Image className="bannerimg" width={664} height={282} alt={``} src={src} />
 }
 

@@ -32,7 +32,7 @@ const Contributors = (contributors: any) => {
 
 const FeaturedImage = (props: DirectusFiles) => {
   const { description, filename_disk, caption } = props
-  const src = `http://localhost:8055/assets/${filename_disk}`
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const desc = caption ? <figcaption>{caption}</figcaption> : null
 
   return (

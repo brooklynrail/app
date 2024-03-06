@@ -17,7 +17,7 @@ const AdsTile = (props: AdsTileProps) => {
     const adImage = ad.tile_image
     const width = adImage.width ?? 0
     const height = adImage.height ?? 0
-    const src = `http://localhost:8055/assets/${ad.tile_image.filename_disk}`
+    const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${ad.tile_image.filename_disk}`
     const size = 147
     const scaledWidth = width > size ? size : width
     const scaledHeight = width > size ? (size * height) / width : (height * scaledWidth) / width

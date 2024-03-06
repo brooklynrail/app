@@ -36,7 +36,7 @@ export const PromoSectionName = (props: PromoProps) => {
 
 const PromoBanner = (props: DirectusFiles) => {
   const { filename_disk } = props
-  const src = `http://localhost:8055/assets/${filename_disk}?key=promo-banner`
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=promo-banner`
   return <Image src={src} width={316} height={96} alt={"tktk"} />
 }
 

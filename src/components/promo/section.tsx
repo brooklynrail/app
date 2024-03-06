@@ -6,7 +6,7 @@ import { PromoProps, PromoSectionName } from "./standard"
 
 const PromoImage = (props: DirectusFiles) => {
   const { filename_disk } = props
-  const src = `http://localhost:8055/assets/${filename_disk}?key=promo-section`
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=promo-section`
   return <Image src={src} width={200} height={260} alt={"tktk"} />
 }
 

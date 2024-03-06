@@ -9,7 +9,7 @@ const RailImage = (props: any) => {
   if (!image) {
     return <></>
   }
-  const src = `http://localhost:8055/assets/${image.directus_files_id.id}`
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${image.directus_files_id.id}`
 
   const mediaType = `width-${type}`
   const caption = image.directus_files_id.caption ? (

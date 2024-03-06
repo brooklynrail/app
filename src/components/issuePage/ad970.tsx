@@ -15,7 +15,7 @@ const Ad970 = (props: Ad970Props) => {
     }
     const alt = ad.title
     const desktopImage = ad.banner_image
-    const srcDesktop = `http://localhost:8055/assets/${desktopImage.filename_disk}`
+    const srcDesktop = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${desktopImage.filename_disk}`
     const desktopSize = 1008
     const dwidth = desktopImage.width ?? 0
     const dheight = desktopImage.height ?? 0
@@ -23,7 +23,7 @@ const Ad970 = (props: Ad970Props) => {
     const desktopHeight = dwidth > desktopSize ? (desktopSize * dheight) / dwidth : (dheight * desktopWidth) / dwidth
 
     const mobileImage = ad.banner_image_mobile
-    const srcMobile = `http://localhost:8055/assets/${mobileImage.filename_disk}`
+    const srcMobile = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${mobileImage.filename_disk}`
     const mwidth = mobileImage.width ?? 0
     const mheight = mobileImage.height ?? 0
     const mobileSize = 640

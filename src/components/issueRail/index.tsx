@@ -99,7 +99,7 @@ export const CoverImage = (props: CoverImagesProps) => {
     }
     const width = (cover_1.width * 200) / cover_1.height
     const height = (cover_1.height * width) / cover_1.width
-    const src = `http://localhost:8055/assets/${cover_1.filename_disk}`
+    const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover_1.filename_disk}`
     const alt = cover_1.description ? cover_1.description.replace(/(<([^>]+)>)/gi, "") : "The Brooklyn Rail"
 
     return (
