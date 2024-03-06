@@ -452,12 +452,12 @@ export type DirectusWebhooks = {
 
 export type Issues = {
   articles: Articles[] | ArticlesIssues[]
-  cover_1?: string | DirectusFiles | null
-  cover_2?: string | DirectusFiles | null
-  cover_3?: string | DirectusFiles | null
-  cover_4?: string | DirectusFiles | null
-  cover_5?: string | DirectusFiles | null
-  cover_6?: string | DirectusFiles | null
+  cover_1?: DirectusFiles
+  cover_2?: DirectusFiles
+  cover_3?: DirectusFiles
+  cover_4?: DirectusFiles
+  cover_5?: DirectusFiles
+  cover_6?: DirectusFiles
   date_created?: string | null
   date_updated?: string | null
   id: number
@@ -466,10 +466,11 @@ export type Issues = {
   sort?: number | null
   special_issue?: boolean | null
   status: string
-  title?: string | null
+  title: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
   year: number
+  issue_number: number
 }
 
 export type Pages = {
