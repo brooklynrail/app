@@ -1,9 +1,58 @@
 import directus from "../../../../../../lib/directus"
-import { readItems, readItem } from "@directus/sdk"
+import { readItems } from "@directus/sdk"
 import Article from "../../../../../components/article"
+import { NextSeo } from "next-seo"
+import { stripHtml } from "string-strip-html"
+import { getArticle, getArticles, getIssueData, getOGImage } from "../../../../../../lib/utils"
+import { Articles, ArticlesContributors, Contributors, Issues, Sections } from "../../../../../../lib/types"
 
-function ArticleController(props: any) {
-  return <Article {...props} />
+export interface ArticleProps {
+  article: Articles
+  currentIssue: Issues
+  currentArticles: Array<Articles>
+  sections: Array<Sections>
+}
+
+interface SectionProps {
+  currentSection: Sections
+}
+
+function ArticleController(props: ArticleProps & SectionProps) {
+  const { article, currentIssue } = props
+  const { title, excerpt, slug, featured_image, date_created, date_updated, contributors } = article
+  const section = props.article.sections[0].sections_id
+  const ogtitle = `${stripHtml(title).result} | The Brooklyn Rail`
+  const ogdescription = `${stripHtml(excerpt).result}`
+  const ogimageprops = { ogimage: featured_image, title }
+  const ogimages = getOGImage(ogimageprops)
+
+  const authors = contributors.map((contributor: any) => {
+    return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${contributor.contributors_id.slug}`
+  })
+
+  return (
+    <>
+      <NextSeo
+        title={ogtitle}
+        description={ogdescription}
+        canonical={`${process.env.NEXT_PUBLIC_BASE_URL}/${currentIssue.slug}/${section.slug}/${slug}/`}
+        openGraph={{
+          title: ogtitle,
+          description: ogdescription,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/${currentIssue.slug}/${section.slug}/${slug}/`,
+          images: ogimages,
+          type: `article`,
+          article: {
+            publishedTime: date_created,
+            modifiedTime: date_updated,
+            section: section.name,
+            authors: authors,
+          },
+        }}
+      />
+      <Article {...props} />
+    </>
+  )
 }
 
 export default ArticleController
@@ -12,58 +61,31 @@ export default ArticleController
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps({ params }: any) {
-  const slug: string | number = params.slug
+  const slug: string = params.slug
   const year: number = params.year
   const month: number = params.month
+  const section: string = params.section
 
   const sectionsData = await directus.request(
     readItems("sections", {
       fields: ["name", "id", "slug"],
     }),
   )
-
-  const issuesData = await directus.request(
-    readItems("issues", {
-      fields: [
-        "*.*", // Selects all fields from the issues
-        "images.thumbnails.*", // Selects all thumbnail images
-        "articles.articles_slug.title", // Selects the title of each article
-        "articles.articles_slug.slug", // Selects the slug of each article
-        "articles.articles_slug.contributors.contributors_id.first_name",
-        "articles.articles_slug.contributors.contributors_id.last_name",
-        "articles.articles_slug.sections.sections_id.name", // Selects the section for each article
-        "articles.articles_slug.sections.sections_id.id", // Selects the section Id
-        "articles.articles_slug.sections.sections_id.slug", // Selects the section slug
-      ],
-      filter: {
-        _and: [{ year: { _eq: year } }, { month: { _eq: month } }],
-      },
-    }),
-  )
-
-  const articleData = await directus.request(
-    readItem("articles", slug, {
-      fields: [
-        "*.*",
-        "images.directus_files_id.*",
-        "contributors.contributors_id.first_name",
-        "contributors.contributors_id.last_name",
-        "contributors.contributors_id.slug",
-        "contributors.contributors_id.bio",
-        "sections.sections_id.slug", // Selects the section Id
-        "sections.sections_id.name", // Selects the section Id
-      ],
-    }),
-  )
+  const issueData = await getIssueData(year, month)
+  const articleData = await getArticle(slug)
+  const currentArticles = await getArticles(issueData[0].id)
 
   const article = articleData
-  const issues = issuesData
+  const currentIssue = issueData[0]
   const sections = sectionsData
+  const currentSection = section
 
   return {
     props: {
       article,
-      issues,
+      currentIssue,
+      currentArticles,
+      currentSection,
       sections,
     },
     // Next.js will attempt to re-generate the page:
@@ -79,15 +101,31 @@ export async function getStaticProps({ params }: any) {
 export async function getStaticPaths() {
   const articles = await directus.request(
     readItems("articles", {
-      fields: ["slug", "sections.sections_id.slug", "issues.issues_id.year", "issues.issues_id.month"],
+      fields: [
+        "slug",
+        {
+          sections: [
+            {
+              sections_id: ["slug"],
+            },
+          ],
+        },
+        {
+          issues: [
+            {
+              issues_id: ["year", "month"],
+            },
+          ],
+        },
+      ],
     }),
   )
 
   const paths = articles.map((article) => ({
     params: {
-      year: String(article.issues[0].issues_id.year),
-      month: String(article.issues[0].issues_id.month),
-      section: String(article.sections[0].sections_id.slug),
+      year: String(article.issues && article.issues[0].issues_id.year),
+      month: String(article.issues && article.issues[0].issues_id.month),
+      section: String(article.sections && article.sections[0].sections_id.slug),
       slug: article.slug,
     },
   }))
