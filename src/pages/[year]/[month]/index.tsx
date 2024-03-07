@@ -31,6 +31,7 @@ function Issue(props: IssuePageProps) {
           description: ogdescription,
           url: `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/`,
           images: ogimages,
+          type: `website`,
         }}
       />
       <IssuePage {...props} />

@@ -34,6 +34,7 @@ function Section(props: IssuePageProps & SectionProps) {
           description: ogdescription,
           url: `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/${props.currentSection.slug}/`,
           images: ogimages,
+          type: `website`,
         }}
       />
       <SectionPage {...props} />
