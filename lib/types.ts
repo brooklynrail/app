@@ -22,7 +22,7 @@ export type Articles = {
   body_code?: string | null
   body_text?: string | null
   body_type?: string | null
-  contributors: any[] | ArticlesContributors[]
+  contributors: Contributors[]
   date_created?: string | null
   date_updated?: string | null
   deck?: string | null
