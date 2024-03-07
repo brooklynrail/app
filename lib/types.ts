@@ -23,8 +23,8 @@ export type Articles = {
   body_text?: string | null
   body_type?: string | null
   contributors: Contributors[]
-  date_created?: string | null
-  date_updated?: string | null
+  date_created: string
+  date_updated: string
   deck?: string | null
   excerpt: string
   featured: boolean
