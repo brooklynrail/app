@@ -1,6 +1,7 @@
 import { Ads, Articles, Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
 import { getAds, getArticles, getIssueData, getIssuesSelect, getSectionsByIssueId } from "../../lib/utils"
+import { NextSeo } from "next-seo"
 
 export interface IssuePageProps {
   allIssues: Array<Issues>
@@ -13,7 +14,12 @@ export interface IssuePageProps {
 }
 
 function HomepageController(props: IssuePageProps) {
-  return <IssuePage {...props} />
+  return (
+    <>
+      <NextSeo />
+      <IssuePage {...props} />
+    </>
+  )
 }
 
 export default HomepageController
