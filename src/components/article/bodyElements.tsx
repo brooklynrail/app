@@ -69,7 +69,7 @@ const replaceImageShortcodes = (htmlString: string, imageData: Array<any>): Arra
 }
 
 const BodyElements = (props: any) => {
-  const { body, images, id } = props
+  const { body, images } = props
 
   const imageData = images && images.map((image: any) => ({ ...image.directus_files_id }))
 
