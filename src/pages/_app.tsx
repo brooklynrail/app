@@ -13,7 +13,7 @@ function RailApp({ Component, pageProps }: AppProps) {
           locale: "en_IE",
           description:
             "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
-          url: "https://brooklynrail.org/",
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           siteName: "The Brooklyn Rail",
         }}
         twitter={{
