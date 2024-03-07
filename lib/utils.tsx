@@ -183,6 +183,8 @@ export function getArticle(slug: string) {
         "header_type",
         "in_print",
         "status",
+        "date_created",
+        "date_updated",
         {
           featured_image: ["caption", "filename_disk", "width", "height", "type"],
         },
