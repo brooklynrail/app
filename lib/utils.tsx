@@ -1,5 +1,5 @@
 import directus from "./directus"
-import { readItems } from "@directus/sdk"
+import { readItem, readItems } from "@directus/sdk"
 import { DirectusFiles } from "./types"
 import { stripHtml } from "string-strip-html"
 
@@ -51,6 +51,23 @@ export async function getIssueData(year?: number, month?: number) {
         },
         {
           cover_6: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          articles: [
+            {
+              articles_slug: [
+                "slug",
+                "title",
+                {
+                  contributors: ["contributors_id.first_name", "contributors_id.last_name"],
+                },
+                {
+                  sections: ["sections_id.slug"],
+                },
+                "sort",
+              ],
+            },
+          ],
         },
       ],
       filter: {
@@ -128,7 +145,7 @@ export function getArticles(issueId: number, section?: string) {
         {
           sections: [
             {
-              sections_id: ["slug", "name"],
+              sections_id: ["slug", "name", "id"],
             },
           ],
         },
@@ -146,6 +163,61 @@ export function getArticles(issueId: number, section?: string) {
     }),
   )
   return currentArticles
+}
+
+export function getArticle(slug: string) {
+  const currentArticle = directus.request(
+    readItem("articles", slug, {
+      fields: [
+        "slug",
+        "title",
+        "deck",
+        "excerpt",
+        "kicker",
+        "featured",
+        "sort",
+        "body",
+        "body_code",
+        "body_text",
+        "body_type",
+        "header_type",
+        "in_print",
+        "status",
+        {
+          featured_image: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          contributors: [
+            {
+              contributors_id: ["first_name", "last_name", "slug", "bio"],
+            },
+          ],
+        },
+        {
+          issues: [
+            {
+              issues_id: ["title", "slug"],
+            },
+          ],
+        },
+        {
+          sections: [
+            {
+              sections_id: ["slug", "name"],
+            },
+          ],
+        },
+        {
+          images: [
+            {
+              directus_files_id: ["id", "caption", "filename_disk", "width", "height", "type", "shortcode_key"],
+            },
+          ],
+        },
+      ],
+    }),
+  )
+  return currentArticle
 }
 
 export function getAds() {
