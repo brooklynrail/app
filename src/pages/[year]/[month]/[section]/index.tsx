@@ -21,7 +21,7 @@ function Section(props: IssuePageProps & SectionProps) {
   const { title, cover_1, issue_number, slug } = props.currentIssue
   const ogtitle = `${name} – ${stripHtml(title).result} | The Brooklyn Rail`
   const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
-  const ogimageprops = { image: cover_1, title }
+  const ogimageprops = { ogimage: cover_1, title }
   const ogimages = getOGImage(ogimageprops)
   return (
     <>
@@ -44,7 +44,6 @@ function Section(props: IssuePageProps & SectionProps) {
 export default Section
 
 export async function getStaticProps({ params }: any) {
-  console.log("Section params", params)
   const year = params.year
   const month = params.month
   const section = params.section

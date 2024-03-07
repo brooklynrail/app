@@ -98,7 +98,6 @@ const ArticleHead = (props: any) => {
 }
 
 export const ArticleBody = (props: ArticleProps) => {
-  console.log("ArticleBody props", props)
   const { body_type } = props.article
 
   switch (body_type) {
