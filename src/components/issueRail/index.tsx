@@ -2,6 +2,8 @@ import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { usePopup } from "./popupProvider"
+import { Articles, ArticlesIssues, ArticlesSections, DirectusFiles, Issues, Sections } from "../../../lib/types"
+import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 
 const Bylines = ({ contributors }: any) => {
   return (
@@ -30,10 +32,11 @@ const Bylines = ({ contributors }: any) => {
   )
 }
 
-const ArticleList = ({ articles, sections }: any) => {
+const ArticleList = (props: ArticleProps) => {
+  const { currentArticles, sections, currentIssue } = props
   // Create a map where each key is a section ID and each value is an array of articles for that section
-  const articlesBySection = articles.reduce((acc: any, article: any) => {
-    const sectionId = article.articles_slug.sections[0].sections_id.id
+  const articlesBySection = currentArticles.reduce((acc: any, article: Articles) => {
+    const sectionId = article.sections[0].sections_id.id
     if (!acc[sectionId]) {
       acc[sectionId] = []
     }
@@ -43,12 +46,14 @@ const ArticleList = ({ articles, sections }: any) => {
 
   return (
     <>
-      {sections.map((section: any, i: number) => {
+      {sections.map((section: Sections, i: number) => {
         // Check if there are articles for this section
         const sectionArticles = articlesBySection[section.id]
         if (!sectionArticles || sectionArticles.length === 0) {
           return null // Skip rendering this section
         }
+
+        const permalink = `/${currentIssue.year}/${currentIssue.month}/${section.slug}`
 
         return (
           <div key={i}>
@@ -57,11 +62,11 @@ const ArticleList = ({ articles, sections }: any) => {
               {sectionArticles.map((article: any, j: number) => (
                 <li key={j}>
                   <h4>
-                    <Link href={`/2023/12/${section.slug}/${article.articles_slug.slug}`}>
-                      <span dangerouslySetInnerHTML={{ __html: article.articles_slug.title }} />
+                    <Link href={`${permalink}/${article.slug}/`}>
+                      <span dangerouslySetInnerHTML={{ __html: article.title }} />
                     </Link>
                   </h4>
-                  <Bylines contributors={article.articles_slug.contributors} />
+                  <Bylines contributors={article.contributors} />
                 </li>
               ))}
             </ul>
@@ -73,12 +78,12 @@ const ArticleList = ({ articles, sections }: any) => {
 }
 
 interface CoverImagesProps {
-  cover_1: any
-  cover_2: any
-  cover_3: any
-  cover_4: any
-  cover_5: any
-  cover_6: any
+  cover_1?: DirectusFiles
+  cover_2?: DirectusFiles
+  cover_3?: DirectusFiles
+  cover_4?: DirectusFiles
+  cover_5?: DirectusFiles
+  cover_6?: DirectusFiles
 }
 
 export const CoverImage = (props: CoverImagesProps) => {
@@ -94,7 +99,7 @@ export const CoverImage = (props: CoverImagesProps) => {
   }
 
   const FirstCover = () => {
-    if (!cover_1) {
+    if (!cover_1 || !!cover_1.width === false || !!cover_1.height === false) {
       return <></>
     }
     const width = (cover_1.width * 200) / cover_1.height
@@ -122,9 +127,14 @@ export const CoverImage = (props: CoverImagesProps) => {
   )
 }
 
-const IssueRail = (props: any) => {
-  const primaryIssue = props.issues[0]
-  const { slug, title, articles, cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = primaryIssue
+interface IssueRailProps {
+  currentIssue: Issues
+  sections: Sections[]
+}
+
+const IssueRail = (props: ArticleProps) => {
+  const { currentIssue, sections, currentArticles } = props
+  const { slug, title, cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
 
   return (
@@ -177,7 +187,7 @@ const IssueRail = (props: any) => {
           </div>
         </div>
 
-        <ArticleList articles={articles} sections={props.sections} />
+        <ArticleList {...props} />
       </nav>
     </section>
   )
