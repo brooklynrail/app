@@ -1,4 +1,3 @@
-import Link from "next/link"
 import parse from "html-react-parser"
 import IssueRail from "../issueRail"
 import Image from "next/image"
@@ -7,31 +6,12 @@ import CoversPopup from "../issueRail/coversPopup"
 import BodyText from "./bodyText"
 import BodyCode from "./bodyCode"
 import { DirectusFiles } from "../../../lib/types"
-
-const Contributors = (contributors: any) => {
-  return (
-    <cite>
-      {contributors.contributors.map((contributor: any, i: number) => {
-        return (
-          <footer key={i}>
-            <section className="contributors">
-              <h3>Contributor</h3>
-              <h4>
-                <Link href={`/contributor/${contributor.contributors_id.slug}`}>
-                  {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
-                </Link>
-              </h4>
-              <div dangerouslySetInnerHTML={{ __html: contributor.contributors_id.bio }} />
-            </section>
-          </footer>
-        )
-      })}
-    </cite>
-  )
-}
+import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
+import NextPrev from "./nextPrev"
+import ContributorsBox from "./contributors"
 
 const FeaturedImage = (props: DirectusFiles) => {
-  const { description, filename_disk, caption } = props
+  const { filename_disk, caption } = props
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const desc = caption ? <figcaption>{caption}</figcaption> : null
 
@@ -66,14 +46,14 @@ export const Kicker = (props: any) => {
 const ArticleHead = (props: any) => {
   const { kicker, sections, title, deck, featured_image, slug, header_type } = props.article
   const primarySection = sections[0].sections_id
-  const primaryIssue = props.issues[0]
+  const primaryIssue = props.currentIssue
   const { year, month } = primaryIssue
   const permalink = `/${year}/${month}/${primarySection.slug}/${slug}/`
   const permalinkEncoded = `https://brooklynrail.org${permalink}`
 
   const articleMeta = (
     <div className="article-meta">
-      <div className="date">{props.issues.title}</div>
+      <div className="date">{primaryIssue.title}</div>
 
       <div className="share-tools">
         <a className="twitter" href={`https://twitter.com/share?url=${permalinkEncoded}`}>
@@ -117,11 +97,11 @@ const ArticleHead = (props: any) => {
   )
 }
 
-export const ArticleBody = (props: any) => {
+export const ArticleBody = (props: ArticleProps) => {
+  console.log("ArticleBody props", props)
   const { body_type } = props.article
-  const { type } = props
 
-  switch (type ? type : body_type) {
+  switch (body_type) {
     case `body_text`:
       return (
         <>
@@ -141,52 +121,9 @@ export const ArticleBody = (props: any) => {
   }
 }
 
-export const NextPrev = (props: any) => {
-  const { slug } = props.article
-  const diff = props.diff ? `diff/` : ``
-  const primaryIssue = props.issues[0]
-  const articles = props.issues[0].articles
-  const currentArticle = articles.find((article: any) => article.articles_slug.slug === slug)
-  const currentIndex = articles.indexOf(currentArticle)
-
-  const prevLink = () => {
-    if (currentIndex == 0) {
-      return <div className="prev"></div>
-    }
-    const prev = articles[currentIndex - 1].articles_slug
-    const prevPrimarySection = prev.sections[0].sections_id
-    const prevPermalink = `/${primaryIssue.year}/${primaryIssue.month}/${prevPrimarySection.slug}/${prev.slug}/${diff}`
-    return (
-      <div className="prev">
-        <a href={prevPermalink}>
-          <span>Previous</span>
-          <h3>{prev.title}</h3>
-        </a>
-      </div>
-    )
-  }
-
-  const next = articles[currentIndex + 1].articles_slug
-  const nextPrimarySection = next.sections[0].sections_id
-  const nextPermalink = `/${primaryIssue.year}/${primaryIssue.month}/${nextPrimarySection.slug}/${next.slug}/${diff}`
-
-  return (
-    <nav className="next-prev">
-      {prevLink()}
-      {next && (
-        <div className="next">
-          <a href={nextPermalink}>
-            <span>Next</span>
-            <h3>{next.title}</h3>
-          </a>
-        </div>
-      )}
-    </nav>
-  )
-}
-
-const Article = (props: any) => {
-  const { contributors } = props.article
+const Article = (props: ArticleProps) => {
+  const { article } = props
+  const { contributors } = article
 
   return (
     <>
@@ -203,7 +140,7 @@ const Article = (props: any) => {
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
                 <header id="article_header">
                   <a className="mobile_nav_btn" href="">
-                    <i className="fas fa-angle-double-left"></i> <span>{props.issues.title}</span> Issue
+                    <i className="fas fa-angle-double-left"></i> <span>{props.currentIssue.title}</span> Issue
                   </a>
 
                   <nav>
@@ -234,7 +171,7 @@ const Article = (props: any) => {
                   <ArticleHead {...props} />
                   <ArticleBody {...props} />
 
-                  <Contributors contributors={contributors} />
+                  <ContributorsBox contributors={contributors} />
                 </article>
               </div>
             </div>
