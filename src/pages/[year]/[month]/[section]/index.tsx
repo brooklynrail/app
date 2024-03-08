@@ -10,6 +10,7 @@ import {
 } from "../../../../../lib/utils"
 import SectionPage from "@/components/sectionPage"
 import { NextSeo } from "next-seo"
+import Error from "next/error"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 
@@ -17,6 +18,9 @@ interface SectionProps {
   currentSection: Sections
 }
 function Section(props: IssuePageProps & SectionProps) {
+  if (props.errorCode && props.errorMessage) {
+    return <Error statusCode={props.errorCode} title={props.errorMessage} />
+  }
   const { name } = props.currentSection
   const { title, cover_1, issue_number, slug } = props.currentIssue
   const ogtitle = `${name} – ${stripHtml(title).result} | The Brooklyn Rail`
@@ -78,6 +82,12 @@ export async function getStaticProps({ params }: any) {
   const currentIssue = issueData[0]
   const dateSlug = `${currentIssue.year}/${currentIssue.month}`
 
+  // If `section` does not exist, set errorCode to a string
+  const errorCode = currentSections.find((s: any) => s.slug != section) ? true : false
+  if (errorCode) {
+    return { props: { errorCode: 404, errorMessage: "This section does not exist." } }
+  }
+
   return {
     props: {
       allIssues,
@@ -87,6 +97,7 @@ export async function getStaticProps({ params }: any) {
       currentArticles,
       ads,
       dateSlug,
+      errorCode,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in

@@ -11,6 +11,8 @@ export interface IssuePageProps {
   currentArticles: Array<Articles>
   currentSlides?: Array<Articles>
   ads: Array<Ads>
+  errorCode?: number
+  errorMessage?: string
 }
 
 function HomepageController(props: IssuePageProps) {

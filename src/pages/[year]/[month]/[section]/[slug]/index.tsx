@@ -3,6 +3,7 @@ import { readItems } from "@directus/sdk"
 import Article from "../../../../../components/article"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
+import Error from "next/error"
 import { getArticle, getArticles, getIssueData, getOGImage } from "../../../../../../lib/utils"
 import { Articles, ArticlesContributors, Contributors, Issues, Sections } from "../../../../../../lib/types"
 
@@ -11,6 +12,8 @@ export interface ArticleProps {
   currentIssue: Issues
   currentArticles: Array<Articles>
   sections: Array<Sections>
+  errorCode?: number
+  errorMessage?: string
 }
 
 interface SectionProps {
@@ -18,6 +21,9 @@ interface SectionProps {
 }
 
 function ArticleController(props: ArticleProps & SectionProps) {
+  if (props.errorCode && props.errorMessage) {
+    return <Error statusCode={props.errorCode} title={props.errorMessage} />
+  }
   const { article, currentIssue } = props
   const { title, excerpt, slug, featured_image, date_created, date_updated, contributors } = article
   const section = props.article.sections[0].sections_id
@@ -71,6 +77,7 @@ export async function getStaticProps({ params }: any) {
       fields: ["name", "id", "slug"],
     }),
   )
+
   const issueData = await getIssueData(year, month)
   const articleData = await getArticle(slug)
   const currentArticles = await getArticles(issueData[0].id)
@@ -78,7 +85,12 @@ export async function getStaticProps({ params }: any) {
   const article = articleData
   const currentIssue = issueData[0]
   const sections = sectionsData
-  const currentSection = section
+  const currentSection: Sections = article.sections && article.sections[0].sections_id
+
+  const errorCode = currentSection.slug != section && "Section not found"
+  if (errorCode) {
+    return { props: { errorCode: 404, errorMessage: errorCode } }
+  }
 
   return {
     props: {
