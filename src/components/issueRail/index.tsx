@@ -52,8 +52,9 @@ const ArticleList = (props: ArticleProps) => {
         if (!sectionArticles || sectionArticles.length === 0) {
           return null // Skip rendering this section
         }
-
-        const permalink = `/${currentIssue.year}/${currentIssue.month}/${section.slug}`
+        // if currentIssue.month is a single digit, add a leading zero
+        const month = currentIssue.month < 10 ? `0${currentIssue.month}` : currentIssue.month
+        const permalink = `/${currentIssue.year}/${month}/${section.slug}`
 
         return (
           <div key={i}>
@@ -133,7 +134,7 @@ interface IssueRailProps {
 }
 
 const IssueRail = (props: ArticleProps) => {
-  const { currentIssue, sections, currentArticles } = props
+  const { currentIssue } = props
   const { slug, title, cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
 
