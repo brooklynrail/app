@@ -5,7 +5,6 @@ import {
   getArticles,
   getIssueData,
   getIssues,
-  getIssuesSelect,
   getOGImage,
   getPermalink,
   getSectionsByIssueId,
@@ -55,7 +54,7 @@ export async function getStaticProps({ params }: any) {
   const month = params.month
   const section = params.section
 
-  const allIssues = await getIssuesSelect()
+  const allIssues = await getIssues()
   const issueData = await getIssueData(year, month)
 
   // Get only the sections that are used in the articles in the current issue

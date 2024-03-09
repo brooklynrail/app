@@ -7,7 +7,7 @@ import {
   getAds,
   getArticles,
   getIssueData,
-  getIssuesSelect,
+  getIssues,
   getOGImage,
   getPermalink,
   getSectionsByIssueId,
@@ -47,7 +47,7 @@ export async function getStaticProps({ params }: any) {
   const year = params.year
   const month = params.month
 
-  const allIssues = await getIssuesSelect()
+  const allIssues = await getIssues()
   const issueData = await getIssueData(year, month)
 
   // Get only the sections that are used in the articles in the current issue
@@ -74,7 +74,7 @@ export async function getStaticProps({ params }: any) {
 
   // Get only the articles from `currentArticles` that have a `slideshow_image`
   const currentSlides = currentArticles.filter((article) => {
-    return article
+    return article.slideshow_image
   })
 
   const currentIssue = issueData[0]
