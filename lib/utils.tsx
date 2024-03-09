@@ -1,27 +1,57 @@
 import directus from "./directus"
-import { readItem, readItems } from "@directus/sdk"
+import { readItem, readItems, readSingleton } from "@directus/sdk"
 import { DirectusFiles } from "./types"
 import { stripHtml } from "string-strip-html"
 
 export async function getIssues() {
   const issues = await directus.request(
     readItems("issues", {
-      fields: ["year", "month", "id"],
-    }),
-  )
-  return issues
-}
-
-export async function getIssuesSelect() {
-  const allIssues = await directus.request(
-    readItems("issues", {
-      fields: ["year", "month", "title", "slug"],
+      fields: ["year", "month", "id", "slug", "title"],
       filter: {
         _and: [{ status: { _eq: "published" } }],
       },
     }),
   )
-  return allIssues
+  return issues
+}
+
+export async function getCurrentIssue() {
+  const settings = await directus.request(
+    readSingleton("global_settings", {
+      fields: [
+        {
+          current_issue: [
+            "id",
+            "title",
+            "slug",
+            "year",
+            "month",
+            "status",
+            {
+              cover_1: ["caption", "filename_disk", "width", "height", "type"],
+            },
+            {
+              cover_2: ["caption", "filename_disk", "width", "height", "type"],
+            },
+            {
+              cover_3: ["caption", "filename_disk", "width", "height", "type"],
+            },
+            {
+              cover_4: ["caption", "filename_disk", "width", "height", "type"],
+            },
+            {
+              cover_5: ["caption", "filename_disk", "width", "height", "type"],
+            },
+            {
+              cover_6: ["caption", "filename_disk", "width", "height", "type"],
+            },
+          ],
+        },
+      ],
+    }),
+  )
+
+  return settings.current_issue
 }
 
 export async function getIssueData(year?: number, month?: number) {
@@ -59,7 +89,7 @@ export async function getIssueData(year?: number, month?: number) {
                 "slug",
                 "title",
                 {
-                  contributors: ["contributors_id.first_name", "contributors_id.last_name"],
+                  contributors: [{ contributors_id: ["first_name", "last_name", "slug"] }],
                 },
                 {
                   sections: ["sections_id.slug"],

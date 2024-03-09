@@ -451,6 +451,15 @@ export type DirectusWebhooks = {
   url: string
 }
 
+export type GlobalSettings = {
+  current_issue: string | Issues
+  date_created?: string | null
+  date_updated?: string | null
+  id: string
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+}
+
 export type Issues = {
   articles: Articles[] | ArticlesIssues[]
   cover_1?: DirectusFiles
@@ -459,6 +468,7 @@ export type Issues = {
   cover_4?: DirectusFiles
   cover_5?: DirectusFiles
   cover_6?: DirectusFiles
+  current_issue: any[] | GlobalSettings[]
   date_created?: string | null
   date_updated?: string | null
   id: number
@@ -533,6 +543,7 @@ export type CustomDirectusTypes = {
   directus_users: DirectusUsers[]
   directus_versions: DirectusVersions[]
   directus_webhooks: DirectusWebhooks[]
+  global_settings: GlobalSettings
   issues: Issues[]
   pages: Pages[]
   sections: Sections[]
