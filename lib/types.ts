@@ -44,6 +44,7 @@ export type Articles = {
   sort?: number | null
   status: string
   title: string
+  title_tag?: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
@@ -494,7 +495,7 @@ export type Sections = {
   id: number
   name: string
   old_id?: number | null
-  slug?: string | null
+  slug?: string
   sort?: number | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
