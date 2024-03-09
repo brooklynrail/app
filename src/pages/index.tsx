@@ -1,6 +1,6 @@
-import { Ads, Articles, Issues, Sections } from "../../lib/types"
+import { Ads, Articles, GlobalSettings, Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
-import { getAds, getArticles, getIssueData, getIssuesSelect, getSectionsByIssueId } from "../../lib/utils"
+import { getAds, getArticles, getCurrentIssue, getIssueData, getIssues, getSectionsByIssueId } from "../../lib/utils"
 import { NextSeo } from "next-seo"
 
 export interface IssuePageProps {
@@ -27,18 +27,18 @@ function HomepageController(props: IssuePageProps) {
 export default HomepageController
 
 export async function getStaticProps() {
-  const allIssues = await getIssuesSelect()
+  const allIssues = await getIssues()
 
   // Get the most recent published issue
-  const issueData = await getIssueData()
+  const currentIssue = await getCurrentIssue()
 
   // Get only the sections that are used in the articles in the current issue
-  const allSections = await getSectionsByIssueId(issueData[0].id)
+  const allSections = await getSectionsByIssueId(currentIssue.id)
 
   // Filter the articles within each section to only include those that are in the current issue
   const currentSections = allSections.map((section: any) => {
     const filteredArticles = section.articles.filter(
-      (article: any) => article.articles_slug && article.articles_slug.issues[0].issues_id.id === issueData[0].id,
+      (article: any) => article.articles_slug && article.articles_slug.issues[0].issues_id.id === currentIssue.id,
     )
     return { ...section, articles: filteredArticles }
   })
@@ -49,7 +49,7 @@ export async function getStaticProps() {
     section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
   })
 
-  const currentArticles = await getArticles(issueData[0].id)
+  const currentArticles = await getArticles(currentIssue.id)
 
   // Get the published Ads
   const ads = await getAds()
@@ -58,8 +58,6 @@ export async function getStaticProps() {
   const currentSlides = currentArticles.filter((article) => {
     return article.slideshow_image
   })
-
-  const currentIssue = issueData[0]
 
   return {
     props: {
