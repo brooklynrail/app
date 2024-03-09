@@ -4,14 +4,16 @@ import Article from "../../../../../components/article"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
 import Error from "next/error"
-import { getArticle, getArticles, getIssueData, getOGImage } from "../../../../../../lib/utils"
-import { Articles, ArticlesContributors, Contributors, Issues, Sections } from "../../../../../../lib/types"
+import { PageType, getArticle, getArticles, getIssueData, getOGImage, getPermalink } from "../../../../../../lib/utils"
+import { Articles, Issues, Sections } from "../../../../../../lib/types"
 
 export interface ArticleProps {
   article: Articles
   currentIssue: Issues
   currentArticles: Array<Articles>
   sections: Array<Sections>
+  currentSection: Sections
+  permalink: string
   errorCode?: number
   errorMessage?: string
 }
@@ -24,28 +26,30 @@ function ArticleController(props: ArticleProps & SectionProps) {
   if (props.errorCode && props.errorMessage) {
     return <Error statusCode={props.errorCode} title={props.errorMessage} />
   }
-  const { article, currentIssue } = props
-  const { title, excerpt, slug, featured_image, date_created, date_updated, contributors } = article
+  const { article, permalink } = props
+  const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag } = article
   const section = props.article.sections[0].sections_id
-  const ogtitle = `${stripHtml(title).result} | The Brooklyn Rail`
+  console.log("title_tag", title_tag)
+  const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
   const ogdescription = `${stripHtml(excerpt).result}`
   const ogimageprops = { ogimage: featured_image, title }
   const ogimages = getOGImage(ogimageprops)
 
   const authors = contributors.map((contributor: any) => {
-    return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${contributor.contributors_id.slug}`
+    const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.contributors_id.slug })
+    return contribPermalink
   })
 
   return (
     <>
       <NextSeo
-        title={ogtitle}
+        title={`${ogtitle} | The Brooklyn Rail`}
         description={ogdescription}
-        canonical={`${process.env.NEXT_PUBLIC_BASE_URL}/${currentIssue.slug}/${section.slug}/${slug}/`}
+        canonical={`${process.env.NEXT_PUBLIC_BASE_URL}/${permalink}`}
         openGraph={{
-          title: ogtitle,
+          title: `${ogtitle} | The Brooklyn Rail`,
           description: ogdescription,
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/${currentIssue.slug}/${section.slug}/${slug}/`,
+          url: permalink,
           images: ogimages,
           type: `article`,
           article: {
@@ -92,6 +96,14 @@ export async function getStaticProps({ params }: any) {
     return { props: { errorCode: 404, errorMessage: errorCode } }
   }
 
+  const permalink = getPermalink({
+    year: currentIssue.year,
+    month: currentIssue.month,
+    section: currentSection.slug,
+    slug: article.slug,
+    type: PageType.Article,
+  })
+
   return {
     props: {
       article,
@@ -99,6 +111,7 @@ export async function getStaticProps({ params }: any) {
       currentArticles,
       currentSection,
       sections,
+      permalink,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in

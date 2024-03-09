@@ -6,11 +6,11 @@ import { NextSeo } from "next-seo"
 export interface IssuePageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
-  dateSlug: string
   currentSections: Array<Sections>
   currentArticles: Array<Articles>
   currentSlides?: Array<Articles>
   ads: Array<Ads>
+  permalink: string
   errorCode?: number
   errorMessage?: string
 }
@@ -60,12 +60,10 @@ export async function getStaticProps() {
   })
 
   const currentIssue = issueData[0]
-  const dateSlug = `${currentIssue.year}/${currentIssue.month}`
 
   return {
     props: {
       allIssues,
-      dateSlug,
       currentSlides,
       currentIssue,
       currentSections,

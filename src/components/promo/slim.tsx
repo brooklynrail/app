@@ -4,15 +4,13 @@ import { stripHtml } from "string-strip-html"
 
 interface PromoSlimProps {
   article: Articles
-  dateSlug: string
   i?: number
+  permalink: string
 }
 
 const PromoSlim = (props: PromoSlimProps) => {
-  const { dateSlug, article, i = 0 } = props
-  const { title, slug, sections, contributors, sort } = article
-  const sectionSlug = sections[0].sections_id.slug
-  const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
+  const { article, i = 0, permalink } = props
+  const { title, contributors, sort } = article
 
   const names = contributors.map((contributor: any, i: number) => {
     const { first_name, last_name } = contributor.contributors_id

@@ -10,13 +10,15 @@ import Header from "../issuePage/header"
 import Ad970 from "../issuePage/ad970"
 import AdsTile from "../issuePage/adsTile"
 import SectionArticles from "./sectionArticles"
+import { SectionProps } from "@/pages/[year]/[month]/[section]"
 
-const SectionPage = (props: IssuePageProps) => {
-  const { allIssues, currentIssue, currentSections, currentArticles, currentSlides, dateSlug } = props
+const SectionPage = (props: IssuePageProps & SectionProps) => {
+  const { allIssues, currentIssue, currentSections, currentArticles, currentSection } = props
   const ads = props.ads
-  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
+  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
-  const currentSectionsProps = { currentSections, dateSlug }
+  const currentSectionsProps = { currentSections, year, month }
+  const currentArticlesProps = { currentArticles, year, month }
   const currentIssueSlug = currentIssue.slug
 
   return (
@@ -71,13 +73,13 @@ const SectionPage = (props: IssuePageProps) => {
                   <div className="grid-row grid-gap-4">
                     <div className="grid-col-12">
                       <header className="section">
-                        <h2>Section Name</h2>
+                        <h2>{currentSection.name}</h2>
                       </header>
                     </div>
                   </div>
                   <div className="grid-row grid-gap-4">
                     <div className="grid-col-12">
-                      <SectionArticles currentArticles={currentArticles} dateSlug={dateSlug} />
+                      <SectionArticles {...currentArticlesProps} />
                     </div>
                   </div>
                 </div>

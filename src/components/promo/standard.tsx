@@ -2,26 +2,30 @@ import parse from "html-react-parser"
 import { Articles, DirectusFiles } from "../../../lib/types"
 import { stripHtml } from "string-strip-html"
 import Image from "next/image"
+import { PageType, getPermalink } from "../../../lib/utils"
 
 export interface PromoProps {
   article: Articles
-  dateSlug: string
   showImage: boolean
   showSection: boolean
+  permalink: string
+  year: number
+  month: number
 }
 
 export const PromoSectionName = (props: PromoProps) => {
-  const { dateSlug, article } = props
+  const { article, year, month } = props
   const { sections, kicker } = article
-  const sectionSlug = sections[0].sections_id.slug
   const sectionName = sections[0].sections_id.name
+  const permalink = getPermalink({
+    year: year,
+    month: month,
+    section: article.sections[0].sections_id.slug,
+    type: PageType.Section,
+  })
   return (
     <p className="article_type">
-      <a
-        className="section"
-        href={`/${dateSlug}/${sectionSlug}`}
-        title={`Go to the ${stripHtml(sectionName).result} section`}
-      >
+      <a className="section" href={permalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
         {sectionName}
       </a>
       {kicker && (
@@ -41,10 +45,8 @@ const PromoBanner = (props: DirectusFiles) => {
 }
 
 const PromoStandard = (props: PromoProps) => {
-  const { dateSlug, article, showSection, showImage } = props
-  const { title, excerpt, slug, sections, sort, promo_banner } = article
-  const sectionSlug = sections[0].sections_id.slug
-  const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
+  const { article, showSection, showImage, permalink, year, month } = props
+  const { title, excerpt, sort, promo_banner } = article
   const sortNum = (
     <span className="sort">
       <span>{sort}</span>

@@ -1,6 +1,8 @@
 import directus from "../../../../../../lib/directus"
 import { readItems, readItem } from "@directus/sdk"
 import ArticleDiff from "@/components/article/articleDiff"
+import { PageType, getArticle, getArticles, getIssueData, getPermalink } from "../../../../../../lib/utils"
+import { Sections } from "../../../../../../lib/types"
 
 function ArticleController(props: any) {
   return <ArticleDiff {...props} />
@@ -12,9 +14,10 @@ export default ArticleController
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps({ params }: any) {
-  const slug: string | number = params.slug
+  const slug: string = params.slug
   const year: number = params.year
   const month: number = params.month
+  const section: string = params.section
 
   const sectionsData = await directus.request(
     readItems("sections", {
@@ -22,49 +25,36 @@ export async function getStaticProps({ params }: any) {
     }),
   )
 
-  const issuesData = await directus.request(
-    readItems("issues", {
-      fields: [
-        "*.*", // Selects all fields from the issues
-        "images.thumbnails.*", // Selects all thumbnail images
-        "articles.articles_slug.title", // Selects the title of each article
-        "articles.articles_slug.slug", // Selects the slug of each article
-        "articles.articles_slug.contributors.contributors_id.first_name",
-        "articles.articles_slug.contributors.contributors_id.last_name",
-        "articles.articles_slug.sections.sections_id.name", // Selects the section for each article
-        "articles.articles_slug.sections.sections_id.id", // Selects the section Id
-        "articles.articles_slug.sections.sections_id.slug", // Selects the section slug
-      ],
-      filter: {
-        _and: [{ year: { _eq: year } }, { month: { _eq: month } }],
-      },
-    }),
-  )
-
-  const articleData = await directus.request(
-    readItem("articles", slug, {
-      fields: [
-        "*.*",
-        "images.directus_files_id.*",
-        "contributors.contributors_id.first_name",
-        "contributors.contributors_id.last_name",
-        "contributors.contributors_id.slug",
-        "contributors.contributors_id.bio",
-        "sections.sections_id.slug", // Selects the section Id
-        "sections.sections_id.name", // Selects the section Id
-      ],
-    }),
-  )
+  const issueData = await getIssueData(year, month)
+  const articleData = await getArticle(slug)
+  const currentArticles = await getArticles(issueData[0].id)
 
   const article = articleData
-  const issues = issuesData
+  const currentIssue = issueData[0]
   const sections = sectionsData
+  const currentSection: Sections = article.sections && article.sections[0].sections_id
+
+  const errorCode = currentSection.slug != section && "Section not found"
+  if (errorCode) {
+    return { props: { errorCode: 404, errorMessage: errorCode } }
+  }
+
+  const permalink = getPermalink({
+    year: currentIssue.year,
+    month: currentIssue.month,
+    section: currentSection.slug,
+    slug: article.slug,
+    type: PageType.Article,
+  })
 
   return {
     props: {
       article,
-      issues,
+      currentIssue,
+      currentArticles,
+      currentSection,
       sections,
+      permalink,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
@@ -79,15 +69,31 @@ export async function getStaticProps({ params }: any) {
 export async function getStaticPaths() {
   const articles = await directus.request(
     readItems("articles", {
-      fields: ["slug", "sections.sections_id.slug", "issues.issues_id.year", "issues.issues_id.month"],
+      fields: [
+        "slug",
+        {
+          sections: [
+            {
+              sections_id: ["slug"],
+            },
+          ],
+        },
+        {
+          issues: [
+            {
+              issues_id: ["year", "month"],
+            },
+          ],
+        },
+      ],
     }),
   )
 
   const paths = articles.map((article) => ({
     params: {
-      year: String(article.issues[0].issues_id.year),
-      month: String(article.issues[0].issues_id.month),
-      section: String(article.sections[0].sections_id.slug),
+      year: String(article.issues && article.issues[0].issues_id.year),
+      month: String(article.issues && article.issues[0].issues_id.month),
+      section: String(article.sections && article.sections[0].sections_id.slug),
       slug: article.slug,
     },
   }))

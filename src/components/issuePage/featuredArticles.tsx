@@ -1,9 +1,10 @@
 import PromoStandard from "../promo/standard"
 import { Articles } from "../../../lib/types"
 import { PromoProps } from "."
+import { PageType, getPermalink } from "../../../lib/utils"
 
 const FeaturedArticles = (props: PromoProps) => {
-  const { dateSlug, currentArticles } = props
+  const { currentArticles, year, month } = props
 
   // Get only the Featured articles from currentArticles
   const featuredArticles: Array<Articles> = []
@@ -16,13 +17,22 @@ const FeaturedArticles = (props: PromoProps) => {
   return (
     <section className="collection">
       {featuredArticles.map((article: Articles, i: number) => {
+        const permalink = getPermalink({
+          year: year,
+          month: month,
+          section: article.sections[0].sections_id.slug,
+          slug: article.slug,
+          type: PageType.Article,
+        })
         return (
           <PromoStandard
             key={`featured-${i}`}
             article={article}
-            dateSlug={dateSlug}
+            permalink={permalink}
             showImage={true}
             showSection={true}
+            year={year}
+            month={month}
           />
         )
       })}

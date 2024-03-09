@@ -1,13 +1,14 @@
 import parse from "html-react-parser"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
-import { ArticleBody, Kicker, NextPrev } from "."
+import { ArticleBody, ArticleType, Kicker } from "."
+import NextPrev from "./nextPrev"
+import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 
-const ArticleHead = (props: any) => {
+const ArticleHead = (props: ArticleProps) => {
   const { kicker, sections, title, deck, featured_image, slug, header_type } = props.article
   const primarySection = sections[0].sections_id
-  const primaryIssue = props.issues[0]
-  const { year, month } = primaryIssue
+  const { year, month } = props.currentIssue
 
   if (header_type === "diptych") {
     return (
@@ -35,7 +36,7 @@ const ArticleHead = (props: any) => {
   )
 }
 
-const ArticleDiff = (props: any) => {
+const ArticleDiff = (props: ArticleProps) => {
   return (
     <>
       <div className="paper">
@@ -47,12 +48,12 @@ const ArticleDiff = (props: any) => {
             <div className="grid-row grid-gap-0">
               <div className="grid-col-12 tablet-lg:grid-col-6">
                 <article className="article article-diff">
-                  <ArticleBody type={`body_text`} {...props} />
+                  <ArticleBody type={ArticleType.BodyText} {...props} />
                 </article>
               </div>
               <div className="grid-col-12 tablet-lg:grid-col-6">
                 <article className="article article-diff">
-                  <ArticleBody type={`body_code`} {...props} />
+                  <ArticleBody type={ArticleType.BodyCode} {...props} />
                 </article>
               </div>
             </div>

@@ -1,7 +1,8 @@
 import { stripHtml } from "string-strip-html"
-import { Articles, DirectusFiles } from "../../../lib/types"
+import { Articles, ArticlesSections, DirectusFiles, Sections } from "../../../lib/types"
 import Image from "next/image"
 import { useState } from "react"
+import { PageType, getPermalink } from "../../../lib/utils"
 
 interface SlideImageProps {
   slideshow_image: DirectusFiles
@@ -14,12 +15,13 @@ const SlideImage = (props: SlideImageProps) => {
 }
 
 interface SlideshowProps {
-  dateSlug: string
   currentSlides: Array<Articles>
+  year: number
+  month: number
 }
 
 const SlideShow = (props: SlideshowProps) => {
-  const { dateSlug, currentSlides } = props
+  const { currentSlides, year, month } = props
   const slideCount = currentSlides.length
   const [slidePosition, setSlidePosition] = useState<number>(0)
 
@@ -32,10 +34,9 @@ const SlideShow = (props: SlideshowProps) => {
   }
 
   const slides = currentSlides.map((article: Articles, i: number) => {
-    const { title, slug, sections } = article
-    const sectionSlug = sections[0].slug
-    const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
-    if (article.slideshow_image === null || article.slideshow_image === undefined) {
+    const { title, slideshow_image, sections, slug } = article
+
+    if (slideshow_image === null || slideshow_image === undefined) {
       return
     }
 
@@ -43,9 +44,17 @@ const SlideShow = (props: SlideshowProps) => {
       return
     }
 
+    const articlePermalink = getPermalink({
+      year: year,
+      month: month,
+      section: sections[0].sections_id.slug,
+      slug: slug,
+      type: PageType.Article,
+    })
+
     return (
-      <a key={i} className="banner" href={permalink} title={`Visit ${stripHtml(title).result}`}>
-        <SlideImage slideshow_image={article.slideshow_image} />
+      <a key={i} className="banner" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
+        <SlideImage slideshow_image={slideshow_image} />
         <h2>{title}</h2>
       </a>
     )

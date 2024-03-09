@@ -11,10 +11,8 @@ const Thumb = (props: DirectusFiles) => {
 }
 
 const PromoThumb = (props: PromoProps) => {
-  const { dateSlug, article, showImage, showSection } = props
-  const { title, excerpt, slug, sections, sort, promo_thumb } = article
-  const sectionSlug = sections[0].sections_id.slug
-  const permalink = `/${dateSlug}/${sectionSlug}/${slug}`
+  const { article, showImage, showSection, permalink } = props
+  const { title, excerpt, sort, promo_thumb } = article
   const names = article.contributors.map((contributor: any, i: number) => {
     const { first_name, last_name } = contributor.contributors_id
     const name = `${first_name} ${last_name}`

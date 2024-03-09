@@ -1,12 +1,13 @@
 import { Articles, ArticlesIssues } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
+import { PageType, getPermalink } from "../../../lib/utils"
 
 interface NextPrevProps {
   diff: boolean
 }
 
 export const NextPrev = (props: ArticleProps & NextPrevProps) => {
-  const { currentIssue, article } = props
+  const { currentIssue, currentSection, article, permalink } = props
   const { slug } = article
   const diff = props.diff ? `diff/` : ``
   const issueName = currentIssue.title
@@ -30,8 +31,13 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
       )
     }
     const prev: Articles = articlesList[currentArticleIndex - 1].articles_slug
-    const prevPrimarySection = prev.sections[0].sections_id
-    const prevPermalink = `/${currentIssue.year}/${currentIssue.month}/${prevPrimarySection.slug}/${prev.slug}/${diff}`
+    const prevPermalink = getPermalink({
+      year: currentIssue.year,
+      month: currentIssue.month,
+      section: currentSection.slug,
+      slug: prev.slug,
+      type: PageType.Article,
+    })
     return (
       <div className="prev">
         <a href={prevPermalink}>
@@ -43,8 +49,13 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
   }
 
   const next = articlesList[currentArticleIndex + 1].articles_slug
-  const nextPrimarySection = next.sections[0].sections_id
-  const nextPermalink = `/${currentIssue.year}/${currentIssue.month}/${nextPrimarySection.slug}/${next.slug}/${diff}`
+  const nextPermalink = getPermalink({
+    year: currentIssue.year,
+    month: currentIssue.month,
+    section: currentSection.slug,
+    slug: next.slug,
+    type: PageType.Article,
+  })
 
   return (
     <nav className="next-prev">

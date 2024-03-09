@@ -3,11 +3,13 @@ import { readItems } from "@directus/sdk"
 import IssuePage from "@/components/issuePage"
 import { IssuePageProps } from "@/pages"
 import {
+  PageType,
   getAds,
   getArticles,
   getIssueData,
   getIssuesSelect,
   getOGImage,
+  getPermalink,
   getSectionsByIssueId,
 } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
@@ -72,11 +74,16 @@ export async function getStaticProps({ params }: any) {
 
   // Get only the articles from `currentArticles` that have a `slideshow_image`
   const currentSlides = currentArticles.filter((article) => {
-    return article.slideshow_image
+    return article
   })
 
   const currentIssue = issueData[0]
-  const dateSlug = `${currentIssue.year}/${currentIssue.month}`
+
+  const permalink = getPermalink({
+    year: currentIssue.year,
+    month: currentIssue.month,
+    type: PageType.Issue,
+  })
 
   return {
     props: {
@@ -86,7 +93,7 @@ export async function getStaticProps({ params }: any) {
       currentArticles,
       currentSlides,
       ads,
-      dateSlug,
+      permalink,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in

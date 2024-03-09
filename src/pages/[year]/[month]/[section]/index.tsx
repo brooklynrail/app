@@ -1,11 +1,13 @@
 import { IssuePageProps } from "@/pages"
 import {
+  PageType,
   getAds,
   getArticles,
   getIssueData,
   getIssues,
   getIssuesSelect,
   getOGImage,
+  getPermalink,
   getSectionsByIssueId,
 } from "../../../../../lib/utils"
 import SectionPage from "@/components/sectionPage"
@@ -14,7 +16,7 @@ import Error from "next/error"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 
-interface SectionProps {
+export interface SectionProps {
   currentSection: Sections
 }
 function Section(props: IssuePageProps & SectionProps) {
@@ -80,13 +82,18 @@ export async function getStaticProps({ params }: any) {
   const ads = await getAds()
 
   const currentIssue = issueData[0]
-  const dateSlug = `${currentIssue.year}/${currentIssue.month}`
 
   // If `section` does not exist, set errorCode to a string
-  const errorCode = currentSections.find((s: any) => s.slug != section) ? true : false
-  if (errorCode) {
-    return { props: { errorCode: 404, errorMessage: "This section does not exist." } }
+  if (!currentSection) {
+    return { props: { errorCode: 404, errorMessage: "This section does not exist" } }
   }
+
+  const permalink = getPermalink({
+    year: currentIssue.year,
+    month: currentIssue.month,
+    section: currentSection.slug,
+    type: PageType.Section,
+  })
 
   return {
     props: {
@@ -96,8 +103,7 @@ export async function getStaticProps({ params }: any) {
       currentSection,
       currentArticles,
       ads,
-      dateSlug,
-      errorCode,
+      permalink,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in

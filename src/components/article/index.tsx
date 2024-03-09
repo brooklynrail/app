@@ -43,23 +43,22 @@ export const Kicker = (props: any) => {
   )
 }
 
-const ArticleHead = (props: any) => {
+const ArticleHead = (props: ArticleProps) => {
+  const { permalink } = props
   const { kicker, sections, title, deck, featured_image, slug, header_type } = props.article
   const primarySection = sections[0].sections_id
   const primaryIssue = props.currentIssue
   const { year, month } = primaryIssue
-  const permalink = `/${year}/${month}/${primarySection.slug}/${slug}/`
-  const permalinkEncoded = `https://brooklynrail.org${permalink}`
 
   const articleMeta = (
     <div className="article-meta">
       <div className="date">{primaryIssue.title}</div>
 
       <div className="share-tools">
-        <a className="twitter" href={`https://twitter.com/share?url=${permalinkEncoded}`}>
+        <a className="twitter" href={`https://twitter.com/share?url=${permalink}`}>
           <i className="fab fa-twitter"></i>
         </a>
-        <a className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalinkEncoded}`}>
+        <a className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
           <i className="fab fa-facebook-f"></i>
         </a>
       </div>
@@ -97,10 +96,19 @@ const ArticleHead = (props: any) => {
   )
 }
 
-export const ArticleBody = (props: ArticleProps) => {
+export enum ArticleType {
+  BodyText = "body_text",
+  BodyCode = "body_code",
+}
+interface ArticleBodyProps {
+  type?: ArticleType
+}
+
+export const ArticleBody = (props: ArticleProps & ArticleBodyProps) => {
+  const { type } = props
   const { body_type } = props.article
 
-  switch (body_type) {
+  switch (type ? type : body_type) {
     case `body_text`:
       return (
         <>

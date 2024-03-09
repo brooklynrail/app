@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { usePopup } from "./popupProvider"
 import { Articles, ArticlesIssues, ArticlesSections, DirectusFiles, Issues, Sections } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
+import { PageType, getPermalink } from "../../../lib/utils"
 
 const Bylines = ({ contributors }: any) => {
   return (
@@ -32,8 +33,39 @@ const Bylines = ({ contributors }: any) => {
   )
 }
 
-const ArticleList = (props: ArticleProps) => {
-  const { currentArticles, sections, currentIssue } = props
+interface ArticleListProps {
+  sectionArticles: Array<Articles>
+  year: number
+  month: number
+}
+
+const ArticleList = (props: ArticleListProps) => {
+  const { sectionArticles, year, month } = props
+  const list = sectionArticles.map((article: any, i: number) => {
+    const permalink = getPermalink({
+      year: year,
+      month: month,
+      section: article.sections[0].sections_id.slug,
+      slug: article.slug,
+      type: PageType.Article,
+    })
+    return (
+      <li key={i}>
+        <h4>
+          <Link href={`${permalink}/${article.slug}/`}>
+            <span dangerouslySetInnerHTML={{ __html: article.title }} />
+          </Link>
+        </h4>
+        <Bylines contributors={article.contributors} />
+      </li>
+    )
+  })
+  return list
+}
+
+const IssueArticles = (props: ArticleProps) => {
+  const { currentArticles, sections, currentIssue, permalink } = props
+  const { year, month } = currentIssue
   // Create a map where each key is a section ID and each value is an array of articles for that section
   const articlesBySection = currentArticles.reduce((acc: any, article: Articles) => {
     const sectionId = article.sections[0].sections_id.id
@@ -52,24 +84,12 @@ const ArticleList = (props: ArticleProps) => {
         if (!sectionArticles || sectionArticles.length === 0) {
           return null // Skip rendering this section
         }
-        // if currentIssue.month is a single digit, add a leading zero
-        const month = currentIssue.month < 10 ? `0${currentIssue.month}` : currentIssue.month
-        const permalink = `/${currentIssue.year}/${month}/${section.slug}`
 
         return (
           <div key={i}>
             <h3>{section.name}</h3>
             <ul>
-              {sectionArticles.map((article: any, j: number) => (
-                <li key={j}>
-                  <h4>
-                    <Link href={`${permalink}/${article.slug}/`}>
-                      <span dangerouslySetInnerHTML={{ __html: article.title }} />
-                    </Link>
-                  </h4>
-                  <Bylines contributors={article.contributors} />
-                </li>
-              ))}
+              <ArticleList sectionArticles={sectionArticles} year={year} month={month} />
             </ul>
           </div>
         )
@@ -188,7 +208,7 @@ const IssueRail = (props: ArticleProps) => {
           </div>
         </div>
 
-        <ArticleList {...props} />
+        <IssueArticles {...props} />
       </nav>
     </section>
   )

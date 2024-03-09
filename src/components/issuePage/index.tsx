@@ -20,19 +20,20 @@ import { Articles } from "../../../lib/types"
 
 export interface PromoProps {
   currentArticles: Array<Articles>
-  dateSlug: string
+  year: number
+  month: number
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { allIssues, currentIssue, currentSections, currentArticles, currentSlides, dateSlug } = props
+  const { allIssues, currentIssue, currentSections, currentArticles, currentSlides, permalink } = props
   const ads = props.ads
-  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
+  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
-  const currentSectionsProps = { currentSections, dateSlug }
-  const tocProps = { currentSections, currentArticles, dateSlug }
+  const currentSectionsProps = { currentSections, year, month }
+  const tocProps = { currentSections, currentArticles, permalink, year, month }
   const currentIssueSlug = currentIssue.slug
 
-  const promoProps = { currentArticles, dateSlug }
+  const promoProps = { currentArticles, year, month }
   return (
     <>
       <div className="paper">
@@ -84,7 +85,7 @@ const IssuePage = (props: IssuePageProps) => {
                 <div className="grid-col-8">
                   <div className="grid-row">
                     <div className="grid-col-12">
-                      {currentSlides && <SlideShow currentSlides={currentSlides} dateSlug={dateSlug} />}
+                      {currentSlides && <SlideShow currentSlides={currentSlides} year={year} month={month} />}
                     </div>
                   </div>
 

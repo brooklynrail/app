@@ -1,33 +1,50 @@
 import { Articles, ArticlesIssues, Issues, Sections } from "../../../lib/types"
+import { PageType, getPermalink } from "../../../lib/utils"
 import PromoSlim from "../promo/slim"
 
 interface TableOfContentsProps {
   currentSections: Array<Sections>
   currentArticles: Array<Articles>
-  dateSlug: string
+  permalink: string
+  year: number
+  month: number
 }
 
 interface IssueSectionProps {
   section: Sections
-  dateSlug: string
-  articles: Array<any>
+  permalink: string
+  articles: Array<Articles>
+  year: number
+  month: number
 }
 const IssueSection = (props: IssueSectionProps) => {
-  const { section, dateSlug, articles } = props
-  const sectionSlug = section.slug
+  const { section, articles, year, month } = props
   const sectionName = section.name
 
-  const permalink = `/${dateSlug}/${sectionSlug}`
+  const sectionPermalink = getPermalink({
+    year: year,
+    month: month,
+    section: section.slug,
+    type: PageType.Section,
+  })
+
   return (
     <>
       <h3>
-        <a href={permalink} title={`Go to ${sectionName}`}>
+        <a href={sectionPermalink} title={`Go to ${sectionName}`}>
           {sectionName}
         </a>
       </h3>
       <ul>
         {articles.map((article, i) => {
-          return <PromoSlim key={`toc-article-${i}`} article={article} dateSlug={dateSlug} />
+          const permalink = getPermalink({
+            year: year,
+            month: month,
+            section: article.sections[0].sections_id.slug,
+            slug: article.slug,
+            type: PageType.Article,
+          })
+          return <PromoSlim key={`toc-article-${i}`} article={article} permalink={permalink} />
         })}
       </ul>
     </>
@@ -35,7 +52,7 @@ const IssueSection = (props: IssueSectionProps) => {
 }
 
 const TableOfContents = (props: TableOfContentsProps) => {
-  const { currentSections, currentArticles, dateSlug } = props
+  const { currentSections, currentArticles, permalink, year, month } = props
 
   return (
     <div className="collection table-of-contents">
@@ -45,7 +62,16 @@ const TableOfContents = (props: TableOfContentsProps) => {
         const articles = currentArticles.filter((article) => {
           return article.sections[0].sections_id.slug === section.slug
         })
-        return <IssueSection key={`toc-section-${i}`} section={section} articles={articles} dateSlug={dateSlug} />
+        return (
+          <IssueSection
+            key={`toc-section-${i}`}
+            section={section}
+            articles={articles}
+            permalink={permalink}
+            year={year}
+            month={month}
+          />
+        )
       })}
     </div>
   )
