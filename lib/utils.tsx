@@ -185,6 +185,7 @@ export function getArticle(slug: string) {
         "status",
         "date_created",
         "date_updated",
+        "title_tag",
         {
           featured_image: ["caption", "filename_disk", "width", "height", "type"],
         },
@@ -291,4 +292,39 @@ export function getOGImage(props: OGImageProps) {
           type: "image/png",
         },
       ]
+}
+
+export enum PageType {
+  Article = "article",
+  Section = "section",
+  Issue = "issue",
+  Home = "home",
+  Contributor = "contributor",
+  page = "page",
+}
+interface PermalinkProps {
+  type: PageType
+  year?: number
+  month?: number
+  section?: string
+  slug?: string
+}
+export function getPermalink(props: PermalinkProps) {
+  const { year, section, slug, type } = props
+  const month = props.month && props.month < 10 ? `0${props.month}` : props.month
+
+  switch (type) {
+    case PageType.Article:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}/${slug}`
+    case PageType.Section:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}`
+    case PageType.Issue:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}`
+    case PageType.Home:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/`
+    case PageType.Contributor:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}`
+    case PageType.page:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}`
+  }
 }
