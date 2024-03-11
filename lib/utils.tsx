@@ -303,7 +303,7 @@ interface OGImageProps {
 
 export function getOGImage(props: OGImageProps) {
   const { ogimage, title } = props
-  return ogimage !== undefined
+  return ogimage !== undefined && ogimage !== null
     ? [
         {
           url: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/${ogimage.filename_disk}`,
@@ -330,7 +330,8 @@ export enum PageType {
   Issue = "issue",
   Home = "home",
   Contributor = "contributor",
-  page = "page",
+  Page = "page",
+  Preview = "preview",
 }
 interface PermalinkProps {
   type: PageType
@@ -354,7 +355,9 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/`
     case PageType.Contributor:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}`
-    case PageType.page:
+    case PageType.Page:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}`
+    case PageType.Preview:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}`
   }
 }
