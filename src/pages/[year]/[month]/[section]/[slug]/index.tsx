@@ -29,7 +29,6 @@ function ArticleController(props: ArticleProps & SectionProps) {
   const { article, permalink } = props
   const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag } = article
   const section = props.article.sections[0].sections_id
-  console.log("title_tag", title_tag)
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
   const ogdescription = `${stripHtml(excerpt).result}`
   const ogimageprops = { ogimage: featured_image, title }
