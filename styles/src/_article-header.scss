@@ -112,6 +112,9 @@
       @include u-font("sans", "xl");
     }
   }
+  img.featured-image {
+    height: auto;
+  }
   figcaption,
   figcaption p {
     @include u-margin-y("2px");

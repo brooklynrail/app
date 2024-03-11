@@ -17,7 +17,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
           <div className="grid-container">
             <div className="grid-row grid-gap-3">
               <div className="grid-col-12">
-                <header id="article_header">
+                <header id="article_header" className="preview">
                   <nav className="preview">
                     <svg
                       className="br-logo"
