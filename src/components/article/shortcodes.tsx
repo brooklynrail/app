@@ -101,6 +101,9 @@ const replaceRule = (html: string) => {
 }
 
 const replaceShortcodes = (html: string, images: any) => {
+  if (!html) {
+    return null
+  }
   // Remove <p> and </p> tags surrounding the shortcodes
   let cleanedHtml = html.replace(/<p>\s*(\[img name="[^"]*" type="[^"]*"\s*\/?\])\s*<\/p>/g, "$1")
   cleanedHtml = replacePromo(cleanedHtml)
