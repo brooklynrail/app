@@ -64,7 +64,7 @@ const ArticleList = (props: ArticleListProps) => {
 }
 
 const IssueArticles = (props: ArticleProps) => {
-  const { currentArticles, sections, currentIssue, permalink } = props
+  const { currentArticles, sections, currentIssue } = props
   const { year, month } = currentIssue
   // Create a map where each key is a section ID and each value is an array of articles for that section
   const articlesBySection = currentArticles.reduce((acc: any, article: Articles) => {
