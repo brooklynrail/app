@@ -1,5 +1,3 @@
-import { readItem } from "@directus/sdk"
-import directus from "../../../lib/directus"
 import { getArticle } from "../../../lib/utils"
 
 export default async (req: any, res: any) => {
@@ -13,9 +11,6 @@ export default async (req: any, res: any) => {
     return res.status(401).json({ message: `Missing slug ${req.query.slug}` })
   }
 
-  // Fetch the headless CMS to check if the provided `slug` exists
-  // getPostBySlug would implement the required fetching logic to the headless CMS
-  // const article = await directus.request(readItem("articles", req.query.slug))
   const article = await getArticle(req.query.slug)
 
   // If the slug doesn't exist prevent draft mode from being enabled
@@ -26,8 +21,7 @@ export default async (req: any, res: any) => {
   // Enable Draft Mode by setting the cookie
   res.setDraftMode({ enable: true })
 
-  // Redirect to the path from the fetched post
-  // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
+  // Redirect to the path from the fetched article
   res.redirect(`/preview/${article.slug}`)
 
   return
