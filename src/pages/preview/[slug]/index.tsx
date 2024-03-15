@@ -16,7 +16,7 @@ export interface ArticlePreviewProps {
   errorMessage?: string
 }
 
-function ArticleController(props: ArticlePreviewProps) {
+function ArticlePreviewController(props: ArticlePreviewProps) {
   if (props.errorCode && props.errorMessage) {
     return <Error statusCode={props.errorCode} title={props.errorMessage} />
   }
@@ -56,14 +56,13 @@ function ArticleController(props: ArticlePreviewProps) {
   )
 }
 
-export default ArticleController
+export default ArticlePreviewController
 
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
-export async function getStaticProps({ params }: any) {
-  const status = params.status
-  const slug: string = params.slug
+export async function getStaticProps(context: any) {
+  const slug: string = context.params.slug
 
   const article = await getArticle(slug)
 
@@ -91,7 +90,7 @@ export async function getStaticProps({ params }: any) {
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every 10 seconds
-    revalidate: 10, // In seconds
+    revalidate: 2, // In seconds
   }
 }
 
@@ -127,7 +126,6 @@ export async function getStaticPaths() {
   const paths = articles.map((article) => ({
     params: {
       slug: article.slug,
-      status: article.status,
     },
   }))
 
