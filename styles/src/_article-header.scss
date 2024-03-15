@@ -112,8 +112,13 @@
       @include u-font("sans", "xl");
     }
   }
-  img.featured-image {
-    height: auto;
+  .featured-image {
+    @include u-display("flex");
+    @include u-flex("column");
+    @include u-flex("align-center");
+    img {
+      height: auto;
+    }
   }
   figcaption,
   figcaption p {
