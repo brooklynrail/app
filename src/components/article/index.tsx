@@ -10,7 +10,6 @@ import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import NextPrev from "./nextPrev"
 import ContributorsBox from "./contributors"
 import { PageType, getPermalink } from "../../../lib/utils"
-import { cu } from "@directus/sdk/dist/index-7ec1f729"
 
 const FeaturedImage = (props: DirectusFiles) => {
   const { filename_disk, caption } = props
@@ -18,9 +17,11 @@ const FeaturedImage = (props: DirectusFiles) => {
   const desc = caption ? <figcaption>{caption}</figcaption> : null
 
   return (
-    <div>
-      <Image className="featured-image" src={src} width={400} height={529} alt={caption ? caption : ""} />
-      {desc}
+    <div className="featured-image">
+      <div>
+        <Image src={src} width={400} height={529} alt={caption ? caption : ""} />
+        {desc}
+      </div>
     </div>
   )
 }
