@@ -99,7 +99,17 @@
       @include u-padding-right(2);
     }
     h2 {
+      @include u-padding-right(2);
       @include u-font("sans", "lg");
+    }
+    .preview-url {
+      @include u-padding("05");
+      @include u-padding-x(1);
+      @include u-radius("sm");
+      @include u-font("sans", "2xs");
+      @include u-bg("base-lightest");
+      @include u-overflow("hidden");
+      text-wrap: nowrap;
     }
   }
 }

@@ -1,12 +1,13 @@
-import Footer from "../footer"
-import CoversPopup from "../issueRail/coversPopup"
 import ContributorsBox from "../article/contributors"
 import { ArticleBody, ArticleHead } from "../article"
 import { ArticlePreviewProps } from "@/pages/preview/[slug]"
+import Link from "next/link"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { article } = props
   const { contributors } = article
+
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${article.slug}`
 
   return (
     <>
@@ -60,6 +61,9 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                       />
                     </svg>
                     <h2>Preview</h2>
+                    <Link className={`preview-url`} href={previewURL} target="_blank">
+                      {previewURL}
+                    </Link>
                   </nav>
                 </header>
               </div>
