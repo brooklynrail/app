@@ -22,7 +22,7 @@ export type Articles = {
   body_code?: string | null
   body_text?: string | null
   body_type?: string | null
-  contributors: Contributors[]
+  contributors: Contributors | ArticlesContributors[]
   date_created: string
   date_updated: string
   deck?: string | null
@@ -461,7 +461,7 @@ export type GlobalSettings = {
 }
 
 export type Issues = {
-  articles: Articles[] | ArticlesIssues[]
+  articles: Articles | ArticlesIssues[]
   cover_1?: DirectusFiles
   cover_2?: DirectusFiles
   cover_3?: DirectusFiles
