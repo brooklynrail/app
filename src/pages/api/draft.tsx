@@ -8,7 +8,7 @@ export default async (req: any, res: any) => {
   }
 
   if (!req.query.slug) {
-    return res.status(401).json({ message: `Missing slug ${req.query.slug}` })
+    return res.status(401).json({ message: `Missing slug` })
   }
 
   const article = await getArticle(req.query.slug)

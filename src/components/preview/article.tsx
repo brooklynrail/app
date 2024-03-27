@@ -2,10 +2,60 @@ import ContributorsBox from "../article/contributors"
 import { ArticleBody, ArticleHead } from "../article"
 import { ArticlePreviewProps } from "@/pages/preview/[slug]"
 import Link from "next/link"
+import { useState, useEffect } from "react"
+import Password from "./password"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { article } = props
   const { contributors } = article
+
+  const cookieSlug = `rail_preview_${article.slug}`
+  const [password, setPassword] = useState("")
+  const [isViewable, setIsViewable] = useState(false)
+
+  // the previewCookie is set on a per-article basis
+  // this way, writers will have to enter the password for each article they want to preview
+  // the directusCookie is set when you are logged in to Directus
+  // if either of these cookies are set, the article will be viewable
+  useEffect(() => {
+    const previewCookie = document.cookie.split(";").some((item) => item.trim().startsWith(`${cookieSlug}=`))
+    const directusCookie = document.cookie.split(";").some((item) => item.trim().startsWith("directus_session_token="))
+    const prerenderCookie = document.cookie.split(";").some((item) => item.trim().startsWith(`__prerender_bypass=`))
+    console.log("document", document)
+    console.log("document.cookie", document.cookie)
+    console.log("previewCookie", previewCookie)
+    console.log("directusCookie", directusCookie)
+    console.log("prerenderCookie", prerenderCookie)
+    if (previewCookie || prerenderCookie) {
+      setIsViewable(true)
+    }
+  }, [])
+
+  const handlePasswordSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+
+    // Check if the entered password is correct
+    if (password === "pizza") {
+      // Redirect to the article preview
+      setIsViewable(true)
+      // set a cookie
+      document.cookie = `${cookieSlug}=true; path=/; max-age=3600; samesite=strict; secure`
+    } else {
+      // Show an error message for incorrect password
+      alert("Incorrect password. Please try again.")
+    }
+  }
+
+  const passwordProps = { password, setPassword, handlePasswordSubmit }
+
+  if (!isViewable) {
+    return (
+      <>
+        {`yes ${isViewable}`}
+        <Password {...passwordProps} />
+      </>
+    )
+  }
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${article.slug}`
 

@@ -6,6 +6,7 @@ import Error from "next/error"
 import { PageType, getArticle, getArticles, getIssueData, getOGImage, getPermalink } from "../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../lib/types"
 import ArticlePreview from "@/components/preview/article"
+import { draftMode } from "next/headers"
 
 export interface ArticlePreviewProps {
   article: Articles
@@ -62,6 +63,7 @@ export default ArticlePreviewController
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps(context: any) {
+  console.log("context: --- ", context)
   const slug: string = context.params.slug
 
   const article = await getArticle(slug)
@@ -80,12 +82,15 @@ export async function getStaticProps(context: any) {
     type: PageType.Preview,
   })
 
+  const draftMode = context.draftMode ? context.draftMode : false
+
   return {
     props: {
       article,
       currentSection: currentSection ? currentSection : null,
       currentIssue: currentIssue ? currentIssue : null,
       permalink,
+      draftMode: draftMode,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
