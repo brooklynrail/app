@@ -17,32 +17,32 @@ const Header = () => {
       <nav>
         <ul>
           <li>
-            <Link href="/about?h" title="About">
+            <Link href="/about" title="About">
               <span>About</span>
             </Link>
           </li>
           <li>
-            <Link href="https://brooklynrail.org/events?h" title="Events">
+            <Link href="https://brooklynrail.org/events" title="Events">
               <span>Events</span>
             </Link>
           </li>
           <li>
-            <Link href="https://mailchi.mp/brooklynrail/join/?h" title="Subscribe to our newsletter">
+            <Link href="https://mailchi.mp/brooklynrail/join/" title="Subscribe to our newsletter">
               <span>Newsletter</span>
             </Link>
           </li>
           <li>
-            <Link href="https://shop.brooklynrail.org/products/subscription?h" title="Subscribe">
+            <Link href="https://shop.brooklynrail.org/products/subscription" title="Subscribe">
               <span>Subscribe</span>
             </Link>
           </li>
           <li>
-            <Link target="_blank" href="https://shop.brooklynrail.org?h" title="Shop">
+            <Link target="_blank" href="https://shop.brooklynrail.org" title="Shop">
               <span>Shop</span>
             </Link>
           </li>
           <li className="btn btn-donate">
-            <Link href="https://brooklynrail.org/donate?h" title="Donate">
+            <Link href="https://brooklynrail.org/donate" title="Donate">
               <span>Donate</span>
             </Link>
           </li>
