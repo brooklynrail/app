@@ -1,8 +1,8 @@
 import Link from "next/link"
-import { Contributors } from "../../../lib/types"
+import { ArticlesContributors, Contributors } from "../../../lib/types"
 
 interface ContributorsProps {
-  contributors: Array<Contributors>
+  contributors: Contributors[] | ArticlesContributors[]
 }
 
 const ContributorsBox = (props: ContributorsProps) => {
