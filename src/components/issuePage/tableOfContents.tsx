@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Articles, ArticlesIssues, Issues, Sections } from "../../../lib/types"
 import { PageType, getPermalink } from "../../../lib/utils"
 import PromoSlim from "../promo/slim"
@@ -31,9 +32,9 @@ const IssueSection = (props: IssueSectionProps) => {
   return (
     <>
       <h3>
-        <a href={sectionPermalink} title={`Go to ${sectionName}`}>
+        <Link href={sectionPermalink} title={`Go to ${sectionName}`}>
           {sectionName}
-        </a>
+        </Link>
       </h3>
       <ul>
         {articles.map((article, i) => {

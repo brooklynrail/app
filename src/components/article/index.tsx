@@ -10,6 +10,7 @@ import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import NextPrev from "./nextPrev"
 import ContributorsBox from "./contributors"
 import { PageType, getPermalink } from "../../../lib/utils"
+import Link from "next/link"
 
 const FeaturedImage = (props: DirectusFiles) => {
   const { filename_disk, caption } = props
@@ -52,9 +53,9 @@ export const Kicker = (props: KickerProps) => {
     <h6 className="kicker">
       {currentSection && (
         <>
-          <a href={sectionPermalink} title={`Go to the ${currentSection.name} section`}>
+          <Link href={sectionPermalink} title={`Go to the ${currentSection.name} section`}>
             {currentSection.name}
-          </a>
+          </Link>
           <span className="divider"></span>
         </>
       )}
@@ -81,12 +82,12 @@ export const ArticleHead = (props: ArticleHeadProps) => {
       <div className="date">ISSUE DATE TKTK</div>
 
       <div className="share-tools">
-        <a className="twitter" href={`https://twitter.com/share?url=${permalink}`}>
+        <Link className="twitter" href={`https://twitter.com/share?url=${permalink}`}>
           <i className="fab fa-twitter"></i>
-        </a>
-        <a className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
+        </Link>
+        <Link className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
           <i className="fab fa-facebook-f"></i>
-        </a>
+        </Link>
       </div>
     </div>
   )
@@ -171,24 +172,24 @@ const Article = (props: ArticleProps) => {
 
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
                 <header id="article_header">
-                  <a className="mobile_nav_btn" href="">
+                  <Link className="mobile_nav_btn" href="">
                     <i className="fas fa-angle-double-left"></i> <span>{props.currentIssue.title}</span> Issue
-                  </a>
+                  </Link>
 
                   <nav>
                     <div>
-                      <a className="btn search" href="/search" title="Search the Rail">
+                      <Link className="btn search" href="/search" title="Search the Rail">
                         <i className="fas fa-search"></i>
-                      </a>
+                      </Link>
                     </div>
                     <div>
-                      <a
+                      <Link
                         className="btn btn-sm donate"
                         href="https://brooklynrail.org/donate?a"
                         title="Donate to the Brooklyn Rail"
                       >
                         <span>Donate</span>
-                      </a>
+                      </Link>
                     </div>
                   </nav>
                 </header>

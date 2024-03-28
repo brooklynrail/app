@@ -162,9 +162,9 @@ const IssueRail = (props: ArticleProps) => {
     <section id="rail">
       <header id="rail-header">
         <h2>
-          <a href="/">
+          <Link href="/">
             <img src="/images/brooklynrail-logo.svg" alt="The Brooklyn Rail" title="Brooklyn Rail Home" />
-          </a>
+          </Link>
         </h2>
       </header>
 
@@ -173,9 +173,9 @@ const IssueRail = (props: ArticleProps) => {
           <Link href={`/${slug}/`}>{title}</Link>
         </h3>
 
-        <a className="archive" href="/archive" title="All Issues Archive">
+        <Link className="archive" href="/archive" title="All Issues Archive">
           <span>All Issues</span> <i className="fas fa-angle-double-right"></i>
-        </a>
+        </Link>
       </header>
 
       <nav className="issue-index">
@@ -188,19 +188,19 @@ const IssueRail = (props: ArticleProps) => {
               <div className="issue-links">
                 <div className="related">
                   <p>
-                    <a href="/where-to-find-us">
+                    <Link href="/where-to-find-us">
                       <strong>
                         Find <em>the RAIL</em> in print
                       </strong>
-                    </a>
+                    </Link>
                   </p>
                   <p>
-                    <a
+                    <Link
                       href="https://shop.brooklynrail.org/products/subscription"
                       title="Subscribe to the Rail in Print"
                     >
                       <strong>Subscribe now</strong>
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </div>

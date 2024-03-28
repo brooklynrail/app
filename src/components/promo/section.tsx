@@ -3,6 +3,7 @@ import { DirectusFiles } from "../../../lib/types"
 import { stripHtml } from "string-strip-html"
 import Image from "next/image"
 import { PromoProps, PromoSectionName } from "./standard"
+import Link from "next/link"
 
 const PromoImage = (props: DirectusFiles) => {
   const { filename_disk } = props
@@ -28,18 +29,18 @@ const PromoSection = (props: PromoProps) => {
             {showSection && <PromoSectionName {...props} />}
             <h4>
               {sortNum}
-              <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
+              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
                 {parse(title)}
-              </a>
+              </Link>
             </h4>
             <p className="excerpt">{parse(excerpt)}</p>
           </div>
           <div className="grid-col-12 tablet:grid-col-4">
             {showImage && featured_image && (
               <div className={`media`}>
-                <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
+                <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
                   <PromoImage {...featured_image} />
-                </a>
+                </Link>
               </div>
             )}
           </div>

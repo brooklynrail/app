@@ -3,6 +3,7 @@ import { stripHtml } from "string-strip-html"
 import { PromoProps, PromoSectionName } from "./standard"
 import { DirectusFiles } from "../../../lib/types"
 import Image from "next/image"
+import Link from "next/link"
 
 const Thumb = (props: DirectusFiles) => {
   const { filename_disk } = props
@@ -31,16 +32,16 @@ const PromoThumb = (props: PromoProps) => {
         {showSection && <PromoSectionName {...props} />}
         {showImage && promo_thumb && (
           <div className={`media media-thumb`}>
-            <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
+            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
               <Thumb {...promo_thumb} />
-            </a>
+            </Link>
           </div>
         )}
         <h4>
           {sortNum}
-          <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
+          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
             {parse(title)}
-          </a>
+          </Link>
         </h4>
         <cite className="byline">By {names} </cite>
         <p className="excerpt">{parse(excerpt)}</p>

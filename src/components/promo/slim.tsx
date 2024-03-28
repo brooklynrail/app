@@ -1,6 +1,7 @@
 import parse from "html-react-parser"
 import { Articles } from "../../../lib/types"
 import { stripHtml } from "string-strip-html"
+import Link from "next/link"
 
 interface PromoSlimProps {
   article: Articles
@@ -30,9 +31,9 @@ const PromoSlim = (props: PromoSlimProps) => {
     <li className={`promo promo-slim ${altClass}`} itemType="http://schema.org/Article">
       <h4>
         {sortNum}
-        <a href={permalink} itemProp="name" title={`Visit ${stripHtml(title).result}`}>
+        <Link href={permalink} itemProp="name" title={`Visit ${stripHtml(title).result}`}>
           {parse(title)}
-        </a>
+        </Link>
       </h4>
       <cite className="byline">– By {names}</cite>
     </li>
