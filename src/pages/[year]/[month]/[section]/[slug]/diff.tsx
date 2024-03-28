@@ -1,5 +1,5 @@
 import directus from "../../../../../../lib/directus"
-import { readItems, readItem } from "@directus/sdk"
+import { readItems } from "@directus/sdk"
 import ArticleDiff from "@/components/article/articleDiff"
 import { PageType, getArticle, getArticles, getIssueData, getPermalink } from "../../../../../../lib/utils"
 import { Sections } from "../../../../../../lib/types"
