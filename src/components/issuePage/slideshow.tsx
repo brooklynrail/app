@@ -1,5 +1,5 @@
 import { stripHtml } from "string-strip-html"
-import { Articles, ArticlesSections, DirectusFiles, Sections } from "../../../lib/types"
+import { Articles, DirectusFiles } from "../../../lib/types"
 import Image from "next/image"
 import { useState } from "react"
 import { PageType, getPermalink } from "../../../lib/utils"
