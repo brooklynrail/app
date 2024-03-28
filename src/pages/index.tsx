@@ -1,6 +1,6 @@
-import { Ads, Articles, GlobalSettings, Issues, Sections } from "../../lib/types"
+import { Ads, Articles, Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
-import { getAds, getArticles, getCurrentIssue, getIssueData, getIssues, getSectionsByIssueId } from "../../lib/utils"
+import { getAds, getArticles, getCurrentIssue, getIssues, getSectionsByIssueId } from "../../lib/utils"
 import { NextSeo } from "next-seo"
 
 export interface IssuePageProps {
