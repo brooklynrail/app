@@ -63,7 +63,6 @@ export default ArticlePreviewController
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps(context: any) {
-  console.log("context: --- ", context)
   const slug: string = context.params.slug
 
   const article = await getArticle(slug)
