@@ -16,7 +16,7 @@ const replaceQuote = (html: string) => {
   // Replace the quote shortcode with a custom HTML structure
   return html.replace(regex, (match, cite, url, content) => {
     const linkedCite = url ? `<a href="${url}">${cite}</a>` : cite
-    let citeTag = cite ? `<cite>— ${linkedCite}</cite>` : ""
+    const citeTag = cite ? `<cite>— ${linkedCite}</cite>` : ""
     return `<blockquote class="quote" data-type="${cite}">“${content}”${citeTag}</blockquote>`
   })
 }
@@ -27,7 +27,7 @@ const replacePullQuote = (html: string) => {
   // Replace the quote shortcode with a custom HTML structure
   return html.replace(regex, (match, cite, url, content) => {
     const linkedCite = url ? `<a href="${url}">${cite}</a>` : cite
-    let citeTag = cite ? `<cite>— ${linkedCite}</cite>` : ""
+    const citeTag = cite ? `<cite>— ${linkedCite}</cite>` : ""
     return `<div class="pullquote width-sm" data-type="${cite}"><pullquote>“${content}”${citeTag}</pullquote></div>`
   })
 }
@@ -38,7 +38,7 @@ const replaceBlockquote = (html: string) => {
   // Replace the quote shortcode with a custom HTML structure
   return html.replace(regex, (match, cite, url, content) => {
     const linkedCite = url ? `<a href="${url}">${cite}</a>` : cite
-    let citeTag = cite ? `<cite>— ${linkedCite}</cite>` : ""
+    const citeTag = cite ? `<cite>— ${linkedCite}</cite>` : ""
     return `<blockquote class="blockquote" data-type="${cite}">“${content}”${citeTag}</blockquote>`
   })
 }
