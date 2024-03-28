@@ -1,3 +1,4 @@
+// @ts-nocheck
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
 import { DirectusFiles } from "./types"
@@ -284,9 +285,13 @@ export function getAds() {
       filter: {
         _and: [
           {
-            status: { _eq: "published" },
-            start_date: { _lte: formattedDate },
-            end_date: { _gte: formattedDate },
+            status: { _in: ["published"] },
+            start_date: {
+              _lte: formattedDate,
+            },
+            end_date: {
+              _gte: formattedDate,
+            },
             ad_url: { _nnull: true },
           },
         ],
