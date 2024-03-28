@@ -1,3 +1,4 @@
+/* eslint max-lines: 0 */
 export type Ads = {
   ad_type: string
   ad_url?: string | null
