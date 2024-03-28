@@ -1,5 +1,5 @@
 // @ts-nocheck
-// tslint:disable-next-line:max-line-length
+/* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
 import { DirectusFiles } from "./types"
