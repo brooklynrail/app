@@ -21,11 +21,15 @@ const IssueSelect = (props: IssueSelectProps) => {
     }
   }
 
-  if (!selectedIssueSlug || !Array.isArray(allIssues)) return null
+  if (!selectedIssueSlug || !Array.isArray(allIssues)) {
+    return null
+  }
   return (
     <select id="issue_select" value={selectedIssueSlug} onChange={handleIssueChange}>
       {allIssues.map((issue) => {
-        if (!issue.slug) return <></>
+        if (!issue.slug) {
+          return <></>
+        }
         return (
           <option key={issue.slug} value={issue.slug}>
             {issue.title}
