@@ -3,6 +3,7 @@ import { Articles, ArticlesSections, DirectusFiles, Sections } from "../../../li
 import Image from "next/image"
 import { useState } from "react"
 import { PageType, getPermalink } from "../../../lib/utils"
+import Link from "next/link"
 
 interface SlideImageProps {
   slideshow_image: DirectusFiles
@@ -53,10 +54,10 @@ const SlideShow = (props: SlideshowProps) => {
     })
 
     return (
-      <a key={i} className="banner" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
+      <Link key={i} className="banner" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
         <SlideImage slideshow_image={slideshow_image} />
         <h2>{title}</h2>
-      </a>
+      </Link>
     )
   })
 

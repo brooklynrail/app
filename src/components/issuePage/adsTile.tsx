@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Ads } from "../../../lib/types"
 import Image from "next/image"
 
@@ -24,9 +25,9 @@ const AdsTile = (props: AdsTileProps) => {
 
     return (
       <div key={`adtile-${i}`} className="ad">
-        <a href={ad.ad_url} target="_blank">
+        <Link href={ad.ad_url} target="_blank">
           <Image src={src} width={scaledWidth} height={scaledHeight} alt={`description`} />
-        </a>
+        </Link>
       </div>
     )
   })

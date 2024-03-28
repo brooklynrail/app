@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Ads } from "../../../lib/types"
 import Image from "next/image"
 
@@ -36,10 +37,10 @@ const Ad970 = (props: Ad970Props) => {
 
     return (
       <div key={`adtile-${i}`} className="ad">
-        <a href={ad.ad_url} target="_blank">
+        <Link href={ad.ad_url} target="_blank">
           <Image className="image_desktop" src={srcDesktop} width={desktopWidth} height={desktopHeight} alt={alt} />
           <Image className="image_mobile" src={srcMobile} width={mobileWidth} height={mobileHeight} alt={alt} />
-        </a>
+        </Link>
       </div>
     )
   })

@@ -3,6 +3,7 @@ import { Articles, DirectusFiles } from "../../../lib/types"
 import { stripHtml } from "string-strip-html"
 import Image from "next/image"
 import { PageType, getPermalink } from "../../../lib/utils"
+import Link from "next/link"
 
 export interface PromoProps {
   article: Articles
@@ -25,9 +26,9 @@ export const PromoSectionName = (props: PromoProps) => {
   })
   return (
     <p className="article_type">
-      <a className="section" href={permalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
+      <Link className="section" href={permalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
         {sectionName}
-      </a>
+      </Link>
       {kicker && (
         <>
           <span className="divider"></span>
@@ -59,16 +60,16 @@ const PromoStandard = (props: PromoProps) => {
         {showSection && <PromoSectionName {...props} />}
         {showImage && promo_banner && (
           <div className={`media media-thumb`}>
-            <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
+            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
               <PromoBanner {...promo_banner} />
-            </a>
+            </Link>
           </div>
         )}
         <h4>
           {sortNum}
-          <a href={permalink} title={`Visit ${stripHtml(title).result}`}>
+          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
             {parse(title)}
-          </a>
+          </Link>
         </h4>
         <p className="excerpt">{parse(excerpt)}</p>
       </div>

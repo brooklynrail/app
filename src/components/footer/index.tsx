@@ -6,42 +6,42 @@ const Footer = () => {
       <div className="grid-container">
         <div className="grid-row grid-gap-4">
           <div className="grid-col-12 tablet-lg:grid-col-3">
-            <a href="/">
+            <Link href="/">
               <img
                 className="logo"
                 src="/images/brooklynrail-logo-white.png"
                 alt="The Brooklyn Rail"
                 title="Brooklyn Rail Home"
               />
-            </a>
+            </Link>
             <p className="sub-head">Critical Perspectives on Art, Politics and Culture</p>
           </div>
           <div className="grid-col-6 tablet-lg:grid-col-3 tablet-lg:grid-offset-1 desktop:grid-col-2 desktop:grid-offset-3">
             <h5>The RAIL</h5>
             <ul>
               <li>
-                <a href="/about/?f">About the Rail</a>
+                <Link href="/about/?f">About the Rail</Link>
               </li>
               <li>
-                <a href="/staff/?f">Staff</a>
+                <Link href="/staff/?f">Staff</Link>
               </li>
               <li>
-                <a href="/our-supporters/?f">Our Supporters</a>
+                <Link href="/our-supporters/?f">Our Supporters</Link>
               </li>
               <li>
-                <a href="/contributors/?f">Contributors</a>
+                <Link href="/contributors/?f">Contributors</Link>
               </li>
               <li>
-                <a href="https://shop.brooklynrail.org?f">Store</a>
+                <Link href="https://shop.brooklynrail.org?f">Store</Link>
               </li>
               <li>
-                <a href="/history/?f">History</a>
+                <Link href="/history/?f">History</Link>
               </li>
               <li>
-                <a href="/archives/?f">Archives</a>
+                <Link href="/archives/?f">Archives</Link>
               </li>
               <li>
-                <a href="/contact/?f">Contact Us</a>
+                <Link href="/contact/?f">Contact Us</Link>
               </li>
             </ul>
           </div>
@@ -49,19 +49,19 @@ const Footer = () => {
             <h5>Get Involved</h5>
             <ul>
               <li>
-                <a href="https://mailchi.mp/brooklynrail/join/?f">Sign up for our newsletter</a>
+                <Link href="https://mailchi.mp/brooklynrail/join/?f">Sign up for our newsletter</Link>
               </li>
               <li>
-                <a href="/subscribe/?f">Subscribe</a>
+                <Link href="/subscribe/?f">Subscribe</Link>
               </li>
               <li>
-                <a href="https://brooklynrail.org/donate?f">Donate</a>
+                <Link href="https://brooklynrail.org/donate?f">Donate</Link>
               </li>
               <li>
-                <a href="/advertise/?f">Advertise</a>
+                <Link href="/advertise/?f">Advertise</Link>
               </li>
               <li>
-                <a href="/submissions/?f">Submissions</a>
+                <Link href="/submissions/?f">Submissions</Link>
               </li>
             </ul>
           </div>
@@ -69,24 +69,24 @@ const Footer = () => {
             <h5>Follow</h5>
             <ul>
               <li>
-                <a href="https://www.instagram.com/brooklynrail/" title="Follow @brooklynrail on Instagram">
+                <Link href="https://www.instagram.com/brooklynrail/" title="Follow @brooklynrail on Instagram">
                   <i className="fab fa-instagram"></i> Instagram
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="https://twitter.com/thebrooklynrail" title="Follow @thebrooklynrail on Twitter">
+                <Link href="https://twitter.com/thebrooklynrail" title="Follow @thebrooklynrail on Twitter">
                   <i className="fab fa-twitter-square"></i> Twitter
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="https://www.facebook.com/thebrooklynrail" title="Like The Brooklyn Rail on Facebook">
+                <Link href="https://www.facebook.com/thebrooklynrail" title="Like The Brooklyn Rail on Facebook">
                   <i className="fab fa-facebook-f"></i> Facebook
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/rss" title="The Brooklyn Rail RSS feed">
+                <Link href="/rss" title="The Brooklyn Rail RSS feed">
                   <i className="fas fa-rss"></i> RSS
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

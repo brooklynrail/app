@@ -11,6 +11,7 @@ import Ad970 from "../issuePage/ad970"
 import AdsTile from "../issuePage/adsTile"
 import SectionArticles from "./sectionArticles"
 import { SectionProps } from "@/pages/[year]/[month]/[section]"
+import Link from "next/link"
 
 const SectionPage = (props: IssuePageProps & SectionProps) => {
   const { allIssues, currentIssue, currentSections, currentArticles, currentSection } = props
@@ -58,12 +59,12 @@ const SectionPage = (props: IssuePageProps & SectionProps) => {
 
                     <CurrentSections {...currentSectionsProps} />
 
-                    <a className="search_btn" href="/search" title="Search All Issues">
+                    <Link className="search_btn" href="/search" title="Search All Issues">
                       <span>Search</span> <i className="fas fa-search"></i>
-                    </a>
-                    <a className="archives_btn" href="/archives" title="View Archive">
+                    </Link>
+                    <Link className="archives_btn" href="/archives" title="View Archive">
                       <span>View Archive</span>
-                    </a>
+                    </Link>
 
                     <RailProjects />
                     <RailPartners />

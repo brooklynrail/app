@@ -17,6 +17,7 @@ import SlideShow from "./slideshow"
 import TableOfContents from "./tableOfContents"
 import FeaturedArticles from "./featuredArticles"
 import { Articles } from "../../../lib/types"
+import Link from "next/link"
 
 export interface PromoProps {
   currentArticles: Array<Articles>
@@ -71,12 +72,12 @@ const IssuePage = (props: IssuePageProps) => {
 
                     <CurrentSections {...currentSectionsProps} />
 
-                    <a className="search_btn" href="/search" title="Search All Issues">
+                    <Link className="search_btn" href="/search" title="Search All Issues">
                       <span>Search</span> <i className="fas fa-search"></i>
-                    </a>
-                    <a className="archives_btn" href="/archives" title="View Archive">
+                    </Link>
+                    <Link className="archives_btn" href="/archives" title="View Archive">
                       <span>View Archive</span>
-                    </a>
+                    </Link>
 
                     <RailProjects />
                     <RailPartners />
@@ -125,9 +126,9 @@ const IssuePage = (props: IssuePageProps) => {
                   </div>
                   <div className="grid-col-8 grid-offset-2">
                     <div style={{ margin: "25px 0px 25px 30px" }}>
-                      <a href="/subscribe">
+                      <Link href="/subscribe">
                         <img src="/images/subscribe-footer.png" />
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

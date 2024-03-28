@@ -1,6 +1,7 @@
 import { Articles, ArticlesIssues } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import { PageType, getPermalink } from "../../../lib/utils"
+import Link from "next/link"
 
 interface NextPrevProps {
   diff: boolean
@@ -23,10 +24,10 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
     if (currentArticleIndex == 0 || currentArticleIndex == articlesListCount) {
       return (
         <div className="prev">
-          <a href={issueSlug}>
+          <Link href={issueSlug}>
             <span>ISSUE</span>
             <h3>{issueName}</h3>
-          </a>
+          </Link>
         </div>
       )
     }
@@ -40,10 +41,10 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
     })
     return (
       <div className="prev">
-        <a href={prevPermalink}>
+        <Link href={prevPermalink}>
           <span>Previous</span>
           <h3>{prev.title}</h3>
-        </a>
+        </Link>
       </div>
     )
   }
@@ -62,10 +63,10 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
       {prevLink()}
       {next && (
         <div className="next">
-          <a href={nextPermalink}>
+          <Link href={nextPermalink}>
             <span>Next</span>
             <h3>{next.title}</h3>
-          </a>
+          </Link>
         </div>
       )}
     </nav>

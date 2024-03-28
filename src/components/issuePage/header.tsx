@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 const Header = () => {
   return (
     <div id="header_section">
@@ -7,42 +9,42 @@ const Header = () => {
           <h2>Critical Perspectives on Art, Politics and Culture</h2>
           <h3>FEB 2024</h3>
         </div>
-        <a href="/">
+        <Link href="/">
           <img src="/images/brooklynrail-logo-ex.svg" height="68" alt="The Brooklyn Rail" title="Brooklyn Rail Home" />
-        </a>
+        </Link>
       </div>
 
       <nav>
         <ul>
           <li>
-            <a href="/about?h" title="About">
+            <Link href="/about?h" title="About">
               <span>About</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="https://brooklynrail.org/events?h" title="Events">
+            <Link href="https://brooklynrail.org/events?h" title="Events">
               <span>Events</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="https://mailchi.mp/brooklynrail/join/?h" title="Subscribe to our newsletter">
+            <Link href="https://mailchi.mp/brooklynrail/join/?h" title="Subscribe to our newsletter">
               <span>Newsletter</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="https://shop.brooklynrail.org/products/subscription?h" title="Subscribe">
+            <Link href="https://shop.brooklynrail.org/products/subscription?h" title="Subscribe">
               <span>Subscribe</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a target="_blank" href="https://shop.brooklynrail.org?h" title="Shop">
+            <Link target="_blank" href="https://shop.brooklynrail.org?h" title="Shop">
               <span>Shop</span>
-            </a>
+            </Link>
           </li>
           <li className="btn btn-donate">
-            <a href="https://brooklynrail.org/donate?h" title="Donate">
+            <Link href="https://brooklynrail.org/donate?h" title="Donate">
               <span>Donate</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
