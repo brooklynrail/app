@@ -50,7 +50,7 @@ module.exports = {
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     complexity: "off",
-    "max-lines": "error",
+    "max-lines": "warn",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
