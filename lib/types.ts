@@ -1,3 +1,4 @@
+// tslint:disable-next-line:max-line-length
 export type Ads = {
   ad_type: string
   ad_url?: string | null
