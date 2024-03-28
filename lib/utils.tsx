@@ -94,7 +94,7 @@ export async function getIssueData(year?: number, month?: number) {
                   contributors: [{ contributors_id: ["first_name", "last_name", "slug"] }],
                 },
                 {
-                  sections: [{ sections_id: ["slug"] }],
+                  sections: ["sections_id.slug"],
                 },
                 "sort",
               ],
@@ -124,7 +124,7 @@ export function getSectionsByIssueId(issueId: number) {
         {
           articles: [
             {
-              articles_slug: [{ issues: [{ issues_id: ["slug"] }] }],
+              articles_slug: ["issues.issues_id.id"],
             },
           ],
         },
