@@ -89,14 +89,17 @@ export async function getStaticPaths() {
     }),
   )
 
-  const paths = articles.map((article) => ({
-    params: {
-      year: String(article.issues && article.issues[0].issues_id.year),
-      month: String(article.issues && article.issues[0].issues_id.month),
-      section: String(article.sections && article.sections[0].sections_id.slug),
-      slug: article.slug,
-    },
-  }))
+  const paths = articles.map((article) => {
+    const month = article.issues && article.issues[0].issues_id.month
+    return {
+      params: {
+        year: article.issues && article.issues[0].issues_id.year.toString(),
+        month: month < 10 ? `0${month}` : month,
+        section: article.sections && article.sections[0].sections_id.slug.toString(),
+        slug: article.slug,
+      },
+    }
+  })
 
   // We'll pre-render only these paths at build time.
   // { fallback: 'blocking' } will server-render pages

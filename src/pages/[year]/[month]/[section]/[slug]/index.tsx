@@ -151,7 +151,7 @@ export async function getStaticPaths() {
       params: {
         year: article.issues && article.issues[0].issues_id.year.toString(),
         month: month < 10 ? `0${month}` : month,
-        section: article.sections && article.sections[0].sections_id.slug,
+        section: article.sections && article.sections[0].sections_id.slug.toString(),
         slug: article.slug,
       },
     }
