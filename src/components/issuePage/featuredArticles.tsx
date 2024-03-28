@@ -15,7 +15,7 @@ const FeaturedArticles = (props: PromoProps) => {
   })
 
   return (
-    <section className="collection">
+    <div className="collection">
       {featuredArticles.map((article: Articles, i: number) => {
         const permalink = getPermalink({
           year: year,
@@ -36,7 +36,7 @@ const FeaturedArticles = (props: PromoProps) => {
           />
         )
       })}
-    </section>
+    </div>
   )
 }
 
