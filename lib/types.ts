@@ -70,7 +70,7 @@ export type ArticlesIssues = {
 export type ArticlesSections = {
   articles_slug?: string | Articles | null
   id: number
-  sections_id?: number | Sections | null
+  sections_id: Sections
 }
 
 export type Contributors = {

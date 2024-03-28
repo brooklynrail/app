@@ -93,7 +93,7 @@ export async function getIssueData(year?: number, month?: number) {
                   contributors: [{ contributors_id: ["first_name", "last_name", "slug"] }],
                 },
                 {
-                  sections: ["sections_id.slug"],
+                  sections: [{ sections_id: ["slug"] }],
                 },
                 "sort",
               ],
@@ -185,8 +185,7 @@ export function getArticles(issueId: number, section?: string) {
         _and: [
           {
             issues: { issues_id: { _eq: issueId } },
-            // section pages need to filter by section
-            sections: section ? { sections_id: { slug: { _eq: section } } } : undefined,
+            sections: { sections_id: { slug: { _eq: section } } },
           },
         ],
       },
