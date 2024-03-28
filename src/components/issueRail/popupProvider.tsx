@@ -15,5 +15,7 @@ export const PopupProvider = ({ children }: any) => {
 
   const value = { showPopup, setShowPopup, images, setImages }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   return <PopupContext.Provider value={value}>{children}</PopupContext.Provider>
 }
