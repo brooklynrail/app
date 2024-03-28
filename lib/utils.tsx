@@ -356,13 +356,13 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}`
     case PageType.Issue:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}`
-    case PageType.Home:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/`
     case PageType.Contributor:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}`
     case PageType.Page:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}`
     case PageType.Preview:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}`
+    default: // HOME
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/`
   }
 }
