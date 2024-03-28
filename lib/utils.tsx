@@ -1,3 +1,4 @@
+/* eslint max-lines: 0 */
 // @ts-nocheck
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
@@ -364,5 +365,7 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}`
     case PageType.Preview:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}`
+    default:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/`
   }
 }
