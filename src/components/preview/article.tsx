@@ -29,7 +29,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
     if (previewCookie || prerenderCookie) {
       setIsViewable(true)
     }
-  }, [])
+  }, [cookieSlug])
 
   const handlePasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault()
