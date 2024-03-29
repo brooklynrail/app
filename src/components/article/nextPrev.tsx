@@ -1,4 +1,4 @@
-import { Articles, ArticlesIssues } from "../../../lib/types"
+import { Articles } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import { PageType, getPermalink } from "../../../lib/utils"
 import Link from "next/link"
@@ -8,9 +8,8 @@ interface NextPrevProps {
 }
 
 export const NextPrev = (props: ArticleProps & NextPrevProps) => {
-  const { currentIssue, currentSection, article, permalink } = props
+  const { currentIssue, currentSection, article } = props
   const { slug } = article
-  const diff = props.diff ? `diff/` : ``
   const issueName = currentIssue.title
   const issueSlug = currentIssue.slug
 
