@@ -43,7 +43,7 @@ function ArticleController(props: ArticleProps & SectionProps) {
       <NextSeo
         title={`${ogtitle} | The Brooklyn Rail`}
         description={ogdescription}
-        canonical={`${process.env.NEXT_PUBLIC_BASE_URL}/${permalink}`}
+        canonical={`${permalink}`}
         openGraph={{
           title: `${ogtitle} | The Brooklyn Rail`,
           description: ogdescription,
