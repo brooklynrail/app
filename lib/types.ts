@@ -65,13 +65,13 @@ export type ArticlesFiles = {
 export type ArticlesIssues = {
   articles_slug?: string | Articles | null
   id: number
-  issues_id?: number | Issues | null
+  issues_id: Issues
 }
 
 export type ArticlesSections = {
-  articles_slug?: string | Articles | null
+  articles_slug: string | Articles
   id: number
-  sections_id?: number | Sections | null
+  sections_id: Sections
 }
 
 export type Contributors = {
@@ -462,7 +462,7 @@ export type GlobalSettings = {
 }
 
 export type Issues = {
-  articles: Articles | ArticlesIssues[]
+  articles: Articles[] | ArticlesIssues[]
   cover_1?: DirectusFiles
   cover_2?: DirectusFiles
   cover_3?: DirectusFiles

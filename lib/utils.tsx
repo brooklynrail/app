@@ -1,5 +1,6 @@
 /* eslint max-lines: 0 */
 // @ts-nocheck
+/* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
 import { DirectusFiles } from "./types"
@@ -185,8 +186,7 @@ export function getArticles(issueId: number, section?: string) {
         _and: [
           {
             issues: { issues_id: { _eq: issueId } },
-            // section pages need to filter by section
-            sections: section ? { sections_id: { slug: { _eq: section } } } : undefined,
+            sections: { sections_id: { slug: { _eq: section } } },
           },
         ],
       },
@@ -356,8 +356,6 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}`
     case PageType.Issue:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}`
-    case PageType.Home:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/`
     case PageType.Contributor:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}`
     case PageType.Page:

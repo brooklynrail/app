@@ -88,9 +88,9 @@ export async function getStaticProps({ params }: any) {
   const article = articleData
   const currentIssue = issueData[0]
   const sections = sectionsData
-  const currentSection: Sections = article.sections && article.sections[0].sections_id
+  const currentSection = articleData.sections && articleData.sections[0].sections_id
 
-  const errorCode = currentSection.slug != section && "Section not found"
+  const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
   if (errorCode) {
     return { props: { errorCode: 404, errorMessage: errorCode } }
   }

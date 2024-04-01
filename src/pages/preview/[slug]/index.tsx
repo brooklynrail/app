@@ -66,14 +66,8 @@ export async function getStaticProps(context: any) {
 
   const article = await getArticle(slug)
 
-  const currentIssue: Issues | undefined = article.issues && article.issues[0] && article.issues[0].issues_id
-  const currentSection: Sections | undefined =
-    article.sections && article.sections[0] && article.sections[0].sections_id
-
-  // const errorCode = currentSection.slug != section && "Section not found"
-  // if (errorCode) {
-  //   return { props: { errorCode: 404, errorMessage: errorCode } }
-  // }
+  const currentIssue = article.issues && article.issues[0] && article.issues[0].issues_id
+  const currentSection = article.sections && article.sections[0] && article.sections[0].sections_id
 
   const permalink = getPermalink({
     slug: article.slug,

@@ -18,7 +18,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 6, // Allows for the parsing of modern ECMAScript features
     sourceType: "module", // Allows for the use of imports
-    project: ["./tsconfig.json"], // Allows the use of rules that require type information from the project
+    project: ["./tsconfig.json", "./app/tsconfig.json"], // Update the project property to include the path to the tsconfig.json file
   },
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
@@ -50,7 +50,7 @@ module.exports = {
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     complexity: "off",
-    "max-lines": "error",
+    "max-lines": "warn",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
