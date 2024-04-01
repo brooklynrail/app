@@ -1,5 +1,3 @@
-import directus from "../../../../lib/directus"
-import { readItems } from "@directus/sdk"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
 import Error from "next/error"
@@ -14,6 +12,7 @@ export interface ArticlePreviewProps {
   permalink: string
   errorCode?: number
   errorMessage?: string
+  draftMode: boolean
 }
 
 function ArticlePreviewController(props: ArticlePreviewProps) {
@@ -58,10 +57,7 @@ function ArticlePreviewController(props: ArticlePreviewProps) {
 
 export default ArticlePreviewController
 
-// This function gets called at build time on server-side.
-// It may be called again, on a serverless function, if
-// revalidation is enabled and a new request comes in
-export async function getStaticProps(context: any) {
+export async function getServerSideProps(context: any) {
   const slug: string = context.params.slug
 
   const article = await getArticle(slug)
@@ -84,50 +80,5 @@ export async function getStaticProps(context: any) {
       permalink,
       draftMode: draftMode,
     },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 10 seconds
-    revalidate: 2, // In seconds
   }
-}
-
-// This function gets called at build time on server-side.
-// It may be called again, on a serverless function, if
-// the path has not been generated.
-export async function getStaticPaths() {
-  const articles = await directus.request(
-    readItems("articles", {
-      fields: [
-        "slug",
-        {
-          sections: [
-            {
-              sections_id: ["slug"],
-            },
-          ],
-        },
-        {
-          issues: [
-            {
-              issues_id: ["year", "month"],
-            },
-          ],
-        },
-      ],
-      filter: {
-        _and: [{ status: { _eq: "draft" } }],
-      },
-    }),
-  )
-
-  const paths = articles.map((article) => ({
-    params: {
-      slug: article.slug,
-    },
-  }))
-
-  // We'll pre-render only these paths at build time.
-  // { fallback: 'blocking' } will server-render pages
-  // on-demand if the path doesn't exist.
-  return { paths, fallback: "blocking" }
 }
