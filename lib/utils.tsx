@@ -117,7 +117,6 @@ export async function getIssueData(year?: number, month?: number) {
 export function getSectionsByIssueId(issueId: number) {
   const sections = directus.request(
     readItems("sections", {
-      // fields: ["name", "slug", "articles", "articles.articles_slug.issues.issues_id.id"],
       fields: [
         "name",
         "slug",
@@ -133,9 +132,11 @@ export function getSectionsByIssueId(issueId: number) {
         _and: [
           {
             articles: {
-              articles_slug: {
-                issues: { issues_id: { _eq: issueId } },
-              },
+              articles_slug: [
+                {
+                  issues: { issues_id: { _eq: issueId } },
+                },
+              ],
             },
           },
         ],
