@@ -6,38 +6,57 @@
   form {
     @include u-display("flex");
     @include u-flex("justify-center");
-    @include u-flex("align-center");
-    @include u-height("viewport");
-    input {
-      @include u-padding("05");
-      @include u-padding-x("105");
-      @include u-radius("md");
-      @include u-border("base-light", "1px", "solid");
-      @include u-font("sans", "2xl");
-      @include u-text("light");
-      @include u-color("black");
-      @include u-bg("white");
-      text-security: disc;
-      -webkit-text-security: disc;
-      -mox-text-security: disc;
-      // @include u-transition("all", "sm");
-      &:focus {
-        // @include u-border("all", "sm", "primary");
-        @include u-bg("white");
-        outline: 0;
+
+    .passWrap {
+      @include u-display("flex");
+      @include u-flex("column");
+      @include u-flex("justify-center");
+      @include u-width("mobile-lg");
+      @include u-height("viewport");
+      p {
+        @include u-font("sans", "xs");
+        @include u-padding-y(1);
+        @include u-text("red-60v");
       }
     }
-    button {
-      @include u-margin-left(1);
-      @include u-border(0);
-      @include u-font("sans", "2xl");
-      @include u-padding("2px");
-      @include u-padding-x(1);
-      @include u-radius("md");
-      @include u-bg("white");
-      &:hover {
-        // @include u-bg("base-lightest");
-        @include u-cursor("pointer");
+
+    .field {
+      @include u-display("flex");
+      @include u-flex("justify-center");
+      @include u-flex("align-center");
+      input {
+        @include u-margin(0);
+        @include u-padding(3);
+        @include u-padding-x("105");
+        @include u-radius("md");
+        @include u-border("base-light", "1px", "solid");
+        @include u-font("sans", "xl");
+        @include u-text("light");
+        @include u-color("black");
+        @include u-bg("white");
+        @include u-width("full");
+
+        text-security: disc;
+        -webkit-text-security: disc;
+        -mox-text-security: disc;
+        // @include u-transition("all", "sm");
+        &:focus {
+          // @include u-border("all", "sm", "primary");
+          @include u-bg("white");
+          outline: 0;
+        }
+      }
+      button {
+        @include u-margin-left(1);
+        @include u-border(0);
+        @include u-font("sans", "xl");
+        @include u-padding(1);
+        @include u-radius("md");
+        @include u-bg("white");
+        &:hover {
+          @include u-bg("base-lightest");
+          @include u-cursor("pointer");
+        }
       }
     }
   }

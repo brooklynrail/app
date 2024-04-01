@@ -14,6 +14,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   const cookieSlug = `rail_preview_${article.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
+  const [passwordError, setPasswordError] = useState<string | undefined>()
 
   // the previewCookie is set on a per-article basis
   // this way, writers will have to enter the password for each article they want to preview
@@ -37,19 +38,14 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
       document.cookie = `${cookieSlug}=true; path=/; max-age=3600; samesite=strict; secure`
     } else {
       // Show an error message for incorrect password
-      alert("Incorrect password. Please try again.")
+      setPasswordError("Incorrect password")
     }
   }
 
-  const passwordProps = { password, setPassword, handlePasswordSubmit }
+  const passwordProps = { password, passwordError, setPassword, handlePasswordSubmit }
 
   if (!isViewable) {
-    return (
-      <>
-        {`Is not viewable ${isViewable}`}
-        <Password {...passwordProps} />
-      </>
-    )
+    return <Password {...passwordProps} />
   }
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${article.slug}/`
