@@ -38,7 +38,6 @@ function ArticleController(props: ArticleProps & SectionProps) {
     const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.contributors_id.slug })
     return contribPermalink
   })
-
   return (
     <>
       <NextSeo
@@ -75,7 +74,7 @@ export async function getStaticProps({ params }: any) {
   const month: number = params.month
   const section: string = params.section
 
-  const sectionsData = await directus.request(
+  const sections = await directus.request(
     readItems("sections", {
       fields: ["name", "id", "slug"],
     }),
@@ -87,7 +86,6 @@ export async function getStaticProps({ params }: any) {
 
   const article = articleData
   const currentIssue = issueData[0]
-  const sections = sectionsData
   const currentSection = articleData.sections && articleData.sections[0].sections_id
 
   const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
