@@ -186,7 +186,8 @@ export function getArticles(issueId: number, section?: string) {
         _and: [
           {
             issues: { issues_id: { _eq: issueId } },
-            sections: { sections_id: { slug: { _eq: section } } },
+            // section pages need to filter by section
+            sections: section ? { sections_id: { slug: { _eq: section } } } : undefined,
           },
         ],
       },
