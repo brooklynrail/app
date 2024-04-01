@@ -112,12 +112,15 @@ export async function getStaticPaths() {
     }),
   )
 
-  const paths = issues.map((issue) => ({
-    params: {
-      year: String(issue.year),
-      month: String(issue.month).padStart(2, "0"), // Adds leading zero to single-digit months
-    },
-  }))
+  const paths = issues.map((issue) => {
+    const month = issue.month
+    return {
+      params: {
+        year: String(issue.year),
+        month: month < 10 ? `0${month}` : month,
+      },
+    }
+  })
 
   // We'll pre-render only these paths at build time.
   // { fallback: 'blocking' } will server-render pages

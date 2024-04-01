@@ -1,3 +1,4 @@
+/* eslint max-lines: 0 */
 // @ts-nocheck
 /* eslint max-lines: 0 */
 import directus from "./directus"
@@ -94,7 +95,7 @@ export async function getIssueData(year?: number, month?: number) {
                   contributors: [{ contributors_id: ["first_name", "last_name", "slug"] }],
                 },
                 {
-                  sections: [{ sections_id: ["slug"] }],
+                  sections: ["sections_id.slug"],
                 },
                 "sort",
               ],
@@ -117,7 +118,6 @@ export async function getIssueData(year?: number, month?: number) {
 export function getSectionsByIssueId(issueId: number) {
   const sections = directus.request(
     readItems("sections", {
-      // fields: ["name", "slug", "articles", "articles.articles_slug.issues.issues_id.id"],
       fields: [
         "name",
         "slug",
@@ -186,7 +186,8 @@ export function getArticles(issueId: number, section?: string) {
         _and: [
           {
             issues: { issues_id: { _eq: issueId } },
-            sections: { sections_id: { slug: { _eq: section } } },
+            // section pages need to filter by section
+            sections: section ? { sections_id: { slug: { _eq: section } } } : undefined,
           },
         ],
       },
@@ -362,7 +363,7 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}`
     case PageType.Preview:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}`
-    default: // HOME
+    default:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/`
   }
 }

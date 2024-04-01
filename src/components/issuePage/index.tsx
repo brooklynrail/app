@@ -1,6 +1,5 @@
 import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
-import Footer from "../footer"
 import ArtSeen from "./artSeen"
 import { IssuePageProps } from "@/pages"
 import CriticsPage from "./criticsPage"

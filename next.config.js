@@ -8,6 +8,6 @@ module.exports = {
   productionBrowserSourceMaps: true,
   trailingSlash: true,
   images: {
-    domains: ["localhost"],
+    domains: ["localhost", "studio.brooklynrail.org", "brooklynrail.org"],
   },
 }

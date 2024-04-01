@@ -23,7 +23,7 @@ export type Articles = {
   body_code?: string | null
   body_text?: string | null
   body_type?: string | null
-  contributors: Contributors[]
+  contributors: Contributors[] | ArticlesContributors[]
   date_created: string
   date_updated: string
   deck?: string | null
@@ -31,15 +31,15 @@ export type Articles = {
   featured: boolean
   featured_image?: DirectusFiles
   header_type?: string | null
-  images: ArticlesFiles[]
+  images: any[] | ArticlesFiles[]
   Images: string
   in_print?: boolean | null
-  issues: ArticlesIssues[]
+  issues: any[] | ArticlesIssues[]
   kicker?: string | null
   old_id?: number | null
   promo_banner?: DirectusFiles
   promo_thumb?: DirectusFiles
-  sections: ArticlesSections[]
+  sections: any[] | ArticlesSections[]
   slideshow_image?: DirectusFiles | null
   slug: string
   sort?: number | null
@@ -75,7 +75,7 @@ export type ArticlesSections = {
 }
 
 export type Contributors = {
-  articles: ArticlesContributors[]
+  articles: any[] | ArticlesContributors[]
   bio?: string | null
   date_created?: string | null
   date_updated?: string | null
@@ -101,7 +101,7 @@ export type DirectusActivity = {
   ip?: string | null
   item: string
   origin?: string | null
-  revisions: DirectusRevisions[]
+  revisions: any[] | DirectusRevisions[]
   timestamp: string
   user?: string | DirectusUsers | null
   user_agent?: string | null
@@ -137,7 +137,7 @@ export type DirectusDashboards = {
   id: string
   name: string
   note?: string | null
-  panels: DirectusPanels[]
+  panels: any[] | DirectusPanels[]
   user_created?: string | DirectusUsers | null
 }
 
@@ -169,8 +169,8 @@ export type DirectusFields = {
 }
 
 export type DirectusFiles = {
-  ads: Ads[]
-  articles: Articles[]
+  ads: any[] | Ads[]
+  articles: any[] | Articles[]
   caption?: string | null
   charset?: string | null
   description?: string | null
@@ -184,7 +184,7 @@ export type DirectusFiles = {
   folder?: string | DirectusFolders | null
   height?: number | null
   id: string
-  issues: Issues[]
+  issues: any[] | Issues[]
   location?: string | null
   metadata?: unknown | null
   modified_by?: string | DirectusUsers | null
@@ -209,7 +209,7 @@ export type DirectusFlows = {
   id: string
   name: string
   operation?: string | DirectusOperations | null
-  operations: DirectusOperations[]
+  operations: any[] | DirectusOperations[]
   options?: unknown | null
   status: string
   trigger?: string | null
@@ -333,7 +333,7 @@ export type DirectusRoles = {
   id: string
   ip_access?: unknown | null
   name: string
-  users: DirectusUsers[]
+  users: any[] | DirectusUsers[]
 }
 
 export type DirectusSessions = {
@@ -469,7 +469,7 @@ export type Issues = {
   cover_4?: DirectusFiles
   cover_5?: DirectusFiles
   cover_6?: DirectusFiles
-  current_issue: GlobalSettings[]
+  current_issue: any[] | GlobalSettings[]
   date_created?: string | null
   date_updated?: string | null
   id: number
@@ -500,7 +500,7 @@ export type Pages = {
 }
 
 export type Sections = {
-  articles: ArticlesSections[]
+  articles: any[] | ArticlesSections[]
   date_created?: string | null
   date_updated?: string | null
   id: number

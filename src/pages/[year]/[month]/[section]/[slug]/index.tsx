@@ -38,7 +38,6 @@ function ArticleController(props: ArticleProps & SectionProps) {
     const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.contributors_id.slug })
     return contribPermalink
   })
-
   return (
     <>
       <NextSeo
@@ -75,7 +74,7 @@ export async function getStaticProps({ params }: any) {
   const month: number = params.month
   const section: string = params.section
 
-  const sectionsData = await directus.request(
+  const sections = await directus.request(
     readItems("sections", {
       fields: ["name", "id", "slug"],
     }),
@@ -87,7 +86,6 @@ export async function getStaticProps({ params }: any) {
 
   const article = articleData
   const currentIssue = issueData[0]
-  const sections = sectionsData
   const currentSection = articleData.sections && articleData.sections[0].sections_id
 
   const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
@@ -145,14 +143,17 @@ export async function getStaticPaths() {
     }),
   )
 
-  const paths = articles.map((article) => ({
-    params: {
-      year: String(article.issues && article.issues[0].issues_id.year),
-      month: String(article.issues && article.issues[0].issues_id.month),
-      section: String(article.sections && article.sections[0].sections_id.slug),
-      slug: article.slug,
-    },
-  }))
+  const paths = articles.map((article) => {
+    const month = article.issues && article.issues[0].issues_id.month
+    return {
+      params: {
+        year: article.issues && article.issues[0].issues_id.year.toString(),
+        month: month < 10 ? `0${month}` : month,
+        section: article.sections && article.sections[0].sections_id.slug.toString(),
+        slug: article.slug,
+      },
+    }
+  })
 
   // We'll pre-render only these paths at build time.
   // { fallback: 'blocking' } will server-render pages

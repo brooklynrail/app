@@ -4,11 +4,11 @@ import Image from "next/image"
 const CoversPopup = () => {
   const { showPopup, images } = usePopup()
 
+  const { setShowPopup, setImages } = usePopup()
+
   if (!showPopup) {
     return null
   }
-
-  const { setShowPopup, setImages } = usePopup()
 
   const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault()
