@@ -52,7 +52,7 @@ const ArticleList = (props: ArticleListProps) => {
     return (
       <li key={i}>
         <h4>
-          <Link href={`${permalink}/${article.slug}/`}>
+          <Link href={`${permalink}`}>
             <span dangerouslySetInnerHTML={{ __html: article.title }} />
           </Link>
         </h4>
