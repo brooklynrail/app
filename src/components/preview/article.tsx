@@ -4,10 +4,13 @@ import { ArticlePreviewProps } from "@/pages/preview/[slug]"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import Password from "./password"
+import cookies from "js-cookie"
+import { useRouter } from "next/router"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
-  const { article } = props
+  const { article, draftMode } = props
   const { contributors } = article
+  const router = useRouter()
 
   const cookieSlug = `rail_preview_${article.slug}`
   const [password, setPassword] = useState("")
@@ -18,18 +21,11 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   // the directusCookie is set when you are logged in to Directus
   // if either of these cookies are set, the article will be viewable
   useEffect(() => {
-    const previewCookie = document.cookie.split(";").some((item) => item.trim().startsWith(`${cookieSlug}=`))
-    const directusCookie = document.cookie.split(";").some((item) => item.trim().startsWith("directus_session_token="))
-    const prerenderCookie = document.cookie.split(";").some((item) => item.trim().startsWith(`__prerender_bypass=`))
-    console.log("document", document)
-    console.log("document.cookie", document.cookie)
-    console.log("previewCookie", previewCookie)
-    console.log("directusCookie", directusCookie)
-    console.log("prerenderCookie", prerenderCookie)
-    if (previewCookie || prerenderCookie) {
+    // Read the cookie
+    if (draftMode || router.query.draftMode) {
       setIsViewable(true)
     }
-  }, [cookieSlug])
+  }, [draftMode, router.query.draftMode])
 
   const handlePasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault()
@@ -51,13 +47,13 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   if (!isViewable) {
     return (
       <>
-        {`yes ${isViewable}`}
+        {`Is not viewable ${isViewable}`}
         <Password {...passwordProps} />
       </>
     )
   }
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${article.slug}`
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${article.slug}/`
 
   return (
     <>
