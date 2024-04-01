@@ -4,7 +4,6 @@ import { ArticlePreviewProps } from "@/pages/preview/[slug]"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import Password from "./password"
-import cookies from "js-cookie"
 import { useRouter } from "next/router"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
