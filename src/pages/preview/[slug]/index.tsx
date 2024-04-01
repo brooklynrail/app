@@ -33,9 +33,11 @@ function ArticlePreviewController(props: ArticlePreviewProps) {
   return (
     <>
       <NextSeo
+        noindex={true}
+        nofollow={true}
         title={`${ogtitle} | The Brooklyn Rail`}
         description={ogdescription}
-        canonical={`${process.env.NEXT_PUBLIC_BASE_URL}/${permalink}`}
+        canonical={`${permalink}`}
         openGraph={{
           title: `${ogtitle} | The Brooklyn Rail`,
           description: ogdescription,
