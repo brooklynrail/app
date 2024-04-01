@@ -132,11 +132,9 @@ export function getSectionsByIssueId(issueId: number) {
         _and: [
           {
             articles: {
-              articles_slug: [
-                {
-                  issues: { issues_id: { _eq: issueId } },
-                },
-              ],
+              articles_slug: {
+                issues: { issues_id: { _eq: issueId } },
+              },
             },
           },
         ],
