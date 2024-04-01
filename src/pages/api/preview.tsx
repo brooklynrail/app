@@ -1,6 +1,6 @@
 import { getArticle } from "../../../lib/utils"
 
-const draftHandler = async (req: any, res: any) => {
+const previewHandler = async (req: any, res: any) => {
   // Check the secret and next parameters
   // This secret should only be known to this API route and the CMS
   if (req.query.secret !== process.env.PREVIEW_TOKEN) {
@@ -18,13 +18,13 @@ const draftHandler = async (req: any, res: any) => {
     return res.status(401).json({ message: "Invalid article slug" })
   }
 
-  // Enable Draft Mode by setting the cookie
-  res.setDraftMode({ enable: true })
+  // Enable Preview Mode by setting the cookies
+  res.setPreviewData({})
 
   // Redirect to the path from the fetched article
-  res.redirect(`/preview/${article.slug}`)
+  res.redirect(`/preview/${article.slug}?draftMode=true`)
 
   return
 }
 
-export default draftHandler
+export default previewHandler
