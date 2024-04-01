@@ -95,7 +95,7 @@ const replaceRightAlign = (html: string) => {
 const replaceRule = (html: string) => {
   const regex = /\[rule(?:\s+size="([^"]*)")?\]/g
   // Replace the quote shortcode with a custom HTML structure
-  return html.replace(regex, (match, size, content) => {
+  return html.replace(regex, (match, size) => {
     return `<hr class="${size}" />`
   })
 }
@@ -119,7 +119,7 @@ const replaceShortcodes = (html: string, images: any) => {
   // IMAGES
   // Options for the html-react-parser
   const options = {
-    replace: ({ type, name, data, children }: any) => {
+    replace: ({ data }: any) => {
       // [img name="img1" type="md" /]
       if (data && /(?:<p>\s*)?\[img name="[^"]*" type="[^"]*"\s*\/?\](?:\s*<\/p>)?/.test(data)) {
         const matches = data.match(/name="([^"]*)" type="([^"]*)"/)

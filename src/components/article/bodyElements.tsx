@@ -1,18 +1,17 @@
-import Link from "next/link"
 import parse from "html-react-parser"
 import Image from "next/image"
-import { useEffect, useState } from "react"
 
 // Promo shortcodes
 //  <p>[promo type="free-text"]</p>
 //  <h6>On View</h6>
 //  <p><strong>Lisson Gallery</strong><br>January 11February 17, 2024<br>New York[/promo]</p>
-const replacePromoShortcodes = (htmlString: string) => {
-  const regex = /<div>\[promo type="([^"]*?)"\]([\s\S]*?)\[\/promo\]<\/div>/g
-  return htmlString.replace(regex, (match: any, type: string, content: string) => {
-    return `<div className="width-sm promo ${type}">${content}</div>`
-  })
-}
+
+// const replacePromoShortcodes = (htmlString: string) => {
+//   const regex = /<div>\[promo type="([^"]*?)"\]([\s\S]*?)\[\/promo\]<\/div>/g
+//   return htmlString.replace(regex, (match: any, type: string, content: string) => {
+//     return `<div className="width-sm promo ${type}">${content}</div>`
+//   })
+// }
 
 // Image shortcodes
 // [img name="img7" type="lg" /]
