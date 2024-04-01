@@ -1,6 +1,6 @@
 import { getArticle } from "../../../lib/utils"
 
-export default async (req: any, res: any) => {
+const draftHandler = async (req: any, res: any) => {
   // Check the secret and next parameters
   // This secret should only be known to this API route and the CMS
   if (req.query.secret !== process.env.PREVIEW_TOKEN) {
@@ -26,3 +26,5 @@ export default async (req: any, res: any) => {
 
   return
 }
+
+export default draftHandler
