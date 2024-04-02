@@ -367,3 +367,13 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/`
   }
 }
+
+export async function getPreviewPassword() {
+  const settings = await directus.request(
+    readSingleton("global_settings", {
+      fields: ["preview_password"],
+    }),
+  )
+
+  return settings.preview_password
+}
