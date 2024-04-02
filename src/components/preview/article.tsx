@@ -7,7 +7,7 @@ import Password from "./password"
 import { useRouter } from "next/router"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
-  const { article, draftMode } = props
+  const { article, draftMode, previewPassword } = props
   const { contributors } = article
   const router = useRouter()
 
@@ -30,8 +30,8 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   const handlePasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault()
 
-    // Check if the entered password is correct
-    if (password === "pizza") {
+    // Check if the `password` is the same as `previewPassword`
+    if (password === previewPassword) {
       // Redirect to the article preview
       setIsViewable(true)
       // set a cookie
