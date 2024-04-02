@@ -1,7 +1,7 @@
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
 import Error from "next/error"
-import { PageType, getArticle, getOGImage, getPermalink } from "../../../../lib/utils"
+import { PageType, getArticle, getOGImage, getPermalink, getPreviewPassword } from "../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../lib/types"
 import ArticlePreview from "@/components/preview/article"
 
@@ -13,6 +13,7 @@ export interface ArticlePreviewProps {
   errorCode?: number
   errorMessage?: string
   draftMode: boolean
+  previewPassword: string
 }
 
 function ArticlePreviewController(props: ArticlePreviewProps) {
@@ -72,6 +73,7 @@ export async function getServerSideProps(context: any) {
     type: PageType.Preview,
   })
 
+  const previewPassword = await getPreviewPassword()
   const draftMode = context.draftMode ? context.draftMode : false
 
   return {
@@ -81,6 +83,7 @@ export async function getServerSideProps(context: any) {
       currentIssue: currentIssue ? currentIssue : null,
       permalink,
       draftMode: draftMode,
+      previewPassword: previewPassword,
     },
   }
 }
