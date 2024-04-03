@@ -221,16 +221,16 @@ export function getArticle(slug: string) {
         "user_updated",
         "date_updated",
         {
-          featured_image: ["caption", "filename_disk", "width", "height", "type"],
+          featured_image: ["id", "caption", "filename_disk", "width", "height", "type"],
         },
         {
-          slideshow_image: ["caption", "filename_disk", "width", "height", "type"],
+          slideshow_image: ["id", "caption", "filename_disk", "width", "height", "type"],
         },
         {
-          promo_banner: ["caption", "filename_disk", "width", "height", "type"],
+          promo_banner: ["id", "caption", "filename_disk", "width", "height", "type"],
         },
         {
-          promo_thumb: ["caption", "filename_disk", "width", "height", "type"],
+          promo_thumb: ["id", "caption", "filename_disk", "width", "height", "type"],
         },
         {
           contributors: [
