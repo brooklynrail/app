@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 import Password from "./password"
 import { useRouter } from "next/router"
+import PreviewInfo from "./previewInfo"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { article, draftMode, previewPassword } = props
@@ -118,7 +119,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                 </article>
               </div>
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <div className="preview-info">Article info: TKTK</div>
+                <PreviewInfo {...article} />
               </div>
             </div>
           </div>
