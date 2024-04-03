@@ -11,15 +11,14 @@ interface PreviewImageProps {
   directusUrl: string
 }
 const PreviewImage = (props: PreviewImageProps) => {
-  const { filename_disk, caption, shortcode_key } = props.image
+  const { filename_disk, caption, shortcode_key, id } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const desc = caption ? <figcaption>{parse(caption)}</figcaption> : null
   const shortcodeKey = shortcode_key && `[img name="${shortcode_key}" type="lg" /]`
   const [isCopied, setIsCopied] = useState(false)
 
   // the URL to edit the image in Directus
-  const imageEditURL = `${props.directusUrl}/admin/files/${props.image.id}`
-  console.log("imageEditURL", imageEditURL)
+  const imageEditURL = `${props.directusUrl}/admin/files/${id}`
 
   // the dimensions of the preview image
   const width = props.fullWidth ? 450 : 200
