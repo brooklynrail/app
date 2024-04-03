@@ -14,6 +14,7 @@ export interface ArticlePreviewProps {
   errorMessage?: string
   draftMode: boolean
   previewPassword: string
+  directusUrl: string
 }
 
 function ArticlePreviewController(props: ArticlePreviewProps) {
@@ -75,6 +76,7 @@ export async function getServerSideProps(context: any) {
 
   const previewPassword = await getPreviewPassword()
   const draftMode = context.draftMode ? context.draftMode : false
+  const directusUrl = process.env.BASE_DIRECTUS_URL
 
   return {
     props: {
@@ -84,6 +86,7 @@ export async function getServerSideProps(context: any) {
       permalink,
       draftMode: draftMode,
       previewPassword: previewPassword,
+      directusUrl: directusUrl,
     },
   }
 }

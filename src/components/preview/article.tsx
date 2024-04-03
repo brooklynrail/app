@@ -8,7 +8,7 @@ import { useRouter } from "next/router"
 import PreviewInfo from "./previewInfo"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
-  const { article, draftMode, previewPassword } = props
+  const { article, draftMode, previewPassword, directusUrl } = props
   const { contributors } = article
   const router = useRouter()
 
@@ -119,7 +119,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                 </article>
               </div>
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <PreviewInfo {...article} />
+                <PreviewInfo article={article} directusUrl={directusUrl} />
               </div>
             </div>
           </div>
