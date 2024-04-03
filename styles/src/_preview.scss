@@ -1,4 +1,166 @@
-// Brooklyn Rail Header
+.preview-info {
+  @include u-margin-top(4);
+  @include u-margin-right(2);
+  @include u-bg("blue-warm-5");
+  @include u-font("sans", "2xs");
+  .block {
+    @include u-padding-y(1);
+    @include u-padding-x(2);
+    h4 {
+      @include u-padding-bottom("05");
+      @include u-text("light");
+      @include u-text("uppercase");
+      @include u-text("gray-cool-60");
+      @include u-font("sans", "3xs");
+    }
+  }
+  .updated {
+    @include u-bg("blue-warm-10");
+    @include u-margin-bottom(2);
+  }
+  .title {
+    @include u-font("sans", "2xs");
+    @include u-text("bold");
+  }
+  .preview-image {
+    @include u-position("relative");
+    @include u-display("flex");
+    @include u-flex("align-start");
+    .imgbox {
+      @include u-margin-top("2px");
+      @include u-margin-right("105");
+    }
+    img {
+      @include u-width(10);
+      @include u-maxw("none");
+      height: auto;
+      object-fit: contain;
+    }
+    figcaption {
+      @include u-font("sans", "3xs");
+    }
+    .dimensions {
+      @include u-margin-top("2px");
+      @include u-font("sans", "micro");
+      @include u-text("gray-cool-60");
+    }
+    .tools {
+      @include u-padding-top(1);
+      @include u-position("relative");
+      @include u-display("flex");
+      @include u-flex("align-center");
+
+      button {
+        @include u-margin-right(1);
+        @include u-padding-y("2px");
+        @include u-padding-x(1);
+        @include u-padding-bottom("05");
+        @include u-border(0);
+        @include u-radius("md");
+        @include u-font("sans", "3xs");
+        @include u-bg("blue-warm-50v");
+        @include u-text("white");
+        @include u-display("block");
+        &:hover {
+          @include u-cursor("pointer");
+          @include u-bg("blue-warm-60v");
+        }
+      }
+      .shortcode {
+        @include u-position("relative");
+        @include u-width(15);
+        @include u-cursor("pointer");
+        span {
+          @include u-display("none");
+          @include u-padding-y("2px");
+          @include u-position("absolute");
+          @include u-top(0);
+          @include u-bottom(0);
+          @include u-right(0);
+          @include u-left(0);
+          @include u-z(100);
+          @include u-radius("sm");
+          @include u-bg("gray-cool-60");
+          @include u-text("white");
+          @include u-text("center");
+          @include u-font("sans", "3xs");
+          opacity: 0.9;
+          background-blend-mode: multiply;
+          &:hover {
+            @include u-bg("gray-cool-70");
+          }
+        }
+        &:hover span {
+          @include u-display("block");
+        }
+        code {
+          @include u-position("relative");
+          @include u-display("block");
+          @include u-bg("white");
+          @include u-text("red-60v");
+          @include u-radius("sm");
+          @include u-padding-y("2px");
+          @include u-padding-x("05");
+          @include u-padding-bottom("05");
+          @include u-font("sans", "3xs");
+          @include u-overflow("hidden");
+          @include u-width(15);
+          text-wrap: nowrap;
+        }
+      }
+    }
+  }
+  .all-images {
+    .preview-image {
+      @include u-margin-bottom(4);
+    }
+  }
+  .slideshow-image {
+    .preview-image {
+      @include u-flex("column");
+      @include u-flex("align-end");
+      .imgbox {
+        @include u-margin-right(0);
+      }
+      img {
+        @include u-width("full");
+      }
+      .dimensions {
+        @include u-text("right");
+      }
+      .tools button {
+        @include u-margin-right(0);
+      }
+    }
+  }
+  .editor {
+    @include u-font("sans", "3xs");
+    @include u-display("flex");
+    @include u-flex("align-center");
+    @include u-text("medium");
+    strong {
+      @include u-display("block");
+      @include u-text("uppercase");
+      @include u-text("red-50v");
+      @include u-text("medium");
+    }
+    em {
+      @include u-text("normal");
+      @include u-display("block");
+    }
+    .avatar {
+      @include u-margin-right(1);
+      @include u-radius("pill");
+    }
+  }
+  hr {
+    @include u-margin-y(3);
+    @include u-margin-x(3);
+    @include u-border-color("base-lightest");
+    @include u-border-bottom(0);
+  }
+}
+
 .preview-pass {
   @include u-bg("white");
   @include u-height("viewport");
