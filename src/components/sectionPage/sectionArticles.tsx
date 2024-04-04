@@ -1,4 +1,4 @@
-import { Articles } from "../../../lib/types"
+import { Articles, ArticlesIssues } from "../../../lib/types"
 import { PageType, getPermalink } from "../../../lib/utils"
 import { PromoProps } from "../issuePage"
 import PromoSection from "../promo/section"
@@ -8,7 +8,9 @@ const SectionArticles = (props: PromoProps) => {
 
   return (
     <section className="collection">
-      {currentArticles.map((article: Articles, i: number) => {
+      {currentArticles.map((articleIssue: ArticlesIssues, i: number) => {
+        const order = articleIssue.order
+        const article = articleIssue.articles_slug
         const permalink = getPermalink({
           year: year,
           month: month,
@@ -25,6 +27,7 @@ const SectionArticles = (props: PromoProps) => {
             month={month}
             showImage={true}
             showSection={true}
+            order={order}
           />
         )
       })}

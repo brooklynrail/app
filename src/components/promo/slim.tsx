@@ -7,11 +7,12 @@ interface PromoSlimProps {
   article: Articles
   i?: number
   permalink: string
+  order?: number | null
 }
 
 const PromoSlim = (props: PromoSlimProps) => {
-  const { article, i = 0, permalink } = props
-  const { title, contributors, sort } = article
+  const { article, i = 0, permalink, order } = props
+  const { title, contributors } = article
 
   const names = contributors.map((contributor: any, i: number) => {
     const { first_name, last_name } = contributor.contributors_id
@@ -21,7 +22,7 @@ const PromoSlim = (props: PromoSlimProps) => {
 
   const sortNum = (
     <span className="sort">
-      <span>{sort}</span>
+      <span>{order}</span>
     </span>
   )
 

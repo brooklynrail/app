@@ -1,4 +1,4 @@
-import { Articles } from "../../../lib/types"
+import { ArticlesIssues } from "../../../lib/types"
 import PromoSlim from "../promo/slim"
 import { PromoProps } from "."
 import { PageType, getPermalink } from "../../../lib/utils"
@@ -6,11 +6,11 @@ import { PageType, getPermalink } from "../../../lib/utils"
 const CriticsPage = (props: PromoProps) => {
   const { currentArticles, year, month } = props
 
-  // Get only the articles that are in the `criticspage` section from the currentArticles
-  const criticsPage: Array<Articles> = []
-  currentArticles.forEach((article: Articles) => {
-    if (article.sections[0].sections_id.slug === "criticspage") {
-      criticsPage.push(article)
+  // Filter the currentArticles to get only the articles in the `criticspage` section
+  const criticsPage: ArticlesIssues[] = []
+  currentArticles.forEach((articleIssue: ArticlesIssues) => {
+    if (articleIssue.articles_slug.sections[0].sections_id.slug === "criticspage") {
+      criticsPage.push(articleIssue)
     }
   })
 
@@ -18,7 +18,9 @@ const CriticsPage = (props: PromoProps) => {
     <>
       <h3>Critics Page</h3>
       <ul>
-        {criticsPage.map((article: Articles, i: number) => {
+        {criticsPage.map((articleIssue: ArticlesIssues, i: number) => {
+          const order = articleIssue.order
+          const article = articleIssue.articles_slug
           const permalink = getPermalink({
             year: year,
             month: month,
@@ -26,7 +28,7 @@ const CriticsPage = (props: PromoProps) => {
             slug: article.slug,
             type: PageType.Article,
           })
-          return <PromoSlim key={`criticspage-${i}`} i={i} article={article} permalink={permalink} />
+          return <PromoSlim key={`criticspage-${i}`} i={i} article={article} permalink={permalink} order={order} />
         })}
       </ul>
     </>

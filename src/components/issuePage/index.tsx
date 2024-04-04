@@ -15,11 +15,11 @@ import Ad970 from "./ad970"
 import SlideShow from "./slideshow"
 import TableOfContents from "./tableOfContents"
 import FeaturedArticles from "./featuredArticles"
-import { Articles } from "../../../lib/types"
+import { ArticlesIssues } from "../../../lib/types"
 import Link from "next/link"
 
 export interface PromoProps {
-  currentArticles: Array<Articles>
+  currentArticles: ArticlesIssues[]
   year: number
   month: number
 }

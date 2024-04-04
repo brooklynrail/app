@@ -12,8 +12,8 @@ const Thumb = (props: DirectusFiles) => {
 }
 
 const PromoThumb = (props: PromoProps) => {
-  const { article, showImage, showSection, permalink } = props
-  const { title, excerpt, sort, promo_thumb } = article
+  const { article, showImage, showSection, permalink, order } = props
+  const { title, excerpt, promo_thumb } = article
   const names = article.contributors.map((contributor: any, i: number) => {
     const { first_name, last_name } = contributor.contributors_id
     const name = `${first_name} ${last_name}`
@@ -22,7 +22,7 @@ const PromoThumb = (props: PromoProps) => {
 
   const sortNum = (
     <span className="sort">
-      <span>{sort}</span>
+      <span>{order}</span>
     </span>
   )
 

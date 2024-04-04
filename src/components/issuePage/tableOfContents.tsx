@@ -1,11 +1,11 @@
 import Link from "next/link"
-import { Articles, ArticlesIssues, Issues, Sections } from "../../../lib/types"
+import { ArticlesIssues, Sections } from "../../../lib/types"
 import { PageType, getPermalink } from "../../../lib/utils"
 import PromoSlim from "../promo/slim"
 
 interface TableOfContentsProps {
   currentSections: Array<Sections>
-  currentArticles: Array<Articles>
+  currentArticles: ArticlesIssues[]
   permalink: string
   year: number
   month: number
@@ -14,7 +14,7 @@ interface TableOfContentsProps {
 interface IssueSectionProps {
   section: Sections
   permalink: string
-  articles: Array<Articles>
+  articles: ArticlesIssues[]
   year: number
   month: number
 }
@@ -37,7 +37,9 @@ const IssueSection = (props: IssueSectionProps) => {
         </Link>
       </h3>
       <ul>
-        {articles.map((article, i) => {
+        {articles.map((articleIssue: ArticlesIssues, i: number) => {
+          const order = articleIssue.order
+          const article = articleIssue.articles_slug
           const permalink = getPermalink({
             year: year,
             month: month,
@@ -45,7 +47,7 @@ const IssueSection = (props: IssueSectionProps) => {
             slug: article.slug,
             type: PageType.Article,
           })
-          return <PromoSlim key={`toc-article-${i}`} article={article} permalink={permalink} />
+          return <PromoSlim key={`toc-article-${i}`} article={article} permalink={permalink} order={order} />
         })}
       </ul>
     </>
@@ -59,9 +61,9 @@ const TableOfContents = (props: TableOfContentsProps) => {
     <div className="collection table-of-contents">
       <h2>Table of Contents</h2>
       {currentSections.map((section, i) => {
-        // get the articles from the currentArticles that are in the `section.slug`
-        const articles = currentArticles.filter((article) => {
-          return article.sections[0].sections_id.slug === section.slug
+        // Filter the currentArticles to get only the articles in the current section
+        const articles = currentArticles.filter((articleIssue: ArticlesIssues) => {
+          return articleIssue.articles_slug.sections[0].sections_id.slug === section.slug
         })
         return (
           <IssueSection

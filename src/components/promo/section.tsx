@@ -12,12 +12,12 @@ const PromoImage = (props: DirectusFiles) => {
 }
 
 const PromoSection = (props: PromoProps) => {
-  const { article, showSection, showImage, permalink } = props
-  const { title, excerpt, sort, featured_image } = article
+  const { article, showSection, showImage, permalink, order } = props
+  const { title, excerpt, featured_image } = article
 
   const sortNum = (
     <span className="sort">
-      <span>{sort}</span>
+      <span>{order}</span>
     </span>
   )
 

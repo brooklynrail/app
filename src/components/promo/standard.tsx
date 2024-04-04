@@ -12,6 +12,7 @@ export interface PromoProps {
   permalink: string
   year: number
   month: number
+  order?: number | null
 }
 
 export const PromoSectionName = (props: PromoProps) => {
@@ -46,11 +47,11 @@ const PromoBanner = (props: DirectusFiles) => {
 }
 
 const PromoStandard = (props: PromoProps) => {
-  const { article, showSection, showImage, permalink } = props
-  const { title, excerpt, sort, promo_banner } = article
+  const { article, showSection, showImage, permalink, order } = props
+  const { title, excerpt, promo_banner } = article
   const sortNum = (
     <span className="sort">
-      <span>{sort}</span>
+      <span>{order}</span>
     </span>
   )
 
