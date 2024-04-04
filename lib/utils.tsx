@@ -79,16 +79,16 @@ export async function getIssueData(year: number, month: number) {
                 "kicker",
                 "featured",
                 {
-                  promo_thumb: ["caption", "filename_disk", "width", "height"],
+                  promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
                 },
                 {
-                  promo_banner: ["caption", "filename_disk", "width", "height"],
+                  promo_banner: ["id", "caption", "filename_disk", "width", "height"],
                 },
                 {
-                  slideshow_image: ["caption", "filename_disk", "width", "height"],
+                  slideshow_image: ["id", "caption", "filename_disk", "width", "height"],
                 },
                 {
-                  featured_image: ["caption", "filename_disk", "width", "height"],
+                  featured_image: ["id", "caption", "filename_disk", "width", "height"],
                 },
                 {
                   contributors: [
@@ -187,16 +187,16 @@ export function getArticles(issueId: number, section?: string) {
         "excerpt",
         "kicker",
         {
-          promo_thumb: ["caption", "filename_disk", "width", "height"],
+          promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
         },
         {
-          promo_banner: ["caption", "filename_disk", "width", "height"],
+          promo_banner: ["id", "caption", "filename_disk", "width", "height"],
         },
         {
-          slideshow_image: ["caption", "filename_disk", "width", "height"],
+          slideshow_image: ["id", "caption", "filename_disk", "width", "height"],
         },
         {
-          featured_image: ["caption", "filename_disk", "width", "height"],
+          featured_image: ["id", "caption", "filename_disk", "width", "height"],
         },
         "featured",
         "sort",
