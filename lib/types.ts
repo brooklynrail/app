@@ -34,12 +34,12 @@ export type Articles = {
   images: any[] | ArticlesFiles[]
   Images: string
   in_print?: boolean | null
-  issues: any[] | ArticlesIssues[]
+  issues: ArticlesIssues[]
   kicker?: string | null
   old_id?: number | null
   promo_banner?: DirectusFiles
   promo_thumb?: DirectusFiles
-  sections: any[] | ArticlesSections[]
+  sections: ArticlesSections[]
   slideshow_image?: DirectusFiles | null
   slug: string
   sort?: number | null
@@ -70,13 +70,13 @@ export type ArticlesIssues = {
 }
 
 export type ArticlesSections = {
-  articles_slug: string | Articles
+  articles_slug: Articles
   id: number
   sections_id: Sections
 }
 
 export type Contributors = {
-  articles: any[] | ArticlesContributors[]
+  articles: ArticlesContributors[]
   bio?: string | null
   date_created?: string | null
   date_updated?: string | null
@@ -502,7 +502,7 @@ export type Pages = {
 }
 
 export type Sections = {
-  articles: any[] | ArticlesSections[]
+  articles: ArticlesSections[]
   date_created?: string | null
   date_updated?: string | null
   id: number
