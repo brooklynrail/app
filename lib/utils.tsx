@@ -3,11 +3,11 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
-import { DirectusFiles } from "./types"
+import { DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
 export async function getIssues() {
-  const issues = await directus.request(
+  const issues: Issues[] = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title"],
       filter: {
@@ -40,7 +40,7 @@ export async function getCurrentIssue() {
 // instead of a single issue by ID
 // This returns a single issue object
 export async function getIssueData(year: number, month: number) {
-  const issueData = await directus.request(
+  const issueData: Issues[] = await directus.request(
     readItems("issues", {
       fields: [
         "id",
@@ -123,7 +123,7 @@ export async function getIssueData(year: number, month: number) {
 }
 
 export function getSectionsByIssueId(issueId: number) {
-  const sections = directus.request(
+  const sections: Sections[] = directus.request(
     readItems("sections", {
       fields: [
         "name",
