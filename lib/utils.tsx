@@ -35,9 +35,13 @@ export async function getCurrentIssue() {
   return currentIssueData
 }
 
-export async function getIssueData(year?: number, month?: number) {
+// Explore making this get IssueData by ID
+// NOTE: we need to use `readItems` instead of `readItem` because we are querying the `issues` collection
+// instead of a single issue by ID
+// This returns a single issue object
+export async function getIssueData(year: number, month: number) {
   const issueData = await directus.request(
-    readItem("issues", {
+    readItems("issues", {
       fields: [
         "id",
         "title",
@@ -115,7 +119,7 @@ export async function getIssueData(year?: number, month?: number) {
       },
     }),
   )
-  return issueData
+  return issueData[0]
 }
 
 export function getSectionsByIssueId(issueId: number) {
