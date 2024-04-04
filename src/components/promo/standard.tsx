@@ -49,7 +49,7 @@ const PromoBanner = (props: DirectusFiles) => {
 const PromoStandard = (props: PromoProps) => {
   const { article, showSection, showImage, permalink, order } = props
   const { title, excerpt, promo_banner } = article
-  const sortNum = (
+  const orderNum = (
     <span className="sort">
       <span>{order}</span>
     </span>
@@ -67,7 +67,7 @@ const PromoStandard = (props: PromoProps) => {
           </div>
         )}
         <h4>
-          {sortNum}
+          {orderNum}
           <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
             {parse(title)}
           </Link>

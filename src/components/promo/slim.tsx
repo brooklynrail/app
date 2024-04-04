@@ -20,7 +20,7 @@ const PromoSlim = (props: PromoSlimProps) => {
     return <span key={`first_name-last_name-${i}`}>{name}</span>
   })
 
-  const sortNum = (
+  const orderNum = (
     <span className="sort">
       <span>{order}</span>
     </span>
@@ -31,7 +31,7 @@ const PromoSlim = (props: PromoSlimProps) => {
   return (
     <li className={`promo promo-slim ${altClass}`} itemType="http://schema.org/Article">
       <h4>
-        {sortNum}
+        {orderNum}
         <Link href={permalink} itemProp="name" title={`Visit ${stripHtml(title).result}`}>
           {parse(title)}
         </Link>

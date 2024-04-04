@@ -15,7 +15,7 @@ const PromoSection = (props: PromoProps) => {
   const { article, showSection, showImage, permalink, order } = props
   const { title, excerpt, featured_image } = article
 
-  const sortNum = (
+  const orderNum = (
     <span className="sort">
       <span>{order}</span>
     </span>
@@ -28,7 +28,7 @@ const PromoSection = (props: PromoProps) => {
           <div className="grid-col-12 tablet:grid-col-8">
             {showSection && <PromoSectionName {...props} />}
             <h4>
-              {sortNum}
+              {orderNum}
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
                 {parse(title)}
               </Link>

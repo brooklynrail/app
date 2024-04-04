@@ -20,7 +20,7 @@ const PromoThumb = (props: PromoProps) => {
     return <span key={`first_name-last_name-${i}`}>{name}</span>
   })
 
-  const sortNum = (
+  const orderNum = (
     <span className="sort">
       <span>{order}</span>
     </span>
@@ -38,7 +38,7 @@ const PromoThumb = (props: PromoProps) => {
           </div>
         )}
         <h4>
-          {sortNum}
+          {orderNum}
           <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
             {parse(title)}
           </Link>
