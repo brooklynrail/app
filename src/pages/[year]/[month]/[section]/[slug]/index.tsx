@@ -38,6 +38,9 @@ function ArticleController(props: ArticleProps & SectionProps) {
     const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.contributors_id.slug })
     return contribPermalink
   })
+
+  console.log("currentIssue ---", props.currentIssue)
+
   return (
     <>
       <NextSeo
@@ -82,10 +85,10 @@ export async function getStaticProps({ params }: any) {
 
   const issueData = await getIssueData(year, month)
   const articleData = await getArticle(slug)
-  const currentArticles = await getArticles(issueData[0].id)
+  const currentArticles = await getArticles(issueData.id)
 
   const article = articleData
-  const currentIssue = issueData[0]
+  const currentIssue = issueData
   const currentSection = articleData.sections && articleData.sections[0].sections_id
 
   const errorCode = !currentSection || (currentSection.slug != section && "Section not found")

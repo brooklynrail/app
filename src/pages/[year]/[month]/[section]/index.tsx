@@ -58,12 +58,12 @@ export async function getStaticProps({ params }: any) {
   const issueData = await getIssueData(year, month)
 
   // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(issueData[0].id)
+  const currentSections = await getSectionsByIssueId(issueData.id)
 
   // Filter the articles within each section to only include those that are in the current issue
   currentSections.map((section: any) => {
     const filteredArticles = section.articles.filter(
-      (article: any) => article.articles_slug && article.articles_slug.issues[0].issues_id.id === issueData[0].id,
+      (article: any) => article.articles_slug && article.articles_slug.issues.issues_id.id === issueData.id,
     )
     return { ...section, articles: filteredArticles }
   })
@@ -74,13 +74,13 @@ export async function getStaticProps({ params }: any) {
     section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
   })
 
-  const currentArticles = await getArticles(issueData[0].id, section)
+  const currentArticles = await getArticles(issueData.id, section)
   const currentSection = currentSections.find((s: any) => s.slug === section)
 
   // Get the published Ads
   const ads = await getAds()
 
-  const currentIssue = issueData[0]
+  const currentIssue = issueData
 
   // If `section` does not exist, set errorCode to a string
   if (!currentSection) {
