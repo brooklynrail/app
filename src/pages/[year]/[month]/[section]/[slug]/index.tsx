@@ -4,8 +4,16 @@ import Article from "../../../../../components/article"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
 import Error from "next/error"
-import { PageType, getArticle, getArticles, getIssueData, getOGImage, getPermalink } from "../../../../../../lib/utils"
-import { Articles, Issues, Sections } from "../../../../../../lib/types"
+import {
+  PageType,
+  getArticle,
+  getArticlePages,
+  getArticles,
+  getIssueData,
+  getOGImage,
+  getPermalink,
+} from "../../../../../../lib/utils"
+import { Articles, ArticlesIssues, Issues, Sections } from "../../../../../../lib/types"
 
 export interface ArticleProps {
   article: Articles
@@ -124,42 +132,27 @@ export async function getStaticProps({ params }: any) {
 // It may be called again, on a serverless function, if
 // the path has not been generated.
 export async function getStaticPaths() {
-  const articles = await directus.request(
-    readItems("articles", {
-      fields: [
-        "slug",
-        {
-          sections: [
-            {
-              sections_id: ["slug"],
-            },
-          ],
-        },
-        {
-          issues: [
-            {
-              issues_id: ["year", "month"],
-            },
-          ],
-        },
-      ],
-    }),
-  )
+  try {
+    const articlePages = getArticlePages()
 
-  const paths = articles.map((article) => {
-    const month = article.issues && article.issues[0].issues_id.month
-    return {
-      params: {
-        year: article.issues && article.issues[0].issues_id.year.toString(),
-        month: month < 10 ? `0${month}` : month,
-        section: article.sections && article.sections[0].sections_id.slug.toString(),
-        slug: article.slug,
-      },
-    }
-  })
+    const paths = articlePages.map((article: Articles) => {
+      const month = article.issues[0].issues_id.month
+      return {
+        params: {
+          year: article.issues && article.issues[0].issues_id.year.toString(),
+          month: month < 10 ? `0${month}` : month,
+          section: article.sections && article.sections[0].sections_id.slug.toString(),
+          slug: article.slug,
+        },
+      }
+    })
 
-  // We'll pre-render only these paths at build time.
-  // { fallback: 'blocking' } will server-render pages
-  // on-demand if the path doesn't exist.
-  return { paths, fallback: "blocking" }
+    // We'll pre-render only these paths at build time.
+    // { fallback: 'blocking' } will server-render pages
+    // on-demand if the path doesn't exist.
+    return { paths, fallback: "blocking" }
+  } catch (error) {
+    console.error("Error fetching paths", error)
+    return { paths: [], fallback: "blocking" }
+  }
 }

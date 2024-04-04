@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
-import { DirectusFiles, Issues, Sections } from "./types"
+import { Articles, DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
 export async function getIssues() {
@@ -152,8 +152,34 @@ export function getSectionsByIssueId(issueId: number) {
   return sections
 }
 
+export function getArticlePages() {
+  const articlePages: Articles[] = directus.request(
+    readItems("articles", {
+      fields: [
+        "slug",
+        {
+          sections: [
+            {
+              sections_id: ["slug"],
+            },
+          ],
+        },
+        {
+          issues: [
+            {
+              issues_id: ["year", "month"],
+            },
+          ],
+        },
+      ],
+      limit: -1,
+    }),
+  )
+  return articlePages
+}
+
 export function getArticles(issueId: number, section?: string) {
-  const currentArticles = directus.request(
+  const currentArticles: Articles[] = directus.request(
     readItems("articles", {
       fields: [
         "title",
