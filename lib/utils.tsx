@@ -19,47 +19,25 @@ export async function getIssues() {
 }
 
 export async function getCurrentIssue() {
+  // get the current issue from the global settings
   const settings = await directus.request(
     readSingleton("global_settings", {
       fields: [
         {
-          current_issue: [
-            "id",
-            "title",
-            "slug",
-            "year",
-            "month",
-            "status",
-            {
-              cover_1: ["caption", "filename_disk", "width", "height", "type"],
-            },
-            {
-              cover_2: ["caption", "filename_disk", "width", "height", "type"],
-            },
-            {
-              cover_3: ["caption", "filename_disk", "width", "height", "type"],
-            },
-            {
-              cover_4: ["caption", "filename_disk", "width", "height", "type"],
-            },
-            {
-              cover_5: ["caption", "filename_disk", "width", "height", "type"],
-            },
-            {
-              cover_6: ["caption", "filename_disk", "width", "height", "type"],
-            },
-          ],
+          current_issue: ["id", "title", "slug", "year", "month", "status"],
         },
       ],
     }),
   )
-
-  return settings.current_issue
+  // get the current issue data from the issues collection
+  const currentIssueData: Issues = await getIssueData(settings.current_issue.year, settings.current_issue.month)
+  // return the first issue in the array
+  return currentIssueData
 }
 
 export async function getIssueData(year?: number, month?: number) {
   const issueData = await directus.request(
-    readItems("issues", {
+    readItem("issues", {
       fields: [
         "id",
         "title",
@@ -85,17 +63,42 @@ export async function getIssueData(year?: number, month?: number) {
         {
           cover_6: ["caption", "filename_disk", "width", "height", "type"],
         },
+
         {
           articles: [
+            "order",
             {
               articles_slug: [
                 "slug",
                 "title",
+                "excerpt",
+                "kicker",
+                "featured",
                 {
-                  contributors: [{ contributors_id: ["first_name", "last_name", "slug"] }],
+                  promo_thumb: ["caption", "filename_disk", "width", "height"],
                 },
                 {
-                  sections: ["sections_id.slug"],
+                  promo_banner: ["caption", "filename_disk", "width", "height"],
+                },
+                {
+                  slideshow_image: ["caption", "filename_disk", "width", "height"],
+                },
+                {
+                  featured_image: ["caption", "filename_disk", "width", "height"],
+                },
+                {
+                  contributors: [
+                    {
+                      contributors_id: ["first_name", "last_name", "slug"],
+                    },
+                  ],
+                },
+                {
+                  sections: [
+                    {
+                      sections_id: ["slug", "name", "id"],
+                    },
+                  ],
                 },
                 "sort",
               ],
