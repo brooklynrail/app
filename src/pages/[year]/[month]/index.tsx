@@ -5,7 +5,6 @@ import { IssuePageProps } from "@/pages"
 import {
   PageType,
   getAds,
-  getArticles,
   getIssueData,
   getIssues,
   getOGImage,
@@ -14,6 +13,7 @@ import {
 } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
+import { ArticlesIssues, ArticlesSections, Sections } from "../../../../lib/types"
 
 function Issue(props: IssuePageProps) {
   const { title, cover_1, issue_number, slug } = props.currentIssue
@@ -54,27 +54,30 @@ export async function getStaticProps({ params }: any) {
   const currentSections = await getSectionsByIssueId(issueData.id)
 
   // Filter the articles within each section to only include those that are in the current issue
-  currentSections.map((section: any) => {
-    const filteredArticles = section.articles.filter(
-      (article: any) => article.articles_slug && article.articles_slug.issues.issues_id.id === issueData.id,
+  currentSections.map((section: Sections) => {
+    const filteredArticles: ArticlesSections[] = section.articles.filter(
+      (article: ArticlesSections) => article.articles_slug.issues[0].issues_id.id === issueData.id,
     )
     return { ...section, articles: filteredArticles }
   })
 
   // Sort the articles within each section by their `sort` order
   // Note: the `sort` field is nested under `articles_slug`
-  currentSections.forEach((section: any) => {
+  currentSections.forEach((section: Sections) => {
     section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
   })
 
-  const currentArticles = await getArticles(issueData.id)
+  const currentArticles = issueData.articles
 
   // Get the published Ads
   const ads = await getAds()
 
-  // Get only the articles from `currentArticles` that have a `slideshow_image`
-  const currentSlides = currentArticles.filter((article) => {
-    return article.slideshow_image
+  // Filter the currentArticles to get only the articles with a slideshow image
+  const currentSlides: ArticlesIssues[] = []
+  currentArticles.forEach((articleIssue: ArticlesIssues) => {
+    if (articleIssue.articles_slug.slideshow_image) {
+      currentSlides.push(articleIssue)
+    }
   })
 
   const currentIssue = issueData
