@@ -13,7 +13,7 @@ import {
   getOGImage,
   getPermalink,
 } from "../../../../../../lib/utils"
-import { Articles, ArticlesIssues, Issues, Sections } from "../../../../../../lib/types"
+import { Articles, Issues, Sections } from "../../../../../../lib/types"
 
 export interface ArticleProps {
   article: Articles

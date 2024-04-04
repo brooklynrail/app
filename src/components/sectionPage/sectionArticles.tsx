@@ -1,4 +1,4 @@
-import { Articles, ArticlesIssues } from "../../../lib/types"
+import { ArticlesIssues } from "../../../lib/types"
 import { PageType, getPermalink } from "../../../lib/utils"
 import { PromoProps } from "../issuePage"
 import PromoSection from "../promo/section"
