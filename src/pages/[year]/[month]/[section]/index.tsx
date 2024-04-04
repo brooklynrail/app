@@ -12,7 +12,7 @@ import SectionPage from "@/components/sectionPage"
 import { NextSeo } from "next-seo"
 import Error from "next/error"
 import { stripHtml } from "string-strip-html"
-import { ArticlesSections, Sections } from "../../../../../lib/types"
+import { ArticlesIssues, Sections } from "../../../../../lib/types"
 
 export interface SectionProps {
   currentSection: Sections
@@ -56,26 +56,14 @@ export async function getStaticProps({ params }: any) {
   const allIssues = await getIssues()
   const issueData = await getIssueData(year, month)
 
+  // Filter the currentArticles to only include those that are in the current section
+  const currentArticles = issueData.articles.filter((article: ArticlesIssues) => {
+    return article.articles_slug.sections.find((s) => s.sections_id.slug === section)
+  })
+
   // Get only the sections that are used in the articles in the current issue
   const currentSections = await getSectionsByIssueId(issueData.id)
-
-  // Filter the articles within each section to only include those that are in the current issue
-  currentSections.map((section: Sections) => {
-    const filteredArticles = section.articles.filter(
-      (article: ArticlesSections) =>
-        article.articles_slug && article.articles_slug.issues[0].issues_id.id === issueData.id,
-    )
-    return { ...section, articles: filteredArticles }
-  })
-
-  // Sort the articles within each section by their `sort` order
-  // Note: the `sort` field is nested under `articles_slug`
-  currentSections.forEach((section: Sections) => {
-    section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
-  })
-
-  const currentArticles = issueData.articles
-  const currentSection = currentSections.find((s: any) => s.slug === section)
+  const currentSection = currentSections.find((s: Sections) => s.slug === section)
 
   // Get the published Ads
   const ads = await getAds()
