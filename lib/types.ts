@@ -66,6 +66,7 @@ export type ArticlesIssues = {
   articles_slug?: string | Articles | null
   id: number
   issues_id: Issues
+  order?: number | null
 }
 
 export type ArticlesSections = {
