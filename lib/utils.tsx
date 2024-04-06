@@ -2,7 +2,7 @@
 // @ts-nocheck
 /* eslint max-lines: 0 */
 import directus from "./directus"
-import { readItem, readItems, readSingleton } from "@directus/sdk"
+import { readItem, readItems, readSingleton, readFiles, readPreset } from "@directus/sdk"
 import { Articles, DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
@@ -410,6 +410,30 @@ export function getPermalink(props: PermalinkProps) {
     default:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/`
   }
+}
+
+export async function getListFiles() {
+  const result = await directus.request(
+    readFiles({
+      query: {
+        filter: {
+          filename_download: {
+            _eq: "walkingstick-kay.jpg",
+          },
+        },
+      },
+    }),
+  )
+  return result
+}
+
+export async function getPreset() {
+  const result = await directus.request(
+    readPreset("11", {
+      fields: ["*.*"],
+    }),
+  )
+  return result
 }
 
 export async function getPreviewPassword() {
