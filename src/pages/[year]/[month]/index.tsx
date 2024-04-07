@@ -53,20 +53,6 @@ export async function getStaticProps({ params }: any) {
   // Get only the sections that are used in the articles in the current issue
   const currentSections = await getSectionsByIssueId(issueData.id)
 
-  // Filter the articles within each section to only include those that are in the current issue
-  currentSections.map((section: Sections) => {
-    const filteredArticles: ArticlesSections[] = section.articles.filter(
-      (article: ArticlesSections) => article.articles_slug.issues[0].issues_id.id === issueData.id,
-    )
-    return { ...section, articles: filteredArticles }
-  })
-
-  // Sort the articles within each section by their `sort` order
-  // Note: the `sort` field is nested under `articles_slug`
-  currentSections.forEach((section: Sections) => {
-    section.articles.sort((a: any, b: any) => a.articles_slug.sort - b.articles_slug.sort)
-  })
-
   const currentArticles = issueData.articles
 
   // Get the published Ads
@@ -114,13 +100,14 @@ export async function getStaticPaths() {
       fields: ["year", "month"],
     }),
   )
+  console.log(issues)
 
   const paths = issues.map((issue) => {
     const month = issue.month
     return {
       params: {
         year: String(issue.year),
-        month: month < 10 ? `0${month}` : month,
+        month: month < 10 ? `0${String(month)}` : String(month),
       },
     }
   })
