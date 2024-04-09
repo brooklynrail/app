@@ -47,8 +47,6 @@ function ArticleController(props: ArticleProps & SectionProps) {
     return contribPermalink
   })
 
-  console.log("currentIssue ---", props.currentIssue)
-
   return (
     <>
       <NextSeo
