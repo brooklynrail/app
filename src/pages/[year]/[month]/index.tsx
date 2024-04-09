@@ -100,7 +100,6 @@ export async function getStaticPaths() {
       fields: ["year", "month"],
     }),
   )
-  console.log(issues)
 
   const paths = issues.map((issue) => {
     const month = issue.month
