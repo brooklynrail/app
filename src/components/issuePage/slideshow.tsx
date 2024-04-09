@@ -1,3 +1,4 @@
+import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
 import { ArticlesIssues, DirectusFiles } from "../../../lib/types"
 import Image from "next/image"
@@ -7,12 +8,13 @@ import Link from "next/link"
 
 interface SlideImageProps {
   slideshow_image: DirectusFiles
+  alt: string
 }
 
 const SlideImage = (props: SlideImageProps) => {
-  const { slideshow_image } = props
+  const { slideshow_image, alt } = props
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${slideshow_image.filename_disk}?key=slideshow-image`
-  return <Image className="bannerimg" width={664} height={282} alt={``} src={src} />
+  return <Image className="bannerimg" width={664} height={282} alt={stripHtml(alt).result} src={src} />
 }
 
 interface SlideshowProps {
@@ -56,8 +58,8 @@ const SlideShow = (props: SlideshowProps) => {
 
     return (
       <Link key={i} className="banner" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
-        <SlideImage slideshow_image={slideshow_image} />
-        <h2>{title}</h2>
+        <SlideImage slideshow_image={slideshow_image} alt={title} />
+        <h2>{parse(title)}</h2>
       </Link>
     )
   })
