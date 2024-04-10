@@ -1,0 +1,46 @@
+.issue-info {
+  @include u-padding-y(8);
+  @include u-font("mono", "sm");
+  h1 {
+    @include u-margin-bottom("05");
+    @include u-font("mono", "md");
+  }
+  p {
+    @include u-margin-bottom("05");
+  }
+  table {
+    @include u-margin-y(1);
+    @include u-width("full");
+    @include u-font("mono", "sm");
+    th {
+      @include u-text-align("left");
+      @include u-padding-right("05");
+    }
+
+    tr.different {
+      @include u-bg("red-10");
+    }
+    th,
+    td {
+      @include u-padding-y("05");
+      @include u-border-bottom("1px", "solid", "gray-40");
+    }
+  }
+  .issue-covers {
+    @include u-margin-y(1);
+    @include u-display("flex");
+    .cover {
+      @include u-padding-right("05");
+    }
+  }
+  .data {
+    @include u-margin-y(1);
+    @include u-font("mono", "sm");
+    p {
+      span {
+        @include u-width("card");
+        @include u-display("inline-block");
+      }
+    }
+  }
+}
