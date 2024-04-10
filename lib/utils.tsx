@@ -49,6 +49,9 @@ export async function getIssueData(year: number, month: number) {
         "year",
         "month",
         "status",
+        "issue_number",
+        "old_id",
+        "special_issue",
         {
           cover_1: ["caption", "filename_disk", "width", "height", "type"],
         },
@@ -67,7 +70,6 @@ export async function getIssueData(year: number, month: number) {
         {
           cover_6: ["caption", "filename_disk", "width", "height", "type"],
         },
-
         {
           articles: [
             "order",
@@ -117,12 +119,18 @@ export async function getIssueData(year: number, month: number) {
           { status: { _eq: "published" } },
         ],
       },
+      limit: -1,
+      deep: {
+        articles: {
+          _limit: -1,
+        },
+      },
     }),
   )
   return issueData[0]
 }
 
-export function getSectionsByIssueId(issueId: number) {
+export async function getSectionsByIssueId(issueId: number) {
   const sections: Sections[] = directus.request(
     readItems("sections", {
       fields: [
@@ -444,4 +452,14 @@ export async function getPreviewPassword() {
   )
 
   return settings.preview_password
+}
+
+export async function getRailIssueApi(year: number, month: number) {
+  // get the data from this API https://brooklynrail.org/2024/04/api
+  const api = `https://brooklynrail.org/${year}/${month}/api`
+  console.log("api", api)
+  const response = await fetch(api)
+  const data = await response.json()
+
+  return data
 }
