@@ -479,6 +479,7 @@ export type Issues = {
   slug: string
   sort?: number | null
   special_issue?: boolean | null
+  old_id: number
   status: string
   title: string
   user_created?: string | DirectusUsers | null
