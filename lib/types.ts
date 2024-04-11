@@ -508,7 +508,7 @@ export type Sections = {
   date_updated?: string | null
   id: number
   name: string
-  old_id?: number | null
+  old_id: number
   slug: string
   sort?: number | null
   user_created?: string | DirectusUsers | null
