@@ -66,10 +66,10 @@ const IssueInfo = (props: IssueInfoProps) => {
 
   const old = railIssueData
 
-  const row = function (label: string, data: any, oldData: any) {
+  const row = function (label: string, data: any, oldData: any, skip: boolean) {
     // check if data and oldData are the same value
-    const diff = String(data) === String(oldData) ? "same" : "different"
-
+    const skipped = skip ? "skipped" : ""
+    const diff = String(data) === String(oldData) ? `same ${skipped}` : `different ${skipped}`
     return (
       <tr className={diff}>
         <th>{label}</th>
@@ -78,6 +78,10 @@ const IssueInfo = (props: IssueInfoProps) => {
       </tr>
     )
   }
+
+  const articlesList = articles.map((article: any, i: number) => {
+    return <>{row(article.order, article.articles_slug.title, old.articles[i].articles_slug.title, false)}</>
+  })
 
   return (
     <>
@@ -89,25 +93,30 @@ const IssueInfo = (props: IssueInfoProps) => {
               <div className="grid-row grid-gap-4">
                 <div className="grid-col-12">
                   <div className="issue-info">
-                    <h1>{title}</h1>
+                    <h1>Issue: {title}</h1>
 
                     <table>
                       <thead>
                         <tr>
                           <th></th>
-                          <th>Current site</th>
+                          <th>New site</th>
                           <th>Old site</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {row("title", title, old.title)}
-                        {row("permalink", permalink, `https://brooklynrail.org/${old.slug}/`)}
-                        {row("slug", slug, old.slug)}
-                        {row("old_id", old_id, old.old_id)}
-                        {row("year", year, old.year)}
-                        {row("month", month, old.month)}
-                        {row("issue_number:", issue_number, old.issue_number)}
-                        {row("special issue:", special_issue ? "true" : "false", old.special_issue ? "true" : "false")}
+                        {row("title", title, old.title, false)}
+                        {row("permalink", permalink, `https://brooklynrail.org/${old.slug}/`, true)}
+                        {row("slug", slug, old.slug, false)}
+                        {row("old_id", old_id, old.old_id, false)}
+                        {row("year", year, old.year, false)}
+                        {row("month", month < 10 ? `0${String(month)}` : String(month), old.month, false)}
+                        {row("issue_number:", issue_number, old.issue_number, true)}
+                        {row(
+                          "special issue:",
+                          special_issue ? "true" : "false",
+                          old.special_issue ? "true" : "false",
+                          false,
+                        )}
                         <tr>
                           <th>covers:</th>
                           <td>
@@ -117,8 +126,20 @@ const IssueInfo = (props: IssueInfoProps) => {
                             <IssueCovers {...coverImageProps} />
                           </td>
                         </tr>
-                        {row("articles:", articles ? articles.length : "no articles", old.articles.length)}
                       </tbody>
+                    </table>
+                  </div>
+                  <div className="issue-info">
+                    <h1>Articles</h1>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>New Count: {articles ? articles.length : "no articles"}</th>
+                          <th>Old Count: {old.articles.length}</th>
+                        </tr>
+                      </thead>
+                      <tbody>{articlesList}</tbody>
                     </table>
                   </div>
                 </div>
