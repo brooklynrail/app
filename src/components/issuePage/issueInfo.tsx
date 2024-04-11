@@ -59,19 +59,19 @@ const IssueInfo = (props: IssueInfoProps) => {
   } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
 
-  console.log("currentIssue", currentIssue)
-  console.log("articles", articles)
+  // console.log("currentIssue", currentIssue)
+  // console.log("articles", articles)
   // console.log("currentSections", currentSections)
   // console.log("railIssueData", railIssueData)
 
   const old = railIssueData
 
-  const row = function (label: string, data: any, oldData: any, skip: boolean) {
+  const row = function (label: string, data: any, oldData: any, skip: boolean, key?: string) {
     // check if data and oldData are the same value
     const skipped = skip ? "skipped" : ""
     const diff = String(data) === String(oldData) ? `same ${skipped}` : `different ${skipped}`
     return (
-      <tr className={diff}>
+      <tr className={diff} key={key}>
         <th>{label}</th>
         <td>{data}</td>
         <td>{oldData}</td>
@@ -80,7 +80,8 @@ const IssueInfo = (props: IssueInfoProps) => {
   }
 
   const articlesList = articles.map((article: any, i: number) => {
-    return <>{row(article.order, article.articles_slug.title, old.articles[i].articles_slug.title, false)}</>
+    const key = `article-${i}`
+    return <>{row(article.order, article.articles_slug.title, old.articles[i].articles_slug.title, false, key)}</>
   })
 
   return (
