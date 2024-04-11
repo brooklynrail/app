@@ -404,17 +404,17 @@ export function getPermalink(props: PermalinkProps) {
 
   switch (type) {
     case PageType.Article:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}/${slug}`
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}/${slug}/`
     case PageType.Section:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}`
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}/`
     case PageType.Issue:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}`
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/`
     case PageType.Contributor:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}`
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}/`
     case PageType.Page:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}`
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/`
     case PageType.Preview:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}`
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}/`
     default:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/`
   }
