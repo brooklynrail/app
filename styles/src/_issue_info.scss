@@ -1,9 +1,9 @@
 .issue-info {
   @include u-padding-y(6);
-  @include u-font("mono", "sm");
+  @include u-font("sans", "sm");
   h1 {
     @include u-margin-bottom("05");
-    @include u-font("mono", "lg");
+    @include u-font("sans", "lg");
   }
   p {
     @include u-margin-bottom("05");
@@ -11,7 +11,7 @@
   table {
     @include u-margin-y(1);
     @include u-width("full");
-    @include u-font("mono", "sm");
+    @include u-font("sans", "sm");
     th {
       @include u-text-align("left");
       @include u-padding-right("05");
@@ -38,12 +38,36 @@
   }
   .data {
     @include u-margin-y(1);
-    @include u-font("mono", "sm");
+    @include u-font("sans", "sm");
     p {
       span {
         @include u-width("card");
         @include u-display("inline-block");
       }
+    }
+  }
+  .table-promo {
+    @include u-display("flex");
+    @include u-flex("justify");
+    @include u-flex("align-start");
+    .featured_image {
+      @include u-margin-left(1);
+      @include u-position("relative");
+      @include u-width(10);
+      @include u-height(15);
+    }
+    .section {
+      @include u-display("block");
+      @include u-text("uppercase");
+      @include u-font("sans", "2xs");
+    }
+    .title {
+      @include u-display("block");
+      @include u-text("medium");
+      @include u-margin-bottom("05");
+    }
+    .bylines {
+      @include u-font("sans", "2xs");
     }
   }
 }
