@@ -1,9 +1,9 @@
 .issue-info {
-  @include u-padding-y(8);
+  @include u-padding-y(6);
   @include u-font("mono", "sm");
   h1 {
     @include u-margin-bottom("05");
-    @include u-font("mono", "md");
+    @include u-font("mono", "lg");
   }
   p {
     @include u-margin-bottom("05");
@@ -19,6 +19,9 @@
 
     tr.different {
       @include u-bg("red-10");
+    }
+    tr.skipped {
+      background: none;
     }
     th,
     td {
