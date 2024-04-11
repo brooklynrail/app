@@ -11,6 +11,7 @@
   "dependencies": {
     "@directus/sdk": "^15.0.3",
     "html-react-parser": "^5.1.9",
+    "lodash.isequal": "^4.5.0",
     "next": "14.1.4",
     "next-seo": "^6.5.0",
     "react": "^18",
@@ -18,6 +19,7 @@
     "string-strip-html": "^13.4.6"
   },
   "devDependencies": {
+    "@types/lodash.isequal": "^4.5.8",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
