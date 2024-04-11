@@ -95,14 +95,14 @@ export async function getIssueData(year: number, month: number) {
                 {
                   contributors: [
                     {
-                      contributors_id: ["first_name", "last_name", "slug"],
+                      contributors_id: ["id", "old_id", "first_name", "last_name", "slug"],
                     },
                   ],
                 },
                 {
                   sections: [
                     {
-                      sections_id: ["slug", "name", "id"],
+                      sections_id: ["slug", "name", "id", "old_id"],
                     },
                   ],
                 },
