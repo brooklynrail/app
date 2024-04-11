@@ -1,7 +1,7 @@
-import { DirectusFiles } from "../../../lib/types"
-import { IssuePageProps } from "@/pages"
+import { ArticlesContributors, ArticlesIssues, Contributors, DirectusFiles } from "../../../lib/types"
 import { IssueInfoProps } from "@/pages/[year]/[month]/info"
 import Image from "next/image"
+import isEqual from "lodash.isequal"
 
 interface IssueCoversProps {
   cover_1: DirectusFiles | undefined
@@ -30,7 +30,7 @@ const IssueCovers = (props: IssueCoversProps) => {
     ) : null
     const image = (
       <div key={`cover-${i}`} className="cover">
-        <Image src={src} width={width} height={height} alt={alt} />
+        <Image src={src} width={width} height={height} alt={alt} sizes="30vw" />
         {desc}
       </div>
     )
@@ -38,6 +38,197 @@ const IssueCovers = (props: IssueCoversProps) => {
   })
 
   return <div className="issue-covers">{allCovers}</div>
+}
+
+interface TableRowProps {
+  label: string
+  data: any
+  oldData: any
+  oldOrder?: number | string
+  skip: boolean
+}
+
+const TableRow = (props: TableRowProps) => {
+  const { label, data, oldData, oldOrder, skip } = props
+  // check if data and oldData are the same value
+  const skipped = skip ? "skipped" : ""
+  // a function to remove the featured_image prop from the object that is passed in
+  const removeImage = (obj: any) => {
+    // First, check if the object and the nested properties exist
+    if (obj && obj.props && "featured_image" in obj.props) {
+      // Create a shallow copy of the object
+      const newObj = { ...obj }
+      // Create a shallow copy of the props and delete 'featured_image'
+      const newProps = { ...newObj.props }
+      delete newProps.featured_image
+      // Assign the newProps back to the newObj
+      newObj.props = newProps
+      // Return the modified object
+      return newObj
+    }
+    // Return the original object if no modifications are made
+    return obj
+  }
+  const compareData = data
+  const compareOldData = oldData
+
+  const diff = isEqual(removeImage(compareData), removeImage(compareOldData))
+    ? `same ${skipped}`
+    : `different ${skipped}`
+  return (
+    <tr className={diff}>
+      <th>{label}</th>
+      <td>{data}</td>
+      {oldOrder && <th>{oldOrder}</th>}
+      <td>{oldData}</td>
+    </tr>
+  )
+}
+interface FeaturedImageProps {
+  path: string
+}
+interface TablePromoProps {
+  section: string
+  title: string
+  bylines: (string | undefined)[]
+  featured_image: DirectusFiles | undefined
+}
+const TablePromo = (props: TablePromoProps) => {
+  const { section, title, bylines, featured_image } = props
+
+  let image = null
+  if (featured_image && featured_image.width) {
+    image = (
+      <Image
+        src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${featured_image.filename_disk}`}
+        fill
+        style={{
+          objectFit: "contain",
+        }}
+        alt="The Brooklyn Rail"
+        sizes="30vw"
+      />
+    )
+  }
+  if (featured_image && !featured_image.width) {
+    const oldFeaturedImage = featured_image as unknown as FeaturedImageProps
+    if (oldFeaturedImage.path != null) {
+      image = (
+        <Image
+          src={`https://storage.googleapis.com/rail-legacy-media/production${oldFeaturedImage.path}`}
+          alt="The Brooklyn Rail"
+          fill
+          style={{
+            objectFit: "contain",
+          }}
+          sizes="30vw"
+        />
+      )
+    }
+  }
+
+  return (
+    <div className="table-promo">
+      <div>
+        <span className="section">{section}</span>
+        <span className="title">{title}</span>
+        <span className="bylines">By {bylines}</span>
+      </div>
+      <div className="featured_image">{image}</div>
+    </div>
+  )
+}
+interface ArticleListProps {
+  articles: ArticlesIssues[]
+  railIssueData: any
+}
+const ArticleList = (props: ArticleListProps) => {
+  const { articles, railIssueData } = props
+  const old = railIssueData
+
+  const getbylines = (contributors: ArticlesContributors[] | Contributors[]) => {
+    const people = contributors.map((contributor: any, i: number) => {
+      if (contributor.contributors_id == null) {
+        return ""
+      }
+      const separator = i === contributors.length - 1 ? "" : ", "
+      const { first_name, last_name } = contributor.contributors_id
+      const byline: string = `${first_name} ${last_name}${separator}`
+      return byline
+    })
+    return people
+  }
+  const getSection = (name: string, newId: number, oldId?: number) => {
+    if (oldId && newId === oldId) {
+      return `${name}`
+    }
+    if (oldId && newId != oldId) {
+      return `${name} (${oldId} | ${newId})`
+    }
+
+    return `${name}`
+  }
+
+  const list = articles.map((articleItem: ArticlesIssues, i: number) => {
+    const newBylines = getbylines(articleItem.articles_slug.contributors)
+    const oldBylines = getbylines(old.articles[i].articles_slug.contributors)
+    const section = getSection(
+      articleItem.articles_slug.sections[0].sections_id.name,
+      articleItem.articles_slug.sections[0].sections_id.old_id,
+    )
+    const oldSection = getSection(
+      articleItem.articles_slug.sections[0].sections_id.name,
+      articleItem.articles_slug.sections[0].sections_id.old_id,
+      old.articles[i].articles_slug.old_section_id,
+    )
+    const featured_image = articleItem.articles_slug.featured_image
+
+    const newArticle = (
+      <TablePromo
+        section={section}
+        title={articleItem.articles_slug.title}
+        bylines={newBylines}
+        featured_image={featured_image}
+      />
+    )
+    const oldArticleOrder = old.articles[i].order
+    const oldArticle = (
+      <TablePromo
+        section={oldSection}
+        title={old.articles[i].articles_slug.title}
+        bylines={oldBylines}
+        featured_image={old.articles[i].articles_slug.featured_image}
+      />
+    )
+    const key = `a-${i}`
+
+    return (
+      <>
+        {i == 0 ? (
+          <TableRow
+            label={``}
+            data={`Count: ${articles.length}`}
+            oldOrder={`--`}
+            oldData={`Count: ${old.articles.length}`}
+            skip={false}
+            key={key}
+          />
+        ) : (
+          <></>
+        )}
+        <TableRow
+          label={String(articleItem.order)}
+          data={newArticle}
+          oldData={oldArticle}
+          oldOrder={oldArticleOrder}
+          skip={false}
+          key={key}
+        />
+      </>
+    )
+  })
+
+  return <>{list}</>
 }
 const IssueInfo = (props: IssueInfoProps) => {
   const { currentIssue, permalink, currentSections, railIssueData } = props
@@ -66,24 +257,6 @@ const IssueInfo = (props: IssueInfoProps) => {
 
   const old = railIssueData
 
-  const row = function (label: string, data: any, oldData: any, skip: boolean, key?: string) {
-    // check if data and oldData are the same value
-    const skipped = skip ? "skipped" : ""
-    const diff = String(data) === String(oldData) ? `same ${skipped}` : `different ${skipped}`
-    return (
-      <tr className={diff} key={key}>
-        <th>{label}</th>
-        <td>{data}</td>
-        <td>{oldData}</td>
-      </tr>
-    )
-  }
-
-  const articlesList = articles.map((article: any, i: number) => {
-    const key = `article-${i}`
-    return <>{row(article.order, article.articles_slug.title, old.articles[i].articles_slug.title, false, key)}</>
-  })
-
   return (
     <>
       <div className="paper">
@@ -105,19 +278,30 @@ const IssueInfo = (props: IssueInfoProps) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {row("title", title, old.title, false)}
-                        {row("permalink", permalink, `https://brooklynrail.org/${old.slug}/`, true)}
-                        {row("slug", slug, old.slug, false)}
-                        {row("old_id", old_id, old.old_id, false)}
-                        {row("year", year, old.year, false)}
-                        {row("month", month < 10 ? `0${String(month)}` : String(month), old.month, false)}
-                        {row("issue_number:", issue_number, old.issue_number, true)}
-                        {row(
-                          "special issue:",
-                          special_issue ? "true" : "false",
-                          old.special_issue ? "true" : "false",
-                          false,
-                        )}
+                        <TableRow label="title" data={title} oldData={old.title} skip={false} />
+                        <TableRow
+                          label="permalink"
+                          data={permalink}
+                          oldData={`https://brooklynrail.org/${old.slug}/`}
+                          skip={true}
+                        />
+                        <TableRow label="slug" data={slug} oldData={old.slug} skip={false} />
+                        <TableRow label="old_id" data={String(old_id)} oldData={String(old.old_id)} skip={false} />
+                        <TableRow label="year" data={String(year)} oldData={String(old.year)} skip={false} />
+                        <TableRow
+                          label="month"
+                          data={month < 10 ? `0${String(month)}` : String(month)}
+                          oldData={old.month}
+                          skip={false}
+                        />
+                        <TableRow label="issue_number:" data={issue_number} oldData={old.issue_number} skip={true} />
+                        <TableRow
+                          label="special issue:"
+                          data={special_issue ? "true" : "false"}
+                          oldData={old.special_issue ? "true" : "false"}
+                          skip={false}
+                        />
+
                         <tr>
                           <th>covers:</th>
                           <td>
@@ -133,14 +317,9 @@ const IssueInfo = (props: IssueInfoProps) => {
                   <div className="issue-info">
                     <h1>Articles</h1>
                     <table>
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>New Count: {articles ? articles.length : "no articles"}</th>
-                          <th>Old Count: {old.articles.length}</th>
-                        </tr>
-                      </thead>
-                      <tbody>{articlesList}</tbody>
+                      <tbody>
+                        <ArticleList articles={articles} railIssueData={railIssueData} />
+                      </tbody>
                     </table>
                   </div>
                 </div>
