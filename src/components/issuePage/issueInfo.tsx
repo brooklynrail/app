@@ -58,7 +58,7 @@ const IssueInfo = (props: IssueInfoProps) => {
     articles,
   } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
-  return <>TKTK</>
+
   // console.log("currentIssue", currentIssue)
   // console.log("articles", articles)
   // console.log("currentSections", currentSections)

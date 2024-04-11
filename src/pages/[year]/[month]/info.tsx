@@ -44,8 +44,8 @@ export async function getStaticProps({ params }: any) {
   // Get only the sections that are used in the articles in the current issue
   const currentSections = await getSectionsByIssueId(currentIssue.id)
   // const railIssueData = await getRailIssueApi(year, month)
-  // const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/railIssue?year=${year}&month=${month}`)
-  // const railIssueData = await response.json()
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/railIssue?year=${year}&month=${month}`)
+  const railIssueData = await response.json()
 
   const permalink = getPermalink({
     year: currentIssue.year,
@@ -58,7 +58,7 @@ export async function getStaticProps({ params }: any) {
       allIssues,
       currentIssue,
       currentSections,
-      // railIssueData,
+      railIssueData,
       permalink,
     },
     // Next.js will attempt to re-generate the page:
