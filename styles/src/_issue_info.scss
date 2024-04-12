@@ -21,7 +21,7 @@
       @include u-bg("red-10");
     }
     tr.skipped {
-      background: none;
+      @include u-bg("gray-warm-5");
     }
     th,
     td {
