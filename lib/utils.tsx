@@ -106,6 +106,13 @@ export async function getIssueData(year: number, month: number) {
                     },
                   ],
                 },
+                {
+                  images: [
+                    {
+                      directus_files_id: ["id", "caption", "filename_disk", "width", "height", "type", "shortcode_key"],
+                    },
+                  ],
+                },
                 "sort",
               ],
             },
