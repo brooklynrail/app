@@ -92,9 +92,10 @@ interface TablePromoProps {
   title: string
   bylines: (string | undefined)[]
   featured_image: DirectusFiles | undefined
+  details?: string
 }
 const TablePromo = (props: TablePromoProps) => {
-  const { section, title, bylines, featured_image } = props
+  const { section, title, bylines, featured_image, details } = props
 
   let image = null
   if (featured_image && featured_image.width) {
@@ -133,6 +134,7 @@ const TablePromo = (props: TablePromoProps) => {
         <span className="section">{section}</span>
         <span className="title">{title}</span>
         <span className="bylines">By {bylines}</span>
+        <span className="details">{details}</span>
       </div>
       <div className="featured_image">{image}</div>
     </div>
@@ -182,13 +184,15 @@ const ArticleList = (props: ArticleListProps) => {
       old.articles[i].articles_slug.old_section_id,
     )
     const featured_image = articleItem.articles_slug.featured_image
-
+    const details = `${articleItem.articles_slug.images.length} images`
+    const oldDetails = `${old.articles[i].articles_slug.images.length} images`
     const newArticle = (
       <TablePromo
         section={section}
         title={articleItem.articles_slug.title}
         bylines={newBylines}
         featured_image={featured_image}
+        details={details}
       />
     )
     const oldArticleOrder = old.articles[i].order
@@ -198,6 +202,7 @@ const ArticleList = (props: ArticleListProps) => {
         title={old.articles[i].articles_slug.title}
         bylines={oldBylines}
         featured_image={old.articles[i].articles_slug.featured_image}
+        details={oldDetails}
       />
     )
     const key = `a-${i}`
@@ -222,7 +227,7 @@ const ArticleList = (props: ArticleListProps) => {
           oldData={oldArticle}
           oldOrder={oldArticleOrder}
           skip={false}
-          key={key}
+          key={`old-${key}`}
         />
       </>
     )
