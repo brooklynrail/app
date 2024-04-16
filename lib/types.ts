@@ -58,7 +58,7 @@ export type ArticlesContributors = {
 
 export type ArticlesFiles = {
   articles_slug?: string | Articles | null
-  directus_files_id?: string | DirectusFiles | null
+  directus_files_id?: DirectusFiles
   id: number
 }
 
