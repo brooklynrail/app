@@ -167,7 +167,7 @@ export async function getSectionsByIssueId(issueId: number) {
   return sections
 }
 
-export function getArticlePages() {
+export async function getArticlePages() {
   const articlePages: Articles[] = directus.request(
     readItems("articles", {
       fields: [

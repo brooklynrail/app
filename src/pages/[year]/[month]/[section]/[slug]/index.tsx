@@ -131,7 +131,7 @@ export async function getStaticProps({ params }: any) {
 // the path has not been generated.
 export async function getStaticPaths() {
   try {
-    const articlePages = getArticlePages()
+    const articlePages = await getArticlePages()
 
     const paths = articlePages.map((article: Articles) => {
       const month = article.issues[0].issues_id.month
