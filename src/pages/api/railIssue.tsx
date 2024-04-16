@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const year = Number(req.query.year)
   const month = Number(req.query.month)
 
-  const data = await getRailIssueApi(year, month)
+  const data = await getRailIssueApi(year.toString(), month.toString())
 
   // Set Cache-Control header
   // This will cache the response for 1 hour
