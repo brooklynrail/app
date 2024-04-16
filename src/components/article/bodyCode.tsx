@@ -1,11 +1,11 @@
-import { ArticlesFiles } from "../../../lib/types"
+import { Articles } from "../../../lib/types"
 import replaceShortcodes from "./shortcodes"
-interface BodyCodeProps {
-  body_code: string
-  images: Array<ArticlesFiles>
-}
-const BodyCode = (props: BodyCodeProps) => {
+
+const BodyCode = (props: Articles) => {
   const { body_code, images } = props
+  if (!body_code) {
+    return <></>
+  }
   return (
     <>
       <div className="content">{replaceShortcodes({ html: body_code, images: images })}</div>
