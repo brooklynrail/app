@@ -36,8 +36,7 @@ const RailImage = (props: RailImageProps) => {
   let mediaType
   let legacy = false
   const height = image.directus_files_id.height
-  console.log("image", image)
-  console.log("image width", image.directus_files_id.width)
+
   if (type === "legacy") {
     legacy = true
     if (image.directus_files_id.width < ImageSize.SM) {

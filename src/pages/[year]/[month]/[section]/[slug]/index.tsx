@@ -132,7 +132,6 @@ export async function getStaticProps({ params }: any) {
 export async function getStaticPaths() {
   try {
     const articlePages = await getArticlePages()
-    console.log("articlePages", articlePages.length)
 
     const paths = articlePages.map((article: Articles) => {
       const month = article.issues[0].issues_id.month
