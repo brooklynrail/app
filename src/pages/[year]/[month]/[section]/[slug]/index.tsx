@@ -132,13 +132,14 @@ export async function getStaticProps({ params }: any) {
 export async function getStaticPaths() {
   try {
     const articlePages = await getArticlePages()
+    console.log("articlePages", articlePages.length)
 
     const paths = articlePages.map((article: Articles) => {
       const month = article.issues[0].issues_id.month
       return {
         params: {
           year: article.issues && article.issues[0].issues_id.year.toString(),
-          month: month < 10 ? `0${month}` : month,
+          month: month < 10 ? `0${month.toString()}` : month.toString(),
           section: article.sections && article.sections[0].sections_id.slug.toString(),
           slug: article.slug,
         },
