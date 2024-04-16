@@ -461,7 +461,7 @@ export async function getPreviewPassword() {
   return settings.preview_password
 }
 
-export async function getRailIssueApi(year: number, month: number) {
+export async function getRailIssueApi(year: string, month: string) {
   // get the data from this API https://brooklynrail.org/2024/04/api
   const api = `https://brooklynrail.org/${year}/${month}/api`
   console.log("api", api)
