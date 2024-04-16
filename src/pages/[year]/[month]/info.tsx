@@ -1,13 +1,6 @@
 import directus from "../../../../lib/directus"
 import { readItems } from "@directus/sdk"
-import {
-  PageType,
-  getIssueData,
-  getIssues,
-  getPermalink,
-  getRailIssueApi,
-  getSectionsByIssueId,
-} from "../../../../lib/utils"
+import { PageType, getIssueData, getIssues, getPermalink, getSectionsByIssueId } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
 
 import IssueInfo from "@/components/issuePage/issueInfo"
@@ -17,7 +10,6 @@ export interface IssueInfoProps {
   allIssues: Array<Issues>
   currentIssue: Issues
   currentSections: Array<Sections>
-  railIssueData: any
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -43,9 +35,6 @@ export async function getStaticProps({ params }: any) {
 
   // Get only the sections that are used in the articles in the current issue
   const currentSections = await getSectionsByIssueId(currentIssue.id)
-  // const railIssueData = await getRailIssueApi(year, month)
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/railIssue?year=${year}&month=${month}`)
-  const railIssueData = await response.json()
 
   const permalink = getPermalink({
     year: currentIssue.year,
@@ -58,7 +47,6 @@ export async function getStaticProps({ params }: any) {
       allIssues,
       currentIssue,
       currentSections,
-      railIssueData,
       permalink,
     },
     // Next.js will attempt to re-generate the page:

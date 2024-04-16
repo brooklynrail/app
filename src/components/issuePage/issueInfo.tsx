@@ -1,7 +1,10 @@
+/* eslint max-lines: 0 */
 import { ArticlesContributors, ArticlesIssues, Contributors, DirectusFiles } from "../../../lib/types"
 import { IssueInfoProps } from "@/pages/[year]/[month]/info"
 import Image from "next/image"
 import isEqual from "lodash.isequal"
+import { useEffect, useState } from "react"
+import { getRailIssueApi } from "../../../lib/utils"
 
 interface IssueCoversProps {
   cover_1: DirectusFiles | undefined
@@ -236,7 +239,7 @@ const ArticleList = (props: ArticleListProps) => {
   return <>{list}</>
 }
 const IssueInfo = (props: IssueInfoProps) => {
-  const { currentIssue, permalink, currentSections, railIssueData } = props
+  const { currentIssue, permalink, currentSections } = props
   const {
     cover_1,
     cover_2,
@@ -254,6 +257,28 @@ const IssueInfo = (props: IssueInfoProps) => {
     articles,
   } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
+
+  const [railIssueData, setRailIssueData] = useState<any>(undefined)
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getRailIssueApi(year.toString(), month.toString())
+        setRailIssueData(data)
+      } catch (error) {
+        console.error("Failed to fetch data:", error)
+        // You might want to set some error state here to show an error message in your UI
+      }
+    }
+
+    fetchData().catch((error) => {
+      console.error("Failed to run fetchData:", error)
+    })
+  }, [year, month])
+
+  if (!railIssueData) {
+    return <div>Loading...</div>
+  }
 
   // console.log("currentIssue", currentIssue)
   // console.log("articles", articles)
