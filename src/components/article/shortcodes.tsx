@@ -1,5 +1,6 @@
 import parse from "html-react-parser"
 import RailImage from "./railImage"
+import { ArticlesFiles } from "../../../lib/types"
 
 // [promo type="free-text"]<h6>On View</h6><strong>Lisson Gallery</strong><br/>January 11&#150;February 17, 2024<br/>New York[/promo]
 const replacePromo = (html: string) => {
@@ -100,7 +101,12 @@ const replaceRule = (html: string) => {
   })
 }
 
-const replaceShortcodes = (html: string, images: any) => {
+interface ReplaceShortcodesProps {
+  html: string
+  images: Array<ArticlesFiles>
+}
+const replaceShortcodes = (props: ReplaceShortcodesProps) => {
+  const { html, images } = props
   if (!html) {
     return null
   }
