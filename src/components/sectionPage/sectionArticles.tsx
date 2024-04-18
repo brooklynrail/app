@@ -18,13 +18,18 @@ const SectionArticles = (props: PromoProps) => {
           slug: article.slug,
           type: PageType.Article,
         })
+        const sectionPermalink = getPermalink({
+          year: year,
+          month: month,
+          section: article.sections[0].sections_id.slug,
+          type: PageType.Section,
+        })
         return (
           <PromoSection
             key={`article-${i}`}
             article={article}
             permalink={permalink}
-            year={year}
-            month={month}
+            sectionPermalink={sectionPermalink}
             showImage={true}
             showSection={true}
             order={order}
