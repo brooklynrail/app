@@ -26,6 +26,12 @@ const FeaturedArticles = (props: PromoProps) => {
           slug: article.slug,
           type: PageType.Article,
         })
+        const sectionPermalink = getPermalink({
+          year: year,
+          month: month,
+          section: article.sections[0].sections_id.slug,
+          type: PageType.Section,
+        })
         return (
           <PromoStandard
             key={`featured-${i}`}
@@ -33,8 +39,7 @@ const FeaturedArticles = (props: PromoProps) => {
             permalink={permalink}
             showImage={true}
             showSection={true}
-            year={year}
-            month={month}
+            sectionPermalink={sectionPermalink}
             order={order}
           />
         )
