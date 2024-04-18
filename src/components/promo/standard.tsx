@@ -2,7 +2,6 @@ import parse from "html-react-parser"
 import { Articles, DirectusFiles } from "../../../lib/types"
 import { stripHtml } from "string-strip-html"
 import Image from "next/image"
-import { PageType, getPermalink } from "../../../lib/utils"
 import Link from "next/link"
 
 export interface PromoProps {
@@ -10,24 +9,17 @@ export interface PromoProps {
   showImage: boolean
   showSection: boolean
   permalink: string
-  year: number
-  month: number
+  sectionPermalink: string
   order?: number | null
 }
 
 export const PromoSectionName = (props: PromoProps) => {
-  const { article, year, month } = props
+  const { article, sectionPermalink } = props
   const { sections, kicker } = article
   const sectionName = sections[0].sections_id.name
-  const permalink = getPermalink({
-    year: year,
-    month: month,
-    section: article.sections[0].sections_id.slug,
-    type: PageType.Section,
-  })
   return (
     <p className="article_type">
-      <Link className="section" href={permalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
+      <Link className="section" href={sectionPermalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
         {sectionName}
       </Link>
       {kicker && (
