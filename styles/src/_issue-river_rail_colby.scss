@@ -1,0 +1,38 @@
+//issue-river_rail_colby
+.issue-river_rail_colby,
+#article_header {
+  background: #e1f3f8;
+}
+
+.issue-river_rail_colby {
+  #header_section nav ul li a {
+    color: #002d3f;
+  }
+
+  .promo-section .media img {
+    width: 100%;
+  }
+
+  #rail,
+  #rail .issue-header,
+  #rail .issue-index h3 {
+    background-color: #e1f3f8;
+  }
+
+  header.section {
+    border-bottom: 2px #0d7ea2 solid;
+  }
+
+  header.section .blurb,
+  header.section .credits {
+    color: #074b69;
+  }
+  header.section .blurb strong {
+    color: #002d3f;
+  }
+  header.section .credits a,
+  header.section .credits a:hover {
+    color: #002d3f;
+    text-decoration: underline;
+  }
+}
