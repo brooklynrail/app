@@ -417,6 +417,7 @@ export enum PageType {
   Page = "page",
   Preview = "preview",
   SpecialIssue = "special_issue",
+  SpecialIssueSection = "special_issue_section",
   SpecialIssueArticle = "special_issue_article",
 }
 interface PermalinkProps {
