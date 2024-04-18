@@ -54,7 +54,7 @@ export async function getStaticProps({ params }: any) {
   const section = params.section
 
   const allIssues = await getIssues()
-  const issueData = await getIssueData(year, month)
+  const issueData = await getIssueData({ year, month, slug: undefined })
 
   // Filter the currentArticles to only include those that are in the current section
   const currentArticles = issueData.articles.filter((article: ArticlesIssues) => {

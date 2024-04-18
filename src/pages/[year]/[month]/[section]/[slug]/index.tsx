@@ -89,7 +89,7 @@ export async function getStaticProps({ params }: any) {
     }),
   )
 
-  const issueData = await getIssueData(year, month)
+  const issueData = await getIssueData({ year, month, slug: undefined })
   const articleData = await getArticle(slug)
   const currentArticles = await getArticles(issueData.id)
 
@@ -131,7 +131,7 @@ export async function getStaticProps({ params }: any) {
 // the path has not been generated.
 export async function getStaticPaths() {
   try {
-    const articlePages = await getArticlePages()
+    const articlePages = await getArticlePages(false)
 
     const paths = articlePages.map((article: Articles) => {
       const month = article.issues[0].issues_id.month

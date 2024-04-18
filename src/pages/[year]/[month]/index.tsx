@@ -48,7 +48,7 @@ export async function getStaticProps({ params }: any) {
   const month = params.month
 
   const allIssues = await getIssues()
-  const issueData = await getIssueData(year, month)
+  const issueData = await getIssueData({ year, month, slug: undefined })
 
   // Get only the sections that are used in the articles in the current issue
   const currentSections = await getSectionsByIssueId(issueData.id)
