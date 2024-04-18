@@ -21,7 +21,7 @@ function SpecialIssue(props: IssuePageProps) {
   const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
   const ogimages = getOGImage(ogimageprops)
-  console.log(props)
+
   return (
     <>
       <NextSeo
