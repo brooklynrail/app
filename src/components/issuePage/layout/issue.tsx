@@ -1,12 +1,12 @@
-import ArtSeen from "./artSeen"
+import ArtSeen from "../artSeen"
 import { IssuePageProps } from "@/pages"
-import CriticsPage from "./criticsPage"
-import EditorsMessage from "./editorsMessage"
-import PublishersMessage from "./publishersMessage"
-import SlideShow from "./slideshow"
-import FeaturedArticles from "./featuredArticles"
+import CriticsPage from "../criticsPage"
+import EditorsMessage from "../editorsMessage"
+import PublishersMessage from "../publishersMessage"
+import SlideShow from "../slideshow"
+import FeaturedArticles from "../featuredArticles"
 
-const MainLayout = (props: IssuePageProps) => {
+const IssueLayout = (props: IssuePageProps) => {
   const { currentIssue, currentArticles, currentSlides } = props
   const { year, month } = currentIssue
 
@@ -40,4 +40,4 @@ const MainLayout = (props: IssuePageProps) => {
   )
 }
 
-export default MainLayout
+export default IssueLayout

@@ -1,6 +1,6 @@
 import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
-import { IssuePageProps } from "@/pages"
+import { IssuePageProps, PageLayout } from "@/pages"
 import AdsTile from "./adsTile"
 import IssueSelect from "./issueSelect"
 import CurrentSections from "./currentSections"
@@ -11,8 +11,10 @@ import Ad970 from "./ad970"
 import TableOfContents from "./tableOfContents"
 import { ArticlesIssues } from "../../../lib/types"
 import Link from "next/link"
-import MainLayout from "./mainLayout"
-import SpecialLayout from "./specialLayout"
+import SpecialIssue from "./layout/specialIssue"
+import SpecialSection from "./layout/specialSection"
+import IssueLayout from "./layout/issue"
+import SectionLayout from "./layout/section"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
@@ -30,6 +32,23 @@ const IssuePage = (props: IssuePageProps) => {
   const currentIssueSlug = currentIssue.slug
 
   const issueClass = `issue-${slug.toLowerCase()}`
+
+  let layout
+  switch (props.layout) {
+    case PageLayout.Section:
+      layout = <SectionLayout {...props} />
+      break
+    case PageLayout.SpecialIssue:
+      layout = <SpecialIssue {...props} />
+      break
+    case PageLayout.SpecialSection:
+      layout = <SpecialSection {...props} />
+      break
+    default:
+      layout = <IssueLayout {...props} />
+      break
+  }
+
   return (
     <>
       <div className={`paper ${issueClass}`}>
@@ -79,7 +98,7 @@ const IssuePage = (props: IssuePageProps) => {
                   </div>
                 </div>
 
-                {special_issue ? <SpecialLayout {...props} /> : <MainLayout {...props} />}
+                {layout}
 
                 <div className="ad_column grid-col-2">
                   <AdsTile ads={ads} />

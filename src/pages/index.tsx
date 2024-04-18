@@ -3,9 +3,16 @@ import IssuePage from "@/components/issuePage"
 import { getAds, getCurrentIssue, getIssues, getSectionsByIssueId } from "../../lib/utils"
 import { NextSeo } from "next-seo"
 
+export enum PageLayout {
+  Issue = "issue",
+  Section = "section",
+  SpecialIssue = "special-issue",
+  SpecialSection = "special-section",
+}
 export interface IssuePageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
+  currentSection?: Sections
   currentSections: Array<Sections>
   currentArticles: ArticlesIssues[]
   currentSlides?: ArticlesIssues[]
@@ -13,13 +20,14 @@ export interface IssuePageProps {
   permalink: string
   errorCode?: number
   errorMessage?: string
+  layout: PageLayout
 }
 
 function HomepageController(props: IssuePageProps) {
   return (
     <>
       <NextSeo />
-      <IssuePage {...props} />
+      <IssuePage {...props} layout={PageLayout.Issue} />
     </>
   )
 }

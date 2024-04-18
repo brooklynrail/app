@@ -1,4 +1,4 @@
-import { IssuePageProps } from "@/pages"
+import { IssuePageProps, PageLayout } from "@/pages"
 import {
   PageType,
   getAds,
@@ -8,18 +8,18 @@ import {
   getPermalink,
   getSectionsByIssueId,
 } from "../../../../../lib/utils"
-import SectionPage from "@/components/sectionPage"
 import { NextSeo } from "next-seo"
 import Error from "next/error"
 import { stripHtml } from "string-strip-html"
 import { ArticlesIssues, Sections } from "../../../../../lib/types"
+import IssuePage from "@/components/issuePage"
 
-export interface SectionProps {
-  currentSection: Sections
-}
-function Section(props: IssuePageProps & SectionProps) {
+function Section(props: IssuePageProps) {
   if (props.errorCode && props.errorMessage) {
     return <Error statusCode={props.errorCode} title={props.errorMessage} />
+  }
+  if (!props.currentSection) {
+    return <Error statusCode={404} title="This section does not exist" />
   }
   const { name } = props.currentSection
   const { title, cover_1, issue_number, slug } = props.currentIssue
@@ -41,7 +41,7 @@ function Section(props: IssuePageProps & SectionProps) {
           type: `website`,
         }}
       />
-      <SectionPage {...props} />
+      <IssuePage {...props} layout={PageLayout.SpecialSection} />
     </>
   )
 }

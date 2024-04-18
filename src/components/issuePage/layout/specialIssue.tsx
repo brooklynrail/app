@@ -1,9 +1,9 @@
 import { IssuePageProps } from "@/pages"
-import { ArticlesIssues } from "../../../lib/types"
-import { getPermalink, PageType } from "../../../lib/utils"
-import PromoSpecialSection from "../promo/specialSection"
+import { ArticlesIssues } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
+import PromoSpecialSection from "../../promo/specialSection"
 
-const SpecialLayout = (props: IssuePageProps) => {
+const SpecialIssue = (props: IssuePageProps) => {
   const { currentIssue, currentArticles } = props
 
   const allArticles = currentArticles.map((article: ArticlesIssues, i: number) => {
@@ -35,4 +35,4 @@ const SpecialLayout = (props: IssuePageProps) => {
   return <div className="grid-col-8">{allArticles}</div>
 }
 
-export default SpecialLayout
+export default SpecialIssue

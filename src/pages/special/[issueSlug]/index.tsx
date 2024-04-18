@@ -1,7 +1,7 @@
 import directus from "../../../../lib/directus"
 import { readItems } from "@directus/sdk"
 import IssuePage from "@/components/issuePage"
-import { IssuePageProps } from "@/pages"
+import { IssuePageProps, PageLayout } from "@/pages"
 import {
   PageType,
   getAds,
@@ -36,7 +36,7 @@ function SpecialIssue(props: IssuePageProps) {
           type: `website`,
         }}
       />
-      <IssuePage {...props} />
+      <IssuePage {...props} layout={PageLayout.SpecialIssue} />
     </>
   )
 }
