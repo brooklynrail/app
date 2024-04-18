@@ -31,7 +31,7 @@ const Ad970 = (props: Ad970Props) => {
     const mobileWidth = mwidth > mobileSize ? mobileSize : mwidth
     const mobileHeight = mwidth > mobileSize ? (mobileSize * mheight) / mwidth : (mheight * mobileWidth) / mwidth
 
-    if (!filteredAds) {
+    if (filteredAds === undefined || filteredAds.length === 0) {
       return <></>
     }
 
@@ -44,6 +44,10 @@ const Ad970 = (props: Ad970Props) => {
       </div>
     )
   })
+
+  if (banners === undefined || banners.length === 0) {
+    return <></>
+  }
 
   return (
     <>
