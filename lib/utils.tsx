@@ -9,7 +9,7 @@ import { stripHtml } from "string-strip-html"
 export async function getIssues() {
   const issues: Issues[] = await directus.request(
     readItems("issues", {
-      fields: ["year", "month", "id", "slug", "title", "special_issue"],
+      fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
       filter: {
         _and: [{ status: { _eq: "published" } }],
       },
