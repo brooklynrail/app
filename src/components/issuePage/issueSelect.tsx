@@ -14,19 +14,24 @@ const IssueSelect = (props: IssueSelectProps) => {
 
   const handleIssueChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value
+    // check for the issue
     const selectedIssue = allIssues.find((issue) => issue.slug === selectedValue)
     if (selectedIssue) {
+      // set the path if the issue is a special issue
+      const path = selectedIssue.special_issue ? `special/${selectedIssue.slug}` : selectedIssue.slug
+      // Set the selected issue slug
       setSelectedIssueSlug(selectedIssue.slug)
-      window.location.href = `/${selectedValue}`
+      window.location.href = `/${path}/`
     }
   }
 
   if (!selectedIssueSlug || !Array.isArray(allIssues)) {
     return null
   }
+
   return (
     <select id="issue_select" value={selectedIssueSlug} onChange={handleIssueChange}>
-      {allIssues.map((issue) => {
+      {allIssues.map((issue: Issues) => {
         if (!issue.slug) {
           return <></>
         }
