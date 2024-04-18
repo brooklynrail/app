@@ -1,10 +1,6 @@
 import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
-import ArtSeen from "./artSeen"
 import { IssuePageProps } from "@/pages"
-import CriticsPage from "./criticsPage"
-import EditorsMessage from "./editorsMessage"
-import PublishersMessage from "./publishersMessage"
 import AdsTile from "./adsTile"
 import IssueSelect from "./issueSelect"
 import CurrentSections from "./currentSections"
@@ -12,11 +8,11 @@ import RailPartners from "./railPartners"
 import RailProjects from "./railProjects"
 import Header from "./header"
 import Ad970 from "./ad970"
-import SlideShow from "./slideshow"
 import TableOfContents from "./tableOfContents"
-import FeaturedArticles from "./featuredArticles"
 import { ArticlesIssues } from "../../../lib/types"
 import Link from "next/link"
+import MainLayout from "./mainLayout"
+import SpecialLayout from "./specialLayout"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
@@ -25,15 +21,14 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { allIssues, currentIssue, currentSections, currentArticles, currentSlides, permalink } = props
+  const { allIssues, currentIssue, currentSections, currentArticles, permalink } = props
   const ads = props.ads
-  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month, special_issue, slug } = currentIssue
+  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month, slug, special_issue } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
   const currentSectionsProps = { currentSections, year, month }
   const tocProps = { currentSections, currentArticles, permalink, year, month }
   const currentIssueSlug = currentIssue.slug
 
-  const promoProps = { currentArticles, year, month }
   const issueClass = `issue-${slug.toLowerCase()}`
   return (
     <>
@@ -83,36 +78,9 @@ const IssuePage = (props: IssuePageProps) => {
                     <RailPartners />
                   </div>
                 </div>
-                <div className="grid-col-8">
-                  <div className="grid-row">
-                    <div className="grid-col-12">
-                      {currentSlides && <SlideShow currentSlides={currentSlides} year={year} month={month} />}
-                    </div>
-                  </div>
 
-                  <div className="grid-row grid-gap-4">
-                    <div className="grid-col-6">
-                      <FeaturedArticles {...promoProps} />
-                    </div>
-                    <div className="grid-col-6">
-                      <div className="collection">
-                        <PublishersMessage {...promoProps} />
-                      </div>
+                {special_issue ? <SpecialLayout {...props} /> : <MainLayout {...props} />}
 
-                      <div className="collection">
-                        <EditorsMessage {...promoProps} />
-                      </div>
-
-                      <div className="collection">
-                        <CriticsPage {...promoProps} />
-                      </div>
-
-                      <div className="collection">
-                        <ArtSeen {...promoProps} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <div className="ad_column grid-col-2">
                   <AdsTile ads={ads} />
                 </div>
