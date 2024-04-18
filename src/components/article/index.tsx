@@ -154,12 +154,14 @@ export const ArticleBody = (props: ArticleBodyProps) => {
 }
 
 const Article = (props: ArticleProps) => {
-  const { article } = props
+  const { article, currentIssue } = props
   const { contributors } = article
+
+  const issueClass = `issue-${currentIssue.slug.toLowerCase()}`
 
   return (
     <>
-      <div className="paper">
+      <div className={`paper ${issueClass}`}>
         <div className="hatbox"></div>
 
         <main>
