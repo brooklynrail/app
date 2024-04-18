@@ -239,7 +239,7 @@ const ArticleList = (props: ArticleListProps) => {
   return <>{list}</>
 }
 const IssueInfo = (props: IssueInfoProps) => {
-  const { currentIssue, permalink, currentSections } = props
+  const { currentIssue, permalink } = props
   const {
     cover_1,
     cover_2,
