@@ -247,8 +247,6 @@ const IssueInfo = (props: IssueInfoProps) => {
     cover_4,
     cover_5,
     cover_6,
-    year,
-    month,
     title,
     slug,
     special_issue,
@@ -259,11 +257,16 @@ const IssueInfo = (props: IssueInfoProps) => {
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
 
   const [railIssueData, setRailIssueData] = useState<any>(undefined)
+  const year = currentIssue.year
+  const month = currentIssue.month < 10 ? `0${currentIssue.month.toString()}` : `${currentIssue.month.toString()}`
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getRailIssueApi(year.toString(), month.toString())
+        // const data = await getRailIssueApi(year.toString(), month.toString())
+        const api = `${process.env.NEXT_PUBLIC_BASE_URL}/api/railIssue?year=${year}&month=${month}`
+        const response = await fetch(api)
+        const data = await response.json()
         setRailIssueData(data)
       } catch (error) {
         console.error("Failed to fetch data:", error)
@@ -318,12 +321,7 @@ const IssueInfo = (props: IssueInfoProps) => {
                         <TableRow label="slug" data={slug} oldData={old.slug} skip={false} />
                         <TableRow label="old_id" data={String(old_id)} oldData={String(old.old_id)} skip={false} />
                         <TableRow label="year" data={String(year)} oldData={String(old.year)} skip={false} />
-                        <TableRow
-                          label="month"
-                          data={month < 10 ? `0${String(month)}` : String(month)}
-                          oldData={old.month}
-                          skip={false}
-                        />
+                        <TableRow label="month" data={month} oldData={old.month} skip={false} />
                         <TableRow label="issue_number:" data={issue_number} oldData={old.issue_number} skip={true} />
                         <TableRow
                           label="special issue:"
