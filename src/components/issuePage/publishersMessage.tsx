@@ -14,6 +14,10 @@ const PublishersMessage = (props: PromoProps) => {
     }
   })
 
+  if (publishersMessage.length === 0) {
+    return <></>
+  }
+
   return (
     <div className="collection">
       <h3>From the Publisher & Artistic Director</h3>
@@ -27,15 +31,20 @@ const PublishersMessage = (props: PromoProps) => {
           slug: article.slug,
           type: PageType.Article,
         })
+        const sectionPermalink = getPermalink({
+          year: year,
+          month: month,
+          section: article.sections[0].sections_id.slug,
+          type: PageType.Section,
+        })
         return (
           <PromoThumb
             key={`publishersmessage-${i}`}
             article={article}
             showImage={false}
             showSection={false}
+            sectionPermalink={sectionPermalink}
             permalink={permalink}
-            year={year}
-            month={month}
             order={order}
           />
         )

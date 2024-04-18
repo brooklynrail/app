@@ -14,6 +14,10 @@ const FeaturedArticles = (props: PromoProps) => {
     }
   })
 
+  if (featuredArticles.length === 0) {
+    return <></>
+  }
+
   return (
     <div className="collection">
       {featuredArticles.map((articleIssue: ArticlesIssues, i: number) => {

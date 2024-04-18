@@ -26,21 +26,13 @@ const MainLayout = (props: IssuePageProps) => {
             <FeaturedArticles {...promoProps} />
           </div>
           <div className="grid-col-6">
-            <div className="collection">
-              <PublishersMessage {...promoProps} />
-            </div>
+            <PublishersMessage {...promoProps} />
 
-            <div className="collection">
-              <EditorsMessage {...promoProps} />
-            </div>
+            <EditorsMessage {...promoProps} />
 
-            <div className="collection">
-              <CriticsPage {...promoProps} />
-            </div>
+            <CriticsPage {...promoProps} />
 
-            <div className="collection">
-              <ArtSeen {...promoProps} />
-            </div>
+            <ArtSeen {...promoProps} />
           </div>
         </div>
       </div>

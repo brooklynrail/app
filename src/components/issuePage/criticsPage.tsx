@@ -14,8 +14,12 @@ const CriticsPage = (props: PromoProps) => {
     }
   })
 
+  if (criticsPage.length === 0) {
+    return <></>
+  }
+
   return (
-    <>
+    <div className="collection">
       <h3>Critics Page</h3>
       <ul>
         {criticsPage.map((articleIssue: ArticlesIssues, i: number) => {
@@ -31,7 +35,7 @@ const CriticsPage = (props: PromoProps) => {
           return <PromoSlim key={`criticspage-${i}`} i={i} article={article} permalink={permalink} order={order} />
         })}
       </ul>
-    </>
+    </div>
   )
 }
 

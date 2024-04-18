@@ -14,8 +14,12 @@ const ArtSeen = (props: PromoProps) => {
     }
   })
 
+  if (artSeen.length === 0) {
+    return <></>
+  }
+
   return (
-    <>
+    <div className="collection">
       <h3>ArtSeen</h3>
       <ul>
         {artSeen.map((articleIssue: ArticlesIssues, i: number) => {
@@ -31,7 +35,7 @@ const ArtSeen = (props: PromoProps) => {
           return <PromoSlim key={`artseen-${i}`} i={i} article={article} permalink={permalink} order={order} />
         })}
       </ul>
-    </>
+    </div>
   )
 }
 
