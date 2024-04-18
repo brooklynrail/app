@@ -39,7 +39,13 @@ export async function getCurrentIssue() {
 // NOTE: we need to use `readItems` instead of `readItem` because we are querying the `issues` collection
 // instead of a single issue by ID
 // This returns a single issue object
-export async function getIssueData(year: number, month: number) {
+interface IssueDataProps {
+  year?: number
+  month?: number
+  slug?: string
+}
+export async function getIssueData(props: IssueDataProps) {
+  const { year, month, slug } = props
   const issueData: Issues[] = await directus.request(
     readItems("issues", {
       fields: [
@@ -121,12 +127,15 @@ export async function getIssueData(year: number, month: number) {
       ],
       filter: {
         _and: [
-          { year: year && month ? { _eq: year } : undefined },
-          { month: month && year ? { _eq: month } : undefined },
-          { status: { _eq: "published" } },
+          {
+            year: year && month ? { _eq: year } : undefined,
+            month: year && month ? { _eq: month } : undefined,
+            slug: slug ? { _eq: slug } : undefined,
+            status: { _eq: "published" },
+          },
         ],
       },
-      limit: -1,
+      // limit: -1,
       deep: {
         articles: {
           _limit: -1,
@@ -167,7 +176,7 @@ export async function getSectionsByIssueId(issueId: number) {
   return sections
 }
 
-export async function getArticlePages() {
+export async function getArticlePages(special_issue: boolean) {
   const articlePages: Articles[] = directus.request(
     readItems("articles", {
       fields: [
@@ -182,18 +191,27 @@ export async function getArticlePages() {
         {
           issues: [
             {
-              issues_id: ["year", "month"],
+              issues_id: ["year", "month", "slug", "special_issue"],
             },
           ],
         },
       ],
+      filter: {
+        _and: [
+          {
+            issues: {
+              issues_id: [{ special_issue: special_issue ? { _eq: true } : { _eq: false } }],
+            },
+          },
+        ],
+      },
       limit: -1,
     }),
   )
   return articlePages
 }
 
-export function getArticles(issueId: number, section?: string) {
+export async function getArticles(issueId: number, section?: string) {
   const currentArticles: Articles[] = directus.request(
     readItems("articles", {
       fields: [
@@ -245,7 +263,7 @@ export function getArticles(issueId: number, section?: string) {
   return currentArticles
 }
 
-export function getArticle(slug: string) {
+export async function getArticle(slug: string) {
   const currentArticle = directus.request(
     readItem("articles", slug, {
       fields: [
@@ -311,6 +329,7 @@ export function getArticle(slug: string) {
       ],
     }),
   )
+
   return currentArticle
 }
 
@@ -397,6 +416,8 @@ export enum PageType {
   Contributor = "contributor",
   Page = "page",
   Preview = "preview",
+  SpecialIssue = "special_issue",
+  SpecialIssueArticle = "special_issue_article",
 }
 interface PermalinkProps {
   type: PageType
@@ -404,9 +425,10 @@ interface PermalinkProps {
   month?: number
   section?: string
   slug?: string
+  issueSlug?: string
 }
 export function getPermalink(props: PermalinkProps) {
-  const { year, section, slug, type } = props
+  const { year, section, slug, issueSlug, type } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
 
   switch (type) {
@@ -422,6 +444,10 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/`
     case PageType.Preview:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}/`
+    case PageType.SpecialIssue:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/`
+    case PageType.SpecialIssueArticle:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/${slug}/`
     default:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/`
   }
