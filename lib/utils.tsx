@@ -214,7 +214,7 @@ export async function getSpecialArticlePages() {
           {
             slug: { _nnull: true },
             issues: {
-              issues_id: [{ special_issue: { _eq: true } }],
+              issues_id: { special_issue: { _eq: true } },
             },
           },
         ],
@@ -248,9 +248,9 @@ export async function getArticlePages() {
       filter: {
         _and: [
           {
-            slug: { _nnull: true },
+            slug: { _nempty: true },
             issues: {
-              issues_id: [{ special_issue: { _eq: false } }],
+              issues_id: { special_issue: { _eq: false } },
             },
           },
         ],
