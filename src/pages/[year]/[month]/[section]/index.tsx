@@ -116,7 +116,7 @@ export async function getStaticPaths() {
       const issuePaths = sections.map((section) => ({
         params: {
           year: String(issue.year),
-          month: String(issue.month),
+          month: issue.month < 10 ? `0${String(issue.month)}` : String(issue.month),
           section: section.slug,
         },
       }))
