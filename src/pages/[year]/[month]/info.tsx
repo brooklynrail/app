@@ -1,6 +1,6 @@
 import directus from "../../../../lib/directus"
 import { readItems } from "@directus/sdk"
-import { PageType, getIssueData, getIssues, getPermalink, getSectionsByIssueId } from "../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getPermalink, getSectionsByIssueId } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
 
 import IssueInfo from "@/components/issuePage/issueInfo"
@@ -30,7 +30,7 @@ export async function getStaticProps({ params }: any) {
   const year = params.year
   const month = params.month
 
-  const allIssues = await getIssues()
+  const allIssues = await getAllIssues()
   const currentIssue = await getIssueData({ year, month, slug: undefined })
 
   // Get only the sections that are used in the articles in the current issue

@@ -6,7 +6,7 @@ import { readItem, readItems, readSingleton, readFiles, readPreset } from "@dire
 import { Articles, DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
-export async function getIssues() {
+export async function getAllIssues() {
   const issues: Issues[] = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
@@ -18,12 +18,17 @@ export async function getIssues() {
   return issues
 }
 
-export async function getSpecialIssues() {
+interface GetIssuesProps {
+  special_issue: boolean
+}
+
+export async function getIssues(props: GetIssuesProps) {
+  const { special_issue } = props
   const issues: Issues[] = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
       filter: {
-        _and: [{ status: { _eq: "published" }, special_issue: { _eq: true } }],
+        _and: [{ status: { _eq: "published" }, special_issue: special_issue ? { _eq: true } : { _eq: false } }],
       },
     }),
   )

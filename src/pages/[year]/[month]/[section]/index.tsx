@@ -2,6 +2,7 @@ import { IssuePageProps, PageLayout } from "@/pages"
 import {
   PageType,
   getAds,
+  getAllIssues,
   getIssueData,
   getIssues,
   getOGImage,
@@ -11,7 +12,7 @@ import {
 import { NextSeo } from "next-seo"
 import Error from "next/error"
 import { stripHtml } from "string-strip-html"
-import { ArticlesIssues, Sections } from "../../../../../lib/types"
+import { ArticlesIssues, Issues, Sections } from "../../../../../lib/types"
 import IssuePage from "@/components/issuePage"
 
 function Section(props: IssuePageProps) {
@@ -55,7 +56,7 @@ export async function getStaticProps({ params }: any) {
   const month = params.month
   const section = params.section
 
-  const allIssues = await getIssues()
+  const allIssues = await getAllIssues()
   const issueData = await getIssueData({ year, month, slug: undefined })
 
   // Filter the currentArticles to only include those that are in the current section
@@ -104,27 +105,25 @@ export async function getStaticProps({ params }: any) {
 export async function getStaticPaths() {
   try {
     // Fetch all issues
-    const issues = await getIssues()
+    const issues = await getIssues({ special_issue: false })
 
-    let paths: any = []
+    const paths = Promise.all(
+      issues.map(async (issue: Issues) => {
+        const sections = await getSectionsByIssueId(issue.id)
+        const issuePath = sections.map((section) => ({
+          params: {
+            year: `${String(issue.year)}`,
+            month: issue.month < 10 ? `0${String(issue.month)}` : String(issue.month),
+            section: section.slug,
+          },
+        }))
+        return issuePath
+      }),
+    )
+    // Flatten the array of arrays into a single array
+    const flattenedPaths = (await paths).flat()
 
-    // Iterate over each issue to fetch related sections
-    for (const issue of issues) {
-      const sections = await getSectionsByIssueId(issue.id)
-
-      // Map sections to paths
-      const issuePaths = sections.map((section) => ({
-        params: {
-          year: String(issue.year),
-          month: issue.month < 10 ? `0${String(issue.month)}` : String(issue.month),
-          section: section.slug,
-        },
-      }))
-
-      paths = paths.concat(issuePaths) // Concatenate to the main paths array
-    }
-
-    return { paths, fallback: "blocking" }
+    return { paths: flattenedPaths, fallback: "blocking" }
   } catch (error) {
     console.error("Error fetching year/month/section paths", error)
     return { paths: [], fallback: "blocking" }

@@ -5,15 +5,15 @@ import { IssuePageProps, PageLayout } from "@/pages"
 import {
   PageType,
   getAds,
+  getAllIssues,
   getIssueData,
-  getIssues,
   getOGImage,
   getPermalink,
   getSectionsByIssueId,
 } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
-import { ArticlesIssues } from "../../../../lib/types"
+import { ArticlesIssues, Issues } from "../../../../lib/types"
 
 function Issue(props: IssuePageProps) {
   const { title, cover_1, issue_number, slug } = props.currentIssue
@@ -47,7 +47,7 @@ export async function getStaticProps({ params }: any) {
   const year = params.year
   const month = params.month
 
-  const allIssues = await getIssues()
+  const allIssues = await getAllIssues()
   const issueData = await getIssueData({ year, month, slug: undefined })
 
   // Get only the sections that are used in the articles in the current issue
@@ -105,19 +105,15 @@ export async function getStaticPaths() {
       }),
     )
 
-    let paths: any = []
-
-    // Iterate over each issue to fetch related sections
-    for (const issue of issues) {
+    const paths = issues.map((issue) => {
       const month = issue.month
-      const issueParams = {
+      return {
         params: {
           year: String(issue.year),
           month: month < 10 ? `0${String(month)}` : String(month),
         },
       }
-      paths = paths.concat(issueParams)
-    }
+    })
 
     // We'll pre-render only these paths at build time.
     // { fallback: 'blocking' } will server-render pages

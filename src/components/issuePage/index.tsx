@@ -109,9 +109,7 @@ const IssuePage = (props: IssuePageProps) => {
               <div className="grid-row grid-gap-3">
                 <div className="grid-row">
                   <div className="grid-col-8 grid-offset-2">
-                    <TableOfContents {...tocProps} />
-                  </div>
-                  <div className="grid-col-8 grid-offset-2">
+                    {props.layout === PageLayout.Issue && <TableOfContents {...tocProps} />}
                     <div style={{ margin: "25px 0px 25px 30px" }}>
                       <Link href="/subscribe">
                         <img src="/images/subscribe-footer.png" />

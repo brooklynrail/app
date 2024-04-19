@@ -133,12 +133,9 @@ export async function getStaticPaths() {
   try {
     const articlePages = await getArticlePages()
 
-    let paths: any = []
-
-    // Iterate over each issue to fetch related sections
-    for (const article of articlePages) {
+    const paths = articlePages.map((article: Articles) => {
       const month = article.issues[0].issues_id.month
-      const articleParams = {
+      return {
         params: {
           year: article.issues && article.issues[0].issues_id.year.toString(),
           month: month < 10 ? `0${month.toString()}` : month.toString(),
@@ -146,8 +143,7 @@ export async function getStaticPaths() {
           slug: article.slug,
         },
       }
-      paths = paths.concat(articleParams) // Concatenate to the main paths array
-    }
+    })
 
     // We'll pre-render only these paths at build time.
     // { fallback: 'blocking' } will server-render pages

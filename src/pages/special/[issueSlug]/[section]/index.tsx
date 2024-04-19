@@ -2,16 +2,17 @@ import { IssuePageProps, PageLayout } from "@/pages"
 import {
   PageType,
   getAds,
+  getAllIssues,
   getIssueData,
+  getIssues,
   getOGImage,
   getPermalink,
   getSectionsByIssueId,
-  getSpecialIssues,
 } from "../../../../../lib/utils"
 import { NextSeo } from "next-seo"
 import Error from "next/error"
 import { stripHtml } from "string-strip-html"
-import { ArticlesIssues, Sections } from "../../../../../lib/types"
+import { ArticlesIssues, Issues, Sections } from "../../../../../lib/types"
 import IssuePage from "@/components/issuePage"
 
 function Section(props: IssuePageProps) {
@@ -52,7 +53,7 @@ export async function getStaticProps({ params }: any) {
   const issueSlug: string = params.issueSlug
   const section = params.section
 
-  const allIssues = await getSpecialIssues()
+  const allIssues = await getAllIssues()
   const issueData = await getIssueData({ year: undefined, month: undefined, slug: issueSlug })
 
   // Filter the currentArticles to only include those that are in the current section
@@ -100,26 +101,24 @@ export async function getStaticProps({ params }: any) {
 export async function getStaticPaths() {
   try {
     // Fetch all issues
-    const specialIssues = await getSpecialIssues()
+    const specialIssues = await getIssues({ special_issue: true })
 
-    let paths: any = []
+    const paths = Promise.all(
+      specialIssues.map(async (issue: Issues) => {
+        const sections = await getSectionsByIssueId(issue.id)
+        const issuePath = sections.map((section) => ({
+          params: {
+            issueSlug: issue.slug,
+            section: section.slug,
+          },
+        }))
+        return issuePath
+      }),
+    )
+    // Flatten the array of arrays into a single array
+    const flattenedPaths = (await paths).flat()
 
-    // Iterate over each issue
-    for (const issue of specialIssues) {
-      const sections = await getSectionsByIssueId(issue.id)
-
-      // Map sections to paths
-      const issuePaths = sections.map((section) => ({
-        params: {
-          issueSlug: issue.slug,
-          section: section.slug,
-        },
-      }))
-
-      paths = paths.concat(issuePaths) // Concatenate to the main paths array
-    }
-
-    return { paths, fallback: "blocking" }
+    return { paths: flattenedPaths, fallback: "blocking" }
   } catch (error) {
     console.error("Error fetching special/section paths", error)
     return { paths: [], fallback: "blocking" }

@@ -1,6 +1,6 @@
 import { Ads, ArticlesIssues, Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
-import { getAds, getCurrentIssue, getIssues, getSectionsByIssueId } from "../../lib/utils"
+import { getAds, getAllIssues, getCurrentIssue, getSectionsByIssueId } from "../../lib/utils"
 import { NextSeo } from "next-seo"
 
 export enum PageLayout {
@@ -35,7 +35,7 @@ function HomepageController(props: IssuePageProps) {
 export default HomepageController
 
 export async function getStaticProps() {
-  const allIssues = await getIssues()
+  const allIssues = await getAllIssues()
 
   // Get the Current issue
   // This is set in the Global Settings in the Studio

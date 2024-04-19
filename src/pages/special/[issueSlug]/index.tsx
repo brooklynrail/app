@@ -5,8 +5,8 @@ import { IssuePageProps, PageLayout } from "@/pages"
 import {
   PageType,
   getAds,
+  getAllIssues,
   getIssueData,
-  getIssues,
   getOGImage,
   getPermalink,
   getSectionsByIssueId,
@@ -45,7 +45,7 @@ export default SpecialIssue
 export async function getStaticProps({ params }: any) {
   const issueSlug: string = params.issueSlug
 
-  const allIssues = await getIssues()
+  const allIssues = await getAllIssues()
   const issueData = await getIssueData({ year: undefined, month: undefined, slug: issueSlug })
 
   // Get only the sections that are used in the articles in the current issue
@@ -105,17 +105,13 @@ export async function getStaticPaths() {
       }),
     )
 
-    let paths: any = []
-
-    // Iterate over each issue to fetch related sections
-    for (const issue of specialIssues) {
-      const issueParams = {
+    const paths = specialIssues.map((issue) => {
+      return {
         params: {
           issueSlug: issue.slug,
         },
       }
-      paths = paths.concat(issueParams)
-    }
+    })
 
     // We'll pre-render only these paths at build time.
     // { fallback: 'blocking' } will server-render pages

@@ -134,19 +134,15 @@ export async function getStaticPaths() {
   try {
     const specialArticlePages = await getSpecialArticlePages()
 
-    let paths: any = []
-
-    // Iterate over each article
-    for (const article of specialArticlePages) {
-      const articlePath = {
+    const paths = specialArticlePages.map((article: Articles) => {
+      return {
         params: {
           issueSlug: article.issues && article.issues[0].issues_id.slug.toString(),
           section: article.sections && article.sections[0].sections_id.slug.toString(),
           slug: article.slug,
         },
       }
-      paths = paths.concat(articlePath)
-    }
+    })
 
     // We'll pre-render only these paths at build time.
     // { fallback: 'blocking' } will server-render pages
