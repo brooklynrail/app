@@ -1,8 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
-import { useEffect, useState } from "react"
 import { usePopup } from "./popupProvider"
-import { Articles, ArticlesIssues, ArticlesSections, DirectusFiles, Issues, Sections } from "../../../lib/types"
+import { Articles, DirectusFiles, Issues, Sections } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import { PageType, getPermalink } from "../../../lib/utils"
 

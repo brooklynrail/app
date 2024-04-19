@@ -212,6 +212,7 @@ export async function getSpecialArticlePages() {
       filter: {
         _and: [
           {
+            status: { _eq: "published" },
             slug: { _nnull: true },
             issues: {
               issues_id: { special_issue: { _eq: true } },
@@ -248,6 +249,7 @@ export async function getArticlePages() {
       filter: {
         _and: [
           {
+            status: { _eq: "published" },
             slug: { _nempty: true },
             issues: {
               issues_id: { special_issue: { _eq: false } },
