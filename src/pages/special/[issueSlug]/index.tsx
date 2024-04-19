@@ -21,7 +21,6 @@ function SpecialIssue(props: IssuePageProps) {
   const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
   const ogimages = getOGImage(ogimageprops)
-
   return (
     <>
       <NextSeo
@@ -52,7 +51,10 @@ export async function getStaticProps({ params }: any) {
   // Get only the sections that are used in the articles in the current issue
   const currentSections = await getSectionsByIssueId(issueData.id)
 
-  const currentArticles = issueData.articles
+  // filter out the issueData.articles that are missing articles_slug
+  const currentArticles = issueData.articles.filter((article: ArticlesIssues) => {
+    return article.articles_slug
+  })
 
   // Get the published Ads
   const ads = await getAds()
