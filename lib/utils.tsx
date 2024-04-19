@@ -6,12 +6,16 @@ import { readItem, readItems, readSingleton, readFiles, readPreset } from "@dire
 import { Articles, DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
-export async function getIssues() {
+interface GetIssuesProps {
+  special_issue: boolean
+}
+export async function getIssues(props: GetIssuesProps) {
+  const { special_issue } = props
   const issues: Issues[] = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
       filter: {
-        _and: [{ status: { _eq: "published" } }],
+        _and: [{ status: { _eq: "published" }, special_issue: special_issue ? { _eq: true } : { _eq: false } }],
       },
     }),
   )
@@ -176,7 +180,7 @@ export async function getSectionsByIssueId(issueId: number) {
   return sections
 }
 
-export async function getArticlePages(special_issue: boolean) {
+export async function getSpecialArticlePages() {
   const articlePages: Articles[] = directus.request(
     readItems("articles", {
       fields: [
@@ -199,8 +203,45 @@ export async function getArticlePages(special_issue: boolean) {
       filter: {
         _and: [
           {
+            slug: { _nnull: true },
             issues: {
-              issues_id: [{ special_issue: special_issue ? { _eq: true } : { _eq: false } }],
+              issues_id: [{ special_issue: { _eq: true } }],
+            },
+          },
+        ],
+      },
+      limit: -1,
+    }),
+  )
+  return articlePages
+}
+
+export async function getArticlePages() {
+  const articlePages: Articles[] = directus.request(
+    readItems("articles", {
+      fields: [
+        "slug",
+        {
+          sections: [
+            {
+              sections_id: ["slug"],
+            },
+          ],
+        },
+        {
+          issues: [
+            {
+              issues_id: ["year", "month", "slug", "special_issue"],
+            },
+          ],
+        },
+      ],
+      filter: {
+        _and: [
+          {
+            slug: { _nnull: true },
+            issues: {
+              issues_id: [{ special_issue: { _eq: false } }],
             },
           },
         ],
