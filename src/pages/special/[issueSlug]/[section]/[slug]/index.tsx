@@ -7,11 +7,11 @@ import Error from "next/error"
 import {
   PageType,
   getArticle,
-  getArticlePages,
   getArticles,
   getIssueData,
   getOGImage,
   getPermalink,
+  getSpecialArticlePages,
 } from "../../../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
 
@@ -131,8 +131,10 @@ export async function getStaticProps({ params }: any) {
 // It may be called again, on a serverless function, if
 // the path has not been generated.
 export async function getStaticPaths() {
+  console.log("special/section/slug paths")
   try {
-    const articlePages = await getArticlePages(true)
+    const articlePages = await getSpecialArticlePages()
+    // console.log("articlePages", articlePages)
 
     const paths = articlePages.map((article: Articles) => {
       return {
@@ -149,7 +151,7 @@ export async function getStaticPaths() {
     // on-demand if the path doesn't exist.
     return { paths, fallback: "blocking" }
   } catch (error) {
-    console.error("Error fetching paths", error)
+    console.error("Error fetching special/section/slug paths", error)
     return { paths: [], fallback: "blocking" }
   }
 }
