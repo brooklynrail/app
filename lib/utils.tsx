@@ -11,7 +11,7 @@ export async function getIssues() {
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
       filter: {
-        _and: [{ status: { _eq: "published" }, special_issue: { _eq: false } }],
+        _and: [{ status: { _eq: "published" } }],
       },
     }),
   )
@@ -93,6 +93,7 @@ export async function getIssueData(props: IssueDataProps) {
             "order",
             {
               articles_slug: [
+                "status",
                 "slug",
                 "title",
                 "excerpt",
