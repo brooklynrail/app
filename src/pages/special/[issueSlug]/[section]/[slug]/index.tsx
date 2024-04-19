@@ -131,7 +131,6 @@ export async function getStaticProps({ params }: any) {
 // It may be called again, on a serverless function, if
 // the path has not been generated.
 export async function getStaticPaths() {
-  console.log("special/section/slug paths")
   try {
     const articlePages = await getSpecialArticlePages()
     // console.log("articlePages", articlePages)

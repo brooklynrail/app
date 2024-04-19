@@ -95,24 +95,32 @@ export async function getStaticProps({ params }: any) {
 // It may be called again, on a serverless function, if
 // the path has not been generated.
 export async function getStaticPaths() {
-  const issues = await directus.request(
-    readItems("issues", {
-      fields: ["year", "month"],
-    }),
-  )
+  try {
+    const issues = await directus.request(
+      readItems("issues", {
+        fields: ["year", "month", "special_issue"],
+        filter: {
+          _and: [{ special_issue: { _eq: false } }],
+        },
+      }),
+    )
 
-  const paths = issues.map((issue) => {
-    const month = issue.month
-    return {
-      params: {
-        year: String(issue.year),
-        month: month < 10 ? `0${String(month)}` : String(month),
-      },
-    }
-  })
+    const paths = issues.map((issue) => {
+      const month = issue.month
+      return {
+        params: {
+          year: String(issue.year),
+          month: month < 10 ? `0${String(month)}` : String(month),
+        },
+      }
+    })
 
-  // We'll pre-render only these paths at build time.
-  // { fallback: 'blocking' } will server-render pages
-  // on-demand if the path doesn't exist.
-  return { paths, fallback: "blocking" }
+    // We'll pre-render only these paths at build time.
+    // { fallback: 'blocking' } will server-render pages
+    // on-demand if the path doesn't exist.
+    return { paths, fallback: "blocking" }
+  } catch (error) {
+    console.error("Error fetching year/month issue paths", error)
+    return { paths: [], fallback: "blocking" }
+  }
 }

@@ -131,7 +131,7 @@ export async function getStaticProps({ params }: any) {
 // the path has not been generated.
 export async function getStaticPaths() {
   try {
-    const articlePages = await getArticlePages(false)
+    const articlePages = await getArticlePages()
 
     const paths = articlePages.map((article: Articles) => {
       const month = article.issues[0].issues_id.month
@@ -150,7 +150,7 @@ export async function getStaticPaths() {
     // on-demand if the path doesn't exist.
     return { paths, fallback: "blocking" }
   } catch (error) {
-    console.error("Error fetching paths", error)
+    console.error("Error fetching year/month/section/slug paths", error)
     return { paths: [], fallback: "blocking" }
   }
 }

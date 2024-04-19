@@ -3,10 +3,10 @@ import {
   PageType,
   getAds,
   getIssueData,
-  getIssues,
   getOGImage,
   getPermalink,
   getSectionsByIssueId,
+  getSpecialIssues,
 } from "../../../../../lib/utils"
 import { NextSeo } from "next-seo"
 import Error from "next/error"
@@ -52,7 +52,7 @@ export async function getStaticProps({ params }: any) {
   const issueSlug: string = params.issueSlug
   const section = params.section
 
-  const allIssues = await getIssues()
+  const allIssues = await getSpecialIssues()
   const issueData = await getIssueData({ year: undefined, month: undefined, slug: issueSlug })
 
   // Filter the currentArticles to only include those that are in the current section
@@ -100,12 +100,12 @@ export async function getStaticProps({ params }: any) {
 export async function getStaticPaths() {
   try {
     // Fetch all issues
-    const issues = await getIssues()
+    const specialIssues = await getSpecialIssues()
 
     let paths: any = []
 
     // Iterate over each issue to fetch related sections
-    for (const issue of issues) {
+    for (const issue of specialIssues) {
       const sections = await getSectionsByIssueId(issue.id)
 
       // Map sections to paths
@@ -121,7 +121,7 @@ export async function getStaticPaths() {
 
     return { paths, fallback: "blocking" }
   } catch (error) {
-    console.error("Error fetching paths", error)
+    console.error("Error fetching special/section paths", error)
     return { paths: [], fallback: "blocking" }
   }
 }

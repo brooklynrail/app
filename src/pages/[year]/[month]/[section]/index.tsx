@@ -126,7 +126,7 @@ export async function getStaticPaths() {
 
     return { paths, fallback: "blocking" }
   } catch (error) {
-    console.error("Error fetching paths", error)
+    console.error("Error fetching year/month/section paths", error)
     return { paths: [], fallback: "blocking" }
   }
 }

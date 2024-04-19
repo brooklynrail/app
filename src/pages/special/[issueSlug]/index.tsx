@@ -93,23 +93,30 @@ export async function getStaticProps({ params }: any) {
 // It may be called again, on a serverless function, if
 // the path has not been generated.
 export async function getStaticPaths() {
-  const issues = await directus.request(
-    readItems("issues", {
-      fields: ["slug", "special_issue"],
-    }),
-  )
-  const specialIssues = issues.filter((issue) => issue.special_issue)
+  try {
+    const issues = await directus.request(
+      readItems("issues", {
+        fields: ["slug", "special_issue"],
+        filter: {
+          _and: [{ special_issue: { _eq: true } }],
+        },
+      }),
+    )
 
-  const paths = specialIssues.map((issue) => {
-    return {
-      params: {
-        issueSlug: issue.slug,
-      },
-    }
-  })
+    const paths = issues.map((issue) => {
+      return {
+        params: {
+          issueSlug: issue.slug,
+        },
+      }
+    })
 
-  // We'll pre-render only these paths at build time.
-  // { fallback: 'blocking' } will server-render pages
-  // on-demand if the path doesn't exist.
-  return { paths, fallback: "blocking" }
+    // We'll pre-render only these paths at build time.
+    // { fallback: 'blocking' } will server-render pages
+    // on-demand if the path doesn't exist.
+    return { paths, fallback: "blocking" }
+  } catch (error) {
+    console.error("Error fetching special issue paths", error)
+    return { paths: [], fallback: "blocking" }
+  }
 }
