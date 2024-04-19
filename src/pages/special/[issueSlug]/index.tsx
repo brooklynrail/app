@@ -96,7 +96,7 @@ export async function getStaticProps({ params }: any) {
 // the path has not been generated.
 export async function getStaticPaths() {
   try {
-    const issues = await directus.request(
+    const specialIssues = await directus.request(
       readItems("issues", {
         fields: ["slug", "special_issue"],
         filter: {
@@ -105,13 +105,17 @@ export async function getStaticPaths() {
       }),
     )
 
-    const paths = issues.map((issue) => {
-      return {
+    let paths: any = []
+
+    // Iterate over each issue to fetch related sections
+    for (const issue of specialIssues) {
+      const issueParams = {
         params: {
           issueSlug: issue.slug,
         },
       }
-    })
+      paths = paths.concat(issueParams)
+    }
 
     // We'll pre-render only these paths at build time.
     // { fallback: 'blocking' } will server-render pages

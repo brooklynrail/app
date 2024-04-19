@@ -105,15 +105,19 @@ export async function getStaticPaths() {
       }),
     )
 
-    const paths = issues.map((issue) => {
+    let paths: any = []
+
+    // Iterate over each issue to fetch related sections
+    for (const issue of issues) {
       const month = issue.month
-      return {
+      const issueParams = {
         params: {
           year: String(issue.year),
           month: month < 10 ? `0${String(month)}` : String(month),
         },
       }
-    })
+      paths = paths.concat(issueParams)
+    }
 
     // We'll pre-render only these paths at build time.
     // { fallback: 'blocking' } will server-render pages

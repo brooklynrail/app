@@ -104,7 +104,7 @@ export async function getStaticPaths() {
 
     let paths: any = []
 
-    // Iterate over each issue to fetch related sections
+    // Iterate over each issue
     for (const issue of specialIssues) {
       const sections = await getSectionsByIssueId(issue.id)
 
