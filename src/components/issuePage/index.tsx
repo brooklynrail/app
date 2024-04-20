@@ -9,14 +9,14 @@ import RailProjects from "./railProjects"
 import Header from "./header"
 import Ad970 from "./ad970"
 import TableOfContents from "./tableOfContents"
-import { Ads, ArticlesIssues, Sections } from "../../../lib/types"
+import { Ads, ArticlesIssues, Issues, Sections } from "../../../lib/types"
 import Link from "next/link"
 import SpecialIssue from "./layout/specialIssue"
 import SpecialSection from "./layout/specialSection"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
-import { getAds, getSectionsByIssueId } from "../../../lib/utils"
+import { getAds, getAllIssues, getSectionsByIssueId } from "../../../lib/utils"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
@@ -25,13 +25,14 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { allIssues, currentIssue, permalink } = props
+  const { currentIssue, permalink } = props
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month, slug, special_issue } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
   const currentIssueSlug = currentIssue.slug
   const issueClass = `issue-${slug.toLowerCase()}`
   const [currentSections, setCurrentSections] = useState<Sections[] | undefined>(undefined)
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
+  const [allIssues, setAllIssues] = useState<Issues[] | undefined>(undefined)
   const tocProps = { currentIssue, currentSections, permalink, year, month }
 
   useEffect(() => {
@@ -60,7 +61,20 @@ const IssuePage = (props: IssuePageProps) => {
     fetchAds().catch((error) => {
       console.error("Failed to run fetchAds:", error)
     })
-  }, [setCurrentSections, currentSections, currentIssue.id, currentAds, setCurrentAds])
+
+    async function fetchAllIssues() {
+      try {
+        // Get all the issues
+        const allIssues = await getAllIssues()
+        setAllIssues(allIssues)
+      } catch (error) {
+        console.error("Failed to fetch All Issues:", error)
+      }
+    }
+    fetchAllIssues().catch((error) => {
+      console.error("Failed to run fetchAllIssues:", error)
+    })
+  }, [setCurrentSections, currentSections, currentIssue.id, currentAds, setCurrentAds, allIssues, setAllIssues])
 
   let layout
   switch (props.layout) {

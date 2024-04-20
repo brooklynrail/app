@@ -2,15 +2,24 @@ import { Issues } from "../../../lib/types"
 import { useState } from "react"
 
 interface IssueSelectProps {
-  allIssues: Array<Issues>
+  allIssues?: Issues[]
   currentIssueSlug?: string
 }
 
 const IssueSelect = (props: IssueSelectProps) => {
   const { allIssues, currentIssueSlug } = props
-  const [selectedIssueSlug, setSelectedIssueSlug] = useState<string>(
-    currentIssueSlug ? currentIssueSlug : allIssues[0].slug,
+
+  const [selectedIssueSlug, setSelectedIssueSlug] = useState<string | undefined>(
+    currentIssueSlug ? currentIssueSlug : undefined,
   )
+
+  if (!selectedIssueSlug || !Array.isArray(allIssues)) {
+    return null
+  }
+
+  if (!allIssues || !selectedIssueSlug) {
+    return <>Loading...</>
+  }
 
   const handleIssueChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value
@@ -25,9 +34,6 @@ const IssueSelect = (props: IssueSelectProps) => {
     }
   }
 
-  if (!selectedIssueSlug || !Array.isArray(allIssues)) {
-    return null
-  }
   // sort allIssues by the issue_number, largest to smallest
   allIssues.sort((a, b) => b.issue_number - a.issue_number)
   return (

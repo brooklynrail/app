@@ -1,6 +1,6 @@
 import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
-import { getAllIssues, getCurrentIssue } from "../../lib/utils"
+import { getCurrentIssue } from "../../lib/utils"
 import { NextSeo } from "next-seo"
 
 export enum PageLayout {
@@ -10,7 +10,6 @@ export enum PageLayout {
   SpecialSection = "special-section",
 }
 export interface IssuePageProps {
-  allIssues: Array<Issues>
   currentIssue: Issues
   currentSection?: Sections
   permalink: string
@@ -31,8 +30,6 @@ function HomepageController(props: IssuePageProps) {
 export default HomepageController
 
 export async function getStaticProps() {
-  const allIssues = await getAllIssues()
-
   // Get the Current issue
   // This is set in the Global Settings in the Studio
   const currentIssue = await getCurrentIssue()
@@ -43,7 +40,6 @@ export async function getStaticProps() {
 
   return {
     props: {
-      allIssues,
       currentIssue,
     },
     // Next.js will attempt to re-generate the page:
