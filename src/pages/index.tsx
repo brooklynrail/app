@@ -1,4 +1,4 @@
-import { Ads, ArticlesIssues, Issues, Sections } from "../../lib/types"
+import { Ads, Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
 import { getAds, getAllIssues, getCurrentIssue, getSectionsByIssueId } from "../../lib/utils"
 import { NextSeo } from "next-seo"
@@ -14,8 +14,6 @@ export interface IssuePageProps {
   currentIssue: Issues
   currentSection?: Sections
   currentSections: Array<Sections>
-  currentArticles: ArticlesIssues[]
-  currentSlides?: ArticlesIssues[]
   ads: Array<Ads>
   permalink: string
   errorCode?: number
@@ -62,26 +60,14 @@ export async function getStaticProps() {
     return <>Add some articles!</>
   }
 
-  const currentArticles = currentIssue.articles
-
   // Get the published Ads
   const ads = await getAds()
-
-  // Filter the currentArticles to get only the articles with a slideshow image
-  const currentSlides: ArticlesIssues[] = []
-  currentArticles.forEach((articleIssue: ArticlesIssues) => {
-    if (articleIssue.articles_slug.slideshow_image) {
-      currentSlides.push(articleIssue)
-    }
-  })
 
   return {
     props: {
       allIssues,
-      currentSlides,
       currentIssue,
       currentSections,
-      currentArticles,
       ads,
     },
     // Next.js will attempt to re-generate the page:

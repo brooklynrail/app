@@ -1,11 +1,11 @@
 import Link from "next/link"
-import { ArticlesIssues, Sections } from "../../../lib/types"
+import { ArticlesIssues, Issues, Sections } from "../../../lib/types"
 import { PageType, getPermalink } from "../../../lib/utils"
 import PromoSlim from "../promo/slim"
 
 interface TableOfContentsProps {
+  currentIssue: Issues
   currentSections: Array<Sections>
-  currentArticles: ArticlesIssues[]
   permalink: string
   year: number
   month: number
@@ -55,7 +55,8 @@ const IssueSection = (props: IssueSectionProps) => {
 }
 
 const TableOfContents = (props: TableOfContentsProps) => {
-  const { currentSections, currentArticles, permalink, year, month } = props
+  const { currentIssue, currentSections, permalink, year, month } = props
+  const currentArticles = currentIssue.articles
 
   return (
     <div className="collection table-of-contents">

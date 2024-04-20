@@ -5,10 +5,20 @@ import EditorsMessage from "../editorsMessage"
 import PublishersMessage from "../publishersMessage"
 import SlideShow from "../slideshow"
 import FeaturedArticles from "../featuredArticles"
+import { ArticlesIssues } from "../../../../lib/types"
 
 const IssueLayout = (props: IssuePageProps) => {
-  const { currentIssue, currentArticles, currentSlides } = props
+  const { currentIssue } = props
   const { year, month } = currentIssue
+  const currentArticles = currentIssue.articles
+
+  // Filter the currentArticles to get only the articles with a slideshow image
+  const currentSlides: ArticlesIssues[] = []
+  currentArticles.forEach((articleIssue: ArticlesIssues) => {
+    if (articleIssue.articles_slug.slideshow_image) {
+      currentSlides.push(articleIssue)
+    }
+  })
 
   const promoProps = { currentArticles, year, month }
 

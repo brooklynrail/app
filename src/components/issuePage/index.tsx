@@ -23,12 +23,12 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { allIssues, currentIssue, currentSections, currentArticles, permalink } = props
+  const { allIssues, currentIssue, currentSections, permalink } = props
   const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month, slug, special_issue } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
   const currentSectionsProps = { currentSections, year, month }
-  const tocProps = { currentSections, currentArticles, permalink, year, month }
+  const tocProps = { currentIssue, currentSections, permalink, year, month }
   const currentIssueSlug = currentIssue.slug
 
   const issueClass = `issue-${slug.toLowerCase()}`
