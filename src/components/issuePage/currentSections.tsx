@@ -1,34 +1,16 @@
 import Link from "next/link"
-import { Issues, Sections } from "../../../lib/types"
-import { PageType, getPermalink, getSectionsByIssueId } from "../../../lib/utils"
-import { useEffect, useState } from "react"
+import { Sections } from "../../../lib/types"
+import { PageType, getPermalink } from "../../../lib/utils"
 
 interface CurrentSectionsProps {
-  currentIssue: Issues
+  currentSections?: Array<Sections>
   year: number
   month: number
 }
 
 const CurrentSections = (props: CurrentSectionsProps) => {
-  const { currentIssue, year, month } = props
+  const { currentSections, year, month } = props
   const sectionsToRemove = ["publishersmessage", "editorsmessage"]
-
-  const [currentSections, setCurrentSections] = useState<Array<Sections> | undefined>(undefined)
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // Get only the sections that are used in the articles in the current issue
-        const allSections = await getSectionsByIssueId(currentIssue.id)
-        setCurrentSections(allSections)
-      } catch (error) {
-        console.error("Failed to fetch allSections:", error)
-      }
-    }
-    fetchData().catch((error) => {
-      console.error("Failed to run fetchData:", error)
-    })
-  }, [setCurrentSections, currentSections, currentIssue.id])
 
   const issuePermalink = getPermalink({
     year: year,

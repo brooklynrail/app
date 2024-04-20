@@ -5,7 +5,7 @@ import PromoSlim from "../promo/slim"
 
 interface TableOfContentsProps {
   currentIssue: Issues
-  currentSections: Array<Sections>
+  currentSections?: Array<Sections>
   permalink: string
   year: number
   month: number
@@ -57,6 +57,10 @@ const IssueSection = (props: IssueSectionProps) => {
 const TableOfContents = (props: TableOfContentsProps) => {
   const { currentIssue, currentSections, permalink, year, month } = props
   const currentArticles = currentIssue.articles
+
+  if (!currentSections) {
+    return <p>Loading...</p>
+  }
 
   return (
     <div className="collection table-of-contents">

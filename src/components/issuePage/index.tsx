@@ -9,12 +9,14 @@ import RailProjects from "./railProjects"
 import Header from "./header"
 import Ad970 from "./ad970"
 import TableOfContents from "./tableOfContents"
-import { ArticlesIssues } from "../../../lib/types"
+import { ArticlesIssues, Sections } from "../../../lib/types"
 import Link from "next/link"
 import SpecialIssue from "./layout/specialIssue"
 import SpecialSection from "./layout/specialSection"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
+import { useEffect, useState } from "react"
+import { getSectionsByIssueId } from "../../../lib/utils"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
@@ -23,15 +25,29 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { allIssues, currentIssue, currentSections, permalink } = props
+  const { allIssues, currentIssue, permalink } = props
   const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month, slug, special_issue } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
-  const currentSectionsProps = { currentIssue, year, month }
-  const tocProps = { currentIssue, currentSections, permalink, year, month }
   const currentIssueSlug = currentIssue.slug
-
   const issueClass = `issue-${slug.toLowerCase()}`
+  const [currentSections, setCurrentSections] = useState<Array<Sections> | undefined>(undefined)
+  const tocProps = { currentIssue, currentSections, permalink, year, month }
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Get only the sections that are used in the articles in the current issue
+        const allSections = await getSectionsByIssueId(currentIssue.id)
+        setCurrentSections(allSections)
+      } catch (error) {
+        console.error("Failed to fetch allSections:", error)
+      }
+    }
+    fetchData().catch((error) => {
+      console.error("Failed to run fetchData:", error)
+    })
+  }, [setCurrentSections, currentSections, currentIssue.id])
 
   let layout
   switch (props.layout) {
@@ -84,7 +100,7 @@ const IssuePage = (props: IssuePageProps) => {
                       <CoverImage {...coverImageProps} />
                     </div>
 
-                    <CurrentSections {...currentSectionsProps} />
+                    <CurrentSections {...{ currentSections, year, month }} />
 
                     <Link className="search_btn" href="/search" title="Search All Issues">
                       <span>Search</span> <i className="fas fa-search"></i>
