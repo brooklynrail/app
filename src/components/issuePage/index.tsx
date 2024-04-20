@@ -25,7 +25,7 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { permalink, issueBasics } = props
+  const { permalink, issueBasics, currentSection } = props
   const { year, month, slug } = issueBasics
   const issueClass = `issue-${slug.toLowerCase()}`
   const [currentSections, setCurrentSections] = useState<Sections[] | undefined>(undefined)
@@ -35,83 +35,41 @@ const IssuePage = (props: IssuePageProps) => {
   const tocProps = { issueData, currentSections, permalink, year, month }
 
   useEffect(() => {
-    async function fetchSections() {
-      try {
-        // Get only the sections that are used in the articles in the current issue
-        const allSections = await getSectionsByIssueId(issueBasics.id)
-        setCurrentSections(allSections)
-      } catch (error) {
-        console.error("Failed to fetch allSections:", error)
-      }
-    }
-    fetchSections().catch((error) => {
-      console.error("Failed to run fetchSections:", error)
-    })
+    const fetchData = async () => {
+      const sections = !currentSections ? getSectionsByIssueId(issueBasics.id) : Promise.resolve(currentSections)
+      const ads = !currentAds ? getAds() : Promise.resolve(currentAds)
+      const issues = !allIssues ? getAllIssues() : Promise.resolve(allIssues)
+      const issueDataPromise = !issueData ? getIssueData({ year, month, slug: undefined }) : Promise.resolve(issueData)
 
-    async function fetchAds() {
-      try {
-        // Get the published Ads
-        const ads = await getAds()
-        setCurrentAds(ads)
-      } catch (error) {
-        console.error("Failed to fetch All Ads:", error)
-      }
-    }
-    fetchAds().catch((error) => {
-      console.error("Failed to run fetchAds:", error)
-    })
+      // Fetch all the data in parallel
+      const [fetchedSections, fetchedAds, fetchedIssues, fetchedIssueData] = await Promise.all([
+        sections,
+        ads,
+        issues,
+        issueDataPromise,
+      ])
 
-    async function fetchAllIssues() {
-      try {
-        // Get all the issues
-        const allIssues = await getAllIssues()
-        setAllIssues(allIssues)
-      } catch (error) {
-        console.error("Failed to fetch All Issues:", error)
-      }
+      // Update the state with the fetched data as it becomes available
+      setCurrentSections(fetchedSections)
+      setCurrentAds(fetchedAds)
+      setAllIssues(fetchedIssues)
+      setIssueData(fetchedIssueData)
     }
-    fetchAllIssues().catch((error) => {
-      console.error("Failed to run fetchAllIssues:", error)
-    })
 
-    async function fetchIssueData() {
-      try {
-        // Get the Current issue
-        // This is set in the Global Settings in the Studio
-        const issueData = await getIssueData({ year, month, slug: undefined })
-        // const currentIssueData = await getCurrentIssueData()
-        setIssueData(issueData)
-      } catch (error) {
-        console.error("Failed to fetch Current Issue Data:", error)
-      }
-    }
-    fetchIssueData().catch((error) => {
-      console.error("Failed to run fetchIssueData:", error)
-    })
-  }, [
-    setCurrentSections,
-    currentSections,
-    issueBasics.id,
-    currentAds,
-    setCurrentAds,
-    allIssues,
-    setAllIssues,
-    issueData,
-    setIssueData,
-    month,
-    year,
-  ])
+    // Call the fetchData function and handle any errors
+    fetchData().catch((error) => console.error("Failed to fetch data:", error))
+  }, [currentSections, issueBasics.id, currentAds, allIssues, issueData, month, year])
 
   let layout
   switch (props.layout) {
     case PageLayout.Section:
-      layout = <SectionLayout {...props} />
-      break
-    case PageLayout.SpecialIssue:
-      layout = <SpecialIssue issueData={issueData} />
+      layout = <SectionLayout issueData={issueData} currentSection={currentSection} />
       break
     case PageLayout.SpecialSection:
       layout = <SpecialSection {...props} />
+      break
+    case PageLayout.SpecialIssue:
+      layout = <SpecialIssue issueData={issueData} />
       break
     default:
       layout = <IssueLayout issueData={issueData} />
