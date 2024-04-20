@@ -4,7 +4,7 @@ import { PageType, getPermalink } from "../../../lib/utils"
 import PromoSlim from "../promo/slim"
 
 interface TableOfContentsProps {
-  currentIssue: Issues
+  currentIssueData?: Issues
   currentSections?: Array<Sections>
   permalink: string
   year: number
@@ -55,12 +55,13 @@ const IssueSection = (props: IssueSectionProps) => {
 }
 
 const TableOfContents = (props: TableOfContentsProps) => {
-  const { currentIssue, currentSections, permalink, year, month } = props
-  const currentArticles = currentIssue.articles
+  const { currentIssueData, currentSections, permalink, year, month } = props
 
-  if (!currentSections) {
+  if (!currentSections || !currentIssueData) {
     return <p>Loading...</p>
   }
+
+  const currentArticles = currentIssueData.articles
 
   return (
     <div className="collection table-of-contents">

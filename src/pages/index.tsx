@@ -32,11 +32,8 @@ export default HomepageController
 export async function getStaticProps() {
   // Get the Current issue
   // This is set in the Global Settings in the Studio
-  const currentIssue = await getCurrentIssue()
-
-  if (!currentIssue || !currentIssue.articles) {
-    return <>Add some articles!</>
-  }
+  const currentIssueSetting = await getCurrentIssue()
+  const currentIssue = currentIssueSetting.current_issue
 
   return {
     props: {

@@ -98,19 +98,20 @@ const IssueArticles = (props: ArticleProps) => {
 }
 
 interface CoverImagesProps {
-  cover_1?: DirectusFiles
-  cover_2?: DirectusFiles
-  cover_3?: DirectusFiles
-  cover_4?: DirectusFiles
-  cover_5?: DirectusFiles
-  cover_6?: DirectusFiles
+  currentIssue?: Issues
 }
 
 export const CoverImage = (props: CoverImagesProps) => {
-  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = props
-  const covers = [cover_1, cover_2, cover_3, cover_4, cover_5, cover_6]
+  const { currentIssue } = props
 
   const { setShowPopup, setImages } = usePopup()
+
+  if (!currentIssue) {
+    return <>Loading...</>
+  }
+
+  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
+  const covers = [cover_1, cover_2, cover_3, cover_4, cover_5, cover_6]
 
   const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault()
@@ -154,8 +155,7 @@ interface IssueRailProps {
 
 const IssueRail = (props: ArticleProps) => {
   const { currentIssue } = props
-  const { slug, title, cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
-  const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
+  const { slug, title } = currentIssue
 
   return (
     <section id="rail">
@@ -181,7 +181,7 @@ const IssueRail = (props: ArticleProps) => {
         <div className="issue-details">
           <div className="grid-row">
             <div className="grid-col-6">
-              <CoverImage {...coverImageProps} />
+              <CoverImage {...{ currentIssue }} />
             </div>
             <div className="grid-col-6">
               <div className="issue-links">

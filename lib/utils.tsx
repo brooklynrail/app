@@ -37,6 +37,21 @@ export async function getIssues(props: GetIssuesProps) {
 
 export async function getCurrentIssue() {
   // get the current issue from the global settings
+  const currentIssue: Issues = await directus.request(
+    readSingleton("global_settings", {
+      fields: [
+        {
+          current_issue: ["id", "title", "slug", "year", "month", "status"],
+        },
+      ],
+    }),
+  )
+
+  return currentIssue
+}
+
+export async function getCurrentIssueData() {
+  // get the current issue from the global settings
   const settings = await directus.request(
     readSingleton("global_settings", {
       fields: [

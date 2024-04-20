@@ -16,7 +16,7 @@ import SpecialSection from "./layout/specialSection"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
-import { getAds, getAllIssues, getSectionsByIssueId } from "../../../lib/utils"
+import { getAds, getAllIssues, getCurrentIssue, getCurrentIssueData, getSectionsByIssueId } from "../../../lib/utils"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
@@ -25,15 +25,15 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { currentIssue, permalink } = props
-  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month, slug, special_issue } = currentIssue
-  const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
+  const { permalink, currentIssue } = props
+  const { year, month } = currentIssue
   const currentIssueSlug = currentIssue.slug
-  const issueClass = `issue-${slug.toLowerCase()}`
+  const issueClass = `issue-${currentIssueSlug.toLowerCase()}`
   const [currentSections, setCurrentSections] = useState<Sections[] | undefined>(undefined)
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
   const [allIssues, setAllIssues] = useState<Issues[] | undefined>(undefined)
-  const tocProps = { currentIssue, currentSections, permalink, year, month }
+  const [currentIssueData, setCurrentIssueData] = useState<Issues | undefined>(undefined)
+  const tocProps = { currentIssueData, currentSections, permalink, year, month }
 
   useEffect(() => {
     async function fetchSections() {
@@ -74,7 +74,31 @@ const IssuePage = (props: IssuePageProps) => {
     fetchAllIssues().catch((error) => {
       console.error("Failed to run fetchAllIssues:", error)
     })
-  }, [setCurrentSections, currentSections, currentIssue.id, currentAds, setCurrentAds, allIssues, setAllIssues])
+
+    async function fetchCurrentIssueData() {
+      try {
+        // Get the Current issue
+        // This is set in the Global Settings in the Studio
+        const currentIssueData = await getCurrentIssueData()
+        setCurrentIssueData(currentIssueData)
+      } catch (error) {
+        console.error("Failed to fetch Current Issue Data:", error)
+      }
+    }
+    fetchCurrentIssueData().catch((error) => {
+      console.error("Failed to run fetchCurrentIssueData:", error)
+    })
+  }, [
+    setCurrentSections,
+    currentSections,
+    currentIssue.id,
+    currentAds,
+    setCurrentAds,
+    allIssues,
+    setAllIssues,
+    currentIssueData,
+    setCurrentIssueData,
+  ])
 
   let layout
   switch (props.layout) {
@@ -88,7 +112,7 @@ const IssuePage = (props: IssuePageProps) => {
       layout = <SpecialSection {...props} />
       break
     default:
-      layout = <IssueLayout {...props} />
+      layout = <IssueLayout currentIssueData={currentIssueData} />
       break
   }
 
@@ -116,7 +140,7 @@ const IssuePage = (props: IssuePageProps) => {
                   <div id="issuecolumn">
                     <div className="youarehereissue">
                       <IssueSelect allIssues={allIssues} currentIssueSlug={currentIssueSlug} />
-                      <CoverImage {...coverImageProps} />
+                      <CoverImage {...{ currentIssue }} />
                     </div>
 
                     <CurrentSections {...{ currentSections, year, month }} />

@@ -1,16 +1,24 @@
 import ArtSeen from "../artSeen"
-import { IssuePageProps } from "@/pages"
 import CriticsPage from "../criticsPage"
 import EditorsMessage from "../editorsMessage"
 import PublishersMessage from "../publishersMessage"
 import SlideShow from "../slideshow"
 import FeaturedArticles from "../featuredArticles"
-import { ArticlesIssues } from "../../../../lib/types"
+import { ArticlesIssues, Issues } from "../../../../lib/types"
 
-const IssueLayout = (props: IssuePageProps) => {
-  const { currentIssue } = props
-  const { year, month } = currentIssue
-  const currentArticles = currentIssue.articles
+export interface LayoutProps {
+  currentIssueData?: Issues
+}
+
+const IssueLayout = (props: LayoutProps) => {
+  const { currentIssueData } = props
+
+  if (!currentIssueData) {
+    return <>Loading...</>
+  }
+
+  const { year, month } = currentIssueData
+  const currentArticles = currentIssueData.articles
 
   // Filter the currentArticles to get only the articles with a slideshow image
   const currentSlides: ArticlesIssues[] = []
