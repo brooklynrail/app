@@ -2,21 +2,12 @@ import directus from "../../../../lib/directus"
 import { readItems } from "@directus/sdk"
 import IssuePage from "@/components/issuePage"
 import { IssuePageProps, PageLayout } from "@/pages"
-import {
-  PageType,
-  getAds,
-  getAllIssues,
-  getIssueData,
-  getOGImage,
-  getPermalink,
-  getSectionsByIssueId,
-} from "../../../../lib/utils"
+import { PageType, getIssueBasics, getOGImage, getPermalink } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
-import { ArticlesIssues } from "../../../../lib/types"
 
 function SpecialIssue(props: IssuePageProps) {
-  const { title, cover_1, issue_number, slug } = props.currentIssue
+  const { title, cover_1, issue_number, slug } = props.issueBasics
   const ogtitle = `${stripHtml(title).result} | The Brooklyn Rail`
   const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -45,43 +36,16 @@ export default SpecialIssue
 export async function getStaticProps({ params }: any) {
   const issueSlug: string = params.issueSlug
 
-  const allIssues = await getAllIssues()
-  const issueData = await getIssueData({ year: undefined, month: undefined, slug: issueSlug })
-
-  // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(issueData.id)
-
-  // filter out the issueData.articles that are missing articles_slug
-  const currentArticles = issueData.articles.filter((article: ArticlesIssues) => {
-    return article.articles_slug
-  })
-
-  // Get the published Ads
-  const ads = await getAds()
-
-  // Filter the currentArticles to get only the articles with a slideshow image
-  const currentSlides: ArticlesIssues[] = []
-  currentArticles.forEach((articleIssue: ArticlesIssues) => {
-    if (articleIssue.articles_slug.slideshow_image) {
-      currentSlides.push(articleIssue)
-    }
-  })
-
-  const currentIssue = issueData
+  const issueBasics = await getIssueBasics({ year: undefined, month: undefined, slug: issueSlug })
 
   const permalink = getPermalink({
-    issueSlug: currentIssue.slug,
+    issueSlug: issueBasics.slug,
     type: PageType.SpecialIssue,
   })
 
   return {
     props: {
-      allIssues,
-      currentIssue,
-      currentSections,
-      currentArticles,
-      currentSlides,
-      ads,
+      issueBasics,
       permalink,
     },
     // Next.js will attempt to re-generate the page:

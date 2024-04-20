@@ -17,7 +17,7 @@ import { Articles, Issues, Sections } from "../../../../../../lib/types"
 
 export interface ArticleProps {
   article: Articles
-  currentIssue: Issues
+  issueData: Issues
   currentArticles: Array<Articles>
   sections: Array<Sections>
   currentSection: Sections

@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePopup } from "./popupProvider"
-import { Articles, DirectusFiles, Issues, Sections } from "../../../lib/types"
+import { Articles, Issues, Sections } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import { PageType, getPermalink } from "../../../lib/utils"
 
@@ -63,8 +63,8 @@ const ArticleList = (props: ArticleListProps) => {
 }
 
 const IssueArticles = (props: ArticleProps) => {
-  const { currentArticles, sections, currentIssue } = props
-  const { year, month } = currentIssue
+  const { currentArticles, sections, issueData } = props
+  const { year, month } = issueData
   // Create a map where each key is a section ID and each value is an array of articles for that section
   const articlesBySection = currentArticles.reduce((acc: any, article: Articles) => {
     const sectionId = article.sections[0].sections_id.id
@@ -98,19 +98,19 @@ const IssueArticles = (props: ArticleProps) => {
 }
 
 interface CoverImagesProps {
-  currentIssue?: Issues
+  issueData?: Issues
 }
 
 export const CoverImage = (props: CoverImagesProps) => {
-  const { currentIssue } = props
+  const { issueData } = props
 
   const { setShowPopup, setImages } = usePopup()
 
-  if (!currentIssue) {
+  if (!issueData) {
     return <>Loading...</>
   }
 
-  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = currentIssue
+  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = issueData
   const covers = [cover_1, cover_2, cover_3, cover_4, cover_5, cover_6]
 
   const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
@@ -148,14 +148,9 @@ export const CoverImage = (props: CoverImagesProps) => {
   )
 }
 
-interface IssueRailProps {
-  currentIssue: Issues
-  sections: Sections[]
-}
-
 const IssueRail = (props: ArticleProps) => {
-  const { currentIssue } = props
-  const { slug, title } = currentIssue
+  const { issueData } = props
+  const { slug, title } = issueData
 
   return (
     <section id="rail">
@@ -181,7 +176,7 @@ const IssueRail = (props: ArticleProps) => {
         <div className="issue-details">
           <div className="grid-row">
             <div className="grid-col-6">
-              <CoverImage {...{ currentIssue }} />
+              <CoverImage {...{ issueData }} />
             </div>
             <div className="grid-col-6">
               <div className="issue-links">

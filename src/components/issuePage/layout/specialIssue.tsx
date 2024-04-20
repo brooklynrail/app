@@ -1,20 +1,26 @@
-import { IssuePageProps } from "@/pages"
 import { ArticlesIssues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import PromoSpecialSection from "../../promo/specialSection"
+import { LayoutProps } from "./issue"
 
-const SpecialIssue = (props: IssuePageProps) => {
-  const { currentIssue, currentArticles } = props
+const SpecialIssue = (props: LayoutProps) => {
+  const { issueData } = props
+
+  if (!issueData) {
+    return <>Loading...</>
+  }
+
+  const currentArticles = issueData.articles
 
   const allArticles = currentArticles.map((article: ArticlesIssues, i: number) => {
     const permalink = getPermalink({
-      issueSlug: currentIssue.slug,
+      issueSlug: issueData.slug,
       section: article.articles_slug.sections[0].sections_id.slug,
       type: PageType.SpecialIssueArticle,
       slug: article.articles_slug.slug,
     })
     const sectionPermalink = getPermalink({
-      issueSlug: currentIssue.slug,
+      issueSlug: issueData.slug,
       section: article.articles_slug.sections[0].sections_id.slug,
       type: PageType.SpecialIssueSection,
       slug: article.articles_slug.sections[0].sections_id.slug,

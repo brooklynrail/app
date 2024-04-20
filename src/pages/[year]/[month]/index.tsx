@@ -2,21 +2,12 @@ import directus from "../../../../lib/directus"
 import { readItems } from "@directus/sdk"
 import IssuePage from "@/components/issuePage"
 import { IssuePageProps, PageLayout } from "@/pages"
-import {
-  PageType,
-  getAds,
-  getAllIssues,
-  getIssueData,
-  getOGImage,
-  getPermalink,
-  getSectionsByIssueId,
-} from "../../../../lib/utils"
+import { PageType, getIssueBasics, getOGImage, getPermalink } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
-import { ArticlesIssues } from "../../../../lib/types"
 
 function Issue(props: IssuePageProps) {
-  const { title, cover_1, issue_number, slug } = props.currentIssue
+  const { title, cover_1, issue_number, slug } = props.issueBasics
   const ogtitle = `${stripHtml(title).result} | The Brooklyn Rail`
   const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -47,17 +38,17 @@ export async function getStaticProps({ params }: any) {
   const year = params.year
   const month = params.month
 
-  const currentIssue = await getIssueData({ year, month, slug: undefined })
+  const issueBasics = await getIssueBasics({ year, month, slug: undefined })
 
   const permalink = getPermalink({
-    year: currentIssue.year,
-    month: currentIssue.month,
+    year: issueBasics.year,
+    month: issueBasics.month,
     type: PageType.Issue,
   })
 
   return {
     props: {
-      currentIssue,
+      issueBasics,
       permalink,
     },
     // Next.js will attempt to re-generate the page:

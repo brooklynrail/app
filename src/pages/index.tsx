@@ -10,7 +10,7 @@ export enum PageLayout {
   SpecialSection = "special-section",
 }
 export interface IssuePageProps {
-  currentIssue: Issues
+  issueBasics: Issues
   currentSection?: Sections
   permalink: string
   errorCode?: number

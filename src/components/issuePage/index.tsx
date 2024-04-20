@@ -25,8 +25,8 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { permalink, currentIssue } = props
-  const { year, month, slug } = currentIssue
+  const { permalink, issueBasics } = props
+  const { year, month, slug } = issueBasics
   const issueClass = `issue-${slug.toLowerCase()}`
   const [currentSections, setCurrentSections] = useState<Sections[] | undefined>(undefined)
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
@@ -38,7 +38,7 @@ const IssuePage = (props: IssuePageProps) => {
     async function fetchSections() {
       try {
         // Get only the sections that are used in the articles in the current issue
-        const allSections = await getSectionsByIssueId(currentIssue.id)
+        const allSections = await getSectionsByIssueId(issueBasics.id)
         setCurrentSections(allSections)
       } catch (error) {
         console.error("Failed to fetch allSections:", error)
@@ -91,7 +91,7 @@ const IssuePage = (props: IssuePageProps) => {
   }, [
     setCurrentSections,
     currentSections,
-    currentIssue.id,
+    issueBasics.id,
     currentAds,
     setCurrentAds,
     allIssues,
@@ -108,7 +108,7 @@ const IssuePage = (props: IssuePageProps) => {
       layout = <SectionLayout {...props} />
       break
     case PageLayout.SpecialIssue:
-      layout = <SpecialIssue {...props} />
+      layout = <SpecialIssue issueData={issueData} />
       break
     case PageLayout.SpecialSection:
       layout = <SpecialSection {...props} />
@@ -142,7 +142,7 @@ const IssuePage = (props: IssuePageProps) => {
                   <div id="issuecolumn">
                     <div className="youarehereissue">
                       <IssueSelect allIssues={allIssues} currentIssueSlug={slug} />
-                      <CoverImage {...{ currentIssue }} />
+                      <CoverImage {...{ issueData }} />
                     </div>
 
                     <CurrentSections {...{ currentSections, year, month }} />

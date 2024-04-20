@@ -179,6 +179,38 @@ export async function getIssueData(props: IssueDataProps) {
   return issueData[0]
 }
 
+export async function getIssueBasics(props: IssueDataProps) {
+  const { year, month, slug } = props
+  const issueData: Issues[] = await directus.request(
+    readItems("issues", {
+      fields: [
+        "id",
+        "title",
+        "slug",
+        "year",
+        "month",
+        "status",
+        "issue_number",
+        "special_issue",
+        {
+          cover_1: ["caption", "filename_disk", "width", "height", "type"],
+        },
+      ],
+      filter: {
+        _and: [
+          {
+            year: year && month ? { _eq: year } : undefined,
+            month: year && month ? { _eq: month } : undefined,
+            slug: slug ? { _eq: slug } : undefined,
+            status: { _eq: "published" },
+          },
+        ],
+      },
+    }),
+  )
+  return issueData[0]
+}
+
 export async function getSectionsByIssueId(issueId: number) {
   const sections: Sections[] = directus.request(
     readItems("sections", {
