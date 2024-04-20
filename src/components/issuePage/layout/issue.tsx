@@ -4,10 +4,11 @@ import EditorsMessage from "../editorsMessage"
 import PublishersMessage from "../publishersMessage"
 import SlideShow from "../slideshow"
 import FeaturedArticles from "../featuredArticles"
-import { ArticlesIssues, Issues } from "../../../../lib/types"
+import { ArticlesIssues, Issues, Sections } from "../../../../lib/types"
 
 export interface LayoutProps {
   issueData?: Issues
+  currentSection?: Sections
 }
 
 const IssueLayout = (props: LayoutProps) => {
