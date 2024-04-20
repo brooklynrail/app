@@ -1,15 +1,17 @@
-import { IssuePageProps } from "@/pages"
 import { ArticlesIssues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import PromoSection from "@/components/promo/section"
+import { LayoutProps } from "./issue"
 
-const SectionLayout = (props: IssuePageProps) => {
-  const { currentIssue, currentArticles, currentSection } = props
-  const { year, month } = currentIssue
+const SectionLayout = (props: LayoutProps) => {
+  const { issueData, currentSection } = props
 
-  if (!currentSection) {
+  if (!currentSection || !issueData) {
     return <></>
   }
+
+  const { year, month } = issueData
+  const currentArticles = issueData.articles
 
   const allArticles = (
     <section className="collection">
