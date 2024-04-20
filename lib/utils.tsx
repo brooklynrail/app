@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton, readFiles, readPreset } from "@directus/sdk"
-import { Ads, Articles, DirectusFiles, Issues, Sections } from "./types"
+import { Ads, Articles, DirectusFiles, GlobalSettings, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
 export async function getAllIssues() {
@@ -37,7 +37,7 @@ export async function getIssues(props: GetIssuesProps) {
 
 export async function getCurrentIssue() {
   // get the current issue from the global settings
-  const currentIssue: Issues = await directus.request(
+  const settings: GlobalSettings = await directus.request(
     readSingleton("global_settings", {
       fields: [
         {
@@ -47,7 +47,7 @@ export async function getCurrentIssue() {
     }),
   )
 
-  return currentIssue
+  return settings
 }
 
 export async function getCurrentIssueData() {
