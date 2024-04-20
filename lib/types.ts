@@ -455,7 +455,7 @@ export type DirectusWebhooks = {
 
 export type GlobalSettings = {
   preview_password: string
-  current_issue: string | Issues
+  current_issue: Issues
   date_created?: string | null
   date_updated?: string | null
   id: string
