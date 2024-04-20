@@ -1,9 +1,8 @@
+import { GetStaticPropsContext } from "next"
 import { IssuePageProps, PageLayout } from "@/pages"
 import {
   PageType,
-  getAds,
-  getAllIssues,
-  getIssueData,
+  getIssueBasics,
   getIssues,
   getOGImage,
   getPermalink,
@@ -12,7 +11,7 @@ import {
 import { NextSeo } from "next-seo"
 import Error from "next/error"
 import { stripHtml } from "string-strip-html"
-import { ArticlesIssues, Issues, Sections } from "../../../../../lib/types"
+import { Issues, Sections } from "../../../../../lib/types"
 import IssuePage from "@/components/issuePage"
 
 function Section(props: IssuePageProps) {
@@ -23,7 +22,7 @@ function Section(props: IssuePageProps) {
     return <Error statusCode={404} title="This section does not exist" />
   }
   const { name } = props.currentSection
-  const { title, cover_1, issue_number, slug } = props.currentIssue
+  const { title, cover_1, issue_number, slug } = props.issueBasics
   const ogtitle = `${name} – ${stripHtml(title).result} | The Brooklyn Rail`
   const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -49,46 +48,34 @@ function Section(props: IssuePageProps) {
 
 export default Section
 
-export async function getStaticProps({ params }: any) {
-  const issueSlug: string = params.issueSlug
-  const section = params.section
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  if (!params || !params.issueSlug || !params.section) {
+    return { props: { errorCode: 400, errorMessage: "Bad Request: params is required" } }
+  }
 
-  const allIssues = await getAllIssues()
-  const issueData = await getIssueData({ year: undefined, month: undefined, slug: issueSlug })
+  const issueSlug: string = params.issueSlug.toString()
+  const section = params.section.toString()
 
-  // Filter the currentArticles to only include those that are in the current section
-  const currentArticles = issueData.articles.filter((article: ArticlesIssues) => {
-    return article.articles_slug.sections.find((s) => s.sections_id.slug === section)
-  })
+  const issueBasics = await getIssueBasics({ year: undefined, month: undefined, slug: issueSlug })
 
   // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(issueData.id)
+  const currentSections = await getSectionsByIssueId(issueBasics.id)
   const currentSection = currentSections.find((s: Sections) => s.slug === section)
-
-  // Get the published Ads
-  const ads = await getAds()
-
-  const currentIssue = issueData
-
   // If `section` does not exist, set errorCode to a string
   if (!currentSection) {
     return { props: { errorCode: 404, errorMessage: "This section does not exist" } }
   }
 
   const permalink = getPermalink({
-    issueSlug: currentIssue.slug,
+    issueSlug: issueBasics.slug,
     section: currentSection.slug,
     type: PageType.SpecialIssueSection,
   })
 
   return {
     props: {
-      allIssues,
-      currentIssue,
-      currentSections,
+      issueBasics,
       currentSection,
-      currentArticles,
-      ads,
       permalink,
     },
     // Next.js will attempt to re-generate the page:

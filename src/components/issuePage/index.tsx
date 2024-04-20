@@ -66,7 +66,7 @@ const IssuePage = (props: IssuePageProps) => {
       layout = <SectionLayout issueData={issueData} currentSection={currentSection} />
       break
     case PageLayout.SpecialSection:
-      layout = <SpecialSection {...props} />
+      layout = <SpecialSection issueData={issueData} currentSection={currentSection} />
       break
     case PageLayout.SpecialIssue:
       layout = <SpecialIssue issueData={issueData} />
