@@ -16,7 +16,7 @@ import SpecialSection from "./layout/specialSection"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
-import { getAds, getAllIssues, getCurrentIssue, getCurrentIssueData, getSectionsByIssueId } from "../../../lib/utils"
+import { getAds, getAllIssues, getIssueData, getSectionsByIssueId } from "../../../lib/utils"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
@@ -26,14 +26,13 @@ export interface PromoProps {
 
 const IssuePage = (props: IssuePageProps) => {
   const { permalink, currentIssue } = props
-  const { year, month } = currentIssue
-  const currentIssueSlug = currentIssue.slug
-  const issueClass = `issue-${currentIssueSlug.toLowerCase()}`
+  const { year, month, slug } = currentIssue
+  const issueClass = `issue-${slug.toLowerCase()}`
   const [currentSections, setCurrentSections] = useState<Sections[] | undefined>(undefined)
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
   const [allIssues, setAllIssues] = useState<Issues[] | undefined>(undefined)
-  const [currentIssueData, setCurrentIssueData] = useState<Issues | undefined>(undefined)
-  const tocProps = { currentIssueData, currentSections, permalink, year, month }
+  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
+  const tocProps = { issueData, currentSections, permalink, year, month }
 
   useEffect(() => {
     async function fetchSections() {
@@ -75,18 +74,19 @@ const IssuePage = (props: IssuePageProps) => {
       console.error("Failed to run fetchAllIssues:", error)
     })
 
-    async function fetchCurrentIssueData() {
+    async function fetchIssueData() {
       try {
         // Get the Current issue
         // This is set in the Global Settings in the Studio
-        const currentIssueData = await getCurrentIssueData()
-        setCurrentIssueData(currentIssueData)
+        const issueData = await getIssueData({ year, month, slug: undefined })
+        // const currentIssueData = await getCurrentIssueData()
+        setIssueData(issueData)
       } catch (error) {
         console.error("Failed to fetch Current Issue Data:", error)
       }
     }
-    fetchCurrentIssueData().catch((error) => {
-      console.error("Failed to run fetchCurrentIssueData:", error)
+    fetchIssueData().catch((error) => {
+      console.error("Failed to run fetchIssueData:", error)
     })
   }, [
     setCurrentSections,
@@ -96,8 +96,10 @@ const IssuePage = (props: IssuePageProps) => {
     setCurrentAds,
     allIssues,
     setAllIssues,
-    currentIssueData,
-    setCurrentIssueData,
+    issueData,
+    setIssueData,
+    month,
+    year,
   ])
 
   let layout
@@ -112,7 +114,7 @@ const IssuePage = (props: IssuePageProps) => {
       layout = <SpecialSection {...props} />
       break
     default:
-      layout = <IssueLayout currentIssueData={currentIssueData} />
+      layout = <IssueLayout issueData={issueData} />
       break
   }
 
@@ -139,7 +141,7 @@ const IssuePage = (props: IssuePageProps) => {
                 <div className="grid-col-2">
                   <div id="issuecolumn">
                     <div className="youarehereissue">
-                      <IssueSelect allIssues={allIssues} currentIssueSlug={currentIssueSlug} />
+                      <IssueSelect allIssues={allIssues} currentIssueSlug={slug} />
                       <CoverImage {...{ currentIssue }} />
                     </div>
 
