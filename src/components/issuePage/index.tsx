@@ -27,7 +27,7 @@ const IssuePage = (props: IssuePageProps) => {
   const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month, slug, special_issue } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
-  const currentSectionsProps = { currentSections, year, month }
+  const currentSectionsProps = { currentIssue, year, month }
   const tocProps = { currentIssue, currentSections, permalink, year, month }
   const currentIssueSlug = currentIssue.slug
 
