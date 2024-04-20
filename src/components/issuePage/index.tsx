@@ -9,14 +9,14 @@ import RailProjects from "./railProjects"
 import Header from "./header"
 import Ad970 from "./ad970"
 import TableOfContents from "./tableOfContents"
-import { ArticlesIssues, Sections } from "../../../lib/types"
+import { Ads, ArticlesIssues, Sections } from "../../../lib/types"
 import Link from "next/link"
 import SpecialIssue from "./layout/specialIssue"
 import SpecialSection from "./layout/specialSection"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
-import { getSectionsByIssueId } from "../../../lib/utils"
+import { getAds, getSectionsByIssueId } from "../../../lib/utils"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
@@ -26,16 +26,16 @@ export interface PromoProps {
 
 const IssuePage = (props: IssuePageProps) => {
   const { allIssues, currentIssue, permalink } = props
-  const ads = props.ads
   const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6, year, month, slug, special_issue } = currentIssue
   const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
   const currentIssueSlug = currentIssue.slug
   const issueClass = `issue-${slug.toLowerCase()}`
-  const [currentSections, setCurrentSections] = useState<Array<Sections> | undefined>(undefined)
+  const [currentSections, setCurrentSections] = useState<Sections[] | undefined>(undefined)
+  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
   const tocProps = { currentIssue, currentSections, permalink, year, month }
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchSections() {
       try {
         // Get only the sections that are used in the articles in the current issue
         const allSections = await getSectionsByIssueId(currentIssue.id)
@@ -44,10 +44,23 @@ const IssuePage = (props: IssuePageProps) => {
         console.error("Failed to fetch allSections:", error)
       }
     }
-    fetchData().catch((error) => {
-      console.error("Failed to run fetchData:", error)
+    fetchSections().catch((error) => {
+      console.error("Failed to run fetchSections:", error)
     })
-  }, [setCurrentSections, currentSections, currentIssue.id])
+
+    async function fetchAds() {
+      try {
+        // Get the published Ads
+        const ads = await getAds()
+        setCurrentAds(ads)
+      } catch (error) {
+        console.error("Failed to fetch All Ads:", error)
+      }
+    }
+    fetchAds().catch((error) => {
+      console.error("Failed to run fetchAds:", error)
+    })
+  }, [setCurrentSections, currentSections, currentIssue.id, currentAds, setCurrentAds])
 
   let layout
   switch (props.layout) {
@@ -80,15 +93,7 @@ const IssuePage = (props: IssuePageProps) => {
             </div>
           </header>
 
-          <section className="banner">
-            <div className="grid-container grid-container-desktop">
-              <div className="grid-row">
-                <div className="grid-col-12">
-                  <Ad970 ads={ads} />
-                </div>
-              </div>
-            </div>
-          </section>
+          <Ad970 currentAds={currentAds} />
 
           <section id="main">
             <div className="grid-container grid-container-desktop">
@@ -117,7 +122,7 @@ const IssuePage = (props: IssuePageProps) => {
                 {layout}
 
                 <div className="ad_column grid-col-2">
-                  <AdsTile ads={ads} />
+                  <AdsTile currentAds={currentAds} />
                 </div>
               </div>
             </div>

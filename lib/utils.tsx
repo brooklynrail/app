@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton, readFiles, readPreset } from "@directus/sdk"
-import { Articles, DirectusFiles, Issues, Sections } from "./types"
+import { Ads, Articles, DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
 export async function getAllIssues() {
@@ -390,15 +390,14 @@ export async function getArticle(slug: string) {
   return currentArticle
 }
 
-export function getAds() {
-  // get todays date and format it like year-mo-day with leading zeros
+export async function getAds() {
   const today = new Date()
   const year = today.getFullYear()
   const month = today.getMonth() + 1 < 10 ? `0${today.getMonth() + 1}` : `${today.getMonth() + 1}`
   const day = today.getDate() < 10 ? `0${today.getDate()}` : `${today.getDate()}`
   const formattedDate = `${year}-${month}-${day}`
 
-  const ads = directus.request(
+  const ads: Ads[] = directus.request(
     readItems("ads", {
       fields: [
         "ad_type",

@@ -3,14 +3,18 @@ import { Ads } from "../../../lib/types"
 import Image from "next/image"
 
 interface AdsTileProps {
-  ads: Array<Ads>
+  currentAds?: Array<Ads>
 }
 
 const AdsTile = (props: AdsTileProps) => {
-  const { ads } = props
+  const { currentAds } = props
+
+  if (!currentAds) {
+    return <>Loading...</>
+  }
 
   // limit ads to any 5 from the array
-  const limitedAds = ads.slice(0, 5)
+  const limitedAds = currentAds.slice(0, 5)
   const tiles = limitedAds.map((ad: Ads, i: number) => {
     if (!ad.tile_image || !ad.ad_url) {
       return

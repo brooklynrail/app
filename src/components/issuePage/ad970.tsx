@@ -3,13 +3,16 @@ import { Ads } from "../../../lib/types"
 import Image from "next/image"
 
 interface Ad970Props {
-  ads: Array<Ads>
+  currentAds?: Array<Ads>
 }
 
 const Ad970 = (props: Ad970Props) => {
-  const { ads } = props
+  const { currentAds } = props
+  if (!currentAds) {
+    return <>Loading...</>
+  }
 
-  const filteredAds = ads.filter((ad) => ad.ad_type === "banner")
+  const filteredAds = currentAds.filter((ad) => ad.ad_type === "banner")
   const banners = filteredAds.map((ad: Ads, i: number) => {
     if (!ad.banner_image || !ad.banner_image_mobile || !ad.ad_url) {
       return
@@ -51,10 +54,18 @@ const Ad970 = (props: Ad970Props) => {
 
   return (
     <>
-      <div className="ad ad_970 visible">
-        <p>Advertisement</p>
-        <div>{banners}</div>
-      </div>
+      <section className="banner">
+        <div className="grid-container grid-container-desktop">
+          <div className="grid-row">
+            <div className="grid-col-12">
+              <div className="ad ad_970 visible">
+                <p>Advertisement</p>
+                <div>{banners}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   )
 }

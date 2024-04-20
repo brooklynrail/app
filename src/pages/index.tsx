@@ -1,6 +1,6 @@
-import { Ads, Issues, Sections } from "../../lib/types"
+import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
-import { getAds, getAllIssues, getCurrentIssue } from "../../lib/utils"
+import { getAllIssues, getCurrentIssue } from "../../lib/utils"
 import { NextSeo } from "next-seo"
 
 export enum PageLayout {
@@ -13,7 +13,6 @@ export interface IssuePageProps {
   allIssues: Array<Issues>
   currentIssue: Issues
   currentSection?: Sections
-  ads: Array<Ads>
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -42,14 +41,10 @@ export async function getStaticProps() {
     return <>Add some articles!</>
   }
 
-  // Get the published Ads
-  const ads = await getAds()
-
   return {
     props: {
       allIssues,
       currentIssue,
-      ads,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
