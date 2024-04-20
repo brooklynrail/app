@@ -1,6 +1,6 @@
-import { Issues, Sections } from "../../lib/types"
+import { GlobalSettings, Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
-import { getCurrentIssue } from "../../lib/utils"
+import { getCurrentIssue, getIssueBasics, getPermalink, PageType } from "../../lib/utils"
 import { NextSeo } from "next-seo"
 
 export enum PageLayout {
@@ -33,11 +33,24 @@ export async function getStaticProps() {
   // Get the Current issue
   // This is set in the Global Settings in the Studio
   const currentIssueSetting = await getCurrentIssue()
-  const currentIssue = currentIssueSetting.current_issue
+  const currentIssue: Issues = currentIssueSetting.current_issue
+
+  const issueBasics = await getIssueBasics({
+    year: currentIssue.year,
+    month: currentIssue.month,
+    slug: currentIssue.slug,
+  })
+
+  const permalink = getPermalink({
+    year: issueBasics.year,
+    month: issueBasics.month,
+    type: PageType.Home,
+  })
 
   return {
     props: {
-      currentIssue,
+      issueBasics,
+      permalink,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
