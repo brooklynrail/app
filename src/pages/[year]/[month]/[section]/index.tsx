@@ -12,6 +12,7 @@ import Error from "next/error"
 import { stripHtml } from "string-strip-html"
 import { Issues, Sections } from "../../../../../lib/types"
 import IssuePage from "@/components/issuePage"
+import { GetStaticPropsContext } from "next"
 
 function Section(props: IssuePageProps) {
   if (props.errorCode && props.errorMessage) {
@@ -49,10 +50,14 @@ function Section(props: IssuePageProps) {
 
 export default Section
 
-export async function getStaticProps({ params }: any) {
-  const year = params.year
-  const month = params.month
-  const section = params.section
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  if (!params || !params.year || !params.month || !params.section) {
+    return { props: { errorCode: 400, errorMessage: "This section does not exist" } }
+  }
+
+  const year = parseInt(params.year.toString(), 10)
+  const month = parseInt(params.month.toString(), 10)
+  const section = params.section.toString()
 
   const issueBasics = await getIssueBasics({ year, month, slug: undefined })
 

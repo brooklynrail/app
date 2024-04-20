@@ -5,6 +5,7 @@ import { IssuePageProps, PageLayout } from "@/pages"
 import { PageType, getIssueBasics, getOGImage, getPermalink } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
+import { GetStaticPropsContext } from "next"
 
 function Issue(props: IssuePageProps) {
   const { title, cover_1, issue_number, slug } = props.issueBasics
@@ -34,9 +35,13 @@ function Issue(props: IssuePageProps) {
 
 export default Issue
 
-export async function getStaticProps({ params }: any) {
-  const year = params.year
-  const month = params.month
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  if (!params || !params.year || !params.month) {
+    return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
+  }
+
+  const year = parseInt(params.year.toString(), 10)
+  const month = parseInt(params.month.toString(), 10)
 
   const issueBasics = await getIssueBasics({ year, month, slug: undefined })
 
