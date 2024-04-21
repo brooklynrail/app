@@ -215,6 +215,7 @@ export async function getSectionsByIssueId(issueId: number) {
   const sections: Sections[] = directus.request(
     readItems("sections", {
       fields: [
+        "id",
         "name",
         "slug",
         {

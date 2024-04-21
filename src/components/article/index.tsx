@@ -67,12 +67,12 @@ interface ArticleHeadProps {
   permalink: string
   currentIssue?: Issues
   currentSection?: Sections
-  article: Articles
+  articleData: Articles
 }
 
 export const ArticleHead = (props: ArticleHeadProps) => {
-  const { permalink, currentIssue, currentSection, article } = props
-  const { kicker, title, deck, featured_image, header_type } = article
+  const { permalink, currentIssue, currentSection, articleData } = props
+  const { kicker, title, deck, featured_image, header_type } = articleData
 
   const kickerProps = { kicker, currentIssue, currentSection }
 
@@ -126,26 +126,26 @@ export enum ArticleType {
 }
 interface ArticleBodyProps {
   type?: ArticleType
-  article: Articles
+  articleData: Articles
 }
 
 export const ArticleBody = (props: ArticleBodyProps) => {
-  const { type, article } = props
-  const { body_type } = article
+  const { type, articleData } = props
+  const { body_type } = articleData
 
   switch (type ? type : body_type) {
     case `body_text`:
       return (
         <>
           <p className="body-label">Body Text</p>
-          <BodyText {...article} />
+          <BodyText {...articleData} />
         </>
       )
     case `body_code`:
       return (
         <>
           <p className="body-label">Body Code</p>
-          <BodyCode {...article} />
+          <BodyCode {...articleData} />
         </>
       )
     default:
@@ -154,10 +154,10 @@ export const ArticleBody = (props: ArticleBodyProps) => {
 }
 
 const Article = (props: ArticleProps) => {
-  const { article, currentIssue } = props
-  const { contributors } = article
+  const { articleData, issueBasics, currentSection } = props
+  const { contributors } = articleData
 
-  const issueClass = `issue-${currentIssue.slug.toLowerCase()}`
+  const issueClass = `issue-${issueBasics.slug.toLowerCase()}`
 
   return (
     <>
@@ -174,7 +174,7 @@ const Article = (props: ArticleProps) => {
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
                 <header id="article_header">
                   <Link className="mobile_nav_btn" href="">
-                    <i className="fas fa-angle-double-left"></i> <span>{props.currentIssue.title}</span> Issue
+                    <i className="fas fa-angle-double-left"></i> <span>{props.issueBasics.title}</span> Issue
                   </Link>
 
                   <nav>

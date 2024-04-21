@@ -3,7 +3,8 @@ import Image from "next/image"
 import { usePopup } from "./popupProvider"
 import { Articles, Issues, Sections } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
-import { PageType, getPermalink } from "../../../lib/utils"
+import { PageType, getArticles, getPermalink, getSectionsByIssueId } from "../../../lib/utils"
+import { useEffect, useState } from "react"
 
 const Bylines = ({ contributors }: any) => {
   return (
@@ -62,11 +63,17 @@ const ArticleList = (props: ArticleListProps) => {
   return list
 }
 
-const IssueArticles = (props: ArticleProps) => {
-  const { currentArticles, sections, issueData } = props
-  const { year, month } = issueData
+interface IssueArticlesProps {
+  issueArticles: Array<Articles>
+  issueSections: Array<Sections>
+  issueBasics: Issues
+}
+
+const IssueArticles = (props: IssueArticlesProps) => {
+  const { issueArticles, issueSections, issueBasics } = props
+  const { year, month } = issueBasics
   // Create a map where each key is a section ID and each value is an array of articles for that section
-  const articlesBySection = currentArticles.reduce((acc: any, article: Articles) => {
+  const articlesBySection = issueArticles.reduce((acc: any, article: Articles) => {
     const sectionId = article.sections[0].sections_id.id
     if (!acc[sectionId]) {
       acc[sectionId] = []
@@ -77,10 +84,12 @@ const IssueArticles = (props: ArticleProps) => {
 
   return (
     <>
-      {sections.map((section: Sections, i: number) => {
+      {issueSections.map((section: Sections, i: number) => {
+        console.log("section", section)
         // Check if there are articles for this section
         const sectionArticles = articlesBySection[section.id]
         if (!sectionArticles || sectionArticles.length === 0) {
+          return <>NOPE</>
           return null // Skip rendering this section
         }
 
@@ -98,19 +107,19 @@ const IssueArticles = (props: ArticleProps) => {
 }
 
 interface CoverImagesProps {
-  issueData?: Issues
+  issueBasics?: Issues
 }
 
 export const CoverImage = (props: CoverImagesProps) => {
-  const { issueData } = props
+  const { issueBasics } = props
 
   const { setShowPopup, setImages } = usePopup()
 
-  if (!issueData) {
+  if (!issueBasics) {
     return <>Loading...</>
   }
 
-  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = issueData
+  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = issueBasics
   const covers = [cover_1, cover_2, cover_3, cover_4, cover_5, cover_6]
 
   const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
@@ -149,8 +158,32 @@ export const CoverImage = (props: CoverImagesProps) => {
 }
 
 const IssueRail = (props: ArticleProps) => {
-  const { issueData } = props
-  const { slug, title } = issueData
+  const { issueBasics } = props
+  const { slug, title } = issueBasics
+  const [issueArticles, setIssueArticles] = useState<Articles[] | undefined>(undefined)
+  const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const articles = !issueArticles ? getArticles(issueBasics.id) : Promise.resolve(issueArticles)
+      const sections = !issueSections ? getSectionsByIssueId(issueBasics.id) : Promise.resolve(issueSections)
+
+      // Fetch all the data in parallel
+      const [fetchedArticles] = await Promise.all([articles])
+      const [fetchedSections] = await Promise.all([sections])
+
+      // Update the state with the fetched data as it becomes available
+      setIssueArticles(fetchedArticles)
+      setIssueSections(fetchedSections)
+    }
+
+    // Call the fetchData function and handle any errors
+    fetchData().catch((error) => console.error("Failed to fetch data:", error))
+  }, [issueArticles, setIssueArticles, issueBasics, issueSections, setIssueSections])
+
+  if (!issueBasics || !issueArticles || !issueSections) {
+    return <>Loading...</>
+  }
 
   return (
     <section id="rail">
@@ -176,7 +209,7 @@ const IssueRail = (props: ArticleProps) => {
         <div className="issue-details">
           <div className="grid-row">
             <div className="grid-col-6">
-              <CoverImage {...{ issueData }} />
+              <CoverImage {...{ issueBasics }} />
             </div>
             <div className="grid-col-6">
               <div className="issue-links">
@@ -202,7 +235,7 @@ const IssueRail = (props: ArticleProps) => {
           </div>
         </div>
 
-        <IssueArticles {...props} />
+        <IssueArticles issueArticles={issueArticles} issueSections={issueSections} issueBasics={issueBasics} />
       </nav>
     </section>
   )

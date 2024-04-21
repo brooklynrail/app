@@ -8,35 +8,29 @@ import {
   PageType,
   getArticle,
   getArticlePages,
-  getArticles,
-  getIssueData,
+  getIssueBasics,
   getOGImage,
   getPermalink,
 } from "../../../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
+import { GetStaticPropsContext } from "next"
 
 export interface ArticleProps {
-  article: Articles
-  issueData: Issues
-  currentArticles: Array<Articles>
-  sections: Array<Sections>
-  currentSection: Sections
+  articleData: Articles
+  issueBasics: Issues
+  currentSection?: Sections
   permalink: string
   errorCode?: number
   errorMessage?: string
 }
 
-interface SectionProps {
-  currentSection: Sections
-}
-
-function ArticleController(props: ArticleProps & SectionProps) {
+function ArticleController(props: ArticleProps) {
   if (props.errorCode && props.errorMessage) {
     return <Error statusCode={props.errorCode} title={props.errorMessage} />
   }
-  const { article, permalink } = props
-  const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag } = article
-  const section = props.article.sections[0].sections_id
+  const { articleData, permalink } = props
+  const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag } = articleData
+  const section = props.articleData.sections[0].sections_id
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
   const ogdescription = `${stripHtml(excerpt).result}`
   const ogimageprops = { ogimage: featured_image, title }
@@ -77,24 +71,23 @@ export default ArticleController
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
-export async function getStaticProps({ params }: any) {
-  const slug: string = params.slug
-  const year: number = params.year
-  const month: number = params.month
-  const section: string = params.section
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  if (!params || !params.year || !params.month || !params.section || !params.slug) {
+    return { props: { errorCode: 400, errorMessage: "This section does not exist" } }
+  }
 
-  const sections = await directus.request(
-    readItems("sections", {
-      fields: ["name", "id", "slug"],
-    }),
-  )
+  const slug: string = params.slug.toString()
+  const section: string = params.section.toString()
+  const year = parseInt(params.year.toString(), 10)
+  const month = parseInt(params.month.toString(), 10)
 
-  const issueData = await getIssueData({ year, month, slug: undefined })
+  const issueBasics = await getIssueBasics({ year, month, slug: undefined })
   const articleData = await getArticle(slug)
-  const currentArticles = await getArticles(issueData.id)
 
-  const article = articleData
-  const currentIssue = issueData
+  if (!articleData) {
+    return { props: { errorCode: 404, errorMessage: "Article not found" } }
+  }
+
   const currentSection = articleData.sections && articleData.sections[0].sections_id
 
   const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
@@ -103,20 +96,18 @@ export async function getStaticProps({ params }: any) {
   }
 
   const permalink = getPermalink({
-    year: currentIssue.year,
-    month: currentIssue.month,
+    year: issueBasics.year,
+    month: issueBasics.month,
     section: currentSection.slug,
-    slug: article.slug,
+    slug: articleData.slug,
     type: PageType.Article,
   })
 
   return {
     props: {
-      article,
-      currentIssue,
-      currentArticles,
+      articleData,
+      issueBasics,
       currentSection,
-      sections,
       permalink,
     },
     // Next.js will attempt to re-generate the page:
