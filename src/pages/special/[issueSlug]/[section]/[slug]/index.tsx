@@ -1,5 +1,3 @@
-import directus from "../../../../../../lib/directus"
-import { readItems } from "@directus/sdk"
 import Article from "../../../../../components/article"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
@@ -7,36 +5,21 @@ import Error from "next/error"
 import {
   PageType,
   getArticle,
-  getArticles,
-  getIssueData,
+  getIssueBasics,
   getOGImage,
   getPermalink,
   getSpecialArticlePages,
 } from "../../../../../../lib/utils"
-import { Articles, Issues, Sections } from "../../../../../../lib/types"
+import { Articles } from "../../../../../../lib/types"
+import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 
-export interface ArticleProps {
-  article: Articles
-  currentIssue: Issues
-  currentArticles: Array<Articles>
-  sections: Array<Sections>
-  currentSection: Sections
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-}
-
-interface SectionProps {
-  currentSection: Sections
-}
-
-function ArticleController(props: ArticleProps & SectionProps) {
+function ArticleController(props: ArticleProps) {
   if (props.errorCode && props.errorMessage) {
     return <Error statusCode={props.errorCode} title={props.errorMessage} />
   }
-  const { article, permalink } = props
-  const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag } = article
-  const section = props.article.sections[0].sections_id
+  const { articleData, permalink } = props
+  const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag } = articleData
+  const section = articleData.sections[0].sections_id
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
   const ogdescription = `${stripHtml(excerpt).result}`
   const ogimageprops = { ogimage: featured_image, title }
@@ -82,19 +65,13 @@ export async function getStaticProps({ params }: any) {
   const issueSlug: string = params.issueSlug
   const section: string = params.section
 
-  const sections = await directus.request(
-    readItems("sections", {
-      fields: ["name", "id", "slug"],
-    }),
-  )
-
-  const issueData = await getIssueData({ year: undefined, month: undefined, slug: issueSlug })
+  const issueBasics = await getIssueBasics({ year: undefined, month: undefined, slug: issueSlug })
   const articleData = await getArticle(slug)
 
-  const currentArticles = await getArticles(issueData.id)
+  if (!articleData) {
+    return { props: { errorCode: 404, errorMessage: "Article not found" } }
+  }
 
-  const article = articleData
-  const currentIssue = issueData
   const currentSection = articleData.sections && articleData.sections[0].sections_id
 
   const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
@@ -103,21 +80,19 @@ export async function getStaticProps({ params }: any) {
   }
 
   const permalink = getPermalink({
-    year: currentIssue.year,
-    month: currentIssue.month,
-    issueSlug: currentIssue.slug,
+    year: issueBasics.year,
+    month: issueBasics.month,
+    issueSlug: issueBasics.slug,
     section: currentSection.slug,
-    slug: article.slug,
+    slug: articleData.slug,
     type: PageType.SpecialIssueArticle,
   })
 
   return {
     props: {
-      article,
-      currentIssue,
-      currentArticles,
+      articleData,
+      issueBasics,
       currentSection,
-      sections,
       permalink,
     },
     // Next.js will attempt to re-generate the page:
