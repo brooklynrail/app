@@ -5,6 +5,7 @@ const nextConfig = {
 module.exports = nextConfig
 
 module.exports = {
+  staticPageGenerationTimeout: 1000,
   productionBrowserSourceMaps: true,
   trailingSlash: true,
   images: {
