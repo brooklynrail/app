@@ -30,6 +30,7 @@ export async function getIssues(props: GetIssuesProps) {
       filter: {
         _and: [{ status: { _eq: "published" }, special_issue: special_issue ? { _eq: true } : { _eq: false } }],
       },
+      limit: -1,
     }),
   )
   return issues
@@ -168,7 +169,6 @@ export async function getIssueData(props: IssueDataProps) {
           },
         ],
       },
-      // limit: -1,
       deep: {
         articles: {
           _limit: -1,
