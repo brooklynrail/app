@@ -107,7 +107,7 @@ const EditorInfo = (props: DirectusUsers & EditorInfoProps) => {
 
 interface PreviewInfoProps {
   directusUrl: string
-  article: Articles
+  articleData: Articles
 }
 
 const PreviewInfo = (props: PreviewInfoProps) => {
@@ -122,7 +122,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
     slideshow_image,
     promo_thumb,
     promo_banner,
-  } = props.article
+  } = props.articleData
   const allImages = images
     ? images.map((image: ArticlesFiles, i: number) => {
         if (!image.directus_files_id || typeof image.directus_files_id === "string") {

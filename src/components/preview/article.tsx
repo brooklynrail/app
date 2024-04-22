@@ -8,11 +8,11 @@ import { useRouter } from "next/router"
 import PreviewInfo from "./previewInfo"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
-  const { article, draftMode, previewPassword, directusUrl } = props
-  const { contributors } = article
+  const { articleData, draftMode, previewPassword, directusUrl } = props
+  const { contributors } = articleData
   const router = useRouter()
 
-  const cookieSlug = `rail_preview_${article.slug}`
+  const cookieSlug = `rail_preview_${articleData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
   const [passwordError, setPasswordError] = useState<string | undefined>()
@@ -49,7 +49,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
     return <Password {...passwordProps} />
   }
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${article.slug}/`
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${articleData.slug}/`
 
   return (
     <>
@@ -119,7 +119,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                 </article>
               </div>
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <PreviewInfo article={article} directusUrl={directusUrl} />
+                <PreviewInfo articleData={articleData} directusUrl={directusUrl} />
               </div>
             </div>
           </div>
