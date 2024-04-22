@@ -97,18 +97,22 @@ export async function getStaticPaths() {
     const paths = Promise.all(
       issues.map(async (issue: Issues) => {
         const sections = await getSectionsByIssueId(issue.id)
-        const issuePath = sections.map((section) => ({
-          params: {
-            year: `${String(issue.year)}`,
-            month: issue.month < 10 ? `0${String(issue.month)}` : String(issue.month),
-            section: section.slug,
-          },
-        }))
+        const issuePath = sections.map((section) => {
+          console.log(`path: ${issue.year}/${issue.month}/${section.slug}`)
+          return {
+            params: {
+              year: `${String(issue.year)}`,
+              month: issue.month < 10 ? `0${String(issue.month)}` : String(issue.month),
+              section: section.slug,
+            },
+          }
+        })
         return issuePath
       }),
     )
     // Flatten the array of arrays into a single array
     const flattenedPaths = (await paths).flat()
+    console.log("flattenedPaths", flattenedPaths)
 
     return { paths: flattenedPaths, fallback: "blocking" }
   } catch (error) {
