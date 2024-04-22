@@ -4,7 +4,6 @@ import { IssueInfoProps } from "@/pages/[year]/[month]/info"
 import Image from "next/image"
 import isEqual from "lodash.isequal"
 import { useEffect, useState } from "react"
-import { getRailIssueApi } from "../../../lib/utils"
 
 interface IssueCoversProps {
   cover_1: DirectusFiles | undefined

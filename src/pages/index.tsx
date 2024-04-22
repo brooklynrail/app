@@ -1,4 +1,4 @@
-import { GlobalSettings, Issues, Sections } from "../../lib/types"
+import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
 import { getCurrentIssue, getIssueBasics, getPermalink, PageType } from "../../lib/utils"
 import { NextSeo } from "next-seo"
