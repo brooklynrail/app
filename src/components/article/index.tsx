@@ -8,8 +8,10 @@ import BodyCode from "./bodyCode"
 import { Articles, DirectusFiles, Issues, Sections } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import ContributorsBox from "./contributors"
-import { PageType, getPermalink } from "../../../lib/utils"
+import { PageType, getIssueData, getPermalink, getSectionsByIssueId } from "../../../lib/utils"
 import Link from "next/link"
+import NextPrev from "./nextPrev"
+import { useEffect, useState } from "react"
 
 const FeaturedImage = (props: DirectusFiles) => {
   const { filename_disk, caption } = props
@@ -159,6 +161,27 @@ const Article = (props: ArticleProps) => {
 
   const issueClass = `issue-${issueBasics.slug.toLowerCase()}`
 
+  const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
+  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const sections = !issueSections ? getSectionsByIssueId(issueBasics.id) : Promise.resolve(issueSections)
+      const issueDataPromise = !issueData
+        ? getIssueData({ year: issueBasics.year, month: issueBasics.month, slug: undefined })
+        : Promise.resolve(issueData)
+      // Fetch all the data in parallel
+      const [fetchedSections, fetchedIssueData] = await Promise.all([sections, issueDataPromise])
+
+      // Update the state with the fetched data as it becomes available
+      setIssueSections(fetchedSections)
+      setIssueData(fetchedIssueData)
+    }
+
+    // Call the fetchData function and handle any errors
+    fetchData().catch((error) => console.error("Failed to fetch data:", error))
+  }, [issueBasics, issueSections, setIssueSections, issueData, setIssueData])
+
   return (
     <>
       <div className={`paper ${issueClass}`}>
@@ -168,7 +191,7 @@ const Article = (props: ArticleProps) => {
           <div className="grid-container">
             <div className="grid-row grid-gap-3">
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <IssueRail {...props} />
+                <IssueRail {...props} issueData={issueData} issueSections={issueSections} />
               </div>
 
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
@@ -201,7 +224,7 @@ const Article = (props: ArticleProps) => {
                 </div>
 
                 <article className="article">
-                  {/* <NextPrev diff={false} {...props} /> */}
+                  <NextPrev diff={false} {...props} currentSection={currentSection} issueData={issueData} />
                   <ArticleHead {...props} />
                   <ArticleBody {...props} />
 

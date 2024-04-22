@@ -1,10 +1,9 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePopup } from "./popupProvider"
-import { Articles, Issues, Sections } from "../../../lib/types"
+import { ArticlesIssues, Issues, Sections } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
-import { PageType, getArticles, getPermalink, getSectionsByIssueId } from "../../../lib/utils"
-import { useEffect, useState } from "react"
+import { PageType, getPermalink } from "../../../lib/utils"
 
 const Bylines = ({ contributors }: any) => {
   return (
@@ -34,29 +33,29 @@ const Bylines = ({ contributors }: any) => {
 }
 
 interface ArticleListProps {
-  sectionArticles: Array<Articles>
+  sectionArticles: Array<ArticlesIssues>
   year: number
   month: number
 }
 
 const ArticleList = (props: ArticleListProps) => {
   const { sectionArticles, year, month } = props
-  const list = sectionArticles.map((article: any, i: number) => {
+  const list = sectionArticles.map((article: ArticlesIssues, i: number) => {
     const permalink = getPermalink({
       year: year,
       month: month,
-      section: article.sections[0].sections_id.slug,
-      slug: article.slug,
+      section: article.articles_slug.sections[0].sections_id.slug,
+      slug: article.articles_slug.slug,
       type: PageType.Article,
     })
     return (
       <li key={i}>
         <h4>
           <Link href={`${permalink}`}>
-            <span dangerouslySetInnerHTML={{ __html: article.title }} />
+            <span dangerouslySetInnerHTML={{ __html: article.articles_slug.title }} />
           </Link>
         </h4>
-        <Bylines contributors={article.contributors} />
+        <Bylines contributors={article.articles_slug.contributors} />
       </li>
     )
   })
@@ -64,7 +63,7 @@ const ArticleList = (props: ArticleListProps) => {
 }
 
 interface IssueArticlesProps {
-  issueArticles: Array<Articles>
+  issueArticles: Array<ArticlesIssues>
   issueSections: Array<Sections>
   issueBasics: Issues
 }
@@ -73,14 +72,18 @@ const IssueArticles = (props: IssueArticlesProps) => {
   const { issueArticles, issueSections, issueBasics } = props
   const { year, month } = issueBasics
   // Create a map where each key is a section ID and each value is an array of articles for that section
-  const articlesBySection = issueArticles.reduce((acc: any, article: Articles) => {
-    const sectionId = article.sections[0].sections_id.id
-    if (!acc[sectionId]) {
-      acc[sectionId] = []
-    }
-    acc[sectionId].push(article)
-    return acc
-  }, {})
+  const articlesBySection: Record<string, ArticlesIssues[]> = issueArticles.reduce(
+    (acc: any, article: ArticlesIssues) => {
+      console.log("ACC", acc)
+      const sectionId = article.articles_slug.sections[0].sections_id.id
+      if (!acc[sectionId]) {
+        acc[sectionId] = []
+      }
+      acc[sectionId].push(article)
+      return acc
+    },
+    {},
+  )
 
   return (
     <>
@@ -107,19 +110,21 @@ const IssueArticles = (props: IssueArticlesProps) => {
 }
 
 interface CoverImagesProps {
-  issueBasics?: Issues
+  issueBasics: Issues
+  issueData?: Issues
 }
 
 export const CoverImage = (props: CoverImagesProps) => {
-  const { issueBasics } = props
+  const { issueBasics, issueData } = props
 
+  const { cover_1 } = issueBasics
   const { setShowPopup, setImages } = usePopup()
 
-  if (!issueBasics) {
-    return <>Loading...</>
+  if (!issueData) {
+    return <>Loading image...</>
   }
 
-  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = issueBasics
+  const { cover_2, cover_3, cover_4, cover_5, cover_6 } = issueData
   const covers = [cover_1, cover_2, cover_3, cover_4, cover_5, cover_6]
 
   const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
@@ -157,33 +162,20 @@ export const CoverImage = (props: CoverImagesProps) => {
   )
 }
 
-const IssueRail = (props: ArticleProps) => {
-  const { issueBasics } = props
+interface IssueRailProps {
+  issueBasics: Issues
+  issueSections?: Array<Sections>
+  issueData?: Issues
+}
+const IssueRail = (props: ArticleProps & IssueRailProps) => {
+  const { issueBasics, issueSections, issueData } = props
   const { slug, title } = issueBasics
-  const [issueArticles, setIssueArticles] = useState<Articles[] | undefined>(undefined)
-  const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const articles = !issueArticles ? getArticles(issueBasics.id) : Promise.resolve(issueArticles)
-      const sections = !issueSections ? getSectionsByIssueId(issueBasics.id) : Promise.resolve(issueSections)
-
-      // Fetch all the data in parallel
-      const [fetchedArticles] = await Promise.all([articles])
-      const [fetchedSections] = await Promise.all([sections])
-
-      // Update the state with the fetched data as it becomes available
-      setIssueArticles(fetchedArticles)
-      setIssueSections(fetchedSections)
-    }
-
-    // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch data:", error))
-  }, [issueArticles, setIssueArticles, issueBasics, issueSections, setIssueSections])
-
-  if (!issueBasics || !issueArticles || !issueSections) {
+  if (!issueSections || !issueData) {
     return <>Loading...</>
   }
+
+  const issueArticles = issueData.articles
 
   return (
     <section id="rail">
@@ -209,7 +201,7 @@ const IssueRail = (props: ArticleProps) => {
         <div className="issue-details">
           <div className="grid-row">
             <div className="grid-col-6">
-              <CoverImage {...{ issueBasics }} />
+              <CoverImage {...{ issueBasics, issueData }} />
             </div>
             <div className="grid-col-6">
               <div className="issue-links">

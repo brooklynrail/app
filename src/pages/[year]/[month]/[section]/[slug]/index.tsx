@@ -1,5 +1,3 @@
-import directus from "../../../../../../lib/directus"
-import { readItems } from "@directus/sdk"
 import Article from "../../../../../components/article"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"

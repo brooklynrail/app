@@ -1,22 +1,28 @@
-import { Articles } from "../../../lib/types"
+import { Articles, Issues } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import { PageType, getPermalink } from "../../../lib/utils"
 import Link from "next/link"
 
 interface NextPrevProps {
   diff: boolean
+  issueData?: Issues
 }
 
 export const NextPrev = (props: ArticleProps & NextPrevProps) => {
-  const { currentIssue, currentSection, article } = props
-  const { slug } = article
-  const issueName = currentIssue.title
-  const issueSlug = currentIssue.slug
+  const { issueBasics, currentSection, articleData, issueData } = props
+  const { slug } = articleData
+  const issueName = issueBasics.title
+  const issueSlug = issueBasics.slug
 
-  const articlesList: any = currentIssue.articles
-  const articlesListCount = articlesList.length
+  if (!issueData || !currentSection) {
+    return <>Loading...</>
+  }
+
+  const issueArticles = issueData.articles
+
+  const articlesListCount = issueArticles.length
   // get the currentArticleIndex
-  const currentArticleIndex = articlesList.findIndex((article: any) => article.articles_slug.slug === slug)
+  const currentArticleIndex = issueArticles.findIndex((article: any) => article.articles_slug.slug === slug)
 
   const prevLink = () => {
     // if is the first article
@@ -30,10 +36,10 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
         </div>
       )
     }
-    const prev: Articles = articlesList[currentArticleIndex - 1].articles_slug
+    const prev: Articles = issueArticles[currentArticleIndex - 1].articles_slug
     const prevPermalink = getPermalink({
-      year: currentIssue.year,
-      month: currentIssue.month,
+      year: issueBasics.year,
+      month: issueBasics.month,
       section: currentSection.slug,
       slug: prev.slug,
       type: PageType.Article,
@@ -48,10 +54,10 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
     )
   }
 
-  const next = articlesList[currentArticleIndex + 1].articles_slug
+  const next = issueArticles[currentArticleIndex + 1].articles_slug
   const nextPermalink = getPermalink({
-    year: currentIssue.year,
-    month: currentIssue.month,
+    year: issueBasics.year,
+    month: issueBasics.month,
     section: currentSection.slug,
     slug: next.slug,
     type: PageType.Article,

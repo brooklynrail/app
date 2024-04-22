@@ -100,7 +100,7 @@ const IssuePage = (props: IssuePageProps) => {
                   <div id="issuecolumn">
                     <div className="youarehereissue">
                       <IssueSelect allIssues={allIssues} currentIssueSlug={slug} />
-                      <CoverImage {...{ issueData }} />
+                      <CoverImage {...{ issueBasics, issueData }} />
                     </div>
 
                     <CurrentSections {...{ currentSections, year, month }} />
