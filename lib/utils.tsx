@@ -243,76 +243,92 @@ export async function getSectionsByIssueId(issueId: number) {
 }
 
 export async function getSpecialArticlePages() {
-  const articlePages: Articles[] = directus.request(
-    readItems("articles", {
-      fields: [
-        "slug",
-        {
-          sections: [
-            {
-              sections_id: ["slug"],
-            },
-          ],
-        },
-        {
-          issues: [
-            {
-              issues_id: ["year", "month", "slug", "special_issue"],
-            },
-          ],
-        },
-      ],
-      filter: {
-        _and: [
+  let articlePages: Articles[] = []
+  let page = 1
+  let isMore = true
+  while (isMore) {
+    const response: Articles[] = await directus.request(
+      readItems("articles", {
+        fields: [
+          "slug",
           {
-            status: { _eq: "published" },
-            slug: { _nnull: true },
-            issues: {
-              issues_id: { special_issue: { _eq: true } },
-            },
+            sections: [
+              {
+                sections_id: ["slug"],
+              },
+            ],
+          },
+          {
+            issues: [
+              {
+                issues_id: ["year", "month", "slug", "special_issue"],
+              },
+            ],
           },
         ],
-      },
-      limit: -1,
-    }),
-  )
+        filter: {
+          _and: [
+            {
+              status: { _eq: "published" },
+              slug: { _nnull: true },
+              issues: {
+                issues_id: { special_issue: { _eq: true } },
+              },
+            },
+          ],
+        },
+        page: page,
+      }),
+    )
+    articlePages = articlePages.concat(response)
+    isMore = response.meta?.pageCount > page // Check if there are more pages
+    page++
+  }
   return articlePages
 }
 
 export async function getArticlePages() {
-  const articlePages: Articles[] = directus.request(
-    readItems("articles", {
-      fields: [
-        "slug",
-        {
-          sections: [
-            {
-              sections_id: ["slug"],
-            },
-          ],
-        },
-        {
-          issues: [
-            {
-              issues_id: ["year", "month", "slug", "special_issue"],
-            },
-          ],
-        },
-      ],
-      filter: {
-        _and: [
+  let articlePages: Articles[] = []
+  let page = 1
+  let isMore = true
+  while (isMore) {
+    const response: Articles[] = await directus.request(
+      readItems("articles", {
+        fields: [
+          "slug",
           {
-            status: { _eq: "published" },
-            slug: { _nempty: true },
-            issues: {
-              issues_id: { special_issue: { _eq: false } },
-            },
+            sections: [
+              {
+                sections_id: ["slug"],
+              },
+            ],
+          },
+          {
+            issues: [
+              {
+                issues_id: ["year", "month", "slug", "special_issue"],
+              },
+            ],
           },
         ],
-      },
-      limit: -1,
-    }),
-  )
+        filter: {
+          _and: [
+            {
+              status: { _eq: "published" },
+              slug: { _nempty: true },
+              issues: {
+                issues_id: { special_issue: { _eq: false } },
+              },
+            },
+          ],
+        },
+        page: page,
+      }),
+    )
+    articlePages = articlePages.concat(response)
+    isMore = response.meta?.pageCount > page // Check if there are more pages
+    page++
+  }
   return articlePages
 }
 
