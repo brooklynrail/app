@@ -332,58 +332,6 @@ export async function getArticlePages() {
   return articlePages
 }
 
-export async function getArticles(issueId: number, section?: string) {
-  const currentArticles: Articles[] = directus.request(
-    readItems("articles", {
-      fields: [
-        "title",
-        "slug",
-        "excerpt",
-        "kicker",
-        {
-          promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
-        },
-        {
-          promo_banner: ["id", "caption", "filename_disk", "width", "height"],
-        },
-        {
-          slideshow_image: ["id", "caption", "filename_disk", "width", "height"],
-        },
-        {
-          featured_image: ["id", "caption", "filename_disk", "width", "height"],
-        },
-        "featured",
-        "sort",
-        {
-          contributors: [
-            {
-              contributors_id: ["first_name", "last_name", "slug"],
-            },
-          ],
-        },
-        {
-          sections: [
-            {
-              sections_id: ["slug", "name", "id"],
-            },
-          ],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            issues: { issues_id: { _eq: issueId } },
-            // section pages need to filter by section
-            sections: section ? { sections_id: { slug: { _eq: section } } } : undefined,
-          },
-        ],
-      },
-      limit: -1,
-    }),
-  )
-  return currentArticles
-}
-
 export async function getArticle(slug: string) {
   const currentArticle = directus.request(
     readItem("articles", slug, {
