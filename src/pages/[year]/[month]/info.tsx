@@ -1,10 +1,9 @@
-import directus from "../../../../lib/directus"
-import { readItems } from "@directus/sdk"
-import { PageType, getAllIssues, getIssueData, getPermalink, getSectionsByIssueId } from "../../../../lib/utils"
+import { PageType, getPermalink } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
 
 import IssueInfo from "@/components/issuePage/issueInfo"
 import { Issues, Sections } from "../../../../lib/types"
+import { GetStaticPropsContext } from "next"
 
 export interface IssueInfoProps {
   allIssues: Array<Issues>
@@ -26,15 +25,26 @@ function Issue(props: IssueInfoProps) {
 
 export default Issue
 
-export async function getStaticProps({ params }: any) {
-  const year = params.year
-  const month = params.month
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  if (!params || !params.year || !params.month) {
+    return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
+  }
 
-  const allIssues = await getAllIssues()
-  const currentIssue = await getIssueData({ year, month, slug: undefined })
+  const year: string = String(params.year)
+  const month: string = String(params.month)
+
+  // const allIssues = await getAllIssues()
+  const allIssuesResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issues`)
+  const allIssues = await allIssuesResponse.json()
+
+  const currentIssueResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${year}/${month}`)
+  const currentIssue = await currentIssueResponse.json()
+  // const currentIssue = await getIssueData({ year, month, slug: undefined })
 
   // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(currentIssue.id)
+  // const currentSections = await getSectionsByIssueId(currentIssue.id)
+  const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issue=${currentIssue.id}`)
+  const currentSections: Sections[] = await sectionsResponse.json()
 
   const permalink = getPermalink({
     year: currentIssue.year,
@@ -61,13 +71,10 @@ export async function getStaticProps({ params }: any) {
 // the path has not been generated.
 export async function getStaticPaths() {
   try {
-    const issues = await directus.request(
-      readItems("issues", {
-        fields: ["year", "month"],
-      }),
-    )
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issues`)
+    const issues = await response.json()
 
-    const paths = issues.map((issue) => {
+    const paths = issues.map((issue: Issues) => {
       const month = issue.month
       return {
         params: {
