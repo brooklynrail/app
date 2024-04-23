@@ -3,7 +3,7 @@ import directus from "../../../lib/directus"
 import { readItems } from "@directus/sdk"
 import { Sections } from "../../../lib/types"
 
-// pages/api/issuesList.js
+// pages/api/issues.js
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!req.query.issue) {
     res.status(400).json({ errorCode: 400, errorMessage: "This issue does not exist" })

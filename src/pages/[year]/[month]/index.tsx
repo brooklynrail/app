@@ -73,7 +73,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 // the path has not been generated.
 export async function getStaticPaths() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issuesList`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issues`)
     const issues = await response.json()
 
     const paths = issues.map((issue: Issues) => {

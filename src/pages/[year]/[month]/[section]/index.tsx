@@ -101,7 +101,7 @@ export async function getStaticPaths() {
   try {
     // Fetch all issues
     // const issues = await getIssues({ special_issue: false })
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issuesList`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issues`)
     const issues: Issues[] = await response.json()
     if (!issues) {
       return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
