@@ -344,9 +344,7 @@ const IssueInfo = (props: IssueInfoProps) => {
                   <div className="issue-info">
                     <h1>Articles</h1>
                     <table>
-                      <tbody>
-                        <ArticleList articles={articles} railIssueData={railIssueData} />
-                      </tbody>
+                      <tbody>{articles && <ArticleList articles={articles} railIssueData={railIssueData} />}</tbody>
                     </table>
                   </div>
                 </div>
