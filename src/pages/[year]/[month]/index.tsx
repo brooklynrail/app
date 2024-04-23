@@ -6,6 +6,7 @@ import { PageType, getIssueBasics, getOGImage, getPermalink } from "../../../../
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
 import { GetStaticPropsContext } from "next"
+import { Issues } from "../../../../lib/types"
 
 function Issue(props: IssuePageProps) {
   const { title, cover_1, issue_number, slug } = props.issueBasics
@@ -72,16 +73,10 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 // the path has not been generated.
 export async function getStaticPaths() {
   try {
-    const issues = await directus.request(
-      readItems("issues", {
-        fields: ["year", "month", "special_issue"],
-        filter: {
-          _and: [{ special_issue: { _eq: false } }],
-        },
-      }),
-    )
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issuesList`)
+    const issues = await response.json()
 
-    const paths = issues.map((issue) => {
+    const paths = issues.map((issue: Issues) => {
       const month = issue.month
       return {
         params: {
