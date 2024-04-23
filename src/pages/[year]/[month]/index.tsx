@@ -43,23 +43,27 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   const year = parseInt(params.year.toString(), 10)
   const month = parseInt(params.month.toString(), 10)
 
-  const issueBasics = await getIssueBasics({ year, month, slug: undefined })
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${year}/${month}`)
+    const issueBasics = await response.json()
 
-  const permalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
-    type: PageType.Issue,
-  })
+    const permalink = getPermalink({
+      year: issueBasics.year,
+      month: issueBasics.month,
+      type: PageType.Issue,
+    })
 
-  return {
-    props: {
-      issueBasics,
-      permalink,
-    },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 10 seconds
-    revalidate: 10, // In seconds
+    return {
+      props: {
+        issueBasics,
+        permalink,
+      },
+      revalidate: 10,
+    }
+  } catch (error) {
+    console.error("Failed to fetch data:", error)
+    // Handle errors or pass default data
+    return { props: { data: { year, month, message: "No data available" } } }
   }
 }
 
