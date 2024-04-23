@@ -208,6 +208,7 @@ export async function getIssueBasics(props: IssueDataProps) {
       },
     }),
   )
+
   return issueData[0]
 }
 

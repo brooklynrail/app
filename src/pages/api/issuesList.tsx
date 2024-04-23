@@ -10,9 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ errorCode: 400, errorMessage: "This issue does not exist" })
   }
 
-  const issues = await directus.request(
+  const issuesList = await directus.request(
     readItems("issues", {
-      fields: ["year", "month", "special_issue"],
+      fields: ["year", "month", "special_issue", "id"],
       filter: {
         _and: [{ special_issue: { _eq: false } }],
       },
@@ -20,5 +20,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   )
 
   // You can now use `year` and `month` to fetch data, perform calculations, or return a response
-  res.status(200).json(issues)
+  res.status(200).json(issuesList)
 }

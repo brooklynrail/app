@@ -88,7 +88,6 @@ const IssueArticles = (props: IssueArticlesProps) => {
   return (
     <>
       {issueSections.map((section: Sections, i: number) => {
-        console.log("section", section)
         // Check if there are articles for this section
         const sectionArticles = articlesBySection[section.id]
         if (!sectionArticles || sectionArticles.length === 0) {

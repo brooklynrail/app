@@ -59,46 +59,63 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   const month = parseInt(params.month.toString(), 10)
   const section = params.section.toString()
 
-  const issueBasics = await getIssueBasics({ year, month, slug: undefined })
+  try {
+    const issueBasics = await getIssueBasics({ year, month, slug: undefined })
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${year}/${month}`)
+    // const issueBasics = await response.json()
 
-  // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(issueBasics.id)
-  const currentSection = currentSections.find((s: Sections) => s.slug === section)
-  // If `section` does not exist, set errorCode to a string
-  if (!currentSection) {
-    return { props: { errorCode: 404, errorMessage: "This section does not exist" } }
-  }
+    // Get only the sections that are used in the articles in the current issue
+    const currentSections = await getSectionsByIssueId(issueBasics.id)
+    // const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issue=${issueBasics.id}`)
+    // const currentSections = await sectionsResponse.json()
 
-  const permalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
-    section: currentSection.slug,
-    type: PageType.Section,
-  })
+    const currentSection = currentSections.find((s: Sections) => s.slug === section)
+    // If `section` does not exist, set errorCode to a string
+    if (!currentSection) {
+      return { props: { errorCode: 404, errorMessage: "This section does not exist" } }
+    }
 
-  return {
-    props: {
-      issueBasics,
-      currentSection,
-      permalink,
-    },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 10 seconds
-    revalidate: 10, // In seconds
+    const permalink = getPermalink({
+      year: issueBasics.year,
+      month: issueBasics.month,
+      section: currentSection.slug,
+      type: PageType.Section,
+    })
+
+    return {
+      props: {
+        issueBasics,
+        currentSection,
+        permalink,
+      },
+      revalidate: 10,
+    }
+  } catch (error) {
+    console.error("Failed to fetch data:", error)
+    // Handle errors or pass default data
+    return { props: { data: { year, month, section, message: "No data available" } } }
   }
 }
 
 export async function getStaticPaths() {
   try {
     // Fetch all issues
-    const issues = await getIssues({ special_issue: false })
+    // const issues = await getIssues({ special_issue: false })
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issuesList`)
+    const issues: Issues[] = await response.json()
+    if (!issues) {
+      return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
+    }
 
     const paths = Promise.all(
       issues.map(async (issue: Issues) => {
-        const sections = await getSectionsByIssueId(issue.id)
-        const issuePath = sections.map((section) => {
-          console.log(`path: ${issue.year}/${issue.month}/${section.slug}`)
+        const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issue=${issue.id}`)
+        const currentSections: Sections[] = await sectionsResponse.json()
+
+        if (!currentSections) {
+          return { props: { errorCode: 400, errorMessage: "This issue/section does not exist" } }
+        }
+        const issuePath = currentSections.map((section: Sections) => {
           return {
             params: {
               year: `${String(issue.year)}`,
@@ -112,7 +129,6 @@ export async function getStaticPaths() {
     )
     // Flatten the array of arrays into a single array
     const flattenedPaths = (await paths).flat()
-    console.log("flattenedPaths", flattenedPaths)
 
     return { paths: flattenedPaths, fallback: "blocking" }
   } catch (error) {

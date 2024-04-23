@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getIssueBasics } from "../../../../../lib/utils"
+import { Issues } from "../../../../../lib/types"
 
 // pages/api/[year]/[month].js
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -9,10 +10,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ errorCode: 400, errorMessage: "This issue does not exist" })
   }
 
-  const year = parseInt(query.year.toString(), 10)
-  const month = parseInt(query.month.toString(), 10)
+  const year = Number(query.year)
+  const month = Number(query.month)
 
-  const issueBasics = await getIssueBasics({ year, month, slug: undefined })
+  const issueBasics = await getIssueBasics({ year: year, month: month, slug: undefined })
 
   // You can now use `year` and `month` to fetch data, perform calculations, or return a response
   res.status(200).json(issueBasics)
