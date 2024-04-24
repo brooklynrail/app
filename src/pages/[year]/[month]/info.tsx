@@ -7,7 +7,7 @@ import { GetStaticPropsContext } from "next"
 
 export interface IssueInfoProps {
   allIssues: Array<Issues>
-  currentIssue: Issues
+  issueBasics: Issues
   currentSections: Array<Sections>
   permalink: string
   errorCode?: number
@@ -33,29 +33,26 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   const year: string = String(params.year)
   const month: string = String(params.month)
 
-  // const allIssues = await getAllIssues()
   const allIssuesResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issues`)
   const allIssues = await allIssuesResponse.json()
 
-  const currentIssueResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${year}/${month}`)
-  const currentIssue = await currentIssueResponse.json()
-  // const currentIssue = await getIssueData({ year, month, slug: undefined })
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${year}/${month}`)
+  const issueBasics = await response.json()
 
   // Get only the sections that are used in the articles in the current issue
-  // const currentSections = await getSectionsByIssueId(currentIssue.id)
-  const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issue=${currentIssue.id}`)
+  const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issue=${issueBasics.id}`)
   const currentSections: Sections[] = await sectionsResponse.json()
 
   const permalink = getPermalink({
-    year: currentIssue.year,
-    month: currentIssue.month,
+    year: issueBasics.year,
+    month: issueBasics.month,
     type: PageType.Issue,
   })
 
   return {
     props: {
       allIssues,
-      currentIssue,
+      issueBasics,
       currentSections,
       permalink,
     },

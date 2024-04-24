@@ -1,9 +1,10 @@
 /* eslint max-lines: 0 */
-import { ArticlesContributors, ArticlesIssues, Contributors, DirectusFiles } from "../../../lib/types"
+import { ArticlesContributors, ArticlesIssues, Contributors, DirectusFiles, Issues } from "../../../lib/types"
 import { IssueInfoProps } from "@/pages/[year]/[month]/info"
 import Image from "next/image"
 import isEqual from "lodash.isequal"
 import { useEffect, useState } from "react"
+import { getIssueData } from "../../../lib/utils"
 
 interface IssueCoversProps {
   cover_1: DirectusFiles | undefined
@@ -209,20 +210,19 @@ const ArticleList = (props: ArticleListProps) => {
     )
     const key = `a-${i}`
 
-    return (
-      <>
-        {i == 0 ? (
-          <TableRow
-            label={``}
-            data={`Count: ${articles.length}`}
-            oldOrder={`--`}
-            oldData={`Count: ${old.articles.length}`}
-            skip={false}
-            key={key}
-          />
-        ) : (
-          <></>
-        )}
+    if (i == 0) {
+      return (
+        <TableRow
+          label={``}
+          data={`Count: ${articles.length}`}
+          oldOrder={`--`}
+          oldData={`Count: ${old.articles.length}`}
+          skip={false}
+          key={key}
+        />
+      )
+    } else {
+      return (
         <TableRow
           label={String(articleItem.order)}
           data={newArticle}
@@ -231,33 +231,34 @@ const ArticleList = (props: ArticleListProps) => {
           skip={false}
           key={`old-${key}`}
         />
-      </>
-    )
+      )
+    }
   })
 
   return <>{list}</>
 }
 const IssueInfo = (props: IssueInfoProps) => {
-  const { currentIssue, permalink } = props
-  const {
-    cover_1,
-    cover_2,
-    cover_3,
-    cover_4,
-    cover_5,
-    cover_6,
-    title,
-    slug,
-    special_issue,
-    issue_number,
-    old_id,
-    articles,
-  } = currentIssue
-  const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
+  const { permalink, issueBasics } = props
 
+  const year = issueBasics.year
+  const month: number = issueBasics.month
   const [railIssueData, setRailIssueData] = useState<any>(undefined)
-  const year = currentIssue.year
-  const month = currentIssue.month < 10 ? `0${currentIssue.month.toString()}` : `${currentIssue.month.toString()}`
+  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const issueDataPromise = !issueData ? getIssueData({ year, month, slug: undefined }) : Promise.resolve(issueData)
+
+      // Fetch all the data in parallel
+      const [fetchedIssueData] = await Promise.all([issueDataPromise])
+
+      // Update the state with the fetched data as it becomes available
+      setIssueData(fetchedIssueData)
+    }
+
+    // Call the fetchData function and handle any errors
+    fetchData().catch((error) => console.error("Failed to fetch data:", error))
+  }, [issueData, setIssueData, month, year])
 
   useEffect(() => {
     async function fetchData() {
@@ -278,9 +279,25 @@ const IssueInfo = (props: IssueInfoProps) => {
     })
   }, [year, month])
 
-  if (!railIssueData) {
+  if (!railIssueData || !issueData) {
     return <div>Loading...</div>
   }
+
+  const {
+    cover_1,
+    cover_2,
+    cover_3,
+    cover_4,
+    cover_5,
+    cover_6,
+    title,
+    slug,
+    special_issue,
+    issue_number,
+    old_id,
+    articles,
+  } = issueData
+  const coverImageProps = { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 }
 
   // console.log("currentIssue", currentIssue)
   // console.log("articles", articles)
