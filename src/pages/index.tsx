@@ -42,6 +42,8 @@ export async function getStaticProps() {
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${currentIssue.year}/${currentIssue.month}`)
     const issueBasics = await response.json()
+    console.log("currentIssue", currentIssue)
+    console.log("issueBasics", issueBasics)
 
     const permalink = getPermalink({
       year: issueBasics.year,
