@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 const Header = () => {
   return (
@@ -10,7 +11,13 @@ const Header = () => {
           <h3>FEB 2024</h3>
         </div>
         <Link href="/">
-          <img src="/images/brooklynrail-logo-ex.svg" height="68" alt="The Brooklyn Rail" title="Brooklyn Rail Home" />
+          <Image
+            src="/images/brooklynrail-logo-ex.svg"
+            height="68"
+            width="396"
+            alt="The Brooklyn Rail"
+            title="Brooklyn Rail Home"
+          />
         </Link>
       </div>
 

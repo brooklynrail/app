@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 const Footer = () => {
   return (
@@ -7,11 +8,13 @@ const Footer = () => {
         <div className="grid-row grid-gap-4">
           <div className="grid-col-12 tablet-lg:grid-col-3">
             <Link href="/">
-              <img
+              <Image
                 className="logo"
                 src="/images/brooklynrail-logo-white.png"
                 alt="The Brooklyn Rail"
                 title="Brooklyn Rail Home"
+                width="320"
+                height="42"
               />
             </Link>
             <p className="sub-head">Critical Perspectives on Art, Politics and Culture</p>
