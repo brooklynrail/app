@@ -19,8 +19,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }),
   )
 
-  console.log("settings", settings)
-
   const currentIssue: Issues = settings.current_issue
 
   if (!currentIssue) {

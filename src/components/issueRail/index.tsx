@@ -74,7 +74,6 @@ const IssueArticles = (props: IssueArticlesProps) => {
   // Create a map where each key is a section ID and each value is an array of articles for that section
   const articlesBySection: Record<string, ArticlesIssues[]> = issueArticles.reduce(
     (acc: any, article: ArticlesIssues) => {
-      console.log("ACC", acc)
       const sectionId = article.articles_slug.sections[0].sections_id.id
       if (!acc[sectionId]) {
         acc[sectionId] = []
