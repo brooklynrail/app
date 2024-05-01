@@ -258,7 +258,7 @@ export async function getSpecialArticlePages() {
               status: { _eq: "published" },
               slug: { _nnull: true },
               issues: {
-                issues_id: { special_issue: { _eq: true } },
+                issues_id: { special_issue: { _eq: true }, status: { _eq: "published" } },
               },
             },
           ],
@@ -303,7 +303,7 @@ export async function getArticlePages() {
               status: { _eq: "published" },
               slug: { _nempty: true },
               issues: {
-                issues_id: { special_issue: { _eq: false } },
+                issues_id: { special_issue: { _eq: false }, status: { _eq: "published" } },
               },
             },
           ],
@@ -382,6 +382,13 @@ export async function getArticle(slug: string) {
           ],
         },
       ],
+      filter: {
+        _and: [
+          {
+            status: { _eq: "published" },
+          },
+        ],
+      },
     }),
   )
 
