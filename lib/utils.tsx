@@ -127,7 +127,7 @@ export async function getIssueData(props: IssueDataProps) {
                 {
                   sections: [
                     {
-                      sections_id: ["slug", "name", "id", "old_id"],
+                      sections_id: ["id", "slug", "name", "old_id"],
                     },
                   ],
                 },
