@@ -400,7 +400,7 @@ export async function getArticlePages() {
           {
             issues: [
               {
-                issues_id: ["year", "month", "slug", "special_issue"],
+                issues_id: ["year", "month", "slug", "special_issue", "status"],
               },
             ],
           },
@@ -411,12 +411,11 @@ export async function getArticlePages() {
               status: { _eq: "published" },
               slug: { _nempty: true },
               issues: {
-                issues_id: { special_issue: { _eq: false }, status: { _eq: "published" } },
+                issues_id: { special_issue: { _eq: false } },
               },
             },
           ],
         },
-        page: page,
       }),
     )
     articlePages = articlePages.concat(response)
