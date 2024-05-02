@@ -66,9 +66,9 @@ export async function getStaticPaths() {
   try {
     const specialIssues = await directus.request(
       readItems("issues", {
-        fields: ["slug", "special_issue"],
+        fields: ["slug", "special_issue", "status"],
         filter: {
-          _and: [{ special_issue: { _eq: true } }],
+          _and: [{ special_issue: { _eq: true }, status: { _eq: "published" } }],
         },
       }),
     )

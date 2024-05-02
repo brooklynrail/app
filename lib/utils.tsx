@@ -355,7 +355,7 @@ export async function getSpecialArticlePages() {
           {
             issues: [
               {
-                issues_id: ["year", "month", "slug", "special_issue"],
+                issues_id: ["year", "month", "slug", "special_issue", "status"],
               },
             ],
           },
@@ -366,7 +366,7 @@ export async function getSpecialArticlePages() {
               status: { _eq: "published" },
               slug: { _nnull: true },
               issues: {
-                issues_id: { special_issue: { _eq: true }, status: { _eq: "published" } },
+                issues_id: { special_issue: { _eq: true } },
               },
             },
           ],
