@@ -26,6 +26,7 @@ function ArticleController(props: ArticleProps) {
   if (props.errorCode && props.errorMessage) {
     return <Error statusCode={props.errorCode} title={props.errorMessage} />
   }
+
   const { articleData, permalink } = props
   const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag } = articleData
   const section = props.articleData.sections[0].sections_id
@@ -74,44 +75,50 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     return { props: { errorCode: 400, errorMessage: "This section does not exist" } }
   }
 
+  const year = Number(params.year)
+  const month = Number(params.month)
   const slug: string = params.slug.toString()
   const section: string = params.section.toString()
-  const year = parseInt(params.year.toString(), 10)
-  const month = parseInt(params.month.toString(), 10)
 
-  const issueBasics = await getIssueBasics({ year, month, slug: undefined })
-  const articleData = await getArticle(slug)
+  try {
+    const issueBasics = await getIssueBasics({ year, month, slug: undefined })
+    const articleData = await getArticle(slug)
 
-  if (!articleData) {
-    return { props: { errorCode: 404, errorMessage: "Article not found" } }
-  }
+    if (!articleData) {
+      return { props: { errorCode: 404, errorMessage: "Article not found" } }
+    }
 
-  const currentSection = articleData.sections && articleData.sections[0].sections_id
+    const currentSection = articleData.sections && articleData.sections[0].sections_id
 
-  const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
-  if (errorCode) {
-    return { props: { errorCode: 404, errorMessage: errorCode } }
-  }
+    const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
+    if (errorCode) {
+      return { props: { errorCode: 404, errorMessage: errorCode } }
+    }
 
-  const permalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
-    section: currentSection.slug,
-    slug: articleData.slug,
-    type: PageType.Article,
-  })
+    const permalink = getPermalink({
+      year: issueBasics.year,
+      month: issueBasics.month,
+      section: currentSection.slug,
+      slug: articleData.slug,
+      type: PageType.Article,
+    })
 
-  return {
-    props: {
-      articleData,
-      issueBasics,
-      currentSection,
-      permalink,
-    },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 10 seconds
-    revalidate: 10, // In seconds
+    return {
+      props: {
+        articleData,
+        issueBasics,
+        currentSection,
+        permalink,
+      },
+      // Next.js will attempt to re-generate the page:
+      // - When a request comes in
+      // - At most once every 10 seconds
+      revalidate: 10, // In seconds
+    }
+  } catch (error) {
+    console.error("Failed to get article data:", error)
+    // Handle errors or pass default data
+    return { props: { data: { year, month, section, slug, message: "No data available" } } }
   }
 }
 
@@ -122,24 +129,28 @@ export async function getStaticPaths() {
   try {
     const articlePages = await getArticlePages()
 
-    const paths = articlePages.map((article: Articles) => {
-      const month = article.issues[0].issues_id.month
-      return {
-        params: {
-          year: article.issues && article.issues[0].issues_id.year.toString(),
-          month: month < 10 ? `0${month.toString()}` : month.toString(),
-          section: article.sections && article.sections[0].sections_id.slug.toString(),
-          slug: article.slug,
-        },
-      }
-    })
+    const paths = Promise.all(
+      articlePages.map((article: Articles) => {
+        const month = article.issues[0].issues_id.month
+        return {
+          params: {
+            year: article.issues && article.issues[0].issues_id.year.toString(),
+            month: month < 10 ? `0${month.toString()}` : month.toString(),
+            section: article.sections && article.sections[0].sections_id.slug.toString(),
+            slug: article.slug,
+          },
+        }
+      }),
+    )
+
+    const flattenedPaths = (await paths).flat()
 
     // We'll pre-render only these paths at build time.
     // { fallback: 'blocking' } will server-render pages
     // on-demand if the path doesn't exist.
-    return { paths, fallback: "blocking" }
+    return { paths: flattenedPaths, fallback: "blocking" }
   } catch (error) {
-    console.error("Error fetching year/month/section/slug paths", error)
+    console.error("Error fetching Article year/month/section/slug paths", error)
     return { paths: [], fallback: "blocking" }
   }
 }

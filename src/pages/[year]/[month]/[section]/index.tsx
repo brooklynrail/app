@@ -55,21 +55,18 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     return { props: { errorCode: 400, errorMessage: "This section does not exist" } }
   }
 
-  const year = parseInt(params.year.toString(), 10)
-  const month = parseInt(params.month.toString(), 10)
+  const year = Number(params.year)
+  const month = Number(params.month)
   const section = params.section.toString()
 
   try {
     const issueBasics = await getIssueBasics({ year, month, slug: undefined })
-    // const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${year}/${month}`)
-    // const issueBasics = await response.json()
 
     // Get only the sections that are used in the articles in the current issue
     const currentSections = await getSectionsByIssueId(issueBasics.id)
-    // const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issue=${issueBasics.id}`)
-    // const currentSections = await sectionsResponse.json()
 
     const currentSection = currentSections.find((s: Sections) => s.slug === section)
+
     // If `section` does not exist, set errorCode to a string
     if (!currentSection) {
       return { props: { errorCode: 404, errorMessage: "This section does not exist" } }
@@ -99,18 +96,15 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 
 export async function getStaticPaths() {
   try {
-    // Fetch all issues
-    // const issues = await getIssues({ special_issue: false })
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issues`)
-    const issues: Issues[] = await response.json()
+    const issues = await getIssues({ special_issue: false })
+
     if (!issues) {
       return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
     }
 
     const paths = Promise.all(
       issues.map(async (issue: Issues) => {
-        const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issue=${issue.id}`)
-        const currentSections: Sections[] = await sectionsResponse.json()
+        const currentSections = await getSectionsByIssueId(issue.id)
 
         if (!currentSections) {
           return { props: { errorCode: 400, errorMessage: "This issue/section does not exist" } }

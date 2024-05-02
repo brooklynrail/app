@@ -1,6 +1,6 @@
 import IssuePage from "@/components/issuePage"
 import { IssuePageProps, PageLayout } from "@/pages"
-import { PageType, getOGImage, getPermalink } from "../../../../lib/utils"
+import { PageType, getAllIssues, getIssueBasics, getOGImage, getPermalink } from "../../../../lib/utils"
 import { NextSeo } from "next-seo"
 import { stripHtml } from "string-strip-html"
 import { GetStaticPropsContext } from "next"
@@ -39,12 +39,11 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
   }
 
-  const year = parseInt(params.year.toString(), 10)
-  const month = parseInt(params.month.toString(), 10)
+  const year = Number(params.year)
+  const month = Number(params.month)
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${year}/${month}`)
-    const issueBasics = await response.json()
+    const issueBasics = await getIssueBasics({ year: year, month: month })
 
     const permalink = getPermalink({
       year: issueBasics.year,
@@ -71,15 +70,14 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 // the path has not been generated.
 export async function getStaticPaths() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/issues`)
-    const issues = await response.json()
+    const allIssues = await getAllIssues()
 
-    const paths = issues.map((issue: Issues) => {
-      const month = issue.month
+    const paths = allIssues.map((issue: Issues) => {
+      const month = issue.month < 10 ? String(`0${issue.month}`) : String(issue.month)
       return {
         params: {
           year: String(issue.year),
-          month: month < 10 ? `0${String(month)}` : String(month),
+          month: month,
         },
       }
     })
