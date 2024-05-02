@@ -1,6 +1,6 @@
 import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
-import { getIssueBasics, getPermalink, PageType } from "../../lib/utils"
+import { getPermalink, PageType } from "../../lib/utils"
 import { NextSeo } from "next-seo"
 
 export enum PageLayout {
