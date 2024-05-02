@@ -16,7 +16,7 @@ import SpecialSection from "./layout/specialSection"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
-import { getAds, getAllIssues, getIssueData, getSectionsByIssueId } from "../../../lib/utils"
+import { getAds, getAllIssues, getIssueData, getSectionsByIssueId, getSpecialIssueData } from "../../../lib/utils"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
@@ -26,20 +26,25 @@ export interface PromoProps {
 
 const IssuePage = (props: IssuePageProps) => {
   const { permalink, issueBasics, currentSection } = props
-  const { year, month, slug } = issueBasics
-  const issueClass = `issue-${slug.toLowerCase()}`
+
   const [currentSections, setCurrentSections] = useState<Sections[] | undefined>(undefined)
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
   const [allIssues, setAllIssues] = useState<Issues[] | undefined>(undefined)
   const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
-  const tocProps = { issueData, currentSections, permalink, year, month }
 
   useEffect(() => {
     const fetchData = async () => {
       const sections = !currentSections ? getSectionsByIssueId(issueBasics.id) : Promise.resolve(currentSections)
       const ads = !currentAds ? getAds() : Promise.resolve(currentAds)
       const issues = !allIssues ? getAllIssues() : Promise.resolve(allIssues)
-      const issueDataPromise = !issueData ? getIssueData({ year, month, slug: undefined }) : Promise.resolve(issueData)
+      let issueDataPromise
+      if (issueBasics.special_issue) {
+        issueDataPromise = !issueData ? getSpecialIssueData({ slug: issueBasics.slug }) : Promise.resolve(issueData)
+      } else {
+        issueDataPromise = !issueData
+          ? getIssueData({ year: issueBasics.year, month: issueBasics.month })
+          : Promise.resolve(issueData)
+      }
 
       // Fetch all the data in parallel
       const [fetchedSections, fetchedAds, fetchedIssues, fetchedIssueData] = await Promise.all([
@@ -58,7 +63,15 @@ const IssuePage = (props: IssuePageProps) => {
 
     // Call the fetchData function and handle any errors
     fetchData().catch((error) => console.error("Failed to fetch data:", error))
-  }, [currentSections, issueBasics.id, currentAds, allIssues, issueData, month, year])
+  }, [currentSections, issueBasics, currentAds, allIssues, issueData])
+
+  if (!issueBasics) {
+    return <></>
+  }
+
+  const { year, month, slug } = issueBasics
+  const issueClass = `issue-${slug.toLowerCase()}`
+  const tocProps = { issueData, currentSections, permalink, year, month }
 
   let layout
   switch (props.layout) {

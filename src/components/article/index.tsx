@@ -8,7 +8,7 @@ import BodyCode from "./bodyCode"
 import { Articles, DirectusFiles, Issues, Sections } from "../../../lib/types"
 import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import ContributorsBox from "./contributors"
-import { PageType, getIssueData, getPermalink, getSectionsByIssueId } from "../../../lib/utils"
+import { PageType, getIssueData, getPermalink, getSectionsByIssueId, getSpecialIssueData } from "../../../lib/utils"
 import Link from "next/link"
 import NextPrev from "./nextPrev"
 import { useEffect, useState } from "react"
@@ -167,9 +167,14 @@ const Article = (props: ArticleProps) => {
   useEffect(() => {
     const fetchData = async () => {
       const sections = !issueSections ? getSectionsByIssueId(issueBasics.id) : Promise.resolve(issueSections)
-      const issueDataPromise = !issueData
-        ? getIssueData({ year: issueBasics.year, month: issueBasics.month, slug: undefined })
-        : Promise.resolve(issueData)
+      let issueDataPromise
+      if (issueBasics.special_issue) {
+        issueDataPromise = !issueData ? getSpecialIssueData({ slug: issueBasics.slug }) : Promise.resolve(issueData)
+      } else {
+        issueDataPromise = !issueData
+          ? getIssueData({ year: issueBasics.year, month: issueBasics.month })
+          : Promise.resolve(issueData)
+      }
       // Fetch all the data in parallel
       const [fetchedSections, fetchedIssueData] = await Promise.all([sections, issueDataPromise])
 
