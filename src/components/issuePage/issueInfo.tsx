@@ -4,7 +4,7 @@ import { IssueInfoProps } from "@/pages/[year]/[month]/info"
 import Image from "next/image"
 import isEqual from "lodash.isequal"
 import { useEffect, useState } from "react"
-import { getIssueData } from "../../../lib/utils"
+import { getIssueData, getSpecialIssueData } from "../../../lib/utils"
 
 interface IssueCoversProps {
   cover_1: DirectusFiles | undefined
@@ -247,7 +247,14 @@ const IssueInfo = (props: IssueInfoProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const issueDataPromise = !issueData ? getIssueData({ year, month, slug: undefined }) : Promise.resolve(issueData)
+      let issueDataPromise
+      if (issueBasics.special_issue) {
+        issueDataPromise = !issueData ? getSpecialIssueData({ slug: issueBasics.slug }) : Promise.resolve(issueData)
+      } else {
+        issueDataPromise = !issueData
+          ? getIssueData({ year: issueBasics.year, month: issueBasics.month })
+          : Promise.resolve(issueData)
+      }
 
       // Fetch all the data in parallel
       const [fetchedIssueData] = await Promise.all([issueDataPromise])
