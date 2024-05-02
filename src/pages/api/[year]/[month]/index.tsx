@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getIssueBasics } from "../../../../../lib/utils"
-import { Issues } from "../../../../../lib/types"
 
 // pages/api/[year]/[month].js
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

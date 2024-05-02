@@ -1,9 +1,8 @@
-/* eslint max-lines: 0 */
 // @ts-nocheck
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton, readFiles, readPreset } from "@directus/sdk"
-import { Ads, Articles, DirectusFiles, GlobalSettings, Issues, Sections } from "./types"
+import { Ads, Articles, DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
 export async function getAllIssues() {
