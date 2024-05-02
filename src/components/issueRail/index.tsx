@@ -2,7 +2,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePopup } from "./popupProvider"
 import { ArticlesIssues, Issues, Sections } from "../../../lib/types"
-import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
 import { PageType, getPermalink } from "../../../lib/utils"
 
 const Bylines = ({ contributors }: any) => {
@@ -165,13 +164,14 @@ interface IssueRailProps {
   issueSections?: Array<Sections>
   issueData?: Issues
 }
-const IssueRail = (props: ArticleProps & IssueRailProps) => {
+const IssueRail = (props: IssueRailProps) => {
   const { issueBasics, issueSections, issueData } = props
-  const { slug, title } = issueBasics
 
-  if (!issueSections || !issueData) {
+  if (!issueSections || !issueData || !issueBasics) {
     return <>Loading...</>
   }
+
+  const { slug, title } = issueBasics
 
   const issueArticles = issueData.articles
 
