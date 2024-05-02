@@ -57,12 +57,11 @@ export async function getCurrentIssueData() {
 // instead of a single issue by ID
 // This returns a single issue object
 interface IssueDataProps {
-  year?: number
-  month?: number
-  slug?: string
+  year: number
+  month: number
 }
 export async function getIssueData(props: IssueDataProps) {
-  const { year, month, slug } = props
+  const { year, month } = props
   const issueData: Issues[] = await directus.request(
     readItems("issues", {
       fields: [
@@ -146,9 +145,9 @@ export async function getIssueData(props: IssueDataProps) {
       filter: {
         _and: [
           {
-            year: year && month ? { _eq: year } : undefined,
-            month: year && month ? { _eq: month } : undefined,
-            slug: slug ? { _eq: slug } : undefined,
+            special_issue: { _eq: false },
+            year: { _eq: year },
+            month: { _eq: month },
             status: { _eq: "published" },
           },
         ],
@@ -163,7 +162,117 @@ export async function getIssueData(props: IssueDataProps) {
   return issueData[0]
 }
 
-export async function getIssueBasics(props: IssueDataProps) {
+interface SpecialIssueDataProps {
+  slug: string
+}
+export async function getSpecialIssueData(props: SpecialIssueDataProps) {
+  const { slug } = props
+  const issueData: Issues[] = await directus.request(
+    readItems("issues", {
+      fields: [
+        "id",
+        "title",
+        "slug",
+        "year",
+        "month",
+        "status",
+        "issue_number",
+        "old_id",
+        "special_issue",
+        {
+          cover_1: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_2: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_3: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_4: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_5: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_6: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          articles: [
+            "order",
+            {
+              articles_slug: [
+                "status",
+                "slug",
+                "title",
+                "excerpt",
+                "kicker",
+                "featured",
+                {
+                  promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
+                },
+                {
+                  promo_banner: ["id", "caption", "filename_disk", "width", "height"],
+                },
+                {
+                  slideshow_image: ["id", "caption", "filename_disk", "width", "height"],
+                },
+                {
+                  featured_image: ["id", "caption", "filename_disk", "width", "height"],
+                },
+                {
+                  contributors: [
+                    {
+                      contributors_id: ["id", "old_id", "first_name", "last_name", "slug"],
+                    },
+                  ],
+                },
+                {
+                  sections: [
+                    {
+                      sections_id: ["id", "slug", "name", "old_id"],
+                    },
+                  ],
+                },
+                {
+                  images: [
+                    {
+                      directus_files_id: ["id", "caption", "filename_disk", "width", "height", "type", "shortcode_key"],
+                    },
+                  ],
+                },
+                "sort",
+              ],
+            },
+          ],
+        },
+      ],
+      filter: {
+        _and: [
+          {
+            special_issue: { _eq: true },
+            slug: { _eq: slug },
+            status: { _eq: "published" },
+          },
+        ],
+      },
+      deep: {
+        articles: {
+          _limit: -1,
+        },
+      },
+    }),
+  )
+  return issueData[0]
+}
+
+interface IssueBasicsProps {
+  year?: number
+  month?: number
+  slug?: string
+}
+
+export async function getIssueBasics(props: IssueBasicsProps) {
   const { year, month, slug } = props
   const issueData: Issues[] = await directus.request(
     readItems("issues", {
