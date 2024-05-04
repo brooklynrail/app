@@ -76,11 +76,11 @@ const SlideShow = (props: SlideshowProps) => {
         <div id="banner-indicator">{indicator}</div>
 
         <div id="banner-prev" className="bannercontrols" onClick={handlePrevSlide}>
-          <img width="25" src="/images/banner-prev.png" />
+          <Image src="/images/banner-prev.png" width={25} height={31} alt="Previous" />
         </div>
 
         <div id="banner-next" className="bannercontrols" onClick={handleNextSlide}>
-          <img width="25" src="/images/banner-next.png" />
+          <Image src="/images/banner-next.png" width={25} height={31} alt="Next" />
         </div>
       </div>
     </div>

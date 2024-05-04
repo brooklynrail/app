@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
 import { IssuePageProps, PageLayout } from "@/pages"
@@ -144,7 +145,7 @@ const IssuePage = (props: IssuePageProps) => {
                     {props.layout === PageLayout.Issue && <TableOfContents {...tocProps} />}
                     <div style={{ margin: "25px 0px 25px 30px" }}>
                       <Link href="/subscribe">
-                        <img src="/images/subscribe-footer.png" />
+                        <Image src="/images/subscribe-footer.png" alt="Subscribe" />
                       </Link>
                     </div>
                   </div>
