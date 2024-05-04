@@ -1,6 +1,6 @@
 import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/components/issuePage"
-import { getPermalink, PageType } from "../../lib/utils"
+import { getCurrentIssueData, getIssueBasics, getPermalink, PageType } from "../../lib/utils"
 import { NextSeo } from "next-seo"
 
 export enum PageLayout {
@@ -32,16 +32,11 @@ export default HomepageController
 export async function getStaticProps() {
   try {
     // Get the Current issue
-    // This is set in the Global Settings in the Studio
-    const currentIssueResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/currentIssue`)
-    const currentIssue: Issues = await currentIssueResponse.json()
+    const issueBasics: Issues = await getCurrentIssueData()
 
-    if (!currentIssue) {
+    if (!issueBasics) {
       return { props: { errorCode: 400, errorMessage: "The current issue is not set." } }
     }
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${currentIssue.year}/${currentIssue.month}`)
-    const issueBasics = await response.json()
 
     const permalink = getPermalink({
       year: issueBasics.year,

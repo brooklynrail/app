@@ -47,9 +47,13 @@ export async function getCurrentIssueData() {
     }),
   )
   // get the current issue data from the issues collection
-  const currentIssueData: Issues = await getIssueData(settings.current_issue.year, settings.current_issue.month)
+  const issueBasics = await getIssueBasics({
+    year: settings.current_issue.year,
+    month: settings.current_issue.month,
+    slug: undefined,
+  })
   // return the first issue in the array
-  return currentIssueData
+  return issueBasics
 }
 
 // Explore making this get IssueData by ID
