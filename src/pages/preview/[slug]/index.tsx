@@ -76,7 +76,7 @@ export async function getServerSideProps(context: any) {
 
   const previewPassword = await getPreviewPassword()
   const draftMode = context.draftMode ? context.draftMode : false
-  const directusUrl = process.env.BASE_DIRECTUS_URL
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
 
   return {
     props: {
