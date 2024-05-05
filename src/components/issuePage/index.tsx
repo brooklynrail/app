@@ -145,7 +145,7 @@ const IssuePage = (props: IssuePageProps) => {
                     {props.layout === PageLayout.Issue && <TableOfContents {...tocProps} />}
                     <div style={{ margin: "25px 0px 25px 30px" }}>
                       <Link href="/subscribe">
-                        <Image src="/images/subscribe-footer.png" alt="Subscribe" />
+                        <Image src="/images/subscribe-footer.png" alt="Subscribe" width={565} height={105} />
                       </Link>
                     </div>
                   </div>
