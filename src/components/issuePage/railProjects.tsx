@@ -5,7 +5,7 @@ const RailProjects = () => {
   return (
     <div className="related rail_projects">
       <Link href="https://shop.brooklynrail.org/collections/books" target="out-rail">
-        <Image src="/images/banners-left/BR-Books-WEB.jpg" width={120} height={73} alt="Rail Editions" />
+        <Image src="/images/banners-left/Rail-Ed-WEB.jpg" width={120} height={73} alt="Rail Editions" />
       </Link>
 
       <Link href="http://curatorialprojects.brooklynrail.org/occupy-mana" target="out-rail">
