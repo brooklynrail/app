@@ -19,6 +19,7 @@ import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
 import { getAds, getAllIssues, getIssueData, getSectionsByIssueId, getSpecialIssueData } from "../../../lib/utils"
+import { PopupProvider } from "../issueRail/popupProvider"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
@@ -93,70 +94,72 @@ const IssuePage = (props: IssuePageProps) => {
 
   return (
     <>
-      <div className={`paper ${issueClass}`}>
-        <div className="hatbox"></div>
-        <div className="wrapper home">
-          <header role="banner">
-            <div className="grid-container grid-container-desktop">
-              <div className="grid-row">
-                <div className="grid-col-12">
-                  <Header />
-                </div>
-              </div>
-            </div>
-          </header>
-
-          <Ad970 currentAds={currentAds} />
-
-          <section id="main">
-            <div className="grid-container grid-container-desktop">
-              <div className="grid-row grid-gap-3">
-                <div className="grid-col-2">
-                  <div id="issuecolumn">
-                    <div className="youarehereissue">
-                      <IssueSelect allIssues={allIssues} currentIssueSlug={slug} />
-                      <CoverImage {...{ issueBasics, issueData }} />
-                    </div>
-
-                    <CurrentSections {...{ currentSections, year, month }} />
-
-                    <Link className="search_btn" href="/search" title="Search All Issues">
-                      <span>Search</span> <i className="fas fa-search"></i>
-                    </Link>
-                    <Link className="archives_btn" href="/archives" title="View Archive">
-                      <span>View Archive</span>
-                    </Link>
-
-                    <RailProjects />
-                    <RailPartners />
-                  </div>
-                </div>
-
-                {layout}
-
-                <div className="ad_column grid-col-2">
-                  <AdsTile currentAds={currentAds} />
-                </div>
-              </div>
-            </div>
-            <div className="grid-container grid-container-desktop">
-              <div className="grid-row grid-gap-3">
+      <PopupProvider>
+        <div className={`paper ${issueClass}`}>
+          <div className="hatbox"></div>
+          <div className="wrapper home">
+            <header role="banner">
+              <div className="grid-container grid-container-desktop">
                 <div className="grid-row">
-                  <div className="grid-col-8 grid-offset-2">
-                    {props.layout === PageLayout.Issue && <TableOfContents {...tocProps} />}
-                    <div style={{ margin: "25px 0px 25px 30px" }}>
-                      <Link href="/subscribe">
-                        <Image src="/images/subscribe-footer.png" alt="Subscribe" width={565} height={105} />
+                  <div className="grid-col-12">
+                    <Header />
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <Ad970 currentAds={currentAds} />
+
+            <section id="main">
+              <div className="grid-container grid-container-desktop">
+                <div className="grid-row grid-gap-3">
+                  <div className="grid-col-2">
+                    <div id="issuecolumn">
+                      <div className="youarehereissue">
+                        <IssueSelect allIssues={allIssues} currentIssueSlug={slug} />
+                        <CoverImage {...{ issueBasics, issueData }} />
+                      </div>
+
+                      <CurrentSections {...{ currentSections, year, month }} />
+
+                      <Link className="search_btn" href="/search" title="Search All Issues">
+                        <span>Search</span> <i className="fas fa-search"></i>
                       </Link>
+                      <Link className="archives_btn" href="/archives" title="View Archive">
+                        <span>View Archive</span>
+                      </Link>
+
+                      <RailProjects />
+                      <RailPartners />
+                    </div>
+                  </div>
+
+                  {layout}
+
+                  <div className="ad_column grid-col-2">
+                    <AdsTile currentAds={currentAds} />
+                  </div>
+                </div>
+              </div>
+              <div className="grid-container grid-container-desktop">
+                <div className="grid-row grid-gap-3">
+                  <div className="grid-row">
+                    <div className="grid-col-8 grid-offset-2">
+                      {props.layout === PageLayout.Issue && <TableOfContents {...tocProps} />}
+                      <div style={{ margin: "25px 0px 25px 30px" }}>
+                        <Link href="/subscribe">
+                          <Image src="/images/subscribe-footer.png" alt="Subscribe" width={565} height={105} />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
-      </div>
-      <CoversPopup />
+        <CoversPopup />
+      </PopupProvider>
     </>
   )
 }
