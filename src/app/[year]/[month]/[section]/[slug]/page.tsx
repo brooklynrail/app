@@ -1,4 +1,3 @@
-import Article from "../../../../../components/article"
 import { stripHtml } from "string-strip-html"
 import {
   PageType,
@@ -10,6 +9,7 @@ import {
 } from "../../../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
+import Article from "@/app/components/article"
 
 export const dynamicParams = true
 

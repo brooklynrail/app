@@ -1,6 +1,6 @@
 import directus from "../../../../lib/directus"
 import { readItems } from "@directus/sdk"
-import IssuePage from "@/components/issuePage"
+import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
 import { PageType, getIssueBasics, getOGImage, getPermalink } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"

@@ -10,7 +10,7 @@ import {
 } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Issues, Sections } from "../../../../../lib/types"
-import IssuePage from "@/components/issuePage"
+import IssuePage from "@/app/components/issuePage"
 
 export const dynamicParams = true
 

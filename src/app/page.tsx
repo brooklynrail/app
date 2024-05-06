@@ -1,5 +1,5 @@
 import { Issues, Sections } from "../../lib/types"
-import IssuePage from "@/components/issuePage"
+import IssuePage from "@/app/components/issuePage"
 import { getCurrentIssueData, getPermalink, PageType } from "../../lib/utils"
 
 export enum PageLayout {
