@@ -34,13 +34,22 @@ const replacePullQuote = (html: string) => {
 }
 
 // [blockquote cite="Phong Bui" url="https://brooklynrail.org"] ... [/blockquote]
-const replaceBlockquote = (html: string) => {
+const replaceBlockquoteCite = (html: string) => {
   const regex = /\[blockquote cite="([^"]*)"(?:\s+url="([^"]*)")?\]([\s\S]*?)\[\/blockquote\]/g
   // Replace the quote shortcode with a custom HTML structure
   return html.replace(regex, (match, cite, url, content) => {
     const linkedCite = url ? `<a href="${url}">${cite}</a>` : cite
     const citeTag = cite ? `<cite>— ${linkedCite}</cite>` : ""
     return `<blockquote class="blockquote" data-type="${cite}">“${content}”${citeTag}</blockquote>`
+  })
+}
+
+// [blockquote] ... [/blockquote]
+const replaceBlockquote = (html: string) => {
+  const regex = /\[blockquote]([\s\S]*?)\[\/blockquote\]/g
+  // Replace the blockquote shortcode with a custom HTML structure
+  return html.replace(regex, (match, content) => {
+    return `<blockquote>${content}</blockquote>`
   })
 }
 
@@ -124,6 +133,7 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
   cleanedHtml = replacePromo(cleanedHtml)
   cleanedHtml = replaceQuote(cleanedHtml)
   cleanedHtml = replacePullQuote(cleanedHtml)
+  cleanedHtml = replaceBlockquoteCite(cleanedHtml)
   cleanedHtml = replaceBlockquote(cleanedHtml)
   cleanedHtml = replaceDropcap(cleanedHtml)
   cleanedHtml = replaceLead(cleanedHtml)
