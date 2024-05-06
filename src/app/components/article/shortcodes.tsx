@@ -101,6 +101,15 @@ const replaceRule = (html: string) => {
   })
 }
 
+// [poetry] ... [/poetry]
+const replacePoetry = (html: string) => {
+  const regex = /\[poetry]([\s\S]*?)\[\/poetry\]/g
+  // Replace the poetry shortcode with a custom HTML structure
+  return html.replace(regex, (match, content) => {
+    return `<div class="poetry"><div class="poem">${content}</div></div>`
+  })
+}
+
 interface ReplaceShortcodesProps {
   html: string
   images: Array<ArticlesFiles>
@@ -121,6 +130,7 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
   cleanedHtml = replaceCenter(cleanedHtml)
   cleanedHtml = replaceRightAlign(cleanedHtml)
   cleanedHtml = replaceRule(cleanedHtml)
+  cleanedHtml = replacePoetry(cleanedHtml)
 
   // IMAGES
   // Options for the html-react-parser
