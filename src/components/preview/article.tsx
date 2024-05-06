@@ -1,16 +1,15 @@
+"use client"
 import ContributorsBox from "../article/contributors"
 import { ArticleBody, ArticleHead } from "../article"
-import { ArticlePreviewProps } from "@/pages/preview/[slug]"
+import { ArticlePreviewProps } from "@/app/preview/[slug]/page"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import Password from "./password"
-import { useRouter } from "next/router"
 import PreviewInfo from "./previewInfo"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
-  const { articleData, draftMode, previewPassword, directusUrl } = props
+  const { articleData, isEnabled, previewPassword, directusUrl } = props
   const { contributors } = articleData
-  const router = useRouter()
 
   const cookieSlug = `rail_preview_${articleData.slug}`
   const [password, setPassword] = useState("")
@@ -23,10 +22,10 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   // if either of these cookies are set, the article will be viewable
   useEffect(() => {
     // Read the cookie
-    if (draftMode || router.query.draftMode) {
+    if (isEnabled) {
       setIsViewable(true)
     }
-  }, [draftMode, router.query.draftMode])
+  }, [isEnabled])
 
   const handlePasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault()

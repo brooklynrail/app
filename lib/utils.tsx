@@ -430,7 +430,7 @@ export async function getArticlePages() {
 }
 
 export async function getArticle(slug: string) {
-  const currentArticle = directus.request(
+  const currentArticle: Articles = directus.request(
     readItem("articles", slug, {
       fields: [
         "slug",
@@ -559,25 +559,26 @@ interface OGImageProps {
 
 export function getOGImage(props: OGImageProps) {
   const { ogimage, title } = props
-  return ogimage !== undefined && ogimage !== null
-    ? [
-        {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/${ogimage.filename_disk}`,
-          width: ogimage.width,
-          height: ogimage.height,
-          alt: ogimage.caption ? stripHtml(ogimage.caption).result : `${stripHtml(title).result} - The Brooklyn Rail`,
-          type: ogimage.type ? ogimage.type : "image/jpeg",
-        },
-      ]
-    : [
-        {
-          url: "https://brooklynrail.org/material/img/brooklynrail-card-3.png",
-          width: 2000,
-          height: 1200,
-          alt: "The Brooklyn Rail",
-          type: "image/png",
-        },
-      ]
+  if (ogimage && ogimage.width && ogimage.height) {
+    return [
+      {
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/${ogimage.filename_disk}`,
+        width: ogimage.width,
+        height: ogimage.height,
+        alt: ogimage.caption ? stripHtml(ogimage.caption).result : `${stripHtml(title).result} - The Brooklyn Rail`,
+        type: ogimage.type ? ogimage.type : "image/jpeg",
+      },
+    ]
+  }
+  return [
+    {
+      url: "https://brooklynrail.org/material/img/brooklynrail-card-3.png",
+      width: 2000,
+      height: 1200,
+      alt: "The Brooklyn Rail",
+      type: "image/png",
+    },
+  ]
 }
 
 export enum PageType {

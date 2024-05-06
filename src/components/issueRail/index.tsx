@@ -131,18 +131,18 @@ export const CoverImage = (props: CoverImagesProps) => {
   }
 
   const FirstCover = () => {
-    if (!cover_1 || !!cover_1.width === false || !!cover_1.height === false) {
+    if (!cover_1 || !cover_1.width || !cover_1.height || !cover_1.filename_disk) {
       return <></>
     }
     const width = (cover_1.width * 200) / cover_1.height
     const height = (cover_1.height * width) / cover_1.width
-    const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover_1.filename_disk}`
     const alt = cover_1.description ? cover_1.description.replace(/(<([^>]+)>)/gi, "") : "The Brooklyn Rail"
-
     return (
       <div>
         <Image
-          src={src}
+          priority
+          id={`cover-1`}
+          src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover_1.filename_disk}`}
           width={width}
           height={height}
           alt={alt}

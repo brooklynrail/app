@@ -1,5 +1,5 @@
 import { Articles, Issues } from "../../../lib/types"
-import { ArticleProps } from "@/pages/[year]/[month]/[section]/[slug]"
+import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import { PageType, getPermalink } from "../../../lib/utils"
 import Link from "next/link"
 

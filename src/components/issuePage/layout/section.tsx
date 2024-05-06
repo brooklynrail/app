@@ -11,7 +11,11 @@ const SectionLayout = (props: LayoutProps) => {
   }
 
   const { year, month } = issueData
-  const currentArticles = issueData.articles
+
+  // get the articles that belong to the current section
+  const currentArticles = issueData.articles.filter((article: ArticlesIssues) => {
+    return article.articles_slug.sections[0].sections_id.slug === currentSection.slug
+  })
 
   const allArticles = (
     <section className="collection">

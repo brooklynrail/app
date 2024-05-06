@@ -12,6 +12,7 @@ const Header = () => {
         </div>
         <Link href="/">
           <Image
+            priority
             src="/images/brooklynrail-logo-ex.svg"
             height="68"
             width="396"
