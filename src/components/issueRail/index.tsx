@@ -180,7 +180,14 @@ const IssueRail = (props: IssueRailProps) => {
       <header id="rail-header">
         <h2>
           <Link href="/">
-            <img src="/images/brooklynrail-logo.svg" alt="The Brooklyn Rail" title="Brooklyn Rail Home" />
+            <Image
+              priority
+              src="/images/brooklynrail-logo.svg"
+              alt="The Brooklyn Rail"
+              title="Brooklyn Rail Home"
+              width={296}
+              height={38.48}
+            />
           </Link>
         </h2>
       </header>
