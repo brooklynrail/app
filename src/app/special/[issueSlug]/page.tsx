@@ -1,10 +1,9 @@
-import directus from "../../../../lib/directus"
-import { readItems } from "@directus/sdk"
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getOGImage, getPermalink, getSpecialIssueData } from "../../../../lib/utils"
+import { PageType, getIssues, getOGImage, getPermalink, getSpecialIssueData } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
+import { Issues } from "../../../../lib/types"
 
 export const dynamicParams = true
 
@@ -62,16 +61,9 @@ async function getData({ params }: { params: SpecialSectionParams }) {
 }
 
 export async function generateStaticParams() {
-  const specialIssues = await directus.request(
-    readItems("issues", {
-      fields: ["slug", "special_issue", "status"],
-      filter: {
-        _and: [{ special_issue: { _eq: true }, status: { _eq: "published" } }],
-      },
-    }),
-  )
+  const specialIssues = await getIssues({ special_issue: true })
 
-  return specialIssues.map((issue) => {
+  return specialIssues.map(async (issue: Issues) => {
     return {
       issueSlug: issue.slug,
     }

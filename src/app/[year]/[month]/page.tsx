@@ -1,6 +1,6 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getIssues, getOGImage, getPermalink } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
 import { Issues } from "../../../../lib/types"
@@ -41,7 +41,6 @@ export default async function Issue({ params }: { params: IssueParams }) {
 interface IssueParams {
   year: string
   month: string
-  section: string
 }
 
 async function getData({ params }: { params: IssueParams }) {
@@ -68,7 +67,7 @@ async function getData({ params }: { params: IssueParams }) {
 }
 
 export async function generateStaticParams() {
-  const allIssues = await getAllIssues()
+  const allIssues = await getIssues({ special_issue: false })
 
   return allIssues.map((issue: Issues) => {
     const month = issue.month < 10 ? String(`0${issue.month}`) : String(issue.month)
