@@ -36,6 +36,8 @@ export type Articles = {
   in_print?: boolean | null
   issues: ArticlesIssues[]
   kicker?: string | null
+  hide_bylines: boolean
+  hide_bylines_downstream: boolean
   old_id?: number | null
   promo_banner?: DirectusFiles
   promo_thumb?: DirectusFiles

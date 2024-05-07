@@ -107,6 +107,8 @@ export async function getIssueData(props: IssueDataProps) {
                 "excerpt",
                 "kicker",
                 "featured",
+                "hide_bylines",
+                "hide_bylines_downstream",
                 {
                   promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
                 },
@@ -212,6 +214,8 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
                 "excerpt",
                 "kicker",
                 "featured",
+                "hide_bylines",
+                "hide_bylines_downstream",
                 {
                   promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
                 },
@@ -452,6 +456,8 @@ export async function getArticle(slug: string) {
         "title_tag",
         "user_updated",
         "date_updated",
+        "hide_bylines",
+        "hide_bylines_downstream",
         {
           featured_image: ["id", "caption", "filename_disk", "width", "height", "type"],
         },

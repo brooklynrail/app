@@ -6,7 +6,7 @@ import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
 import BodyText from "./bodyText"
 import BodyCode from "./bodyCode"
-import { Articles, DirectusFiles, Issues, Sections } from "../../../../lib/types"
+import { Articles, ArticlesContributors, Contributors, DirectusFiles, Issues, Sections } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import ContributorsBox from "./contributors"
 import { PageType, getIssueData, getPermalink, getSectionsByIssueId, getSpecialIssueData } from "../../../../lib/utils"
@@ -75,13 +75,32 @@ interface ArticleHeadProps {
 
 export const ArticleHead = (props: ArticleHeadProps) => {
   const { permalink, currentIssue, currentSection, articleData } = props
-  const { kicker, title, deck, featured_image, header_type } = articleData
+  const { kicker, title, deck, featured_image, header_type, contributors, hide_bylines } = articleData
 
   const kickerProps = { kicker, currentIssue, currentSection }
+  const authors = contributors.map((contributor: any, i: number) => {
+    const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.contributors_id.slug })
+    return (
+      <Link itemProp="author" href={contribPermalink} key={i}>
+        {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
+      </Link>
+    )
+  })
 
   const articleMeta = (
-    <div className="article-meta">
-      <div className="date">ISSUE DATE TKTK</div>
+    <div className="article-meta ooo">
+      <div className="date">MAY 2024</div>
+
+      {!hide_bylines && (
+        <cite className="byline">
+          <span>By </span>
+          <Link itemProp="author" href="#">
+            {authors}
+          </Link>
+        </cite>
+      )}
+
+      {currentIssue && <div className="date">{currentIssue.title}</div>}
 
       <div className="share-tools">
         <Link className="twitter" href={`https://twitter.com/share?url=${permalink}`}>

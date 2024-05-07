@@ -7,6 +7,7 @@ import { PageType, getPermalink } from "../../../../lib/utils"
 const Bylines = ({ contributors }: any) => {
   return (
     <cite>
+      <span>By </span>
       {contributors.map((contributor: any, i: number) => {
         const isLast = i === contributors.length - 1
         const isFirst = i === 0
@@ -47,6 +48,9 @@ const ArticleList = (props: ArticleListProps) => {
       slug: article.articles_slug.slug,
       type: PageType.Article,
     })
+
+    const hide_bylines_downstream = article.articles_slug.hide_bylines_downstream
+
     return (
       <li key={i}>
         <h4>
@@ -54,7 +58,7 @@ const ArticleList = (props: ArticleListProps) => {
             <span dangerouslySetInnerHTML={{ __html: article.articles_slug.title }} />
           </Link>
         </h4>
-        <Bylines contributors={article.articles_slug.contributors} />
+        {!hide_bylines_downstream && <Bylines contributors={article.articles_slug.contributors} />}
       </li>
     )
   })
