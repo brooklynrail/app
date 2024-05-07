@@ -38,7 +38,7 @@ const CurrentSections = (props: CurrentSectionsProps) => {
       )
     })
   ) : (
-    <p>SECTIONS loading...</p>
+    <LoadingSections />
   )
 
   return (
@@ -53,6 +53,18 @@ const CurrentSections = (props: CurrentSectionsProps) => {
           {sections}
         </ul>
       </div>
+    </>
+  )
+}
+
+const LoadingSections = () => {
+  return (
+    <>
+      {Array.from({ length: 12 }).map((_, i) => (
+        <li key={i} className="loading">
+          <span style={{ width: `${Math.floor(Math.random() * 61) + 35}%` }}></span>
+        </li>
+      ))}
     </>
   )
 }

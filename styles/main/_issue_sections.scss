@@ -18,5 +18,14 @@
         }
       }
     }
+    li.loading {
+      span {
+        @include u-margin-y("2px");
+        @include u-padding-y(1);
+        @include u-display("block");
+        @include u-bg("gray-10");
+        @include u-radius("sm");
+      }
+    }
   }
 }
