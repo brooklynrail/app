@@ -6,10 +6,6 @@ import { LayoutProps } from "./issue"
 const SpecialIssue = (props: LayoutProps) => {
   const { issueData } = props
 
-  if (!issueData) {
-    return <>Loading...</>
-  }
-
   const currentArticles = issueData.articles
 
   const allArticles = currentArticles.map((article: ArticlesIssues, i: number) => {

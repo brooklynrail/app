@@ -1,7 +1,7 @@
 import { PageLayout } from "@/app/page"
 import {
   PageType,
-  getIssueBasics,
+  getIssueData,
   getIssues,
   getOGImage,
   getPermalink,
@@ -17,12 +17,12 @@ export const dynamicParams = true
 export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
   const data = await getData({ params })
 
-  if (!data.props.issueBasics || !data.props.currentSection) {
+  if (!data.props.currentSection) {
     return {}
   }
 
   const { name } = data.props.currentSection
-  const { title, cover_1, issue_number } = data.props.issueBasics
+  const { title, cover_1, issue_number } = data.props.issueData
   const ogtitle = `${name} – ${stripHtml(title).result} | The Brooklyn Rail`
   const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: { params: SectionParams }): P
 export default async function SectionPage({ params }: { params: SectionParams }) {
   const data = await getData({ params })
 
-  if (!data.props.issueBasics || !data.props.currentSection) {
+  if (!data.props.currentSection) {
     return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
   }
 
@@ -65,10 +65,13 @@ async function getData({ params }: { params: SectionParams }) {
   const month = Number(params.month)
   const section = params.section.toString()
 
-  const issueBasics = await getIssueBasics({ year, month, slug: undefined })
+  const issueData = await getIssueData({
+    year: year,
+    month: month,
+  })
 
   // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(issueBasics.id)
+  const currentSections = await getSectionsByIssueId(issueData.id)
 
   const currentSection = currentSections.find((s: Sections) => s.slug === section)
 
@@ -78,15 +81,15 @@ async function getData({ params }: { params: SectionParams }) {
   }
 
   const permalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
+    year: issueData.year,
+    month: issueData.month,
     section: currentSection.slug,
     type: PageType.Section,
   })
 
   return {
     props: {
-      issueBasics,
+      issueData,
       currentSection,
       permalink,
     },

@@ -7,19 +7,13 @@ import FeaturedArticles from "../featuredArticles"
 import { ArticlesIssues, Issues, Sections } from "../../../../../lib/types"
 
 export interface LayoutProps {
-  issueData?: Issues
+  issueData: Issues
   currentSection?: Sections
 }
 
 const IssueLayout = (props: LayoutProps) => {
-  const { issueData } = props
-
-  if (!issueData) {
-    return <>Loading...</>
-  }
-
-  const { year, month } = issueData
-  const currentArticles = issueData.articles
+  const { year, month } = props.issueData
+  const currentArticles = props.issueData.articles
 
   // Filter the currentArticles to get only the articles with a slideshow image
   const currentSlides: ArticlesIssues[] = []

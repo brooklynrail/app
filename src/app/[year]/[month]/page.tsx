@@ -1,6 +1,6 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getIssueBasics, getOGImage, getPermalink } from "../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
 import { Issues } from "../../../../lib/types"
@@ -10,7 +10,7 @@ export const dynamicParams = true
 export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {
   const data = await getData({ params })
 
-  const { title, cover_1, issue_number } = data.props.issueBasics
+  const { title, cover_1, issue_number } = data.props.issueData
   const ogtitle = `${stripHtml(title).result} | The Brooklyn Rail`
   const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -48,17 +48,20 @@ async function getData({ params }: { params: IssueParams }) {
   const year = Number(params.year)
   const month = Number(params.month)
 
-  const issueBasics = await getIssueBasics({ year: year, month: month })
+  const issueData = await getIssueData({
+    year: year,
+    month: month,
+  })
 
   const permalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
+    year: issueData.year,
+    month: issueData.month,
     type: PageType.Issue,
   })
 
   return {
     props: {
-      issueBasics,
+      issueData,
       permalink,
     },
   }

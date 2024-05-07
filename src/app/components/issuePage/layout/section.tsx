@@ -7,7 +7,7 @@ import { LayoutProps } from "./issue"
 const SectionLayout = (props: LayoutProps) => {
   const { issueData, currentSection } = props
 
-  if (!currentSection || !issueData) {
+  if (!currentSection) {
     return <></>
   }
 

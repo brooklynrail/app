@@ -111,21 +111,15 @@ const IssueArticles = (props: IssueArticlesProps) => {
 }
 
 interface CoverImagesProps {
-  issueBasics: Issues
-  issueData?: Issues
+  issueData: Issues
 }
 
 export const CoverImage = (props: CoverImagesProps) => {
-  const { issueBasics, issueData } = props
+  const { issueData } = props
 
-  const { cover_1 } = issueBasics
   const { setShowPopup, setImages } = usePopup()
 
-  if (!issueData) {
-    return <>Loading image...</>
-  }
-
-  const { cover_2, cover_3, cover_4, cover_5, cover_6 } = issueData
+  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = issueData
   const covers = [cover_1, cover_2, cover_3, cover_4, cover_5, cover_6]
 
   const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {

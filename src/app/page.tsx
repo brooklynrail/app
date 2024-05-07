@@ -9,7 +9,7 @@ export enum PageLayout {
   SpecialSection = "special-section",
 }
 export interface IssuePageProps {
-  issueBasics: Issues
+  issueData: Issues
   currentSection?: Sections
   permalink: string
   errorCode?: number
@@ -20,7 +20,7 @@ export interface IssuePageProps {
 export default async function Homepage() {
   const data = await getData()
 
-  if (!data.props.issueBasics || !data.props.permalink) {
+  if (!data.props.issueData || !data.props.permalink) {
     return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
   }
 
@@ -28,17 +28,17 @@ export default async function Homepage() {
 }
 
 async function getData() {
-  const issueBasics: Issues = await getCurrentIssueData()
+  const issueData: Issues = await getCurrentIssueData()
 
   const permalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
+    year: issueData.year,
+    month: issueData.month,
     type: PageType.Home,
   })
 
   return {
     props: {
-      issueBasics,
+      issueData,
       permalink,
     },
   }
