@@ -1,24 +1,30 @@
 import { Issues } from "../../../../lib/types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { getAllIssues } from "../../../../lib/utils"
 
 interface IssueSelectProps {
-  allIssues?: Issues[]
-  currentIssueSlug?: string
+  currentIssueSlug: string
 }
 
 const IssueSelect = (props: IssueSelectProps) => {
-  const { allIssues, currentIssueSlug } = props
+  const { currentIssueSlug } = props
+  const [allIssues, setAllIssues] = useState<Issues[] | undefined>(undefined)
+  const [selectedIssueSlug, setSelectedIssueSlug] = useState<string | undefined>(currentIssueSlug)
 
-  const [selectedIssueSlug, setSelectedIssueSlug] = useState<string | undefined>(
-    currentIssueSlug ? currentIssueSlug : undefined,
-  )
+  useEffect(() => {
+    const fetchData = async () => {
+      const issues = !allIssues ? getAllIssues() : Promise.resolve(allIssues)
+      // Fetch all the data in parallel
+      const [fetchedIssues] = await Promise.all([issues])
+      // Update the state with the fetched data as it becomes available
+      setAllIssues(fetchedIssues)
+    }
+    // Call the fetchData function and handle any errors
+    fetchData().catch((error) => console.error("Failed to fetch data:", error))
+  }, [allIssues])
 
-  if (!selectedIssueSlug || !Array.isArray(allIssues)) {
-    return null
-  }
-
-  if (!allIssues || !selectedIssueSlug) {
-    return <>Loading...</>
+  if (!allIssues) {
+    return <div className="loading_issue_select"></div>
   }
 
   const handleIssueChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -37,18 +43,20 @@ const IssueSelect = (props: IssueSelectProps) => {
   // sort allIssues by the issue_number, largest to smallest
   allIssues.sort((a, b) => b.issue_number - a.issue_number)
   return (
-    <select id="issue_select" value={selectedIssueSlug} onChange={handleIssueChange}>
-      {allIssues.map((issue: Issues) => {
-        if (!issue.slug) {
-          return <></>
-        }
-        return (
-          <option key={issue.slug} value={issue.slug}>
-            {issue.title}
-          </option>
-        )
-      })}
-    </select>
+    <>
+      <select id="issue_select" value={selectedIssueSlug} onChange={handleIssueChange}>
+        {allIssues.map((issue: Issues) => {
+          if (!issue.slug) {
+            return <></>
+          }
+          return (
+            <option key={issue.slug} value={issue.slug}>
+              {issue.title}
+            </option>
+          )
+        })}
+      </select>
+    </>
   )
 }
 

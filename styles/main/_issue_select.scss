@@ -22,3 +22,10 @@
     0.65em auto,
     100%;
 }
+
+.loading_issue_select {
+  @include u-padding-y("105");
+  @include u-padding-x(1);
+  @include u-bg("gray-10");
+  @include u-radius("sm");
+}

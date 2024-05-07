@@ -32,26 +32,21 @@ const IssuePage = (props: IssuePageProps) => {
 
   const [currentSections, setCurrentSections] = useState<Sections[] | undefined>(undefined)
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
-  const [allIssues, setAllIssues] = useState<Issues[] | undefined>(undefined)
 
   useEffect(() => {
     const fetchData = async () => {
       const sections = !currentSections ? getSectionsByIssueId(issueData.id) : Promise.resolve(currentSections)
       const ads = !currentAds ? getAds() : Promise.resolve(currentAds)
-      const issues = !allIssues ? getAllIssues() : Promise.resolve(allIssues)
-
       // Fetch all the data in parallel
-      const [fetchedSections, fetchedAds, fetchedIssues] = await Promise.all([sections, ads, issues])
-
+      const [fetchedSections, fetchedAds] = await Promise.all([sections, ads])
       // Update the state with the fetched data as it becomes available
       setCurrentSections(fetchedSections)
       setCurrentAds(fetchedAds)
-      setAllIssues(fetchedIssues)
     }
 
     // Call the fetchData function and handle any errors
     fetchData().catch((error) => console.error("Failed to fetch data:", error))
-  }, [currentSections, issueData, currentAds, allIssues])
+  }, [currentSections, issueData, currentAds])
 
   const { year, month, slug } = issueData
   const issueClass = `issue-${slug.toLowerCase()}`
@@ -97,7 +92,7 @@ const IssuePage = (props: IssuePageProps) => {
                   <div className="grid-col-2">
                     <div id="issuecolumn">
                       <div className="youarehereissue">
-                        <IssueSelect allIssues={allIssues} currentIssueSlug={slug} />
+                        <IssueSelect currentIssueSlug={slug} />
                         <CoverImage {...{ issueData }} />
                       </div>
 

@@ -38,7 +38,7 @@ const CurrentSections = (props: CurrentSectionsProps) => {
       )
     })
   ) : (
-    <p>loading...</p>
+    <p>SECTIONS loading...</p>
   )
 
   return (
