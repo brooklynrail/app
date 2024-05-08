@@ -68,7 +68,7 @@ const PromoSpecialSection = (props: PromoProps) => {
             {showImage && featured_image && (
               <div className={`media`}>
                 <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                  <PromoImage {...featured_image} />
+                  <PromoImage image={featured_image} title={title} />
                 </Link>
               </div>
             )}
