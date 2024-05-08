@@ -29,6 +29,7 @@ const FeaturedImage = (props: FeaturedImageProps) => {
     <div className="featured-image">
       <div>
         <Image
+          priority
           src={src}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           width={400}

@@ -3,6 +3,7 @@ import Image from "next/image"
 import { usePopup } from "./popupProvider"
 import { ArticlesIssues, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
+import { stripHtml } from "string-strip-html"
 
 const Bylines = ({ contributors }: any) => {
   return (
@@ -180,11 +181,9 @@ export const CoverImage = (props: CoverImagesProps) => {
     setShowPopup(true)
   }
 
-  const width = (issueData.cover_1.width * 200) / issueData.cover_1.height
-  const height = (issueData.cover_1.height * width) / issueData.cover_1.width
-  const alt = issueData.cover_1.description
-    ? issueData.cover_1.description.replace(/(<([^>]+)>)/gi, "")
-    : "The Brooklyn Rail"
+  const alt = issueData.cover_1.caption
+    ? stripHtml(issueData.cover_1.caption).result
+    : `${issueData.title} — The Brooklyn Rail`
 
   return (
     <div className={`issue-covers`}>
@@ -193,8 +192,12 @@ export const CoverImage = (props: CoverImagesProps) => {
           priority
           id={`cover-1`}
           src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${issueData.cover_1.filename_disk}`}
-          width={width}
-          height={height}
+          width={issueData.cover_1.width}
+          height={issueData.cover_1.height}
+          style={{
+            width: "100%",
+            height: "auto",
+          }}
           alt={alt}
           onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
         />
