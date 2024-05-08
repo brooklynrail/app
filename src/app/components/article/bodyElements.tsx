@@ -49,7 +49,16 @@ const replaceImageShortcodes = (htmlString: string, imageData: Array<any>): Arra
         const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${thisImg.filename_disk}`
         elements.push(
           <div className={`media width-${type}`} key={key}>
-            <Image src={src} width={width} height={height} alt={thisImg.caption ? thisImg.caption : thisImg.title} />
+            <Image
+              src={src}
+              width={width}
+              height={height}
+              alt={thisImg.caption ? thisImg.caption : thisImg.title}
+              style={{
+                width: "100%",
+                height: "auto",
+              }}
+            />
             {thisImg.caption && (
               <figcaption dangerouslySetInnerHTML={{ __html: thisImg.caption }} className={`width-${type}`} />
             )}

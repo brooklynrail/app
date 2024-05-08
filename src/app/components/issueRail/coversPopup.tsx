@@ -1,3 +1,4 @@
+import { stripHtml } from "string-strip-html"
 import { usePopup } from "./popupProvider"
 import Image from "next/image"
 
@@ -23,7 +24,7 @@ const CoversPopup = () => {
     const width = (cover.width * 500) / cover.height
     const height = (cover.height * width) / cover.width
     const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`
-    const alt = cover.description ? cover.description.replace(/(<([^>]+)>)/gi, "") : "The Brooklyn Rail"
+    const alt = cover.caption ? `${stripHtml(cover.caption).result}` : "The Brooklyn Rail"
     const desc = cover.description ? (
       <figcaption dangerouslySetInnerHTML={{ __html: `<strong>Cover ${i + 1}:</strong> ${cover.description}` }} />
     ) : null
