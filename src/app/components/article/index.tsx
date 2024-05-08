@@ -249,7 +249,7 @@ const Article = (props: ArticleProps) => {
                 </div>
 
                 <article className="article">
-                  <NextPrev diff={false} {...props} currentSection={currentSection} issueData={issueData} />
+                  <NextPrev {...props} currentSection={currentSection} issueData={issueData} />
                   <ArticleHead {...props} />
                   <ArticleBody {...props} />
 

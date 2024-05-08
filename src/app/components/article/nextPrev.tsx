@@ -4,7 +4,6 @@ import { PageType, getPermalink } from "../../../../lib/utils"
 import Link from "next/link"
 
 interface NextPrevProps {
-  diff: boolean
   issueData?: Issues
 }
 
@@ -15,7 +14,7 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
   const issueSlug = issueBasics.slug
 
   if (!issueData || !currentSection) {
-    return <>Loading...</>
+    return <LoadingNextPrev />
   }
 
   const issueArticles = issueData.articles
@@ -79,3 +78,29 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
 }
 
 export default NextPrev
+
+const LoadingNextPrev = () => {
+  const randomWidth = Math.floor(Math.random() * 25) + 50 // Generate a random width between 60 and 85
+  const spanStyle = { width: `${randomWidth}%` }
+
+  return (
+    <nav className="next-prev loading">
+      <div className="prev">
+        <div>
+          <span></span>
+          <h3>
+            <span style={spanStyle}></span>
+          </h3>
+        </div>
+      </div>
+      <div className="next">
+        <div>
+          <span></span>
+          <h3>
+            <span style={spanStyle}></span>
+          </h3>
+        </div>
+      </div>
+    </nav>
+  )
+}

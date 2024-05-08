@@ -95,6 +95,43 @@ article.article-diff {
     @include u-text("right");
   }
 }
+.next-prev.loading {
+  div {
+    width: 48%;
+    div {
+      width: 100%;
+      @include u-display("flex");
+      @include u-flex("column");
+      @include u-flex("align-start");
+      @include u-padding-bottom(3);
+      span {
+        @include u-margin-y("2px");
+        @include u-bg("gray-10");
+        @include u-height("105");
+        @include u-width(9);
+        @include u-display("block");
+      }
+      h3 {
+        @include u-display("flex");
+        @include u-flex("column");
+        @include u-flex("align-start");
+        @include u-width("full");
+        span {
+          @include u-bg("gray-10");
+          @include u-height(2);
+          @include u-width("full");
+          @include u-display("block");
+        }
+      }
+    }
+  }
+  .next div {
+    @include u-flex("align-end");
+    h3 {
+      @include u-flex("align-end");
+    }
+  }
+}
 
 .body-label {
   @include u-display("inline-block");
