@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/:year/:month(\\d{1})(/:path*)",
+      "destination": "/:year/0:month/:path*",
+      "permanent": true
+    }
+  ]
+}
