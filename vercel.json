@@ -1,6 +1,16 @@
 {
   "redirects": [
     {
+      "source": "/:year/:month(\\d{1})/",
+      "destination": "/:year/0:month/",
+      "permanent": true
+    },
+    {
+      "source": "/:year/:month(\\d{1})/:section/",
+      "destination": "/:year/0:month/:section/",
+      "permanent": true
+    },
+    {
       "source": "/:year/:month(\\d{1})/:section/:slug/",
       "destination": "/:year/0:month/:section/:slug/",
       "permanent": true
