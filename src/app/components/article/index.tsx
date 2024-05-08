@@ -6,23 +6,39 @@ import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
 import BodyText from "./bodyText"
 import BodyCode from "./bodyCode"
-import { Articles, ArticlesContributors, Contributors, DirectusFiles, Issues, Sections } from "../../../../lib/types"
+import { Articles, DirectusFiles, Issues, Sections } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import ContributorsBox from "./contributors"
 import { PageType, getIssueData, getPermalink, getSectionsByIssueId, getSpecialIssueData } from "../../../../lib/utils"
 import Link from "next/link"
 import NextPrev from "./nextPrev"
 import { useEffect, useState } from "react"
+import { stripHtml } from "string-strip-html"
 
-const FeaturedImage = (props: DirectusFiles) => {
-  const { filename_disk, caption } = props
+interface FeaturedImageProps {
+  image: DirectusFiles
+  title: string
+}
+const FeaturedImage = (props: FeaturedImageProps) => {
+  const { filename_disk, caption } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=featured-image`
   const desc = caption ? <figcaption>{caption}</figcaption> : null
+  const alt = caption ? caption : `${stripHtml(props.title).result}`
 
   return (
     <div className="featured-image">
       <div>
-        <Image src={src} width={400} height={529} alt={caption ? caption : ""} />
+        <Image
+          src={src}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          width={400}
+          height={529}
+          style={{
+            width: "100%",
+            height: "auto",
+          }}
+          alt={alt}
+        />
         {desc}
       </div>
     </div>
@@ -125,7 +141,7 @@ export const ArticleHead = (props: ArticleHeadProps) => {
             </div>
 
             <div className="grid-col-12 tablet:grid-col-5">
-              {featured_image ? <FeaturedImage {...featured_image} /> : null}
+              {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
             </div>
           </div>
         </header>
