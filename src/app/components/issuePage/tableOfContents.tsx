@@ -57,31 +57,31 @@ const IssueSection = (props: IssueSectionProps) => {
 const TableOfContents = (props: TableOfContentsProps) => {
   const { issueData, currentSections, permalink, year, month } = props
 
-  if (!currentSections) {
-    return <p>Loading...</p>
-  }
+  const loading = <div className="loading">Loading...</div>
 
   const currentArticles = issueData.articles
 
   return (
     <div className="collection table-of-contents">
       <h2>Table of Contents</h2>
-      {currentSections.map((section, i) => {
-        // Filter the currentArticles to get only the articles in the current section
-        const articles = currentArticles.filter((articleIssue: ArticlesIssues) => {
-          return articleIssue.articles_slug.sections[0].sections_id.slug === section.slug
-        })
-        return (
-          <IssueSection
-            key={`toc-section-${i}`}
-            section={section}
-            articles={articles}
-            permalink={permalink}
-            year={year}
-            month={month}
-          />
-        )
-      })}
+      {currentSections
+        ? currentSections.map((section, i) => {
+            // Filter the currentArticles to get only the articles in the current section
+            const articles = currentArticles.filter((articleIssue: ArticlesIssues) => {
+              return articleIssue.articles_slug.sections[0].sections_id.slug === section.slug
+            })
+            return (
+              <IssueSection
+                key={`toc-section-${i}`}
+                section={section}
+                articles={articles}
+                permalink={permalink}
+                year={year}
+                month={month}
+              />
+            )
+          })
+        : loading}
     </div>
   )
 }
