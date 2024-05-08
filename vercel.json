@@ -1,8 +1,8 @@
 {
   "redirects": [
     {
-      "source": "/:year/:month(\\d{1})(/:path*)",
-      "destination": "/:year/0:month/:path*",
+      "source": "/:year/:month(\\d{1})(/.*)?",
+      "destination": "/:year/0:month$2",
       "permanent": true
     }
   ]
