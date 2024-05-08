@@ -66,16 +66,25 @@ const ArticleList = (props: ArticleListProps) => {
 }
 
 interface IssueArticlesProps {
-  issueArticles: Array<ArticlesIssues>
-  issueSections: Array<Sections>
+  issueData?: Issues
+  issueSections?: Array<Sections>
   issueBasics: Issues
 }
 
 const IssueArticles = (props: IssueArticlesProps) => {
-  const { issueArticles, issueSections, issueBasics } = props
+  const { issueData, issueSections, issueBasics } = props
   const { year, month } = issueBasics
+
+  if (!issueData || !issueSections) {
+    return (
+      <div className={`loading-issue-index`}>
+        <LoadingIssueIndex />
+      </div>
+    )
+  }
+
   // Create a map where each key is a section ID and each value is an array of articles for that section
-  const articlesBySection: Record<string, ArticlesIssues[]> = issueArticles.reduce(
+  const articlesBySection: Record<string, ArticlesIssues[]> = issueData.articles.reduce(
     (acc: any, article: ArticlesIssues) => {
       const sectionId = article.articles_slug.sections[0].sections_id.id
       if (!acc[sectionId]) {
@@ -110,17 +119,60 @@ const IssueArticles = (props: IssueArticlesProps) => {
   )
 }
 
+const LoadingIssueIndex = () => {
+  return [...Array(12)].map((_, index) => (
+    <div key={index}>
+      <h3>
+        <span style={{ width: `${Math.floor(Math.random() * 21) + 20}%` }}></span>
+      </h3>
+      <ul>
+        <li>
+          <h4>
+            <span style={{ width: `${Math.floor(Math.random() * 51) + 35}%` }}></span>
+          </h4>
+          <cite>
+            <span style={{ width: `${Math.floor(Math.random() * 21) + 15}%` }}></span>
+          </cite>
+        </li>
+        <li>
+          <h4>
+            <span style={{ width: `${Math.floor(Math.random() * 71) + 35}%` }}></span>
+          </h4>
+          <cite>
+            <span style={{ width: `${Math.floor(Math.random() * 31) + 35}%` }}></span>
+          </cite>
+        </li>
+      </ul>
+    </div>
+  ))
+}
+
 interface CoverImagesProps {
-  issueData: Issues
+  issueData?: Issues
 }
 
 export const CoverImage = (props: CoverImagesProps) => {
   const { issueData } = props
 
   const { setShowPopup, setImages } = usePopup()
+  if (
+    !issueData ||
+    !issueData.cover_1 ||
+    !issueData.cover_1.width ||
+    !issueData.cover_1.height ||
+    !issueData.cover_1.filename_disk
+  ) {
+    return <div className={`issue-covers loading`}></div>
+  }
 
-  const { cover_1, cover_2, cover_3, cover_4, cover_5, cover_6 } = issueData
-  const covers = [cover_1, cover_2, cover_3, cover_4, cover_5, cover_6]
+  const covers = [
+    issueData.cover_1,
+    issueData.cover_2,
+    issueData.cover_3,
+    issueData.cover_4,
+    issueData.cover_5,
+    issueData.cover_6,
+  ]
 
   const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault()
@@ -128,31 +180,25 @@ export const CoverImage = (props: CoverImagesProps) => {
     setShowPopup(true)
   }
 
-  const FirstCover = () => {
-    if (!cover_1 || !cover_1.width || !cover_1.height || !cover_1.filename_disk) {
-      return <></>
-    }
-    const width = (cover_1.width * 200) / cover_1.height
-    const height = (cover_1.height * width) / cover_1.width
-    const alt = cover_1.description ? cover_1.description.replace(/(<([^>]+)>)/gi, "") : "The Brooklyn Rail"
-    return (
+  const width = (issueData.cover_1.width * 200) / issueData.cover_1.height
+  const height = (issueData.cover_1.height * width) / issueData.cover_1.width
+  const alt = issueData.cover_1.description
+    ? issueData.cover_1.description.replace(/(<([^>]+)>)/gi, "")
+    : "The Brooklyn Rail"
+
+  return (
+    <div className={`issue-covers`}>
       <div>
         <Image
           priority
           id={`cover-1`}
-          src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover_1.filename_disk}`}
+          src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${issueData.cover_1.filename_disk}`}
           width={width}
           height={height}
           alt={alt}
           onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
         />
       </div>
-    )
-  }
-
-  return (
-    <div className={`issue-covers`}>
-      <FirstCover />
     </div>
   )
 }
@@ -165,13 +211,7 @@ interface IssueRailProps {
 const IssueRail = (props: IssueRailProps) => {
   const { issueBasics, issueSections, issueData } = props
 
-  if (!issueSections || !issueData || !issueBasics) {
-    return <>Loading...</>
-  }
-
   const { slug, title } = issueBasics
-
-  const issueArticles = issueData.articles
 
   return (
     <section id="rail">
@@ -230,7 +270,7 @@ const IssueRail = (props: IssueRailProps) => {
           </div>
         </div>
 
-        <IssueArticles issueArticles={issueArticles} issueSections={issueSections} issueBasics={issueBasics} />
+        <IssueArticles issueData={issueData} issueSections={issueSections} issueBasics={issueBasics} />
       </nav>
     </section>
   )

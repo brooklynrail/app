@@ -80,6 +80,13 @@
         }
       }
     }
+    .issue-covers.loading {
+      @include u-bg("gray-10");
+      @include u-radius("sm");
+      width: 140px;
+      height: 200px;
+    }
+
     .issue-links {
       @include u-font("sans", "3xs");
       p {
@@ -193,6 +200,41 @@
         }
         cite {
           padding-right: 6px;
+        }
+      }
+    }
+  }
+  .loading-issue-index {
+    div {
+      h3 {
+        span {
+          @include u-padding(0);
+          @include u-bg("gray-10");
+          @include u-width("full");
+          @include u-display("block");
+          @include u-height("205");
+        }
+      }
+      h4 {
+        span {
+          @include u-margin-y("2px");
+          @include u-padding(0);
+          @include u-padding-y(1);
+          @include u-bg("gray-10");
+          @include u-width("full");
+          @include u-display("block");
+        }
+      }
+      cite {
+        span {
+          @include u-margin-top("05");
+          @include u-margin-y("2px");
+          @include u-padding-y(0);
+          @include u-padding-x(0);
+          @include u-height("105");
+          @include u-bg("gray-10");
+          @include u-width("full");
+          @include u-display("inline-block");
         }
       }
     }
