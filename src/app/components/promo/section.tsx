@@ -15,7 +15,7 @@ export const PromoImage = (props: PromoImageProps) => {
   if (!filename_disk || !image.width || !image.height) {
     return <></>
   }
-  const caption = image.caption ? image.caption : `${stripHtml(title).result}`
+  const caption = image.caption ? `${stripHtml(image.caption).result}` : `${stripHtml(title).result}`
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   return (
     <Image

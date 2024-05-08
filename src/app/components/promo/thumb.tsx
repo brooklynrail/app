@@ -5,10 +5,16 @@ import { DirectusFiles } from "../../../../lib/types"
 import Image from "next/image"
 import Link from "next/link"
 
-const Thumb = (props: DirectusFiles) => {
-  const { filename_disk } = props
+interface ThumbProps {
+  image: DirectusFiles
+  title: string
+}
+const Thumb = (props: ThumbProps) => {
+  const { image, title } = props
+  const { filename_disk } = image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=promo-thumb`
-  return <Image src={src} width={60} height={60} alt={"tktk"} />
+  const alt = image.caption ? `${stripHtml(image.caption).result}` : `${stripHtml(title).result}`
+  return <Image src={src} width={60} height={60} alt={alt} sizes="15vw" />
 }
 
 const PromoThumb = (props: PromoProps) => {
@@ -33,7 +39,7 @@ const PromoThumb = (props: PromoProps) => {
         {showImage && promo_thumb && (
           <div className={`media media-thumb`}>
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <Thumb {...promo_thumb} />
+              <Thumb image={promo_thumb} title={title} />
             </Link>
           </div>
         )}

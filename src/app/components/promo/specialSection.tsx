@@ -6,10 +6,16 @@ import { PromoProps, PromoSectionName } from "./standard"
 import Link from "next/link"
 import { PromoImage } from "./section"
 
-const SlideImage = (props: DirectusFiles) => {
-  const { filename_disk } = props
+interface SlideImageProps {
+  image: DirectusFiles
+  title: string
+}
+const SlideImage = (props: SlideImageProps) => {
+  const { image, title } = props
+  const { filename_disk } = image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
-  return <Image src={src} width={664} height={265} alt={"tktk"} />
+  const alt = image.caption ? `${stripHtml(image.caption).result}` : `${stripHtml(title).result}`
+  return <Image src={src} width={664} height={265} alt={alt} sizes="75vw" />
 }
 
 const PromoSpecialSection = (props: PromoProps) => {
@@ -31,7 +37,7 @@ const PromoSpecialSection = (props: PromoProps) => {
               {showImage && slideshow_image && (
                 <div className={`media`}>
                   <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                    <SlideImage {...slideshow_image} />
+                    <SlideImage image={slideshow_image} title={title} />
                   </Link>
                 </div>
               )}

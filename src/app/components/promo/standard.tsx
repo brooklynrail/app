@@ -32,10 +32,16 @@ export const PromoSectionName = (props: PromoProps) => {
   )
 }
 
-const PromoBanner = (props: DirectusFiles) => {
-  const { filename_disk } = props
+interface PromoBannerProps {
+  image: DirectusFiles
+  title: string
+}
+const PromoBanner = (props: PromoBannerProps) => {
+  const { image, title } = props
+  const { filename_disk } = image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=promo-banner`
-  return <Image src={src} width={316} height={96} alt={"tktk"} />
+  const alt = image.caption ? `${stripHtml(image.caption).result}` : `${stripHtml(title).result}`
+  return <Image src={src} width={316} height={96} alt={alt} sizes="33vw" />
 }
 
 const PromoStandard = (props: PromoProps) => {
@@ -54,7 +60,7 @@ const PromoStandard = (props: PromoProps) => {
         {showImage && promo_banner && (
           <div className={`media media-thumb`}>
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <PromoBanner {...promo_banner} />
+              <PromoBanner image={promo_banner} title={title} />
             </Link>
           </div>
         )}
