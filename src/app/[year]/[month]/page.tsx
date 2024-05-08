@@ -1,6 +1,6 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getIssueData, getIssues, getOGImage, getPermalink } from "../../../../lib/utils"
+import { PageType, getIssueData, getIssues, getOGImage, getPermalink } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
 import { Issues } from "../../../../lib/types"
