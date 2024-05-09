@@ -9,11 +9,14 @@ import BodyCode from "./bodyCode"
 import { Articles, DirectusFiles, Issues, Sections } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import ContributorsBox from "./contributors"
-import { PageType, getIssueData, getPermalink, getSectionsByIssueId, getSpecialIssueData } from "../../../../lib/utils"
+import { PageType, getIssueData, getPermalink, getSpecialIssueData } from "../../../../lib/utils"
 import Link from "next/link"
 import NextPrev from "./nextPrev"
 import { useEffect, useState } from "react"
 import { stripHtml } from "string-strip-html"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
+import { faSquareFacebook, faTwitter } from "@fortawesome/free-brands-svg-icons"
 
 interface FeaturedImageProps {
   image: DirectusFiles
@@ -121,10 +124,10 @@ export const ArticleHead = (props: ArticleHeadProps) => {
 
       <div className="share-tools">
         <Link className="twitter" href={`https://twitter.com/share?url=${permalink}`}>
-          <i className="fab fa-twitter"></i>
+          <FontAwesomeIcon icon={faTwitter} />
         </Link>
         <Link className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
-          <i className="fab fa-facebook-f"></i>
+          <FontAwesomeIcon icon={faSquareFacebook} />
         </Link>
       </div>
     </div>
@@ -251,6 +254,7 @@ const Article = (props: ArticleProps) => {
                     <div>
                       <Link className="btn search" href="/search" title="Search the Rail">
                         <i className="fas fa-search"></i>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} />
                       </Link>
                     </div>
                     <div>
