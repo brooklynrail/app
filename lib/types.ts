@@ -476,7 +476,7 @@ export type Issues = {
   current_issue: any[] | GlobalSettings[]
   date_created: string
   date_updated: string
-  id: number
+  id: string
   month: number
   slug: string
   sort?: number | null
