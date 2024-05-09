@@ -397,6 +397,7 @@ export async function getArticlePages() {
       readItems("articles", {
         fields: [
           "slug",
+          "date_updated",
           {
             sections: [
               {
