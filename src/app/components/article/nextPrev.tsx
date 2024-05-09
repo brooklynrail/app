@@ -1,3 +1,4 @@
+import parse from "html-react-parser"
 import { Articles, Issues } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import { PageType, getPermalink } from "../../../../lib/utils"
@@ -47,7 +48,7 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
       <div className="prev">
         <Link href={prevPermalink}>
           <span>Previous</span>
-          <h3>{prev.title}</h3>
+          <h3>{parse(prev.title)}</h3>
         </Link>
       </div>
     )
@@ -69,7 +70,7 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
         <div className="next">
           <Link href={nextPermalink}>
             <span>Next</span>
-            <h3>{next.title}</h3>
+            <h3>{parse(next.title)}</h3>
           </Link>
         </div>
       )}
