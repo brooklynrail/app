@@ -7,6 +7,7 @@ export enum PageLayout {
   Section = "section",
   SpecialIssue = "special-issue",
   SpecialSection = "special-section",
+  Contributor = "contributor",
 }
 export interface IssuePageProps {
   issueData: Issues

@@ -2,7 +2,7 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton, readFiles, readPreset } from "@directus/sdk"
-import { Ads, Articles, DirectusFiles, Issues, Sections } from "./types"
+import { Ads, Articles, Contributors, DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
 export async function getAllIssues() {
@@ -676,4 +676,90 @@ export async function getRailIssueApi(year: string, month: string) {
   const data = await response.json()
 
   return data
+}
+
+export async function getContributor(slug: string) {
+  const data: Contributors = await directus.request(
+    readItems("contributors", {
+      fields: [
+        "id",
+        "first_name",
+        "last_name",
+        "slug",
+        "bio",
+        "status",
+        "date_updated",
+        "date_created",
+        {
+          articles: [
+            {
+              articles_slug: [
+                "title",
+                "slug",
+                "excerpt",
+                "kicker",
+                {
+                  featured_image: ["id", "caption", "filename_disk", "width", "height"],
+                },
+                {
+                  issues: [
+                    {
+                      issues_id: ["slug", "year", "month", "special_issue"],
+                    },
+                  ],
+                },
+                {
+                  sections: [
+                    {
+                      sections_id: ["slug", "name"],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      filter: { slug: { _eq: slug } },
+    }),
+  )
+  return data[0]
+}
+
+export async function getAllContributors() {
+  let contributorPages: Contributors[] = []
+  let page = 1
+  let isMore = true
+  while (isMore) {
+    const response = await directus.request(
+      readItems("contributors", {
+        fields: [
+          "first_name",
+          "last_name",
+          "slug",
+          {
+            articles: [
+              {
+                articles_slug: ["slug"],
+              },
+            ],
+          },
+        ],
+        sort: ["first_name"],
+        filter: {
+          _and: [
+            {
+              status: { _eq: "published" },
+              articles: { _gt: 0 },
+            },
+          ],
+        },
+        limit: -1,
+      }),
+    )
+    contributorPages = contributorPages.concat(response)
+    isMore = response.meta?.pageCount > page // Check if there are more pages
+    page++
+  }
+  return contributorPages
 }

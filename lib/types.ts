@@ -53,7 +53,7 @@ export type Articles = {
 }
 
 export type ArticlesContributors = {
-  articles_slug?: string | Articles | null
+  articles_slug: Articles
   contributors_id?: string | Contributors | null
   id: number
 }
