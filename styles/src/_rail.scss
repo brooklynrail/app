@@ -62,6 +62,12 @@
       @include u-position("relative");
       @include u-color("red-50v");
     }
+    h3.issue-name.loading {
+      @include u-bg("gray-10");
+      @include u-width(15);
+      @include u-height("205");
+      @include u-display("inline-block");
+    }
   }
 
   .issue-details {

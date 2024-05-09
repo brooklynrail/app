@@ -149,6 +149,20 @@ const LoadingIssueIndex = () => {
   ))
 }
 
+interface IssueTitleProps {
+  issueData?: Issues
+}
+const IssueTitle = ({ issueData }: IssueTitleProps) => {
+  if (!issueData) {
+    return <h3 className="issue-name loading"></h3>
+  }
+  return (
+    <h3 className="issue-name">
+      <Link href={`/${issueData.slug}/`}>{issueData.title}</Link>
+    </h3>
+  )
+}
+
 interface IssueRailProps {
   currentIssueData?: Issues
 }
@@ -195,7 +209,7 @@ const IssueRail = (props: IssueRailProps) => {
       </header>
 
       <header className="issue-header">
-        <h3 className="issue-name">{/* <Link href={`/${slug}/`}>{title}</Link> */}</h3>
+        <IssueTitle issueData={issueData} />
 
         <Link className="archive" href="/archive" title="All Issues Archive">
           <span>All Issues</span> <i className="fas fa-angle-double-right"></i>
