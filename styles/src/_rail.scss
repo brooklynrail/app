@@ -94,6 +94,10 @@
     }
 
     .issue-links {
+      @include u-display("flex");
+      @include u-flex("column");
+      @include u-flex("justify");
+      @include u-height("full");
       @include u-font("sans", "3xs");
       p {
         @include u-margin(0);
@@ -107,8 +111,47 @@
           @include u-text("underline");
         }
       }
-      .related a {
-        @include u-color("red-50v");
+      .related {
+        @include u-text("center");
+        p {
+          @include u-margin-bottom("05");
+        }
+        a {
+          @include u-color("red-50v");
+        }
+        .subscribe {
+          @include u-padding-x("05");
+          @include u-padding-y("05");
+          @include u-font("sans", "sm");
+          // @include u-border("1px", "red-50v", "solid");
+          @include u-radius("md");
+          @include u-bg("red-50v");
+          @include u-display("block");
+          @include u-text("white");
+          @include u-text("uppercase");
+        }
+        .find-us {
+          @include u-text("medium");
+        }
+      }
+
+      .publishers-message {
+        @include u-margin-top(1);
+        a {
+          @include u-display("block");
+          strong {
+            @include u-text("medium");
+          }
+        }
+      }
+      .publishers-message.loading {
+        span {
+          @include u-bg("gray-10");
+          @include u-width("full");
+          @include u-height("105");
+          @include u-display("block");
+          @include u-margin-top("05");
+        }
       }
     }
   }

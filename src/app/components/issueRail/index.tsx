@@ -5,6 +5,8 @@ import { ArticlesIssues, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
 import { useState, useEffect } from "react"
 import { CoverImage } from "./coverImage"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faMapPin } from "@fortawesome/free-solid-svg-icons"
 
 const Bylines = ({ contributors }: any) => {
   return (
@@ -101,10 +103,12 @@ const IssueArticles = (props: IssueArticlesProps) => {
   return (
     <>
       {issueSections.map((section: Sections, i: number) => {
+        if (section.slug === "publishersmessage") {
+          return null // Skip rendering this section
+        }
         // Check if there are articles for this section
         const sectionArticles = articlesBySection[section.id]
         if (!sectionArticles || sectionArticles.length === 0) {
-          return <>NOPE</>
           return null // Skip rendering this section
         }
 
@@ -160,6 +164,28 @@ const IssueTitle = ({ issueData }: IssueTitleProps) => {
     <h3 className="issue-name">
       <Link href={`/${issueData.slug}/`}>{issueData.title}</Link>
     </h3>
+  )
+}
+
+const PublishersMessage = ({ issueData }: IssueTitleProps) => {
+  if (!issueData) {
+    return (
+      <p className="publishers-message loading">
+        <span></span>
+        <span style={{ width: "75%" }}></span>
+        <span style={{ width: "65%" }}></span>
+      </p>
+    )
+  }
+  return (
+    <p className="publishers-message">
+      <Link
+        href="/2024/05/publishersmessage/Dear-Friends-and-Readers-may-24"
+        title="A message from Publisher and Artistic Director, Phong Bui"
+      >
+        <strong>A message from Phong Bui</strong>, Publisher and Artistic Director
+      </Link>
+    </p>
   )
 }
 
@@ -226,21 +252,21 @@ const IssueRail = (props: IssueRailProps) => {
               <div className="issue-links">
                 <div className="related">
                   <p>
-                    <Link href="/where-to-find-us">
-                      <strong>
-                        Find <em>the RAIL</em> in print
-                      </strong>
-                    </Link>
-                  </p>
-                  <p>
                     <Link
                       href="https://shop.brooklynrail.org/products/subscription"
                       title="Subscribe to the Rail in Print"
+                      className="subscribe"
                     >
-                      <strong>Subscribe now</strong>
+                      <strong>Subscribe</strong>
+                    </Link>
+                  </p>
+                  <p className="find-us">
+                    <Link href="/where-to-find-us">
+                      <FontAwesomeIcon icon={faMapPin} /> Get <em>the RAIL</em> in print
                     </Link>
                   </p>
                 </div>
+                <PublishersMessage issueData={issueData} />
               </div>
             </div>
           </div>
