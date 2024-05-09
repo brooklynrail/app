@@ -378,6 +378,7 @@ export async function getSpecialArticlePages() {
             },
           ],
         },
+        limit: -1,
         page: page,
       }),
     )
