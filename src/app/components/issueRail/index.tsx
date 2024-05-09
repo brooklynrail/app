@@ -1,9 +1,10 @@
+"use client"
 import Link from "next/link"
 import Image from "next/image"
-import { usePopup } from "./popupProvider"
 import { ArticlesIssues, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
-import { stripHtml } from "string-strip-html"
+import { useState, useEffect } from "react"
+import { CoverImage } from "./coverImage"
 
 const Bylines = ({ contributors }: any) => {
   return (
@@ -69,12 +70,10 @@ const ArticleList = (props: ArticleListProps) => {
 interface IssueArticlesProps {
   issueData?: Issues
   issueSections?: Array<Sections>
-  issueBasics: Issues
 }
 
 const IssueArticles = (props: IssueArticlesProps) => {
-  const { issueData, issueSections, issueBasics } = props
-  const { year, month } = issueBasics
+  const { issueData, issueSections } = props
 
   if (!issueData || !issueSections) {
     return (
@@ -83,6 +82,8 @@ const IssueArticles = (props: IssueArticlesProps) => {
       </div>
     )
   }
+
+  const { year, month } = issueData
 
   // Create a map where each key is a section ID and each value is an array of articles for that section
   const articlesBySection: Record<string, ArticlesIssues[]> = issueData.articles.reduce(
@@ -148,73 +149,33 @@ const LoadingIssueIndex = () => {
   ))
 }
 
-interface CoverImagesProps {
-  issueData?: Issues
-}
-
-export const CoverImage = (props: CoverImagesProps) => {
-  const { issueData } = props
-
-  const { setShowPopup, setImages } = usePopup()
-  if (
-    !issueData ||
-    !issueData.cover_1 ||
-    !issueData.cover_1.width ||
-    !issueData.cover_1.height ||
-    !issueData.cover_1.filename_disk
-  ) {
-    return <div className={`issue-covers loading`}></div>
-  }
-
-  const covers = [
-    issueData.cover_1,
-    issueData.cover_2,
-    issueData.cover_3,
-    issueData.cover_4,
-    issueData.cover_5,
-    issueData.cover_6,
-  ]
-
-  const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
-    e.preventDefault()
-    setImages(covers)
-    setShowPopup(true)
-  }
-
-  const alt = issueData.cover_1.caption
-    ? stripHtml(issueData.cover_1.caption).result
-    : `${issueData.title} — The Brooklyn Rail`
-
-  return (
-    <div className={`issue-covers`}>
-      <div>
-        <Image
-          priority
-          id={`cover-1`}
-          src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${issueData.cover_1.filename_disk}`}
-          width={issueData.cover_1.width}
-          height={issueData.cover_1.height}
-          style={{
-            width: "100%",
-            height: "auto",
-          }}
-          alt={alt}
-          onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
-        />
-      </div>
-    </div>
-  )
-}
-
 interface IssueRailProps {
-  issueBasics: Issues
-  issueSections?: Array<Sections>
-  issueData?: Issues
+  currentIssueData?: Issues
 }
 const IssueRail = (props: IssueRailProps) => {
-  const { issueBasics, issueSections, issueData } = props
+  const { currentIssueData } = props
+  const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
+  const [issueData, setIssueData] = useState<Issues | undefined>(currentIssueData)
 
-  const { slug, title } = issueBasics
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!issueData) {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/currentIssue`, {
+          next: { revalidate: 10 },
+        })
+        const fetchedIssueData = await res.json()
+        setIssueData(fetchedIssueData)
+      } else {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`, {
+          next: { revalidate: 10 },
+        })
+        const fetchedSectionData = await res.json()
+        setIssueSections(fetchedSectionData)
+      }
+    }
+
+    fetchData().catch((error) => console.error("Failed to fetch data:", error))
+  }, [issueSections, setIssueSections, issueData, setIssueData])
 
   return (
     <section id="rail">
@@ -234,9 +195,7 @@ const IssueRail = (props: IssueRailProps) => {
       </header>
 
       <header className="issue-header">
-        <h3 className="issue-name">
-          <Link href={`/${slug}/`}>{title}</Link>
-        </h3>
+        <h3 className="issue-name">{/* <Link href={`/${slug}/`}>{title}</Link> */}</h3>
 
         <Link className="archive" href="/archive" title="All Issues Archive">
           <span>All Issues</span> <i className="fas fa-angle-double-right"></i>
@@ -247,7 +206,7 @@ const IssueRail = (props: IssueRailProps) => {
         <div className="issue-details">
           <div className="grid-row">
             <div className="grid-col-6">
-              <CoverImage {...{ issueBasics, issueData }} />
+              <CoverImage {...{ issueData }} />
             </div>
             <div className="grid-col-6">
               <div className="issue-links">
@@ -273,7 +232,7 @@ const IssueRail = (props: IssueRailProps) => {
           </div>
         </div>
 
-        <IssueArticles issueData={issueData} issueSections={issueSections} issueBasics={issueBasics} />
+        <IssueArticles issueData={issueData} issueSections={issueSections} />
       </nav>
     </section>
   )
