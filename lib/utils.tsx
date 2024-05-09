@@ -312,27 +312,16 @@ export async function getIssueBasics(props: IssueBasicsProps) {
   return issueData[0]
 }
 
-export async function getSectionsByIssueId(issueId: number) {
+export async function getSectionsByIssueId(issueId: string) {
   const sections: Sections[] = directus.request(
     readItems("sections", {
-      fields: [
-        "id",
-        "name",
-        "slug",
-        {
-          articles: [
-            {
-              articles_slug: ["issues.issues_id.id"],
-            },
-          ],
-        },
-      ],
+      fields: ["id", "name", "slug"],
       filter: {
         _and: [
           {
             articles: {
               articles_slug: {
-                issues: { issues_id: { _eq: issueId } },
+                issues: { issues_id: { id: { _eq: issueId } } },
               },
             },
           },
