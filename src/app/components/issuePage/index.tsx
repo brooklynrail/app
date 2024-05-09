@@ -1,6 +1,5 @@
 "use client"
 import Image from "next/image"
-import { CoverImage } from "../issueRail"
 import CoversPopup from "../issueRail/coversPopup"
 import { IssuePageProps, PageLayout } from "@/app/page"
 import AdsTile from "./adsTile"
@@ -20,6 +19,7 @@ import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
 import { getAds, getSectionsByIssueId } from "../../../../lib/utils"
 import { PopupProvider } from "../issueRail/popupProvider"
+import { CoverImage } from "../issueRail/coverImage"
 
 export interface PromoProps {
   currentArticles: ArticlesIssues[]
