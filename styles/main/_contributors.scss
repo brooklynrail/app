@@ -1,0 +1,7 @@
+.contributors {
+  h3 {
+    @include u-padding-y("05");
+    @include u-font("sans", "sm");
+    @include u-text("normal");
+  }
+}
