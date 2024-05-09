@@ -16,7 +16,6 @@ export default async function Contributor({ params }: { params: ContributorsPara
     <section className="collection">
       {currentArticles.map((articleContributor: ArticlesContributors, i: number) => {
         const article = articleContributor.articles_slug
-        console.log("article", article)
         const issue = article.issues[0].issues_id
         const permalink = getPermalink({
           year: issue.year,
@@ -53,7 +52,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
             <h2>
               {contributorData.first_name} {contributorData.last_name}
             </h2>
-            <div className="bio">{parse(contributorData.bio)}</div>
+            {contributorData.bio && <div className="bio">{parse(contributorData.bio)}</div>}
           </header>
         </div>
       </div>
@@ -70,7 +69,7 @@ interface ContributorsParams {
 
 async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
-  const contributorData = await getContributor(slug)
+  const contributorData: Contributors = await getContributor(slug)
   const permalink = getPermalink({
     slug: contributorData.slug,
     type: PageType.Contributor,
@@ -85,7 +84,6 @@ async function getData({ params }: { params: ContributorsParams }) {
 
 export async function generateStaticParams() {
   const allContributors = await getAllContributors()
-  console.log("All contributors", allContributors.length)
 
   return allContributors.map((contributor: Contributors) => {
     return {
