@@ -474,8 +474,8 @@ export type Issues = {
   cover_5?: DirectusFiles
   cover_6?: DirectusFiles
   current_issue: any[] | GlobalSettings[]
-  date_created?: string | null
-  date_updated?: string | null
+  date_created: string
+  date_updated: string
   id: number
   month: number
   slug: string

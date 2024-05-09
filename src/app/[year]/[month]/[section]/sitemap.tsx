@@ -1,22 +1,26 @@
 import { MetadataRoute } from "next"
-import { getArticlePages } from "../../../../../lib/utils"
-import { Articles } from "../../../../../lib/types"
+import { getIssues, getSectionsByIssueId } from "../../../../../lib/utils"
+import { Issues, Sections } from "../../../../../lib/types"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const articlePages = await getArticlePages()
+  const issues = await getIssues({ special_issue: false })
 
-  const paths = articlePages.map((article: Articles) => {
-    const year = article.issues[0].issues_id.year
-    const month = article.issues[0].issues_id.month
-    const section = article.sections[0].sections_id.slug
+  const paths = issues.map(async (issue: Issues) => {
+    const currentSections = await getSectionsByIssueId(issue.id)
 
-    return {
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}/`,
-      lastModified: article.date_updated,
-      changeFrequency: "weekly" as const,
-      priority: 1,
-    }
+    return currentSections.map((section: Sections) => {
+      const year = issue.year
+      const month = issue.month < 10 ? `0${String(issue.month)}` : String(issue.month)
+      return {
+        url: process.env.NEXT_PUBLIC_BASE_URL
+          ? `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section.slug}/`
+          : `https://brooklynrail.org/${year}/${month}/${section.slug}/`,
+        lastModified: issue.date_updated,
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      }
+    })
   })
 
-  return [...paths]
+  return await Promise.all(paths).then((results) => results.flat())
 }
