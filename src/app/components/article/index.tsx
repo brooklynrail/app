@@ -203,7 +203,12 @@ const Article = (props: ArticleProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const sections = !issueSections ? getSectionsByIssueId(issueBasics.id) : Promise.resolve(issueSections)
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueBasics.id}`, {
+        next: { revalidate: 10 },
+      })
+      const sections = await res.json()
+
+      // TODO: Refactor this to use a single function to fetch issue data from APIs
       let issueDataPromise
       if (issueBasics.special_issue) {
         issueDataPromise = !issueData ? getSpecialIssueData({ slug: issueBasics.slug }) : Promise.resolve(issueData)
@@ -233,7 +238,7 @@ const Article = (props: ArticleProps) => {
           <div className="grid-container">
             <div className="grid-row grid-gap-3">
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <IssueRail {...props} issueData={issueData} issueSections={issueSections} />
+                <IssueRail currentIssueData={issueData} />
               </div>
 
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
