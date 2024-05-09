@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next"
-import { getArticlePages } from "../../../../../../lib/utils"
-import { Articles } from "../../../../../../lib/types"
+import { getArticlePages } from "../../lib/utils"
+import { Articles } from "../../lib/types"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articlePages = await getArticlePages()
