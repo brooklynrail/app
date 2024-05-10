@@ -5,8 +5,8 @@ import PromoSection from "@/app/components/promo/section"
 
 export default async function Contributor({ params }: { params: ContributorsParams }) {
   const data = await getData({ params })
-  const contributorData = data.props.contributorData
-  const currentArticles = contributorData.articles
+  const contributorData = data.contributorData
+  const currentArticles = data.articles
 
   if (!currentArticles) {
     return <></>
@@ -44,13 +44,16 @@ export default async function Contributor({ params }: { params: ContributorsPara
     </section>
   )
 
+  const first_name = contributorData.first_name ? parse(contributorData.first_name) : null
+  const last_name = contributorData.last_name ? parse(contributorData.last_name) : null
+
   return (
     <>
       <div className="grid-row grid-gap-4">
         <div className="grid-col-12">
           <header className="section">
             <h2>
-              {contributorData.first_name} {contributorData.last_name}
+              {first_name} {last_name}
             </h2>
             {contributorData.bio && <div className="bio">{parse(contributorData.bio)}</div>}
           </header>
@@ -69,16 +72,29 @@ interface ContributorsParams {
 
 async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
-  const contributorData: Contributors = await getContributor(slug)
+
+  // Get all contributors
+  // NOTE: There are multiple contributors with the same slug
+  // This returns all contributors with the same slug, but their specific name and bio information may be different
+  const allContributors: Contributors[] = await getContributor(slug)
+
+  // This gets the contributor with the greatest `old_id`, which assumes that this is the most recent version of this person's name and bio
+  const contributorData = allContributors.reduce((prev, current) => {
+    return prev.old_id > current.old_id ? prev : current
+  })
+
+  // Get all articles for this contributor
+  // This is an array of all articles for all contributors with the same slug
+  const allArticles = allContributors.flatMap((contributor) => contributor.articles)
+
   const permalink = getPermalink({
     slug: contributorData.slug,
     type: PageType.Contributor,
   })
   return {
-    props: {
-      contributorData,
-      permalink,
-    },
+    contributorData,
+    articles: allArticles,
+    permalink,
   }
 }
 
