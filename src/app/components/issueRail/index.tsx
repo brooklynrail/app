@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { ArticlesIssues, Issues, Sections } from "../../../../lib/types"
+import { Articles, ArticlesIssues, ArticlesSections, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
 import { useState, useEffect } from "react"
 import { CoverImage } from "./coverImage"
@@ -90,6 +90,23 @@ const IssueArticles = (props: IssueArticlesProps) => {
   // Create a map where each key is a section ID and each value is an array of articles for that section
   const articlesBySection: Record<string, ArticlesIssues[]> = issueData.articles.reduce(
     (acc: any, article: ArticlesIssues) => {
+      // get the criticspage_id
+      let criticspage: number = 0
+      let criticspageArticles: ArticlesSections[] = []
+      if (article.articles_slug.sections[0].sections_id.slug === "criticspage") {
+        criticspage = article.articles_slug.sections[0].sections_id.id
+        criticspageArticles = article.articles_slug.sections[0].sections_id.articles
+      }
+      // if the section for this article is editorsmessage,
+      // change the section to criticspage
+      if (article.articles_slug.sections[0].sections_id.slug === "editorsmessage") {
+        article.articles_slug.sections[0].sections_id.id = criticspage
+        article.articles_slug.sections[0].sections_id.slug = "criticspage"
+        const articles = article.articles_slug.sections[0].sections_id.articles
+        // append articles to the criticspageArticles array
+        criticspageArticles.concat(articles)
+      }
+
       const sectionId = article.articles_slug.sections[0].sections_id.id
       if (!acc[sectionId]) {
         acc[sectionId] = []
@@ -100,12 +117,15 @@ const IssueArticles = (props: IssueArticlesProps) => {
     {},
   )
 
+  console.log("articlesBySection", articlesBySection)
+
   return (
     <>
       {issueSections.map((section: Sections, i: number) => {
         if (section.slug === "publishersmessage") {
           return null // Skip rendering this section
         }
+
         // Check if there are articles for this section
         const sectionArticles = articlesBySection[section.id]
         if (!sectionArticles || sectionArticles.length === 0) {
