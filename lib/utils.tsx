@@ -668,7 +668,7 @@ export async function getRailIssueApi(year: string, month: string) {
 }
 
 export async function getContributor(slug: string) {
-  const data: Contributors = await directus.request(
+  const data: Contributors[] = await directus.request(
     readItems("contributors", {
       fields: [
         "id",
@@ -677,12 +677,14 @@ export async function getContributor(slug: string) {
         "slug",
         "bio",
         "status",
+        "old_id",
         "date_updated",
         "date_created",
         {
           articles: [
             {
               articles_slug: [
+                "status",
                 "title",
                 "slug",
                 "excerpt",
@@ -709,10 +711,14 @@ export async function getContributor(slug: string) {
           ],
         },
       ],
-      filter: { slug: { _eq: slug } },
+      filter: {
+        slug: { _eq: slug },
+        articles: { _gt: 0 }, // only get contributors with articles
+        status: { _eq: "published" },
+      },
     }),
   )
-  return data[0]
+  return data
 }
 
 export async function getAllContributors() {
