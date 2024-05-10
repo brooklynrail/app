@@ -107,6 +107,9 @@
     @include u-text("light");
     @include u-float("right");
     clear: both;
+    &:first-child {
+      @include u-padding-top(2, important);
+    }
 
     @include at-media("tablet") {
       @include u-font("sans", "sm");
