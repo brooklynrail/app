@@ -4,4 +4,7 @@
     @include u-font("sans", "sm");
     @include u-text("normal");
   }
+  div {
+    @include u-margin-top(4);
+  }
 }

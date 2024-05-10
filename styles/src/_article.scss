@@ -35,7 +35,7 @@ article.article {
       }
       p {
         @include u-margin-top(0);
-        @include u-measure(1);
+        @include u-measure(5);
         @include u-line-height("sans", 5);
       }
       a {
