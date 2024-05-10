@@ -81,16 +81,13 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
 export default NextPrev
 
 const LoadingNextPrev = () => {
-  const randomWidth = Math.floor(Math.random() * 25) + 50 // Generate a random width between 60 and 85
-  const spanStyle = { width: `${randomWidth}%` }
-
   return (
     <nav className="next-prev loading">
       <div className="prev">
         <div>
           <span></span>
           <h3>
-            <span style={spanStyle}></span>
+            <span style={{ width: `255px` }}></span>
           </h3>
         </div>
       </div>
@@ -98,7 +95,7 @@ const LoadingNextPrev = () => {
         <div>
           <span></span>
           <h3>
-            <span style={spanStyle}></span>
+            <span style={{ width: `255px` }}></span>
           </h3>
         </div>
       </div>

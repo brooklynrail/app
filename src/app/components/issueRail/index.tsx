@@ -129,23 +129,23 @@ const LoadingIssueIndex = () => {
   return [...Array(12)].map((_, index) => (
     <div key={index}>
       <h3>
-        <span style={{ width: `${Math.floor(Math.random() * 21) + 20}%` }}></span>
+        <span style={{ width: `100px` }}></span>
       </h3>
       <ul>
         <li>
           <h4>
-            <span style={{ width: `${Math.floor(Math.random() * 51) + 35}%` }}></span>
+            <span style={{ width: `200px` }}></span>
           </h4>
           <cite>
-            <span style={{ width: `${Math.floor(Math.random() * 21) + 15}%` }}></span>
+            <span style={{ width: `80px` }}></span>
           </cite>
         </li>
         <li>
           <h4>
-            <span style={{ width: `${Math.floor(Math.random() * 71) + 35}%` }}></span>
+            <span style={{ width: `235px` }}></span>
           </h4>
           <cite>
-            <span style={{ width: `${Math.floor(Math.random() * 31) + 35}%` }}></span>
+            <span style={{ width: `70px` }}></span>
           </cite>
         </li>
       </ul>
