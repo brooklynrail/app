@@ -41,16 +41,15 @@ export const metadata = {
       "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
     url: "https://brooklynrail.org",
     type: "website",
+    image: "https://brooklynrail.org/material/img/brooklynrail-card-3.png",
   },
   twitter: {
     card: "summary_large_image",
     title: "The Brooklyn Rail",
     description:
       "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
-    siteId: "1467726470533754880",
     creator: "@thebrooklynrail",
-    creatorId: "1467726470533754880",
-    images: ["https://brooklynrail.org/material/img/brooklynrail-card-3.png"], // Must be an absolute URL
+    images: ["https://brooklynrail.org/material/img/brooklynrail-card-3.png"],
   },
 }
 
