@@ -116,12 +116,12 @@ export const ArticleHead = (props: ArticleHeadProps) => {
     // if there is only one author, don't use a separator
 
     const author = (
-      <>
-        <Link itemProp="author" href={contribPermalink} key={i}>
+      <span key={i}>
+        <Link itemProp="author" href={contribPermalink}>
           {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
         </Link>
         {separator}
-      </>
+      </span>
     )
     return author
   })

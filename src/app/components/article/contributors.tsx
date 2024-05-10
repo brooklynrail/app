@@ -11,13 +11,13 @@ const ContributorsBox = (props: ContributorsProps) => {
   const title = contributors.length > 1 ? "Contributors" : "Contributor"
   const authors = contributors.map((contributor: any, i: number) => {
     return (
-      <div key={i}>
+      <div className="contributor" key={i}>
         <h4>
           <Link href={`/contributor/${contributor.contributors_id.slug}`}>
             {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
           </Link>
         </h4>
-        <p dangerouslySetInnerHTML={{ __html: contributor.contributors_id.bio }} />
+        <div dangerouslySetInnerHTML={{ __html: contributor.contributors_id.bio }} />
       </div>
     )
   })
