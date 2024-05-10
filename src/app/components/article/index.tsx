@@ -25,7 +25,7 @@ interface FeaturedImageProps {
 const FeaturedImage = (props: FeaturedImageProps) => {
   const { filename_disk, caption } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=featured-image`
-  const desc = caption ? <figcaption>{caption}</figcaption> : null
+  const desc = caption ? <figcaption>{parse(caption)}</figcaption> : null
   const alt = caption ? caption : `${stripHtml(props.title).result}`
 
   return (
