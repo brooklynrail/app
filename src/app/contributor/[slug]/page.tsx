@@ -2,6 +2,41 @@ import parse from "html-react-parser"
 import { ArticlesContributors, Contributors } from "../../../../lib/types"
 import { getAllContributors, getContributor, getPermalink, PageType } from "../../../../lib/utils"
 import PromoSection from "@/app/components/promo/section"
+import { Metadata } from "next"
+import { stripHtml } from "string-strip-html"
+
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const data = await getData({ params })
+
+  if (!data.contributorData || !data.permalink) {
+    return {}
+  }
+
+  const { first_name, last_name, bio, date_updated, date_created } = data.contributorData
+  const ogtitle = `${first_name && stripHtml(first_name).result} ${last_name && stripHtml(last_name).result}`
+  const ogdescription = `${bio && stripHtml(bio).result}`
+
+  return {
+    title: `${ogtitle} | The Brooklyn Rail`,
+    description: ogdescription,
+    creator: `${first_name && stripHtml(first_name).result} ${last_name && stripHtml(last_name).result}`,
+    authors: [
+      {
+        name: `${first_name && stripHtml(first_name).result} ${last_name && stripHtml(last_name).result}`,
+        url: data.permalink,
+      },
+    ],
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: `${ogtitle} | The Brooklyn Rail`,
+      description: ogdescription,
+      url: data.permalink,
+      type: `website`,
+    },
+  }
+}
 
 export default async function Contributor({ params }: { params: ContributorsParams }) {
   const data = await getData({ params })
