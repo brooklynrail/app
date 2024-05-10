@@ -87,7 +87,7 @@ export type Contributors = {
   hidden?: boolean | null
   id: string
   last_name?: string | null
-  old_id?: number | null
+  old_id: number
   slug: string
   sort?: number | null
   status?: string | null
