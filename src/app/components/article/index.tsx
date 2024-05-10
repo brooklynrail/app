@@ -6,7 +6,7 @@ import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
 import BodyText from "./bodyText"
 import BodyCode from "./bodyCode"
-import { Articles, DirectusFiles, Issues, Sections } from "../../../../lib/types"
+import { Articles, ArticlesContributors, Contributors, DirectusFiles, Issues, Sections } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import ContributorsBox from "./contributors"
 import { PageType, getIssueData, getPermalink, getSpecialIssueData } from "../../../../lib/utils"
@@ -98,13 +98,32 @@ export const ArticleHead = (props: ArticleHeadProps) => {
   const { kicker, title, deck, featured_image, header_type, contributors, hide_bylines } = articleData
 
   const kickerProps = { kicker, currentIssue, currentSection }
-  const authors = contributors.map((contributor: any, i: number) => {
+
+  const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
     const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.contributors_id.slug })
-    return (
-      <Link itemProp="author" href={contribPermalink} key={i}>
-        {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
-      </Link>
+
+    let separator
+    // if there are two authors, use " and " as the separator
+    if (contributors.length === 2 && i === 0) {
+      separator = " and "
+      // if there are more than two authors, and this is the last iteration, use ", and "
+    } else if (contributors.length > 2 && i == contributors.length - 2) {
+      separator = ", and "
+      // if there are more than two authors, use ", " as the separator
+    } else if (i < contributors.length - 1) {
+      separator = ", "
+    }
+    // if there is only one author, don't use a separator
+
+    const author = (
+      <>
+        <Link itemProp="author" href={contribPermalink} key={i}>
+          {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
+        </Link>
+        {separator}
+      </>
     )
+    return author
   })
 
   const articleMeta = (
@@ -114,9 +133,7 @@ export const ArticleHead = (props: ArticleHeadProps) => {
       {!hide_bylines && (
         <cite className="byline">
           <span>By </span>
-          <Link itemProp="author" href="#">
-            {authors}
-          </Link>
+          {authors}
         </cite>
       )}
 

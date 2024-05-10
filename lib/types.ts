@@ -23,7 +23,7 @@ export type Articles = {
   body_code?: string | null
   body_text?: string | null
   body_type?: string | null
-  contributors: Contributors[] | ArticlesContributors[]
+  contributors: ArticlesContributors[]
   date_created: string
   date_updated: string
   deck?: string | null
@@ -54,7 +54,7 @@ export type Articles = {
 
 export type ArticlesContributors = {
   articles_slug: Articles
-  contributors_id?: string | Contributors | null
+  contributors_id: Contributors
   id: number
 }
 
