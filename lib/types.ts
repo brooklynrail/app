@@ -185,7 +185,7 @@ export type DirectusFiles = {
   focal_point_x?: number | null
   focal_point_y?: number | null
   folder?: string | DirectusFolders | null
-  height?: number | null
+  height: number
   id: string
   issues: any[] | Issues[]
   location?: string | null
@@ -200,7 +200,7 @@ export type DirectusFiles = {
   type?: string | null
   uploaded_by?: string | DirectusUsers | null
   uploaded_on: string
-  width?: number | null
+  width: number
 }
 
 export type DirectusFlows = {
