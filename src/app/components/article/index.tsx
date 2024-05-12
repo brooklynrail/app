@@ -32,19 +32,21 @@ const Article = (props: ArticleProps) => {
 
       // TODO: Refactor this to use a single function to fetch issue data from APIs
       let issueDataPromise
-      if (issueBasics.special_issue) {
-        issueDataPromise = !issueData ? getSpecialIssueData({ slug: issueBasics.slug }) : Promise.resolve(issueData)
-      } else {
-        issueDataPromise = !issueData
-          ? getIssueData({ year: issueBasics.year, month: issueBasics.month })
-          : Promise.resolve(issueData)
-      }
-      // Fetch all the data in parallel
-      const [fetchedSections, fetchedIssueData] = await Promise.all([sections, issueDataPromise])
+      if (!issueData) {
+        if (issueBasics.special_issue) {
+          issueDataPromise = !issueData ? getSpecialIssueData({ slug: issueBasics.slug }) : Promise.resolve(issueData)
+        } else {
+          issueDataPromise = !issueData
+            ? getIssueData({ year: issueBasics.year, month: issueBasics.month })
+            : Promise.resolve(issueData)
+        }
+        // Fetch all the data in parallel
+        const [fetchedSections, fetchedIssueData] = await Promise.all([sections, issueDataPromise])
 
-      // Update the state with the fetched data as it becomes available
-      setIssueSections(fetchedSections)
-      setIssueData(fetchedIssueData)
+        // Update the state with the fetched data as it becomes available
+        setIssueSections(fetchedSections)
+        setIssueData(fetchedIssueData)
+      }
     }
 
     // Call the fetchData function and handle any errors
@@ -60,7 +62,7 @@ const Article = (props: ArticleProps) => {
           <div className="grid-container">
             <div className="grid-row grid-gap-3">
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <IssueRail currentIssueData={issueData} />
+                <IssueRail currentIssueBasics={issueBasics} />
               </div>
 
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">

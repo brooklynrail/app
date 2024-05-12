@@ -25,7 +25,6 @@ const CurrentSections = (props: CurrentSectionsProps) => {
 
   const sections = currentSections ? (
     currentSections.map((section: Sections, i: number) => {
-      console.log("special_issue", special_issue)
       const sectionPermalink = special_issue
         ? getPermalink({
             issueSlug: slug,

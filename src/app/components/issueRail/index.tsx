@@ -208,32 +208,47 @@ const PublishersMessage = ({ issueData }: IssueTitleProps) => {
 }
 
 interface IssueRailProps {
-  currentIssueData?: Issues
+  currentIssueBasics?: Issues
 }
 const IssueRail = (props: IssueRailProps) => {
-  const { currentIssueData } = props
+  const { currentIssueBasics } = props
   const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
-  const [issueData, setIssueData] = useState<Issues | undefined>(currentIssueData)
+  const [issueData, setIssueData] = useState<Issues | undefined>(currentIssueBasics)
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!issueData) {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/currentIssue`, {
+      // if currentIssueBasics is not defined, fetch the current issue
+      if (!currentIssueBasics) {
+        const issueResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/currentIssue`, {
           next: { revalidate: 10 },
         })
-        const fetchedIssueData = await res.json()
+        const fetchedIssueData = await issueResponse.json()
         setIssueData(fetchedIssueData)
       } else {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`, {
+        const issueAPI = currentIssueBasics.special_issue
+          ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/special/${currentIssueBasics.slug}`
+          : `${process.env.NEXT_PUBLIC_BASE_URL}/api/${currentIssueBasics.year}/${currentIssueBasics.month}`
+        const issueResponse = await fetch(issueAPI, {
           next: { revalidate: 10 },
         })
-        const fetchedSectionData = await res.json()
+        const fetchedIssueData = await issueResponse.json()
+        setIssueData(fetchedIssueData)
+      }
+
+      if (issueData) {
+        const sectionsResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
+          {
+            next: { revalidate: 10 },
+          },
+        )
+        const fetchedSectionData = await sectionsResponse.json()
         setIssueSections(fetchedSectionData)
       }
     }
 
     fetchData().catch((error) => console.error("Failed to fetch data:", error))
-  }, [issueSections, setIssueSections, issueData, setIssueData])
+  }, [issueSections, setIssueSections, issueData, setIssueData, currentIssueBasics])
 
   return (
     <section id="rail">
