@@ -62,7 +62,7 @@ const LoadingSections = () => {
     <>
       {Array.from({ length: 12 }).map((_, i) => (
         <li key={i} className="loading">
-          <span style={{ width: `${Math.floor(Math.random() * 61) + 35}%` }}></span>
+          <span style={{ width: 111 }}></span>
         </li>
       ))}
     </>
