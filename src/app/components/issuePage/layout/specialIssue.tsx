@@ -37,12 +37,14 @@ const SpecialIssue = (props: LayoutProps) => {
 
   return (
     <div className="grid-col-8">
-      <header className="section">
-        <div className="description">
-          {issueData.summary && <p className="blurb">{parse(issueData.summary)}</p>}
-          {issueData.credits && <p className="credits">{parse(issueData.credits)}</p>}
-        </div>
-      </header>
+      {(issueData.summary || issueData.credits) && (
+        <header className="section">
+          <div className="description">
+            {issueData.summary && <div className="blurb">{parse(issueData.summary)}</div>}
+            {issueData.credits && <div className="credits">{parse(issueData.credits)}</div>}
+          </div>
+        </header>
+      )}
       <div className="grid-row grid-gap-4">
         <div className="grid-col-12">
           <div className="collection">{allArticles}</div>
