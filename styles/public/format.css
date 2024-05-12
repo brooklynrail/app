@@ -1688,7 +1688,7 @@ input.gsc-search-button {
   color: #333333;
 }
 /* Promotion url */
-.cse .gs-promotion.gs-result ..gs-visibleUrl,
+.cse .gs-promotion.gs-result .gs-visibleUrl,
 .gs-promotion.gs-result .gs-visibleUrl {
   color: #00cc00;
 }
