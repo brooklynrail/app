@@ -1,11 +1,12 @@
 "use client"
 import ContributorsBox from "../article/contributors"
-import { ArticleBody, ArticleHead } from "../article"
 import { ArticlePreviewProps } from "@/app/preview/[slug]/page"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import Password from "./password"
 import PreviewInfo from "./previewInfo"
+import ArticleHead from "../article/articleHead"
+import ArticleBody from "../article/articleBody"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
