@@ -480,7 +480,7 @@ export type Issues = {
   month: number
   slug: string
   sort?: number | null
-  special_issue?: boolean | null
+  special_issue: boolean
   old_id: number
   status: string
   title: string
@@ -489,7 +489,6 @@ export type Issues = {
   year: number
   issue_number: number
   summary: string
-  description: string
   credits: string
 }
 
