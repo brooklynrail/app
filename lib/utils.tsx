@@ -621,6 +621,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}/`
     case PageType.SpecialIssue:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/`
+    case PageType.SpecialIssueSection:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/`
     case PageType.SpecialIssueArticle:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/${slug}/`
     default:

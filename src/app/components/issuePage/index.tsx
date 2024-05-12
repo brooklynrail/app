@@ -96,7 +96,7 @@ const IssuePage = (props: IssuePageProps) => {
                         <CoverImage {...{ issueData }} />
                       </div>
 
-                      <CurrentSections {...{ currentSections, year, month }} />
+                      <CurrentSections {...{ currentSections, issueData }} />
 
                       <Link className="search_btn" href="/search" title="Search All Issues">
                         <span>Search</span> <i className="fas fa-search"></i>
