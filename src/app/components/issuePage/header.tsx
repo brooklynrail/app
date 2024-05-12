@@ -1,7 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
 
-const Header = () => {
+const Header = ({ special_issue }: { special_issue: boolean }) => {
+  const src = special_issue ? "/images/brooklynrail-logo-ex-issue-194.svg" : "/images/brooklynrail-logo-ex.svg"
   return (
     <div id="header_section">
       <div className="logo">
@@ -11,14 +12,7 @@ const Header = () => {
           <h3>FEB 2024</h3>
         </div>
         <Link href="/">
-          <Image
-            priority
-            src="/images/brooklynrail-logo-ex.svg"
-            height="68"
-            width="396"
-            alt="The Brooklyn Rail"
-            title="Brooklyn Rail Home"
-          />
+          <Image priority src={src} height="68" width="396" alt="The Brooklyn Rail" title="Brooklyn Rail Home" />
         </Link>
       </div>
 
