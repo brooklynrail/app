@@ -77,6 +77,9 @@ export async function getIssueData(props: IssueDataProps) {
         "issue_number",
         "old_id",
         "special_issue",
+        "summary",
+        "description",
+        "credits",
         {
           cover_1: ["caption", "filename_disk", "width", "height", "type"],
         },
@@ -184,6 +187,9 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
         "issue_number",
         "old_id",
         "special_issue",
+        "summary",
+        "description",
+        "credits",
         {
           cover_1: ["caption", "filename_disk", "width", "height", "type"],
         },

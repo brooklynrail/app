@@ -488,6 +488,9 @@ export type Issues = {
   user_updated?: string | DirectusUsers | null
   year: number
   issue_number: number
+  summary: string
+  description: string
+  credits: string
 }
 
 export type Pages = {

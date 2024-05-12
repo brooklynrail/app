@@ -1,3 +1,4 @@
+import parse from "html-react-parser"
 import { ArticlesIssues } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import PromoSpecialSection from "../../promo/specialSection"
@@ -34,7 +35,21 @@ const SpecialIssue = (props: LayoutProps) => {
     )
   })
 
-  return <div className="grid-col-8">{allArticles}</div>
+  return (
+    <div className="grid-col-8">
+      <header className="section">
+        <div className="description">
+          {issueData.summary && <p className="blurb">{parse(issueData.summary)}</p>}
+          {issueData.credits && <p className="credits">{parse(issueData.credits)}</p>}
+        </div>
+      </header>
+      <div className="grid-row grid-gap-4">
+        <div className="grid-col-12">
+          <div className="collection">{allArticles}</div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default SpecialIssue
