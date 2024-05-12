@@ -40,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/`,
       lastModified: issue.date_updated,
       changeFrequency: "monthly" as const,
-      priority: 0.5,
+      priority: 0.7,
     }
   })
 
@@ -51,7 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/`,
       lastModified: issue.date_updated,
       changeFrequency: "monthly" as const,
-      priority: 0.5,
+      priority: 0.7,
     }
   })
 
