@@ -1,4 +1,4 @@
-import "../../../styles/article/styles.scss"
+import "../../../../styles/article/styles.scss"
 import IssueRail from "../../components/issueRail"
 import Link from "next/link"
 import Footer from "../../components/footer"
