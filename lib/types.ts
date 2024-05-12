@@ -80,8 +80,8 @@ export type ArticlesSections = {
 export type Contributors = {
   articles: ArticlesContributors[]
   bio?: string | null
-  date_created?: string | null
-  date_updated?: string | null
+  date_created: string
+  date_updated: string
   email?: string | null
   first_name?: string | null
   hidden?: boolean | null
