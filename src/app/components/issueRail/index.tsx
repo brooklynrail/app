@@ -1,40 +1,13 @@
 "use client"
 import Link from "next/link"
-import Image from "next/image"
 import { ArticlesIssues, ArticlesSections, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
 import { useState, useEffect } from "react"
 import { CoverImage } from "./coverImage"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapPin } from "@fortawesome/free-solid-svg-icons"
-
-export const Bylines = ({ contributors }: any) => {
-  return (
-    <cite>
-      <span>By </span>
-      {contributors.map((contributor: any, i: number) => {
-        const isLast = i === contributors.length - 1
-        const isFirst = i === 0
-        let separator = ", "
-
-        if (contributors.length > 2 && isLast) {
-          separator = ", and "
-        } else if (contributors.length === 2 && isLast) {
-          separator = " and "
-        } else if (isLast) {
-          separator = ""
-        }
-
-        return (
-          <span key={i}>
-            {!isFirst && separator}
-            {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
-          </span>
-        )
-      })}
-    </cite>
-  )
-}
+import IssueRailHeader from "./header"
+import Bylines from "./bylines"
 
 interface ArticleListProps {
   sectionArticles: Array<ArticlesIssues>
@@ -250,25 +223,22 @@ const IssueRail = (props: IssueRailProps) => {
     fetchData().catch((error) => console.error("Failed to fetch data:", error))
   }, [issueSections, setIssueSections, issueData, setIssueData, currentIssueBasics])
 
+  let logosrc = "/images/brooklynrail-logo.svg"
+  if (currentIssueBasics && currentIssueBasics.special_issue) {
+    logosrc = `/images/brooklynrail-logo-issue-${currentIssueBasics.issue_number}.svg`
+  }
+
+  // const src =
+  //   currentIssueBasics && currentIssueBasics.special_issue
+  //     ? `/images/brooklynrail-logo-issue-${currentIssueBasics.issue_number}.svg`
+  //     : "/images/brooklynrail-logo.svg"
+
   return (
     <section id="rail">
-      <header id="rail-header">
-        <h2>
-          <Link href="/">
-            <Image
-              priority
-              src="/images/brooklynrail-logo.svg"
-              alt="The Brooklyn Rail"
-              title="Brooklyn Rail Home"
-              width={296}
-              height={38.48}
-            />
-          </Link>
-        </h2>
-      </header>
+      <IssueRailHeader logosrc={logosrc} />
 
       <header className="issue-header">
-        <IssueTitle issueData={issueData} />
+        <IssueTitle issueData={currentIssueBasics} />
 
         <Link className="archive" href="/archive" title="All Issues Archive">
           <span>All Issues</span> <i className="fas fa-angle-double-right"></i>

@@ -2,7 +2,7 @@ import parse from "html-react-parser"
 import { Articles } from "../../../../lib/types"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
-import { Bylines } from "../issueRail"
+import Bylines from "../issueRail/bylines"
 
 interface PromoSlimProps {
   article: Articles
