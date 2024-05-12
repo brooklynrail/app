@@ -1,14 +1,14 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { Articles, ArticlesIssues, ArticlesSections, Issues, Sections } from "../../../../lib/types"
+import { ArticlesIssues, ArticlesSections, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
 import { useState, useEffect } from "react"
 import { CoverImage } from "./coverImage"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapPin } from "@fortawesome/free-solid-svg-icons"
 
-const Bylines = ({ contributors }: any) => {
+export const Bylines = ({ contributors }: any) => {
   return (
     <cite>
       <span>By </span>
@@ -116,8 +116,6 @@ const IssueArticles = (props: IssueArticlesProps) => {
     },
     {},
   )
-
-  console.log("articlesBySection", articlesBySection)
 
   return (
     <>

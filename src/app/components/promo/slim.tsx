@@ -2,6 +2,7 @@ import parse from "html-react-parser"
 import { Articles } from "../../../../lib/types"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
+import { Bylines } from "../issueRail"
 
 interface PromoSlimProps {
   article: Articles
@@ -13,12 +14,6 @@ interface PromoSlimProps {
 const PromoSlim = (props: PromoSlimProps) => {
   const { article, i = 0, permalink, order } = props
   const { title, contributors } = article
-
-  const names = contributors.map((contributor: any, i: number) => {
-    const { first_name, last_name } = contributor.contributors_id
-    const name = `${first_name} ${last_name}`
-    return <span key={`first_name-last_name-${i}`}>{name}</span>
-  })
 
   const orderNum = (
     <span className="sort">
@@ -36,7 +31,9 @@ const PromoSlim = (props: PromoSlimProps) => {
           {parse(title)}
         </Link>
       </h4>
-      <cite className="byline">– By {names}</cite>
+      <cite className="byline">
+        {` –`} <Bylines contributors={contributors} />
+      </cite>
     </li>
   )
 }
