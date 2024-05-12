@@ -78,7 +78,11 @@ const IssuePage = (props: IssuePageProps) => {
               <div className="grid-container grid-container-desktop">
                 <div className="grid-row">
                   <div className="grid-col-12">
-                    <Header special_issue={issueData.special_issue} />
+                    <Header
+                      special_issue={issueData.special_issue}
+                      issue_number={issueData.issue_number}
+                      title={issueData.title}
+                    />
                   </div>
                 </div>
               </div>

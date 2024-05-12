@@ -1,18 +1,27 @@
 import Link from "next/link"
 import Image from "next/image"
 
-const Header = ({ special_issue }: { special_issue: boolean }) => {
-  const src = special_issue ? "/images/brooklynrail-logo-ex-issue-194.svg" : "/images/brooklynrail-logo-ex.svg"
+interface HeaderProps {
+  special_issue: boolean
+  issue_number: number
+  title: string
+}
+
+const Header = (props: HeaderProps) => {
+  const { special_issue, issue_number, title } = props
+  const src = special_issue
+    ? `/images/brooklynrail-logo-ex-issue-${issue_number}.svg`
+    : "/images/brooklynrail-logo-ex.svg"
   return (
     <div id="header_section">
       <div className="logo">
         <div id="textflag">
           <h1>The Brooklyn Rail </h1>
           <h2>Critical Perspectives on Art, Politics and Culture</h2>
-          <h3>FEB 2024</h3>
+          <h3>{title}</h3>
         </div>
         <Link href="/">
-          <Image priority src={src} height="68" width="396" alt="The Brooklyn Rail" title="Brooklyn Rail Home" />
+          <Image priority src={src} height="68" width="396" alt="The Brooklyn Rail" title="Brooklyn Rail Homepage" />
         </Link>
       </div>
 
