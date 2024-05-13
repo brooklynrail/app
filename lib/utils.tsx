@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint max-lines: 0 */
 import directus from "./directus"
-import { readItem, readItems, readSingleton, readFiles, readPreset } from "@directus/sdk"
+import { readItem, readItems, readSingleton, readFiles, readPreset, aggregate } from "@directus/sdk"
 import { Ads, Articles, Contributors, DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
@@ -440,6 +440,7 @@ export async function getArticlePages() {
           ],
         },
         limit: -1,
+        page: page,
       }),
     )
     articlePages = articlePages.concat(response)
@@ -777,6 +778,7 @@ export async function getAllContributors() {
           ],
         },
         limit: -1,
+        page: page,
       }),
     )
     contributorPages = contributorPages.concat(response)
