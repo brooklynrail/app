@@ -1,6 +1,12 @@
 import parse from "html-react-parser"
 import { ArticlesContributors, Contributors, Issues } from "../../../../lib/types"
-import { getAllContributors, getContributor, getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
+import {
+  getAllContributors,
+  getContributor,
+  getCurrentIssueBasics,
+  getPermalink,
+  PageType,
+} from "../../../../lib/utils"
 import PromoSection from "@/app/components/promo/section"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
@@ -90,7 +96,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
         <div className="grid-container">
           <div className="grid-row grid-gap-3">
             <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-              {/* <IssueRail currentIssueData={data.currentIssueData} /> */}
+              <IssueRail currentIssueBasics={data.currentIssueBasics} />
             </div>
 
             <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
@@ -143,7 +149,7 @@ interface ContributorsParams {
 async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
 
-  // const currentIssueData: Issues = await getCurrentIssueData()
+  const currentIssueBasics: Issues = await getCurrentIssueBasics()
 
   // Get all contributors
   // NOTE: There are multiple contributors with the same slug
@@ -164,7 +170,7 @@ async function getData({ params }: { params: ContributorsParams }) {
     type: PageType.Contributor,
   })
   return {
-    // currentIssueData,
+    currentIssueBasics,
     contributorData,
     articles: allArticles,
     permalink,

@@ -181,26 +181,17 @@ const PublishersMessage = ({ issueData }: IssueTitleProps) => {
 }
 
 interface IssueRailProps {
-  currentIssueBasics?: Issues
-  currentIssueData?: Issues
+  currentIssueBasics: Issues
 }
 const IssueRail = (props: IssueRailProps) => {
-  const { currentIssueBasics, currentIssueData } = props
+  const { currentIssueBasics } = props
   const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
-  const [issueData, setIssueData] = useState<Issues | undefined>(currentIssueData ? currentIssueData : undefined)
+  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
 
   useEffect(() => {
     const fetchData = async () => {
       // if currentIssueBasics is not defined, fetch the current issue
-      if (!currentIssueBasics) {
-        if (!issueData) {
-          const issueResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/currentIssue`, {
-            next: { revalidate: 10 },
-          })
-          const fetchedIssueData = await issueResponse.json()
-          setIssueData(fetchedIssueData)
-        }
-      } else {
+      if (!issueData) {
         const issueAPI = currentIssueBasics.special_issue
           ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/special/${currentIssueBasics.slug}`
           : `${process.env.NEXT_PUBLIC_BASE_URL}/api/${currentIssueBasics.year}/${currentIssueBasics.month}`
@@ -213,17 +204,15 @@ const IssueRail = (props: IssueRailProps) => {
         }
       }
 
-      if (issueData) {
-        if (!issueSections) {
-          const sectionsResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
-            {
-              next: { revalidate: 10 },
-            },
-          )
-          const fetchedSectionData = await sectionsResponse.json()
-          setIssueSections(fetchedSectionData)
-        }
+      if (issueData && !issueSections) {
+        const sectionsResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
+          {
+            next: { revalidate: 10 },
+          },
+        )
+        const fetchedSectionData = await sectionsResponse.json()
+        setIssueSections(fetchedSectionData)
       }
     }
 

@@ -55,6 +55,27 @@ export async function getCurrentIssueData() {
   return issueData
 }
 
+export async function getCurrentIssueBasics() {
+  // get the current issue from the global settings
+  const settings = await directus.request(
+    readSingleton("global_settings", {
+      fields: [
+        {
+          current_issue: ["id", "title", "slug", "year", "month", "status", "special_issue"],
+        },
+      ],
+    }),
+  )
+
+  const issueData = await getIssueBasics({
+    year: settings.current_issue.year,
+    month: settings.current_issue.month,
+  })
+
+  // return the first issue in the array
+  return issueData
+}
+
 // Explore making this get IssueData by ID
 // NOTE: we need to use `readItems` instead of `readItem` because we are querying the `issues` collection
 // instead of a single issue by ID

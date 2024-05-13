@@ -1,5 +1,5 @@
 import { Contributors, Issues } from "../../../lib/types"
-import { getAllContributors, getCurrentIssueData, getPermalink, PageType } from "../../../lib/utils"
+import { getAllContributors, getCurrentIssueBasics, getPermalink, PageType } from "../../../lib/utils"
 import Link from "next/link"
 import IssueRail from "../components/issueRail"
 
@@ -31,7 +31,7 @@ export default async function ContributorsIndex() {
         <div className="grid-container">
           <div className="grid-row grid-gap-3">
             <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-              {/* <IssueRail currentIssueData={data.currentIssueData} /> */}
+              <IssueRail currentIssueBasics={data.currentIssueBasics} />
             </div>
 
             <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
@@ -78,9 +78,9 @@ export default async function ContributorsIndex() {
 
 async function getData() {
   const allContributors = await getAllContributors()
-  // const currentIssueData: Issues = await getCurrentIssueData()
+  const currentIssueBasics: Issues = await getCurrentIssueBasics()
   return {
-    // currentIssueData,
+    currentIssueBasics,
     allContributors,
   }
 }
