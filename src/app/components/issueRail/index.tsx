@@ -186,7 +186,7 @@ interface IssueRailProps {
 const IssueRail = (props: IssueRailProps) => {
   const { currentIssueBasics } = props
   const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
-  const [issueData, setIssueData] = useState<Issues | undefined>(currentIssueBasics)
+  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
 
   useEffect(() => {
     const fetchData = async () => {
