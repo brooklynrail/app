@@ -1,4 +1,3 @@
-"use client"
 import "../../../../styles/article/styles.scss"
 import Footer from "../../components/footer"
 
