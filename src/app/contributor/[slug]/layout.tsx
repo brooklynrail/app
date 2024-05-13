@@ -1,3 +1,4 @@
+"use client"
 import "../../../../styles/article/styles.scss"
 import IssueRail from "../../components/issueRail"
 import Link from "next/link"
