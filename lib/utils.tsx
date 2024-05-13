@@ -756,18 +756,7 @@ export async function getAllContributors() {
   while (isMore) {
     const response = await directus.request(
       readItems("contributors", {
-        fields: [
-          "first_name",
-          "last_name",
-          "slug",
-          {
-            articles: [
-              {
-                articles_slug: ["slug"],
-              },
-            ],
-          },
-        ],
+        fields: ["first_name", "last_name", "slug"],
         sort: ["first_name"],
         filter: {
           _and: [
