@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const slug = contributor.slug
 
     return {
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}/`,
       lastModified: contributor.date_updated,
       changeFrequency: "yearly" as const,
       priority: 0.5,
