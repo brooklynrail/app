@@ -235,11 +235,6 @@ const IssueRail = (props: IssueRailProps) => {
     logosrc = `/images/brooklynrail-logo-issue-${currentIssueBasics.issue_number}.svg`
   }
 
-  // const src =
-  //   currentIssueBasics && currentIssueBasics.special_issue
-  //     ? `/images/brooklynrail-logo-issue-${currentIssueBasics.issue_number}.svg`
-  //     : "/images/brooklynrail-logo.svg"
-
   return (
     <section id="rail">
       <IssueRailHeader logosrc={logosrc} />
