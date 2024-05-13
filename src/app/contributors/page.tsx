@@ -1,13 +1,14 @@
-import { Contributors } from "../../../lib/types"
-import { getAllContributors, getPermalink, PageType } from "../../../lib/utils"
+import { Contributors, Issues } from "../../../lib/types"
+import { getAllContributors, getCurrentIssueData, getPermalink, PageType } from "../../../lib/utils"
 import Link from "next/link"
+import IssueRail from "../components/issueRail"
 
 export default async function ContributorsIndex() {
-  const contributorsData = await getData()
+  const data = await getData()
 
   const all = (
     <>
-      {contributorsData.props.allContributors.map((contributor: Contributors, i: number) => {
+      {data.allContributors.map((contributor: Contributors, i: number) => {
         const permalink = getPermalink({
           slug: contributor.slug,
           type: PageType.Contributor,
@@ -26,28 +27,61 @@ export default async function ContributorsIndex() {
 
   return (
     <>
-      <div className="grid-row grid-gap-4">
-        <div className="grid-col-12">
-          <header className="section">
-            <h2>Contributors</h2>
-          </header>
+      <main>
+        <div className="grid-container">
+          <div className="grid-row grid-gap-3">
+            <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
+              <IssueRail currentIssueData={data.currentIssueData} />
+            </div>
+
+            <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
+              <header id="article_header">
+                <nav>
+                  <div>
+                    <Link className="btn search" href="/search" title="Search the Rail">
+                      <i className="fas fa-search"></i>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      className="btn btn-sm donate"
+                      href="https://brooklynrail.org/donate?a"
+                      title="Donate to the Brooklyn Rail"
+                    >
+                      <span>Donate</span>
+                    </Link>
+                  </div>
+                </nav>
+              </header>
+
+              <article className="article">
+                <div className="grid-row grid-gap-4">
+                  <div className="grid-col-12">
+                    <header className="section">
+                      <h2>Contributors</h2>
+                    </header>
+                  </div>
+                </div>
+                <div className="grid-row grid-gap-4">
+                  <div className="grid-col-12">
+                    <div className="contributors">{all}</div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="grid-row grid-gap-4">
-        <div className="grid-col-12">
-          <div className="contributors">{all}</div>
-        </div>
-      </div>
+      </main>
     </>
   )
 }
 
 async function getData() {
   const allContributors = await getAllContributors()
+  const currentIssueData: Issues = await getCurrentIssueData()
   return {
-    props: {
-      allContributors,
-    },
+    currentIssueData,
+    allContributors,
   }
 }
 
