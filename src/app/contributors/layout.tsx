@@ -4,12 +4,6 @@ import IssueRail from "../components/issueRail"
 import Link from "next/link"
 import Footer from "../components/footer"
 
-export const metadata = {
-  title: "The Brooklyn Rail",
-  description:
-    "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
-}
-
 export default function ContributorLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
