@@ -192,11 +192,13 @@ const IssueRail = (props: IssueRailProps) => {
     const fetchData = async () => {
       // if currentIssueBasics is not defined, fetch the current issue
       if (!currentIssueBasics) {
-        const issueResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/currentIssue`, {
-          next: { revalidate: 10 },
-        })
-        const fetchedIssueData = await issueResponse.json()
-        setIssueData(fetchedIssueData)
+        if (!issueData) {
+          const issueResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/currentIssue`, {
+            next: { revalidate: 10 },
+          })
+          const fetchedIssueData = await issueResponse.json()
+          setIssueData(fetchedIssueData)
+        }
       } else {
         const issueAPI = currentIssueBasics.special_issue
           ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/special/${currentIssueBasics.slug}`
@@ -204,19 +206,23 @@ const IssueRail = (props: IssueRailProps) => {
         const issueResponse = await fetch(issueAPI, {
           next: { revalidate: 10 },
         })
-        const fetchedIssueData = await issueResponse.json()
-        setIssueData(fetchedIssueData)
+        if (!issueData) {
+          const fetchedIssueData = await issueResponse.json()
+          setIssueData(fetchedIssueData)
+        }
       }
 
       if (issueData) {
-        const sectionsResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
-          {
-            next: { revalidate: 10 },
-          },
-        )
-        const fetchedSectionData = await sectionsResponse.json()
-        setIssueSections(fetchedSectionData)
+        if (!issueSections) {
+          const sectionsResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
+            {
+              next: { revalidate: 10 },
+            },
+          )
+          const fetchedSectionData = await sectionsResponse.json()
+          setIssueSections(fetchedSectionData)
+        }
       }
     }
 
