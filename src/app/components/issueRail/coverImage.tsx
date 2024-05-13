@@ -4,30 +4,29 @@ import Image from "next/image"
 import { usePopup } from "./popupProvider"
 
 interface CoverImagesProps {
-  issueData?: Issues
+  issueBasics: Issues
 }
 
 export const CoverImage = (props: CoverImagesProps) => {
-  const { issueData } = props
+  const { issueBasics } = props
 
   const { setShowPopup, setImages } = usePopup()
   if (
-    !issueData ||
-    !issueData.cover_1 ||
-    !issueData.cover_1.width ||
-    !issueData.cover_1.height ||
-    !issueData.cover_1.filename_disk
+    !issueBasics.cover_1 ||
+    !issueBasics.cover_1.width ||
+    !issueBasics.cover_1.height ||
+    !issueBasics.cover_1.filename_disk
   ) {
     return <div className={`issue-covers loading`}></div>
   }
 
   const covers = [
-    issueData.cover_1,
-    issueData.cover_2,
-    issueData.cover_3,
-    issueData.cover_4,
-    issueData.cover_5,
-    issueData.cover_6,
+    issueBasics.cover_1,
+    issueBasics.cover_2,
+    issueBasics.cover_3,
+    issueBasics.cover_4,
+    issueBasics.cover_5,
+    issueBasics.cover_6,
   ]
 
   const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
@@ -36,9 +35,9 @@ export const CoverImage = (props: CoverImagesProps) => {
     setShowPopup(true)
   }
 
-  const alt = issueData.cover_1.caption
-    ? stripHtml(issueData.cover_1.caption).result
-    : `${issueData.title} — The Brooklyn Rail`
+  const alt = issueBasics.cover_1.caption
+    ? stripHtml(issueBasics.cover_1.caption).result
+    : `${issueBasics.title} — The Brooklyn Rail`
 
   return (
     <div className={`issue-covers`}>
@@ -46,9 +45,9 @@ export const CoverImage = (props: CoverImagesProps) => {
         <Image
           priority
           id={`cover-1`}
-          src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${issueData.cover_1.filename_disk}`}
-          width={issueData.cover_1.width}
-          height={issueData.cover_1.height}
+          src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${issueBasics.cover_1.filename_disk}`}
+          width={issueBasics.cover_1.width}
+          height={issueBasics.cover_1.height}
           style={{
             width: "100%",
             height: "auto",

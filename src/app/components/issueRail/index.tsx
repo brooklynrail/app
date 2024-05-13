@@ -144,21 +144,11 @@ const LoadingIssueIndex = () => {
   ))
 }
 
-interface IssueTitleProps {
+interface PublishersMessageProps {
   issueData?: Issues
 }
-const IssueTitle = ({ issueData }: IssueTitleProps) => {
-  if (!issueData) {
-    return <h3 className="issue-name loading"></h3>
-  }
-  return (
-    <h3 className="issue-name">
-      <Link href={`/${issueData.slug}/`}>{issueData.title}</Link>
-    </h3>
-  )
-}
 
-const PublishersMessage = ({ issueData }: IssueTitleProps) => {
+const PublishersMessage = ({ issueData }: PublishersMessageProps) => {
   if (!issueData) {
     return (
       <p className="publishers-message loading">
@@ -220,7 +210,7 @@ const IssueRail = (props: IssueRailProps) => {
   }, [issueSections, setIssueSections, issueData, setIssueData, currentIssueBasics])
 
   let logosrc = "/images/brooklynrail-logo.svg"
-  if (currentIssueBasics && currentIssueBasics.special_issue) {
+  if (currentIssueBasics.special_issue) {
     logosrc = `/images/brooklynrail-logo-issue-${currentIssueBasics.issue_number}.svg`
   }
 
@@ -229,7 +219,9 @@ const IssueRail = (props: IssueRailProps) => {
       <IssueRailHeader logosrc={logosrc} />
 
       <header className="issue-header">
-        <IssueTitle issueData={issueData} />
+        <h3 className="issue-name">
+          <Link href={`/${currentIssueBasics.slug}/`}>{currentIssueBasics.title}</Link>
+        </h3>
 
         <Link className="archive" href="/archive" title="All Issues Archive">
           <span>All Issues</span> <i className="fas fa-angle-double-right"></i>
@@ -240,7 +232,7 @@ const IssueRail = (props: IssueRailProps) => {
         <div className="issue-details">
           <div className="grid-row">
             <div className="grid-col-6">
-              <CoverImage {...{ issueData }} />
+              <CoverImage issueBasics={currentIssueBasics} />
             </div>
             <div className="grid-col-6">
               <div className="issue-links">
