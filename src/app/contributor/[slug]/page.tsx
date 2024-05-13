@@ -1,9 +1,11 @@
 import parse from "html-react-parser"
-import { ArticlesContributors, Contributors } from "../../../../lib/types"
-import { getAllContributors, getContributor, getPermalink, PageType } from "../../../../lib/utils"
+import { ArticlesContributors, Contributors, Issues } from "../../../../lib/types"
+import { getAllContributors, getContributor, getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
 import PromoSection from "@/app/components/promo/section"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
+import Link from "next/link"
+import IssueRail from "@/app/components/issueRail"
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -84,19 +86,52 @@ export default async function Contributor({ params }: { params: ContributorsPara
 
   return (
     <>
-      <div className="grid-row grid-gap-4">
-        <div className="grid-col-12">
-          <header className="section">
-            <h2>
-              {first_name} {last_name}
-            </h2>
-            {contributorData.bio && <div className="bio">{parse(contributorData.bio)}</div>}
-          </header>
+      <main>
+        <div className="grid-container">
+          <div className="grid-row grid-gap-3">
+            <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
+              <IssueRail currentIssueData={data.currentIssueData} />
+            </div>
+
+            <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
+              <header id="article_header">
+                <nav>
+                  <div>
+                    <Link className="btn search" href="/search" title="Search the Rail">
+                      <i className="fas fa-search"></i>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      className="btn btn-sm donate"
+                      href="https://brooklynrail.org/donate?a"
+                      title="Donate to the Brooklyn Rail"
+                    >
+                      <span>Donate</span>
+                    </Link>
+                  </div>
+                </nav>
+              </header>
+
+              <article className="article">
+                <div className="grid-row grid-gap-4">
+                  <div className="grid-col-12">
+                    <header className="section">
+                      <h2>
+                        {first_name} {last_name}
+                      </h2>
+                      {contributorData.bio && <div className="bio">{parse(contributorData.bio)}</div>}
+                    </header>
+                  </div>
+                </div>
+                <div className="grid-row grid-gap-4">
+                  <div className="grid-col-12">{allArticles}</div>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="grid-row grid-gap-4">
-        <div className="grid-col-12">{allArticles}</div>
-      </div>
+      </main>
     </>
   )
 }
@@ -107,6 +142,8 @@ interface ContributorsParams {
 
 async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
+
+  const currentIssueData: Issues = await getCurrentIssueData()
 
   // Get all contributors
   // NOTE: There are multiple contributors with the same slug
@@ -127,6 +164,7 @@ async function getData({ params }: { params: ContributorsParams }) {
     type: PageType.Contributor,
   })
   return {
+    currentIssueData,
     contributorData,
     articles: allArticles,
     permalink,

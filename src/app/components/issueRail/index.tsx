@@ -182,11 +182,12 @@ const PublishersMessage = ({ issueData }: IssueTitleProps) => {
 
 interface IssueRailProps {
   currentIssueBasics?: Issues
+  currentIssueData?: Issues
 }
 const IssueRail = (props: IssueRailProps) => {
-  const { currentIssueBasics } = props
+  const { currentIssueBasics, currentIssueData } = props
   const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
-  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
+  const [issueData, setIssueData] = useState<Issues | undefined>(currentIssueData ? currentIssueData : undefined)
 
   useEffect(() => {
     const fetchData = async () => {
