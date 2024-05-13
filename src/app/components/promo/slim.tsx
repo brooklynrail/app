@@ -31,9 +31,11 @@ const PromoSlim = (props: PromoSlimProps) => {
           {parse(title)}
         </Link>
       </h4>
-      <cite className="byline">
-        {` –`} <Bylines contributors={contributors} />
-      </cite>
+      {contributors && contributors.length != 0 && (
+        <cite className="byline">
+          {` –`} <Bylines contributors={contributors} />
+        </cite>
+      )}
     </li>
   )
 }

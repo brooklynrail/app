@@ -5,6 +5,9 @@ interface BylinesProps {
 }
 const Bylines = (props: BylinesProps) => {
   const { contributors } = props
+  if (!contributors || contributors.length === 0) {
+    return null
+  }
   return (
     <cite>
       <span>By </span>

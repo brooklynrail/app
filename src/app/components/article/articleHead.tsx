@@ -83,7 +83,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
     <div className="article-meta ooo">
       <div className="date">MAY 2024</div>
 
-      {!hide_bylines && (
+      {!hide_bylines && contributors && contributors.length != 0 && (
         <cite className="byline">
           <span>By </span>
           {authors}
