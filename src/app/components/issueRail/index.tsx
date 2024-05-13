@@ -244,7 +244,7 @@ const IssueRail = (props: IssueRailProps) => {
       <IssueRailHeader logosrc={logosrc} />
 
       <header className="issue-header">
-        <IssueTitle issueData={currentIssueBasics} />
+        <IssueTitle issueData={issueData} />
 
         <Link className="archive" href="/archive" title="All Issues Archive">
           <span>All Issues</span> <i className="fas fa-angle-double-right"></i>
