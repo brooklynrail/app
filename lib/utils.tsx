@@ -392,12 +392,12 @@ export async function getSpecialArticlePages() {
             },
           ],
         },
-        limit: -1,
+        limit: 100,
         page: page,
       }),
     )
     articlePages = articlePages.concat(response)
-    isMore = response.meta?.pageCount > page // Check if there are more pages
+    isMore = response.length == 100 // assumes there is another page of records
     page++
   }
   return articlePages
@@ -439,12 +439,12 @@ export async function getArticlePages() {
             },
           ],
         },
-        limit: -1,
+        limit: 100,
         page: page,
       }),
     )
     articlePages = articlePages.concat(response)
-    isMore = response.meta?.pageCount > page // Check if there are more pages
+    isMore = response.length == 100 // assumes there is another page of records
     page++
   }
   return articlePages
@@ -777,12 +777,12 @@ export async function getAllContributors() {
             },
           ],
         },
-        limit: -1,
+        limit: 100,
         page: page,
       }),
     )
     contributorPages = contributorPages.concat(response)
-    isMore = response.meta?.pageCount > page // Check if there are more pages
+    isMore = response.length == 100 // assumes there is another page of records
     page++
   }
   return contributorPages
