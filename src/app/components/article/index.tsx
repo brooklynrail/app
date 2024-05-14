@@ -13,10 +13,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import ArticleHead from "./articleHead"
 import ArticleBody from "./articleBody"
+import parse from "html-react-parser"
 
 const Article = (props: ArticleProps) => {
   const { articleData, issueBasics, currentSection } = props
-  const { contributors } = articleData
+  const { contributors, endnote } = articleData
 
   const issueClass = `issue-${issueBasics.slug.toLowerCase()}`
 
@@ -99,8 +100,15 @@ const Article = (props: ArticleProps) => {
                   <NextPrev {...props} currentSection={currentSection} issueData={issueData} />
                   <ArticleHead {...props} />
                   <ArticleBody {...props} />
+                  {endnote && (
+                    <div className="content">
+                      <div className="endnote">{parse(endnote)}</div>
+                    </div>
+                  )}
 
-                  <ContributorsBox contributors={contributors} />
+                  <div className="content">
+                    <ContributorsBox contributors={contributors} />
+                  </div>
                 </article>
               </div>
             </div>
