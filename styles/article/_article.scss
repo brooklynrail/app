@@ -28,10 +28,13 @@ article.article {
       @include u-font("sans", "sm");
       h3 {
         @include u-margin-y(2);
+        @include u-font("sans", "md");
+        @include u-text("bold");
       }
       h4 {
         @include u-margin(0);
         @include u-margin-bottom(1);
+        @include u-font("sans", "sm");
       }
       p {
         @include u-margin-top(0);
