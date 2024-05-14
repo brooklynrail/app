@@ -99,7 +99,10 @@ const ArticleHead = (props: ArticleHeadProps) => {
       {currentIssue && <div className="date">{currentIssue.title}</div>}
 
       <div className="share-tools">
-        <Link className="twitter" href={`https://twitter.com/share?url=${permalink}`}>
+        <Link
+          className="twitter"
+          href={`https://twitter.com/share?url=${permalink}&text=${encodeURIComponent(`${title} — @thebrooklynrail`)}`}
+        >
           <FontAwesomeIcon icon={faTwitter} />
         </Link>
         <Link className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
