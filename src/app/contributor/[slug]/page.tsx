@@ -148,7 +148,6 @@ interface ContributorsParams {
 
 async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
-
   const currentIssueBasics: Issues = await getCurrentIssueBasics()
 
   // Get all contributors

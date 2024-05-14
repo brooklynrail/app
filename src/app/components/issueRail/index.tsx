@@ -35,7 +35,12 @@ const ArticleList = (props: ArticleListProps) => {
             <span dangerouslySetInnerHTML={{ __html: article.articles_slug.title }} />
           </Link>
         </h4>
-        {!hide_bylines_downstream && <Bylines contributors={article.articles_slug.contributors} />}
+        {!hide_bylines_downstream && (
+          <Bylines
+            byline_override={article.articles_slug.byline_override}
+            contributors={article.articles_slug.contributors}
+          />
+        )}
       </li>
     )
   })

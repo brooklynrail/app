@@ -48,7 +48,7 @@ interface ArticleHeadProps {
 
 const ArticleHead = (props: ArticleHeadProps) => {
   const { permalink, currentIssue, currentSection, articleData } = props
-  const { kicker, title, deck, featured_image, header_type, contributors, hide_bylines } = articleData
+  const { kicker, title, deck, featured_image, header_type, contributors, hide_bylines, byline_override } = articleData
 
   const kickerProps = { kicker, currentIssue, currentSection }
 
@@ -85,8 +85,14 @@ const ArticleHead = (props: ArticleHeadProps) => {
 
       {!hide_bylines && contributors && contributors.length != 0 && (
         <cite className="byline">
-          <span>By </span>
-          {authors}
+          {byline_override ? (
+            <span>{byline_override}</span>
+          ) : (
+            <>
+              <span>By </span>
+              {authors}
+            </>
+          )}
         </cite>
       )}
 

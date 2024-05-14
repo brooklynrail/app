@@ -23,6 +23,7 @@ export type Articles = {
   body_code?: string | null
   body_text?: string | null
   body_type?: string | null
+  byline_override?: string | null
   contributors: ArticlesContributors[]
   date_created: string
   date_updated: string

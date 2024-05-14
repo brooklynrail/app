@@ -131,6 +131,7 @@ export async function getIssueData(props: IssueDataProps) {
                 "featured",
                 "hide_bylines",
                 "hide_bylines_downstream",
+                "byline_override",
                 {
                   promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
                 },
@@ -240,6 +241,7 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
                 "featured",
                 "hide_bylines",
                 "hide_bylines_downstream",
+                "byline_override",
                 {
                   promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
                 },
@@ -455,6 +457,7 @@ export async function getArticle(slug: string) {
     readItem("articles", slug, {
       fields: [
         "slug",
+        "byline_override",
         "title",
         "deck",
         "excerpt",

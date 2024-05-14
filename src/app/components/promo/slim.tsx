@@ -13,7 +13,7 @@ interface PromoSlimProps {
 
 const PromoSlim = (props: PromoSlimProps) => {
   const { article, i = 0, permalink, order } = props
-  const { title, contributors } = article
+  const { title, contributors, byline_override } = article
 
   const orderNum = (
     <span className="sort">
@@ -33,7 +33,7 @@ const PromoSlim = (props: PromoSlimProps) => {
       </h4>
       {contributors && contributors.length != 0 && (
         <cite className="byline">
-          {` –`} <Bylines contributors={contributors} />
+          {` –`} <Bylines byline_override={byline_override} contributors={contributors} />
         </cite>
       )}
     </li>
