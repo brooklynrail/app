@@ -47,6 +47,7 @@ export type Articles = {
   slug: string
   sort?: number | null
   status: string
+  tags: string
   title: string
   title_tag?: string
   user_created?: string | DirectusUsers | null

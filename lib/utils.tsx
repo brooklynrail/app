@@ -478,6 +478,7 @@ export async function getArticle(slug: string) {
         "date_updated",
         "hide_bylines",
         "hide_bylines_downstream",
+        "tags",
         {
           featured_image: ["id", "caption", "filename_disk", "width", "height", "type"],
         },
