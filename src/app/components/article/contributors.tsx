@@ -1,15 +1,16 @@
 import Link from "next/link"
-import { ArticlesContributors, Contributors } from "../../../../lib/types"
+import { ArticlesContributors } from "../../../../lib/types"
+import parse from "html-react-parser"
 
 interface ContributorsProps {
-  contributors: Contributors[] | ArticlesContributors[]
+  contributors: ArticlesContributors[]
 }
 
 const ContributorsBox = (props: ContributorsProps) => {
   const { contributors } = props
 
   const title = contributors.length > 1 ? "Contributors" : "Contributor"
-  const authors = contributors.map((contributor: any, i: number) => {
+  const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
     return (
       <div className="contributor" key={i}>
         <h4>
@@ -17,7 +18,7 @@ const ContributorsBox = (props: ContributorsProps) => {
             {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
           </Link>
         </h4>
-        <div dangerouslySetInnerHTML={{ __html: contributor.contributors_id.bio }} />
+        {contributor.contributors_id.bio && <div className="bio">{parse(contributor.contributors_id.bio)}</div>}
       </div>
     )
   })

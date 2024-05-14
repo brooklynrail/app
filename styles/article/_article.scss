@@ -36,10 +36,11 @@ article.article {
         @include u-margin-bottom(1);
         @include u-font("sans", "sm");
       }
-      p {
+      .bio {
         @include u-margin-top(0);
         @include u-measure(5);
         @include u-line-height("sans", 5);
+        @include u-font("sans", "xs");
       }
       a {
         @include u-color("red-50v");
