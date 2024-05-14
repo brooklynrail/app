@@ -28,6 +28,7 @@ export type Articles = {
   date_created: string
   date_updated: string
   deck?: string | null
+  endnote: string
   excerpt: string
   featured: boolean
   featured_image?: DirectusFiles

@@ -479,6 +479,7 @@ export async function getArticle(slug: string) {
         "hide_bylines",
         "hide_bylines_downstream",
         "tags",
+        "endnote",
         {
           featured_image: ["id", "caption", "filename_disk", "width", "height", "type"],
         },
