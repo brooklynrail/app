@@ -102,7 +102,10 @@ const Article = (props: ArticleProps) => {
                   <ArticleBody {...props} />
                   {endnote && (
                     <div className="content">
-                      <div className="endnote">{parse(endnote)}</div>
+                      <div className="endnote">
+                        <span className="line"></span>
+                        {parse(endnote)}
+                      </div>
                     </div>
                   )}
 

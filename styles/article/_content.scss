@@ -206,9 +206,18 @@
 
   // Footnotes & Endnotes
   .endnote {
-    @include u-font("sans", "sm");
+    @include u-margin-y(8);
+    p {
+      @include u-font("sans", "sm");
+      @include u-line-height("sans", 4);
+    }
     @include u-text("normal");
-    @include u-text("left");
+    .line {
+      @include u-margin-bottom("105");
+      @include u-border-bottom("1px", "gray-50", "solid");
+      @include u-width(15);
+      @include u-display("inline-block");
+    }
   }
 
   .poetry {
