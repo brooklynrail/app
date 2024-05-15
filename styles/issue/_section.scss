@@ -8,9 +8,11 @@ header.section {
     @include u-text("thin");
   }
   .bio {
-    @include u-margin-bottom(2);
-    @include u-font("sans", "md");
+    @include u-margin-y(2);
+    @include u-font("sans", "sm");
     @include u-text("normal");
+    @include u-measure(5);
+    @include u-line-height("sans", 3);
   }
   .blurb {
     @include u-margin-bottom(2);
