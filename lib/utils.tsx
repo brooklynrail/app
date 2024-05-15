@@ -776,6 +776,7 @@ export async function getAllContributors() {
       }),
     )
     contributorPages = contributorPages.concat(response)
+    await new Promise((res) => setTimeout(res, 500))
     isMore = response.length == 100 // assumes there is another page of records
     page++
   }
