@@ -45,7 +45,7 @@ export async function getCurrentIssueData() {
   }
   const settings = await res.json()
 
-  let issueData: Issues[]
+  let issueData: Issues
   if (settings.data.current_issue.special_issue === false) {
     issueData = await getIssueData({
       year: settings.data.current_issue.year,
@@ -57,7 +57,7 @@ export async function getCurrentIssueData() {
     })
   }
 
-  return issueData[0]
+  return issueData
 }
 
 export async function getCurrentIssueBasics() {
@@ -191,7 +191,7 @@ export async function getIssueData(props: IssueDataProps) {
       },
     }),
   )
-  return issueData
+  return issueData[0]
 }
 
 interface SpecialIssueDataProps {
