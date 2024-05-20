@@ -84,13 +84,3 @@ async function getData() {
     allContributors,
   }
 }
-
-export async function generateStaticParams() {
-  const allContributors = await getAllContributors()
-
-  return allContributors.map((contributor: Contributors) => {
-    return {
-      slug: contributor.slug,
-    }
-  })
-}
