@@ -59,19 +59,34 @@ export default async function Contributor({ params }: { params: ContributorsPara
       {currentArticles.map((articleContributor: ArticlesContributors, i: number) => {
         const article = articleContributor.articles_slug
         const issue = article.issues[0].issues_id
-        const permalink = getPermalink({
-          year: issue.year,
-          month: issue.month,
-          section: article.sections[0].sections_id.slug,
-          slug: article.slug,
-          type: PageType.Article,
-        })
-        const sectionPermalink = getPermalink({
-          year: issue.year,
-          month: issue.month,
-          section: article.sections[0].sections_id.slug,
-          type: PageType.Section,
-        })
+
+        let permalink
+        let sectionPermalink
+        if (issue.special_issue) {
+          permalink = getPermalink({
+            section: article.sections[0].sections_id.slug,
+            slug: article.slug,
+            type: PageType.SpecialIssueArticle,
+          })
+          sectionPermalink = getPermalink({
+            section: article.sections[0].sections_id.slug,
+            type: PageType.SpecialIssueSection,
+          })
+        } else {
+          permalink = getPermalink({
+            year: issue.year,
+            month: issue.month,
+            section: article.sections[0].sections_id.slug,
+            slug: article.slug,
+            type: PageType.Article,
+          })
+          sectionPermalink = getPermalink({
+            year: issue.year,
+            month: issue.month,
+            section: article.sections[0].sections_id.slug,
+            type: PageType.Section,
+          })
+        }
         return (
           <PromoSection
             key={`article-${i}`}
