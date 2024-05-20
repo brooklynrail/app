@@ -1,7 +1,8 @@
+import { Issues } from "../../../../lib/types"
 import { getCurrentIssueData } from "../../../../lib/utils"
 
 export async function GET() {
-  const data = await getCurrentIssueData()
+  const data: Issues = await getCurrentIssueData()
 
   return Response.json(data)
 }
