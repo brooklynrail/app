@@ -63,8 +63,9 @@ export async function getCurrentIssueData() {
   }
   const settings = await res.json()
 
+  const curruentIssueData: Issues = settings.data.current_issue
   let issueData: Issues
-  if (settings.data.current_issue.special_issue === false) {
+  if (curruentIssueData.special_issue === false) {
     issueData = await getIssueData({
       year: settings.data.current_issue.year,
       month: settings.data.current_issue.month,
