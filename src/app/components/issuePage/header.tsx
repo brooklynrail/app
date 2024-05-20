@@ -2,16 +2,17 @@ import Link from "next/link"
 import Image from "next/image"
 
 interface HeaderProps {
-  special_issue: boolean
+  special_issue: boolean | null
   issue_number: number
   title: string
 }
 
 const Header = (props: HeaderProps) => {
   const { special_issue, issue_number, title } = props
-  const src = special_issue
-    ? `/images/brooklynrail-logo-ex-issue-${issue_number}.svg`
-    : "/images/brooklynrail-logo-ex.svg"
+  const src =
+    special_issue && special_issue !== null
+      ? `/images/brooklynrail-logo-ex-issue-${issue_number}.svg`
+      : "/images/brooklynrail-logo-ex.svg"
   return (
     <div id="header_section">
       <div className="logo">
