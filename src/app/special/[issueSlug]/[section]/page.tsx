@@ -2,11 +2,11 @@ import { Metadata } from "next"
 import { PageLayout } from "@/app/page"
 import {
   PageType,
-  getIssues,
   getOGImage,
   getPermalink,
   getSectionsByIssueId,
   getSpecialIssueData,
+  getSpecialIssues,
 } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Issues, Sections } from "../../../../../lib/types"
@@ -91,7 +91,7 @@ async function getData({ params }: { params: SpecialSectionParams }) {
 }
 
 export async function generateStaticParams() {
-  const specialIssues = await getIssues({ special_issue: true })
+  const specialIssues = await getSpecialIssues()
 
   return specialIssues.map(async (issue: Issues) => {
     const sections = await getSectionsByIssueId(issue.id)

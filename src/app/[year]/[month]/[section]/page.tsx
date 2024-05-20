@@ -97,7 +97,7 @@ async function getData({ params }: { params: SectionParams }) {
 }
 
 export async function generateStaticParams() {
-  const issues = await getIssues({ special_issue: false })
+  const issues = await getIssues()
   return issues.map(async (issue: Issues) => {
     const currentSections = await getSectionsByIssueId(issue.id)
 

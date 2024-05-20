@@ -67,7 +67,7 @@ async function getData({ params }: { params: IssueParams }) {
 }
 
 export async function generateStaticParams() {
-  const allIssues = await getIssues({ special_issue: false })
+  const allIssues = await getIssues()
 
   return allIssues.map((issue: Issues) => {
     const month = issue.month < 10 ? String(`0${issue.month}`) : String(issue.month)

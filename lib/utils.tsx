@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint max-lines: 0 */
 import directus from "./directus"
-import { readItem, readItems, readSingleton, readFiles, readPreset, aggregate } from "@directus/sdk"
+import { readItem, readItems, readSingleton, readFiles, readPreset } from "@directus/sdk"
 import { Ads, Articles, Contributors, DirectusFiles, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
@@ -17,17 +17,36 @@ export async function getAllIssues() {
   return issues
 }
 
-interface GetIssuesProps {
-  special_issue: boolean
-}
-
-export async function getIssues(props: GetIssuesProps) {
+export async function getIssues() {
   const { special_issue } = props
   const issues: Issues[] = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
       filter: {
-        _and: [{ status: { _eq: "published" }, special_issue: special_issue ? { _eq: true } : { _eq: false } }],
+        _and: [
+          {
+            status: { _eq: "published" },
+            special_issue: false,
+          },
+        ],
+      },
+      limit: -1,
+    }),
+  )
+  return issues
+}
+
+export async function getSpecialIssues() {
+  const issues: Issues[] = await directus.request(
+    readItems("issues", {
+      fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
+      filter: {
+        _and: [
+          {
+            status: { _eq: "published" },
+            special_issue: true,
+          },
+        ],
       },
       limit: -1,
     }),

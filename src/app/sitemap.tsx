@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next"
-import { getArticlePages, getIssues, getSpecialArticlePages } from "../../lib/utils"
+import { getArticlePages, getIssues, getSpecialArticlePages, getSpecialIssues } from "../../lib/utils"
 import { Articles, Issues } from "../../lib/types"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -43,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   })
 
-  const allIssues = await getIssues({ special_issue: false })
+  const allIssues = await getIssues()
   const issues = allIssues.map((issue: Issues) => {
     const year = issue.year
     const month = issue.month < 10 ? String(`0${issue.month}`) : String(issue.month)
@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   })
 
-  const allSpecialIssues = await getIssues({ special_issue: true })
+  const allSpecialIssues = await getSpecialIssues()
   const specialIssues = allSpecialIssues.map((issue: Issues) => {
     const issueSlug = issue.slug
     return {
