@@ -21,24 +21,25 @@ export interface IssuePageProps {
 export default async function Homepage() {
   const data = await getData()
 
-  if (!data.props.issueData || !data.props.permalink) {
+  if (!data.issueData || !data.permalink) {
     return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
   }
 
-  return <IssuePage {...data.props} layout={PageLayout.Issue} />
+  return <IssuePage {...data} layout={PageLayout.Issue} />
 }
 
 async function getData() {
-  const issueData: Issues = await getCurrentIssueData()
+  const data: Issues | undefined = await getCurrentIssueData()
 
+  if (!data) {
+    return { errorCode: 500, errorMessage: "There is no current issue set" }
+  }
   const permalink = getPermalink({
     type: PageType.Home,
   })
 
   return {
-    props: {
-      issueData,
-      permalink,
-    },
+    issueData: data,
+    permalink,
   }
 }
