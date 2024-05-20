@@ -626,30 +626,6 @@ export function getPermalink(props: PermalinkProps) {
   }
 }
 
-export async function getListFiles() {
-  const result = await directus.request(
-    readFiles({
-      query: {
-        filter: {
-          filename_download: {
-            _eq: "walkingstick-kay.jpg",
-          },
-        },
-      },
-    }),
-  )
-  return result
-}
-
-export async function getPreset() {
-  const result = await directus.request(
-    readPreset("11", {
-      fields: ["*.*"],
-    }),
-  )
-  return result
-}
-
 export async function getPreviewPassword() {
   const settings = await directus.request(
     readSingleton("global_settings", {
