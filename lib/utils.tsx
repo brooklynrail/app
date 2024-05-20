@@ -67,14 +67,14 @@ export async function getCurrentIssueData() {
   const curruentIssueData: Issues = settings.current_issue
 
   let issueData: Issues
-  if (curruentIssueData.special_issue === false) {
+  if (curruentIssueData.special_issue && curruentIssueData.special_issue === true) {
+    issueData = await getSpecialIssueData({
+      slug: curruentIssueData.slug,
+    })
+  } else {
     issueData = await getIssueData({
       year: curruentIssueData.year,
       month: curruentIssueData.month,
-    })
-  } else {
-    issueData = await getSpecialIssueData({
-      slug: curruentIssueData.slug,
     })
   }
 

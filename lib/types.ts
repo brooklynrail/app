@@ -483,7 +483,7 @@ export type Issues = {
   month: number
   slug: string
   sort?: number | null
-  special_issue: boolean
+  special_issue: boolean | null
   old_id: number
   status: string
   title: string
