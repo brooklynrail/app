@@ -410,43 +410,15 @@ export async function getArticlePages() {
   let page = 1
   let isMore = true
   while (isMore) {
-    const response: Articles[] = await directus.request(
-      readItems("articles", {
-        fields: [
-          "slug",
-          "date_updated",
-          {
-            sections: [
-              {
-                sections_id: ["slug"],
-              },
-            ],
-          },
-          {
-            issues: [
-              {
-                issues_id: ["year", "month", "slug", "special_issue", "status"],
-              },
-            ],
-          },
-        ],
-        filter: {
-          _and: [
-            {
-              status: { _eq: "published" },
-              slug: { _nempty: true },
-              issues: {
-                issues_id: { special_issue: { _eq: false } },
-              },
-            },
-          ],
-        },
-        limit: 100,
-        page: page,
-      }),
-    )
-    articlePages = articlePages.concat(response)
-    isMore = response.length == 100 // assumes there is another page of records
+    const articleDataAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles?fields[]=slug&fields[]=sections.sections_id.slug&fields[]=issues.issues_id.year&fields[]=issues.issues_id.month&fields[]=issues.issues_id.slug&fields[]=issues.issues_id.special_issue&fields[]=issues.issues_id.status&filter[status][_eq]=published&filter[slug][_nempty]=true&deep[issues][_filter][issues_id][special_issue][_eq]=false&page=${page}&limit=100&offset=${page * 100 - 100}`
+    const res = await fetch(articleDataAPI, { cache: "force-cache" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch data")
+    }
+    const data = await res.json()
+    articlePages = articlePages.concat(data.data)
+    isMore = data.data.length === 100 // assumes there is another page of records
     page++
   }
   return articlePages
