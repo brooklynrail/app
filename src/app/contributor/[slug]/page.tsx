@@ -55,11 +55,15 @@ export default async function Contributor({ params }: { params: ContributorsPara
     return <></>
   }
 
+  console.log("currentArticles", currentArticles[0].articles_slug.issues[0].issues_id)
+
   const allArticles = (
     <section className="collection">
       {currentArticles.map((articleContributor: ArticlesContributors, i: number) => {
         const article = articleContributor.articles_slug
+        console.log("article ============", article)
         const issue = article.issues[0].issues_id
+        console.log("issue ============", issue)
         const permalink = getPermalink({
           year: issue.year,
           month: issue.month,
