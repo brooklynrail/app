@@ -704,26 +704,17 @@ export async function getAllContributors() {
   let page = 1
   let isMore = true
   while (isMore) {
-    const response = await directus.request(
-      readItems("contributors", {
-        fields: ["first_name", "last_name", "slug"],
-        sort: ["first_name"],
-        filter: {
-          _and: [
-            {
-              status: { _eq: "published" },
-              articles: { _gt: 0 },
-            },
-          ],
-        },
-        limit: 100,
-        page: page,
-      }),
-    )
-    contributorPages = contributorPages.concat(response)
-    await new Promise((res) => setTimeout(res, 500))
-    isMore = response.length == 100 // assumes there is another page of records
+    const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=slug&fields[]=first_name&fields[]=last_name&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_gt]=0&page=${page}&limit=100&offset=${page * 100 - 100}`
+    const res = await fetch(contributorsAPI, { cache: "force-cache" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch data")
+    }
+    const data = await res.json()
+    contributorPages = contributorPages.concat(data.data)
+    isMore = data.data.length === 100 // assumes there is another page of records
     page++
   }
+
   return contributorPages
 }
