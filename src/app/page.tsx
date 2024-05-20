@@ -32,8 +32,6 @@ async function getData() {
   const issueData: Issues = await getCurrentIssueData()
 
   const permalink = getPermalink({
-    year: issueData.year,
-    month: issueData.month,
     type: PageType.Home,
   })
 
