@@ -704,7 +704,7 @@ export async function getAllContributors() {
   let page = 1
   let isMore = true
   while (isMore) {
-    const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=slug&fields[]=first_name&fields[]=last_name&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_gt]=0&page=${page}&limit=100&offset=${page * 100 - 100}`
+    const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_gt]=0&page=${page}&limit=100&offset=${page * 100 - 100}`
     const res = await fetch(contributorsAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
