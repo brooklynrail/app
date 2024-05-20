@@ -1,14 +1,12 @@
-import { NextApiRequest, NextApiResponse } from "next"
 import { Issues } from "../../../../lib/types"
 import { getCurrentIssueData } from "../../../../lib/utils"
 
-export default async function GET(req: NextApiRequest, res: NextApiResponse) {
+export default async function GET() {
   const data: Issues = await getCurrentIssueData()
 
   if (!data) {
-    res.status(404).json({ message: "Data not found" })
-    return
+    throw new Error("Failed to fetch data")
   }
 
-  res.status(200).json(data)
+  return Response.json(data)
 }
