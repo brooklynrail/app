@@ -55,8 +55,6 @@ export default async function Contributor({ params }: { params: ContributorsPara
     return <></>
   }
 
-  console.log("currentArticles", currentArticles[0].articles_slug.issues[0].issues_id)
-
   const allArticles = (
     <section className="collection">
       {currentArticles.map((articleContributor: ArticlesContributors, i: number) => {
