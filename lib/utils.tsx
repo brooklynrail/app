@@ -45,13 +45,19 @@ export async function getCurrentIssueData() {
   }
   const settings = await res.json()
 
-  const issueData = await getIssueData({
-    year: settings.data.current_issue.year,
-    month: settings.data.current_issue.month,
-  })
+  let issueData: Issues[]
+  if (settings.data.current_issue.special_issue === false) {
+    issueData = await getIssueData({
+      year: settings.data.current_issue.year,
+      month: settings.data.current_issue.month,
+    })
+  } else {
+    issueData = await getSpecialIssueData({
+      slug: settings.data.current_issue.slug,
+    })
+  }
 
-  // return the first issue in the array
-  return issueData
+  return issueData[0]
 }
 
 export async function getCurrentIssueBasics() {
@@ -185,7 +191,7 @@ export async function getIssueData(props: IssueDataProps) {
       },
     }),
   )
-  return issueData[0]
+  return issueData
 }
 
 interface SpecialIssueDataProps {
