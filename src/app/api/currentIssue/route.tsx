@@ -1,8 +1,8 @@
-import { NextApiResponse } from "next"
+import { NextApiRequest, NextApiResponse } from "next"
 import { Issues } from "../../../../lib/types"
 import { getCurrentIssueData } from "../../../../lib/utils"
 
-export default async function handler(req: Request, res: NextApiResponse) {
+export default async function GET(req: NextApiRequest, res: NextApiResponse) {
   const data: Issues = await getCurrentIssueData()
 
   if (!data) {
