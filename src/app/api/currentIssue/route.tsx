@@ -5,7 +5,9 @@ export async function GET() {
   const data: Issues = await getCurrentIssueData()
 
   if (!data) {
-    throw new Error("Failed to fetch data")
+    return new Response("There is no data coming through...", {
+      status: 500,
+    })
   }
 
   return Response.json(data)
