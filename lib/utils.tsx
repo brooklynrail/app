@@ -103,9 +103,6 @@ export async function getCurrentIssueBasics() {
     month: settings.current_issue.month,
   })
 
-  console.log("settings", settings)
-  console.log("issueData", issueData)
-
   // return the first issue in the array
   return issueData
 }
