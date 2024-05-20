@@ -65,6 +65,11 @@ export async function getCurrentIssueData() {
   )
 
   const curruentIssueData: Issues = settings.current_issue
+  if (!curruentIssueData) {
+    // throw an error if there is no current issue
+    console.error("There is no current issue set", curruentIssueData)
+    return
+  }
 
   let issueData: Issues
   if (curruentIssueData.special_issue && curruentIssueData.special_issue === true) {
