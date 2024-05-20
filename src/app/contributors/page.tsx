@@ -77,7 +77,9 @@ export default async function ContributorsIndex() {
 }
 
 async function getData() {
-  const allContributors = await getAllContributors()
+  let allContributors = await getAllContributors()
+  // filter out contributors with no articles
+  allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)
   const currentIssueBasics: Issues = await getCurrentIssueBasics()
   return {
     currentIssueBasics,
