@@ -1,7 +1,7 @@
 import { Issues } from "../../../../lib/types"
 import { getCurrentIssueData } from "../../../../lib/utils"
 
-export default async function GET() {
+export async function GET() {
   const data: Issues = await getCurrentIssueData()
 
   if (!data) {
