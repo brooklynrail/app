@@ -37,18 +37,17 @@ export async function getIssues(props: GetIssuesProps) {
 
 export async function getCurrentIssueData() {
   // get the current issue from the global settings
-  const settings = await directus.request(
-    readSingleton("global_settings", {
-      fields: [
-        {
-          current_issue: ["id", "title", "slug", "year", "month", "status"],
-        },
-      ],
-    }),
-  )
+  const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue&fields[]=current_issue.id&fields[]=current_issue.year&fields[]=current_issue.month&fields[]=current_issue.slug&fields[]=current_issue.special_issue&fields[]=current_issue.status`
+  const res = await fetch(globalSettingsAPI, { cache: "force-cache" })
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data")
+  }
+  const settings = await res.json()
+
   const issueData = await getIssueData({
-    year: settings.current_issue.year,
-    month: settings.current_issue.month,
+    year: settings.data.current_issue.year,
+    month: settings.data.current_issue.month,
   })
 
   // return the first issue in the array
