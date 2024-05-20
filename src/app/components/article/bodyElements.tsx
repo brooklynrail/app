@@ -1,5 +1,6 @@
 import parse from "html-react-parser"
 import Image from "next/image"
+import { stripHtml } from "string-strip-html"
 
 // Promo shortcodes
 //  <p>[promo type="free-text"]</p>
@@ -45,7 +46,7 @@ const replaceImageShortcodes = (htmlString: string, imageData: Array<any>): Arra
         const width = thisImg.width > size ? size : thisImg.width
         const height =
           thisImg.width > size ? (size * thisImg.height) / thisImg.width : (thisImg.height * width) / thisImg.width
-
+        const alt = thisImg.caption ? thisImg.caption : thisImg.title
         const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${thisImg.filename_disk}`
         elements.push(
           <div className={`media width-${type}`} key={key}>
@@ -53,7 +54,7 @@ const replaceImageShortcodes = (htmlString: string, imageData: Array<any>): Arra
               src={src}
               width={width}
               height={height}
-              alt={thisImg.caption ? thisImg.caption : thisImg.title}
+              alt={stripHtml(alt).result}
               style={{
                 width: "100%",
                 height: "auto",

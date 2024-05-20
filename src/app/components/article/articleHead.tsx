@@ -101,7 +101,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
       <div className="share-tools">
         <Link
           className="twitter"
-          href={`https://twitter.com/share?url=${permalink}&text=${encodeURIComponent(`${title} — @thebrooklynrail`)}`}
+          href={`https://twitter.com/share?url=${permalink}&text=${encodeURIComponent(`${stripHtml(title).result} — @thebrooklynrail`)}`}
         >
           <FontAwesomeIcon icon={faTwitter} />
         </Link>
