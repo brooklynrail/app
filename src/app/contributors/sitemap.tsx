@@ -3,7 +3,9 @@ import { getAllContributors } from "../../../lib/utils"
 import { Contributors } from "../../../lib/types"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const allContributors = await getAllContributors()
+  let allContributors = await getAllContributors()
+  // filter out contributors with no articles
+  allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)
   const contributors = allContributors.map((contributor: Contributors) => {
     const slug = contributor.slug
 
