@@ -108,6 +108,12 @@ export async function generateStaticParams() {
   const specialArticlePages = await getSpecialArticlePages()
 
   return specialArticlePages.map((article: Articles) => {
+    // NOTE: This is returning articles with no issues.
+    // These are the articles that are part of the "Special Issues"
+    // This might be a BUG, or might be how the REST API is set up.
+    if (article.issues.length === 0) {
+      return
+    }
     return {
       issueSlug: article.issues && article.issues[0].issues_id.slug.toString(),
       section: article.sections && article.sections[0].sections_id.slug.toString(),
