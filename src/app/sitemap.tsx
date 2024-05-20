@@ -4,7 +4,12 @@ import { Articles, Issues } from "../../lib/types"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articlePages = await getArticlePages()
-  const articles = articlePages.map((article: Articles) => {
+  // NOTE: This is returning articles with no issues.
+  // These are the articles that are part of the "Special Issues"
+  // This might be a BUG, or might be how the REST API is set up.
+  // remove all articles from specialArticlePages that have an empty issues array
+  const articlePagesFiltered = articlePages.filter((article: Articles) => article.issues.length > 0)
+  const articles = articlePagesFiltered.map((article: Articles) => {
     const year = article.issues[0].issues_id.year
     const month = article.issues[0].issues_id.month
     const section = article.sections[0].sections_id.slug
@@ -19,7 +24,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   })
 
   const specialArticlePages = await getSpecialArticlePages()
-  const specialArticles = specialArticlePages.map((article: Articles) => {
+  // NOTE: This is returning articles with no issues.
+  // These are the articles that are part of the "Special Issues"
+  // This might be a BUG, or might be how the REST API is set up.
+  // remove all articles from specialArticlePages that have an empty issues array
+  const specialArticlePagesFiltered = specialArticlePages.filter((article: Articles) => article.issues.length > 0)
+
+  const specialArticles = specialArticlePagesFiltered.map((article: Articles) => {
     const slug = article.slug
     const issueSlug = article.issues && article.issues[0].issues_id.slug
     const section = article.sections && article.sections[0].sections_id.slug
