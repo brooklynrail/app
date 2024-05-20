@@ -10,7 +10,7 @@ export const dynamicParams = true
 export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {
   const data = await getData({ params })
 
-  const { title, cover_1, issue_number } = data.props.issueData
+  const { title, cover_1, issue_number } = data.issueData
   const ogtitle = `${stripHtml(title).result} | The Brooklyn Rail`
   const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -20,12 +20,12 @@ export async function generateMetadata({ params }: { params: IssueParams }): Pro
     title: `${ogtitle}`,
     description: ogdescription,
     alternates: {
-      canonical: `${data.props.permalink}`,
+      canonical: `${data.permalink}`,
     },
     openGraph: {
       title: `${ogtitle} | The Brooklyn Rail`,
       description: ogdescription,
-      url: data.props.permalink,
+      url: data.permalink,
       images: ogimages,
       type: `website`,
     },
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: IssueParams }): Pro
 export default async function Issue({ params }: { params: IssueParams }) {
   const data = await getData({ params })
 
-  return <IssuePage {...data.props} layout={PageLayout.Issue} />
+  return <IssuePage {...data} layout={PageLayout.Issue} />
 }
 
 interface IssueParams {
@@ -59,10 +59,8 @@ async function getData({ params }: { params: IssueParams }) {
   })
 
   return {
-    props: {
-      issueData,
-      permalink,
-    },
+    issueData,
+    permalink,
   }
 }
 
