@@ -9,7 +9,7 @@ interface ContributorsProps {
 const ContributorsBox = (props: ContributorsProps) => {
   const { contributors } = props
 
-  const title = contributors.length > 1 ? "Contributors" : "Contributor"
+  const heading = contributors.length > 1 ? "Contributors" : "Contributor"
   const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
     return (
       <div className="contributor" key={i}>
@@ -26,7 +26,7 @@ const ContributorsBox = (props: ContributorsProps) => {
     <cite>
       <footer>
         <section className="contributors">
-          <h3>{title}</h3>
+          <h3>{heading}</h3>
           {authors}
         </section>
       </footer>
