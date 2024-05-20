@@ -51,7 +51,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
   const contributorData = data.contributorData
   const currentArticles = data.articles
 
-  if (!currentArticles) {
+  if (!currentArticles || currentArticles.length === 0) {
     return <></>
   }
 
