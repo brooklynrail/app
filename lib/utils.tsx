@@ -18,7 +18,6 @@ export async function getAllIssues() {
 }
 
 export async function getIssues() {
-  const { special_issue } = props
   const issues: Issues[] = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
