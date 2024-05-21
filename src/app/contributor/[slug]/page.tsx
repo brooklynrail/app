@@ -11,6 +11,7 @@ import PromoSection from "@/app/components/promo/section"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
+import IssueRail from "@/app/components/issueRail"
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -110,7 +111,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
         <div className="grid-container">
           <div className="grid-row grid-gap-3">
             <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-              <></>
+              <IssueRail currentIssueBasics={data.currentIssueBasics} />
             </div>
 
             <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">

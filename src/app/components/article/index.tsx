@@ -63,7 +63,7 @@ const Article = (props: ArticleProps) => {
           <div className="grid-container">
             <div className="grid-row grid-gap-3">
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <></>
+                <IssueRail currentIssueBasics={issueBasics} />
               </div>
 
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
