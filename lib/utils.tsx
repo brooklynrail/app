@@ -332,13 +332,12 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
 }
 
 interface IssueBasicsProps {
-  year?: number
-  month?: number
-  slug?: string
+  year: number
+  month: number
 }
 
 export async function getIssueBasics(props: IssueBasicsProps) {
-  const { year, month, slug } = props
+  const { year, month } = props
   const issueData: Issues[] = await directus.request(
     readItems("issues", {
       fields: [
@@ -357,10 +356,46 @@ export async function getIssueBasics(props: IssueBasicsProps) {
       filter: {
         _and: [
           {
-            year: year && month ? { _eq: year } : undefined,
-            month: year && month ? { _eq: month } : undefined,
-            slug: slug ? { _eq: slug } : undefined,
+            year: { _eq: year },
+            month: { _eq: month },
             status: { _eq: "published" },
+            special_issue: { _eq: false },
+          },
+        ],
+      },
+    }),
+  )
+
+  return issueData[0]
+}
+
+interface SpecialIssueBasicsProps {
+  slug: string
+}
+
+export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
+  const { slug } = props
+  const issueData: Issues[] = await directus.request(
+    readItems("issues", {
+      fields: [
+        "id",
+        "title",
+        "slug",
+        "year",
+        "month",
+        "status",
+        "issue_number",
+        "special_issue",
+        {
+          cover_1: ["caption", "filename_disk", "width", "height", "type"],
+        },
+      ],
+      filter: {
+        _and: [
+          {
+            slug: { _eq: slug },
+            status: { _eq: "published" },
+            special_issue: { _eq: true },
           },
         ],
       },

@@ -6,6 +6,7 @@ import {
   getOGImage,
   getPermalink,
   getSpecialArticlePages,
+  getSpecialIssueBasics,
 } from "../../../../../../lib/utils"
 import { Articles } from "../../../../../../lib/types"
 import { Metadata } from "next"
@@ -71,7 +72,7 @@ async function getData({ params }: { params: SpecialArticleParams }) {
   const issueSlug = String(params.issueSlug)
   const section = String(params.section)
 
-  const issueBasics = await getIssueBasics({ year: undefined, month: undefined, slug: issueSlug })
+  const issueBasics = await getSpecialIssueBasics({ slug: issueSlug }) // A limited set of data for the issue
   const articleData = await getArticle(slug)
 
   if (!articleData) {

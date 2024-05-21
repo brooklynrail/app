@@ -55,7 +55,7 @@ async function getData({ params }: { params: ArticleParams }) {
   const slug: string = params.slug.toString()
   const section: string = params.section.toString()
 
-  const issueBasics = await getIssueBasics({ year, month, slug: undefined })
+  const issueBasics = await getIssueBasics({ year, month })
   const articleData = await getArticle(slug)
 
   if (!articleData) {
