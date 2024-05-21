@@ -2,7 +2,6 @@ import { stripHtml } from "string-strip-html"
 import {
   PageType,
   getArticle,
-  getIssueBasics,
   getOGImage,
   getPermalink,
   getSpecialArticlePages,
