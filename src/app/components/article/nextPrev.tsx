@@ -37,10 +37,11 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
       )
     }
     const prev: Articles = issueArticles[currentArticleIndex - 1].articles_slug
+    const prevSection = prev.sections[0].sections_id
     const prevPermalink = getPermalink({
       year: issueBasics.year,
       month: issueBasics.month,
-      section: currentSection.slug,
+      section: prevSection.slug,
       slug: prev.slug,
       type: PageType.Article,
     })
@@ -54,11 +55,12 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
     )
   }
 
-  const next = issueArticles[currentArticleIndex + 1].articles_slug
+  const next: Articles = issueArticles[currentArticleIndex + 1].articles_slug
+  const nextSection = next.sections[0].sections_id
   const nextPermalink = getPermalink({
     year: issueBasics.year,
     month: issueBasics.month,
-    section: currentSection.slug,
+    section: nextSection.slug,
     slug: next.slug,
     type: PageType.Article,
   })
