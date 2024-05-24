@@ -17,19 +17,9 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
   switch (type ? type : body_type) {
     case `body_text`:
-      return (
-        <>
-          <p className="body-label">Body Text</p>
-          <BodyText {...articleData} />
-        </>
-      )
+      return <BodyText {...articleData} />
     case `body_code`:
-      return (
-        <>
-          <p className="body-label">Body Code</p>
-          <BodyCode {...articleData} />
-        </>
-      )
+      return <BodyCode {...articleData} />
     default:
       return <></>
   }
