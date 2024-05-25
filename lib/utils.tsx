@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
@@ -6,7 +5,7 @@ import { Ads, Articles, Contributors, DirectusFiles, Issues, Sections } from "./
 import { stripHtml } from "string-strip-html"
 
 export async function getAllIssues() {
-  const issues: Issues[] = await directus.request(
+  const issues = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number", "date_updated"],
       filter: {
@@ -18,14 +17,14 @@ export async function getAllIssues() {
 }
 
 export async function getIssues() {
-  const issues: Issues[] = await directus.request(
+  const issues = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
       filter: {
         _and: [
           {
             status: { _eq: "published" },
-            special_issue: false,
+            special_issue: { _eq: false },
           },
         ],
       },
@@ -36,14 +35,14 @@ export async function getIssues() {
 }
 
 export async function getSpecialIssues() {
-  const issues: Issues[] = await directus.request(
+  const issues = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
       filter: {
         _and: [
           {
             status: { _eq: "published" },
-            special_issue: true,
+            special_issue: { _eq: true },
           },
         ],
       },
@@ -64,14 +63,14 @@ export async function getCurrentIssueData() {
     }),
   )
 
-  const curruentIssueData: Issues = settings.current_issue
+  const curruentIssueData = settings.current_issue
   if (!curruentIssueData) {
     // throw an error if there is no current issue
     console.error("There is no current issue set", curruentIssueData)
     return
   }
 
-  let issueData: Issues
+  let issueData
   if (curruentIssueData.special_issue && curruentIssueData.special_issue === true) {
     issueData = await getSpecialIssueData({
       slug: curruentIssueData.slug,
@@ -117,7 +116,7 @@ interface IssueDataProps {
 }
 export async function getIssueData(props: IssueDataProps) {
   const { year, month } = props
-  const issueData: Issues[] = await directus.request(
+  const issueData = await directus.request(
     readItems("issues", {
       fields: [
         "id",
@@ -227,7 +226,7 @@ interface SpecialIssueDataProps {
 }
 export async function getSpecialIssueData(props: SpecialIssueDataProps) {
   const { slug } = props
-  const issueData: Issues[] = await directus.request(
+  const issueData = await directus.request(
     readItems("issues", {
       fields: [
         "id",
@@ -338,7 +337,7 @@ interface IssueBasicsProps {
 
 export async function getIssueBasics(props: IssueBasicsProps) {
   const { year, month } = props
-  const issueData: Issues[] = await directus.request(
+  const issueData = await directus.request(
     readItems("issues", {
       fields: [
         "id",
@@ -375,7 +374,7 @@ interface SpecialIssueBasicsProps {
 
 export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
   const { slug } = props
-  const issueData: Issues[] = await directus.request(
+  const issueData = await directus.request(
     readItems("issues", {
       fields: [
         "id",
@@ -406,7 +405,7 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
 }
 
 export async function getSectionsByIssueId(issueId: string) {
-  const sections: Sections[] = directus.request(
+  const sections = directus.request(
     readItems("sections", {
       fields: ["id", "name", "slug"],
       filter: {
@@ -464,7 +463,7 @@ export async function getArticlePages() {
 }
 
 export async function getArticle(slug: string) {
-  const currentArticle: Articles = directus.request(
+  const currentArticle = directus.request(
     readItem("articles", slug, {
       fields: [
         "slug",
@@ -547,12 +546,7 @@ export async function getArticle(slug: string) {
 
 export async function getAds() {
   const today = new Date()
-  const year = today.getFullYear()
-  const month = today.getMonth() + 1 < 10 ? `0${today.getMonth() + 1}` : `${today.getMonth() + 1}`
-  const day = today.getDate() < 10 ? `0${today.getDate()}` : `${today.getDate()}`
-  const formattedDate = `${year}-${month}-${day}`
-
-  const ads: Ads[] = directus.request(
+  const ads = directus.request(
     readItems("ads", {
       fields: [
         "ad_type",
@@ -576,12 +570,8 @@ export async function getAds() {
         _and: [
           {
             status: { _in: ["published"] },
-            start_date: {
-              _lte: formattedDate,
-            },
-            end_date: {
-              _gte: formattedDate,
-            },
+            // start_date: { _lte: today },
+            // end_date: { _gte: today },
             ad_url: { _nnull: true },
           },
         ],
@@ -688,7 +678,7 @@ export async function getRailIssueApi(year: string, month: string) {
 }
 
 export async function getContributor(slug: string) {
-  const data: Contributors[] = await directus.request(
+  const data = await directus.request(
     readItems("contributors", {
       fields: [
         "id",
@@ -733,7 +723,7 @@ export async function getContributor(slug: string) {
       ],
       filter: {
         slug: { _eq: slug },
-        articles: { _gt: 0 }, // only get contributors with articles
+        articles: { _nempty: true }, // only get contributors with articles
         status: { _eq: "published" },
       },
     }),
