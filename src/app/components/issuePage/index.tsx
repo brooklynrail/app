@@ -35,13 +35,15 @@ const IssuePage = (props: IssuePageProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const sections = !currentSections ? getSectionsByIssueId(issueData.id) : Promise.resolve(currentSections)
-      const ads = !currentAds ? getAds() : Promise.resolve(currentAds)
-      // Fetch all the data in parallel
-      const [fetchedSections, fetchedAds] = await Promise.all([sections, ads])
-      // Update the state with the fetched data as it becomes available
-      setCurrentSections(fetchedSections)
-      setCurrentAds(fetchedAds)
+      if (!currentSections || !currentAds) {
+        const sections = getSectionsByIssueId(issueData.id)
+        const ads = getAds()
+        // Fetch all the data in parallel
+        const [fetchedSections, fetchedAds] = await Promise.all([sections, ads])
+        // Update the state with the fetched data as it becomes available
+        setCurrentSections(fetchedSections)
+        setCurrentAds(fetchedAds)
+      }
     }
 
     // Call the fetchData function and handle any errors
