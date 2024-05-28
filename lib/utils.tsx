@@ -1,13 +1,16 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
-import { Ads, Articles, Contributors, DirectusFiles, Issues, Sections } from "./types"
+import { Ads, Articles, Contributors, DirectusFiles, Issues } from "./types"
 import { stripHtml } from "string-strip-html"
+import { IssuesSelect } from "./railTypes"
 
+// Used in
+// - Issue Select dropdown
 export async function getAllIssues() {
-  const issues = await directus.request(
+  const issues: IssuesSelect[] = await directus.request(
     readItems("issues", {
-      fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number", "date_updated"],
+      fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number", "date_updated", "status"],
       filter: {
         _and: [{ status: { _eq: "published" } }],
       },
@@ -31,7 +34,7 @@ export async function getIssues() {
       limit: -1,
     }),
   )
-  return issues
+  return issues as Issues[]
 }
 
 export async function getSpecialIssues() {
@@ -49,7 +52,7 @@ export async function getSpecialIssues() {
       limit: -1,
     }),
   )
-  return issues
+  return issues as Issues[]
 }
 
 export async function getCurrentIssueData() {
@@ -82,7 +85,7 @@ export async function getCurrentIssueData() {
     })
   }
 
-  return issueData
+  return issueData as Issues
 }
 
 export async function getCurrentIssueBasics() {
@@ -103,7 +106,7 @@ export async function getCurrentIssueBasics() {
   })
 
   // return the first issue in the array
-  return issueData
+  return issueData as Issues
 }
 
 // Explore making this get IssueData by ID
@@ -218,7 +221,7 @@ export async function getIssueData(props: IssueDataProps) {
       },
     }),
   )
-  return issueData[0]
+  return issueData[0] as Issues
 }
 
 interface SpecialIssueDataProps {
@@ -327,7 +330,7 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
       },
     }),
   )
-  return issueData[0]
+  return issueData[0] as Issues
 }
 
 interface IssueBasicsProps {
@@ -365,7 +368,7 @@ export async function getIssueBasics(props: IssueBasicsProps) {
     }),
   )
 
-  return issueData[0]
+  return issueData[0] as Issues
 }
 
 interface SpecialIssueBasicsProps {
@@ -401,13 +404,13 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
     }),
   )
 
-  return issueData[0]
+  return issueData[0] as Issues
 }
 
 export async function getSectionsByIssueId(issueId: string) {
-  const sections = directus.request(
+  const sections = await directus.request(
     readItems("sections", {
-      fields: ["id", "name", "slug"],
+      fields: ["id", "name", "slug", "articles", "old_id"],
       filter: {
         _and: [
           {
@@ -463,7 +466,7 @@ export async function getArticlePages() {
 }
 
 export async function getArticle(slug: string) {
-  const currentArticle = directus.request(
+  const currentArticle = await directus.request(
     readItem("articles", slug, {
       fields: [
         "slug",
@@ -541,12 +544,12 @@ export async function getArticle(slug: string) {
     }),
   )
 
-  return currentArticle
+  return currentArticle as Articles
 }
 
 export async function getAds() {
-  const today = new Date()
-  const ads = directus.request(
+  // const today = new Date()
+  const ads = await directus.request(
     readItems("ads", {
       fields: [
         "ad_type",
@@ -578,7 +581,7 @@ export async function getAds() {
       },
     }),
   )
-  return ads
+  return ads as Ads[]
 }
 
 interface OGImageProps {
@@ -668,15 +671,9 @@ export async function getPreviewPassword() {
   return settings.preview_password
 }
 
-export async function getRailIssueApi(year: string, month: string) {
-  // get the data from this API https://brooklynrail.org/2024/04/api
-  const api = `https://brooklynrail.org/${year}/${month}/api`
-  const response = await fetch(api)
-  const data = await response.json()
-
-  return data
-}
-
+// Get contributor
+// NOTE: There are multiple contributors with the same slug
+// This returns all contributors with the same slug, but their specific name and bio information may be different
 export async function getContributor(slug: string) {
   const data = await directus.request(
     readItems("contributors", {
@@ -728,7 +725,7 @@ export async function getContributor(slug: string) {
       },
     }),
   )
-  return data
+  return data as Contributors[]
 }
 
 export async function getAllContributors() {
