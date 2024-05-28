@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import { CoverImage } from "./coverImage"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapPin } from "@fortawesome/free-solid-svg-icons"
+import parse from "html-react-parser"
 import IssueRailHeader from "./header"
 import Bylines from "./bylines"
 
@@ -32,7 +33,7 @@ const ArticleList = (props: ArticleListProps) => {
       <li key={i}>
         <h4>
           <Link href={`${permalink}`}>
-            <span dangerouslySetInnerHTML={{ __html: article.articles_slug.title }} />
+            <span>{parse(article.articles_slug.title)}</span>
           </Link>
         </h4>
         {!hide_bylines_downstream && (
