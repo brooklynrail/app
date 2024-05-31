@@ -1,7 +1,6 @@
 import { Issues } from "../../../../lib/types"
 import { useEffect, useState } from "react"
 import { getAllIssues } from "../../../../lib/utils"
-import { IssuesSelect } from "../../../../lib/railTypes"
 
 interface IssueSelectProps {
   currentIssueSlug: string
@@ -9,7 +8,7 @@ interface IssueSelectProps {
 
 const IssueSelect = (props: IssueSelectProps) => {
   const { currentIssueSlug } = props
-  const [allIssues, setAllIssues] = useState<IssuesSelect[] | undefined>(undefined)
+  const [allIssues, setAllIssues] = useState<Issues[] | undefined>(undefined)
   const [selectedIssueSlug, setSelectedIssueSlug] = useState<string | undefined>(currentIssueSlug)
 
   useEffect(() => {
@@ -46,7 +45,7 @@ const IssueSelect = (props: IssueSelectProps) => {
   return (
     <>
       <select id="issue_select" value={selectedIssueSlug} onChange={handleIssueChange}>
-        {allIssues.map((issue: IssuesSelect) => {
+        {allIssues.map((issue: Issues) => {
           if (!issue.slug) {
             return <></>
           }

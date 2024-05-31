@@ -3,12 +3,11 @@ import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
 import { Ads, Articles, Contributors, DirectusFiles, Issues } from "./types"
 import { stripHtml } from "string-strip-html"
-import { IssuesSelect } from "./railTypes"
 
 // Used in
 // - Issue Select dropdown
 export async function getAllIssues() {
-  const issues: IssuesSelect[] = await directus.request(
+  const issues = await directus.request(
     readItems("issues", {
       fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number", "date_updated", "status"],
       filter: {
@@ -16,7 +15,7 @@ export async function getAllIssues() {
       },
     }),
   )
-  return issues
+  return issues as Issues[]
 }
 
 export async function getIssues() {
