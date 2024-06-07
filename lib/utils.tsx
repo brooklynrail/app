@@ -720,7 +720,6 @@ export async function getContributor(slug: string) {
       ],
       filter: {
         slug: { _eq: slug },
-        articles: { _nempty: true }, // only get contributors with articles
         status: { _eq: "published" },
       },
     }),
