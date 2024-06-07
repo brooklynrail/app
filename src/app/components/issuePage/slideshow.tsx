@@ -13,7 +13,7 @@ interface SlideImageProps {
 
 const SlideImage = (props: SlideImageProps) => {
   const { slideshow_image, alt } = props
-  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${slideshow_image.filename_disk}?key=slideshow-image`
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${slideshow_image.filename_disk}`
   return <Image priority className="bannerimg" width={664} height={282} alt={stripHtml(alt).result} src={src} />
 }
 

@@ -39,7 +39,7 @@ interface PromoBannerProps {
 const PromoBanner = (props: PromoBannerProps) => {
   const { image, title } = props
   const { filename_disk } = image
-  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=promo-banner`
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const alt = image.caption ? `${stripHtml(image.caption).result}` : `${stripHtml(title).result}`
   return <Image src={src} width={316} height={96} alt={alt} sizes="33vw" />
 }

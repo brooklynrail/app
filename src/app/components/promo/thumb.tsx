@@ -12,7 +12,7 @@ interface ThumbProps {
 const Thumb = (props: ThumbProps) => {
   const { image, title } = props
   const { filename_disk } = image
-  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=promo-thumb`
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const alt = image.caption ? `${stripHtml(image.caption).result}` : `${stripHtml(title).result}`
   return <Image src={src} width={60} height={60} alt={alt} sizes="15vw" />
 }
