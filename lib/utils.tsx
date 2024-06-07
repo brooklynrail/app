@@ -13,6 +13,7 @@ export async function getAllIssues() {
       filter: {
         _and: [{ status: { _eq: "published" } }],
       },
+      limit: -1,
     }),
   )
   return issues as Issues[]
