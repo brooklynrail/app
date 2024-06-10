@@ -340,35 +340,34 @@ interface IssueBasicsProps {
 
 export async function getIssueBasics(props: IssueBasicsProps) {
   const { year, month } = props
-  const issueData = await directus.request(
-    readItems("issues", {
-      fields: [
-        "id",
-        "title",
-        "slug",
-        "year",
-        "month",
-        "status",
-        "issue_number",
-        "special_issue",
-        {
-          cover_1: ["caption", "filename_disk", "width", "height", "type"],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            year: { _eq: year },
-            month: { _eq: month },
-            status: { _eq: "published" },
-            special_issue: { _eq: false },
-          },
-        ],
-      },
-    }),
-  )
+  const issueBasicsAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
+    `?fields[]=id` +
+    `&fields[]=title` +
+    `&fields[]=slug` +
+    `&fields[]=year` +
+    `&fields[]=month` +
+    `&fields[]=status` +
+    `&fields[]=issue_number` +
+    `&fields[]=special_issue` +
+    `&fields[]=sections.sections_id.slug` +
+    `&fields[]=cover_1.caption` +
+    `&fields[]=cover_1.filename_disk` +
+    `&fields[]=cover_1.width` +
+    `&fields[]=cover_1.height` +
+    `&fields[]=cover_1.type` +
+    `&filter[year][_eq]=${year}` +
+    `&filter[month][_eq]=${month}` +
+    `&filter[status][_eq]=published` +
+    `&filter[special_issue][_eq]=false`
+  const res = await fetch(issueBasicsAPI, { cache: "force-cache" })
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch issueBasics data")
+  }
 
-  return issueData[0] as Issues
+  const { data } = await res.json()
+  return data[0] as Issues
 }
 
 interface SpecialIssueBasicsProps {
@@ -451,7 +450,20 @@ export async function getArticlePages() {
   let page = 1
   let isMore = true
   while (isMore) {
-    const articleDataAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles?fields[]=slug&fields[]=sections.sections_id.slug&fields[]=issues.issues_id.year&fields[]=issues.issues_id.month&fields[]=issues.issues_id.slug&fields[]=issues.issues_id.special_issue&fields[]=issues.issues_id.status&filter[status][_eq]=published&filter[slug][_nempty]=true&deep[issues][_filter][issues_id][special_issue][_eq]=false&page=${page}&limit=100&offset=${page * 100 - 100}`
+    const articleDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles?fields[]=slug` +
+      `&fields[]=sections.sections_id.slug` +
+      `&fields[]=issues.issues_id.year` +
+      `&fields[]=issues.issues_id.month` +
+      `&fields[]=issues.issues_id.slug` +
+      `&fields[]=issues.issues_id.special_issue` +
+      `&fields[]=issues.issues_id.status` +
+      `&filter[status][_eq]=published` +
+      `&filter[slug][_nempty]=true` +
+      `&deep[issues][_filter][issues_id][special_issue][_eq]=false` +
+      `&page=${page}` +
+      `&limit=100` +
+      `&offset=${page * 100 - 100}`
     const res = await fetch(articleDataAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
