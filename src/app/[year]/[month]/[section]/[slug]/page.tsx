@@ -29,7 +29,7 @@ export async function generateStaticParams() {
     // NOTE: This is returning articles with no issues.
     // These are the articles that are part of the "Special Issues"
     // This might be a BUG, or might be how the REST API is set up.
-    if (article.issues.length === 0) {
+    if (!article.issues || article.issues.length === 0) {
       return
     }
     const month = article.issues[0].issues_id.month
