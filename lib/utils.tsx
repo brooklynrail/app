@@ -431,7 +431,20 @@ export async function getSpecialArticlePages() {
   let page = 1
   let isMore = true
   while (isMore) {
-    const specialArticleDataAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles?fields[]=slug&fields[]=sections.sections_id.slug&fields[]=issues.issues_id.slug&fields[]=issues.issues_id.special_issue&fields[]=issues.issues_id.status&filter[status][_eq]=published&filter[slug][_nempty]=true&deep[issues][_filter][issues_id][special_issue][_eq]=true&page=${page}&limit=100&offset=${page * 100 - 100}`
+    const specialArticleDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles?fields[]=slug` +
+      `&fields[]=sections.sections_id.slug` +
+      `&fields[]=issues.issues_id.slug` +
+      `&fields[]=issues.issues_id.special_issue` +
+      `&fields[]=issues.issues_id.status` +
+      `&filter[status][_eq]=published` +
+      `&filter[slug][_nempty]=true` +
+      `&filter[issues][_nnull]=true` +
+      `&filter[issues][_gt]=0` +
+      `&deep[issues][_filter][issues_id][special_issue][_eq]=true` +
+      `&page=${page}` +
+      `&limit=100` +
+      `&offset=${page * 100 - 100}`
     const res = await fetch(specialArticleDataAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
@@ -460,6 +473,8 @@ export async function getArticlePages() {
       `&fields[]=issues.issues_id.status` +
       `&filter[status][_eq]=published` +
       `&filter[slug][_nempty]=true` +
+      `&filter[issues][_nnull]=true` +
+      `&filter[issues][_gt]=0` +
       `&deep[issues][_filter][issues_id][special_issue][_eq]=false` +
       `&page=${page}` +
       `&limit=100` +
@@ -733,10 +748,16 @@ export async function getContributor(slug: string) {
       filter: {
         slug: { _eq: slug },
         status: { _eq: "published" },
+        // articles: { _nnull: true },
+        articles: { _nnull: true },
+      },
+      deep: {
+        articles: [{ articles_slug: { issues: { _nnull: true } } }],
       },
     }),
   )
-  return data as Contributors[]
+
+  return data
 }
 
 export async function getAllContributors() {
@@ -744,7 +765,7 @@ export async function getAllContributors() {
   let page = 1
   let isMore = true
   while (isMore) {
-    const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_gt]=0&page=${page}&limit=100&offset=${page * 100 - 100}`
+    const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_nnull]=true&page=${page}&limit=100&offset=${page * 100 - 100}`
     const res = await fetch(contributorsAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
