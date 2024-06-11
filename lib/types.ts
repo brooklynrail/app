@@ -34,7 +34,6 @@ export type Articles = {
   featured_image?: DirectusFiles
   header_type?: string | null
   images: any[] | ArticlesFiles[]
-  Images: string
   in_print?: boolean | null
   issues: ArticlesIssues[]
   kicker?: string | null
