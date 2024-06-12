@@ -11,6 +11,9 @@ const ContributorsBox = (props: ContributorsProps) => {
 
   const heading = contributors.length > 1 ? "Contributors" : "Contributor"
   const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
+    if (!contributor.contributors_id) {
+      return <></>
+    }
     return (
       <div className="contributor" key={i}>
         <h4>
