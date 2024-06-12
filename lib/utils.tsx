@@ -26,7 +26,7 @@ export async function getIssues() {
       filter: {
         _and: [
           {
-            status: { _eq: "published" },
+            status: { _in: ["published"] },
             special_issue: { _eq: false },
           },
         ],
@@ -44,7 +44,7 @@ export async function getSpecialIssues() {
       filter: {
         _and: [
           {
-            status: { _eq: "published" },
+            status: { _in: ["published"] },
             special_issue: { _eq: true },
           },
         ],
@@ -210,7 +210,7 @@ export async function getIssueData(props: IssueDataProps) {
             special_issue: { _eq: false },
             year: { _eq: year },
             month: { _eq: month },
-            status: { _eq: "published" },
+            status: { _in: ["published"] },
           },
         ],
       },
@@ -319,7 +319,7 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
           {
             special_issue: { _eq: true },
             slug: { _eq: slug },
-            status: { _eq: "published" },
+            status: { _in: ["published"] },
           },
         ],
       },
@@ -395,7 +395,7 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
         _and: [
           {
             slug: { _eq: slug },
-            status: { _eq: "published" },
+            status: { _in: ["published"] },
             special_issue: { _eq: true },
           },
         ],
@@ -564,7 +564,7 @@ export async function getArticle(slug: string) {
       filter: {
         _and: [
           {
-            status: { _eq: "published" },
+            status: { _in: ["published"] },
           },
         ],
       },
@@ -747,7 +747,7 @@ export async function getContributor(slug: string) {
       ],
       filter: {
         slug: { _eq: slug },
-        status: { _eq: "published" },
+        status: { _in: ["published"] },
         // articles: { _nnull: true },
         articles: { _nnull: true },
       },
