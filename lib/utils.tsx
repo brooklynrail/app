@@ -757,7 +757,7 @@ export async function getContributor(slug: string) {
     }),
   )
 
-  return data
+  return data as Contributors[]
 }
 
 export async function getAllContributors() {

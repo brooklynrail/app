@@ -59,6 +59,9 @@ export default async function Contributor({ params }: { params: ContributorsPara
     <section className="collection">
       {currentArticles.map((articleContributor: ArticlesContributors, i: number) => {
         const article = articleContributor.articles_slug
+        if (!article) {
+          return <></>
+        }
         const issue = article.issues[0].issues_id
 
         let permalink
