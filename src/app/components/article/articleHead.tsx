@@ -45,14 +45,20 @@ interface ArticleHeadProps {
   currentSection?: Sections
   articleData: Articles
 }
-
-const ArticleHead = (props: ArticleHeadProps) => {
-  const { permalink, currentIssue, currentSection, articleData } = props
-  const { kicker, title, deck, featured_image, header_type, contributors, hide_bylines, byline_override } = articleData
-
-  const kickerProps = { kicker, currentIssue, currentSection }
+interface AuthorsProps {
+  contributors: ArticlesContributors[]
+}
+const Authors = (props: AuthorsProps) => {
+  const { contributors } = props
+  if (!contributors || contributors.length === 0) {
+    return <></>
+  }
 
   const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
+    if (!contributor.contributors_id) {
+      return <></>
+    }
+
     const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.contributors_id.slug })
 
     let separator
@@ -66,8 +72,8 @@ const ArticleHead = (props: ArticleHeadProps) => {
     } else if (i < contributors.length - 1) {
       separator = ", "
     }
-    // if there is only one author, don't use a separator
 
+    // if there is only one author, don't use a separator
     const author = (
       <span key={i}>
         <Link itemProp="author" href={contribPermalink}>
@@ -78,6 +84,15 @@ const ArticleHead = (props: ArticleHeadProps) => {
     )
     return author
   })
+
+  return authors
+}
+
+const ArticleHead = (props: ArticleHeadProps) => {
+  const { permalink, currentIssue, currentSection, articleData } = props
+  const { kicker, title, deck, featured_image, header_type, contributors, hide_bylines, byline_override } = articleData
+
+  const kickerProps = { kicker, currentIssue, currentSection }
 
   const articleMeta = (
     <div className="article-meta ooo">
@@ -90,7 +105,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
           ) : (
             <>
               <span>By </span>
-              {authors}
+              <Authors contributors={contributors} />
             </>
           )}
         </cite>
