@@ -96,7 +96,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
   const kickerProps = { kicker, currentIssue, currentSection }
 
   // remove https://localhost:3000 from the permalink and replace with https://brooklynrail.org
-  const previewUrl = permalink.replace("https://localhost:3000", "https://preview.brooklynrail.org")
+  const previewUrl = permalink.replace("https://localhost:3000", "https://brooklynrail.org")
 
   const articleMeta = (
     <div className="article-meta ooo">
