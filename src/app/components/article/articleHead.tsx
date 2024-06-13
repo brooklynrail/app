@@ -127,7 +127,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
         <Link className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
           <FontAwesomeIcon icon={faSquareFacebook} />
         </Link>
-        <Link className="preview" href={previewUrl}>
+        <Link className="preview" href={previewUrl} target="_new">
           <FontAwesomeIcon icon={faEye} />
         </Link>
       </div>
