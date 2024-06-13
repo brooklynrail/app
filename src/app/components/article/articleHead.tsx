@@ -7,6 +7,7 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSquareFacebook, faTwitter } from "@fortawesome/free-brands-svg-icons"
 import Kicker from "./kicker"
+import { faEye } from "@fortawesome/free-solid-svg-icons"
 
 interface FeaturedImageProps {
   image: DirectusFiles
@@ -94,6 +95,9 @@ const ArticleHead = (props: ArticleHeadProps) => {
 
   const kickerProps = { kicker, currentIssue, currentSection }
 
+  // remove https://localhost:3000 from the permalink and replace with https://brooklynrail.org
+  const previewUrl = permalink.replace("https://localhost:3000", "https://preview.brooklynrail.org")
+
   const articleMeta = (
     <div className="article-meta ooo">
       <div className="date">MAY 2024</div>
@@ -122,6 +126,9 @@ const ArticleHead = (props: ArticleHeadProps) => {
         </Link>
         <Link className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
           <FontAwesomeIcon icon={faSquareFacebook} />
+        </Link>
+        <Link className="preview" href={previewUrl}>
+          <FontAwesomeIcon icon={faEye} />
         </Link>
       </div>
     </div>
