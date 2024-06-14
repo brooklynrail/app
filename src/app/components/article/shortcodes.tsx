@@ -129,7 +129,7 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
     return null
   }
   // Remove <p> and </p> tags surrounding the shortcodes
-  let cleanedHtml = html.replace(/<p>\s*(\[img name="[^"]*" type="[^"]*"\s*\/?\])\s*<\/p>/g, "$1")
+  let cleanedHtml = html.replace(/<p>\s*(\[img name="[^"]*" type="[^"]*"\s*\/?\])\s*<\/p>/g, "<div>$1</div>")
   cleanedHtml = replacePromo(cleanedHtml)
   cleanedHtml = replaceQuote(cleanedHtml)
   cleanedHtml = replacePullQuote(cleanedHtml)
@@ -146,11 +146,19 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
   // Options for the html-react-parser
   const options = {
     replace: ({ data }: any) => {
-      // [img name="img1" type="md" /]
-      if (data && /(?:<p>\s*)?\[img name="[^"]*" type="[^"]*"\s*\/?\](?:\s*<\/p>)?/.test(data)) {
-        const matches = data.match(/name="([^"]*)" type="([^"]*)"/)
-        if (matches && matches.length >= 3) {
-          return <RailImage name={matches[1]} type={matches[2]} images={images} />
+      if (data) {
+        const regex = /(?:<p>\s*)?\[img name="([^"]*)" type="([^"]*)"\s*\/?\](?:\s*<\/p>)?/g
+        let match
+        let newData = data
+        while ((match = regex.exec(data)) !== null) {
+          // Extract name and type from each match
+          const name = match[1]
+          const type = match[2]
+          // Construct the RailImage component for each match
+          const railImageComponent = <RailImage name={name} type={type} images={images} />
+          // Replace the matched shortcode with the RailImage component
+          newData = newData.replace(match[0], railImageComponent)
+          return railImageComponent
         }
       }
     },
