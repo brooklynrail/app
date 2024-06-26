@@ -44,31 +44,35 @@ const ArchivePage = (props: ArchivePageProps) => {
 
       return (
         <li key={index} className="cover">
-          <Image
-            priority
-            id={`cover-${index + 1}`}
-            src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`}
-            width={100}
-            height={100}
-            sizes="12vw"
-            style={{
-              height: "auto",
-            }}
-            alt={alt}
-          />
+          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+            <Image
+              priority
+              id={`cover-${index + 1}`}
+              src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`}
+              width={100}
+              height={100}
+              sizes="12vw"
+              style={{
+                height: "auto",
+              }}
+              alt={alt}
+            />
+          </Link>
         </li>
       )
     })
 
     return (
       <li key={id} className="issue">
-        <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-          <div className="issueDetails">
-            <h6>Issue #{issue_number}</h6>
-            <h3>{title}</h3>
-          </div>
-          <ul className="coversList">{coversList}</ul>
-        </Link>
+        <div className="issueDetails">
+          <h6>Issue #{issue_number}</h6>
+          <h3>
+            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+              {title}
+            </Link>
+          </h3>
+        </div>
+        <ul className="coversList">{coversList}</ul>
       </li>
     )
   })
