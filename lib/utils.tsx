@@ -6,13 +6,43 @@ import { stripHtml } from "string-strip-html"
 
 // Used in
 // - Issue Select dropdown
+// - Archive page
 export async function getAllIssues() {
   const issues = await directus.request(
     readItems("issues", {
-      fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number", "date_updated", "status"],
+      fields: [
+        "year",
+        "month",
+        "id",
+        "slug",
+        "title",
+        "special_issue",
+        "issue_number",
+        "date_updated",
+        "status",
+        {
+          cover_1: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_2: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_3: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_4: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_5: ["caption", "filename_disk", "width", "height", "type"],
+        },
+        {
+          cover_6: ["caption", "filename_disk", "width", "height", "type"],
+        },
+      ],
       filter: {
         _and: [{ status: { _eq: "published" } }],
       },
+      sort: ["sort", "-issue_number"], //Sort by sort field and creation date descending
       limit: -1,
     }),
   )
@@ -651,6 +681,7 @@ export enum PageType {
   SpecialIssue = "special_issue",
   SpecialIssueSection = "special_issue_section",
   SpecialIssueArticle = "special_issue_article",
+  Archive = "archive",
 }
 interface PermalinkProps {
   type: PageType
@@ -683,6 +714,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/`
     case PageType.SpecialIssueArticle:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/${slug}/`
+    case PageType.Archive:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/archive/`
     default:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/`
   }
