@@ -40,8 +40,6 @@ const IssueSelect = (props: IssueSelectProps) => {
     }
   }
 
-  // sort allIssues by the issue_number, largest to smallest
-  allIssues.sort((a, b) => b.issue_number - a.issue_number)
   return (
     <>
       <select id="issue_select" value={selectedIssueSlug} onChange={handleIssueChange}>
