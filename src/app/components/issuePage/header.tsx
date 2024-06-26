@@ -2,9 +2,9 @@ import Link from "next/link"
 import Image from "next/image"
 
 interface HeaderProps {
-  special_issue: boolean | null
-  issue_number: number
-  title: string
+  special_issue?: boolean
+  issue_number?: number
+  title?: string
 }
 
 const Header = (props: HeaderProps) => {
@@ -19,7 +19,7 @@ const Header = (props: HeaderProps) => {
         <div id="textflag">
           <h1>The Brooklyn Rail </h1>
           <h2>Critical Perspectives on Art, Politics and Culture</h2>
-          <h3>{title}</h3>
+          {title && <h3>{title}</h3>}
         </div>
         <Link href="/">
           <Image priority src={src} height="68" width="396" alt="The Brooklyn Rail" title="Brooklyn Rail Homepage" />
