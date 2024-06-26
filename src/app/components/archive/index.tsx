@@ -22,7 +22,7 @@ const ArchivePage = (props: ArchivePageProps) => {
 
   // list all Issues
   const issueList = issues.map((issue: Issues) => {
-    const { id, issue_number, articles, special_issue, title, cover_1 } = issue
+    const { id, issue_number, special_issue, title, cover_1 } = issue
     if (!cover_1 || !cover_1.filename_disk) {
       return null
     }
@@ -66,7 +66,6 @@ const ArchivePage = (props: ArchivePageProps) => {
           <div className="issueDetails">
             <h6>Issue #{issue_number}</h6>
             <h3>{title}</h3>
-            <p>Articles: {articles.length} </p>
           </div>
           <ul className="coversList">{coversList}</ul>
         </Link>

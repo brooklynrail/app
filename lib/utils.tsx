@@ -20,7 +20,6 @@ export async function getAllIssues() {
         "issue_number",
         "date_updated",
         "status",
-        "articles",
         {
           cover_1: ["caption", "filename_disk", "width", "height", "type"],
         },
