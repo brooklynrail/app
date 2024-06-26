@@ -20,13 +20,7 @@ export async function getAllIssues() {
         "issue_number",
         "date_updated",
         "status",
-        {
-          articles: [
-            {
-              articles_slug: ["contributors", "sections", "images"],
-            },
-          ],
-        },
+        "articles",
         {
           cover_1: ["caption", "filename_disk", "width", "height", "type"],
         },

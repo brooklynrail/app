@@ -22,7 +22,7 @@ const ArchivePage = (props: ArchivePageProps) => {
 
   // list all Issues
   const issueList = issues.map((issue: Issues) => {
-    const { id, issue_number, special_issue, title, cover_1 } = issue
+    const { id, issue_number, articles, special_issue, title, cover_1 } = issue
     if (!cover_1 || !cover_1.filename_disk) {
       return null
     }
@@ -50,6 +50,7 @@ const ArchivePage = (props: ArchivePageProps) => {
             src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`}
             width={100}
             height={100}
+            sizes="12vw"
             style={{
               height: "auto",
             }}
@@ -62,7 +63,11 @@ const ArchivePage = (props: ArchivePageProps) => {
     return (
       <li key={id} className="issue">
         <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-          <h3>{title}</h3>
+          <div className="issueDetails">
+            <h6>Issue #{issue_number}</h6>
+            <h3>{title}</h3>
+            <p>Articles: {articles.length} </p>
+          </div>
           <ul className="coversList">{coversList}</ul>
         </Link>
       </li>
@@ -84,11 +89,12 @@ const ArchivePage = (props: ArchivePageProps) => {
             </div>
           </header>
 
-          <section id="main">
+          <section id="main" className="issues-archive">
             <div className="grid-container grid-container-desktop">
               <div className="grid-row grid-gap-3">
                 <div className="grid-col-12">
-                  <ul className="issues-archive">{issueList}</ul>
+                  <h1>The Brooklyn Rail Archives</h1>
+                  <ul>{issueList}</ul>
                 </div>
               </div>
             </div>

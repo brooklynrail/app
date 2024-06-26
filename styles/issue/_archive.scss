@@ -1,18 +1,48 @@
 .issues-archive {
-  @include u-margin-bottom(3);
-  @include u-padding-bottom(3);
-  @include u-border-bottom("1px", "dotted", "black");
-  h3 {
-    @include u-padding-bottom("105");
-    @include u-font("sans", "xl");
+  h1 {
+    @include u-font("sans", "2xl");
     @include u-text("thin");
+    @include u-margin-y(3);
   }
-  .issue {
-    @include u-padding-y(2);
-    .coversList {
-      @include u-display("flex");
-      .cover {
-        @include u-padding-right(2);
+  ul {
+    @include u-margin-bottom(3);
+    @include u-padding-bottom(3);
+
+    .issue {
+      @include u-margin-bottom(3);
+      @include u-padding-y(2);
+      @include u-bg("gray-warm-5");
+      a {
+        @include u-display("flex");
+        @include u-color("black");
+      }
+      .issueDetails {
+        @include u-padding-x(2);
+        @include u-width("card-lg");
+        h6 {
+          @include u-margin-bottom(1);
+          @include u-font("sans", "3xs");
+          @include u-text("uppercase");
+          @include u-text("normal");
+          @include u-color("red-50v");
+        }
+        h3 {
+          @include u-padding-bottom("105");
+          @include u-font("sans", "md");
+          @include u-text("medium");
+        }
+        p {
+          @include u-font("sans", "2xs");
+          @include u-text("normal");
+        }
+      }
+      ul.coversList {
+        @include u-display("flex");
+        @include u-margin-bottom(0);
+        @include u-padding-bottom(0);
+        .cover {
+          @include u-padding-right(2);
+        }
       }
     }
   }
