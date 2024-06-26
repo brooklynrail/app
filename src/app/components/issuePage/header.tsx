@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 
 interface HeaderProps {
-  special_issue?: boolean
+  special_issue?: boolean | null
   issue_number?: number
   title?: string
 }
