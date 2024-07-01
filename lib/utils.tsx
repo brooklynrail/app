@@ -42,11 +42,6 @@ export async function getAllIssues() {
       filter: {
         _and: [{ status: { _eq: "published" } }],
       },
-      deep: {
-        articles: {
-          _limit: -1,
-        },
-      },
       sort: ["sort", "-issue_number"], //Sort by sort field and creation date descending
       limit: -1,
     }),
