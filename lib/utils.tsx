@@ -445,7 +445,7 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
     `&fields[]=cover_1.height` +
     `&fields[]=cover_1.type` +
     `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_eq]=published` +
+    `&filter[status][_in]=published` +
     `&filter[special_issue][_eq]=true`
   const res = await fetch(specialIssueBasicsAPI, { cache: "force-cache" })
   if (!res.ok) {
