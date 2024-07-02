@@ -539,7 +539,7 @@ export async function getArticlePages() {
     isMore = data.data.length === 100 // assumes there is another page of records
     page++
   }
-  return articlePages
+  return articlePages as Articles[]
 }
 
 export async function getArticle(slug: string) {
