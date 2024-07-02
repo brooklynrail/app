@@ -1,6 +1,6 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
-import { readItem, readItems, readSingleton } from "@directus/sdk"
+import { readItems, readSingleton } from "@directus/sdk"
 import { Ads, Articles, Contributors, DirectusFiles, Issues } from "./types"
 import { stripHtml } from "string-strip-html"
 
@@ -89,10 +89,11 @@ export async function getIssues() {
   return issues as Issues[]
 }
 
+// only used for building pages in Special Issues
 export async function getSpecialIssues() {
-  const issues = await directus.request(
+  const specialIssues = await directus.request(
     readItems("issues", {
-      fields: ["year", "month", "id", "slug", "title", "special_issue", "issue_number"],
+      fields: ["slug", "special_issue", "status"],
       filter: {
         _and: [
           {
@@ -101,10 +102,10 @@ export async function getSpecialIssues() {
           },
         ],
       },
-      limit: -1,
+      // limit: -1, // there are under 100 special issues at the moment
     }),
   )
-  return issues as Issues[]
+  return specialIssues as Issues[]
 }
 
 export async function getCurrentIssueData() {
