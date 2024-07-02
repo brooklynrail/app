@@ -54,6 +54,7 @@ export async function getAllIssues() {
       `&fields[]=cover_6.height` +
       `&fields[]=cover_6.type` +
       `&filter[status][_in]=published` +
+      `&sort[]=-issue_number` +
       `&page=${page}` +
       `&limit=100` +
       `&offset=${page * 100 - 100}`
