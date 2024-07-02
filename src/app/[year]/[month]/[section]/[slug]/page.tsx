@@ -22,31 +22,24 @@ export interface ArticleProps {
   errorMessage?: string
 }
 
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
 export async function generateStaticParams() {
   const articlePagesData = await getArticlePages()
 
-  const results = []
-  for (const article of articlePagesData) {
-    if (article.issues && article.issues.length > 0) {
+  const articlePages = articlePagesData
+    .filter((article: Articles) => article.issues && article.issues.length > 0)
+    .map((article: Articles) => {
+      // NOTE: This is returning articles with no issues.
+      // These are the articles that are part of the "Special Issues"
+      // This might be a BUG, or might be how the REST API is set up.
       const month = article.issues[0].issues_id.month
-      const result = {
+      return {
         year: article.issues[0].issues_id.year.toString(),
         month: month < 10 ? `0${month.toString()}` : month.toString(),
         section: article.sections[0].sections_id.slug.toString(),
         slug: article.slug,
       }
-      results.push(result)
-
-      // Include a delay here - adjust time based on your requirements
-      await delay(1000) // 1 second delay between processing each article
-    }
-  }
-
-  return results
+    })
+  return articlePages
 }
 
 interface ArticleParams {
