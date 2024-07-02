@@ -12,7 +12,7 @@ import { Issues, Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
 import { Metadata } from "next"
 
-export const dynamicParams = true
+// export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
   const data = await getData({ params })

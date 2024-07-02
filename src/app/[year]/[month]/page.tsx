@@ -6,7 +6,7 @@ import { Metadata } from "next"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
+// export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {
   const data = await getData({ params })

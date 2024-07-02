@@ -11,7 +11,7 @@ import { Articles, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
 
-export const dynamicParams = true
+// export const dynamicParams = true
 
 export interface ArticleProps {
   articleData: Articles

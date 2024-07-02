@@ -5,7 +5,7 @@ import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
 import { Issues } from "../../../../lib/types"
 
-export const dynamicParams = true
+// export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: SpecialSectionParams }): Promise<Metadata> {
   const data = await getData({ params })

@@ -12,7 +12,7 @@ import { stripHtml } from "string-strip-html"
 import { Issues, Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
 
-export const dynamicParams = true
+// export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: SpecialSectionParams }): Promise<Metadata> {
   const data = await getData({ params })
