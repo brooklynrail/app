@@ -427,7 +427,7 @@ interface SpecialIssueBasicsProps {
 
 export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
   const { slug } = props
-  const issueBasicsAPI =
+  const specialIssueBasicsAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
     `?fields[]=id` +
     `&fields[]=title` +
@@ -446,10 +446,10 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
     `&filter[special_issue][_eq]=true`
-  const res = await fetch(issueBasicsAPI, { cache: "force-cache" })
+  const res = await fetch(specialIssueBasicsAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch issueBasics data")
+    throw new Error("Failed to fetch specialIssueBasicsAPI data")
   }
 
   const { data } = await res.json()
@@ -543,85 +543,81 @@ export async function getArticlePages() {
 }
 
 export async function getArticle(slug: string) {
-  const currentArticle = await directus.request(
-    readItem("articles", slug, {
-      fields: [
-        "slug",
-        "byline_override",
-        "title",
-        "deck",
-        "excerpt",
-        "kicker",
-        "featured",
-        "sort",
-        "body",
-        "body_code",
-        "body_text",
-        "body_type",
-        "header_type",
-        "in_print",
-        "status",
-        "date_created",
-        "date_updated",
-        "title_tag",
-        "user_updated",
-        "date_updated",
-        "hide_bylines",
-        "hide_bylines_downstream",
-        "tags",
-        "endnote",
-        {
-          featured_image: ["id", "caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          slideshow_image: ["id", "caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          promo_banner: ["id", "caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          promo_thumb: ["id", "caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          contributors: [
-            {
-              contributors_id: ["first_name", "last_name", "slug", "bio"],
-            },
-          ],
-        },
-        {
-          issues: [
-            {
-              issues_id: ["title", "slug"],
-            },
-          ],
-        },
-        {
-          sections: [
-            {
-              sections_id: ["slug", "name"],
-            },
-          ],
-        },
-        {
-          images: [
-            {
-              directus_files_id: ["id", "caption", "filename_disk", "width", "height", "type", "shortcode_key"],
-            },
-          ],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            status: { _in: ["published"] },
-          },
-        ],
-      },
-    }),
-  )
+  const articleAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
+    `?fields[]=slug` +
+    `&fields[]=byline_override` +
+    `&fields[]=title` +
+    `&fields[]=deck` +
+    `&fields[]=excerpt` +
+    `&fields[]=kicker` +
+    `&fields[]=featured` +
+    `&fields[]=sort` +
+    `&fields[]=body` +
+    `&fields[]=body_code` +
+    `&fields[]=body_text` +
+    `&fields[]=body_type` +
+    `&fields[]=header_type` +
+    `&fields[]=in_print` +
+    `&fields[]=status` +
+    `&fields[]=date_created` +
+    `&fields[]=date_updated` +
+    `&fields[]=title_tag` +
+    `&fields[]=user_updated` +
+    `&fields[]=date_updated` +
+    `&fields[]=hide_bylines` +
+    `&fields[]=hide_bylines_downstream` +
+    `&fields[]=tags` +
+    `&fields[]=endnote` +
+    `&fields[]=featured_image.id` +
+    `&fields[]=featured_image.caption` +
+    `&fields[]=featured_image.filename_disk` +
+    `&fields[]=featured_image.width` +
+    `&fields[]=featured_image.height` +
+    `&fields[]=featured_image.type` +
+    `&fields[]=slideshow_image.id` +
+    `&fields[]=slideshow_image.caption` +
+    `&fields[]=slideshow_image.filename_disk` +
+    `&fields[]=slideshow_image.width` +
+    `&fields[]=slideshow_image.height` +
+    `&fields[]=slideshow_image.type` +
+    `&fields[]=promo_banner.id` +
+    `&fields[]=promo_banner.caption` +
+    `&fields[]=promo_banner.filename_disk` +
+    `&fields[]=promo_banner.width` +
+    `&fields[]=promo_banner.height` +
+    `&fields[]=promo_banner.type` +
+    `&fields[]=promo_thumb.id` +
+    `&fields[]=promo_thumb.caption` +
+    `&fields[]=promo_thumb.filename_disk` +
+    `&fields[]=promo_thumb.width` +
+    `&fields[]=promo_thumb.height` +
+    `&fields[]=promo_thumb.type` +
+    `&fields[]=contributors.contributors_id.first_name` +
+    `&fields[]=contributors.contributors_id.last_name` +
+    `&fields[]=contributors.contributors_id.slug` +
+    `&fields[]=contributors.contributors_id.bio` +
+    `&fields[]=issues.issues_id.title` +
+    `&fields[]=issues.issues_id.slug` +
+    `&fields[]=sections.sections_id.slug` +
+    `&fields[]=sections.sections_id.name` +
+    `&fields[]=images.directus_files_id.id` +
+    `&fields[]=images.directus_files_id.caption` +
+    `&fields[]=images.directus_files_id.filename_disk` +
+    `&fields[]=images.directus_files_id.width` +
+    `&fields[]=images.directus_files_id.height` +
+    `&fields[]=images.directus_files_id.type` +
+    `&fields[]=images.directus_files_id.shortcode_key` +
+    `&filter[slug][_eq]=${slug}` +
+    `&filter[status][_in]=published`
+  const res = await fetch(articleAPI, { cache: "force-cache" })
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch articleAPI data")
+  }
 
-  return currentArticle as Articles
+  const { data } = await res.json()
+  return data[0] as Articles
 }
 
 export async function getAds() {
