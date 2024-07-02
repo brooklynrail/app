@@ -797,7 +797,6 @@ export async function getContributor(slug: string) {
       filter: {
         slug: { _eq: slug },
         status: { _in: ["published"] },
-        // articles: { _nnull: true },
         articles: { _nnull: true },
       },
       deep: {
