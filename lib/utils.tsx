@@ -8,45 +8,66 @@ import { stripHtml } from "string-strip-html"
 // - Issue Select dropdown
 // - Archive page
 export async function getAllIssues() {
-  const issues = await directus.request(
-    readItems("issues", {
-      fields: [
-        "year",
-        "month",
-        "id",
-        "slug",
-        "title",
-        "special_issue",
-        "issue_number",
-        "date_updated",
-        "status",
-        {
-          cover_1: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_2: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_3: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_4: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_5: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_6: ["caption", "filename_disk", "width", "height", "type"],
-        },
-      ],
-      filter: {
-        _and: [{ status: { _eq: "published" } }],
-      },
-      sort: ["sort", "-issue_number"], //Sort by sort field and creation date descending
-      limit: -1,
-    }),
-  )
-  return issues as Issues[]
+  let allIssues: Issues[] = []
+  let page = 1
+  let isMore = true
+  while (isMore) {
+    const issuesDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
+      `?fields[]=year` +
+      `&fields[]=month` +
+      `&fields[]=id` +
+      `&fields[]=slug` +
+      `&fields[]=title` +
+      `&fields[]=special_issue` +
+      `&fields[]=issue_number` +
+      `&fields[]=date_updated` +
+      `&fields[]=status` +
+      `&fields[]=cover_1.caption` +
+      `&fields[]=cover_1.filename_disk` +
+      `&fields[]=cover_1.width` +
+      `&fields[]=cover_1.height` +
+      `&fields[]=cover_1.type` +
+      `&fields[]=cover_2.caption` +
+      `&fields[]=cover_2.filename_disk` +
+      `&fields[]=cover_2.width` +
+      `&fields[]=cover_2.height` +
+      `&fields[]=cover_2.type` +
+      `&fields[]=cover_3.caption` +
+      `&fields[]=cover_3.filename_disk` +
+      `&fields[]=cover_3.width` +
+      `&fields[]=cover_3.height` +
+      `&fields[]=cover_3.type` +
+      `&fields[]=cover_4.caption` +
+      `&fields[]=cover_4.filename_disk` +
+      `&fields[]=cover_4.width` +
+      `&fields[]=cover_4.height` +
+      `&fields[]=cover_4.type` +
+      `&fields[]=cover_5.caption` +
+      `&fields[]=cover_5.filename_disk` +
+      `&fields[]=cover_5.width` +
+      `&fields[]=cover_5.height` +
+      `&fields[]=cover_5.type` +
+      `&fields[]=cover_6.caption` +
+      `&fields[]=cover_6.filename_disk` +
+      `&fields[]=cover_6.width` +
+      `&fields[]=cover_6.height` +
+      `&fields[]=cover_6.type` +
+      `&filter[status][_in]=published` +
+      `&page=${page}` +
+      `&limit=100` +
+      `&offset=${page * 100 - 100}`
+    const res = await fetch(issuesDataAPI, { cache: "force-cache" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch data")
+    }
+    const data = await res.json()
+    allIssues = allIssues.concat(data.data)
+    isMore = data.data.length === 100 // assumes there is another page of records
+    page++
+  }
+  return allIssues as Issues[]
 }
 
 export async function getIssues() {
