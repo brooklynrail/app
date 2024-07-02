@@ -23,23 +23,23 @@ export interface ArticleProps {
 }
 
 export async function generateStaticParams() {
-  const articlePages = await getArticlePages()
+  const articlePagesData = await getArticlePages()
 
-  return articlePages.map((article: Articles) => {
-    // NOTE: This is returning articles with no issues.
-    // These are the articles that are part of the "Special Issues"
-    // This might be a BUG, or might be how the REST API is set up.
-    if (!article.issues || article.issues.length === 0) {
-      return
-    }
-    const month = article.issues[0].issues_id.month
-    return {
-      year: article.issues[0].issues_id.year.toString(),
-      month: month < 10 ? `0${month.toString()}` : month.toString(),
-      section: article.sections[0].sections_id.slug.toString(),
-      slug: article.slug,
-    }
-  })
+  const articlePages = articlePagesData
+    .filter((article: Articles) => article.issues && article.issues.length > 0)
+    .map((article: Articles) => {
+      // NOTE: This is returning articles with no issues.
+      // These are the articles that are part of the "Special Issues"
+      // This might be a BUG, or might be how the REST API is set up.
+      const month = article.issues[0].issues_id.month
+      return {
+        year: article.issues[0].issues_id.year.toString(),
+        month: month < 10 ? `0${month.toString()}` : month.toString(),
+        section: article.sections[0].sections_id.slug.toString(),
+        slug: article.slug,
+      }
+    })
+  return articlePages
 }
 
 interface ArticleParams {
