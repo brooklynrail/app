@@ -427,34 +427,33 @@ interface SpecialIssueBasicsProps {
 
 export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
   const { slug } = props
-  const issueData = await directus.request(
-    readItems("issues", {
-      fields: [
-        "id",
-        "title",
-        "slug",
-        "year",
-        "month",
-        "status",
-        "issue_number",
-        "special_issue",
-        {
-          cover_1: ["caption", "filename_disk", "width", "height", "type"],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            slug: { _eq: slug },
-            status: { _in: ["published"] },
-            special_issue: { _eq: true },
-          },
-        ],
-      },
-    }),
-  )
+  const issueBasicsAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
+    `?fields[]=id` +
+    `&fields[]=title` +
+    `&fields[]=slug` +
+    `&fields[]=year` +
+    `&fields[]=month` +
+    `&fields[]=status` +
+    `&fields[]=issue_number` +
+    `&fields[]=special_issue` +
+    `&fields[]=sections.sections_id.slug` +
+    `&fields[]=cover_1.caption` +
+    `&fields[]=cover_1.filename_disk` +
+    `&fields[]=cover_1.width` +
+    `&fields[]=cover_1.height` +
+    `&fields[]=cover_1.type` +
+    `&filter[slug][_eq]=${slug}` +
+    `&filter[status][_eq]=published` +
+    `&filter[special_issue][_eq]=true`
+  const res = await fetch(issueBasicsAPI, { cache: "force-cache" })
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch issueBasics data")
+  }
 
-  return issueData[0] as Issues
+  const { data } = await res.json()
+  return data[0] as Issues
 }
 
 export async function getSectionsByIssueId(issueId: string) {
