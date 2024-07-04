@@ -786,60 +786,48 @@ export async function getPreviewPassword() {
 // NOTE: There are multiple contributors with the same slug
 // This returns all contributors with the same slug, but their specific name and bio information may be different
 export async function getContributor(slug: string) {
-  const data = await directus.request(
-    readItems("contributors", {
-      fields: [
-        "id",
-        "first_name",
-        "last_name",
-        "slug",
-        "bio",
-        "status",
-        "old_id",
-        "date_updated",
-        "date_created",
-        {
-          articles: [
-            {
-              articles_slug: [
-                "status",
-                "title",
-                "slug",
-                "excerpt",
-                "kicker",
-                {
-                  featured_image: ["id", "caption", "filename_disk", "width", "height"],
-                },
-                {
-                  issues: [
-                    {
-                      issues_id: ["slug", "year", "month", "special_issue"],
-                    },
-                  ],
-                },
-                {
-                  sections: [
-                    {
-                      sections_id: ["slug", "name"],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      filter: {
-        slug: { _eq: slug },
-        status: { _in: ["published"] },
-        articles: { _nnull: true },
-      },
-      deep: {
-        articles: [{ articles_slug: { issues: { _nnull: true } } }],
-      },
-    }),
-  )
+  const issueDataAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors` +
+    `?fields[]=id` +
+    `&fields[]=first_name` +
+    `&fields[]=last_name` +
+    `&fields[]=slug` +
+    `&fields[]=bio` +
+    `&fields[]=status` +
+    `&fields[]=old_id` +
+    `&fields[]=date_updated` +
+    `&fields[]=date_created` +
+    `&fields[]=articles.articles_slug.status` +
+    `&fields[]=articles.articles_slug.slug` +
+    `&fields[]=articles.articles_slug.title` +
+    `&fields[]=articles.articles_slug.excerpt` +
+    `&fields[]=articles.articles_slug.kicker` +
+    `&fields[]=articles.articles_slug.featured` +
+    `&fields[]=articles.articles_slug.featured_image.id` +
+    `&fields[]=articles.articles_slug.featured_image.caption` +
+    `&fields[]=articles.articles_slug.featured_image.filename_disk` +
+    `&fields[]=articles.articles_slug.featured_image.width` +
+    `&fields[]=articles.articles_slug.featured_image.height` +
+    `&fields[]=articles.articles_slug.featured_image.type` +
+    `&fields[]=articles.articles_slug.issues.issues_id.title` +
+    `&fields[]=articles.articles_slug.issues.issues_id.year` +
+    `&fields[]=articles.articles_slug.issues.issues_id.month` +
+    `&fields[]=articles.articles_slug.issues.issues_id.slug` +
+    `&fields[]=articles.articles_slug.issues.issues_id.special_issue` +
+    `&fields[]=articles.articles_slug.sections.sections_id.slug` +
+    `&fields[]=articles.articles_slug.sections.sections_id.name` +
+    `&filter[slug][_eq]=${slug}` +
+    `&filter[status][_in]=published` +
+    `&filter[articles][_nnull]=true` +
+    `&deep[articles][articles_slug][issues][_nnull]=true`
 
+  const res = await fetch(issueDataAPI, { cache: "force-cache" })
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch issueBasics data")
+  }
+
+  const { data } = await res.json()
   return data as Contributors[]
 }
 
