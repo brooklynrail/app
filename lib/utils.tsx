@@ -1,7 +1,7 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItems, readSingleton } from "@directus/sdk"
-import { Ads, Articles, Contributors, DirectusFiles, Issues } from "./types"
+import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues } from "./types"
 import { stripHtml } from "string-strip-html"
 
 // Used in
@@ -130,6 +130,7 @@ export async function getSpecialIssues() {
 }
 
 export async function getCurrentIssueData() {
+  // const settings = await getGlobalSettings()
   const settings = await directus.request(
     readSingleton("global_settings", {
       fields: [
@@ -162,17 +163,19 @@ export async function getCurrentIssueData() {
   return issueData as Issues
 }
 
+export async function getGlobalSettings() {
+  const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
+  const res = await fetch(globalSettingsAPI, { cache: "force-cache" })
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch issueBasics data")
+  }
+  const { data } = await res.json()
+  return data as GlobalSettings
+}
+
 export async function getCurrentIssueBasics() {
-  // get the current issue from the global settings
-  const settings = await directus.request(
-    readSingleton("global_settings", {
-      fields: [
-        {
-          current_issue: ["id", "title", "slug", "year", "month", "status", "special_issue"],
-        },
-      ],
-    }),
-  )
+  const settings = await getGlobalSettings()
 
   const issueData = await getIssueBasics({
     year: settings.current_issue.year,
@@ -761,12 +764,7 @@ export function getPermalink(props: PermalinkProps) {
 }
 
 export async function getPreviewPassword() {
-  const settings = await directus.request(
-    readSingleton("global_settings", {
-      fields: ["preview_password"],
-    }),
-  )
-
+  const settings = await getGlobalSettings()
   return settings.preview_password
 }
 
