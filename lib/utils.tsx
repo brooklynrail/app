@@ -1,7 +1,7 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItems, readSingleton } from "@directus/sdk"
-import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues } from "./types"
+import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
 // Used in
@@ -497,23 +497,22 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
 }
 
 export async function getSectionsByIssueId(issueId: string) {
-  const sections = await directus.request(
-    readItems("sections", {
-      fields: ["id", "name", "slug", "articles", "old_id"],
-      filter: {
-        _and: [
-          {
-            articles: {
-              articles_slug: {
-                issues: { issues_id: { id: { _eq: issueId } } },
-              },
-            },
-          },
-        ],
-      },
-    }),
-  )
-  return sections
+  const sectionsAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/sections` +
+    `?fields[]=id` +
+    `&fields[]=name` +
+    `&fields[]=slug` +
+    `&fields[]=articles` +
+    `&fields[]=old_id` +
+    `&filter[articles][articles_slug][issues][issues_id][id][_eq]=${issueId}`
+  const res = await fetch(sectionsAPI, { cache: "force-cache" })
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch issueBasics data")
+  }
+
+  const { data } = await res.json()
+  return data[0] as Sections[]
 }
 
 export async function getSpecialArticlePages() {
