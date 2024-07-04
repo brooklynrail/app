@@ -72,40 +72,61 @@ export async function getAllIssues() {
 }
 
 export async function getIssues() {
-  const issues = await directus.request(
-    readItems("issues", {
-      fields: ["year", "month", "slug", "special_issue"],
-      filter: {
-        _and: [
-          {
-            status: { _in: ["published"] },
-            special_issue: { _eq: false },
-          },
-        ],
-      },
-      limit: -1,
-    }),
-  )
-  return issues as Issues[]
+  let allIssues: Issues[] = []
+  let page = 1
+  let isMore = true
+  while (isMore) {
+    const issuesDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
+      `?fields[]=year` +
+      `&fields[]=month` +
+      `&fields[]=slug` +
+      `&fields[]=special_issue` +
+      `&filter[status][_in]=published` +
+      `&filter[special_issue][_eq]=false` +
+      `&page=${page}` +
+      `&limit=100` +
+      `&offset=${page * 100 - 100}`
+    const res = await fetch(issuesDataAPI, { cache: "force-cache" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch data")
+    }
+    const data = await res.json()
+    allIssues = allIssues.concat(data.data)
+    isMore = data.data.length === 100 // assumes there is another page of records
+    page++
+  }
+  return allIssues as Issues[]
 }
 
 // only used for building pages in Special Issues
 export async function getSpecialIssues() {
-  const specialIssues = await directus.request(
-    readItems("issues", {
-      fields: ["slug", "special_issue", "status"],
-      filter: {
-        _and: [
-          {
-            status: { _in: ["published"] },
-            special_issue: { _eq: true },
-          },
-        ],
-      },
-      // limit: -1, // there are under 100 special issues at the moment
-    }),
-  )
-  return specialIssues as Issues[]
+  let allIssues: Issues[] = []
+  let page = 1
+  let isMore = true
+  while (isMore) {
+    const issuesDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
+      `?fields[]=slug` +
+      `&fields[]=special_issue` +
+      `&fields[]=issue_number` +
+      `&filter[special_issue][_eq]=true` +
+      `&filter[status][_in]=published` +
+      `&page=${page}` +
+      `&limit=100` +
+      `&offset=${page * 100 - 100}`
+    const res = await fetch(issuesDataAPI, { cache: "force-cache" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch data")
+    }
+    const data = await res.json()
+    allIssues = allIssues.concat(data.data)
+    isMore = data.data.length === 100 // assumes there is another page of records
+    page++
+  }
+  return allIssues as Issues[]
 }
 
 export async function getCurrentIssueData() {
