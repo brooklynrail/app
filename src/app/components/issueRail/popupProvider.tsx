@@ -2,8 +2,10 @@ import React, { createContext, useContext, useState } from "react"
 
 const PopupContext = createContext({
   showPopup: false,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
   setShowPopup: (show: boolean) => {},
   images: [],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
   setImages: (images: any[]) => {},
 })
 
