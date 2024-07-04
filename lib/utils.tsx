@@ -196,109 +196,116 @@ interface IssueDataProps {
 }
 export async function getIssueData(props: IssueDataProps) {
   const { year, month } = props
-  const issueData = await directus.request(
-    readItems("issues", {
-      fields: [
-        "id",
-        "title",
-        "slug",
-        "year",
-        "month",
-        "status",
-        "issue_number",
-        "old_id",
-        "special_issue",
-        "summary",
-        "credits",
-        {
-          cover_1: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_2: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_3: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_4: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_5: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_6: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          articles: [
-            "order",
-            {
-              articles_slug: [
-                "status",
-                "slug",
-                "title",
-                "excerpt",
-                "kicker",
-                "featured",
-                "hide_bylines",
-                "hide_bylines_downstream",
-                "byline_override",
-                {
-                  promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
-                },
-                {
-                  promo_banner: ["id", "caption", "filename_disk", "width", "height"],
-                },
-                {
-                  slideshow_image: ["id", "caption", "filename_disk", "width", "height"],
-                },
-                {
-                  featured_image: ["id", "caption", "filename_disk", "width", "height"],
-                },
-                {
-                  contributors: [
-                    {
-                      contributors_id: ["id", "old_id", "first_name", "last_name", "slug"],
-                    },
-                  ],
-                },
-                {
-                  sections: [
-                    {
-                      sections_id: ["id", "slug", "name", "old_id"],
-                    },
-                  ],
-                },
-                {
-                  images: [
-                    {
-                      directus_files_id: ["id", "caption", "filename_disk", "width", "height", "type", "shortcode_key"],
-                    },
-                  ],
-                },
-                "sort",
-              ],
-            },
-          ],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            special_issue: { _eq: false },
-            year: { _eq: year },
-            month: { _eq: month },
-            status: { _in: ["published"] },
-          },
-        ],
-      },
-      deep: {
-        articles: {
-          _limit: -1,
-        },
-      },
-    }),
-  )
-  return issueData[0] as Issues
+  const issueDataAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
+    `?fields[]=id` +
+    `&fields[]=title` +
+    `&fields[]=slug` +
+    `&fields[]=year` +
+    `&fields[]=month` +
+    `&fields[]=status` +
+    `&fields[]=issue_number` +
+    `&fields[]=special_issue` +
+    `&fields[]=old_id` +
+    `&fields[]=summary` +
+    `&fields[]=credits` +
+    `&fields[]=cover_1.caption` +
+    `&fields[]=cover_1.filename_disk` +
+    `&fields[]=cover_1.width` +
+    `&fields[]=cover_1.height` +
+    `&fields[]=cover_1.type` +
+    `&fields[]=cover_2.caption` +
+    `&fields[]=cover_2.filename_disk` +
+    `&fields[]=cover_2.width` +
+    `&fields[]=cover_2.height` +
+    `&fields[]=cover_2.type` +
+    `&fields[]=cover_3.caption` +
+    `&fields[]=cover_3.filename_disk` +
+    `&fields[]=cover_3.width` +
+    `&fields[]=cover_3.height` +
+    `&fields[]=cover_3.type` +
+    `&fields[]=cover_4.caption` +
+    `&fields[]=cover_4.filename_disk` +
+    `&fields[]=cover_4.width` +
+    `&fields[]=cover_4.height` +
+    `&fields[]=cover_4.type` +
+    `&fields[]=cover_5.caption` +
+    `&fields[]=cover_5.filename_disk` +
+    `&fields[]=cover_5.width` +
+    `&fields[]=cover_5.height` +
+    `&fields[]=cover_5.type` +
+    `&fields[]=cover_6.caption` +
+    `&fields[]=cover_6.filename_disk` +
+    `&fields[]=cover_6.width` +
+    `&fields[]=cover_6.height` +
+    `&fields[]=cover_6.type` +
+    `&fields[]=articles.order` +
+    `&fields[]=articles.articles_slug.status` +
+    `&fields[]=articles.articles_slug.slug` +
+    `&fields[]=articles.articles_slug.title` +
+    `&fields[]=articles.articles_slug.excerpt` +
+    `&fields[]=articles.articles_slug.kicker` +
+    `&fields[]=articles.articles_slug.featured` +
+    `&fields[]=articles.articles_slug.hide_bylines` +
+    `&fields[]=articles.articles_slug.hide_bylines_downstream` +
+    `&fields[]=articles.articles_slug.byline_override` +
+    `&fields[]=articles.articles_slug.featured_image.id` +
+    `&fields[]=articles.articles_slug.featured_image.caption` +
+    `&fields[]=articles.articles_slug.featured_image.filename_disk` +
+    `&fields[]=articles.articles_slug.featured_image.width` +
+    `&fields[]=articles.articles_slug.featured_image.height` +
+    `&fields[]=articles.articles_slug.featured_image.type` +
+    `&fields[]=articles.articles_slug.slideshow_image.id` +
+    `&fields[]=articles.articles_slug.slideshow_image.caption` +
+    `&fields[]=articles.articles_slug.slideshow_image.filename_disk` +
+    `&fields[]=articles.articles_slug.slideshow_image.width` +
+    `&fields[]=articles.articles_slug.slideshow_image.height` +
+    `&fields[]=articles.articles_slug.slideshow_image.type` +
+    `&fields[]=articles.articles_slug.promo_banner.id` +
+    `&fields[]=articles.articles_slug.promo_banner.caption` +
+    `&fields[]=articles.articles_slug.promo_banner.filename_disk` +
+    `&fields[]=articles.articles_slug.promo_banner.width` +
+    `&fields[]=articles.articles_slug.promo_banner.height` +
+    `&fields[]=articles.articles_slug.promo_banner.type` +
+    `&fields[]=articles.articles_slug.promo_thumb.id` +
+    `&fields[]=articles.articles_slug.promo_thumb.caption` +
+    `&fields[]=articles.articles_slug.promo_thumb.filename_disk` +
+    `&fields[]=articles.articles_slug.promo_thumb.width` +
+    `&fields[]=articles.articles_slug.promo_thumb.height` +
+    `&fields[]=articles.articles_slug.promo_thumb.type` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.id` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.first_name` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.last_name` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.old_id` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.slug` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.bio` +
+    `&fields[]=articles.articles_slug.issues.issues_id.title` +
+    `&fields[]=articles.articles_slug.issues.issues_id.slug` +
+    `&fields[]=articles.articles_slug.sections.sections_id.id` +
+    `&fields[]=articles.articles_slug.sections.sections_id.slug` +
+    `&fields[]=articles.articles_slug.sections.sections_id.name` +
+    `&fields[]=articles.articles_slug.sections.sections_id.old_id` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.id` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.caption` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.filename_disk` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.width` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.height` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.type` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.shortcode_key` +
+    `&filter[year][_eq]=${year}` +
+    `&filter[month][_eq]=${month}` +
+    `&filter[status][_eq]=published` +
+    `&filter[special_issue][_eq]=false` +
+    `&deep[articles][_limit]=-1`
+
+  const res = await fetch(issueDataAPI, { cache: "force-cache" })
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch issueBasics data")
+  }
+
+  const { data } = await res.json()
+  return data[0] as Issues
 }
 
 interface SpecialIssueDataProps {
@@ -306,108 +313,115 @@ interface SpecialIssueDataProps {
 }
 export async function getSpecialIssueData(props: SpecialIssueDataProps) {
   const { slug } = props
-  const issueData = await directus.request(
-    readItems("issues", {
-      fields: [
-        "id",
-        "title",
-        "slug",
-        "year",
-        "month",
-        "status",
-        "issue_number",
-        "old_id",
-        "special_issue",
-        "summary",
-        "credits",
-        {
-          cover_1: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_2: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_3: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_4: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_5: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          cover_6: ["caption", "filename_disk", "width", "height", "type"],
-        },
-        {
-          articles: [
-            "order",
-            {
-              articles_slug: [
-                "status",
-                "slug",
-                "title",
-                "excerpt",
-                "kicker",
-                "featured",
-                "hide_bylines",
-                "hide_bylines_downstream",
-                "byline_override",
-                {
-                  promo_thumb: ["id", "caption", "filename_disk", "width", "height"],
-                },
-                {
-                  promo_banner: ["id", "caption", "filename_disk", "width", "height"],
-                },
-                {
-                  slideshow_image: ["id", "caption", "filename_disk", "width", "height"],
-                },
-                {
-                  featured_image: ["id", "caption", "filename_disk", "width", "height"],
-                },
-                {
-                  contributors: [
-                    {
-                      contributors_id: ["id", "old_id", "first_name", "last_name", "slug"],
-                    },
-                  ],
-                },
-                {
-                  sections: [
-                    {
-                      sections_id: ["id", "slug", "name", "old_id"],
-                    },
-                  ],
-                },
-                {
-                  images: [
-                    {
-                      directus_files_id: ["id", "caption", "filename_disk", "width", "height", "type", "shortcode_key"],
-                    },
-                  ],
-                },
-                "sort",
-              ],
-            },
-          ],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            special_issue: { _eq: true },
-            slug: { _eq: slug },
-            status: { _in: ["published"] },
-          },
-        ],
-      },
-      deep: {
-        articles: {
-          _limit: -1,
-        },
-      },
-    }),
-  )
-  return issueData[0] as Issues
+  const issueDataAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
+    `?fields[]=id` +
+    `&fields[]=title` +
+    `&fields[]=slug` +
+    `&fields[]=year` +
+    `&fields[]=month` +
+    `&fields[]=status` +
+    `&fields[]=issue_number` +
+    `&fields[]=special_issue` +
+    `&fields[]=old_id` +
+    `&fields[]=summary` +
+    `&fields[]=credits` +
+    `&fields[]=cover_1.caption` +
+    `&fields[]=cover_1.filename_disk` +
+    `&fields[]=cover_1.width` +
+    `&fields[]=cover_1.height` +
+    `&fields[]=cover_1.type` +
+    `&fields[]=cover_2.caption` +
+    `&fields[]=cover_2.filename_disk` +
+    `&fields[]=cover_2.width` +
+    `&fields[]=cover_2.height` +
+    `&fields[]=cover_2.type` +
+    `&fields[]=cover_3.caption` +
+    `&fields[]=cover_3.filename_disk` +
+    `&fields[]=cover_3.width` +
+    `&fields[]=cover_3.height` +
+    `&fields[]=cover_3.type` +
+    `&fields[]=cover_4.caption` +
+    `&fields[]=cover_4.filename_disk` +
+    `&fields[]=cover_4.width` +
+    `&fields[]=cover_4.height` +
+    `&fields[]=cover_4.type` +
+    `&fields[]=cover_5.caption` +
+    `&fields[]=cover_5.filename_disk` +
+    `&fields[]=cover_5.width` +
+    `&fields[]=cover_5.height` +
+    `&fields[]=cover_5.type` +
+    `&fields[]=cover_6.caption` +
+    `&fields[]=cover_6.filename_disk` +
+    `&fields[]=cover_6.width` +
+    `&fields[]=cover_6.height` +
+    `&fields[]=cover_6.type` +
+    `&fields[]=articles.order` +
+    `&fields[]=articles.articles_slug.status` +
+    `&fields[]=articles.articles_slug.slug` +
+    `&fields[]=articles.articles_slug.title` +
+    `&fields[]=articles.articles_slug.excerpt` +
+    `&fields[]=articles.articles_slug.kicker` +
+    `&fields[]=articles.articles_slug.featured` +
+    `&fields[]=articles.articles_slug.hide_bylines` +
+    `&fields[]=articles.articles_slug.hide_bylines_downstream` +
+    `&fields[]=articles.articles_slug.byline_override` +
+    `&fields[]=articles.articles_slug.featured_image.id` +
+    `&fields[]=articles.articles_slug.featured_image.caption` +
+    `&fields[]=articles.articles_slug.featured_image.filename_disk` +
+    `&fields[]=articles.articles_slug.featured_image.width` +
+    `&fields[]=articles.articles_slug.featured_image.height` +
+    `&fields[]=articles.articles_slug.featured_image.type` +
+    `&fields[]=articles.articles_slug.slideshow_image.id` +
+    `&fields[]=articles.articles_slug.slideshow_image.caption` +
+    `&fields[]=articles.articles_slug.slideshow_image.filename_disk` +
+    `&fields[]=articles.articles_slug.slideshow_image.width` +
+    `&fields[]=articles.articles_slug.slideshow_image.height` +
+    `&fields[]=articles.articles_slug.slideshow_image.type` +
+    `&fields[]=articles.articles_slug.promo_banner.id` +
+    `&fields[]=articles.articles_slug.promo_banner.caption` +
+    `&fields[]=articles.articles_slug.promo_banner.filename_disk` +
+    `&fields[]=articles.articles_slug.promo_banner.width` +
+    `&fields[]=articles.articles_slug.promo_banner.height` +
+    `&fields[]=articles.articles_slug.promo_banner.type` +
+    `&fields[]=articles.articles_slug.promo_thumb.id` +
+    `&fields[]=articles.articles_slug.promo_thumb.caption` +
+    `&fields[]=articles.articles_slug.promo_thumb.filename_disk` +
+    `&fields[]=articles.articles_slug.promo_thumb.width` +
+    `&fields[]=articles.articles_slug.promo_thumb.height` +
+    `&fields[]=articles.articles_slug.promo_thumb.type` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.id` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.first_name` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.last_name` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.old_id` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.slug` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.bio` +
+    `&fields[]=articles.articles_slug.issues.issues_id.title` +
+    `&fields[]=articles.articles_slug.issues.issues_id.slug` +
+    `&fields[]=articles.articles_slug.sections.sections_id.id` +
+    `&fields[]=articles.articles_slug.sections.sections_id.slug` +
+    `&fields[]=articles.articles_slug.sections.sections_id.name` +
+    `&fields[]=articles.articles_slug.sections.sections_id.old_id` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.id` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.caption` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.filename_disk` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.width` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.height` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.type` +
+    `&fields[]=articles.articles_slug.images.directus_files_id.shortcode_key` +
+    `&filter[slug][_eq]=${slug}` +
+    `&filter[status][_eq]=published` +
+    `&filter[special_issue][_eq]=true` +
+    `&deep[articles][_limit]=-1`
+
+  const res = await fetch(issueDataAPI, { cache: "force-cache" })
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch issueBasics data")
+  }
+
+  const { data } = await res.json()
+  return data[0] as Issues
 }
 
 interface IssueBasicsProps {
