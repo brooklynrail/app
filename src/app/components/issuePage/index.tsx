@@ -47,7 +47,7 @@ const IssuePage = (props: IssuePageProps) => {
     }
 
     // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch data:", error))
+    fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
   }, [currentSections, issueData, currentAds])
 
   const { year, month, slug } = issueData

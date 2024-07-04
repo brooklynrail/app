@@ -61,7 +61,7 @@ export async function getAllIssues() {
     const res = await fetch(issuesDataAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data")
+      throw new Error("Failed to fetch getAllIssues data")
     }
     const data = await res.json()
     allIssues = allIssues.concat(data.data)
@@ -90,7 +90,7 @@ export async function getIssues() {
     const res = await fetch(issuesDataAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data")
+      throw new Error("Failed to fetch getIssues data")
     }
     const data = await res.json()
     allIssues = allIssues.concat(data.data)
@@ -119,7 +119,7 @@ export async function getSpecialIssues() {
     const res = await fetch(issuesDataAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data")
+      throw new Error("Failed to fetch getSpecialIssues data")
     }
     const data = await res.json()
     allIssues = allIssues.concat(data.data)
@@ -168,7 +168,7 @@ export async function getGlobalSettings() {
   const res = await fetch(globalSettingsAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch issueBasics data")
+    throw new Error("Failed to fetch getGlobalSettings data")
   }
   const { data } = await res.json()
   return data as GlobalSettings
@@ -301,7 +301,7 @@ export async function getIssueData(props: IssueDataProps) {
   const res = await fetch(issueDataAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch issueBasics data")
+    throw new Error("Failed to fetch getIssueData data")
   }
 
   const { data } = await res.json()
@@ -417,7 +417,7 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
   const res = await fetch(issueDataAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch issueBasics data")
+    throw new Error("Failed to fetch getSpecialIssueData data")
   }
 
   const { data } = await res.json()
@@ -454,7 +454,7 @@ export async function getIssueBasics(props: IssueBasicsProps) {
   const res = await fetch(issueBasicsAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch issueBasics data")
+    throw new Error("Failed to fetch getIssueBasics data")
   }
 
   const { data } = await res.json()
@@ -489,7 +489,7 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
   const res = await fetch(specialIssueBasicsAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch specialIssueBasicsAPI data")
+    throw new Error("Failed to fetch getSpecialIssueBasics data")
   }
 
   const { data } = await res.json()
@@ -497,7 +497,7 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
 }
 
 export async function getSectionsByIssueId(issueId: string) {
-  const sectionsAPI =
+  const sectionsByIssueAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/sections` +
     `?fields[]=id` +
     `&fields[]=name` +
@@ -505,10 +505,10 @@ export async function getSectionsByIssueId(issueId: string) {
     `&fields[]=articles` +
     `&fields[]=old_id` +
     `&filter[articles][articles_slug][issues][issues_id][id][_eq]=${issueId}`
-  const res = await fetch(sectionsAPI, { cache: "force-cache" })
+  const res = await fetch(sectionsByIssueAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch issueBasics data")
+    throw new Error("Failed to fetch sectionsByIssue data")
   }
 
   const { data } = await res.json()
@@ -516,7 +516,7 @@ export async function getSectionsByIssueId(issueId: string) {
 }
 
 export async function getSpecialArticlePages() {
-  let articlePages: Articles[] = []
+  let specialArticlePages: Articles[] = []
   let page = 1
   let isMore = true
   while (isMore) {
@@ -537,14 +537,14 @@ export async function getSpecialArticlePages() {
     const res = await fetch(specialArticleDataAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data")
+      throw new Error("Failed to fetch getSpecialArticlePages data")
     }
     const data = await res.json()
-    articlePages = articlePages.concat(data.data)
+    specialArticlePages = specialArticlePages.concat(data.data)
     isMore = data.data.length === 100 // assumes there is another page of records
     page++
   }
-  return articlePages
+  return specialArticlePages
 }
 
 export async function getArticlePages() {
@@ -571,7 +571,7 @@ export async function getArticlePages() {
     const res = await fetch(articleDataAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data")
+      throw new Error("Failed to fetch getArticlePages data")
     }
     const data = await res.json()
     articlePages = articlePages.concat(data.data)
@@ -823,7 +823,7 @@ export async function getContributor(slug: string) {
   const res = await fetch(issueDataAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch issueBasics data")
+    throw new Error("Failed to fetch getContributor data")
   }
 
   const { data } = await res.json()
@@ -839,7 +839,7 @@ export async function getAllContributors() {
     const res = await fetch(contributorsAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data")
+      throw new Error("Failed to fetch getAllContributors data")
     }
     const data = await res.json()
     contributorPages = contributorPages.concat(data.data)

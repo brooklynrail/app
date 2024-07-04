@@ -51,7 +51,7 @@ const Article = (props: ArticleProps) => {
     }
 
     // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch data:", error))
+    fetchData().catch((error) => console.error("Failed to fetch data on Article page:", error))
   }, [issueBasics, issueSections, setIssueSections, issueData, setIssueData])
 
   return (

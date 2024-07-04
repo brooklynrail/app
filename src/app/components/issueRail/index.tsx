@@ -212,7 +212,7 @@ const IssueRail = (props: IssueRailProps) => {
       }
     }
 
-    fetchData().catch((error) => console.error("Failed to fetch data:", error))
+    fetchData().catch((error) => console.error("Failed to fetch data Issue Rail:", error))
   }, [issueSections, setIssueSections, issueData, setIssueData, currentIssueBasics])
 
   let logosrc = "/images/brooklynrail-logo.svg"
