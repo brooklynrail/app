@@ -94,8 +94,6 @@ async function getData({ params }: { params: SpecialArticleParams }) {
     type: PageType.SpecialIssueArticle,
   })
 
-  console.log("--->", permalink)
-
   return {
     props: {
       articleData,
