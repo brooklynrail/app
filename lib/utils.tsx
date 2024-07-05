@@ -498,24 +498,23 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
 }
 
 export async function getSectionsByIssueId(issueId: string) {
-  const sectionsByIssueAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/sections` +
-    `?fields[]=id` +
-    `&fields[]=name` +
-    `&fields[]=slug` +
-    `&fields[]=articles` +
-    `&fields[]=articles.articles_slug.issues.issues_id.id` +
-    `&fields[]=old_id` +
-    `&deep[articles][_filter][articles_slug][issues][issues_id][id][_eq]=${issueId}`
-  const res = await fetch(sectionsByIssueAPI, { cache: "force-cache" })
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch getSectionsByIssueId data")
-  }
-
-  const { data } = await res.json()
-  // console.log("sectionsByIssueAPI", data)
-  return data as Sections[]
+  const sections = await directus.request(
+    readItems("sections", {
+      fields: ["id", "name", "slug", "articles", "old_id"],
+      filter: {
+        _and: [
+          {
+            articles: {
+              articles_slug: {
+                issues: { issues_id: { id: { _eq: issueId } } },
+              },
+            },
+          },
+        ],
+      },
+    }),
+  )
+  return sections as Sections[]
 }
 
 export async function getSpecialArticlePages() {
