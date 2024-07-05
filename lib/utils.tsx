@@ -78,7 +78,8 @@ export async function getIssues() {
   while (isMore) {
     const issuesDataAPI =
       `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
-      `?fields[]=year` +
+      `?fields[]=id` +
+      `&fields[]=year` +
       `&fields[]=month` +
       `&fields[]=slug` +
       `&fields[]=special_issue` +
@@ -503,16 +504,18 @@ export async function getSectionsByIssueId(issueId: string) {
     `&fields[]=name` +
     `&fields[]=slug` +
     `&fields[]=articles` +
+    `&fields[]=articles.articles_slug.issues.issues_id.id` +
     `&fields[]=old_id` +
-    `&filter[articles][articles_slug][issues][issues_id][id][_eq]=${issueId}`
+    `&deep[articles][_filter][articles_slug][issues][issues_id][id][_eq]=${issueId}`
   const res = await fetch(sectionsByIssueAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch sectionsByIssue data")
+    throw new Error("Failed to fetch getSectionsByIssueId data")
   }
 
   const { data } = await res.json()
-  return data[0] as Sections[]
+  // console.log("sectionsByIssueAPI", data)
+  return data as Sections[]
 }
 
 export async function getSpecialArticlePages() {
