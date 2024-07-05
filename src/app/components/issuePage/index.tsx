@@ -36,7 +36,7 @@ const IssuePage = (props: IssuePageProps) => {
   useEffect(() => {
     const fetchData = async () => {
       if (!currentSections || !currentAds) {
-        const sections = getSectionsByIssueId(issueData.id)
+        const sections = await getSectionsByIssueId(issueData.id)
         const ads = getAds()
         // Fetch all the data in parallel
         const [fetchedSections, fetchedAds] = await Promise.all([sections, ads])
