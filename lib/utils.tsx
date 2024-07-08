@@ -197,6 +197,7 @@ interface IssueDataProps {
 }
 export async function getIssueData(props: IssueDataProps) {
   const { year, month } = props
+  console.log("getIssueData props: ", props)
   const issueDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
     `?fields[]=id` +
@@ -298,7 +299,6 @@ export async function getIssueData(props: IssueDataProps) {
     `&filter[status][_eq]=published` +
     `&filter[special_issue][_eq]=false` +
     `&deep[articles][_limit]=-1`
-
   const res = await fetch(issueDataAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
