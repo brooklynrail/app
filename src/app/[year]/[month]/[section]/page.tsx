@@ -65,7 +65,6 @@ async function getData({ params }: { params: SectionParams }) {
   const month = Number(params.month)
   const section = params.section.toString()
 
-  console.log("issue props: ", year, month, section)
   const issueData = await getIssueData({
     year: year,
     month: month,
@@ -73,10 +72,15 @@ async function getData({ params }: { params: SectionParams }) {
   // console.log("issueData.id", issueData.articles[0].articles_slug.sections)
 
   // Get only the sections that are used in the articles in the current issue
-  // console.log("issueData.id", issueData)
+  console.log("issueData: ", issueData.id, issueData.year, issueData.month, issueData.title, issueData.slug)
   const currentSections = await getSectionsByIssueId(issueData.id)
   // console.log("currentSections", currentSections)
-  // console.log("currentSections", currentSections.length)
+  console.log("currentSections: ", currentSections.length)
+
+  if (!currentSections) {
+    return { props: { errorCode: 404, errorMessage: "No currentSections found" } }
+  }
+
   const currentSection = currentSections.find((s: Sections) => s.slug === section)
 
   // If `section` does not exist, set errorCode to a string

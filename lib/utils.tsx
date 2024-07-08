@@ -197,7 +197,6 @@ interface IssueDataProps {
 }
 export async function getIssueData(props: IssueDataProps) {
   const { year, month } = props
-  console.log("getIssueData props: ", props)
   const issueDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
     `?fields[]=id` +
@@ -502,15 +501,15 @@ export async function getSectionsByIssueId(issueId: string) {
     readItems("sections", {
       fields: ["id", "name", "slug", "articles", "old_id"],
       filter: {
-        _and: [
-          {
-            articles: {
-              articles_slug: {
-                issues: { issues_id: { id: { _eq: issueId } } },
+        articles: {
+          articles_slug: {
+            issues: {
+              issues_id: {
+                id: { _eq: issueId },
               },
             },
           },
-        ],
+        },
       },
     }),
   )
