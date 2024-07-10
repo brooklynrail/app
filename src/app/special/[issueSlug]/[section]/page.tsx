@@ -1,18 +1,11 @@
 import { Metadata } from "next"
 import { PageLayout } from "@/app/page"
-import {
-  PageType,
-  getOGImage,
-  getPermalink,
-  getSectionsByIssueId,
-  getSpecialIssueData,
-  getSpecialIssues,
-} from "../../../../../lib/utils"
+import { PageType, getOGImage, getPermalink, getSectionsByIssueId, getSpecialIssueData } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
-import { Issues, Sections } from "../../../../../lib/types"
+import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
 
-// export const dynamicParams = true
+export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: SpecialSectionParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -93,17 +86,4 @@ async function getData({ params }: { params: SpecialSectionParams }) {
       permalink,
     },
   }
-}
-
-export async function generateStaticParams() {
-  const specialIssues = await getSpecialIssues()
-
-  return specialIssues.map(async (issue: Issues) => {
-    const sections = await getSectionsByIssueId(issue.id)
-    const issuePath = sections.map((section) => ({
-      issueSlug: issue.slug,
-      section: section.slug,
-    }))
-    return issuePath
-  })
 }
