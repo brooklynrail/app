@@ -12,7 +12,7 @@ import { Issues, Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
 import { Metadata } from "next"
 
-// export const dynamicParams = true
+export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -65,6 +65,7 @@ async function getData({ params }: { params: SectionParams }) {
   const month = Number(params.month)
   const section = params.section.toString()
 
+  console.log(params)
   const issueData = await getIssueData({
     year: year,
     month: month,
@@ -104,17 +105,17 @@ async function getData({ params }: { params: SectionParams }) {
   }
 }
 
-export async function generateStaticParams() {
-  const issues = await getIssues()
-  return issues.map(async (issue: Issues) => {
-    const currentSections = await getSectionsByIssueId(issue.id)
-    const issuePath = currentSections.map((section: Sections) => {
-      return {
-        year: `${String(issue.year)}`,
-        month: issue.month < 10 ? `0${String(issue.month)}` : String(issue.month),
-        section: section.slug,
-      }
-    })
-    return issuePath
-  })
-}
+// export async function generateStaticParams() {
+//   const issues = await getIssues()
+//   return issues.map(async (issue: Issues) => {
+//     const currentSections = await getSectionsByIssueId(issue.id)
+//     const issuePath = currentSections.map((section: Sections) => {
+//       return {
+//         year: `${String(issue.year)}`,
+//         month: issue.month < 10 ? `0${String(issue.month)}` : String(issue.month),
+//         section: section.slug,
+//       }
+//     })
+//     return issuePath
+//   })
+// }
