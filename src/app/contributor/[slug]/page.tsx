@@ -1,17 +1,13 @@
 import parse from "html-react-parser"
 import { ArticlesContributors, Contributors, Issues } from "../../../../lib/types"
-import {
-  getAllContributors,
-  getContributor,
-  getCurrentIssueBasics,
-  getPermalink,
-  PageType,
-} from "../../../../lib/utils"
+import { getContributor, getCurrentIssueBasics, getPermalink, PageType } from "../../../../lib/utils"
 import PromoSection from "@/app/components/promo/section"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
 import IssueRail from "@/app/components/issueRail"
+
+export const dynamicParams = true
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -194,13 +190,13 @@ async function getData({ params }: { params: ContributorsParams }) {
   }
 }
 
-export async function generateStaticParams() {
-  let allContributors = await getAllContributors()
-  // filter out contributors with no articles
-  allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)
-  return allContributors.map((contributor: Contributors) => {
-    return {
-      slug: contributor.slug,
-    }
-  })
-}
+// export async function generateStaticParams() {
+//   let allContributors = await getAllContributors()
+//   // filter out contributors with no articles
+//   allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)
+//   return allContributors.map((contributor: Contributors) => {
+//     return {
+//       slug: contributor.slug,
+//     }
+//   })
+// }
