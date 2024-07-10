@@ -582,7 +582,7 @@ export async function getArticlePages() {
   return articlePages as Articles[]
 }
 
-export async function getArticle(slug: string) {
+export async function getArticle(slug: string, status: string) {
   const articleAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
     `?fields[]=slug` +
@@ -649,7 +649,7 @@ export async function getArticle(slug: string) {
     `&fields[]=images.directus_files_id.type` +
     `&fields[]=images.directus_files_id.shortcode_key` +
     `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_in]=published`
+    `&filter[status][_in]=${status}`
   const res = await fetch(articleAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
