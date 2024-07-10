@@ -17,7 +17,7 @@ export interface ArticlePreviewProps {
   directusUrl: string
 }
 
-// export const dynamicParams = true
+export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -69,7 +69,7 @@ export default async function ArticlePreviewPage({ params }: { params: PreviewPa
   const data = await getData({ params })
 
   const { articleData, currentIssue, permalink, currentSection, directusUrl, previewPassword } = data
-  if (!articleData || !currentSection || !currentIssue || !permalink || !previewPassword || !directusUrl) {
+  if (!articleData || !permalink || !previewPassword || !directusUrl) {
     return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
   }
 
@@ -96,7 +96,7 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const slug = String(params.slug)
 
-  const articleData = await getArticle(slug)
+  const articleData = await getArticle(slug, "draft")
 
   const currentIssue = articleData.issues && articleData.issues[0] && articleData.issues[0].issues_id
   const currentSection = articleData.sections && articleData.sections[0] && articleData.sections[0].sections_id
