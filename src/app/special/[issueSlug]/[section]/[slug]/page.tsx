@@ -72,7 +72,7 @@ async function getData({ params }: { params: SpecialArticleParams }) {
   const section = String(params.section)
 
   const issueBasics = await getSpecialIssueBasics({ slug: issueSlug }) // A limited set of data for the issue
-  const articleData = await getArticle(slug)
+  const articleData = await getArticle(slug, "published")
 
   if (!articleData) {
     return { props: { errorCode: 404, errorMessage: "Article not found" } }
