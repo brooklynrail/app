@@ -18,11 +18,19 @@ const RailImage = (props: RailImageProps) => {
   const { name, type, images } = props
 
   // images == these are ALL of the images in the article
-  // Find the `name` in the `images` array
+  let image
+  // Find the `name` in the `images` array in the `directus_files_id.shortcode_key`
   // this assumes that the `name` is unique
-  const image = images.find(
+  image = images.find(
     (image: ArticlesFiles) => image.directus_files_id && image.directus_files_id.shortcode_key === name,
   )
+  if (!image) {
+    // take the name "img1" and remove the string 'img' to get the number
+    const sort = parseInt(name.replace("img", ""), 10)
+    // Get the `sort` in the `images` array
+    image = images[sort - 1]
+  }
+
   if (!image || !image.directus_files_id) {
     return <></>
   }
