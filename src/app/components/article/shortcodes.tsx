@@ -144,6 +144,7 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
 
   // IMAGES
   // Options for the html-react-parser
+  // This function will replace the [img name="img1" type="lg"] shortcode with the RailImage component
   const options = {
     replace: ({ data }: any) => {
       if (data) {
