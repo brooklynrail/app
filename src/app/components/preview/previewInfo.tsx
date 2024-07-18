@@ -153,7 +153,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
 
       <div className="block">
         <h4>Excerpt</h4>
-        <p>{parse(excerpt)}</p>
+        {parse(excerpt)}
       </div>
 
       <div className="block">
