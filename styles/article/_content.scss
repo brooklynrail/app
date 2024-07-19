@@ -34,6 +34,15 @@
     @include u-margin(0);
     @include u-margin-bottom("205");
   }
+  ul,
+  ol {
+    @include u-padding-left(4);
+    @include u-margin-bottom("205");
+  }
+
+  li {
+    list-style-type: disc;
+  }
 
   blockquote,
   li,
