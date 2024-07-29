@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArticlesIssues, Issues, Sections } from "../../../../lib/types"
+import { Articles, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
 import PromoSlim from "../promo/slim"
 
@@ -14,7 +14,7 @@ interface TableOfContentsProps {
 interface IssueSectionProps {
   section: Sections
   permalink: string
-  articles: ArticlesIssues[]
+  articles: Articles[]
   year: number
   month: number
 }
@@ -29,6 +29,7 @@ const IssueSection = (props: IssueSectionProps) => {
     type: PageType.Section,
   })
 
+  console.log("==============")
   return (
     <>
       <h3>
@@ -36,20 +37,23 @@ const IssueSection = (props: IssueSectionProps) => {
           {sectionName}
         </Link>
       </h3>
-      <ul>
-        {articles.map((articleIssue: ArticlesIssues, i: number) => {
-          const order = articleIssue.order
-          const article = articleIssue.articles_slug
-          const permalink = getPermalink({
-            year: year,
-            month: month,
-            section: article.sections[0].sections_id.slug,
-            slug: article.slug,
-            type: PageType.Article,
-          })
-          return <PromoSlim key={`toc-article-${i}`} article={article} permalink={permalink} order={order} />
-        })}
-      </ul>
+      {section.slug === "art_books" && (
+        <ul>
+          {articles.map((article: Articles, i: number) => {
+            console.log("article: ", article.title)
+            console.log("article: ", article.sort)
+            const order = article.sort
+            const permalink = getPermalink({
+              year: year,
+              month: month,
+              section: article.section.slug,
+              slug: article.slug,
+              type: PageType.Article,
+            })
+            return <PromoSlim key={`toc-article-${i}`} article={article} permalink={permalink} order={order} />
+          })}
+        </ul>
+      )}
     </>
   )
 }
@@ -67,8 +71,8 @@ const TableOfContents = (props: TableOfContentsProps) => {
       {currentSections
         ? currentSections.map((section, i) => {
             // Filter the currentArticles to get only the articles in the current section
-            const articles = currentArticles.filter((articleIssue: ArticlesIssues) => {
-              return articleIssue.articles_slug.sections[0].sections_id.slug === section.slug
+            const articles = currentArticles.filter((articleIssue: Articles) => {
+              return articleIssue.section.slug === section.slug
             })
             return (
               <IssueSection

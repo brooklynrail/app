@@ -35,14 +35,14 @@ export type Articles = {
   header_type?: string | null
   images: any[] | ArticlesFiles[]
   in_print?: boolean | null
-  issues: ArticlesIssues[]
+  issue: Issues
   kicker?: string | null
   hide_bylines: boolean
   hide_bylines_downstream: boolean
   old_id?: number | null
   promo_banner?: DirectusFiles
   promo_thumb?: DirectusFiles
-  sections: ArticlesSections[]
+  section: Sections
   slideshow_image?: DirectusFiles | null
   slug: string
   sort?: number | null
@@ -64,19 +64,6 @@ export type ArticlesFiles = {
   articles_slug?: string | Articles | null
   directus_files_id?: DirectusFiles
   id: number
-}
-
-export type ArticlesIssues = {
-  articles_slug: Articles
-  id: number
-  issues_id: Issues
-  order?: number | null
-}
-
-export type ArticlesSections = {
-  articles_slug: Articles
-  id: number
-  sections_id: Sections
 }
 
 export type Contributors = {
@@ -468,7 +455,7 @@ export type GlobalSettings = {
 }
 
 export type Issues = {
-  articles: ArticlesIssues[]
+  articles: Articles[]
   cover_1?: DirectusFiles
   cover_2?: DirectusFiles
   cover_3?: DirectusFiles
@@ -509,7 +496,7 @@ export type Pages = {
 }
 
 export type Sections = {
-  articles: ArticlesSections[]
+  articles: Articles[]
   date_created?: string | null
   date_updated?: string | null
   id: number
@@ -526,8 +513,6 @@ export type CustomDirectusTypes = {
   articles: Articles[]
   articles_contributors: ArticlesContributors[]
   articles_files: ArticlesFiles[]
-  articles_issues: ArticlesIssues[]
-  articles_sections: ArticlesSections[]
   contributors: Contributors[]
   directus_activity: DirectusActivity[]
   directus_collections: DirectusCollections[]

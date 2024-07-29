@@ -1,5 +1,5 @@
 import parse from "html-react-parser"
-import { ArticlesIssues } from "../../../../../lib/types"
+import { Articles } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import PromoSpecialSection from "../../promo/specialSection"
 import { LayoutProps } from "./issue"
@@ -9,28 +9,28 @@ const SpecialIssue = (props: LayoutProps) => {
 
   const currentArticles = issueData.articles
 
-  const allArticles = currentArticles.map((article: ArticlesIssues, i: number) => {
+  const allArticles = currentArticles.map((article: Articles, i: number) => {
     const permalink = getPermalink({
       issueSlug: issueData.slug,
-      section: article.articles_slug.sections[0].sections_id.slug,
+      section: article.section.slug,
       type: PageType.SpecialIssueArticle,
-      slug: article.articles_slug.slug,
+      slug: article.slug,
     })
     const sectionPermalink = getPermalink({
       issueSlug: issueData.slug,
-      section: article.articles_slug.sections[0].sections_id.slug,
+      section: article.section.slug,
       type: PageType.SpecialIssueSection,
-      slug: article.articles_slug.sections[0].sections_id.slug,
+      slug: article.section.slug,
     })
     return (
       <PromoSpecialSection
-        key={`${i}-${article.articles_slug.slug}`}
-        article={article.articles_slug}
+        key={`${i}-${article.slug}`}
+        article={article}
         permalink={permalink}
         sectionPermalink={sectionPermalink}
         showImage={true}
         showSection={false}
-        order={article.order}
+        order={article.sort}
       />
     )
   })

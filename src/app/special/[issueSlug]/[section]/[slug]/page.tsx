@@ -18,9 +18,8 @@ export async function generateMetadata({ params }: { params: SpecialArticleParam
     return {}
   }
 
-  const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag, sections } =
+  const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag, section } =
     data.props.articleData
-  const section = sections[0].sections_id
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
   const ogdescription = `${stripHtml(excerpt).result}`
   const ogimageprops = { ogimage: featured_image, title }
@@ -78,7 +77,7 @@ async function getData({ params }: { params: SpecialArticleParams }) {
     return { props: { errorCode: 404, errorMessage: "Article not found" } }
   }
 
-  const currentSection = articleData.sections && articleData.sections[0].sections_id
+  const currentSection = articleData.section
 
   const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
   if (errorCode) {
@@ -111,12 +110,12 @@ export async function generateStaticParams() {
     // NOTE: This is returning articles with no issues.
     // These are the articles that are part of the "Special Issues"
     // This might be a BUG, or might be how the REST API is set up.
-    if (!article.issues || article.issues.length === 0) {
+    if (!article.issue) {
       return
     }
     return {
-      issueSlug: article.issues && article.issues[0].issues_id.slug.toString(),
-      section: article.sections && article.sections[0].sections_id.slug.toString(),
+      issueSlug: article.issue.slug,
+      section: article.section.slug,
       slug: article.slug,
     }
   })

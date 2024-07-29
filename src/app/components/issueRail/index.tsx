@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { ArticlesIssues, ArticlesSections, Issues, Sections } from "../../../../lib/types"
+import { Articles, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
 import { useState, useEffect } from "react"
 import { CoverImage } from "./coverImage"
@@ -11,36 +11,33 @@ import IssueRailHeader from "./header"
 import Bylines from "./bylines"
 
 interface ArticleListProps {
-  sectionArticles: Array<ArticlesIssues>
+  sectionArticles: Array<Articles>
   year: number
   month: number
 }
 
 const ArticleList = (props: ArticleListProps) => {
   const { sectionArticles, year, month } = props
-  const list = sectionArticles.map((article: ArticlesIssues, i: number) => {
+  const list = sectionArticles.map((article: Articles, i: number) => {
     const permalink = getPermalink({
       year: year,
       month: month,
-      section: article.articles_slug.sections[0].sections_id.slug,
-      slug: article.articles_slug.slug,
+      section: article.section.slug,
+      slug: article.slug,
       type: PageType.Article,
     })
 
-    const hide_bylines_downstream = article.articles_slug.hide_bylines_downstream
+    const hide_bylines_downstream = article.hide_bylines_downstream
 
     return (
       <li key={i}>
         <h4>
           <Link href={`${permalink}`}>
-            <span>{parse(article.articles_slug.title)}</span>
+            <span>{parse(article.title)}</span>
           </Link>
         </h4>
         {!hide_bylines_downstream && (
-          <Bylines
-            byline_override={article.articles_slug.byline_override}
-            contributors={article.articles_slug.contributors}
-          />
+          <Bylines byline_override={article.byline_override} contributors={article.contributors} />
         )}
       </li>
     )
@@ -67,34 +64,31 @@ const IssueArticles = (props: IssueArticlesProps) => {
   const { year, month } = issueData
 
   // Create a map where each key is a section ID and each value is an array of articles for that section
-  const articlesBySection: Record<string, ArticlesIssues[]> = issueData.articles.reduce(
-    (acc: any, article: ArticlesIssues) => {
-      // get the criticspage_id
-      let criticspage: number = 0
-      let criticspageArticles: ArticlesSections[] = []
-      if (article.articles_slug.sections[0].sections_id.slug === "criticspage") {
-        criticspage = article.articles_slug.sections[0].sections_id.id
-        criticspageArticles = article.articles_slug.sections[0].sections_id.articles
-      }
-      // if the section for this article is editorsmessage,
-      // change the section to criticspage
-      if (article.articles_slug.sections[0].sections_id.slug === "editorsmessage") {
-        article.articles_slug.sections[0].sections_id.id = criticspage
-        article.articles_slug.sections[0].sections_id.slug = "criticspage"
-        const articles = article.articles_slug.sections[0].sections_id.articles
-        // append articles to the criticspageArticles array
-        criticspageArticles.concat(articles)
-      }
+  const articlesBySection: Record<string, Articles[]> = issueData.articles.reduce((acc: any, article: Articles) => {
+    // get the criticspage_id
+    let criticspage: number = 0
+    let criticspageArticles: Articles[] = []
+    if (article.section.slug === "criticspage") {
+      criticspage = article.section.id
+      criticspageArticles = article.section.articles
+    }
+    // if the section for this article is editorsmessage,
+    // change the section to criticspage
+    if (article.section.slug === "editorsmessage") {
+      article.section.id = criticspage
+      article.section.slug = "criticspage"
+      const articles = article.section.articles
+      // append articles to the criticspageArticles array
+      criticspageArticles.concat(articles)
+    }
 
-      const sectionId = article.articles_slug.sections[0].sections_id.id
-      if (!acc[sectionId]) {
-        acc[sectionId] = []
-      }
-      acc[sectionId].push(article)
-      return acc
-    },
-    {},
-  )
+    const sectionId = article.section.id
+    if (!acc[sectionId]) {
+      acc[sectionId] = []
+    }
+    acc[sectionId].push(article)
+    return acc
+  }, {})
 
   return (
     <>
@@ -201,6 +195,7 @@ const IssueRail = (props: IssueRailProps) => {
       }
 
       if (issueData && !issueSections) {
+        console.log("fetching issueData.id", issueData.id)
         const sectionsResponse = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
           {

@@ -1,15 +1,15 @@
 import PromoThumb from "../promo/thumb"
 import { PromoProps } from "."
-import { ArticlesIssues } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
+import { Articles } from "../../../../lib/types"
 
 const EditorsMessage = (props: PromoProps) => {
   const { currentArticles, year, month } = props
 
   // filter the currentArticles to get only the articles in the `editorsmessage` section
-  const editorsMessage: ArticlesIssues[] = []
-  currentArticles.forEach((articleIssue: ArticlesIssues) => {
-    if (articleIssue.articles_slug.sections[0].sections_id.slug === "editorsmessage") {
+  const editorsMessage: Articles[] = []
+  currentArticles.forEach((articleIssue: Articles) => {
+    if (articleIssue.section.slug === "editorsmessage") {
       editorsMessage.push(articleIssue)
     }
   })
@@ -21,20 +21,20 @@ const EditorsMessage = (props: PromoProps) => {
   return (
     <div className="collection">
       <h3>Editor's Message</h3>
-      {editorsMessage.map((articleIssue: ArticlesIssues, i: number) => {
-        const order = articleIssue.order
-        const article = articleIssue.articles_slug
+      {editorsMessage.map((article: Articles, i: number) => {
+        const order = article.sort
+        // const article = articleIssue
         const permalink = getPermalink({
           year: year,
           month: month,
-          section: article.sections[0].sections_id.slug,
+          section: article.section.slug,
           slug: article.slug,
           type: PageType.Article,
         })
         const sectionPermalink = getPermalink({
           year: year,
           month: month,
-          section: article.sections[0].sections_id.slug,
+          section: article.section.slug,
           type: PageType.Section,
         })
         return (

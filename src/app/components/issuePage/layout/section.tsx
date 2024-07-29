@@ -1,4 +1,4 @@
-import { ArticlesIssues } from "../../../../../lib/types"
+import { Articles } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import PromoSection from "../../promo/section"
 
@@ -14,26 +14,25 @@ const SectionLayout = (props: LayoutProps) => {
   const { year, month } = issueData
 
   // get the articles that belong to the current section
-  const currentArticles = issueData.articles.filter((article: ArticlesIssues) => {
-    return article.articles_slug.sections[0].sections_id.slug === currentSection.slug
+  const currentArticles = issueData.articles.filter((article: Articles) => {
+    return article.section.slug === currentSection.slug
   })
 
   const allArticles = (
     <section className="collection">
-      {currentArticles.map((articleIssue: ArticlesIssues, i: number) => {
-        const order = articleIssue.order
-        const article = articleIssue.articles_slug
+      {currentArticles.map((article: Articles, i: number) => {
+        const order = article.sort
         const permalink = getPermalink({
           year: year,
           month: month,
-          section: article.sections[0].sections_id.slug,
+          section: article.section.slug,
           slug: article.slug,
           type: PageType.Article,
         })
         const sectionPermalink = getPermalink({
           year: year,
           month: month,
-          section: article.sections[0].sections_id.slug,
+          section: article.section.slug,
           type: PageType.Section,
         })
         return (

@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     return new Response("Missing id", { status: 401 })
   }
 
-  const article = await getArticle(slug, "draft")
+  const article = await getArticle(slug)
   if (!article) {
     return new Response("Invalid slug", { status: 401 })
   }

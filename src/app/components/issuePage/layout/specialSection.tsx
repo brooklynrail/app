@@ -1,4 +1,4 @@
-import { ArticlesIssues } from "../../../../../lib/types"
+import { Articles } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import PromoSpecialSection from "../../promo/specialSection"
 import { LayoutProps } from "./issue"
@@ -15,20 +15,20 @@ const SpecialSection = (props: LayoutProps) => {
 
   const allArticles = (
     <section className="collection">
-      {currentArticles.map((articleIssue: ArticlesIssues, i: number) => {
-        const order = articleIssue.order
-        const article = articleIssue.articles_slug
+      {currentArticles.map((articleIssue: Articles, i: number) => {
+        const order = articleIssue.sort
+        const article = articleIssue
         const permalink = getPermalink({
           year: year,
           month: month,
-          section: article.sections[0].sections_id.slug,
+          section: article.section.slug,
           slug: article.slug,
           type: PageType.Article,
         })
         const sectionPermalink = getPermalink({
           year: year,
           month: month,
-          section: article.sections[0].sections_id.slug,
+          section: article.section.slug,
           type: PageType.Section,
         })
         return (

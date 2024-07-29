@@ -58,32 +58,32 @@ export default async function Contributor({ params }: { params: ContributorsPara
         if (!article) {
           return <></>
         }
-        const issue = article.issues[0].issues_id
+        const issue = article.issue
 
         let permalink
         let sectionPermalink
         if (issue.special_issue) {
           permalink = getPermalink({
-            section: article.sections[0].sections_id.slug,
+            section: article.section,
             slug: article.slug,
             type: PageType.SpecialIssueArticle,
           })
           sectionPermalink = getPermalink({
-            section: article.sections[0].sections_id.slug,
+            section: article.section,
             type: PageType.SpecialIssueSection,
           })
         } else {
           permalink = getPermalink({
             year: issue.year,
             month: issue.month,
-            section: article.sections[0].sections_id.slug,
+            section: article.section.slug,
             slug: article.slug,
             type: PageType.Article,
           })
           sectionPermalink = getPermalink({
             year: issue.year,
             month: issue.month,
-            section: article.sections[0].sections_id.slug,
+            section: article.section.slug,
             type: PageType.Section,
           })
         }

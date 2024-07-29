@@ -4,7 +4,7 @@ import EditorsMessage from "../editorsMessage"
 import PublishersMessage from "../publishersMessage"
 import SlideShow from "../slideshow"
 import FeaturedArticles from "../featuredArticles"
-import { ArticlesIssues, Issues, Sections } from "../../../../../lib/types"
+import { Articles, Issues, Sections } from "../../../../../lib/types"
 
 export interface LayoutProps {
   issueData: Issues
@@ -16,10 +16,10 @@ const IssueLayout = (props: LayoutProps) => {
   const currentArticles = props.issueData.articles
 
   // Filter the currentArticles to get only the articles with a slideshow image
-  const currentSlides: ArticlesIssues[] = []
-  currentArticles.forEach((articleIssue: ArticlesIssues) => {
-    if (articleIssue.articles_slug.slideshow_image) {
-      currentSlides.push(articleIssue)
+  const currentSlides: Articles[] = []
+  currentArticles.forEach((article: Articles) => {
+    if (article.slideshow_image) {
+      currentSlides.push(article)
     }
   })
 

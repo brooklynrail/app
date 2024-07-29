@@ -10,7 +10,7 @@ import RailProjects from "./railProjects"
 import Header from "./header"
 import Ad970 from "./ad970"
 import TableOfContents from "./tableOfContents"
-import { Ads, ArticlesIssues, Sections } from "../../../../lib/types"
+import { Ads, Articles, Sections } from "../../../../lib/types"
 import Link from "next/link"
 import SpecialIssue from "./layout/specialIssue"
 import SpecialSection from "./layout/specialSection"
@@ -22,7 +22,7 @@ import { PopupProvider } from "../issueRail/popupProvider"
 import { CoverImage } from "../issueRail/coverImage"
 
 export interface PromoProps {
-  currentArticles: ArticlesIssues[]
+  currentArticles: Articles[]
   year: number
   month: number
 }

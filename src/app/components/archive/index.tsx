@@ -1,13 +1,13 @@
 "use client"
 import Header from "../issuePage/header"
-import { ArticlesIssues, Issues } from "../../../../lib/types"
+import { Articles, Issues } from "../../../../lib/types"
 import Image from "next/image"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
 
 export interface PromoProps {
-  currentArticles: ArticlesIssues[]
+  currentArticles: Articles[]
   year: number
   month: number
 }

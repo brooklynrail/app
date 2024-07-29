@@ -1,6 +1,6 @@
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
-import { ArticlesIssues, DirectusFiles } from "../../../../lib/types"
+import { Articles, DirectusFiles } from "../../../../lib/types"
 import Image from "next/image"
 import { useState } from "react"
 import { PageType, getPermalink } from "../../../../lib/utils"
@@ -18,7 +18,7 @@ const SlideImage = (props: SlideImageProps) => {
 }
 
 interface SlideshowProps {
-  currentSlides: ArticlesIssues[]
+  currentSlides: Articles[]
   year: number
   month: number
 }
@@ -36,9 +36,8 @@ const SlideShow = (props: SlideshowProps) => {
     setSlidePosition((prevPosition) => (prevPosition + 1) % slideCount)
   }
 
-  const slides = currentSlides.map((articleIssue: ArticlesIssues, i: number) => {
-    const article = articleIssue.articles_slug
-    const { title, slideshow_image, sections, slug } = article
+  const slides = currentSlides.map((article: Articles, i: number) => {
+    const { title, slideshow_image, section, slug } = article
 
     if (slideshow_image === null || slideshow_image === undefined) {
       return
@@ -51,7 +50,7 @@ const SlideShow = (props: SlideshowProps) => {
     const articlePermalink = getPermalink({
       year: year,
       month: month,
-      section: sections[0].sections_id.slug,
+      section: section.slug,
       slug: slug,
       type: PageType.Article,
     })
@@ -64,7 +63,7 @@ const SlideShow = (props: SlideshowProps) => {
     )
   })
 
-  const indicator = currentSlides.map((articleIssue: ArticlesIssues, i: number) => {
+  const indicator = currentSlides.map((article: Articles, i: number) => {
     const show = i === slidePosition ? "show" : ""
     return <div key={i} className={`bannerblock ${show}`} onClick={() => setSlidePosition(i)}></div>
   })

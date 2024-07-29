@@ -17,7 +17,7 @@ export interface ArticlePreviewProps {
   directusUrl: string
 }
 
-export const dynamicParams = true
+// export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -65,6 +65,7 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
 
 export default async function ArticlePreviewPage({ params }: { params: PreviewParams }) {
   const { isEnabled } = draftMode()
+  console.log("Draft mode enabled: ", isEnabled)
 
   const data = await getData({ params })
 
@@ -96,10 +97,10 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const slug = String(params.slug)
 
-  const articleData = await getArticle(slug, "draft")
+  const articleData = await getArticle(slug)
 
-  const currentIssue = articleData.issues && articleData.issues[0] && articleData.issues[0].issues_id
-  const currentSection = articleData.sections && articleData.sections[0] && articleData.sections[0].sections_id
+  const currentIssue = articleData.issue
+  const currentSection = articleData.section
 
   const permalink = getPermalink({
     slug: articleData.slug,
@@ -118,3 +119,17 @@ async function getData({ params }: { params: PreviewParams }) {
     directusUrl,
   }
 }
+
+// export async function generateStaticParams() {
+//   const articlePages = await getArticlePages()
+
+//   return articlePages.map((article: Articles) => {
+//     const month = article.issues[0].issues_id.month
+//     return {
+//       year: article.issues[0].issues_id.year.toString(),
+//       month: month < 10 ? `0${month.toString()}` : month.toString(),
+//       section: article.sections[0].sections_id.slug.toString(),
+//       slug: article.slug,
+//     }
+//   })
+// }

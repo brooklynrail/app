@@ -8,7 +8,7 @@ interface PasswordProps {
 const Password = (props: PasswordProps) => {
   const { password, passwordError, setPassword, handlePasswordSubmit } = props
 
-  // A handler for the password input field that checks  on keyup
+  // A handler for the password input field that checks on keyup
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value)
   }

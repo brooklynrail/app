@@ -1,15 +1,15 @@
-import { ArticlesIssues } from "../../../../lib/types"
 import PromoSlim from "../promo/slim"
 import { PromoProps } from "."
 import { PageType, getPermalink } from "../../../../lib/utils"
+import { Articles } from "../../../../lib/types"
 
 const ArtSeen = (props: PromoProps) => {
   const { currentArticles, year, month } = props
 
   // Filter the currentArticles to get only the articles in the `artseen` section
-  const artSeen: ArticlesIssues[] = []
-  currentArticles.forEach((articleIssue: ArticlesIssues) => {
-    if (articleIssue.articles_slug.sections[0].sections_id.slug === "artseen") {
+  const artSeen: Articles[] = []
+  currentArticles.forEach((articleIssue: Articles) => {
+    if (articleIssue.section.slug === "artseen") {
       artSeen.push(articleIssue)
     }
   })
@@ -22,13 +22,12 @@ const ArtSeen = (props: PromoProps) => {
     <div className="collection">
       <h3>ArtSeen</h3>
       <ul>
-        {artSeen.map((articleIssue: ArticlesIssues, i: number) => {
-          const order = articleIssue.order
-          const article = articleIssue.articles_slug
+        {artSeen.map((article: Articles, i: number) => {
+          const order = article.sort
           const permalink = getPermalink({
             year: year,
             month: month,
-            section: article.sections[0].sections_id.slug,
+            section: article.section.slug,
             slug: article.slug,
             type: PageType.Article,
           })

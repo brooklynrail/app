@@ -240,63 +240,64 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=cover_6.width` +
     `&fields[]=cover_6.height` +
     `&fields[]=cover_6.type` +
-    `&fields[]=articles.order` +
-    `&fields[]=articles.articles_slug.status` +
-    `&fields[]=articles.articles_slug.slug` +
-    `&fields[]=articles.articles_slug.title` +
-    `&fields[]=articles.articles_slug.excerpt` +
-    `&fields[]=articles.articles_slug.kicker` +
-    `&fields[]=articles.articles_slug.featured` +
-    `&fields[]=articles.articles_slug.hide_bylines` +
-    `&fields[]=articles.articles_slug.hide_bylines_downstream` +
-    `&fields[]=articles.articles_slug.byline_override` +
-    `&fields[]=articles.articles_slug.featured_image.id` +
-    `&fields[]=articles.articles_slug.featured_image.caption` +
-    `&fields[]=articles.articles_slug.featured_image.filename_disk` +
-    `&fields[]=articles.articles_slug.featured_image.width` +
-    `&fields[]=articles.articles_slug.featured_image.height` +
-    `&fields[]=articles.articles_slug.featured_image.type` +
-    `&fields[]=articles.articles_slug.slideshow_image.id` +
-    `&fields[]=articles.articles_slug.slideshow_image.caption` +
-    `&fields[]=articles.articles_slug.slideshow_image.filename_disk` +
-    `&fields[]=articles.articles_slug.slideshow_image.width` +
-    `&fields[]=articles.articles_slug.slideshow_image.height` +
-    `&fields[]=articles.articles_slug.slideshow_image.type` +
-    `&fields[]=articles.articles_slug.promo_banner.id` +
-    `&fields[]=articles.articles_slug.promo_banner.caption` +
-    `&fields[]=articles.articles_slug.promo_banner.filename_disk` +
-    `&fields[]=articles.articles_slug.promo_banner.width` +
-    `&fields[]=articles.articles_slug.promo_banner.height` +
-    `&fields[]=articles.articles_slug.promo_banner.type` +
-    `&fields[]=articles.articles_slug.promo_thumb.id` +
-    `&fields[]=articles.articles_slug.promo_thumb.caption` +
-    `&fields[]=articles.articles_slug.promo_thumb.filename_disk` +
-    `&fields[]=articles.articles_slug.promo_thumb.width` +
-    `&fields[]=articles.articles_slug.promo_thumb.height` +
-    `&fields[]=articles.articles_slug.promo_thumb.type` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.id` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.first_name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.last_name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.old_id` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.slug` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.bio` +
-    `&fields[]=articles.articles_slug.issues.issues_id.title` +
-    `&fields[]=articles.articles_slug.issues.issues_id.slug` +
-    `&fields[]=articles.articles_slug.sections.sections_id.id` +
-    `&fields[]=articles.articles_slug.sections.sections_id.slug` +
-    `&fields[]=articles.articles_slug.sections.sections_id.name` +
-    `&fields[]=articles.articles_slug.sections.sections_id.old_id` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.id` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.caption` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.filename_disk` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.width` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.height` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.type` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.shortcode_key` +
+    `&fields[]=articles.sort` +
+    `&fields[]=articles.status` +
+    `&fields[]=articles.slug` +
+    `&fields[]=articles.title` +
+    `&fields[]=articles.excerpt` +
+    `&fields[]=articles.kicker` +
+    `&fields[]=articles.featured` +
+    `&fields[]=articles.hide_bylines` +
+    `&fields[]=articles.hide_bylines_downstream` +
+    `&fields[]=articles.byline_override` +
+    `&fields[]=articles.featured_image.id` +
+    `&fields[]=articles.featured_image.caption` +
+    `&fields[]=articles.featured_image.filename_disk` +
+    `&fields[]=articles.featured_image.width` +
+    `&fields[]=articles.featured_image.height` +
+    `&fields[]=articles.featured_image.type` +
+    `&fields[]=articles.slideshow_image.id` +
+    `&fields[]=articles.slideshow_image.caption` +
+    `&fields[]=articles.slideshow_image.filename_disk` +
+    `&fields[]=articles.slideshow_image.width` +
+    `&fields[]=articles.slideshow_image.height` +
+    `&fields[]=articles.slideshow_image.type` +
+    `&fields[]=articles.promo_banner.id` +
+    `&fields[]=articles.promo_banner.caption` +
+    `&fields[]=articles.promo_banner.filename_disk` +
+    `&fields[]=articles.promo_banner.width` +
+    `&fields[]=articles.promo_banner.height` +
+    `&fields[]=articles.promo_banner.type` +
+    `&fields[]=articles.promo_thumb.id` +
+    `&fields[]=articles.promo_thumb.caption` +
+    `&fields[]=articles.promo_thumb.filename_disk` +
+    `&fields[]=articles.promo_thumb.width` +
+    `&fields[]=articles.promo_thumb.height` +
+    `&fields[]=articles.promo_thumb.type` +
+    `&fields[]=articles.contributors.contributors_id.id` +
+    `&fields[]=articles.contributors.contributors_id.first_name` +
+    `&fields[]=articles.contributors.contributors_id.last_name` +
+    `&fields[]=articles.contributors.contributors_id.old_id` +
+    `&fields[]=articles.contributors.contributors_id.slug` +
+    `&fields[]=articles.contributors.contributors_id.bio` +
+    `&fields[]=articles.issue.id` +
+    `&fields[]=articles.issue.title` +
+    `&fields[]=articles.issue.slug` +
+    `&fields[]=articles.section.id` +
+    `&fields[]=articles.section.name` +
+    `&fields[]=articles.section.slug` +
+    `&fields[]=articles.images.directus_files_id.id` +
+    `&fields[]=articles.images.directus_files_id.caption` +
+    `&fields[]=articles.images.directus_files_id.filename_disk` +
+    `&fields[]=articles.images.directus_files_id.width` +
+    `&fields[]=articles.images.directus_files_id.height` +
+    `&fields[]=articles.images.directus_files_id.type` +
+    `&fields[]=articles.images.directus_files_id.shortcode_key` +
     `&filter[year][_eq]=${year}` +
     `&filter[month][_eq]=${month}` +
     `&filter[status][_eq]=published` +
     `&filter[special_issue][_eq]=false` +
+    `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
   const res = await fetch(issueDataAPI, { cache: "force-cache" })
   if (!res.ok) {
@@ -305,6 +306,7 @@ export async function getIssueData(props: IssueDataProps) {
   }
 
   const { data } = await res.json()
+  console.log("data: ", data[0].articles)
   return data[0] as Issues
 }
 
@@ -356,62 +358,63 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
     `&fields[]=cover_6.width` +
     `&fields[]=cover_6.height` +
     `&fields[]=cover_6.type` +
-    `&fields[]=articles.order` +
-    `&fields[]=articles.articles_slug.status` +
-    `&fields[]=articles.articles_slug.slug` +
-    `&fields[]=articles.articles_slug.title` +
-    `&fields[]=articles.articles_slug.excerpt` +
-    `&fields[]=articles.articles_slug.kicker` +
-    `&fields[]=articles.articles_slug.featured` +
-    `&fields[]=articles.articles_slug.hide_bylines` +
-    `&fields[]=articles.articles_slug.hide_bylines_downstream` +
-    `&fields[]=articles.articles_slug.byline_override` +
-    `&fields[]=articles.articles_slug.featured_image.id` +
-    `&fields[]=articles.articles_slug.featured_image.caption` +
-    `&fields[]=articles.articles_slug.featured_image.filename_disk` +
-    `&fields[]=articles.articles_slug.featured_image.width` +
-    `&fields[]=articles.articles_slug.featured_image.height` +
-    `&fields[]=articles.articles_slug.featured_image.type` +
-    `&fields[]=articles.articles_slug.slideshow_image.id` +
-    `&fields[]=articles.articles_slug.slideshow_image.caption` +
-    `&fields[]=articles.articles_slug.slideshow_image.filename_disk` +
-    `&fields[]=articles.articles_slug.slideshow_image.width` +
-    `&fields[]=articles.articles_slug.slideshow_image.height` +
-    `&fields[]=articles.articles_slug.slideshow_image.type` +
-    `&fields[]=articles.articles_slug.promo_banner.id` +
-    `&fields[]=articles.articles_slug.promo_banner.caption` +
-    `&fields[]=articles.articles_slug.promo_banner.filename_disk` +
-    `&fields[]=articles.articles_slug.promo_banner.width` +
-    `&fields[]=articles.articles_slug.promo_banner.height` +
-    `&fields[]=articles.articles_slug.promo_banner.type` +
-    `&fields[]=articles.articles_slug.promo_thumb.id` +
-    `&fields[]=articles.articles_slug.promo_thumb.caption` +
-    `&fields[]=articles.articles_slug.promo_thumb.filename_disk` +
-    `&fields[]=articles.articles_slug.promo_thumb.width` +
-    `&fields[]=articles.articles_slug.promo_thumb.height` +
-    `&fields[]=articles.articles_slug.promo_thumb.type` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.id` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.first_name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.last_name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.old_id` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.slug` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.bio` +
-    `&fields[]=articles.articles_slug.issues.issues_id.title` +
-    `&fields[]=articles.articles_slug.issues.issues_id.slug` +
-    `&fields[]=articles.articles_slug.sections.sections_id.id` +
-    `&fields[]=articles.articles_slug.sections.sections_id.slug` +
-    `&fields[]=articles.articles_slug.sections.sections_id.name` +
-    `&fields[]=articles.articles_slug.sections.sections_id.old_id` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.id` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.caption` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.filename_disk` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.width` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.height` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.type` +
-    `&fields[]=articles.articles_slug.images.directus_files_id.shortcode_key` +
+    `&fields[]=articles.sort` +
+    `&fields[]=articles.status` +
+    `&fields[]=articles.slug` +
+    `&fields[]=articles.title` +
+    `&fields[]=articles.excerpt` +
+    `&fields[]=articles.kicker` +
+    `&fields[]=articles.featured` +
+    `&fields[]=articles.hide_bylines` +
+    `&fields[]=articles.hide_bylines_downstream` +
+    `&fields[]=articles.byline_override` +
+    `&fields[]=articles.featured_image.id` +
+    `&fields[]=articles.featured_image.caption` +
+    `&fields[]=articles.featured_image.filename_disk` +
+    `&fields[]=articles.featured_image.width` +
+    `&fields[]=articles.featured_image.height` +
+    `&fields[]=articles.featured_image.type` +
+    `&fields[]=articles.slideshow_image.id` +
+    `&fields[]=articles.slideshow_image.caption` +
+    `&fields[]=articles.slideshow_image.filename_disk` +
+    `&fields[]=articles.slideshow_image.width` +
+    `&fields[]=articles.slideshow_image.height` +
+    `&fields[]=articles.slideshow_image.type` +
+    `&fields[]=articles.promo_banner.id` +
+    `&fields[]=articles.promo_banner.caption` +
+    `&fields[]=articles.promo_banner.filename_disk` +
+    `&fields[]=articles.promo_banner.width` +
+    `&fields[]=articles.promo_banner.height` +
+    `&fields[]=articles.promo_banner.type` +
+    `&fields[]=articles.promo_thumb.id` +
+    `&fields[]=articles.promo_thumb.caption` +
+    `&fields[]=articles.promo_thumb.filename_disk` +
+    `&fields[]=articles.promo_thumb.width` +
+    `&fields[]=articles.promo_thumb.height` +
+    `&fields[]=articles.promo_thumb.type` +
+    `&fields[]=articles.contributors.contributors_id.id` +
+    `&fields[]=articles.contributors.contributors_id.first_name` +
+    `&fields[]=articles.contributors.contributors_id.last_name` +
+    `&fields[]=articles.contributors.contributors_id.old_id` +
+    `&fields[]=articles.contributors.contributors_id.slug` +
+    `&fields[]=articles.contributors.contributors_id.bio` +
+    `&fields[]=articles.issue.title` +
+    `&fields[]=articles.issue.slug` +
+    `&fields[]=articles.section.id` +
+    `&fields[]=articles.section.slug` +
+    `&fields[]=articles.section.name` +
+    `&fields[]=articles.section.old_id` +
+    `&fields[]=articles.images.directus_files_id.id` +
+    `&fields[]=articles.images.directus_files_id.caption` +
+    `&fields[]=articles.images.directus_files_id.filename_disk` +
+    `&fields[]=articles.images.directus_files_id.width` +
+    `&fields[]=articles.images.directus_files_id.height` +
+    `&fields[]=articles.images.directus_files_id.type` +
+    `&fields[]=articles.images.directus_files_id.shortcode_key` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
     `&filter[special_issue][_eq]=true` +
+    `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
 
   const res = await fetch(issueDataAPI, { cache: "force-cache" })
@@ -441,7 +444,7 @@ export async function getIssueBasics(props: IssueBasicsProps) {
     `&fields[]=status` +
     `&fields[]=issue_number` +
     `&fields[]=special_issue` +
-    `&fields[]=sections.sections_id.slug` +
+    `&fields[]=section.slug` +
     `&fields[]=cover_1.caption` +
     `&fields[]=cover_1.filename_disk` +
     `&fields[]=cover_1.width` +
@@ -477,7 +480,7 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
     `&fields[]=status` +
     `&fields[]=issue_number` +
     `&fields[]=special_issue` +
-    `&fields[]=sections.sections_id.slug` +
+    `&fields[]=section.slug` +
     `&fields[]=cover_1.caption` +
     `&fields[]=cover_1.filename_disk` +
     `&fields[]=cover_1.width` +
@@ -502,12 +505,8 @@ export async function getSectionsByIssueId(issueId: string) {
       fields: ["id", "name", "slug", "articles", "old_id"],
       filter: {
         articles: {
-          articles_slug: {
-            issues: {
-              issues_id: {
-                id: { _eq: issueId },
-              },
-            },
+          issue: {
+            id: { _eq: issueId },
           },
         },
       },
@@ -523,15 +522,15 @@ export async function getSpecialArticlePages() {
   while (isMore) {
     const specialArticleDataAPI =
       `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles?fields[]=slug` +
-      `&fields[]=sections.sections_id.slug` +
-      `&fields[]=issues.issues_id.slug` +
-      `&fields[]=issues.issues_id.special_issue` +
-      `&fields[]=issues.issues_id.status` +
+      `&fields[]=section.slug` +
+      `&fields[]=issue.slug` +
+      `&fields[]=issue.special_issue` +
+      `&fields[]=issue.status` +
       `&filter[status][_eq]=published` +
       `&filter[slug][_nempty]=true` +
       `&filter[issues][_nnull]=true` +
       `&filter[issues][_gt]=0` +
-      `&deep[issues][_filter][issues_id][special_issue][_eq]=true` +
+      `&deep[issues][_filter][special_issue][_eq]=true` +
       `&page=${page}` +
       `&limit=100` +
       `&offset=${page * 100 - 100}`
@@ -554,18 +553,18 @@ export async function getArticlePages() {
   let isMore = true
   while (isMore) {
     const articleDataAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles?fields[]=slug` +
-      `&fields[]=sections.sections_id.slug` +
-      `&fields[]=issues.issues_id.year` +
-      `&fields[]=issues.issues_id.month` +
-      `&fields[]=issues.issues_id.slug` +
-      `&fields[]=issues.issues_id.special_issue` +
-      `&fields[]=issues.issues_id.status` +
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
+      `?fields[]=slug` +
+      `&fields[]=section.slug` +
+      `&fields[]=issue.year` +
+      `&fields[]=issue.month` +
+      `&fields[]=issue.slug` +
+      `&fields[]=issue.special_issue` +
+      `&fields[]=issue.status` +
       `&filter[status][_eq]=published` +
       `&filter[slug][_nempty]=true` +
-      `&filter[issues][_nnull]=true` +
-      `&filter[issues][_gt]=0` +
-      `&deep[issues][_filter][issues_id][special_issue][_eq]=false` +
+      `&filter[issue][_nnull]=true` +
+      `&deep[issue][_filter][special_issue][_eq]=false` +
       `&page=${page}` +
       `&limit=100` +
       `&offset=${page * 100 - 100}`
@@ -582,8 +581,9 @@ export async function getArticlePages() {
   return articlePages as Articles[]
 }
 
-export async function getArticle(slug: string, status: string) {
+export async function getArticle(slug: string, status?: string) {
   let articleAPI
+  let res
   if (status === "published") {
     articleAPI =
       `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
@@ -639,10 +639,10 @@ export async function getArticle(slug: string, status: string) {
       `&fields[]=contributors.contributors_id.last_name` +
       `&fields[]=contributors.contributors_id.slug` +
       `&fields[]=contributors.contributors_id.bio` +
-      `&fields[]=issues.issues_id.title` +
-      `&fields[]=issues.issues_id.slug` +
-      `&fields[]=sections.sections_id.slug` +
-      `&fields[]=sections.sections_id.name` +
+      `&fields[]=issue.title` +
+      `&fields[]=issue.slug` +
+      `&fields[]=section.slug` +
+      `&fields[]=section.name` +
       `&fields[]=images.directus_files_id.id` +
       `&fields[]=images.directus_files_id.caption` +
       `&fields[]=images.directus_files_id.filename_disk` +
@@ -652,6 +652,7 @@ export async function getArticle(slug: string, status: string) {
       `&fields[]=images.directus_files_id.shortcode_key` +
       `&filter[slug][_eq]=${slug}` +
       `&filter[status][_in]=published`
+    res = await fetch(articleAPI, { cache: "force-cache" })
   } else {
     articleAPI =
       `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
@@ -707,10 +708,10 @@ export async function getArticle(slug: string, status: string) {
       `&fields[]=contributors.contributors_id.last_name` +
       `&fields[]=contributors.contributors_id.slug` +
       `&fields[]=contributors.contributors_id.bio` +
-      `&fields[]=issues.issues_id.title` +
-      `&fields[]=issues.issues_id.slug` +
-      `&fields[]=sections.sections_id.slug` +
-      `&fields[]=sections.sections_id.name` +
+      `&fields[]=issue.title` +
+      `&fields[]=issue.slug` +
+      `&fields[]=section.slug` +
+      `&fields[]=section.name` +
       `&fields[]=images.directus_files_id.id` +
       `&fields[]=images.directus_files_id.caption` +
       `&fields[]=images.directus_files_id.filename_disk` +
@@ -719,9 +720,9 @@ export async function getArticle(slug: string, status: string) {
       `&fields[]=images.directus_files_id.type` +
       `&fields[]=images.directus_files_id.shortcode_key` +
       `&filter[slug][_eq]=${slug}`
+    res = await fetch(articleAPI)
   }
 
-  const res = await fetch(articleAPI, { cache: "force-cache" })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch articleAPI data")
@@ -814,7 +815,7 @@ interface PermalinkProps {
   type: PageType
   year?: number
   month?: number
-  section?: string
+  section?: string | Sections
   slug?: string
   issueSlug?: string
 }
@@ -868,29 +869,29 @@ export async function getContributor(slug: string) {
     `&fields[]=old_id` +
     `&fields[]=date_updated` +
     `&fields[]=date_created` +
-    `&fields[]=articles.articles_slug.status` +
-    `&fields[]=articles.articles_slug.slug` +
-    `&fields[]=articles.articles_slug.title` +
-    `&fields[]=articles.articles_slug.excerpt` +
-    `&fields[]=articles.articles_slug.kicker` +
-    `&fields[]=articles.articles_slug.featured` +
-    `&fields[]=articles.articles_slug.featured_image.id` +
-    `&fields[]=articles.articles_slug.featured_image.caption` +
-    `&fields[]=articles.articles_slug.featured_image.filename_disk` +
-    `&fields[]=articles.articles_slug.featured_image.width` +
-    `&fields[]=articles.articles_slug.featured_image.height` +
-    `&fields[]=articles.articles_slug.featured_image.type` +
-    `&fields[]=articles.articles_slug.issues.issues_id.title` +
-    `&fields[]=articles.articles_slug.issues.issues_id.year` +
-    `&fields[]=articles.articles_slug.issues.issues_id.month` +
-    `&fields[]=articles.articles_slug.issues.issues_id.slug` +
-    `&fields[]=articles.articles_slug.issues.issues_id.special_issue` +
-    `&fields[]=articles.articles_slug.sections.sections_id.slug` +
-    `&fields[]=articles.articles_slug.sections.sections_id.name` +
+    `&fields[]=articles.status` +
+    `&fields[]=articles.slug` +
+    `&fields[]=articles.title` +
+    `&fields[]=articles.excerpt` +
+    `&fields[]=articles.kicker` +
+    `&fields[]=articles.featured` +
+    `&fields[]=articles.featured_image.id` +
+    `&fields[]=articles.featured_image.caption` +
+    `&fields[]=articles.featured_image.filename_disk` +
+    `&fields[]=articles.featured_image.width` +
+    `&fields[]=articles.featured_image.height` +
+    `&fields[]=articles.featured_image.type` +
+    `&fields[]=articles.issue.title` +
+    `&fields[]=articles.issue.year` +
+    `&fields[]=articles.issue.month` +
+    `&fields[]=articles.issue.slug` +
+    `&fields[]=articles.issue.special_issue` +
+    `&fields[]=articles.section.slug` +
+    `&fields[]=articles.section.name` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_in]=published` +
     `&filter[articles][_nnull]=true` +
-    `&deep[articles][articles_slug][issues][_nnull]=true`
+    `&deep[articles][issue][_nnull]=true`
 
   const res = await fetch(issueDataAPI, { cache: "force-cache" })
   if (!res.ok) {

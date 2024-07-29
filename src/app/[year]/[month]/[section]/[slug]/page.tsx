@@ -12,7 +12,6 @@ import { Metadata } from "next"
 import Article from "@/app/components/article"
 
 // export const dynamicParams = true
-
 export interface ArticleProps {
   articleData: Articles
   issueBasics: Issues
@@ -29,14 +28,14 @@ export async function generateStaticParams() {
     // NOTE: This is returning articles with no issues.
     // These are the articles that are part of the "Special Issues"
     // This might be a BUG, or might be how the REST API is set up.
-    if (!article.issues || article.issues.length === 0) {
+    if (!article.issue) {
       return
     }
-    const month = article.issues[0].issues_id.month
+    const month = article.issue.month
     return {
-      year: article.issues[0].issues_id.year.toString(),
+      year: article.issue.year.toString(),
       month: month < 10 ? `0${month.toString()}` : month.toString(),
-      section: article.sections[0].sections_id.slug.toString(),
+      section: article.section.slug,
       slug: article.slug,
     }
   })
@@ -62,7 +61,7 @@ async function getData({ params }: { params: ArticleParams }) {
     return { props: { errorCode: 404, errorMessage: "Article not found" } }
   }
 
-  const currentSection = articleData.sections && articleData.sections[0].sections_id
+  const currentSection = articleData.section
 
   const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
   if (errorCode) {
@@ -94,9 +93,8 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     return {}
   }
 
-  const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag, sections } =
+  const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag, section } =
     data.props.articleData
-  const section = sections[0].sections_id
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
   const ogdescription = `${stripHtml(excerpt).result}`
   const ogimageprops = { ogimage: featured_image, title }

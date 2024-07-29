@@ -13,9 +13,7 @@ export async function GET(request: Request) {
           _and: [
             {
               articles: {
-                articles_slug: {
-                  issues: { issues_id: { id: { _eq: issueId } } },
-                },
+                issue: { id: { _eq: issueId } },
               },
             },
           ],

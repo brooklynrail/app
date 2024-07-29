@@ -11,11 +11,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // const articlePagesFiltered = articlePages.filter((article: Articles) => article.issues && article.issues.length > 0)
   const articles = articlePages
-    .filter((article: Articles) => article.issues && article.issues.length > 0)
+    .filter((article: Articles) => article.issue)
     .map((article: Articles) => {
-      const year = article.issues[0].issues_id.year
-      const month = article.issues[0].issues_id.month
-      const section = article.sections[0].sections_id.slug
+      const year = article.issue.year
+      const month = article.issue.month
+      const section = article.section.slug
       const slug = article.slug
 
       return {
@@ -32,11 +32,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // // This might be a BUG, or might be how the REST API is set up.
   // // remove all articles from specialArticlePages that have an empty issues array
   const specialArticles = specialArticlePages
-    .filter((article: Articles) => article.issues && article.issues.length > 0)
+    .filter((article: Articles) => article.issue)
     .map((article: Articles) => {
       const slug = article.slug
-      const issueSlug = article.issues[0].issues_id.slug
-      const section = article.sections[0].sections_id.slug
+      const issueSlug = article.issue.slug
+      const section = article.section.slug
 
       return {
         url: `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/${slug}/`,

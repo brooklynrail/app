@@ -15,8 +15,8 @@ export interface PromoProps {
 
 export const PromoSectionName = (props: PromoProps) => {
   const { article, sectionPermalink } = props
-  const { sections, kicker } = article
-  const sectionName = sections[0].sections_id.name
+  const { section, kicker } = article
+  const sectionName = section.name
   return (
     <p className="article_type">
       <Link className="section" href={sectionPermalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
