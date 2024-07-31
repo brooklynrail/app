@@ -12,7 +12,7 @@ export async function getAllIssues() {
   let page = 1
   let isMore = true
   while (isMore) {
-    const issuesDataAPI =
+    const allIssuesDataAPI =
       `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
       `?fields[]=year` +
       `&fields[]=month` +
@@ -58,12 +58,15 @@ export async function getAllIssues() {
       `&page=${page}` +
       `&limit=100` +
       `&offset=${page * 100 - 100}`
-    const res = await fetch(issuesDataAPI, { cache: "force-cache" })
+    console.log("allIssues API", allIssuesDataAPI)
+
+    const res = await fetch(allIssuesDataAPI, { cache: "force-cache" })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       throw new Error("Failed to fetch getAllIssues data")
     }
     const data = await res.json()
+    console.log("allIssues --->", data)
     allIssues = allIssues.concat(data.data)
     isMore = data.data.length === 100 // assumes there is another page of records
     page++
@@ -306,7 +309,6 @@ export async function getIssueData(props: IssueDataProps) {
   }
 
   const { data } = await res.json()
-  console.log("data: ", data[0].articles)
   return data[0] as Issues
 }
 
@@ -516,35 +518,41 @@ export async function getSectionsByIssueId(issueId: string) {
 }
 
 export async function getSpecialArticlePages() {
-  let specialArticlePages: Articles[] = []
-  let page = 1
-  let isMore = true
-  while (isMore) {
-    const specialArticleDataAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles?fields[]=slug` +
-      `&fields[]=section.slug` +
-      `&fields[]=issue.slug` +
-      `&fields[]=issue.special_issue` +
-      `&fields[]=issue.status` +
-      `&filter[status][_eq]=published` +
-      `&filter[slug][_nempty]=true` +
-      `&filter[issues][_nnull]=true` +
-      `&filter[issues][_gt]=0` +
-      `&deep[issues][_filter][special_issue][_eq]=true` +
-      `&page=${page}` +
-      `&limit=100` +
-      `&offset=${page * 100 - 100}`
-    const res = await fetch(specialArticleDataAPI, { cache: "force-cache" })
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch getSpecialArticlePages data")
+  try {
+    let specialArticlePages: Articles[] = []
+    let page = 1
+    let isMore = true
+    while (isMore) {
+      const specialArticleDataAPI =
+        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
+        `?fields[]=slug` +
+        `&fields[]=section.slug` +
+        `&fields[]=issue.slug` +
+        `&fields[]=issue.special_issue` +
+        `&fields[]=issue.status` +
+        `&filter[status][_eq]=published` +
+        `&filter[slug][_nempty]=true` +
+        `&filter[issue][_nnull]=true` +
+        `&filter[issue][_gt]=0` +
+        `&deep[issue][_filter][special_issue][_eq]=true` +
+        `&page=${page}` +
+        `&limit=100` +
+        `&offset=${page * 100 - 100}`
+      const res = await fetch(specialArticleDataAPI, { cache: "force-cache" })
+      if (!res.ok) {
+        // This will activate the closest `error.js` Error Boundary
+        throw new Error("Failed to fetch getSpecialArticlePages data")
+      }
+      const data = await res.json()
+      specialArticlePages = specialArticlePages.concat(data.data)
+      isMore = data.data.length === 100 // assumes there is another page of records
+      page++
     }
-    const data = await res.json()
-    specialArticlePages = specialArticlePages.concat(data.data)
-    isMore = data.data.length === 100 // assumes there is another page of records
-    page++
+    return specialArticlePages
+  } catch (error) {
+    console.error("error in getSpecialArticlePages", error)
+    throw error
   }
-  return specialArticlePages
 }
 
 export async function getArticlePages() {
