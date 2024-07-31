@@ -65,14 +65,12 @@ async function getData({ params }: { params: SectionParams }) {
   const month = Number(params.month)
   const section = params.section.toString()
 
-  console.log(params)
   const issueData = await getIssueData({
     year: year,
     month: month,
   })
 
   // Get only the sections that are used in the articles in the current issue
-  console.log("issueData: ", issueData.id, issueData.year, issueData.month, issueData.title, issueData.slug)
   const currentSections = await getSectionsByIssueId(issueData.id)
 
   if (!currentSections) {
