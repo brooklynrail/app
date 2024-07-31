@@ -29,7 +29,6 @@ const IssueSection = (props: IssueSectionProps) => {
     type: PageType.Section,
   })
 
-  console.log("==============")
   return (
     <>
       <h3>
@@ -40,8 +39,6 @@ const IssueSection = (props: IssueSectionProps) => {
       {section.slug === "art_books" && (
         <ul>
           {articles.map((article: Articles, i: number) => {
-            console.log("article: ", article.title)
-            console.log("article: ", article.sort)
             const order = article.sort
             const permalink = getPermalink({
               year: year,

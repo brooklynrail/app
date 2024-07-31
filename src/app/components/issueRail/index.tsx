@@ -195,7 +195,6 @@ const IssueRail = (props: IssueRailProps) => {
       }
 
       if (issueData && !issueSections) {
-        console.log("fetching issueData.id", issueData.id)
         const sectionsResponse = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
           {
