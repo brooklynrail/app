@@ -98,6 +98,7 @@
     font-size: 10px;
     @include u-position("relative");
     @include u-top("05");
+    @include u-display("none");
     span {
       @include u-position("absolute");
       @include u-top("05");
