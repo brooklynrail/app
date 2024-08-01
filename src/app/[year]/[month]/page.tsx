@@ -1,6 +1,13 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getIssueData, getIssues, getOGImage, getPermalink } from "../../../../lib/utils"
+import {
+  PageType,
+  getIssueData,
+  getIssues,
+  getOGImage,
+  getPermalink,
+  getSectionsByIssueId,
+} from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
 
@@ -53,6 +60,8 @@ async function getData({ params }: { params: IssueParams }) {
     month: month,
   })
 
+  const sections = await getSectionsByIssueId(issueData.id)
+
   const permalink = getPermalink({
     year: issueData.year,
     month: issueData.month,
@@ -61,6 +70,7 @@ async function getData({ params }: { params: IssueParams }) {
 
   return {
     issueData,
+    sections,
     permalink,
   }
 }

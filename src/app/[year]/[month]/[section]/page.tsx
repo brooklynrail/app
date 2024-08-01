@@ -1,14 +1,7 @@
 import { PageLayout } from "@/app/page"
-import {
-  PageType,
-  getIssueData,
-  getIssues,
-  getOGImage,
-  getPermalink,
-  getSectionsByIssueId,
-} from "../../../../../lib/utils"
+import { PageType, getIssueData, getOGImage, getPermalink, getSectionsByIssueId } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
-import { Issues, Sections } from "../../../../../lib/types"
+import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
 import { Metadata } from "next"
 
@@ -94,6 +87,7 @@ async function getData({ params }: { params: SectionParams }) {
   return {
     props: {
       issueData,
+      sections: currentSections,
       currentSection,
       permalink,
     },

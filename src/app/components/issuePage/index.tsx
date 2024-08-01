@@ -10,14 +10,14 @@ import RailProjects from "./railProjects"
 import Header from "./header"
 import Ad970 from "./ad970"
 import TableOfContents from "./tableOfContents"
-import { Ads, Articles, Sections } from "../../../../lib/types"
+import { Ads, Articles } from "../../../../lib/types"
 import Link from "next/link"
 import SpecialIssue from "./layout/specialIssue"
 import SpecialSection from "./layout/specialSection"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
-import { getAds, getSectionsByIssueId } from "../../../../lib/utils"
+import { getAds } from "../../../../lib/utils"
 import { PopupProvider } from "../issueRail/popupProvider"
 import { CoverImage } from "../issueRail/coverImage"
 
@@ -28,27 +28,24 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { permalink, issueData, currentSection } = props
-
-  const [currentSections, setCurrentSections] = useState<Sections[] | undefined>(undefined)
+  const { permalink, issueData, currentSection, sections } = props
+  const currentSections = sections
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!currentSections || !currentAds) {
-        const sections = await getSectionsByIssueId(issueData.id)
+      if (!currentAds) {
         const ads = getAds()
         // Fetch all the data in parallel
-        const [fetchedSections, fetchedAds] = await Promise.all([sections, ads])
+        const [fetchedAds] = await Promise.all([ads])
         // Update the state with the fetched data as it becomes available
-        setCurrentSections(fetchedSections)
         setCurrentAds(fetchedAds)
       }
     }
 
     // Call the fetchData function and handle any errors
     fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
-  }, [currentSections, issueData, currentAds])
+  }, [issueData, currentAds])
 
   const { year, month, slug } = issueData
   const issueClass = `issue-${slug.toLowerCase()}`
@@ -102,7 +99,7 @@ const IssuePage = (props: IssuePageProps) => {
                         <CoverImage issueBasics={issueData} />
                       </div>
 
-                      <CurrentSections {...{ currentSections, issueData }} />
+                      <CurrentSections sections={sections} issueData={issueData} />
 
                       <Link className="search_btn" href="/search" title="Search All Issues">
                         <span>Search</span> <i className="fas fa-search"></i>

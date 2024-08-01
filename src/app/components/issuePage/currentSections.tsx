@@ -3,12 +3,12 @@ import { Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
 
 interface CurrentSectionsProps {
-  currentSections?: Array<Sections>
+  sections: Array<Sections>
   issueData: Issues
 }
 
 const CurrentSections = (props: CurrentSectionsProps) => {
-  const { currentSections, issueData } = props
+  const { sections, issueData } = props
   const { year, month, slug, special_issue } = issueData
   const sectionsToRemove = ["publishersmessage", "editorsmessage"]
 
@@ -23,34 +23,30 @@ const CurrentSections = (props: CurrentSectionsProps) => {
         type: PageType.Issue,
       })
 
-  const sections = currentSections ? (
-    currentSections.map((section: Sections, i: number) => {
-      const sectionPermalink = special_issue
-        ? getPermalink({
-            issueSlug: slug,
-            section: section.slug,
-            type: PageType.SpecialIssueSection,
-          })
-        : getPermalink({
-            year: year,
-            month: month,
-            section: section.slug,
-            type: PageType.Section,
-          })
-      if (sectionsToRemove.includes(section.slug)) {
-        return
-      }
-      return (
-        <li key={`${i}`}>
-          <Link href={sectionPermalink} title={`Go to the ${section.name} section`}>
-            {section.name}
-          </Link>
-        </li>
-      )
-    })
-  ) : (
-    <LoadingSections />
-  )
+  const sectionsList = sections.map((section: Sections, i: number) => {
+    const sectionPermalink = special_issue
+      ? getPermalink({
+          issueSlug: slug,
+          section: section.slug,
+          type: PageType.SpecialIssueSection,
+        })
+      : getPermalink({
+          year: year,
+          month: month,
+          section: section.slug,
+          type: PageType.Section,
+        })
+    if (sectionsToRemove.includes(section.slug)) {
+      return
+    }
+    return (
+      <li key={`${i}`}>
+        <Link href={sectionPermalink} title={`Go to the ${section.name} section`}>
+          {section.name}
+        </Link>
+      </li>
+    )
+  })
 
   return (
     <>
@@ -61,21 +57,9 @@ const CurrentSections = (props: CurrentSectionsProps) => {
               Issue Home
             </Link>
           </li>
-          {sections}
+          {sectionsList}
         </ul>
       </div>
-    </>
-  )
-}
-
-const LoadingSections = () => {
-  return (
-    <>
-      {Array.from({ length: 12 }).map((_, i) => (
-        <li key={i} className="loading">
-          <span style={{ width: 111 }}></span>
-        </li>
-      ))}
     </>
   )
 }

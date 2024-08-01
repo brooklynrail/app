@@ -1,6 +1,6 @@
 import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/app/components/issuePage"
-import { getCurrentIssueData, getPermalink, PageType } from "../../lib/utils"
+import { getCurrentIssueData, getPermalink, getSectionsByIssueId, PageType } from "../../lib/utils"
 
 export enum PageLayout {
   Issue = "issue",
@@ -11,6 +11,7 @@ export enum PageLayout {
 }
 export interface IssuePageProps {
   issueData: Issues
+  sections: Sections[]
   currentSection?: Sections
   permalink: string
   errorCode?: number
@@ -34,12 +35,16 @@ async function getData() {
   if (!data) {
     return { errorCode: 500, errorMessage: "There is no current issue set" }
   }
+
+  const sections = await getSectionsByIssueId(data.id)
+
   const permalink = getPermalink({
     type: PageType.Home,
   })
 
   return {
     issueData: data,
+    sections,
     permalink,
   }
 }
