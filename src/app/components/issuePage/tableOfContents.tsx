@@ -36,21 +36,20 @@ const IssueSection = (props: IssueSectionProps) => {
           {sectionName}
         </Link>
       </h3>
-      {section.slug === "art_books" && (
-        <ul>
-          {articles.map((article: Articles, i: number) => {
-            const order = article.sort
-            const permalink = getPermalink({
-              year: year,
-              month: month,
-              section: article.section.slug,
-              slug: article.slug,
-              type: PageType.Article,
-            })
-            return <PromoSlim key={`toc-article-${i}`} article={article} permalink={permalink} order={order} />
-          })}
-        </ul>
-      )}
+
+      <ul>
+        {articles.map((article: Articles, i: number) => {
+          const order = article.sort
+          const permalink = getPermalink({
+            year: year,
+            month: month,
+            section: article.section.slug,
+            slug: article.slug,
+            type: PageType.Article,
+          })
+          return <PromoSlim key={`toc-article-${i}`} article={article} permalink={permalink} order={order} />
+        })}
+      </ul>
     </>
   )
 }
