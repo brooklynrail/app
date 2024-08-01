@@ -9,12 +9,17 @@ interface PreviewImageProps {
   image: DirectusFiles
   fullWidth?: boolean
   directusUrl: string
+  showShortcode: boolean
+  key: number
 }
 const PreviewImage = (props: PreviewImageProps) => {
+  const { showShortcode, key } = props
   const { filename_disk, caption, shortcode_key, id } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const desc = caption ? <figcaption>{parse(caption)}</figcaption> : null
-  const shortcodeKey = shortcode_key && `[img name="${shortcode_key}" type="lg" /]`
+  const shortcodeKey = shortcode_key
+    ? `[img name="${shortcode_key}" type="lg" /]`
+    : `[img name="img${key}" type="lg" /]`
   const [isCopied, setIsCopied] = useState(false)
 
   // the URL to edit the image in Directus
@@ -30,13 +35,13 @@ const PreviewImage = (props: PreviewImageProps) => {
     </p>
   )
 
-  const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
-    e.preventDefault()
-    if (shortcodeKey) {
-      await navigator.clipboard.writeText(shortcodeKey)
-      setIsCopied(true)
-    }
-  }
+  // const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
+  //   e.preventDefault()
+  //   if (shortcodeKey) {
+  //     // await navigator.clipboard.writeText(shortcodeKey)
+  //     setIsCopied(true)
+  //   }
+  // }
 
   useEffect(() => {
     // wait 5 seconds and then reset the isCopied state
@@ -49,24 +54,21 @@ const PreviewImage = (props: PreviewImageProps) => {
     <div className="preview-image">
       <div className="imgbox">
         <Image src={src} width={width} height={height} alt={caption ? caption : ""} sizes="30vw" />
-        {dimensions}
-      </div>
-      <div>
-        {desc}
+
         <div className="tools">
+          {desc}
+          {dimensions}
           <Link href={imageEditURL} title="Edit this image" target="_blank">
             <button>edit</button>
           </Link>
-          {shortcodeKey && (
-            <div className="shortcode">
-              <span onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}>
-                {isCopied ? `copied` : `copy`}
-              </span>
-              <code>{shortcodeKey}</code>
-            </div>
-          )}
         </div>
       </div>
+
+      {showShortcode && (
+        <div className="shortcode">
+          <code>{shortcodeKey}</code>
+        </div>
+      )}
     </div>
   )
 }
@@ -129,7 +131,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           return <></>
         }
         const img = image.directus_files_id
-        return <PreviewImage key={i} image={img} directusUrl={props.directusUrl} />
+        return <PreviewImage key={i} image={img} directusUrl={props.directusUrl} showShortcode={true} />
       })
     : null
 
@@ -148,7 +150,9 @@ const PreviewInfo = (props: PreviewInfoProps) => {
 
       <div className="block">
         <h4>Featured Image</h4>
-        {featured_image ? <PreviewImage image={featured_image} directusUrl={props.directusUrl} /> : null}
+        {featured_image ? (
+          <PreviewImage key={1} image={featured_image} directusUrl={props.directusUrl} showShortcode={false} />
+        ) : null}
       </div>
 
       <div className="block">
@@ -166,21 +170,33 @@ const PreviewInfo = (props: PreviewInfoProps) => {
       {slideshow_image && (
         <div className="block slideshow-image">
           <h4>Slideshow Image</h4>
-          <PreviewImage image={slideshow_image} fullWidth={true} directusUrl={props.directusUrl} />
+          <PreviewImage
+            key={1}
+            image={slideshow_image}
+            fullWidth={true}
+            directusUrl={props.directusUrl}
+            showShortcode={false}
+          />
         </div>
       )}
 
       {promo_banner && (
         <div className="block slideshow-image">
           <h4>Promo Banner Image</h4>
-          <PreviewImage image={promo_banner} fullWidth={true} directusUrl={props.directusUrl} />
+          <PreviewImage
+            key={1}
+            image={promo_banner}
+            fullWidth={true}
+            directusUrl={props.directusUrl}
+            showShortcode={false}
+          />
         </div>
       )}
 
       {promo_thumb && (
         <div className="block">
           <h4>Promo Thumb Image</h4>
-          <PreviewImage image={promo_thumb} directusUrl={props.directusUrl} />
+          <PreviewImage key={1} image={promo_thumb} directusUrl={props.directusUrl} showShortcode={false} />
         </div>
       )}
 
