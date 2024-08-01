@@ -81,6 +81,7 @@ async function getData({ params }: { params: SpecialSectionParams }) {
   return {
     props: {
       issueData,
+      sections: currentSections,
       currentSection,
       permalink,
     },
