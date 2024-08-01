@@ -58,7 +58,6 @@ export async function getAllIssues() {
       `&page=${page}` +
       `&limit=100` +
       `&offset=${page * 100 - 100}`
-    console.log("allIssues API", allIssuesDataAPI)
 
     const res = await fetch(allIssuesDataAPI, { cache: "force-cache" })
     if (!res.ok) {
@@ -66,7 +65,6 @@ export async function getAllIssues() {
       throw new Error("Failed to fetch getAllIssues data")
     }
     const data = await res.json()
-    console.log("allIssues --->", data)
     allIssues = allIssues.concat(data.data)
     isMore = data.data.length === 100 // assumes there is another page of records
     page++
@@ -533,7 +531,6 @@ export async function getSpecialArticlePages() {
         `&filter[status][_eq]=published` +
         `&filter[slug][_nempty]=true` +
         `&filter[issue][_nnull]=true` +
-        `&filter[issue][_gt]=0` +
         `&deep[issue][_filter][special_issue][_eq]=true` +
         `&page=${page}` +
         `&limit=100` +
