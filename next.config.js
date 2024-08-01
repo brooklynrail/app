@@ -11,28 +11,4 @@ module.exports = {
   images: {
     domains: ["localhost", "studio.brooklynrail.org", "brooklynrail.org", "storage.googleapis.com"],
   },
-  async headers() {
-    return [
-      {
-        // Preview route
-        source: "/preview",
-        headers: [
-          {
-            key: "Permissions-Policy",
-            value: "clipboard-read=(self), clipboard-write=(self)", // Set your desired permissions policy here
-          },
-        ],
-      },
-      {
-        // Preview route
-        source: "/api/preview",
-        headers: [
-          {
-            key: "Permissions-Policy",
-            value: "clipboard-read=(self), clipboard-write=(self)", // Set your desired permissions policy here
-          },
-        ],
-      },
-    ]
-  },
 }
