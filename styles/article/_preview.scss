@@ -44,9 +44,9 @@
     }
     .dimensions {
       @include u-margin-top("2px");
-      @include u-margin-left("1px");
+      @include u-margin-left("2px");
       @include u-font("sans", "micro");
-      @include u-text("gray-cool-60");
+      @include u-text("gray-cool-40");
     }
     .tools {
       @include u-padding-left(1);
@@ -120,7 +120,7 @@
   }
   .all-images {
     .preview-image {
-      @include u-margin-bottom(4);
+      @include u-margin-bottom(2);
     }
   }
   .slideshow-image {
