@@ -587,9 +587,19 @@ export async function getArticlePages() {
 }
 
 export async function getPreviewArticle(slug: string) {
-  const preview = await directus.request(readItem("articles", slug, { version: "draft" }))
+  const preview = await directus.request(
+    readItem("articles", slug, {
+      version: "draft",
+      fields: [
+        "*",
+        { featured_image: ["id", "width", "height", "filename_disk"] },
+        { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key"] }] },
+      ],
+    }),
+  )
   return preview as Articles
 }
+
 export async function getArticle(slug: string, status?: string) {
   let articleAPI
   let res

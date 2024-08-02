@@ -2,7 +2,7 @@ import { Articles, ArticlesFiles, DirectusFiles, DirectusUsers } from "../../../
 import Image from "next/image"
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 
 interface PreviewImageProps {
@@ -19,8 +19,7 @@ const PreviewImage = (props: PreviewImageProps) => {
   const desc = caption ? <figcaption>{parse(caption)}</figcaption> : null
   const shortcodeKey = shortcode_key
     ? `[img name="${shortcode_key}" type="lg" /]`
-    : `[img name="img${order}" type="lg" /]`
-  const [isCopied, setIsCopied] = useState(false)
+    : `[img name="img${order + 1}" type="lg" /]`
 
   // the URL to edit the image in Directus
   const imageEditURL = `${props.directusUrl}/admin/files/${id}`
@@ -35,40 +34,26 @@ const PreviewImage = (props: PreviewImageProps) => {
     </p>
   )
 
-  // const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
-  //   e.preventDefault()
-  //   if (shortcodeKey) {
-  //     // await navigator.clipboard.writeText(shortcodeKey)
-  //     setIsCopied(true)
-  //   }
-  // }
-
-  useEffect(() => {
-    // wait 5 seconds and then reset the isCopied state
-    setTimeout(() => {
-      setIsCopied(false)
-    }, 3500)
-  }, [setIsCopied])
-
   return (
     <div className="preview-image">
       <div className="imgbox">
-        <Image src={src} width={width} height={height} alt={caption ? caption : ""} sizes="30vw" />
+        <div>
+          <Image src={src} width={width} height={height} alt={caption ? caption : ""} sizes="30vw" />
+          {dimensions}
+        </div>
 
         <div className="tools">
           {desc}
-          {dimensions}
           <Link href={imageEditURL} title="Edit this image" target="_blank">
             <button>edit</button>
           </Link>
+          {showShortcode && (
+            <div className="shortcode">
+              <code>{shortcodeKey}</code>
+            </div>
+          )}
         </div>
       </div>
-
-      {showShortcode && (
-        <div className="shortcode">
-          <code>{shortcodeKey}</code>
-        </div>
-      )}
     </div>
   )
 }
@@ -142,31 +127,26 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           <EditorInfo {...user_updated} date={date_updated} />
         </div>
       )}
-
       <div className="block">
         <h4>Title</h4>
         <p className="title">{parse(title)}</p>
       </div>
 
-      <div className="block">
-        <h4>Featured Image</h4>
-        {featured_image ? (
+      {featured_image && (
+        <div className="block">
+          <h4>Featured Image</h4>
           <PreviewImage order={1} image={featured_image} directusUrl={props.directusUrl} showShortcode={false} />
-        ) : null}
-      </div>
-
+        </div>
+      )}
       <div className="block">
         <h4>Excerpt</h4>
         {parse(excerpt)}
       </div>
-
       <div className="block">
         <h4>SEO Title</h4>
         <p className="title">{title_tag ? stripHtml(title_tag).result : stripHtml(title).result}</p>
       </div>
-
       <hr />
-
       {slideshow_image && (
         <div className="block slideshow-image">
           <h4>Slideshow Image</h4>
@@ -179,7 +159,6 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           />
         </div>
       )}
-
       {promo_banner && (
         <div className="block slideshow-image">
           <h4>Promo Banner Image</h4>
@@ -192,19 +171,16 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           />
         </div>
       )}
-
       {promo_thumb && (
         <div className="block">
           <h4>Promo Thumb Image</h4>
           <PreviewImage order={1} image={promo_thumb} directusUrl={props.directusUrl} showShortcode={false} />
         </div>
       )}
-
       <div className="block">
         <h4>Article Images</h4>
         <div className="all-images">{allImages}</div>
       </div>
-
       <PromoBuilder />
     </div>
   )
