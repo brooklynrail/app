@@ -44,6 +44,7 @@
     }
     .dimensions {
       @include u-margin-top("2px");
+      @include u-margin-left("1px");
       @include u-font("sans", "micro");
       @include u-text("gray-cool-60");
     }
@@ -75,6 +76,9 @@
     .shortcode {
       @include u-position("relative");
       @include u-margin-top(1);
+      user-select: all;
+      @include u-width("card");
+      @include u-overflow("hidden");
       span {
         @include u-display("none");
         @include u-padding-y("05");
