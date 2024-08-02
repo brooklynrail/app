@@ -1,5 +1,12 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getArticle, getOGImage, getPermalink, getPreviewPassword } from "../../../../lib/utils"
+import {
+  PageType,
+  getArticle,
+  getOGImage,
+  getPermalink,
+  getPreviewArticle,
+  getPreviewPassword,
+} from "../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -97,7 +104,7 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const slug = String(params.slug)
 
-  const articleData = await getArticle(slug)
+  const articleData = await getPreviewArticle(slug)
 
   const currentIssue = articleData.issue
   const currentSection = articleData.section
@@ -119,17 +126,3 @@ async function getData({ params }: { params: PreviewParams }) {
     directusUrl,
   }
 }
-
-// export async function generateStaticParams() {
-//   const articlePages = await getArticlePages()
-
-//   return articlePages.map((article: Articles) => {
-//     const month = article.issues[0].issues_id.month
-//     return {
-//       year: article.issues[0].issues_id.year.toString(),
-//       month: month < 10 ? `0${month.toString()}` : month.toString(),
-//       section: article.sections[0].sections_id.slug.toString(),
-//       slug: article.slug,
-//     }
-//   })
-// }

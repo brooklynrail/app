@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers"
-import { getArticle } from "../../../../lib/utils"
+import { getPreviewArticle } from "../../../../lib/utils"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -14,7 +14,8 @@ export async function GET(request: Request) {
     return new Response("Missing id", { status: 401 })
   }
 
-  const article = await getArticle(slug)
+  const article = await getPreviewArticle(slug)
+
   if (!article) {
     return new Response("Invalid slug", { status: 401 })
   }

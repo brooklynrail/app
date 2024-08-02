@@ -1,6 +1,6 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
-import { readItems, readSingleton } from "@directus/sdk"
+import { readItem, readItems, readSingleton, withToken } from "@directus/sdk"
 import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
@@ -586,6 +586,10 @@ export async function getArticlePages() {
   return articlePages as Articles[]
 }
 
+export async function getPreviewArticle(slug: string) {
+  const preview = await directus.request(readItem("articles", slug, { version: "draft" }))
+  return preview as Articles
+}
 export async function getArticle(slug: string, status?: string) {
   let articleAPI
   let res
