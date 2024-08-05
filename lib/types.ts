@@ -482,15 +482,14 @@ export type Issues = {
 }
 
 export type Pages = {
-  body: string
-  body_code?: string | null
-  body_text?: unknown | null
   date_created?: string | null
   date_updated?: string | null
   slug: string
   sort?: number | null
   status: string
   title: string
+  body_text?: string | null
+  images: any[] | ArticlesFiles[]
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }

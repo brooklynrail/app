@@ -1,7 +1,7 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton, withToken } from "@directus/sdk"
-import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues, Sections } from "./types"
+import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues, Pages, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
 // Used in
@@ -163,6 +163,16 @@ export async function getCurrentIssueData() {
   }
 
   return issueData as Issues
+}
+
+export async function getPageData(slug: string) {
+  const pageData = await directus.request(
+    readItem("pages", slug, {
+      fields: ["*"],
+    }),
+  )
+
+  return pageData as Pages
 }
 
 export async function getGlobalSettings() {

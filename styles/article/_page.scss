@@ -1,94 +1,111 @@
-#page-nav{
+.article-page {
+  header {
+    @include u-margin-bottom(8);
+    h1 {
+      @include u-margin(0);
+      @include u-margin-bottom(1);
+      @include u-font("sans", "2xl");
+      @include u-line-height("sans", 1);
+      @include u-text("thin");
+      @include u-maxw("tablet-lg");
+
+      @include at-media("desktop-lg") {
+        @include u-font("sans", "2xl");
+      }
+    }
+  }
+}
+#page-nav {
   @include u-margin-top(1);
-	@include u-margin-left(1);
-	@include u-margin-bottom(2);
+  @include u-margin-left(1);
+  @include u-margin-bottom(2);
   @include u-padding-x(2);
   @include u-padding-y(2);
-  @include u-border-top('black', '2px', 'dotted');
-  @include u-float('right');
-  @include u-width('full');
-  @include u-bg('gray-warm-5');
-  @include at-media('mobile-lg') {
-		@include u-width('card-lg');
-	}
-  @include at-media('tablet') {
-		@include u-margin-left(3);
-	}
-  ul{
+  @include u-border-top("black", "2px", "dotted");
+  @include u-float("right");
+  @include u-width("full");
+  @include u-bg("gray-warm-5");
+  @include at-media("mobile-lg") {
+    @include u-width("card-lg");
+  }
+  @include at-media("tablet") {
+    @include u-margin-left(3);
+  }
+  ul {
     @include u-margin-bottom(2);
-    @include u-font('sans', 'xs');
-    @include u-text('normal');
+    @include u-font("sans", "xs");
+    @include u-text("normal");
     @include add-list-reset;
-    li{
-      @include u-padding-y('05');
+    li {
+      @include u-padding-y("05");
     }
   }
-  a{
-    @include u-text('black');
-    @include u-text('no-underline');
-    &:hover{
-      @include u-border-bottom('1px', 'black', 'solid');
+  a {
+    @include u-text("black");
+    @include u-text("no-underline");
+    &:hover {
+      @include u-border-bottom("1px", "black", "solid");
     }
   }
-  ul li a.current{
-    @include u-text('bold');
+  ul li a.current {
+    @include u-text("bold");
   }
 }
 
-#masthead{
-  @include u-font('sans', 'xs');
-  ul{
+#masthead {
+  @include u-font("sans", "xs");
+  ul {
     @include u-margin-bottom(3);
     @include add-list-reset;
   }
-  strong{
-    @include u-text('medium');
-    @include u-text('red-50v');
+  strong {
+    @include u-text("medium");
+    @include u-text("red-50v");
   }
 }
 
-#supporters{
-  @include u-font('sans', 'xs');
-  ul{
+#supporters {
+  @include u-font("sans", "xs");
+  ul {
     @include u-margin-bottom(3);
     @include add-list-reset;
   }
-  span{
-    @include u-font('sans', '2xs');
+  span {
+    @include u-font("sans", "2xs");
   }
-  p strong{
-    @include u-text('medium');
-    @include u-text('red-50v');
+  p strong {
+    @include u-text("medium");
+    @include u-text("red-50v");
   }
-  a{
-    @include u-text('no-underline');
-    &:hover{
-      @include u-border-bottom('1px', 'red-50v', 'solid');
+  a {
+    @include u-text("no-underline");
+    &:hover {
+      @include u-border-bottom("1px", "red-50v", "solid");
     }
   }
 }
 
-.contributor-search{
+.contributor-search {
   @include u-margin-bottom(2);
-  @include u-padding('05');
-  @include u-font('sans', 'sm');
+  @include u-padding("05");
+  @include u-font("sans", "sm");
 }
 
-#contributors{
+#contributors {
   @include add-list-reset;
-  @include u-font('sans', 'sm');
+  @include u-font("sans", "sm");
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
-  @include at-media('tablet') {
-		columns: 3;
+  @include at-media("tablet") {
+    columns: 3;
     -webkit-columns: 3;
     -moz-columns: 3;
-	}
-  a{
-    @include u-text('no-underline');
-    &:hover{
-      @include u-border-bottom('1px', 'black', 'dotted');
+  }
+  a {
+    @include u-text("no-underline");
+    &:hover {
+      @include u-border-bottom("1px", "black", "dotted");
     }
   }
 }

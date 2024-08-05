@@ -1,7 +1,12 @@
-import { Articles } from "../../../../lib/types"
+import { ArticlesFiles } from "../../../../lib/types"
 import replaceShortcodes from "./shortcodes"
 
-const BodyText = (props: Articles) => {
+interface BodyTextProps {
+  body_text?: string | null
+  images: any[] | ArticlesFiles[]
+}
+
+const BodyText = (props: BodyTextProps) => {
   const { body_text, images } = props
   if (!body_text) {
     return <></>
