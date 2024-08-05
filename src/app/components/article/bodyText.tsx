@@ -11,11 +11,7 @@ const BodyText = (props: BodyTextProps) => {
   if (!body_text) {
     return <></>
   }
-  return (
-    <>
-      <div className="content">{replaceShortcodes({ html: body_text, images: images })}</div>
-    </>
-  )
+  return <div className="content">{replaceShortcodes({ html: body_text, images: images })}</div>
 }
 
 export default BodyText

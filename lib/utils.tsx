@@ -1,6 +1,6 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
-import { readItem, readItems, readSingleton, withToken } from "@directus/sdk"
+import { readItem, readItems, readSingleton } from "@directus/sdk"
 import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues, Pages, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 
@@ -168,7 +168,12 @@ export async function getCurrentIssueData() {
 export async function getPageData(slug: string) {
   const pageData = await directus.request(
     readItem("pages", slug, {
-      fields: ["*"],
+      fields: [
+        "*",
+        {
+          images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+        },
+      ],
     }),
   )
 
@@ -603,7 +608,7 @@ export async function getPreviewArticle(slug: string) {
       fields: [
         "*",
         { featured_image: ["id", "width", "height", "filename_disk"] },
-        { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key"] }] },
+        { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
       ],
     }),
   )
