@@ -14,6 +14,49 @@
       }
     }
   }
+  #masthead {
+    @include u-font("sans", "xs");
+    ul {
+      @include u-margin-bottom(3);
+      @include add-list-reset;
+    }
+    strong {
+      @include u-text("medium");
+      @include u-text("red-50v");
+    }
+  }
+  #masthead {
+    @include u-font("sans", "xs");
+    ul {
+      @include u-margin-bottom(3);
+      @include add-list-reset;
+    }
+    strong {
+      @include u-text("medium");
+      @include u-text("red-50v");
+    }
+  }
+
+  #supporters {
+    @include u-font("sans", "xs");
+    ul {
+      @include u-margin-bottom(3);
+      @include add-list-reset;
+    }
+    span {
+      @include u-font("sans", "2xs");
+    }
+    p strong {
+      @include u-text("medium");
+      @include u-text("red-50v");
+    }
+    a {
+      @include u-text("no-underline");
+      &:hover {
+        @include u-border-bottom("1px", "red-50v", "solid");
+      }
+    }
+  }
 }
 #page-nav {
   @include u-margin-top(1);
@@ -49,39 +92,6 @@
   }
   ul li a.current {
     @include u-text("bold");
-  }
-}
-
-#masthead {
-  @include u-font("sans", "xs");
-  ul {
-    @include u-margin-bottom(3);
-    @include add-list-reset;
-  }
-  strong {
-    @include u-text("medium");
-    @include u-text("red-50v");
-  }
-}
-
-#supporters {
-  @include u-font("sans", "xs");
-  ul {
-    @include u-margin-bottom(3);
-    @include add-list-reset;
-  }
-  span {
-    @include u-font("sans", "2xs");
-  }
-  p strong {
-    @include u-text("medium");
-    @include u-text("red-50v");
-  }
-  a {
-    @include u-text("no-underline");
-    &:hover {
-      @include u-border-bottom("1px", "red-50v", "solid");
-    }
   }
 }
 
