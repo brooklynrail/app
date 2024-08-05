@@ -19,17 +19,9 @@
     ul {
       @include u-margin-bottom(3);
       @include add-list-reset;
-    }
-    strong {
-      @include u-text("medium");
-      @include u-text("red-50v");
-    }
-  }
-  #masthead {
-    @include u-font("sans", "xs");
-    ul {
-      @include u-margin-bottom(3);
-      @include add-list-reset;
+      li {
+        list-style-type: none;
+      }
     }
     strong {
       @include u-text("medium");
@@ -42,6 +34,9 @@
     ul {
       @include u-margin-bottom(3);
       @include add-list-reset;
+      li {
+        list-style-type: none;
+      }
     }
     span {
       @include u-font("sans", "2xs");
