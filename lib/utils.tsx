@@ -169,7 +169,10 @@ export async function getPageData(slug: string) {
   const pageData = await directus.request(
     readItem("pages", slug, {
       fields: [
-        "*",
+        "title",
+        "slug",
+        "status",
+        "body_text",
         {
           images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
         },
@@ -767,7 +770,7 @@ export async function getArticle(slug: string, status?: string) {
 }
 
 export async function getAds() {
-  // const today = new Date()
+  const today = new Date()
   const ads = await directus.request(
     readItems("ads", {
       fields: [
@@ -779,22 +782,30 @@ export async function getAds() {
         "sort",
         "title",
         {
-          tile_image: ["filename_disk", "width", "height"],
+          tile_image: ["filename_disk", "width", "height", "caption"],
         },
         {
-          banner_image: ["filename_disk", "width", "height"],
+          banner_image: ["filename_disk", "width", "height", "caption"],
         },
         {
-          banner_image_mobile: ["filename_disk", "width", "height"],
+          banner_image_mobile: ["filename_disk", "width", "height", "caption"],
         },
       ],
       filter: {
         _and: [
           {
-            status: { _in: ["published"] },
-            // start_date: { _lte: today },
-            // end_date: { _gte: today },
-            ad_url: { _nnull: true },
+            status: {
+              _in: ["published"],
+            },
+            // start_date: {
+            //   _lte: [today],
+            // },
+            // end_date: {
+            //   _gte: today,
+            // },
+            ad_url: {
+              _nnull: true,
+            },
           },
         ],
       },
