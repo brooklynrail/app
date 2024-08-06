@@ -610,6 +610,7 @@ export async function getPreviewArticle(slug: string) {
       version: "draft",
       fields: [
         "*",
+        { section: ["id", "name", "slug"] },
         { featured_image: ["id", "width", "height", "filename_disk"] },
         { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
       ],
