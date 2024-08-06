@@ -612,6 +612,7 @@ export async function getPreviewArticle(slug: string) {
         "*",
         { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
         { section: ["id", "name", "slug"] },
+        { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
         { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
         { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
         { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
