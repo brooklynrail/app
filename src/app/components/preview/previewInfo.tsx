@@ -207,12 +207,12 @@ const PromoBuilder = () => {
 
   // [promo type="free-text"]<h6>New York</h6><a href="URL" title="Venue"><strong>Venue</strong></a><br/><em>ShowTitle</em><br/>Jun 1, 2024 &ndash; Aug 30, 2024[/promo]
   const generatePromoCode = () => {
-    const h6 = type === "art" && city !== "" ? `<h6>${city}</h6>` : `<h6>On View</h6>`
-    const location = type === "artseen" && city !== "" ? `<br/>${city}` : ""
+    const h6 = `<h6>On View</h6>`
+    const location = city ? `<br/>${city}` : ""
     if (url === "") {
-      return `[promo type="free-text"]${h6}<strong>${venue}</strong><br/><em>${showTitle}</em><br/>${startDate}&ndash;${endDate}${location}[/promo]`
+      return `<div>[promo type="free-text"]${h6}<strong>${venue}</strong><br/><em>${showTitle}</em><br/>${startDate}&ndash;${endDate}${location}[/promo]</div>`
     } else {
-      return `[promo type="free-text"]${h6}<a href="${url}" title="${venue}"><strong>${venue}</strong></a><br/><em>${showTitle}</em><br/>${startDate}&ndash;${endDate}${location}[/promo]`
+      return `<div>[promo type="free-text"]${h6}<a href="${url}" title="${venue}"><strong>${venue}</strong></a><br/><em>${showTitle}</em><br/>${startDate}&ndash;${endDate}${location}[/promo]</div>`
     }
   }
 
@@ -223,7 +223,6 @@ const PromoBuilder = () => {
         <div className="field">
           <label htmlFor="type">Type</label>
           <select id="type" value={type} onChange={handleSelectChange(setType)}>
-            <option value="art">Art</option>
             <option value="artseen">Artseen</option>
           </select>
         </div>
@@ -264,7 +263,13 @@ const PromoBuilder = () => {
         </div>
         <div className="field">
           <label htmlFor="url">City</label>
-          <input type="text" id="city" placeholder="city" value={city} onChange={handleInputChange(setCity)} />
+          <input
+            type="text"
+            id="city"
+            placeholder="city"
+            value={city ? city : "New York"}
+            onChange={handleInputChange(setCity)}
+          />
         </div>
         <div className="field">
           <label htmlFor="url">URL:</label>
@@ -273,9 +278,7 @@ const PromoBuilder = () => {
       </div>
       <div className="generated">
         <pre>
-          <code>
-            <code>{generatePromoCode()}</code>
-          </code>
+          <code>{generatePromoCode()}</code>
         </pre>
       </div>
     </div>
