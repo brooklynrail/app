@@ -219,6 +219,8 @@
   // Footnotes & Endnotes
   .endnote {
     @include u-margin-y(8);
+    @include u-font("sans", "sm");
+    @include u-line-height("sans", 4);
     p {
       @include u-font("sans", "sm");
       @include u-line-height("sans", 4);
