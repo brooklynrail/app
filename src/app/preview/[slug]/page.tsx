@@ -7,7 +7,7 @@ import {
   getPreviewArticle,
   getPreviewPassword,
 } from "../../../../lib/utils"
-import { Articles, Issues, Sections } from "../../../../lib/types"
+import { Articles, Contributors, Issues, Sections } from "../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import ArticlePreview from "@/app/components/preview/article"
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
   const ogimages = getOGImage(ogimageprops)
 
   const authors = contributors.map((contributor: any) => {
-    const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.contributors_id.slug })
+    const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.slug })
     return contribPermalink
   })
 
