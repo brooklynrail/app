@@ -17,8 +17,8 @@
   #masthead {
     @include u-font("sans", "xs");
     ul {
-      @include u-margin-bottom(3);
       @include add-list-reset;
+      @include u-margin-bottom(3);
       li {
         list-style-type: none;
       }
