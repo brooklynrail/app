@@ -614,6 +614,7 @@ export async function getPreviewArticle(slug: string) {
         { section: ["id", "name", "slug"] },
         { featured_image: ["id", "width", "height", "filename_disk"] },
         { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
+        { user_updated: ["id", "first_name", "last_name", "avatar"] },
       ],
     }),
   )
