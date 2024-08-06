@@ -1,20 +1,13 @@
 import { stripHtml } from "string-strip-html"
-import {
-  PageType,
-  getArticle,
-  getOGImage,
-  getPermalink,
-  getPreviewArticle,
-  getPreviewPassword,
-} from "../../../../lib/utils"
-import { Articles, Contributors, Issues, Sections } from "../../../../lib/types"
+import { PageType, getOGImage, getPermalink, getPreviewArticle, getPreviewPassword } from "../../../../lib/utils"
+import { Articles, Issues, Sections } from "../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import ArticlePreview from "@/app/components/preview/article"
 
 export interface ArticlePreviewProps {
   articleData: Articles
-  currentIssue?: Issues
+  issueBasics?: Issues
   currentSection?: Sections
   permalink: string
   errorCode?: number
@@ -76,14 +69,14 @@ export default async function ArticlePreviewPage({ params }: { params: PreviewPa
 
   const data = await getData({ params })
 
-  const { articleData, currentIssue, permalink, currentSection, directusUrl, previewPassword } = data
+  const { articleData, issueBasics, permalink, currentSection, directusUrl, previewPassword } = data
   if (!articleData || !permalink || !previewPassword || !directusUrl) {
     return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
   }
 
   const articlePreviewProps = {
     articleData,
-    currentIssue,
+    issueBasics,
     permalink,
     currentSection,
     directusUrl,
@@ -106,7 +99,7 @@ async function getData({ params }: { params: PreviewParams }) {
 
   const articleData = await getPreviewArticle(slug)
 
-  const currentIssue = articleData.issue
+  const issueBasics = articleData.issue
   const currentSection = articleData.section
 
   const permalink = getPermalink({
@@ -120,7 +113,7 @@ async function getData({ params }: { params: PreviewParams }) {
   return {
     articleData,
     currentSection,
-    currentIssue,
+    issueBasics,
     permalink,
     previewPassword,
     directusUrl,
