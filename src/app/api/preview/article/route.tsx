@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers"
-import { getPreviewArticle } from "../../../../lib/utils"
+import { getPreviewArticle } from "../../../../../lib/utils"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
   return new Response(null, {
     status: 307,
     headers: {
-      Location: `/preview/${article.slug}?draftMode=true`,
+      Location: `/preview/article/${article.slug}?draftMode=true`,
     },
   })
 }

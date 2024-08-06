@@ -1,12 +1,12 @@
 "use client"
-import ContributorsBox from "../article/contributors"
-import { ArticlePreviewProps } from "@/app/preview/[slug]/page"
+import ContributorsBox from "../../article/contributors"
+import { ArticlePreviewProps } from "@/app/preview/article/[slug]/page"
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import Password from "./password"
-import PreviewInfo from "./previewInfo"
-import ArticleHead from "../article/articleHead"
-import ArticleBody from "../article/articleBody"
+import Password from "../password"
+import PreviewInfo from "../previewInfo"
+import ArticleHead from "../../article/articleHead"
+import ArticleBody from "../../article/articleBody"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
@@ -49,8 +49,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
     return <Password {...passwordProps} />
   }
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${articleData.slug}/`
-
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.slug}/`
   return (
     <>
       <div className="paper">
@@ -115,7 +114,11 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                 <article className="article">
                   <ArticleHead {...props} />
                   <ArticleBody {...props} />
-                  <ContributorsBox contributors={contributors} />
+                  {contributors && contributors.length > 0 && (
+                    <div className="content">
+                      <ContributorsBox contributors={contributors} />
+                    </div>
+                  )}
                 </article>
               </div>
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">

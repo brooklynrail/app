@@ -1,6 +1,6 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getOGImage, getPermalink, getPreviewArticle, getPreviewPassword } from "../../../../lib/utils"
-import { Articles, Issues, Sections } from "../../../../lib/types"
+import { PageType, getOGImage, getPermalink, getPreviewArticle, getPreviewPassword } from "../../../../../lib/utils"
+import { Articles, Issues, Sections } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import ArticlePreview from "@/app/components/preview/article"

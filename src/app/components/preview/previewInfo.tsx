@@ -110,6 +110,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
     promo_thumb,
     promo_banner,
   } = props.articleData
+
   const allImages = images
     ? images.map((image: ArticlesFiles, i: number) => {
         if (!image.directus_files_id || typeof image.directus_files_id === "string") {
