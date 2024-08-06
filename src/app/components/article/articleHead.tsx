@@ -42,7 +42,7 @@ const FeaturedImage = (props: FeaturedImageProps) => {
 
 interface ArticleHeadProps {
   permalink: string
-  currentIssue?: Issues
+  issueBasics?: Issues
   currentSection?: Sections
   articleData: Articles
 }
@@ -90,10 +90,10 @@ const Authors = (props: AuthorsProps) => {
 }
 
 const ArticleHead = (props: ArticleHeadProps) => {
-  const { permalink, currentIssue, currentSection, articleData } = props
+  const { permalink, issueBasics, currentSection, articleData } = props
   const { kicker, title, deck, featured_image, header_type, contributors, hide_bylines, byline_override } = articleData
 
-  const kickerProps = { kicker, currentIssue, currentSection }
+  const kickerProps = { kicker, issueBasics, currentSection }
 
   // remove https://localhost:3000 from the permalink and replace with https://brooklynrail.org
   const previewUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
@@ -101,7 +101,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
     : permalink.replace("https://localhost:3000", "https://brooklynrail.org")
 
   const articleMeta = (
-    <div className="article-meta ooo">
+    <div className="article-meta">
       <div className="date">MAY 2024</div>
 
       {!hide_bylines && contributors && contributors.length != 0 && (
@@ -117,7 +117,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
         </cite>
       )}
 
-      {currentIssue && <div className="date">{currentIssue.title}</div>}
+      {issueBasics && <div className="date">{issueBasics.title}</div>}
 
       <div className="share-tools">
         <Link
