@@ -34,6 +34,7 @@
     @include u-line-height("sans", 3);
     @include u-color("gray-cool-70");
     @include u-text("normal");
+    max-width: none;
   }
 }
 
