@@ -59,7 +59,7 @@ async function getData({ params }: { params: SpecialSectionParams }) {
   const issueData = await getSpecialIssueData({
     slug: issueSlug,
   })
-  console.log("Special issueData: ", issueData.id, issueData.title, issueData.slug)
+
   // Get only the sections that are used in the articles in the current issue
   const currentSections = await getSectionsByIssueId(issueData.id)
 
