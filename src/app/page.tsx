@@ -11,6 +11,7 @@ export enum PageLayout {
 }
 export interface IssuePageProps {
   issueData: Issues
+  previewURL?: string
   sections: Sections[]
   currentSection?: Sections
   permalink: string

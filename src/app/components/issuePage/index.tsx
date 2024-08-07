@@ -20,6 +20,7 @@ import { useEffect, useState } from "react"
 import { getAds } from "../../../../lib/utils"
 import { PopupProvider } from "../issueRail/popupProvider"
 import { CoverImage } from "../issueRail/coverImage"
+import PreviewHeader from "../preview/previewHead"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -28,7 +29,7 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { permalink, issueData, currentSection, sections } = props
+  const { permalink, issueData, currentSection, sections, previewURL } = props
   const currentSections = sections
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
@@ -72,6 +73,7 @@ const IssuePage = (props: IssuePageProps) => {
       <PopupProvider>
         <div className={`paper ${issueClass}`}>
           <div className="hatbox"></div>
+          {previewURL && <PreviewHeader previewURL={previewURL} />}
           <div className="wrapper home">
             <header role="banner">
               <div className="grid-container grid-container-desktop">

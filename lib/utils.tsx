@@ -173,9 +173,9 @@ export async function getPageData(slug: string) {
         "slug",
         "status",
         "body_text",
-        {
-          images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
-        },
+        // {
+        //   images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+        // },
       ],
     }),
   )
@@ -625,6 +625,48 @@ export async function getPreviewArticle(slug: string) {
   return preview as Articles
 }
 
+export async function getPreviewIssue(year: number, month: number) {
+  const preview = await directus.request(
+    readItems("issues", {
+      fields: [
+        "*",
+        "title",
+        {
+          articles: [
+            "slug",
+            "title",
+            "excerpt",
+            "kicker",
+            "sort",
+            "featured",
+            { section: ["slug", "name"] },
+            { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
+            { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
+            { promo_thumb: ["id", "width", "height", "filename_disk", "caption"] },
+            { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
+          ],
+        },
+        { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
+        { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
+        { cover_3: ["id", "width", "height", "filename_disk", "caption"] },
+        { cover_4: ["id", "width", "height", "filename_disk", "caption"] },
+        { cover_5: ["id", "width", "height", "filename_disk", "caption"] },
+        { cover_6: ["id", "width", "height", "filename_disk", "caption"] },
+        { user_updated: ["id", "first_name", "last_name", "avatar"] },
+      ],
+      filter: {
+        _and: [
+          {
+            year: { _eq: year },
+            month: { _eq: month },
+          },
+        ],
+      },
+    }),
+  )
+  return preview[0] as Issues
+}
+
 export async function getArticle(slug: string, status?: string) {
   let articleAPI
   let res
@@ -640,7 +682,6 @@ export async function getArticle(slug: string, status?: string) {
       `&fields[]=featured` +
       `&fields[]=sort` +
       `&fields[]=body` +
-      `&fields[]=body_code` +
       `&fields[]=body_text` +
       `&fields[]=body_type` +
       `&fields[]=header_type` +
