@@ -7,6 +7,7 @@ import PreviewInfo from "../previewInfo"
 import ArticleHead from "../../article/articleHead"
 import ArticleBody from "../../article/articleBody"
 import PreviewHeader from "../previewHead"
+import parse from "html-react-parser"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
@@ -63,6 +64,14 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                 <article className="article">
                   <ArticleHead {...props} />
                   <ArticleBody {...props} />
+                  {articleData.endnote && (
+                    <div className="content">
+                      <div className="endnote">
+                        <span className="line"></span>
+                        {parse(articleData.endnote)}
+                      </div>
+                    </div>
+                  )}
                   {contributors && contributors.length > 0 && (
                     <div className="content">
                       <ContributorsBox contributors={contributors} />
