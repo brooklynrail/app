@@ -3,6 +3,7 @@ import { Articles } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import PromoSpecialSection from "../../promo/specialSection"
 import { LayoutProps } from "./issue"
+import SubscribeAd from "../subscribeAd"
 
 const SpecialIssue = (props: LayoutProps) => {
   const { issueData } = props
@@ -50,6 +51,7 @@ const SpecialIssue = (props: LayoutProps) => {
           <div className="collection">{allArticles}</div>
         </div>
       </div>
+      <SubscribeAd />
     </div>
   )
 }

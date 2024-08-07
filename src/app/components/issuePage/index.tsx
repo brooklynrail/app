@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image"
 import CoversPopup from "../issueRail/coversPopup"
 import { IssuePageProps, PageLayout } from "@/app/page"
 import AdsTile from "./adsTile"
@@ -9,7 +8,6 @@ import RailPartners from "./railPartners"
 import RailProjects from "./railProjects"
 import Header from "./header"
 import Ad970 from "./ad970"
-import TableOfContents from "./tableOfContents"
 import { Ads, Articles } from "../../../../lib/types"
 import Link from "next/link"
 import SpecialIssue from "./layout/specialIssue"
@@ -48,9 +46,8 @@ const IssuePage = (props: IssuePageProps) => {
     fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
   }, [issueData, currentAds])
 
-  const { year, month, slug } = issueData
+  const { slug } = issueData
   const issueClass = `issue-${slug.toLowerCase()}`
-  const tocProps = { issueData, currentSections, permalink, year, month }
 
   let layout
   switch (props.layout) {
@@ -64,7 +61,7 @@ const IssuePage = (props: IssuePageProps) => {
       layout = <SpecialIssue issueData={issueData} />
       break
     default:
-      layout = <IssueLayout issueData={issueData} />
+      layout = <IssueLayout {...props} />
       break
   }
 
@@ -119,20 +116,6 @@ const IssuePage = (props: IssuePageProps) => {
 
                   <div className="ad_column grid-col-2">
                     <AdsTile currentAds={currentAds} />
-                  </div>
-                </div>
-              </div>
-              <div className="grid-container grid-container-desktop">
-                <div className="grid-row grid-gap-3">
-                  <div className="grid-row">
-                    <div className="grid-col-8 grid-offset-2">
-                      {props.layout === PageLayout.Issue && <TableOfContents {...tocProps} />}
-                      <div style={{ margin: "25px 0px 25px 30px" }}>
-                        <Link href="/subscribe">
-                          <Image src="/images/subscribe-footer.png" alt="Subscribe" width={565} height={105} />
-                        </Link>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>

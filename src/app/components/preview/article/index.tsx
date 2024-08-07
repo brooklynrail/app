@@ -1,7 +1,6 @@
 "use client"
 import ContributorsBox from "../../article/contributors"
 import { ArticlePreviewProps } from "@/app/preview/article/[slug]/page"
-import Link from "next/link"
 import { useState, useEffect } from "react"
 import Password from "../password"
 import PreviewInfo from "../previewInfo"

@@ -5,15 +5,20 @@ import PublishersMessage from "../publishersMessage"
 import SlideShow from "../slideshow"
 import FeaturedArticles from "../featuredArticles"
 import { Articles, Issues, Sections } from "../../../../../lib/types"
+import { IssuePageProps, PageLayout } from "@/app/page"
+import TableOfContents from "../tableOfContents"
+import SubscribeAd from "../subscribeAd"
 
 export interface LayoutProps {
   issueData: Issues
   currentSection?: Sections
 }
 
-const IssueLayout = (props: LayoutProps) => {
-  const { year, month } = props.issueData
-  const currentArticles = props.issueData.articles
+const IssueLayout = (props: IssuePageProps) => {
+  const { issueData, sections, permalink } = props
+  const currentSections = sections
+  const { year, month } = issueData
+  const currentArticles = issueData.articles
 
   // Filter the currentArticles to get only the articles with a slideshow image
   const currentSlides: Articles[] = []
@@ -24,6 +29,7 @@ const IssueLayout = (props: LayoutProps) => {
   })
 
   const promoProps = { currentArticles, year, month }
+  const tocProps = { issueData, currentSections, permalink, year, month }
 
   return (
     <>
@@ -48,6 +54,8 @@ const IssueLayout = (props: LayoutProps) => {
             <ArtSeen {...promoProps} />
           </div>
         </div>
+        <div className="grid-row">{props.layout === PageLayout.Issue && <TableOfContents {...tocProps} />}</div>
+        <SubscribeAd />
       </div>
     </>
   )

@@ -1,6 +1,7 @@
 import { Articles } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import PromoSection from "../../promo/section"
+import SubscribeAd from "../subscribeAd"
 
 import { LayoutProps } from "./issue"
 
@@ -62,6 +63,7 @@ const SectionLayout = (props: LayoutProps) => {
       <div className="grid-row grid-gap-4">
         <div className="grid-col-12">{allArticles}</div>
       </div>
+      <SubscribeAd />
     </div>
   )
 }
