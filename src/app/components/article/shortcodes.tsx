@@ -1,6 +1,6 @@
-import parse from "html-react-parser"
+import parse, { HTMLReactParserOptions, Element, Text, domToReact } from "html-react-parser"
 import RailImage from "./railImage"
-import { ArticlesFiles } from "../../../../lib/types"
+import { ArticlesFiles, DirectusFiles } from "../../../../lib/types"
 
 // [promo type="free-text"]<h6>On View</h6><strong>Lisson Gallery</strong><br/>January 11&#150;February 17, 2024<br/>New York[/promo]
 const replacePromo = (html: string) => {
@@ -145,18 +145,40 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
   // IMAGES
   // Options for the html-react-parser
   // This function will replace the [img name="img1" type="lg"] shortcode with the RailImage component
-  const options = {
-    replace: ({ data }: any) => {
-      if (data) {
+  // const options = {
+  //   replace: ({ data }: any) => {
+  //     if (data) {
+  //       const regex = /(?:<p>\s*)?\[img name="([^"]*)" type="([^"]*)"\s*\/?\](?:\s*<\/p>)?/g
+  //       let match
+  //       let newData = data
+  //       while ((match = regex.exec(data)) !== null) {
+  //         // Extract name and type from each match
+  //         const name = match[1]
+  //         const type = match[2]
+  //         // Construct the RailImage component for each match
+  //         const railImageComponent = <RailImage name={name} type={type} images={images} />
+  //         // Replace the matched shortcode with the RailImage component
+  //         newData = newData.replace(match[0], railImageComponent)
+  //         return railImageComponent
+  //       }
+  //     }
+  //   },
+  // }
+
+  const shortCodeOptions: HTMLReactParserOptions = {
+    replace(domNode) {
+      // console.dir(domNode, { depth: null })
+      if (domNode instanceof Text) {
+        // console.dir("domNode")
         const regex = /(?:<p>\s*)?\[img name="([^"]*)" type="([^"]*)"\s*\/?\](?:\s*<\/p>)?/g
         let match
-        let newData = data
-        while ((match = regex.exec(data)) !== null) {
+        let newData = domNode.data
+        while ((match = regex.exec(domNode.data)) !== null) {
           // Extract name and type from each match
           const name = match[1]
           const type = match[2]
           // Construct the RailImage component for each match
-          const railImageComponent = <RailImage name={name} type={type} images={images} />
+          const railImageComponent: any = <RailImage name={name} type={type} images={images} />
           // Replace the matched shortcode with the RailImage component
           newData = newData.replace(match[0], railImageComponent)
           return railImageComponent
@@ -165,7 +187,72 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
     },
   }
 
-  return parse(cleanedHtml, options)
+  const imageOptions: HTMLReactParserOptions = {
+    replace(domNode) {
+      // console.dir(domNode, { depth: null })
+      if (domNode instanceof Text) {
+        // console.dir("domNode")
+        const regex = /(?:<p>\s*)?\[img name="([^"]*)" type="([^"]*)"\s*\/?\](?:\s*<\/p>)?/g
+        let match
+        let newData = domNode.data
+        while ((match = regex.exec(domNode.data)) !== null) {
+          // Extract name and type from each match
+          const name = match[1]
+          const type = match[2]
+          // Construct the RailImage component for each match
+          const railImageComponent: any = <RailImage name={name} type={type} images={images} />
+          // Replace the matched shortcode with the RailImage component
+          newData = newData.replace(match[0], railImageComponent)
+          return railImageComponent
+        }
+      }
+    },
+  }
+
+  // check to see if there are any shortcodes in the cleanedHtml before parsing it
+  if (cleanedHtml.match(/\[img name="[^"]*" type="[^"]*"\s*\/?\]/g)) {
+    console.log("YES, Shortcodes have been found in the cleanedHtml.")
+    return parse(cleanedHtml, shortCodeOptions)
+  } else {
+    console.log("NO, Shortcodes have not been found in the cleanedHtml.")
+    console.log("images", images)
+    const distributeImages = (htmlString: string, images: ArticlesFiles[]) => {
+      let imageIndex = 0
+      let paragraphCount = 1
+      const elements = parse(htmlString, {
+        replace: (domNode) => {
+          if (domNode.type === "tag") {
+            paragraphCount++
+            // Clone the original paragraph
+            const originalParagraph = domToReact([domNode])
+            console.log("imageIndex", imageIndex)
+            console.log("images.length", images.length)
+
+            // Add the image after every 3rd paragraph
+            if (imageIndex < images.length && paragraphCount % 3 === 0) {
+              const imageToInsert = images[imageIndex]
+              console.log("imageToInsert ==============", imageIndex)
+              console.log("imageToInsert ==============", imageIndex)
+              console.log("imageToInsert ==============", imageToInsert)
+              imageIndex++
+              return (
+                <>
+                  {originalParagraph}
+                  <RailImage name={`img${imageIndex}`} type={`lg`} images={images} />
+                </>
+              )
+            }
+
+            return originalParagraph
+          }
+        },
+      })
+      // console.log("elements", elements)
+      return elements
+    }
+    const contentWithImages = distributeImages(cleanedHtml, images)
+    return contentWithImages
+  }
 }
 
 export default replaceShortcodes
