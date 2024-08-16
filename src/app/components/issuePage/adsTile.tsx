@@ -13,9 +13,13 @@ const AdsTile = (props: AdsTileProps) => {
     return <>Loading...</>
   }
 
-  // limit ads to any 5 from the array
-  const limitedAds = currentAds.slice(0, 5)
-  const tiles = limitedAds.map((ad: Ads, i: number) => {
+  // filter the ads that are only ad.ad_type === "tile"
+  const tileAds = currentAds.filter((ad: Ads) => ad.ad_type === "tile")
+  if (tileAds.length === 0) {
+    return <></>
+  }
+
+  const tiles = tileAds.map((ad: Ads, i: number) => {
     if (!ad.tile_image || !ad.ad_url) {
       return
     }
