@@ -849,9 +849,9 @@ export async function getAds() {
             status: {
               _in: ["published"],
             },
-            start_date: {
-              _lte: "$NOW",
-            },
+            // start_date: {
+            //   _lte: "$NOW",
+            // },
             // end_date: {
             //   _gte: today,
             // },
