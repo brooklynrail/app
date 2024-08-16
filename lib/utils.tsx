@@ -819,6 +819,7 @@ export async function getArticle(slug: string, status?: string) {
 
 export async function getAds() {
   const today = new Date()
+  console.log("today", today)
   const ads = await directus.request(
     readItems("ads", {
       fields: [
@@ -840,14 +841,17 @@ export async function getAds() {
         },
       ],
       filter: {
+        // start_date: {
+        //   _lte: today,
+        // },
         _and: [
           {
             status: {
               _in: ["published"],
             },
-            // start_date: {
-            //   _lte: [today],
-            // },
+            start_date: {
+              _lte: "$NOW",
+            },
             // end_date: {
             //   _gte: today,
             // },

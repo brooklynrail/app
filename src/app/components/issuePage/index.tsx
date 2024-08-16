@@ -38,6 +38,7 @@ const IssuePage = (props: IssuePageProps) => {
         // Fetch all the data in parallel
         const [fetchedAds] = await Promise.all([ads])
         // Update the state with the fetched data as it becomes available
+        console.log("Fetching ads", fetchedAds)
         setCurrentAds(fetchedAds)
       }
     }
