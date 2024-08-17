@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Ads } from "../../../../lib/types"
 import Image from "next/image"
+import { sendGAEvent } from "@next/third-parties/google"
 
 interface AdsTileProps {
   currentAds?: Array<Ads>
@@ -34,7 +35,26 @@ const AdsTile = (props: AdsTileProps) => {
     return (
       <div key={`adtile-${i}`} className="ad">
         <Link href={ad.ad_url} target="_blank">
-          <Image src={src} width={scaledWidth} height={scaledHeight} alt={`description`} />
+          <Image
+            src={src}
+            width={scaledWidth}
+            height={scaledHeight}
+            alt={ad.title}
+            onLoad={() =>
+              sendGAEvent("event", "impression", {
+                event_category: "ads",
+                event_label: ad.title,
+                event_value: ad.ad_url,
+              })
+            }
+            onClick={() =>
+              sendGAEvent("event", "click", {
+                event_category: "ads",
+                event_label: ad.title,
+                event_value: ad.ad_url,
+              })
+            }
+          />
         </Link>
       </div>
     )
