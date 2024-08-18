@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Ads } from "../../../../lib/types"
 import Image from "next/image"
+import { sendGAEvent } from "@next/third-parties/google"
 
 interface Ad970Props {
   currentAds?: Array<Ads>
@@ -55,6 +56,20 @@ const Ad970 = (props: Ad970Props) => {
                       width={desktopWidth}
                       height={desktopHeight}
                       alt={alt}
+                      onLoad={() =>
+                        sendGAEvent("event", "impression", {
+                          event_category: "ads",
+                          event_label: randomAd.title,
+                          event_value: randomAd.ad_url,
+                        })
+                      }
+                      onClick={() =>
+                        sendGAEvent("event", "click", {
+                          event_category: "ads",
+                          event_label: randomAd.title,
+                          event_value: randomAd.ad_url,
+                        })
+                      }
                     />
                     <Image
                       className="image_mobile"
@@ -62,6 +77,20 @@ const Ad970 = (props: Ad970Props) => {
                       width={mobileWidth}
                       height={mobileHeight}
                       alt={alt}
+                      onLoad={() =>
+                        sendGAEvent("event", "impression", {
+                          event_category: "ads",
+                          event_label: randomAd.title,
+                          event_value: randomAd.ad_url,
+                        })
+                      }
+                      onClick={() =>
+                        sendGAEvent("event", "click", {
+                          event_category: "ads",
+                          event_label: randomAd.title,
+                          event_value: randomAd.ad_url,
+                        })
+                      }
                     />
                   </Link>
                 </div>
