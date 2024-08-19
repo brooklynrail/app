@@ -822,9 +822,6 @@ export async function getAds() {
   const today = new Date()
   // newDate Formatted as YYYY-MM-DD
 
-  // What type is today
-  console.log("Today is: ", typeof newDate.getFullYear())
-
   const ads = await directus.request(
     readItems("ads", {
       fields: [
