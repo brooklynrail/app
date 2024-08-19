@@ -819,7 +819,10 @@ export async function getArticle(slug: string, status?: string) {
 }
 
 export async function getAds() {
-  const today = new Date()
+  const newDate = new Date()
+  // Formatted as YYYY-MM-DD
+  const today = newDate.toISOString().split("T")[0]
+
   const ads = await directus.request(
     readItems("ads", {
       fields: [
@@ -832,13 +835,13 @@ export async function getAds() {
         "campaign_title",
         "slug",
         {
-          tile_image: ["filename_disk", "width", "height", "caption"],
+          tile_image: ["filename_disk", "width", "height"],
         },
         {
-          banner_image: ["filename_disk", "width", "height", "caption"],
+          banner_image: ["filename_disk", "width", "height"],
         },
         {
-          banner_image_mobile: ["filename_disk", "width", "height", "caption"],
+          banner_image_mobile: ["filename_disk", "width", "height"],
         },
       ],
       filter: {
@@ -848,10 +851,10 @@ export async function getAds() {
               _in: ["published"],
             },
             // start_date: {
-            //   lte: "$NOW",
+            //   _lte: "$NOW",
             // },
             // end_date: {
-            //   gte: today,
+            //   _gte: today,
             // },
             ad_url: {
               _nnull: true,
