@@ -39,18 +39,18 @@ const AdsTile = (props: AdsTileProps) => {
             src={src}
             width={scaledWidth}
             height={scaledHeight}
-            alt={ad.title}
+            alt={ad.campaign_title}
             onLoad={() =>
               sendGAEvent("event", "impression", {
                 event_category: "ads",
-                event_label: ad.title,
+                event_label: ad.slug,
                 event_value: ad.ad_url,
               })
             }
             onClick={() =>
               sendGAEvent("event", "click", {
                 event_category: "ads",
-                event_label: ad.title,
+                event_label: ad.slug,
                 event_value: ad.ad_url,
               })
             }

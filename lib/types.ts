@@ -13,7 +13,8 @@ export type Ads = {
   sort?: number | null
   start_date: string
   status: string
-  title: string
+  slug: string
+  campaign_title: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }

@@ -23,7 +23,7 @@ const Ad970 = (props: Ad970Props) => {
     return <></>
   }
 
-  const alt = randomAd.title
+  const alt = randomAd.campaign_title
   const desktopImage = randomAd.banner_image
   const srcDesktop = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${desktopImage.filename_disk}`
   const desktopSize = 1008
@@ -59,14 +59,14 @@ const Ad970 = (props: Ad970Props) => {
                       onLoad={() =>
                         sendGAEvent("event", "impression", {
                           event_category: "ads",
-                          event_label: randomAd.title,
+                          event_label: randomAd.slug,
                           event_value: randomAd.ad_url,
                         })
                       }
                       onClick={() =>
                         sendGAEvent("event", "click", {
                           event_category: "ads",
-                          event_label: randomAd.title,
+                          event_label: randomAd.slug,
                           event_value: randomAd.ad_url,
                         })
                       }
@@ -80,14 +80,14 @@ const Ad970 = (props: Ad970Props) => {
                       onLoad={() =>
                         sendGAEvent("event", "impression", {
                           event_category: "ads",
-                          event_label: randomAd.title,
+                          event_label: randomAd.slug,
                           event_value: randomAd.ad_url,
                         })
                       }
                       onClick={() =>
                         sendGAEvent("event", "click", {
                           event_category: "ads",
-                          event_label: randomAd.title,
+                          event_label: randomAd.slug,
                           event_value: randomAd.ad_url,
                         })
                       }

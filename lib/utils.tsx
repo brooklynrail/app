@@ -829,7 +829,8 @@ export async function getAds() {
         "end_date",
         "status",
         "sort",
-        "title",
+        "campaign_title",
+        "slug",
         {
           tile_image: ["filename_disk", "width", "height", "caption"],
         },
