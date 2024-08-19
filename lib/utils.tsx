@@ -728,6 +728,7 @@ export async function getArticle(slug: string, status?: string) {
       `&fields[]=issue.slug` +
       `&fields[]=section.slug` +
       `&fields[]=section.name` +
+      `&fields[]=images.sort` +
       `&fields[]=images.directus_files_id.id` +
       `&fields[]=images.directus_files_id.caption` +
       `&fields[]=images.directus_files_id.filename_disk` +
@@ -819,7 +820,6 @@ export async function getArticle(slug: string, status?: string) {
 
 export async function getAds() {
   const today = new Date()
-  console.log("today", today)
   const ads = await directus.request(
     readItems("ads", {
       fields: [
@@ -841,19 +841,16 @@ export async function getAds() {
         },
       ],
       filter: {
-        // start_date: {
-        //   _lte: today,
-        // },
         _and: [
           {
             status: {
               _in: ["published"],
             },
             // start_date: {
-            //   _lte: "$NOW",
+            //   lte: "$NOW",
             // },
             // end_date: {
-            //   _gte: today,
+            //   gte: today,
             // },
             ad_url: {
               _nnull: true,
