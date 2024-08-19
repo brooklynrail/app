@@ -854,7 +854,7 @@ export async function getAds() {
             //   _lte: "$NOW",
             // },
             // end_date: {
-            //   _gte: today,
+            //   _gte: "$NOW",
             // },
             ad_url: {
               _nnull: true,
