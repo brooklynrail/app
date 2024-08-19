@@ -7,6 +7,8 @@ import { stripHtml } from "string-strip-html"
 import Link from "next/link"
 import IssueRail from "@/app/components/issueRail"
 
+// Dynamic segments not included in generateStaticParams are generated on demand.
+// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
 export const dynamicParams = true
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {

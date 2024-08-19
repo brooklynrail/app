@@ -1,18 +1,12 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import {
-  PageType,
-  getOGImage,
-  getPermalink,
-  getSectionsByIssueId,
-  getSpecialIssueData,
-  getSpecialIssues,
-} from "../../../../lib/utils"
+import { PageType, getOGImage, getPermalink, getSectionsByIssueId, getSpecialIssueData } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
-import { Issues } from "../../../../lib/types"
 
-// export const dynamicParams = true
+// Dynamic segments not included in generateStaticParams are generated on demand.
+// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
+export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: SpecialSectionParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -70,12 +64,12 @@ async function getData({ params }: { params: SpecialSectionParams }) {
   }
 }
 
-export async function generateStaticParams() {
-  const specialIssues = await getSpecialIssues()
+// export async function generateStaticParams() {
+//   const specialIssues = await getSpecialIssues()
 
-  return specialIssues.map(async (issue: Issues) => {
-    return {
-      issueSlug: issue.slug,
-    }
-  })
-}
+//   return specialIssues.map(async (issue: Issues) => {
+//     return {
+//       issueSlug: issue.slug,
+//     }
+//   })
+// }

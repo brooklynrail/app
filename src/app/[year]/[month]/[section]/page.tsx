@@ -5,6 +5,8 @@ import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
 import { Metadata } from "next"
 
+// Dynamic segments not included in generateStaticParams are generated on demand.
+// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
 export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
