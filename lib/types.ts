@@ -4,14 +4,14 @@ export type Ads = {
   ad_url?: string | null
   date_created?: string | null
   date_updated?: string | null
-  end_date: string
+  end_date: Date
   id: number
   tile_image?: DirectusFiles | null
   banner_image?: DirectusFiles | null
   banner_image_mobile?: DirectusFiles | null
   old_id?: number | null
   sort?: number | null
-  start_date: string
+  start_date: Date
   status: string
   slug: string
   campaign_title: string
