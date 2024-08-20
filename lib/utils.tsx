@@ -169,13 +169,14 @@ export async function getPageData(slug: string) {
   const pageData = await directus.request(
     readItem("pages", slug, {
       fields: [
+        "*",
         "title",
         "slug",
         "status",
         "body_text",
-        // {
-        //   images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
-        // },
+        {
+          images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+        },
       ],
     }),
   )
