@@ -30,7 +30,6 @@ const Article = (props: ArticleProps) => {
         next: { revalidate: 10 },
       })
       const sections = await res.json()
-
       // TODO: Refactor this to use a single function to fetch issue data from APIs
       let issueDataPromise
       if (!issueData) {
@@ -43,13 +42,11 @@ const Article = (props: ArticleProps) => {
         }
         // Fetch all the data in parallel
         const [fetchedSections, fetchedIssueData] = await Promise.all([sections, issueDataPromise])
-
         // Update the state with the fetched data as it becomes available
         setIssueSections(fetchedSections)
         setIssueData(fetchedIssueData)
       }
     }
-
     // Call the fetchData function and handle any errors
     fetchData().catch((error) => console.error("Failed to fetch data on Article page:", error))
   }, [issueBasics, issueSections, setIssueSections, issueData, setIssueData])
