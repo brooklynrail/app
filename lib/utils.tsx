@@ -682,7 +682,6 @@ export async function getArticle(slug: string, status?: string) {
       `&fields[]=kicker` +
       `&fields[]=featured` +
       `&fields[]=sort` +
-      `&fields[]=body` +
       `&fields[]=body_text` +
       `&fields[]=body_type` +
       `&fields[]=header_type` +
@@ -751,7 +750,6 @@ export async function getArticle(slug: string, status?: string) {
       `&fields[]=kicker` +
       `&fields[]=featured` +
       `&fields[]=sort` +
-      `&fields[]=body` +
       `&fields[]=body_code` +
       `&fields[]=body_text` +
       `&fields[]=body_type` +
