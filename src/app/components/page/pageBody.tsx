@@ -1,5 +1,4 @@
-import { Articles, Pages } from "../../../../lib/types"
-import BodyCode from "../article/bodyCode"
+import { Pages } from "../../../../lib/types"
 import BodyText from "../article/bodyText"
 
 export enum ArticleType {

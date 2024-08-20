@@ -7,7 +7,6 @@ import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import ContributorsBox from "./contributors"
 import { getIssueData, getSpecialIssueData } from "../../../../lib/utils"
 import Link from "next/link"
-import NextPrev from "./nextPrev"
 import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
@@ -16,7 +15,7 @@ import ArticleBody from "./articleBody"
 import parse from "html-react-parser"
 
 const Article = (props: ArticleProps) => {
-  const { articleData, issueBasics, currentSection } = props
+  const { articleData, issueBasics } = props
   const { contributors, endnote } = articleData
 
   const issueClass = `issue-${issueBasics.slug.toLowerCase()}`

@@ -27,8 +27,7 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { permalink, issueData, currentSection, sections, previewURL } = props
-  const currentSections = sections
+  const { issueData, currentSection, sections, previewURL } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
   useEffect(() => {

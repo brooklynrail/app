@@ -57,7 +57,7 @@ const replaceBlockquote = (html: string) => {
 const replaceDropcap = (html: string) => {
   const regex = /\[dropcap letter="([^"]*)"\]/g
   // Replace the quote shortcode with a custom HTML structure
-  return html.replace(regex, (match, letter, content) => {
+  return html.replace(regex, (match, letter) => {
     return `<span class="dropcap">${letter}</span>`
   })
 }
