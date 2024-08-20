@@ -13,7 +13,6 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
   const { slug } = articleData
   const issueName = issueBasics.title
   const issueSlug = issueBasics.slug
-
   if (!issueData || !currentSection) {
     return <LoadingNextPrev />
   }
@@ -22,7 +21,7 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
 
   const articlesListCount = issueArticles.length
   // get the currentArticleIndex
-  const currentArticleIndex = issueArticles.findIndex((article: any) => article.slug === slug)
+  const currentArticleIndex = issueArticles.findIndex((article: Articles) => article.slug === slug)
 
   const prevLink = () => {
     // if is the first article
@@ -37,11 +36,11 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
       )
     }
     const prev: Articles = issueArticles[currentArticleIndex - 1]
-    const prevSection = prev.section
+
     const prevPermalink = getPermalink({
       year: issueBasics.year,
       month: issueBasics.month,
-      section: prevSection.slug,
+      section: prev.section.slug,
       slug: prev.slug,
       type: PageType.Article,
     })
@@ -56,11 +55,10 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
   }
 
   const next: Articles = issueArticles[currentArticleIndex + 1]
-  const nextSection = next.section
   const nextPermalink = getPermalink({
     year: issueBasics.year,
     month: issueBasics.month,
-    section: nextSection.slug,
+    section: next.section.slug,
     slug: next.slug,
     type: PageType.Article,
   })
