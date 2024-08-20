@@ -1,15 +1,11 @@
 import { stripHtml } from "string-strip-html"
-import {
-  PageType,
-  getArticle,
-  getOGImage,
-  getPermalink,
-  getSpecialArticlePages,
-  getSpecialIssueBasics,
-} from "../../../../../../lib/utils"
-import { Articles } from "../../../../../../lib/types"
+import { PageType, getArticle, getOGImage, getPermalink, getSpecialIssueBasics } from "../../../../../../lib/utils"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
+
+// Dynamic segments not included in generateStaticParams are generated on demand.
+// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
+export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: SpecialArticleParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -103,20 +99,20 @@ async function getData({ params }: { params: SpecialArticleParams }) {
   }
 }
 
-export async function generateStaticParams() {
-  const specialArticlePages = await getSpecialArticlePages()
+// export async function generateStaticParams() {
+//   const specialArticlePages = await getSpecialArticlePages()
 
-  return specialArticlePages.map((article: Articles) => {
-    // NOTE: This is returning articles with no issues.
-    // These are the articles that are part of the "Special Issues"
-    // This might be a BUG, or might be how the REST API is set up.
-    if (!article.issue) {
-      return
-    }
-    return {
-      issueSlug: article.issue.slug,
-      section: article.section.slug,
-      slug: article.slug,
-    }
-  })
-}
+//   return specialArticlePages.map((article: Articles) => {
+//     // NOTE: This is returning articles with no issues.
+//     // These are the articles that are part of the "Special Issues"
+//     // This might be a BUG, or might be how the REST API is set up.
+//     if (!article.issue) {
+//       return
+//     }
+//     return {
+//       issueSlug: article.issue.slug,
+//       section: article.section.slug,
+//       slug: article.slug,
+//     }
+//   })
+// }
