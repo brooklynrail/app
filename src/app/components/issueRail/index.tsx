@@ -171,47 +171,56 @@ const PublishersMessage = ({ issueData }: PublishersMessageProps) => {
 }
 
 interface IssueRailProps {
-  currentIssueBasics: Issues
+  issueSections?: Sections[]
+  issueData?: Issues
 }
 const IssueRail = (props: IssueRailProps) => {
-  const { currentIssueBasics } = props
-  const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
-  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
+  const { issueData, issueSections } = props
+  // const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
+  // const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // if currentIssueBasics is not defined, fetch the current issue
-      if (!issueData) {
-        const issueAPI = currentIssueBasics.special_issue
-          ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/special/${currentIssueBasics.slug}`
-          : `${process.env.NEXT_PUBLIC_BASE_URL}/api/${currentIssueBasics.year}/${currentIssueBasics.month}`
-        const issueResponse = await fetch(issueAPI, {
-          next: { revalidate: 10 },
-        })
-        if (!issueData) {
-          const fetchedIssueData = await issueResponse.json()
-          setIssueData(fetchedIssueData)
-        }
-      }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     // if currentIssueBasics is not defined, fetch the current issue
+  //     if (!issueData) {
+  //       const issueAPI = currentIssueBasics.special_issue
+  //         ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/special/${currentIssueBasics.slug}`
+  //         : `${process.env.NEXT_PUBLIC_BASE_URL}/api/${currentIssueBasics.year}/${currentIssueBasics.month}`
+  //       const issueResponse = await fetch(issueAPI, {
+  //         next: { revalidate: 10 },
+  //       })
+  //       if (!issueData) {
+  //         const fetchedIssueData = await issueResponse.json()
+  //         setIssueData(fetchedIssueData)
+  //       }
+  //     }
 
-      if (issueData && !issueSections) {
-        const sectionsResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
-          {
-            next: { revalidate: 10 },
-          },
-        )
-        const fetchedSectionData = await sectionsResponse.json()
-        setIssueSections(fetchedSectionData)
-      }
-    }
+  //     if (issueData && !issueSections) {
+  //       const sectionsResponse = await fetch(
+  //         `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
+  //         {
+  //           next: { revalidate: 10 },
+  //         },
+  //       )
+  //       const fetchedSectionData = await sectionsResponse.json()
+  //       setIssueSections(fetchedSectionData)
+  //     }
+  //   }
 
-    fetchData().catch((error) => console.error("Failed to fetch data Issue Rail:", error))
-  }, [issueSections, setIssueSections, issueData, setIssueData, currentIssueBasics])
+  //   fetchData().catch((error) => console.error("Failed to fetch data Issue Rail:", error))
+  // }, [issueSections, setIssueSections, issueData, setIssueData, currentIssueBasics])
+
+  if (!issueData || !issueSections) {
+    return (
+      <div className={`loading-issue-index`}>
+        <LoadingIssueIndex />
+      </div>
+    )
+  }
 
   let logosrc = "/images/brooklynrail-logo.svg"
-  if (currentIssueBasics.special_issue) {
-    logosrc = `/images/brooklynrail-logo-issue-${currentIssueBasics.issue_number}.svg`
+  if (issueData.special_issue) {
+    logosrc = `/images/brooklynrail-logo-issue-${issueData.issue_number}.svg`
   }
 
   return (
@@ -220,7 +229,7 @@ const IssueRail = (props: IssueRailProps) => {
 
       <header className="issue-header">
         <h3 className="issue-name">
-          <Link href={`/${currentIssueBasics.slug}/`}>{currentIssueBasics.title}</Link>
+          <Link href={`/${issueData.slug}/`}>{issueData.title}</Link>
         </h3>
 
         <Link className="archive" href="/archive" title="All Issues Archive">
@@ -232,7 +241,7 @@ const IssueRail = (props: IssueRailProps) => {
         <div className="issue-details">
           <div className="grid-row">
             <div className="grid-col-6">
-              <CoverImage issueBasics={currentIssueBasics} />
+              <CoverImage issueBasics={issueData} />
             </div>
             <div className="grid-col-6">
               <div className="issue-links">
