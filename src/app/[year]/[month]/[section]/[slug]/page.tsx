@@ -1,12 +1,5 @@
 import { stripHtml } from "string-strip-html"
-import {
-  PageType,
-  getArticle,
-  getArticlePages,
-  getIssueBasics,
-  getOGImage,
-  getPermalink,
-} from "../../../../../../lib/utils"
+import { PageType, getArticle, getIssueBasics, getOGImage, getPermalink } from "../../../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
@@ -25,25 +18,25 @@ export interface ArticleProps {
   errorMessage?: string
 }
 
-export async function generateStaticParams() {
-  const articlePages = await getArticlePages()
+// export async function generateStaticParams() {
+//   const articlePages = await getArticlePages()
 
-  return articlePages.map((article: Articles) => {
-    // NOTE: This is returning articles with no issues.
-    // These are the articles that are part of the "Special Issues"
-    // This might be a BUG, or might be how the REST API is set up.
-    if (!article.issue) {
-      return
-    }
-    const month = article.issue.month
-    return {
-      year: article.issue.year.toString(),
-      month: month < 10 ? `0${month.toString()}` : month.toString(),
-      section: article.section.slug,
-      slug: article.slug,
-    }
-  })
-}
+//   return articlePages.map((article: Articles) => {
+//     // NOTE: This is returning articles with no issues.
+//     // These are the articles that are part of the "Special Issues"
+//     // This might be a BUG, or might be how the REST API is set up.
+//     if (!article.issue) {
+//       return
+//     }
+//     const month = article.issue.month
+//     return {
+//       year: article.issue.year.toString(),
+//       month: month < 10 ? `0${month.toString()}` : month.toString(),
+//       section: article.section.slug,
+//       slug: article.slug,
+//     }
+//   })
+// }
 
 interface ArticleParams {
   year: string
