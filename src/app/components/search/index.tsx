@@ -19,7 +19,7 @@ const SearchComponent = () => {
   }
 
   return (
-    <InstantSearchNext indexName="issues" searchClient={searchClient} insights>
+    <InstantSearchNext indexName="issues" searchClient={searchClient} insights routing>
       <SearchBox />
       <RefinementList attribute="issue" />
       <Hits hitComponent={Hit} />
