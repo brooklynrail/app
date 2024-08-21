@@ -1,22 +1,6 @@
-import { Issues, Sections } from "../../../lib/types"
+import { Issues } from "../../../lib/types"
 import { getAllIssues, getPermalink, PageType } from "../../../lib/utils"
 import ArchivePage from "../components/archive"
-
-export enum PageLayout {
-  Issue = "issue",
-  Section = "section",
-  SpecialIssue = "special-issue",
-  SpecialSection = "special-section",
-  Contributor = "contributor",
-}
-export interface IssuePageProps {
-  issueData: Issues
-  currentSection?: Sections
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  layout: PageLayout
-}
 
 export default async function Homepage() {
   const data = await getData()
