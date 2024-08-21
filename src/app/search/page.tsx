@@ -2,6 +2,11 @@ import { Issues } from "../../../lib/types"
 import { getAllIssues, getPermalink, PageType } from "../../../lib/utils"
 import SearchPage from "../components/search"
 
+// Dynamic segments not included in generateStaticParams are generated on demand.
+// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
+export const dynamicParams = true
+// export const dynamic = "force-dynamic"
+
 export default async function Search() {
   const data = await getData()
 
