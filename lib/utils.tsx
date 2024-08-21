@@ -69,6 +69,7 @@ export async function getAllIssues() {
     isMore = data.data.length === 100 // assumes there is another page of records
     page++
   }
+  console.log("allIssues", allIssues)
   return allIssues as Issues[]
 }
 
@@ -818,7 +819,7 @@ export async function getArticle(slug: string, status?: string) {
 }
 
 export async function getAds() {
-  const today = new Date()
+  // const today = new Date()
   // newDate Formatted as YYYY-MM-DD
 
   const ads = await directus.request(
