@@ -907,6 +907,7 @@ export enum PageType {
   SpecialIssueSection = "special_issue_section",
   SpecialIssueArticle = "special_issue_article",
   Archive = "archive",
+  Search = "search",
 }
 interface PermalinkProps {
   type: PageType
@@ -941,6 +942,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/${slug}/`
     case PageType.Archive:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/archive/`
+    case PageType.Search:
+      return `${process.env.NEXT_PUBLIC_BASE_URL}/search/`
     default:
       return `${process.env.NEXT_PUBLIC_BASE_URL}/`
   }
