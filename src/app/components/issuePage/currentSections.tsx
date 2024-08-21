@@ -58,6 +58,16 @@ const CurrentSections = (props: CurrentSectionsProps) => {
             </Link>
           </li>
           {sectionsList}
+          <li>
+            <Link href={`https://intranslation.brooklynrail.org/?br`} title="Go to In Translation">
+              In Translation
+            </Link>
+          </li>
+          <li>
+            <Link href={`${issuePermalink}table_of_contents`} title="Go to Table of Contents">
+              Table of Contents
+            </Link>
+          </li>
         </ul>
       </div>
     </>
