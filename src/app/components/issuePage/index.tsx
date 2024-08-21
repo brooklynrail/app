@@ -102,7 +102,7 @@ const IssuePage = (props: IssuePageProps) => {
                       <Link className="search_btn" href="/search" title="Search All Issues">
                         <span>Search</span> <i className="fas fa-search"></i>
                       </Link>
-                      <Link className="archives_btn" href="/archives" title="View Archive">
+                      <Link className="archives_btn" href="/archive" title="View Archive">
                         <span>View Archive</span>
                       </Link>
 
