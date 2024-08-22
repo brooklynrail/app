@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   })
 
   return {
-    title: `${ogtitle} | The Brooklyn Rail`,
+    title: `${ogtitle}`,
     description: ogdescription,
     alternates: {
       canonical: `${data.props.permalink}`,
@@ -43,6 +43,9 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       modifiedTime: date_updated,
       section: section.name,
       authors: authors,
+    },
+    twitter: {
+      images: ogimages,
     },
   }
 }
