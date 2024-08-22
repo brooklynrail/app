@@ -306,14 +306,15 @@
   @include u-flex("align-center");
   @include u-overflow("scroll");
   @include u-padding-y(6);
+
   .cover {
     @include u-margin(0);
     @include u-padding-y(2);
     width: 370px;
     figcaption {
       @include u-padding-top(1);
-      color: white;
-      @include u-font("sans", "2xs");
+      @include u-text("white");
+      @include u-font("sans", "3xs");
     }
   }
 }

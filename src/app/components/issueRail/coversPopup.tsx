@@ -1,3 +1,4 @@
+import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
 import { usePopup } from "./popupProvider"
 import Image from "next/image"
@@ -25,14 +26,12 @@ const CoversPopup = () => {
     const height = (cover.height * width) / cover.width
     const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`
     const alt = cover.caption ? `${stripHtml(cover.caption).result}` : "The Brooklyn Rail"
-    const desc = cover.description ? (
-      <figcaption dangerouslySetInnerHTML={{ __html: `<strong>Cover ${i + 1}:</strong> ${cover.description}` }} />
-    ) : null
+    const caption = parse(cover.caption)
 
     return (
       <div className="cover" key={i}>
         <Image src={src} width={width} height={height} alt={alt} />
-        {desc}
+        <figcaption>{caption}</figcaption>
       </div>
     )
   })
