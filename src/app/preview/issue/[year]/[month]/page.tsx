@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
       },
     },
     openGraph: {
-      title: `${ogtitle} | The Brooklyn Rail`,
+      title: `${ogtitle}`,
       description: ogdescription,
       url: data.permalink,
       type: `website`,

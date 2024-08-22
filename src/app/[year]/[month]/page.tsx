@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: IssueParams }): Pro
   const data = await getData({ params })
 
   const { title, cover_1, issue_number } = data.issueData
-  const ogtitle = `${stripHtml(title).result} | The Brooklyn Rail`
+  const ogtitle = `${stripHtml(title).result}`
   const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
   const ogimages = getOGImage(ogimageprops)
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: IssueParams }): Pro
       canonical: `${data.permalink}`,
     },
     openGraph: {
-      title: `${ogtitle} | The Brooklyn Rail`,
+      title: `${ogtitle}`,
       description: ogdescription,
       url: data.permalink,
       images: ogimages,

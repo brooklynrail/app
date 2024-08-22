@@ -26,13 +26,13 @@ export async function generateMetadata({ params }: { params: SpecialArticleParam
     return contribPermalink
   })
   return {
-    title: `${ogtitle} | The Brooklyn Rail`,
+    title: `${ogtitle}`,
     description: ogdescription,
     alternates: {
       canonical: `${data.props.permalink}`,
     },
     openGraph: {
-      title: `${ogtitle} | The Brooklyn Rail`,
+      title: `${ogtitle}`,
       description: ogdescription,
       url: data.props.permalink,
       images: ogimages,

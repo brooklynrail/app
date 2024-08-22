@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       canonical: `${data.props.permalink}`,
     },
     openGraph: {
-      title: `${ogtitle} | The Brooklyn Rail`,
+      title: `${ogtitle}`,
       description: ogdescription,
       url: data.props.permalink,
       images: ogimages,

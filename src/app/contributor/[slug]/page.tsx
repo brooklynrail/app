@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   const ogdescription = `${bio && stripHtml(bio).result}`
 
   return {
-    title: `${ogtitle} | The Brooklyn Rail`,
+    title: `${ogtitle}`,
     description: ogdescription,
     creator: `${first_name && stripHtml(first_name).result} ${last_name && stripHtml(last_name).result}`,
     authors: [
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       canonical: data.permalink,
     },
     openGraph: {
-      title: `${ogtitle} | The Brooklyn Rail`,
+      title: `${ogtitle}`,
       description: ogdescription,
       url: data.permalink,
       type: `website`,

@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: SpecialSectionParam
 
   const { name } = data.props.currentSection
   const { title, cover_1, issue_number } = data.props.issueData
-  const ogtitle = `${name} – ${stripHtml(title).result} | The Brooklyn Rail`
+  const ogtitle = `${name} – ${stripHtml(title).result}`
   const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
   const ogimages = getOGImage(ogimageprops)
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: SpecialSectionParam
       canonical: `${data.props.permalink}`,
     },
     openGraph: {
-      title: `${ogtitle} | The Brooklyn Rail`,
+      title: `${ogtitle}`,
       description: ogdescription,
       url: data.props.permalink,
       images: ogimages,
