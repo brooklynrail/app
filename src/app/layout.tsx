@@ -10,7 +10,10 @@ export const metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL
     ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
     : new URL("https://brooklynrail.org"),
-  title: "The Brooklyn Rail",
+  title: {
+    template: "%s | The Brooklyn Rail",
+    default: "The Brooklyn Rail", // a default is required when creating a template
+  },
   description:
     "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
   keywords: [
@@ -37,7 +40,10 @@ export const metadata = {
   applicationName: "The Brooklyn Rail",
   publisher: "The Brooklyn Rail",
   openGraph: {
-    title: "The Brooklyn Rail",
+    title: {
+      template: "%s | The Brooklyn Rail",
+      default: "The Brooklyn Rail", // a default is required when creating a template
+    },
     description:
       "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
     url: "https://brooklynrail.org",
