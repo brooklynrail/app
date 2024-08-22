@@ -69,7 +69,6 @@ export async function getAllIssues() {
     isMore = data.data.length === 100 // assumes there is another page of records
     page++
   }
-  console.log("allIssues", allIssues)
   return allIssues as Issues[]
 }
 
@@ -530,6 +529,7 @@ export async function getSectionsByIssueId(issueId: string) {
           issue: {
             id: { _eq: issueId },
           },
+          status: { _eq: "published" },
         },
       },
     }),
