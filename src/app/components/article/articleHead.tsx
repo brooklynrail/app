@@ -95,11 +95,6 @@ const ArticleHead = (props: ArticleHeadProps) => {
 
   const kickerProps = { kicker, issueBasics, currentSection }
 
-  // remove https://localhost:3000 from the permalink and replace with https://brooklynrail.org
-  const previewUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-    ? permalink.replace("https://preview.brooklynrail.org", "https://brooklynrail.org")
-    : permalink.replace("https://localhost:3000", "https://brooklynrail.org")
-
   const articleMeta = (
     <div className="article-meta">
       <div className="date">MAY 2024</div>
@@ -128,9 +123,6 @@ const ArticleHead = (props: ArticleHeadProps) => {
         </Link>
         <Link className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
           <FontAwesomeIcon icon={faSquareFacebook} />
-        </Link>
-        <Link className="preview" href={previewUrl} target="_new">
-          <FontAwesomeIcon icon={faEye} />
         </Link>
       </div>
     </div>
