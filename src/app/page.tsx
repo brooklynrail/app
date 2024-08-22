@@ -2,6 +2,10 @@ import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/app/components/issuePage"
 import { getCurrentIssueData, getPermalink, getSectionsByIssueId, PageType } from "../../lib/utils"
 
+// Dynamic segments not included in generateStaticParams are generated on demand.
+// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
+export const dynamicParams = true
+
 export enum PageLayout {
   Issue = "issue",
   Section = "section",
