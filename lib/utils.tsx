@@ -876,7 +876,7 @@ export function getOGImage(props: OGImageProps) {
   if (ogimage && ogimage.width && ogimage.height) {
     return [
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/${ogimage.filename_disk}`,
+        url: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${ogimage.filename_disk}`,
         width: ogimage.width,
         height: ogimage.height,
         alt: ogimage.caption ? stripHtml(ogimage.caption).result : `${stripHtml(title).result} - The Brooklyn Rail`,
