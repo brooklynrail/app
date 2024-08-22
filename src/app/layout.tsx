@@ -42,7 +42,7 @@ export const metadata = {
   openGraph: {
     title: {
       template: "%s | The Brooklyn Rail",
-      default: "The Brooklyn Rail", // a default is required when creating a template
+      default: "The Brooklyn Rail - Arts, Culture, Critical Perspectives", // a default is required when creating a template
     },
     description:
       "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
