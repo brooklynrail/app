@@ -318,6 +318,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&filter[month][_eq]=${month}` +
     `&filter[status][_eq]=published` +
     `&filter[special_issue][_eq]=false` +
+    `&deep[articles][_filter][status][_eq]=published` +
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
   const res = await fetch(issueDataAPI, { cache: "force-cache" })
@@ -434,6 +435,7 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
     `&filter[special_issue][_eq]=true` +
+    `&deep[articles][_filter][status][_eq]=published` +
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
 
