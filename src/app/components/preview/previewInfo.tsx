@@ -2,8 +2,8 @@ import { Articles, ArticlesFiles, DirectusFiles, DirectusUsers } from "../../../
 import Image from "next/image"
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
-import { useState } from "react"
 import Link from "next/link"
+import PromoBuilder from "./promoBuilder"
 
 interface PreviewImageProps {
   image: DirectusFiles
@@ -183,104 +183,6 @@ const PreviewInfo = (props: PreviewInfoProps) => {
         <div className="all-images">{allImages}</div>
       </div>
       <PromoBuilder />
-    </div>
-  )
-}
-
-const PromoBuilder = () => {
-  const [type, setType] = useState("artseen")
-  const [venue, setVenue] = useState("")
-  const [showTitle, setShowTitle] = useState("")
-  const [startDate, setStartDate] = useState("")
-  const [endDate, setEndDate] = useState("")
-  const [city, setCity] = useState("")
-  const [url, setUrl] = useState("")
-
-  const handleInputChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setter(event.target.value)
-    }
-  const handleSelectChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setter(event.target.value)
-    }
-
-  // [promo type="free-text"]<h6>New York</h6><a href="URL" title="Venue"><strong>Venue</strong></a><br/><em>ShowTitle</em><br/>Jun 1, 2024 &ndash; Aug 30, 2024[/promo]
-  const generatePromoCode = () => {
-    const h6 = `<h6>On View</h6>`
-    const location = city ? `<br/>${city}` : ""
-    if (url === "") {
-      return `<div>[promo type="free-text"]${h6}<strong>${venue}</strong><br/><em>${showTitle}</em><br/>${startDate}&ndash;${endDate}${location}[/promo]</div>`
-    } else {
-      return `<div>[promo type="free-text"]${h6}<a href="${url}" title="${venue}"><strong>${venue}</strong></a><br/><em>${showTitle}</em><br/>${startDate}&ndash;${endDate}${location}[/promo]</div>`
-    }
-  }
-
-  return (
-    <div className="block promo-builder">
-      <h4>Promo Builder</h4>
-      <div>
-        <div className="field">
-          <label htmlFor="type">Type</label>
-          <select id="type" value={type} onChange={handleSelectChange(setType)}>
-            <option value="artseen">Artseen</option>
-          </select>
-        </div>
-
-        <div className="field">
-          <label htmlFor="venue">Venue:</label>
-          <input type="text" id="venue" placeholder="venue" value={venue} onChange={handleInputChange(setVenue)} />
-        </div>
-        <div className="field">
-          <label htmlFor="artist">Show title (optional):</label>
-          <input
-            type="text"
-            id="showTitle"
-            placeholder="show title"
-            value={showTitle}
-            onChange={handleInputChange(setShowTitle)}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="startDate">Start Date:</label>
-          <input
-            type="text"
-            id="startDate"
-            placeholder="start date"
-            value={startDate}
-            onChange={handleInputChange(setStartDate)}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="endDate">End Date:</label>
-          <input
-            type="text"
-            id="endDate"
-            placeholder="end date"
-            value={endDate}
-            onChange={handleInputChange(setEndDate)}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="url">City</label>
-          <input
-            type="text"
-            id="city"
-            placeholder="city"
-            value={city ? city : "New York"}
-            onChange={handleInputChange(setCity)}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="url">URL:</label>
-          <input type="text" id="url" placeholder="URL" value={url} onChange={handleInputChange(setUrl)} />
-        </div>
-      </div>
-      <div className="generated">
-        <pre>
-          <code>{generatePromoCode()}</code>
-        </pre>
-      </div>
     </div>
   )
 }
