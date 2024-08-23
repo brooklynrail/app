@@ -39,6 +39,10 @@ const PromoBuilder = () => {
   const [venue, setVenue] = useState("")
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
+  const [directedBy, setDirectedBy] = useState("")
+  const [language, setLanguage] = useState("")
+  const [company, setCompany] = useState("")
+  const [runTime, setRunTime] = useState("")
   const [translator, setTranslator] = useState("")
   const [publisher, setPublisher] = useState("")
   const [additional, setAdditional] = useState("")
@@ -56,6 +60,16 @@ const PromoBuilder = () => {
       setter(event.target.value as PromoType)
     }
 
+  const fieldLanguage = (
+    <Field label="Language" placeholder="" value={language} onChange={handleInputChange(setLanguage)} />
+  )
+  const fieldCompany = <Field label="Company" placeholder="" value={company} onChange={handleInputChange(setCompany)} />
+  const fieldRunTime = (
+    <Field label="Run Time" placeholder="" value={runTime} onChange={handleInputChange(setRunTime)} />
+  )
+  const fieldDirectedBy = (
+    <Field label="Directed By" placeholder="" value={directedBy} onChange={handleInputChange(setDirectedBy)} />
+  )
   const fieldVenue = <Field label="Venue" placeholder="" value={venue} onChange={handleInputChange(setVenue)} />
   const fieldTitle = (
     <Field required label="Title" placeholder="title" value={title} onChange={handleInputChange(setTitle)} />
@@ -108,6 +122,15 @@ const PromoBuilder = () => {
       {fieldCity}
     </div>
   )
+  const formFilm = (
+    <div>
+      {fieldTitle}
+      {fieldDirectedBy}
+      {fieldCompany}
+      {fieldLanguage}
+      {fieldRunTime}
+    </div>
+  )
   const formDance = (
     <div>
       {fieldArtist}
@@ -157,6 +180,10 @@ const PromoBuilder = () => {
     return `[promo type="free-text"]<em>${artist}</em><br />${title}<br />${label && label}${label && `<br/>`}${venue}<br />${dates}<br />${city}[/promo]`
   }
 
+  const codeFilm = () => {
+    return `[promo type="free-text"]<em>${title}</em><br />${directedBy}<br />${company}<br />${language}<br />${runTime}[/promo]`
+  }
+
   const codeTheater = () => {
     return `[promo type="free-text"]<em>${title}</em><br />${artist}<br />${venue}<br />${dates}<br />${city}[/promo]`
   }
@@ -173,7 +200,7 @@ const PromoBuilder = () => {
       case PromoType.Dance:
         return codeDance()
       case PromoType.Film:
-        return codeArtseen()
+        return codeFilm()
       case PromoType.Music:
         return codeMusic()
       case PromoType.Theater:
@@ -196,7 +223,7 @@ const PromoBuilder = () => {
       case PromoType.Music:
         return formMusic
       case PromoType.Film:
-        return formArtseen
+        return formFilm
       case PromoType.Theater:
         return formTheater
       default:
