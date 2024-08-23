@@ -32,10 +32,13 @@ const Kicker = (props: KickerProps) => {
           <Link href={sectionPermalink} title={`Go to the ${currentSection.name} section`}>
             {currentSection.name}
           </Link>
-          <span className="divider"></span>
         </>
       )}
-      {kicker && <span>{kicker}</span>}
+      {kicker && (
+        <>
+          <span className="divider"></span> <span>{kicker}</span>
+        </>
+      )}
     </h6>
   )
 }
