@@ -107,8 +107,8 @@ const PromoBuilder = () => {
   )
   const formBooks = (
     <div>
-      {fieldTitle}
       {fieldAuthor}
+      {fieldTitle}
       {fieldTranslator}
       {fieldPublisher}
       {fieldAdditional}
@@ -169,7 +169,7 @@ const PromoBuilder = () => {
   }
 
   const codeBooks = () => {
-    return `[promo type="free-text"]<em>${title}</em><br />${author}<br />${translator ?? translator}${translator ?? `<br/>`}${publisher}<br />${additional}[/promo]`
+    return `[promo type="free-text"]<em>${author}</em><br />${title}<br />${translator}<br />${publisher}<br />${additional}[/promo]`
   }
 
   const codeDance = () => {
