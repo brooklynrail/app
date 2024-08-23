@@ -27,6 +27,8 @@
     @include u-display("flex");
     @include u-flex("align-start");
     @include u-flex("column");
+    width: 100%;
+    overflow: hidden;
     .imgbox {
       @include u-margin-top("2px");
       @include u-margin-right("105");
@@ -77,7 +79,7 @@
       @include u-position("relative");
       @include u-margin-top(1);
       user-select: all;
-      @include u-width("card");
+      width: 100%;
       @include u-overflow("hidden");
       span {
         @include u-display("none");
