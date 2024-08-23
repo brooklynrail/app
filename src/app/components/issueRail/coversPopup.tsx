@@ -30,7 +30,7 @@ const CoversPopup = () => {
 
     return (
       <div className="cover" key={i}>
-        <Image src={src} width={width} height={height} alt={alt} />
+        <Image src={src} width={width} height={height} alt={alt} sizes="35vw" />
         <figcaption>{caption}</figcaption>
       </div>
     )
