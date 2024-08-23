@@ -161,7 +161,7 @@ const PromoBuilder = () => {
   )
 
   const codeArtseen = () => {
-    return `[promo type="free-text"]<em>${title}</em><br />${venue}<br />${dates}<br />${city}[/promo]`
+    return `[promo type="free-text"]<h6>On View</h6><em>${title}</em><br />${venue}<br />${dates}<br />${city}[/promo]`
   }
 
   const codeArtbooks = () => {
@@ -169,15 +169,15 @@ const PromoBuilder = () => {
   }
 
   const codeBooks = () => {
-    return `[promo type="free-text"]<em>${author}</em><br />${title}<br />${translator}<br />${publisher}<br />${additional}[/promo]`
+    return `[promo type="free-text"]${author}<br /><em>${title}</em><br />${translator}<br />${publisher}<br />${additional}[/promo]`
   }
 
   const codeDance = () => {
-    return `[promo type="free-text"]<em>${artist}</em><br />${title}<br />${venue}<br />${dates}<br />${city}[/promo]`
+    return `[promo type="free-text"]${artist}<br /><em>${title}</em><br />${venue}<br />${dates}<br />${city}[/promo]`
   }
 
   const codeMusic = () => {
-    return `[promo type="free-text"]<em>${artist}</em><br />${title}<br />${label && label}${label && `<br/>`}${venue}<br />${dates}<br />${city}[/promo]`
+    return `[promo type="free-text"]${artist}<br /><em>${title}</em><br />${label && label}${label && `<br/>`}${venue}<br />${dates}<br />${city}[/promo]`
   }
 
   const codeFilm = () => {
