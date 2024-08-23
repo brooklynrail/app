@@ -11,7 +11,8 @@
       @include u-text("light");
       @include u-text("uppercase");
       @include u-text("gray-cool-60");
-      @include u-font("sans", "3xs");
+      // @include u-font("sans", "3xs");
+      font-size: 12px;
     }
   }
   .updated {
@@ -19,20 +20,21 @@
     @include u-margin-bottom(2);
   }
   .title {
-    @include u-font("sans", "2xs");
-    @include u-text("bold");
+    @include u-font("sans", "md");
+    @include u-text("light");
   }
   .preview-image {
     @include u-position("relative");
     @include u-display("flex");
     @include u-flex("align-start");
     @include u-flex("column");
-    width: 100%;
-    overflow: hidden;
+    // width: 100%;
+    // overflow: hidden;
     .imgbox {
       @include u-margin-top("2px");
       @include u-margin-right("105");
       @include u-display("flex");
+      @include u-flex("column");
       @include u-flex("align-start");
     }
     img {
@@ -50,31 +52,7 @@
       @include u-font("sans", "micro");
       @include u-text("gray-cool-40");
     }
-    .tools {
-      @include u-padding-left(1);
-      @include u-position("relative");
-      @include u-display("flex");
-      @include u-flex("column");
-      @include u-flex("align-start");
 
-      button {
-        @include u-margin-top(1);
-        @include u-margin-right(1);
-        @include u-padding-y("2px");
-        @include u-padding-x(1);
-        @include u-padding-bottom("05");
-        @include u-border(0);
-        @include u-radius("md");
-        @include u-font("sans", "3xs");
-        @include u-bg("blue-warm-50v");
-        @include u-text("white");
-        @include u-display("block");
-        &:hover {
-          @include u-cursor("pointer");
-          @include u-bg("blue-warm-60v");
-        }
-      }
-    }
     .shortcode {
       @include u-position("relative");
       @include u-margin-top(1);
@@ -128,7 +106,6 @@
   .slideshow-image {
     .preview-image {
       @include u-flex("column");
-      @include u-flex("align-end");
       .imgbox {
         @include u-margin-right(0);
       }
@@ -164,16 +141,14 @@
     }
   }
   hr {
-    @include u-margin-y(3);
-    @include u-margin-x(3);
+    @include u-margin-y("105");
+    @include u-margin-x(2);
     @include u-border-color("base-lightest");
     @include u-border-bottom(0);
   }
 }
 .preview-info {
   .promo-builder {
-    @include u-border-top("1px", "solid", "gray-cool-60");
-
     .field {
       @include u-display("flex");
       @include u-flex("column");

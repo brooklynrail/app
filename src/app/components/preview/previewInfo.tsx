@@ -2,7 +2,6 @@ import { Articles, ArticlesFiles, DirectusFiles, DirectusUsers } from "../../../
 import Image from "next/image"
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
-import Link from "next/link"
 import PromoBuilder from "./promoBuilder"
 
 interface PreviewImageProps {
@@ -13,16 +12,9 @@ interface PreviewImageProps {
   order: number
 }
 const PreviewImage = (props: PreviewImageProps) => {
-  const { showShortcode, order } = props
-  const { filename_disk, caption, shortcode_key, id } = props.image
+  const { filename_disk, caption } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const desc = caption ? <figcaption>{parse(caption)}</figcaption> : null
-  const shortcodeKey = shortcode_key
-    ? `[img name="${shortcode_key}" type="lg" /]`
-    : `[img name="img${order + 1}" type="lg" /]`
-
-  // the URL to edit the image in Directus
-  const imageEditURL = `${props.directusUrl}/admin/files/${id}`
 
   // the dimensions of the preview image
   const width = props.fullWidth ? 450 : 200
@@ -37,22 +29,9 @@ const PreviewImage = (props: PreviewImageProps) => {
   return (
     <div className="preview-image">
       <div className="imgbox">
-        <div>
-          <Image src={src} width={width} height={height} alt={caption ? caption : ""} sizes="30vw" />
-          {dimensions}
-        </div>
-
-        <div className="tools">
-          {desc}
-          <Link href={imageEditURL} title="Edit this image" target="_blank">
-            <button>edit</button>
-          </Link>
-          {showShortcode && (
-            <div className="shortcode">
-              <code>{shortcodeKey}</code>
-            </div>
-          )}
-        </div>
+        <Image src={src} width={width} height={height} alt={caption ? caption : ""} sizes="30vw" />
+        {dimensions}
+        {desc}
       </div>
     </div>
   )
@@ -102,6 +81,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
     excerpt,
     images,
     title,
+    section,
     title_tag,
     user_updated,
     date_updated,
@@ -133,6 +113,11 @@ const PreviewInfo = (props: PreviewInfoProps) => {
         <p className="title">{parse(title)}</p>
       </div>
 
+      <div className="block">
+        <h4>Section</h4>
+        <p>{section.name}</p>
+      </div>
+
       {featured_image && (
         <div className="block">
           <h4>Featured Image</h4>
@@ -145,7 +130,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
       </div>
       <div className="block">
         <h4>SEO Title</h4>
-        <p className="title">{title_tag ? stripHtml(title_tag).result : stripHtml(title).result}</p>
+        <p>{title_tag ? stripHtml(title_tag).result : stripHtml(title).result}</p>
       </div>
       <hr />
       {slideshow_image && (
@@ -178,10 +163,11 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           <PreviewImage order={1} image={promo_thumb} directusUrl={props.directusUrl} showShortcode={false} />
         </div>
       )}
-      <div className="block">
+      <div className="block hidden">
         <h4>Article Images</h4>
         <div className="all-images">{allImages}</div>
       </div>
+      <hr />
       <PromoBuilder />
     </div>
   )
