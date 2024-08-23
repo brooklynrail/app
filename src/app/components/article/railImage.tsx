@@ -14,65 +14,73 @@ interface RailImageProps {
   type: string
   images: Array<ArticlesFiles>
 }
+
 const RailImage = (props: RailImageProps) => {
   const { name, type, images } = props
 
-  // images == these are ALL of the images in the article
-  let image
-  // Find the `name` in the `images` array in the `directus_files_id.shortcode_key`
-  // this assumes that the `name` is unique
-  image = images.find(
+  let image = images.find(
     (image: ArticlesFiles) => image.directus_files_id && image.directus_files_id.shortcode_key === name,
   )
   if (!image) {
-    // take the name "img1" and remove the string 'img' to get the number
     const sort = parseInt(name.replace("img", ""), 10)
-    // Get the `sort` in the `images` array
     image = images[sort - 1]
   }
 
   if (!image || !image.directus_files_id) {
     return <></>
   }
+
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${image.directus_files_id.id}`
 
   if (!image.directus_files_id.width || !image.directus_files_id.height) {
     return <></>
   }
 
-  let width
-  let mediaType
-  let legacy = false
+  const checkWidth = (ogwidth: number, type: string) => {
+    const sizeMap = {
+      sm: ImageSize.SM,
+      md: ImageSize.MD,
+      lg: ImageSize.LG,
+      xl: ImageSize.XL,
+    }
+
+    const targetWidth = sizeMap[type as keyof typeof sizeMap] || ImageSize.XL
+
+    let width = ogwidth
+    let mediaType = `width-${type}`
+
+    if (ogwidth < targetWidth) {
+      if (ogwidth < ImageSize.SM) {
+        width = ImageSize.SM
+        mediaType = `width-sm`
+      } else if (ogwidth < ImageSize.MD) {
+        width = ImageSize.SM
+        mediaType = `width-sm`
+      } else if (ogwidth < ImageSize.LG) {
+        width = ImageSize.MD
+        mediaType = `width-md`
+      } else {
+        width = ImageSize.LG
+        mediaType = `width-lg`
+      }
+    } else {
+      width = targetWidth
+    }
+
+    return { width, mediaType }
+  }
+
   const height = image.directus_files_id.height
 
-  if (type === "legacy") {
-    legacy = true
-    if (image.directus_files_id.width < ImageSize.SM) {
-      width = ImageSize.SM
-      mediaType = `width-sm`
-    } else if (image.directus_files_id.width < ImageSize.MD) {
-      width = ImageSize.MD
-      mediaType = `width-md`
-    } else if (image.directus_files_id.width < ImageSize.LG) {
-      width = ImageSize.LG
-      mediaType = `width-lg`
-    } else {
-      width = ImageSize.XL
-      mediaType = `width-xl`
-    }
-  } else {
-    width = image.directus_files_id.width
-    mediaType = `width-${type}`
-  }
-  const legacyClass = legacy ? "legacy" : ""
+  const { width, mediaType } = checkWidth(image.directus_files_id.width, type)
 
   const caption = image.directus_files_id.caption ? (
-    <figcaption className={`${mediaType} ${legacyClass}`}>{parse(image.directus_files_id.caption)}</figcaption>
+    <figcaption className={`${mediaType}`}>{parse(image.directus_files_id.caption)}</figcaption>
   ) : null
 
   return (
-    <div className={`media ${mediaType} ${legacyClass}`}>
-      <div className={`frame ${mediaType} ${legacyClass}`}>
+    <div className={`media ${mediaType}`}>
+      <div className={`frame ${mediaType}`}>
         <Image
           src={src}
           style={{
@@ -82,7 +90,7 @@ const RailImage = (props: RailImageProps) => {
           width={width}
           height={height}
           alt={name}
-          object-fit={`contain`}
+          object-fit="contain"
         />
       </div>
       {caption}
