@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((article: Articles) => article.issue)
     .map((article: Articles) => {
       const year = article.issue.year
-      const month = article.issue.month
+      const month = article.issue.month < 10 ? String(`0${article.issue.month}`) : String(article.issue.month)
       const section = article.section.slug
       const slug = article.slug
 
