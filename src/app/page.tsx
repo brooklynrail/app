@@ -12,6 +12,7 @@ export enum PageLayout {
   SpecialIssue = "special-issue",
   SpecialSection = "special-section",
   Contributor = "contributor",
+  TableOfContents = "table-of-contents",
 }
 export interface IssuePageProps {
   issueData: Issues

@@ -19,6 +19,7 @@ import { getAds } from "../../../../lib/utils"
 import { PopupProvider } from "../issueRail/popupProvider"
 import { CoverImage } from "../issueRail/coverImage"
 import PreviewHeader from "../preview/previewHead"
+import TableOfContentsPage from "./layout/tableOfContentsPage"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -58,6 +59,9 @@ const IssuePage = (props: IssuePageProps) => {
       break
     case PageLayout.SpecialIssue:
       layout = <SpecialIssue issueData={issueData} />
+      break
+    case PageLayout.TableOfContents:
+      layout = <TableOfContentsPage {...props} />
       break
     default:
       layout = <IssueLayout {...props} />
