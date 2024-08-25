@@ -20,7 +20,8 @@ const AdsTile = (props: AdsTileProps) => {
     return <></>
   }
 
-  const tiles = tileAds.map((ad: Ads, i: number) => {
+  const ramdomizeTileAds = tileAds.sort(() => Math.random() - 0.5)
+  const tiles = ramdomizeTileAds.map((ad: Ads, i: number) => {
     if (!ad.tile_image || !ad.ad_url) {
       return
     }
