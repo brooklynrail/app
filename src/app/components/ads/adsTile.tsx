@@ -46,6 +46,11 @@ const AdsTile = (props: AdsTileProps) => {
                 event_category: "ads",
                 event_label: ad.slug,
                 event_value: ad.ad_url,
+                ad_format: "tile",
+                campaign: ad.campaign_title,
+                campaign_id: ad.slug,
+                ad_position: i + 1,
+                ad_source: "br-studio",
               })
             }
             onClick={() =>
@@ -53,6 +58,11 @@ const AdsTile = (props: AdsTileProps) => {
                 event_category: "ads",
                 event_label: ad.slug,
                 event_value: ad.ad_url,
+                ad_format: "tile",
+                campaign: ad.campaign_title,
+                campaign_id: ad.slug,
+                ad_position: i + 1,
+                ad_source: "br-studio",
               })
             }
           />

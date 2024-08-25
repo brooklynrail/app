@@ -61,6 +61,10 @@ const Ad970 = (props: Ad970Props) => {
                           event_category: "ads",
                           event_label: randomAd.slug,
                           event_value: randomAd.ad_url,
+                          ad_format: "banner",
+                          campaign: randomAd.campaign_title,
+                          campaign_id: randomAd.slug,
+                          ad_source: "br-studio",
                         })
                       }
                       onClick={() =>
@@ -68,6 +72,10 @@ const Ad970 = (props: Ad970Props) => {
                           event_category: "ads",
                           event_label: randomAd.slug,
                           event_value: randomAd.ad_url,
+                          ad_format: "banner",
+                          campaign: randomAd.campaign_title,
+                          campaign_id: randomAd.slug,
+                          ad_source: "br-studio",
                         })
                       }
                     />
