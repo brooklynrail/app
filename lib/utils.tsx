@@ -69,7 +69,6 @@ export async function getAllIssues() {
     isMore = data.data.length === 100 // assumes there is another page of records
     page++
   }
-  console.log("allIssues", allIssues)
   return allIssues as Issues[]
 }
 
@@ -217,7 +216,6 @@ interface IssueDataProps {
   month: number
 }
 export async function getIssueData(props: IssueDataProps) {
-  console.log("getIssueData props", props)
   const { year, month } = props
   const issueDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
@@ -329,7 +327,6 @@ export async function getIssueData(props: IssueDataProps) {
   }
 
   const { data } = await res.json()
-  console.log("Issue data======", data)
   return data[0] as Issues
 }
 
