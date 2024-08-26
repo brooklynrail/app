@@ -3,6 +3,7 @@
   @include u-font("sans", "2xs");
   @include u-text("black");
   @include u-text("medium");
+  @include u-text("uppercase");
   @include u-margin(0);
   @include u-padding-y("05");
   @include u-padding-x(1);

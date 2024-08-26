@@ -37,6 +37,7 @@
       @include u-padding(0);
       @include u-font("sans", "md");
       @include u-text("bold");
+      @include u-text("uppercase");
       @include u-line-height("sans", 2);
       @include u-display("inline-block");
       a {
