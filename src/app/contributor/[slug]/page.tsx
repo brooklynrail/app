@@ -6,6 +6,7 @@ import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
 import IssueRail from "@/app/components/issueRail"
+import { notFound } from "next/navigation"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -164,12 +165,16 @@ interface ContributorsParams {
 
 async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
-  const currentIssueBasics: Issues = await getCurrentIssueBasics()
+  const currentIssueBasics = await getCurrentIssueBasics()
 
   // Get all contributors
   // NOTE: There are multiple contributors with the same slug
   // This returns all contributors with the same slug, but their specific name and bio information may be different
-  const allContributors: Contributors[] = await getContributor(slug)
+  const allContributors = await getContributor(slug)
+
+  if (!allContributors || allContributors.length == 0 || !currentIssueBasics) {
+    return notFound()
+  }
 
   // This gets the contributor with the greatest `old_id`, which assumes that this is the most recent version of this person's name and bio
   const contributorData = allContributors.reduce((prev, current) => {
@@ -184,6 +189,7 @@ async function getData({ params }: { params: ContributorsParams }) {
     slug: contributorData.slug,
     type: PageType.Contributor,
   })
+
   return {
     currentIssueBasics,
     contributorData,

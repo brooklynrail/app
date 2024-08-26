@@ -214,15 +214,20 @@ export async function getGlobalSettings() {
 }
 
 export async function getCurrentIssueBasics() {
-  const settings = await getGlobalSettings()
+  try {
+    const settings = await getGlobalSettings()
 
-  const issueData = await getIssueBasics({
-    year: settings.current_issue.year,
-    month: settings.current_issue.month,
-  })
+    const issueData = await getIssueBasics({
+      year: settings.current_issue.year,
+      month: settings.current_issue.month,
+    })
 
-  // return the first issue in the array
-  return issueData as Issues
+    // return the first issue in the array
+    return issueData as Issues
+  } catch (error) {
+    console.error("Error fetching current issue basics data:", error)
+    return null
+  }
 }
 
 // Explore making this get IssueData by ID
@@ -966,14 +971,20 @@ export async function getContributor(slug: string) {
     `&filter[articles][_nnull]=true` +
     `&deep[articles][issue][_nnull]=true`
 
-  const res = await fetch(issueDataAPI, { cache: "force-cache" })
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch getContributor data")
-  }
+  try {
+    const res = await fetch(issueDataAPI, { cache: "force-cache" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch getContributor data")
+    }
 
-  const { data } = await res.json()
-  return data as Contributors[]
+    const { data } = await res.json()
+    return data as Contributors[]
+  } catch (error) {
+    // Handle the error here
+    console.error("Failed to fetch getContributor data", error)
+    return null
+  }
 }
 
 export async function getAllContributors() {
