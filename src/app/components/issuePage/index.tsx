@@ -103,9 +103,9 @@ const IssuePage = (props: IssuePageProps) => {
 
                       <CurrentSections sections={sections} issueData={issueData} />
 
-                      <Link className="search_btn" href="/search" title="Search All Issues">
+                      {/* <Link className="search_btn" href="/search" title="Search All Issues">
                         <span>Search</span> <i className="fas fa-search"></i>
-                      </Link>
+                      </Link> */}
                       <Link className="archives_btn" href="/archive" title="View Archive">
                         <span>View Archive</span>
                       </Link>
