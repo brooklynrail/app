@@ -28,6 +28,7 @@
           @include u-padding-bottom("105");
           @include u-font("sans", "md");
           @include u-text("medium");
+          @include u-text("uppercase");
         }
         p {
           @include u-font("sans", "2xs");
