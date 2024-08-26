@@ -11,8 +11,8 @@ const Header = (props: HeaderProps) => {
   const { special_issue, issue_number, title } = props
   const src =
     special_issue && special_issue !== null
-      ? `${process.env.NEXT_PUBLIC_BASE_URL}images/brooklynrail-logo-ex-issue-${issue_number}.svg`
-      : `${process.env.NEXT_PUBLIC_BASE_URL}images/brooklynrail-logo-ex.svg`
+      ? `${process.env.NEXT_PUBLIC_BASE_URL}images/brooklynrail-logo-ex-issue-${issue_number}.svg?new`
+      : `${process.env.NEXT_PUBLIC_BASE_URL}images/brooklynrail-logo-ex.svg?new`
   return (
     <div id="header_section">
       <div className="logo">
