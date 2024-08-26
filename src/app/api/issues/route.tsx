@@ -1,7 +1,12 @@
+import { notFound } from "next/navigation"
 import { getAllIssues } from "../../../../lib/utils"
 
 export async function GET() {
-  const data = await getAllIssues()
+  const allIssuesData = await getAllIssues()
 
-  return Response.json(data)
+  if (!allIssuesData) {
+    return notFound()
+  }
+
+  return Response.json(allIssuesData)
 }

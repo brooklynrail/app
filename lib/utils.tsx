@@ -8,68 +8,74 @@ import { stripHtml } from "string-strip-html"
 // - Issue Select dropdown
 // - Archive page
 export async function getAllIssues() {
-  let allIssues: Issues[] = []
-  let page = 1
-  let isMore = true
-  while (isMore) {
-    const allIssuesDataAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
-      `?fields[]=year` +
-      `&fields[]=month` +
-      `&fields[]=id` +
-      `&fields[]=slug` +
-      `&fields[]=title` +
-      `&fields[]=special_issue` +
-      `&fields[]=issue_number` +
-      `&fields[]=date_updated` +
-      `&fields[]=status` +
-      `&fields[]=cover_1.caption` +
-      `&fields[]=cover_1.filename_disk` +
-      `&fields[]=cover_1.width` +
-      `&fields[]=cover_1.height` +
-      `&fields[]=cover_1.type` +
-      `&fields[]=cover_2.caption` +
-      `&fields[]=cover_2.filename_disk` +
-      `&fields[]=cover_2.width` +
-      `&fields[]=cover_2.height` +
-      `&fields[]=cover_2.type` +
-      `&fields[]=cover_3.caption` +
-      `&fields[]=cover_3.filename_disk` +
-      `&fields[]=cover_3.width` +
-      `&fields[]=cover_3.height` +
-      `&fields[]=cover_3.type` +
-      `&fields[]=cover_4.caption` +
-      `&fields[]=cover_4.filename_disk` +
-      `&fields[]=cover_4.width` +
-      `&fields[]=cover_4.height` +
-      `&fields[]=cover_4.type` +
-      `&fields[]=cover_5.caption` +
-      `&fields[]=cover_5.filename_disk` +
-      `&fields[]=cover_5.width` +
-      `&fields[]=cover_5.height` +
-      `&fields[]=cover_5.type` +
-      `&fields[]=cover_6.caption` +
-      `&fields[]=cover_6.filename_disk` +
-      `&fields[]=cover_6.width` +
-      `&fields[]=cover_6.height` +
-      `&fields[]=cover_6.type` +
-      `&filter[status][_eq]=published` +
-      `&sort[]=-issue_number` +
-      `&page=${page}` +
-      `&limit=100` +
-      `&offset=${page * 100 - 100}`
+  try {
+    let allIssues: Issues[] = []
+    let page = 1
+    let isMore = true
+    while (isMore) {
+      const allIssuesDataAPI =
+        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
+        `?fields[]=year` +
+        `&fields[]=month` +
+        `&fields[]=id` +
+        `&fields[]=slug` +
+        `&fields[]=title` +
+        `&fields[]=special_issue` +
+        `&fields[]=issue_number` +
+        `&fields[]=date_updated` +
+        `&fields[]=status` +
+        `&fields[]=cover_1.caption` +
+        `&fields[]=cover_1.filename_disk` +
+        `&fields[]=cover_1.width` +
+        `&fields[]=cover_1.height` +
+        `&fields[]=cover_1.type` +
+        `&fields[]=cover_2.caption` +
+        `&fields[]=cover_2.filename_disk` +
+        `&fields[]=cover_2.width` +
+        `&fields[]=cover_2.height` +
+        `&fields[]=cover_2.type` +
+        `&fields[]=cover_3.caption` +
+        `&fields[]=cover_3.filename_disk` +
+        `&fields[]=cover_3.width` +
+        `&fields[]=cover_3.height` +
+        `&fields[]=cover_3.type` +
+        `&fields[]=cover_4.caption` +
+        `&fields[]=cover_4.filename_disk` +
+        `&fields[]=cover_4.width` +
+        `&fields[]=cover_4.height` +
+        `&fields[]=cover_4.type` +
+        `&fields[]=cover_5.caption` +
+        `&fields[]=cover_5.filename_disk` +
+        `&fields[]=cover_5.width` +
+        `&fields[]=cover_5.height` +
+        `&fields[]=cover_5.type` +
+        `&fields[]=cover_6.caption` +
+        `&fields[]=cover_6.filename_disk` +
+        `&fields[]=cover_6.width` +
+        `&fields[]=cover_6.height` +
+        `&fields[]=cover_6.type` +
+        `&filter[status][_eq]=published` +
+        `&sort[]=-issue_number` +
+        `&page=${page}` +
+        `&limit=100` +
+        `&offset=${page * 100 - 100}`
 
-    const res = await fetch(allIssuesDataAPI, { cache: "force-cache" })
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch getAllIssues data")
+      const res = await fetch(allIssuesDataAPI, { cache: "force-cache" })
+      if (!res.ok) {
+        // This will activate the closest `error.js` Error Boundary
+        console.error(`Failed to fetch IssueBasics data: ${res.statusText}`)
+        return null
+      }
+      const data = await res.json()
+      allIssues = allIssues.concat(data.data)
+      isMore = data.data.length === 100 // assumes there is another page of records
+      page++
     }
-    const data = await res.json()
-    allIssues = allIssues.concat(data.data)
-    isMore = data.data.length === 100 // assumes there is another page of records
-    page++
+    return allIssues as Issues[]
+  } catch (error) {
+    console.error("Error fetching All Issues data:", error)
+    return null
   }
-  return allIssues as Issues[]
 }
 
 export async function getIssues() {

@@ -8,7 +8,7 @@ interface IssueSelectProps {
 
 const IssueSelect = (props: IssueSelectProps) => {
   const { currentIssueSlug } = props
-  const [allIssues, setAllIssues] = useState<Issues[] | undefined>(undefined)
+  const [allIssues, setAllIssues] = useState<Issues[] | null>(null)
   const [selectedIssueSlug, setSelectedIssueSlug] = useState<string | undefined>(currentIssueSlug)
 
   useEffect(() => {

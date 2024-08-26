@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation"
 import { Issues, Sections } from "../../../lib/types"
 import { getAllIssues, getPermalink, PageType } from "../../../lib/utils"
 import ArchivePage from "../components/archive"
@@ -29,17 +30,18 @@ export default async function Homepage() {
 }
 
 async function getData() {
-  const data: Issues[] | undefined = await getAllIssues()
+  const allIssuesData = await getAllIssues()
 
-  if (!data) {
-    return { errorCode: 500, errorMessage: "There is no current issue set" }
+  if (!allIssuesData) {
+    return notFound()
   }
+
   const permalink = getPermalink({
     type: PageType.Archive,
   })
 
   return {
-    issues: data,
+    issues: allIssuesData,
     permalink,
   }
 }
