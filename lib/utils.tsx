@@ -53,7 +53,7 @@ export async function getAllIssues() {
       `&fields[]=cover_6.width` +
       `&fields[]=cover_6.height` +
       `&fields[]=cover_6.type` +
-      `&filter[status][_eq]=published` +
+      `&filter[status][_in]=published` +
       `&sort[]=-issue_number` +
       `&page=${page}` +
       `&limit=100` +
@@ -643,6 +643,7 @@ export async function getPreviewIssue(year: number, month: number) {
             "kicker",
             "sort",
             "featured",
+            { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
             { section: ["slug", "name"] },
             { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
             { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
