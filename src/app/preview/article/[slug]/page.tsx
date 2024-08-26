@@ -4,6 +4,7 @@ import { Articles, Issues, Sections } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import ArticlePreview from "@/app/components/preview/article"
+import { notFound } from "next/navigation"
 
 export interface ArticlePreviewProps {
   articleData: Articles
@@ -98,6 +99,9 @@ async function getData({ params }: { params: PreviewParams }) {
   const slug = String(params.slug)
 
   const articleData = await getPreviewArticle(slug)
+  if (!articleData) {
+    return notFound()
+  }
 
   const issueBasics = articleData.issue
   const currentSection = articleData.section

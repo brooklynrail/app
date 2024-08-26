@@ -10,6 +10,7 @@ import { Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import IssuePreview from "@/app/components/preview/issue"
+import { notFound } from "next/navigation"
 
 export interface IssuePreviewProps {
   issueData: Issues
@@ -91,7 +92,14 @@ async function getData({ params }: { params: PreviewParams }) {
   const month = parseInt(params.month, 10)
 
   const issueData = await getPreviewIssue(year, month)
+  if (!issueData) {
+    return notFound()
+  }
   const sections = await getSectionsByIssueId(issueData.id)
+
+  if (!sections) {
+    return notFound()
+  }
 
   const permalink = getPermalink({
     year: issueData.year,

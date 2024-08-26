@@ -561,20 +561,25 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
 }
 
 export async function getSectionsByIssueId(issueId: string) {
-  const sections = await directus.request(
-    readItems("sections", {
-      fields: ["id", "name", "slug", "articles", "old_id"],
-      filter: {
-        articles: {
-          issue: {
-            id: { _eq: issueId },
+  try {
+    const sections = await directus.request(
+      readItems("sections", {
+        fields: ["id", "name", "slug", "articles", "old_id"],
+        filter: {
+          articles: {
+            issue: {
+              id: { _eq: issueId },
+            },
+            status: { _eq: "published" },
           },
-          status: { _eq: "published" },
         },
-      },
-    }),
-  )
-  return sections as Sections[]
+      }),
+    )
+    return sections as Sections[]
+  } catch (error) {
+    console.error("Error in getSectionsByIssueId", error)
+    return null
+  }
 }
 
 export async function getSpecialArticlePages() {
@@ -649,67 +654,77 @@ export async function getArticlePages() {
 }
 
 export async function getPreviewArticle(slug: string) {
-  const preview = await directus.request(
-    readItem("articles", slug, {
-      version: "draft",
-      fields: [
-        "*",
-        { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
-        { section: ["id", "name", "slug"] },
-        { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
-        { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
-        { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
-        { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
-        { promo_thumb: ["id", "width", "height", "filename_disk", "caption"] },
-        { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
-        { user_updated: ["id", "first_name", "last_name", "avatar"] },
-      ],
-    }),
-  )
-  return preview as Articles
+  try {
+    const preview = await directus.request(
+      readItem("articles", slug, {
+        version: "draft",
+        fields: [
+          "*",
+          { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
+          { section: ["id", "name", "slug"] },
+          { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
+          { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
+          { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
+          { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
+          { promo_thumb: ["id", "width", "height", "filename_disk", "caption"] },
+          { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
+          { user_updated: ["id", "first_name", "last_name", "avatar"] },
+        ],
+      }),
+    )
+    return preview as Articles
+  } catch (error) {
+    console.error("error in getPreviewArticle", error)
+    return null
+  }
 }
 
 export async function getPreviewIssue(year: number, month: number) {
-  const preview = await directus.request(
-    readItems("issues", {
-      fields: [
-        "*",
-        "title",
-        {
-          articles: [
-            "slug",
-            "title",
-            "excerpt",
-            "kicker",
-            "sort",
-            "featured",
-            { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
-            { section: ["slug", "name"] },
-            { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
-            { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
-            { promo_thumb: ["id", "width", "height", "filename_disk", "caption"] },
-            { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
+  try {
+    const preview = await directus.request(
+      readItems("issues", {
+        fields: [
+          "*",
+          "title",
+          {
+            articles: [
+              "slug",
+              "title",
+              "excerpt",
+              "kicker",
+              "sort",
+              "featured",
+              { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
+              { section: ["slug", "name"] },
+              { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
+              { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
+              { promo_thumb: ["id", "width", "height", "filename_disk", "caption"] },
+              { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
+            ],
+          },
+          { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
+          { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
+          { cover_3: ["id", "width", "height", "filename_disk", "caption"] },
+          { cover_4: ["id", "width", "height", "filename_disk", "caption"] },
+          { cover_5: ["id", "width", "height", "filename_disk", "caption"] },
+          { cover_6: ["id", "width", "height", "filename_disk", "caption"] },
+          { user_updated: ["id", "first_name", "last_name", "avatar"] },
+        ],
+        filter: {
+          _and: [
+            {
+              year: { _eq: year },
+              month: { _eq: month },
+            },
           ],
         },
-        { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
-        { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
-        { cover_3: ["id", "width", "height", "filename_disk", "caption"] },
-        { cover_4: ["id", "width", "height", "filename_disk", "caption"] },
-        { cover_5: ["id", "width", "height", "filename_disk", "caption"] },
-        { cover_6: ["id", "width", "height", "filename_disk", "caption"] },
-        { user_updated: ["id", "first_name", "last_name", "avatar"] },
-      ],
-      filter: {
-        _and: [
-          {
-            year: { _eq: year },
-            month: { _eq: month },
-          },
-        ],
-      },
-    }),
-  )
-  return preview[0] as Issues
+      }),
+    )
+    return preview[0] as Issues
+  } catch (error) {
+    console.error("error in getPreviewIssue", error)
+    return null
+  }
 }
 
 export async function getArticle(slug: string, status?: string) {
