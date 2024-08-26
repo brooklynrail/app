@@ -53,7 +53,7 @@ export async function getAllIssues() {
       `&fields[]=cover_6.width` +
       `&fields[]=cover_6.height` +
       `&fields[]=cover_6.type` +
-      `&filter[status][_in]=published` +
+      `&filter[status][_eq]=published` +
       `&sort[]=-issue_number` +
       `&page=${page}` +
       `&limit=100` +
@@ -69,6 +69,7 @@ export async function getAllIssues() {
     isMore = data.data.length === 100 // assumes there is another page of records
     page++
   }
+  console.log("allIssues", allIssues)
   return allIssues as Issues[]
 }
 
@@ -327,6 +328,7 @@ export async function getIssueData(props: IssueDataProps) {
   }
 
   const { data } = await res.json()
+  console.log("Issue data", data)
   return data[0] as Issues
 }
 
