@@ -166,22 +166,34 @@ export async function getCurrentIssueData() {
 }
 
 export async function getPageData(slug: string) {
-  const pageData = await directus.request(
-    readItem("pages", slug, {
-      fields: [
-        "*",
-        "title",
-        "slug",
-        "status",
-        "body_text",
-        {
-          images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+  try {
+    const pageData = await directus.request(
+      readItem("pages", slug, {
+        fields: [
+          "*",
+          "title",
+          "slug",
+          "status",
+          "body_text",
+          {
+            images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+          },
+        ],
+        filter: {
+          _and: [
+            {
+              status: { _eq: "published" },
+            },
+          ],
         },
-      ],
-    }),
-  )
+      }),
+    )
 
-  return pageData as Pages
+    return pageData as Pages
+  } catch (error) {
+    console.error("Error fetching page data:", error)
+    return null
+  }
 }
 
 export async function getGlobalSettings() {
@@ -320,14 +332,25 @@ export async function getIssueData(props: IssueDataProps) {
     `&deep[articles][_filter][status][_eq]=published` +
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
-  const res = await fetch(issueDataAPI, { cache: "force-cache" })
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch getIssueData data")
-  }
+  try {
+    const res = await fetch(issueDataAPI, { cache: "force-cache" })
 
-  const { data } = await res.json()
-  return data[0] as Issues
+    if (!res.ok) {
+      console.error(`Failed to fetch issue data: ${res.statusText}`)
+      return null
+    }
+
+    const json = await res.json()
+    if (!json.data || !json.data.length) {
+      console.error("No issue data returned from API")
+      return null
+    }
+
+    return json.data[0] as Issues
+  } catch (error) {
+    console.error("Error fetching issue data:", error)
+    return null
+  }
 }
 
 interface SpecialIssueDataProps {

@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation"
 import { Issues, Pages } from "../../../lib/types"
 import { getCurrentIssueData, getPageData, getPermalink, PageType } from "../../../lib/utils"
 import Page from "../components/page"
@@ -31,7 +32,11 @@ interface PageParams {
 
 async function getData({ params }: { params: PageParams }) {
   const slug = String(params.slug)
-  const pageData: Pages | undefined = await getPageData(slug)
+  const pageData = await getPageData(slug)
+
+  if (!pageData) {
+    return notFound()
+  }
 
   const issueBasics: Issues | undefined = await getCurrentIssueData()
 
