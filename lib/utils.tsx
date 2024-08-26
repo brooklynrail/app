@@ -472,14 +472,20 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
 
-  const res = await fetch(issueDataAPI, { cache: "force-cache" })
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch getSpecialIssueData data")
-  }
+  try {
+    const res = await fetch(issueDataAPI, { cache: "force-cache" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch getSpecialIssueData data")
+    }
 
-  const { data } = await res.json()
-  return data[0] as Issues
+    const { data } = await res.json()
+    return data[0] as Issues
+  } catch (error) {
+    // Handle the error here
+    console.error("Error fetching getSpecialIssueData data:", error)
+    return null
+  }
 }
 
 interface IssueBasicsProps {
@@ -550,14 +556,19 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_in]=published` +
     `&filter[special_issue][_eq]=true`
-  const res = await fetch(specialIssueBasicsAPI, { cache: "force-cache" })
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch getSpecialIssueBasics data")
-  }
+  try {
+    const res = await fetch(specialIssueBasicsAPI, { cache: "force-cache" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch getSpecialIssueBasics data")
+    }
 
-  const { data } = await res.json()
-  return data[0] as Issues
+    const { data } = await res.json()
+    return data[0] as Issues
+  } catch (error) {
+    console.error("Error fetching getSpecialIssueBasics data:", error)
+    return null
+  }
 }
 
 export async function getSectionsByIssueId(issueId: string) {

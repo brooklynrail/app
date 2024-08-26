@@ -2,6 +2,7 @@ import { stripHtml } from "string-strip-html"
 import { PageType, getArticle, getOGImage, getPermalink, getSpecialIssueBasics } from "../../../../../../lib/utils"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
+import { notFound } from "next/navigation"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -48,10 +49,6 @@ export async function generateMetadata({ params }: { params: SpecialArticleParam
 export default async function ArticlePage({ params }: { params: SpecialArticleParams }) {
   const data = await getData({ params })
 
-  if (!data.props.issueBasics || !data.props.permalink) {
-    return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
-  }
-
   return <Article {...data.props} />
 }
 
@@ -64,21 +61,15 @@ interface SpecialArticleParams {
 async function getData({ params }: { params: SpecialArticleParams }) {
   const slug = String(params.slug)
   const issueSlug = String(params.issueSlug)
-  const section = String(params.section)
+  // const section = String(params.section)
 
   const issueBasics = await getSpecialIssueBasics({ slug: issueSlug }) // A limited set of data for the issue
   const articleData = await getArticle(slug, "published")
-
-  if (!articleData) {
-    return { props: { errorCode: 404, errorMessage: "Article not found" } }
+  if (!articleData || !issueBasics) {
+    return notFound()
   }
 
   const currentSection = articleData.section
-
-  const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
-  if (errorCode) {
-    return { props: { errorCode: 404, errorMessage: errorCode } }
-  }
 
   const permalink = getPermalink({
     year: issueBasics.year,

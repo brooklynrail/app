@@ -4,6 +4,7 @@ import { PageType, getOGImage, getPermalink, getSectionsByIssueId, getSpecialIss
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
+import { notFound } from "next/navigation"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -62,8 +63,15 @@ async function getData({ params }: { params: SpecialSectionParams }) {
     slug: issueSlug,
   })
 
+  if (!issueData) {
+    return notFound()
+  }
+
   // Get only the sections that are used in the articles in the current issue
   const currentSections = await getSectionsByIssueId(issueData.id)
+  if (!currentSections) {
+    return notFound()
+  }
 
   if (!currentSections) {
     return { props: { errorCode: 404, errorMessage: "No currentSections found" } }

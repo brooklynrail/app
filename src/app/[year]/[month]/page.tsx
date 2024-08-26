@@ -59,6 +59,9 @@ async function getData({ params }: { params: IssueParams }) {
   }
 
   const sections = await getSectionsByIssueId(issueData.id)
+  if (!sections) {
+    return notFound()
+  }
 
   const permalink = getPermalink({
     year: issueData.year,
