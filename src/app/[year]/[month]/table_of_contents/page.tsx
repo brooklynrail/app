@@ -3,6 +3,7 @@ import { PageLayout } from "@/app/page"
 import { PageType, getIssueData, getOGImage, getPermalink, getSectionsByIssueId } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -52,6 +53,10 @@ async function getData({ params }: { params: IssueParams }) {
     year: year,
     month: month,
   })
+
+  if (!issueData) {
+    return notFound()
+  }
 
   const sections = await getSectionsByIssueId(issueData.id)
 

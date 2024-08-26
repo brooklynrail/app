@@ -21,7 +21,7 @@ const Article = (props: ArticleProps) => {
   const issueClass = `issue-${issueBasics.slug.toLowerCase()}`
 
   const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
-  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
+  const [issueData, setIssueData] = useState<Issues | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {

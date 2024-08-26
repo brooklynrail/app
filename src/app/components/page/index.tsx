@@ -15,7 +15,7 @@ import PageBody from "./pageBody"
 const Page = (props: PageProps) => {
   const { issueBasics } = props
 
-  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
+  const [issueData, setIssueData] = useState<Issues | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
