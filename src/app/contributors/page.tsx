@@ -2,6 +2,7 @@ import { Contributors, Issues } from "../../../lib/types"
 import { getAllContributors, getCurrentIssueBasics, getPermalink, PageType } from "../../../lib/utils"
 import Link from "next/link"
 import IssueRail from "../components/issueRail"
+import { notFound } from "next/navigation"
 
 export default async function ContributorsIndex() {
   const data = await getData()
@@ -78,9 +79,17 @@ export default async function ContributorsIndex() {
 
 async function getData() {
   let allContributors = await getAllContributors()
+  if (!allContributors || allContributors.length === 0) {
+    return notFound()
+  }
   // filter out contributors with no articles
   allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)
-  const currentIssueBasics: Issues = await getCurrentIssueBasics()
+  const currentIssueBasics = await getCurrentIssueBasics()
+
+  if (!currentIssueBasics) {
+    return notFound()
+  }
+
   return {
     currentIssueBasics,
     allContributors,
