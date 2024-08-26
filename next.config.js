@@ -24,6 +24,21 @@ module.exports = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/am4n.php",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/search",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/admin",
+        destination: "/",
+        permanent: false,
+      },
     ]
   },
 }
