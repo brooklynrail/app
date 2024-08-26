@@ -498,14 +498,20 @@ export async function getIssueBasics(props: IssueBasicsProps) {
     `&filter[month][_eq]=${month}` +
     `&filter[status][_eq]=published` +
     `&filter[special_issue][_eq]=false`
-  const res = await fetch(issueBasicsAPI, { cache: "force-cache" })
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch getIssueBasics data")
-  }
+  try {
+    const res = await fetch(issueBasicsAPI, { cache: "force-cache" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      console.error(`Failed to fetch IssueBasics data: ${res.statusText}`)
+      return null
+    }
 
-  const { data } = await res.json()
-  return data[0] as Issues
+    const { data } = await res.json()
+    return data[0] as Issues
+  } catch (error) {
+    console.error(error)
+    return null
+  }
 }
 
 interface SpecialIssueBasicsProps {
@@ -696,152 +702,87 @@ export async function getPreviewIssue(year: number, month: number) {
 }
 
 export async function getArticle(slug: string, status?: string) {
-  let articleAPI
-  let res
-  if (status === "published") {
-    articleAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
-      `?fields[]=slug` +
-      `&fields[]=byline_override` +
-      `&fields[]=title` +
-      `&fields[]=deck` +
-      `&fields[]=excerpt` +
-      `&fields[]=kicker` +
-      `&fields[]=featured` +
-      `&fields[]=sort` +
-      `&fields[]=body_text` +
-      `&fields[]=body_type` +
-      `&fields[]=header_type` +
-      `&fields[]=in_print` +
-      `&fields[]=status` +
-      `&fields[]=date_created` +
-      `&fields[]=date_updated` +
-      `&fields[]=title_tag` +
-      `&fields[]=user_updated` +
-      `&fields[]=date_updated` +
-      `&fields[]=hide_bylines` +
-      `&fields[]=hide_bylines_downstream` +
-      `&fields[]=tags` +
-      `&fields[]=endnote` +
-      `&fields[]=featured_image.id` +
-      `&fields[]=featured_image.caption` +
-      `&fields[]=featured_image.filename_disk` +
-      `&fields[]=featured_image.width` +
-      `&fields[]=featured_image.height` +
-      `&fields[]=featured_image.type` +
-      `&fields[]=slideshow_image.id` +
-      `&fields[]=slideshow_image.caption` +
-      `&fields[]=slideshow_image.filename_disk` +
-      `&fields[]=slideshow_image.width` +
-      `&fields[]=slideshow_image.height` +
-      `&fields[]=slideshow_image.type` +
-      `&fields[]=promo_banner.id` +
-      `&fields[]=promo_banner.caption` +
-      `&fields[]=promo_banner.filename_disk` +
-      `&fields[]=promo_banner.width` +
-      `&fields[]=promo_banner.height` +
-      `&fields[]=promo_banner.type` +
-      `&fields[]=promo_thumb.id` +
-      `&fields[]=promo_thumb.caption` +
-      `&fields[]=promo_thumb.filename_disk` +
-      `&fields[]=promo_thumb.width` +
-      `&fields[]=promo_thumb.height` +
-      `&fields[]=promo_thumb.type` +
-      `&fields[]=contributors.contributors_id.first_name` +
-      `&fields[]=contributors.contributors_id.last_name` +
-      `&fields[]=contributors.contributors_id.slug` +
-      `&fields[]=contributors.contributors_id.bio` +
-      `&fields[]=issue.title` +
-      `&fields[]=issue.slug` +
-      `&fields[]=section.slug` +
-      `&fields[]=section.name` +
-      `&fields[]=images.sort` +
-      `&fields[]=images.directus_files_id.id` +
-      `&fields[]=images.directus_files_id.caption` +
-      `&fields[]=images.directus_files_id.filename_disk` +
-      `&fields[]=images.directus_files_id.width` +
-      `&fields[]=images.directus_files_id.height` +
-      `&fields[]=images.directus_files_id.type` +
-      `&fields[]=images.directus_files_id.shortcode_key` +
-      `&filter[slug][_eq]=${slug}` +
-      `&filter[status][_in]=published`
-    res = await fetch(articleAPI, { cache: "force-cache" })
-  } else {
-    articleAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
-      `?fields[]=slug` +
-      `&fields[]=byline_override` +
-      `&fields[]=title` +
-      `&fields[]=deck` +
-      `&fields[]=excerpt` +
-      `&fields[]=kicker` +
-      `&fields[]=featured` +
-      `&fields[]=sort` +
-      `&fields[]=body_code` +
-      `&fields[]=body_text` +
-      `&fields[]=body_type` +
-      `&fields[]=header_type` +
-      `&fields[]=in_print` +
-      `&fields[]=status` +
-      `&fields[]=date_created` +
-      `&fields[]=date_updated` +
-      `&fields[]=title_tag` +
-      `&fields[]=user_updated` +
-      `&fields[]=date_updated` +
-      `&fields[]=hide_bylines` +
-      `&fields[]=hide_bylines_downstream` +
-      `&fields[]=tags` +
-      `&fields[]=endnote` +
-      `&fields[]=featured_image.id` +
-      `&fields[]=featured_image.caption` +
-      `&fields[]=featured_image.filename_disk` +
-      `&fields[]=featured_image.width` +
-      `&fields[]=featured_image.height` +
-      `&fields[]=featured_image.type` +
-      `&fields[]=slideshow_image.id` +
-      `&fields[]=slideshow_image.caption` +
-      `&fields[]=slideshow_image.filename_disk` +
-      `&fields[]=slideshow_image.width` +
-      `&fields[]=slideshow_image.height` +
-      `&fields[]=slideshow_image.type` +
-      `&fields[]=promo_banner.id` +
-      `&fields[]=promo_banner.caption` +
-      `&fields[]=promo_banner.filename_disk` +
-      `&fields[]=promo_banner.width` +
-      `&fields[]=promo_banner.height` +
-      `&fields[]=promo_banner.type` +
-      `&fields[]=promo_thumb.id` +
-      `&fields[]=promo_thumb.caption` +
-      `&fields[]=promo_thumb.filename_disk` +
-      `&fields[]=promo_thumb.width` +
-      `&fields[]=promo_thumb.height` +
-      `&fields[]=promo_thumb.type` +
-      `&fields[]=contributors.contributors_id.first_name` +
-      `&fields[]=contributors.contributors_id.last_name` +
-      `&fields[]=contributors.contributors_id.slug` +
-      `&fields[]=contributors.contributors_id.bio` +
-      `&fields[]=issue.title` +
-      `&fields[]=issue.slug` +
-      `&fields[]=section.slug` +
-      `&fields[]=section.name` +
-      `&fields[]=images.directus_files_id.id` +
-      `&fields[]=images.directus_files_id.caption` +
-      `&fields[]=images.directus_files_id.filename_disk` +
-      `&fields[]=images.directus_files_id.width` +
-      `&fields[]=images.directus_files_id.height` +
-      `&fields[]=images.directus_files_id.type` +
-      `&fields[]=images.directus_files_id.shortcode_key` +
-      `&filter[slug][_eq]=${slug}`
-    res = await fetch(articleAPI)
-  }
+  const articleAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
+    `?fields[]=slug` +
+    `&fields[]=byline_override` +
+    `&fields[]=title` +
+    `&fields[]=deck` +
+    `&fields[]=excerpt` +
+    `&fields[]=kicker` +
+    `&fields[]=featured` +
+    `&fields[]=sort` +
+    `&fields[]=body_text` +
+    `&fields[]=body_type` +
+    `&fields[]=header_type` +
+    `&fields[]=in_print` +
+    `&fields[]=status` +
+    `&fields[]=date_created` +
+    `&fields[]=date_updated` +
+    `&fields[]=title_tag` +
+    `&fields[]=user_updated` +
+    `&fields[]=date_updated` +
+    `&fields[]=hide_bylines` +
+    `&fields[]=hide_bylines_downstream` +
+    `&fields[]=tags` +
+    `&fields[]=endnote` +
+    `&fields[]=featured_image.id` +
+    `&fields[]=featured_image.caption` +
+    `&fields[]=featured_image.filename_disk` +
+    `&fields[]=featured_image.width` +
+    `&fields[]=featured_image.height` +
+    `&fields[]=featured_image.type` +
+    `&fields[]=slideshow_image.id` +
+    `&fields[]=slideshow_image.caption` +
+    `&fields[]=slideshow_image.filename_disk` +
+    `&fields[]=slideshow_image.width` +
+    `&fields[]=slideshow_image.height` +
+    `&fields[]=slideshow_image.type` +
+    `&fields[]=promo_banner.id` +
+    `&fields[]=promo_banner.caption` +
+    `&fields[]=promo_banner.filename_disk` +
+    `&fields[]=promo_banner.width` +
+    `&fields[]=promo_banner.height` +
+    `&fields[]=promo_banner.type` +
+    `&fields[]=promo_thumb.id` +
+    `&fields[]=promo_thumb.caption` +
+    `&fields[]=promo_thumb.filename_disk` +
+    `&fields[]=promo_thumb.width` +
+    `&fields[]=promo_thumb.height` +
+    `&fields[]=promo_thumb.type` +
+    `&fields[]=contributors.contributors_id.first_name` +
+    `&fields[]=contributors.contributors_id.last_name` +
+    `&fields[]=contributors.contributors_id.slug` +
+    `&fields[]=contributors.contributors_id.bio` +
+    `&fields[]=issue.title` +
+    `&fields[]=issue.slug` +
+    `&fields[]=section.slug` +
+    `&fields[]=section.name` +
+    `&fields[]=images.sort` +
+    `&fields[]=images.directus_files_id.id` +
+    `&fields[]=images.directus_files_id.caption` +
+    `&fields[]=images.directus_files_id.filename_disk` +
+    `&fields[]=images.directus_files_id.width` +
+    `&fields[]=images.directus_files_id.height` +
+    `&fields[]=images.directus_files_id.type` +
+    `&fields[]=images.directus_files_id.shortcode_key` +
+    `&filter[slug][_eq]=${slug}` +
+    `&filter[status][_in]=${status}`
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch articleAPI data")
-  }
+  try {
+    const res = await fetch(articleAPI, { cache: status === "published" ? "force-cache" : "no-store" })
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      console.error(`Failed to fetch Article data: ${res.statusText}`)
+      return null
+    }
 
-  const { data } = await res.json()
-  return data[0] as Articles
+    const { data } = await res.json()
+    return data[0] as Articles
+  } catch (error) {
+    console.error(error)
+    return null
+  }
 }
 
 export async function getAds() {

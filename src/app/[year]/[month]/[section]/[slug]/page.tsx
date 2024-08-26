@@ -3,6 +3,7 @@ import { PageType, getArticle, getIssueBasics, getOGImage, getPermalink } from "
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
+import { notFound } from "next/navigation"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -74,8 +75,8 @@ async function getData({ params }: { params: ArticleParams }) {
   const issueBasics = await getIssueBasics({ year, month }) // A limited set of data for the issue
   const articleData = await getArticle(slug, "published")
 
-  if (!articleData) {
-    return { props: { errorCode: 404, errorMessage: "Article not found" } }
+  if (!articleData || !issueBasics) {
+    return notFound()
   }
 
   const currentSection = articleData.section
