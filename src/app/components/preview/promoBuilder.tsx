@@ -161,7 +161,7 @@ const PromoBuilder = () => {
   )
 
   const codeArtseen = () => {
-    return `[promo type="free-text"]<h6>On View</h6><em>${title}</em><br />${venue}<br />${dates}<br />${city}[/promo]`
+    return `[promo type="free-text"]<em>${title}</em><br />${venue}<br />${dates}<br />${city}[/promo]`
   }
 
   const codeArtbooks = () => {
