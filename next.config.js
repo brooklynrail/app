@@ -85,12 +85,12 @@ module.exports = {
       // Redirect the Hackers
       {
         source: "/admin/wp-login",
-        destination: "/?wp",
+        destination: "/",
         permanent: true,
       },
       {
         source: "/wp-login",
-        destination: "/?wp",
+        destination: "/",
         permanent: true,
       },
       {
@@ -110,7 +110,17 @@ module.exports = {
       },
       {
         source: "/wp-admin",
-        destination: "/?wp",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/wp-content",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/wp-content/:slug*",
+        destination: "/",
         permanent: true,
       },
       // Article Redirects
