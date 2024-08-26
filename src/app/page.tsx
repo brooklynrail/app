@@ -1,6 +1,7 @@
 import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/app/components/issuePage"
 import { getCurrentIssueData, getPermalink, getSectionsByIssueId, PageType } from "../../lib/utils"
+import { notFound } from "next/navigation"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -43,6 +44,9 @@ async function getData() {
   }
 
   const sections = await getSectionsByIssueId(data.id)
+  if (!sections) {
+    return notFound()
+  }
 
   const permalink = getPermalink({
     type: PageType.Home,
