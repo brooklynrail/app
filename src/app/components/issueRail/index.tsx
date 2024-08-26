@@ -161,7 +161,7 @@ const PublishersMessage = ({ issueData }: PublishersMessageProps) => {
   return (
     <p className="publishers-message">
       <Link
-        href="/2024/05/publishersmessage/Dear-Friends-and-Readers-may-24"
+        href="/2024/07/publishersmessage/Dear-Friends-and-Readers-July-24/"
         title="A message from Publisher and Artistic Director, Phong Bui"
       >
         <strong>A message from Phong Bui</strong>, Publisher and Artistic Director
