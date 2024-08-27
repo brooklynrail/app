@@ -8,7 +8,10 @@ body {
 
 body {
   @include u-margin(0);
-  @include u-bg("red-50v");
+  @include u-bg("white");
+  @include at-media("tablet-lg") {
+    @include u-bg("red-50v");
+  }
 }
 
 .paper {
