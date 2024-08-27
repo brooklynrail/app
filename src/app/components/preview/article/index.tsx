@@ -8,6 +8,7 @@ import ArticleHead from "../../article/articleHead"
 import ArticleBody from "../../article/articleBody"
 import PreviewHeader from "../previewHead"
 import parse from "html-react-parser"
+import { BookshopWidget } from "../../article"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
@@ -72,6 +73,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                       </div>
                     </div>
                   )}
+                  <BookshopWidget {...articleData} />
                   {contributors && contributors.length > 0 && (
                     <div className="content">
                       <ContributorsBox contributors={contributors} />

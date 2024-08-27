@@ -2,7 +2,7 @@
 import IssueRail from "../issueRail"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
-import { Issues, Sections } from "../../../../lib/types"
+import { Articles, Issues, Sections } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import ContributorsBox from "./contributors"
 import { getIssueData, getSpecialIssueData } from "../../../../lib/utils"
@@ -105,7 +105,7 @@ const Article = (props: ArticleProps) => {
                       </div>
                     </div>
                   )}
-                  <BookshopWidget {...props} />
+                  <BookshopWidget {...articleData} />
                   <div className="content">
                     <ContributorsBox contributors={contributors} />
                   </div>
@@ -121,8 +121,8 @@ const Article = (props: ArticleProps) => {
   )
 }
 
-const BookshopWidget = (props: ArticleProps) => {
-  const { isbn } = props.articleData
+export const BookshopWidget = (props: Articles) => {
+  const { isbn } = props
 
   if (!isbn) {
     return <></>
