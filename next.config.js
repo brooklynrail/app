@@ -211,6 +211,11 @@ module.exports = {
         destination: "/2024/07/art/David-Ostrowski-with-Andrew-Woolbright",
         permanent: false,
       },
+      {
+        source: "/arhives",
+        destination: "/archive",
+        permanent: false,
+      },
       // The RSS feed will be coming back soon!
       {
         source: "/rss",
