@@ -216,6 +216,11 @@ module.exports = {
         destination: "/archive",
         permanent: false,
       },
+      {
+        source: "/contact",
+        destination: "/about",
+        permanent: false,
+      },
       // The RSS feed will be coming back soon!
       {
         source: "/rss",
