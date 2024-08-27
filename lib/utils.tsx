@@ -63,7 +63,7 @@ export async function getAllIssues() {
       const res = await fetch(allIssuesDataAPI, { cache: "force-cache" })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
-        console.error(`Failed to fetch IssueBasics data: ${res.statusText}`)
+        console.error(`Failed to fetch AllIssues data: ${res.statusText}`)
         return null
       }
       const data = await res.json()
