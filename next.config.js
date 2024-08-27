@@ -11,6 +11,12 @@ module.exports = {
   images: {
     domains: ["localhost", "studio.brooklynrail.org", "brooklynrail.org", "storage.googleapis.com"],
   },
+  // Logging
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   // Redirects
   async redirects() {
     return [
