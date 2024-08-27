@@ -95,7 +95,8 @@ async function getData({ params }: { params: PreviewParams }) {
   if (!issueData) {
     return notFound()
   }
-  const sections = await getSectionsByIssueId(issueData.id)
+  // Get the current list of Sections used in this Issue (draft or published)
+  const sections = await getSectionsByIssueId(issueData.id, issueData.status)
 
   if (!sections) {
     return notFound()

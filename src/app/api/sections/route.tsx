@@ -7,7 +7,8 @@ export async function GET(request: Request) {
   const issueId = searchParams.get("issueId")
 
   if (issueId) {
-    const data = await getSectionsByIssueId(issueId)
+    // Get the current list of Sections used in this Issue (draft or published)
+    const data = await getSectionsByIssueId(issueId, "published")
     return Response.json(data)
   } else {
     const data = await directus.request(

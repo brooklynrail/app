@@ -37,13 +37,14 @@ export default async function Homepage() {
 }
 
 async function getData() {
-  const data: Issues | undefined = await getCurrentIssueData()
+  const issueData = await getCurrentIssueData()
 
-  if (!data) {
-    return { errorCode: 500, errorMessage: "There is no current issue set" }
+  if (!issueData) {
+    return notFound()
   }
 
-  const sections = await getSectionsByIssueId(data.id)
+  // Get the current list of Sections used in this Issue (draft or published)
+  const sections = await getSectionsByIssueId(issueData.id, issueData.status)
   if (!sections) {
     return notFound()
   }
@@ -53,7 +54,7 @@ async function getData() {
   })
 
   return {
-    issueData: data,
+    issueData,
     sections,
     permalink,
   }

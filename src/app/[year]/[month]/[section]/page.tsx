@@ -70,8 +70,8 @@ async function getData({ params }: { params: SectionParams }) {
     return notFound()
   }
 
-  // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(issueData.id)
+  // Get the current list of Sections used in this Issue (draft or published)
+  const currentSections = await getSectionsByIssueId(issueData.id, issueData.status)
 
   if (!currentSections) {
     return { props: { errorCode: 404, errorMessage: "No currentSections found" } }
@@ -100,18 +100,3 @@ async function getData({ params }: { params: SectionParams }) {
     },
   }
 }
-
-// export async function generateStaticParams() {
-//   const issues = await getIssues()
-//   return issues.map(async (issue: Issues) => {
-//     const currentSections = await getSectionsByIssueId(issue.id)
-//     const issuePath = currentSections.map((section: Sections) => {
-//       return {
-//         year: `${String(issue.year)}`,
-//         month: issue.month < 10 ? `0${String(issue.month)}` : String(issue.month),
-//         section: section.slug,
-//       }
-//     })
-//     return issuePath
-//   })
-// }

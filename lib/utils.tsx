@@ -571,21 +571,26 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
   }
 }
 
-export async function getSectionsByIssueId(issueId: string) {
+export async function getSectionsByIssueId(issueId: string, status: string) {
   try {
     const sections = await directus.request(
       readItems("sections", {
         fields: ["id", "name", "slug", "articles", "old_id"],
         filter: {
-          articles: {
-            issue: {
-              id: { _eq: issueId },
+          _and: [
+            {
+              articles: {
+                issue: {
+                  id: { _eq: issueId },
+                },
+                status: { _eq: `${status}` },
+              },
             },
-            status: { _eq: "published" },
-          },
+          ],
         },
       }),
     )
+    console.log("sections", sections)
     return sections as Sections[]
   } catch (error) {
     console.error("Error in getSectionsByIssueId", error)

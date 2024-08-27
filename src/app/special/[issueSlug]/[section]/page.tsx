@@ -68,7 +68,7 @@ async function getData({ params }: { params: SpecialSectionParams }) {
   }
 
   // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(issueData.id)
+  const currentSections = await getSectionsByIssueId(issueData.id, issueData.status)
   if (!currentSections) {
     return notFound()
   }
