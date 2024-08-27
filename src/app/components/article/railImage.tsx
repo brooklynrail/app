@@ -90,6 +90,7 @@ const RailImage = (props: RailImageProps) => {
             width: "100%",
             height: "auto",
           }}
+          data-src={src}
           width={width}
           height={height}
           alt={name}
