@@ -13,10 +13,11 @@ interface RailImageProps {
   name: string
   type: string
   images: Array<ArticlesFiles>
+  preview?: boolean
 }
 
 const RailImage = (props: RailImageProps) => {
-  const { name, type, images } = props
+  const { name, type, images, preview } = props
 
   let image = images.find(
     (image: ArticlesFiles) => image.directus_files_id && image.directus_files_id.shortcode_key === name,
@@ -30,7 +31,9 @@ const RailImage = (props: RailImageProps) => {
     return <></>
   }
 
-  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${image.directus_files_id.id}`
+  const nowDate = new Date()
+  const previewNow = nowDate.toISOString()
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${image.directus_files_id.id}${preview ? `?preview=${previewNow}` : ""}`
 
   if (!image.directus_files_id.width || !image.directus_files_id.height) {
     return <></>

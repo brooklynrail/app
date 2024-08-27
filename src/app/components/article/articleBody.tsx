@@ -9,15 +9,16 @@ export enum ArticleType {
 interface ArticleBodyProps {
   type?: ArticleType
   articleData: Articles
+  preview?: boolean
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
-  const { type, articleData } = props
+  const { type, articleData, preview } = props
   const { body_type } = articleData
 
   switch (type ? type : body_type) {
     case `body_text`:
-      return <BodyText {...articleData} />
+      return <BodyText {...articleData} preview={preview} />
     case `body_code`:
       return <BodyCode {...articleData} />
     default:

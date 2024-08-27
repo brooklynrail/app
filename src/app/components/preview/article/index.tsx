@@ -64,7 +64,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
                 <article className="article">
                   <ArticleHead {...props} />
-                  <ArticleBody {...props} />
+                  <ArticleBody {...props} preview={true} />
                   {articleData.endnote && (
                     <div className="content">
                       <div className="endnote">

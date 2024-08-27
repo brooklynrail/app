@@ -122,9 +122,10 @@ const replacePoetry = (html: string) => {
 interface ReplaceShortcodesProps {
   html: string
   images: Array<ArticlesFiles>
+  preview?: boolean
 }
 const replaceShortcodes = (props: ReplaceShortcodesProps) => {
-  const { html, images } = props
+  const { html, images, preview } = props
   if (!html) {
     return null
   }
@@ -156,7 +157,7 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
           const name = match[1]
           const type = match[2]
           // Construct the RailImage component for each match
-          const railImageComponent = <RailImage name={name} type={type} images={images} />
+          const railImageComponent = <RailImage name={name} type={type} images={images} preview={preview} />
           // Replace the matched shortcode with the RailImage component
           newData = newData.replace(match[0], railImageComponent)
           return railImageComponent
