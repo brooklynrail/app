@@ -1,9 +1,13 @@
 import { MetadataRoute } from "next"
 import { getArticlePages, getIssues, getSpecialArticlePages, getSpecialIssues } from "../../lib/utils"
 import { Articles, Issues } from "../../lib/types"
+import { notFound } from "next/navigation"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articlePages = await getArticlePages()
+  if (!articlePages) {
+    return notFound()
+  }
   // // NOTE: This is returning articles with no issues.
   // // These are the articles that are part of the "Special Issues"
   // // This might be a BUG, or might be how the REST API is set up.
