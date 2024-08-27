@@ -38,10 +38,10 @@ async function getData({ params }: { params: PageParams }) {
     return notFound()
   }
 
-  const issueBasics: Issues | undefined = await getCurrentIssueData()
+  const issueBasics = await getCurrentIssueData()
 
-  if (!pageData || !issueBasics) {
-    return { errorCode: 500, errorMessage: "There is no page there" }
+  if (!issueBasics) {
+    return notFound()
   }
 
   const permalink = getPermalink({

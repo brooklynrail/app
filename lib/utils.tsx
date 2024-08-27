@@ -139,36 +139,41 @@ export async function getSpecialIssues() {
 
 export async function getCurrentIssueData() {
   // const settings = await getGlobalSettings()
-  const settings = await directus.request(
-    readSingleton("global_settings", {
-      fields: [
-        {
-          current_issue: ["id", "title", "slug", "year", "month", "status", "special_issue"],
-        },
-      ],
-    }),
-  )
+  try {
+    const settings = await directus.request(
+      readSingleton("global_settings", {
+        fields: [
+          {
+            current_issue: ["id", "title", "slug", "year", "month", "status", "special_issue"],
+          },
+        ],
+      }),
+    )
 
-  const curruentIssueData = settings.current_issue
-  if (!curruentIssueData) {
-    // throw an error if there is no current issue
-    console.error("There is no current issue set", curruentIssueData)
-    return
+    const curruentIssueData = settings.current_issue
+    if (!curruentIssueData) {
+      // throw an error if there is no current issue
+      console.error("There is no current issue set", curruentIssueData)
+      return
+    }
+
+    let issueData
+    if (curruentIssueData.special_issue && curruentIssueData.special_issue === true) {
+      issueData = await getSpecialIssueData({
+        slug: curruentIssueData.slug,
+      })
+    } else {
+      issueData = await getIssueData({
+        year: curruentIssueData.year,
+        month: curruentIssueData.month,
+      })
+    }
+
+    return issueData as Issues
+  } catch (error) {
+    console.error("Error fetching CurrentIssueData data:", error)
+    return null
   }
-
-  let issueData
-  if (curruentIssueData.special_issue && curruentIssueData.special_issue === true) {
-    issueData = await getSpecialIssueData({
-      slug: curruentIssueData.slug,
-    })
-  } else {
-    issueData = await getIssueData({
-      year: curruentIssueData.year,
-      month: curruentIssueData.month,
-    })
-  }
-
-  return issueData as Issues
 }
 
 export async function getPageData(slug: string) {
