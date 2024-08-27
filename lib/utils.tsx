@@ -590,7 +590,6 @@ export async function getSectionsByIssueId(issueId: string, status: string) {
         },
       }),
     )
-    console.log("sections", sections)
     return sections as Sections[]
   } catch (error) {
     console.error("Error in getSectionsByIssueId", error)
