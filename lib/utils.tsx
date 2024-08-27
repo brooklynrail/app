@@ -768,6 +768,7 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=header_type` +
     `&fields[]=in_print` +
     `&fields[]=status` +
+    `&fields[]=isbn` +
     `&fields[]=date_created` +
     `&fields[]=date_updated` +
     `&fields[]=title_tag` +

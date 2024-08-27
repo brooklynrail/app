@@ -13,6 +13,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import ArticleHead from "./articleHead"
 import ArticleBody from "./articleBody"
 import parse from "html-react-parser"
+import Script from "next/script"
 
 const Article = (props: ArticleProps) => {
   const { articleData, issueBasics } = props
@@ -104,7 +105,7 @@ const Article = (props: ArticleProps) => {
                       </div>
                     </div>
                   )}
-
+                  <BookshopWidget {...props} />
                   <div className="content">
                     <ContributorsBox contributors={contributors} />
                   </div>
@@ -117,6 +118,29 @@ const Article = (props: ArticleProps) => {
       </div>
       <CoversPopup />
     </>
+  )
+}
+
+const BookshopWidget = (props: ArticleProps) => {
+  const { isbn } = props.articleData
+
+  if (!isbn) {
+    return <></>
+  }
+  console.log("isbn ==============", isbn)
+  return (
+    <div>
+      <Script
+        src={`https://bookshop.org/widgets.js`}
+        data-type={`book_button`}
+        data-affiliate-id={`24114`}
+        data-sku={isbn}
+        strategy="lazyOnload"
+        onError={(e: Error) => {
+          console.error("Script failed to load", e)
+        }}
+      />
+    </div>
   )
 }
 

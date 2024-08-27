@@ -40,6 +40,7 @@ export type Articles = {
   kicker?: string | null
   hide_bylines: boolean
   hide_bylines_downstream: boolean
+  isbn?: number
   old_id?: number | null
   promo_banner?: DirectusFiles
   promo_thumb?: DirectusFiles
