@@ -2,7 +2,7 @@ import { Issues } from "../../../../lib/types"
 import { getCurrentIssueData } from "../../../../lib/utils"
 
 export async function GET() {
-  const data: Issues | undefined = await getCurrentIssueData()
+  const data = await getCurrentIssueData()
 
   if (!data) {
     return new Response("There is no current issue set", {
