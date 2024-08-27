@@ -218,7 +218,7 @@ module.exports = {
       },
       {
         source: "/contact",
-        destination: "/about",
+        destination: "/contact-us",
         permanent: false,
       },
       // The RSS feed will be coming back soon!
