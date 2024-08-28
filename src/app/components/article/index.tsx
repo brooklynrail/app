@@ -5,7 +5,7 @@ import CoversPopup from "../issueRail/coversPopup"
 import { Ads, Articles } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import ContributorsBox from "./contributors"
-import { getAds } from "../../../../lib/utils"
+import { getAds, getPermalink, PageType } from "../../../../lib/utils"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import ArticleHead from "./articleHead"
@@ -14,6 +14,7 @@ import parse from "html-react-parser"
 import Script from "next/script"
 import NextPrev from "./nextPrev"
 import Ad970 from "../ads/ad970"
+import { get } from "http"
 
 const Article = (props: ArticleProps) => {
   const { articleData, issueBasics } = props
@@ -36,6 +37,12 @@ const Article = (props: ArticleProps) => {
 
   const issueClass = `issue-${issueBasics.slug.toLowerCase()}`
 
+  const issuePermalink = getPermalink({
+    year: issueBasics.year,
+    month: issueBasics.month,
+    type: PageType.Issue,
+  })
+
   return (
     <>
       <div className={`paper ${issueClass}`}>
@@ -48,7 +55,7 @@ const Article = (props: ArticleProps) => {
 
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
                 <header id="article_header">
-                  <Link className="mobile_nav_btn" href="">
+                  <Link className="mobile_nav_btn" href={issuePermalink}>
                     <i className="fas fa-angle-double-left"></i> <span>{props.issueBasics.title}</span> Issue
                   </Link>
 
