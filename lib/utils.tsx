@@ -827,7 +827,7 @@ export async function getArticle(slug: string, status?: string) {
     `&filter[status][_in]=${status}`
 
   try {
-    const res = await fetch(articleAPI, { cache: status === "published" ? "force-cache" : "no-store" })
+    const res = await fetch(articleAPI)
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       console.error(`Failed to fetch Article data: ${res.statusText}`)
