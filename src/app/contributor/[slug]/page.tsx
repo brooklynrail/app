@@ -124,11 +124,6 @@ export default async function Contributor({ params }: { params: ContributorsPara
               <header id="article_header">
                 <nav>
                   <div>
-                    <Link className="btn search" href="/search" title="Search the Rail">
-                      <i className="fas fa-search"></i>
-                    </Link>
-                  </div>
-                  <div>
                     <Link
                       className="btn btn-sm donate"
                       href="https://brooklynrail.org/donate?a"

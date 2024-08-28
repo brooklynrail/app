@@ -66,12 +66,6 @@ const Page = (props: PageProps) => {
 
                   <nav>
                     <div>
-                      <Link className="btn search" href="/search" title="Search the Rail">
-                        <i className="fas fa-search"></i>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                      </Link>
-                    </div>
-                    <div>
                       <Link
                         className="btn btn-sm donate"
                         href="https://brooklynrail.org/donate?a"
