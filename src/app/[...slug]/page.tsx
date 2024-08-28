@@ -27,7 +27,7 @@ export default async function SinglePage({ params }: { params: PageParams }) {
   const data = await getData({ params })
 
   if (!data.issueBasics || !data.pageData || !data.permalink) {
-    return { props: { errorCode: 400, errorMessage: "This page does not exist" } }
+    return notFound()
   }
 
   return <Page {...data} />
@@ -39,14 +39,13 @@ interface PageParams {
 
 async function getData({ params }: { params: PageParams }) {
   const slug = String(params.slug)
-  const pageData = await getPageData(slug)
 
+  const pageData = await getPageData(slug)
   if (!pageData) {
     return notFound()
   }
 
   const issueBasics = await getCurrentIssueData()
-
   if (!issueBasics) {
     return notFound()
   }
