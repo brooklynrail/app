@@ -74,6 +74,7 @@ const Article = (props: ArticleProps) => {
                   <div className="content">
                     <ContributorsBox contributors={contributors} />
                   </div>
+                  <NextPrev {...props} currentSection={section} />
                 </article>
               </div>
             </div>
