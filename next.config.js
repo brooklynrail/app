@@ -212,7 +212,7 @@ module.exports = {
         permanent: false,
       },
       {
-        source: "/arhives",
+        source: "/archives",
         destination: "/archive",
         permanent: false,
       },
