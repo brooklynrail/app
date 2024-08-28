@@ -93,55 +93,64 @@ const Page = (props: PageProps) => {
                   <div id="page-nav">
                     <ul>
                       <li>
-                        <a href="/notefrompub">A Note from the Publisher</a>
+                        <Link href="/notefrompub">A Note from the Publisher</Link>
                       </li>
                       <li>
-                        <a href="/about">
+                        <Link href="/about">
                           About the <em>Rail</em>
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a href="/history">History</a>
+                        <Link href="/history">History</Link>
                       </li>
                       <li>
-                        <a href="/staff">Staff</a>
+                        <Link href="/staff">Staff</Link>
                       </li>
                       <li>
-                        <a href="/our-supporters">Supporters</a>
+                        <Link href="/our-supporters">Supporters</Link>
                       </li>
                       <li>
-                        <a href="/contributors">Contributors</a>
+                        <Link href="/contributors">Contributors</Link>
                       </li>
                       <li>
-                        <a href="/submissions">Submission guidelines</a>
+                        <Link href="/submissions">Submission guidelines</Link>
                       </li>
                     </ul>
 
                     <ul>
                       <li>
-                        <a href="/donate">
+                        <Link href="/donate">
                           Donate to the <em>Rail</em>
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a href="/subscribe">Subscribe</a>
+                        <Link href="/subscribe">Subscribe</Link>
                       </li>
                       <li>
-                        <a href="/submissions">Find the Rail in print</a>
+                        <Link href="/submissions">Find the Rail in print</Link>
                       </li>
                       <li>
-                        <a href="/advertise">Advertise</a>
+                        <Link href="/advertise">Advertise</Link>
                       </li>
                       <li>
-                        <a href="/newsletter">Sign up for our newsletter</a>
+                        <Link href="/newsletter">Sign up for our newsletter</Link>
                       </li>
                       <li>
-                        <a href="/contact">Contact Us</a>
+                        <Link href="/contact">Contact Us</Link>
                       </li>
                     </ul>
                   </div>
                   <section className="content">
                     <PageBody {...props} />
+                    <p>
+                      <iframe
+                        src="https://www.google.com/maps/d/u/0/embed?mid=1d9gC__bvp0PFNyo2ygOKqsxTKeWeY5dU"
+                        width="640"
+                        height="480"
+                        sandbox=""
+                        allow="allow-scripts"
+                      ></iframe>
+                    </p>
                   </section>
                 </article>
               </div>
