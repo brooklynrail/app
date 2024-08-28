@@ -78,8 +78,6 @@ const IssueArticles = (props: IssueArticlesProps) => {
     if (article.section.slug === "editorsmessage") {
       // Change the section to criticspage
       article.section.id = criticspage ? criticspage : 0
-      article.section.slug = "criticspage"
-      article.section.name = "Critics Page"
 
       // Add the modified article to the updatedArticles array
       updatedArticles.push(article)
