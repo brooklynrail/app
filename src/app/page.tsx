@@ -7,6 +7,10 @@ import { notFound } from "next/navigation"
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
 export const dynamicParams = true
 
+// Next.js will invalidate the cache when a
+// request comes in, at most once every 60 seconds.
+export const revalidate = 60
+
 export enum PageLayout {
   Issue = "issue",
   Section = "section",
@@ -30,7 +34,7 @@ export default async function Homepage() {
   const data = await getData()
 
   if (!data.issueData || !data.permalink) {
-    return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
+    return notFound()
   }
 
   return <IssuePage {...data} layout={PageLayout.Issue} />
