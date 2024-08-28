@@ -80,7 +80,6 @@ const ArchivePage = (props: ArchivePageProps) => {
   return (
     <>
       <div className={`paper`}>
-        <div className="hatbox"></div>
         <div className="wrapper home">
           <header role="banner">
             <div className="grid-container grid-container-desktop">

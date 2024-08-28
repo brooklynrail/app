@@ -5,7 +5,6 @@ export default function ContributorLayout({ children }: { children: React.ReactN
   return (
     <>
       <div className={`paper`}>
-        <div className="hatbox"></div>
         {children}
         <Footer />
       </div>

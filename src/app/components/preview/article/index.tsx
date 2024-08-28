@@ -55,8 +55,6 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   return (
     <>
       <div className="paper">
-        <div className="hatbox"></div>
-
         <main>
           <div className="grid-container">
             <PreviewHeader previewURL={previewURL} />

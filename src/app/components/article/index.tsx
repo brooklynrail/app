@@ -25,8 +25,6 @@ const Article = (props: ArticleProps) => {
   return (
     <>
       <div className={`paper ${issueClass}`}>
-        <div className="hatbox"></div>
-
         <main>
           <div className="grid-container">
             <div className="grid-row grid-gap-3">

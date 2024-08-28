@@ -49,8 +49,6 @@ const Page = (props: PageProps) => {
   return (
     <>
       <div className={`paper`}>
-        <div className="hatbox"></div>
-
         <main>
           <div className="grid-container">
             <div className="grid-row grid-gap-3">

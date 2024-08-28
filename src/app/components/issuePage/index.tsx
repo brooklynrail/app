@@ -72,7 +72,6 @@ const IssuePage = (props: IssuePageProps) => {
     <>
       <PopupProvider>
         <div className={`paper ${issueClass}`}>
-          <div className="hatbox"></div>
           {previewURL && <PreviewHeader previewURL={previewURL} />}
           <div className="wrapper home">
             <header role="banner">
