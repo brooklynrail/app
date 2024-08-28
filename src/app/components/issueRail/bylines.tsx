@@ -3,19 +3,21 @@ import { ArticlesContributors } from "../../../../lib/types"
 interface BylinesProps {
   contributors: ArticlesContributors[]
   byline_override?: string | null
+  guestCritic?: boolean
 }
 const Bylines = (props: BylinesProps) => {
-  const { contributors, byline_override } = props
+  const { contributors, byline_override, guestCritic } = props
   if (!contributors || contributors.length === 0) {
     return null
   }
+  const by = guestCritic ? <strong>Guest Critic:</strong> : "By"
   return (
     <cite>
       {byline_override ? (
         <span>{byline_override}</span>
       ) : (
         <>
-          <span>By </span>
+          <span>{by} </span>
           {contributors.map((contributor: any, i: number) => {
             const isLast = i === contributors.length - 1
             const isFirst = i === 0
