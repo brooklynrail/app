@@ -70,6 +70,10 @@ article.article-diff {
 }
 
 .next-prev {
+  .next,
+  .prev {
+    width: 48%;
+  }
   @include u-display("flex");
   @include u-flex("justify");
   @include u-border-bottom("black", "2px", "dotted");
