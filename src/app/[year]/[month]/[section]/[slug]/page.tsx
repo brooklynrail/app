@@ -77,9 +77,12 @@ async function getData({ params }: { params: ArticleParams }) {
   const section: string = params.section.toString()
 
   const issueBasics = await getIssueBasics({ year, month }) // A limited set of data for the issue
-  const articleData = await getArticle(slug, "published")
+  if (!issueBasics) {
+    return notFound()
+  }
 
-  if (!articleData || !issueBasics) {
+  const articleData = await getArticle(slug, "published")
+  if (!articleData) {
     return notFound()
   }
 
