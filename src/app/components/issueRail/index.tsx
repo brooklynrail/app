@@ -63,32 +63,50 @@ const IssueArticles = (props: IssueArticlesProps) => {
 
   const { year, month } = issueData
 
-  // Create a map where each key is a section ID and each value is an array of articles for that section
-  const articlesBySection: Record<string, Articles[]> = issueData.articles.reduce((acc: any, article: Articles) => {
-    // get the criticspage_id
-    let criticspage: number = 0
-    let criticspageArticles: Articles[] = []
-    if (article.section.slug === "criticspage") {
-      criticspage = article.section.id
-      criticspageArticles = article.section.articles
-    }
-    // if the section for this article is editorsmessage,
-    // change the section to criticspage
-    if (article.section.slug === "editorsmessage") {
-      article.section.id = criticspage
-      article.section.slug = "criticspage"
-      const articles = article.section.articles
-      // append articles to the criticspageArticles array
-      criticspageArticles.concat(articles)
-    }
+  // get the criticspage section ID from issueSections
+  const criticspage = issueSections.find((section) => section.slug === "criticspage")?.id
 
-    const sectionId = article.section.id
-    if (!acc[sectionId]) {
-      acc[sectionId] = []
+  // Assume criticspage is the correct ID for the 'criticspage' section
+  let updatedArticles: Articles[] = [] // Array to store the modified articles
+
+  // Iterate over articles and modify sections as needed
+  issueData.articles.forEach((article: Articles) => {
+    // If the section for this article is editorsmessage, change the section to criticspage
+    if (article.section.slug === "editorsmessage") {
+      console.log("editorsmessage ====")
+      console.log("article.section.slug", article.section.slug)
+      console.log("article", article.title)
+
+      // Change the section to criticspage
+      article.section.id = criticspage ? criticspage : 0
+      article.section.slug = "criticspage"
+      article.section.name = "Critics Page"
+
+      // Add the modified article to the updatedArticles array
+      updatedArticles.push(article)
+    } else {
+      // Add the article as is if it's not editorsmessage
+      updatedArticles.push(article)
     }
-    acc[sectionId].push(article)
-    return acc
-  }, {})
+  })
+
+  // Create a map where each key is a section ID and each value is an array of articles for that section
+  const articlesBySection: Record<string, Articles[]> = updatedArticles.reduce(
+    (acc: Record<string, Articles[]>, article: Articles) => {
+      const sectionId = article.section.id
+
+      if (!acc[sectionId]) {
+        acc[sectionId] = []
+      }
+
+      acc[sectionId].push(article)
+      return acc
+    },
+    {},
+  )
+
+  // Log the final articles by section
+  console.log("Final articlesBySection:", articlesBySection)
 
   return (
     <>
