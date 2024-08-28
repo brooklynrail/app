@@ -195,13 +195,7 @@ export const getPageData = cache(async (slug: string) => {
             images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
           },
         ],
-        filter: {
-          _and: [
-            {
-              status: { _eq: "published" },
-            },
-          ],
-        },
+        filter: { status: { _eq: "published" } },
       }),
     )
 
