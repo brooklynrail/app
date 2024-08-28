@@ -19,13 +19,16 @@ const SectionLayout = (props: LayoutProps) => {
     return article.section.slug === currentSection.slug
   })
 
-  // find the articles that belong to the Editors Message section
-  const editorsMessage = issueData.articles.find((article: Articles) => {
-    return article.section.slug === "editorsmessage"
-  })
-  // add those articles to the beginning of the currentArticles array
-  if (editorsMessage) {
-    currentArticles.unshift(editorsMessage)
+  // If the current section is the Critics Page, add the Editors Message to the beginning of the currentArticles array
+  if (currentSection.slug === "criticspage") {
+    // find the articles that belong to the Editors Message section
+    const editorsMessage = issueData.articles.find((article: Articles) => {
+      return article.section.slug === "editorsmessage"
+    })
+    // add those articles to the beginning of the currentArticles array
+    if (editorsMessage) {
+      currentArticles.unshift(editorsMessage)
+    }
   }
 
   const AllArticles = () => {
