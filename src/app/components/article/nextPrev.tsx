@@ -57,7 +57,7 @@ export const NextPrev = (props: ArticleProps) => {
         <div className="prev">
           <Link href={issuePermalink}>
             <span>ISSUE</span>
-            <h3>{issueName}</h3>
+            <h3 className="issueName">{issueName}</h3>
           </Link>
         </div>
       )
@@ -82,27 +82,43 @@ export const NextPrev = (props: ArticleProps) => {
     )
   }
 
+  const nextLink = () => {
+    // if is the last article
+
+    if (currentArticleIndex === articlesListCount - 1) {
+      return (
+        <div className="next">
+          <Link href={issuePermalink}>
+            <span>ISSUE</span>
+            <h3 className="issueName">{issueName}</h3>
+          </Link>
+        </div>
+      )
+    }
+    const nextPermalink = getPermalink({
+      year: issueBasics.year,
+      month: issueBasics.month,
+      section: next.section.slug,
+      slug: next.slug,
+      type: PageType.Article,
+    })
+    return (
+      <div className="next">
+        <Link href={nextPermalink}>
+          <span>Next</span>
+          <h4>{parse(next.section.name)}</h4>
+          <h3>{parse(next.title)}</h3>
+        </Link>
+      </div>
+    )
+  }
+
   const next: Articles = issueArticles[currentArticleIndex + 1]
-  const nextPermalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
-    section: next.section.slug,
-    slug: next.slug,
-    type: PageType.Article,
-  })
 
   return (
     <nav className="next-prev">
       {prevLink()}
-      {next && (
-        <div className="next">
-          <Link href={nextPermalink}>
-            <span>Next</span>
-            <h4>{parse(next.section.name)}</h4>
-            <h3>{parse(next.title)}</h3>
-          </Link>
-        </div>
-      )}
+      {nextLink()}
     </nav>
   )
 }

@@ -100,7 +100,9 @@ article.article-diff {
       @include u-margin(0);
       @include u-font("sans", "sm");
       @include u-text("normal");
-      // @include u-text("light");
+    }
+    h3.issueName {
+      @include u-text("uppercase");
     }
   }
   .next {
