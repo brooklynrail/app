@@ -3,6 +3,7 @@ import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
 import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues, Pages, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
+import { cache } from "react"
 
 // Used in
 // - Issue Select dropdown
@@ -137,8 +138,7 @@ export async function getSpecialIssues() {
   return allIssues as Issues[]
 }
 
-export async function getCurrentIssueData() {
-  // const settings = await getGlobalSettings()
+export const getCurrentIssueData = cache(async () => {
   try {
     const settings = await directus.request(
       readSingleton("global_settings", {
@@ -174,9 +174,9 @@ export async function getCurrentIssueData() {
     console.error("Error fetching CurrentIssueData data:", error)
     return null
   }
-}
+})
 
-export async function getPageData(slug: string) {
+export const getPageData = cache(async (slug: string) => {
   try {
     const pageData = await directus.request(
       readItem("pages", slug, {
@@ -205,7 +205,7 @@ export async function getPageData(slug: string) {
     console.error("Error fetching page data:", error)
     return null
   }
-}
+})
 
 export async function getGlobalSettings() {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
@@ -576,7 +576,7 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
   }
 }
 
-export async function getSectionsByIssueId(issueId: string, status: string) {
+export const getSectionsByIssueId = cache(async (issueId: string, status: string) => {
   try {
     const sections = await directus.request(
       readItems("sections", {
@@ -600,7 +600,7 @@ export async function getSectionsByIssueId(issueId: string, status: string) {
     console.error("Error in getSectionsByIssueId", error)
     return null
   }
-}
+})
 
 export async function getSpecialArticlePages() {
   try {
@@ -837,7 +837,7 @@ export async function getArticle(slug: string, status?: string) {
   }
 }
 
-export async function getAds() {
+export const getAds = cache(async () => {
   // const today = new Date()
   // newDate Formatted as YYYY-MM-DD
 
@@ -883,7 +883,7 @@ export async function getAds() {
     }),
   )
   return ads as Ads[]
-}
+})
 
 interface OGImageProps {
   ogimage?: DirectusFiles
