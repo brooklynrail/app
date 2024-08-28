@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import { Issues, Sections } from "../../../lib/types"
 import { getAllIssues, getPermalink, PageType } from "../../../lib/utils"
 import ArchivePage from "../components/archive"
+import { Viewport } from "next"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -10,6 +11,12 @@ export const dynamicParams = true
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
 export const revalidate = 60
+
+// Set the Viewport to show the full page of the Rail on mobile devices
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 0.405,
+}
 
 export enum PageLayout {
   Issue = "issue",

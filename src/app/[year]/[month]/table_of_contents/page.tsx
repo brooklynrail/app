@@ -2,7 +2,7 @@ import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
 import { PageType, getIssueData, getOGImage, getPermalink, getSectionsByIssueId } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
-import { Metadata } from "next"
+import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
@@ -12,6 +12,12 @@ export const dynamicParams = true
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
 export const revalidate = 60
+
+// Set the Viewport to show the full page of the Rail on mobile devices
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 0.405,
+}
 
 export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {
   const data = await getData({ params })
