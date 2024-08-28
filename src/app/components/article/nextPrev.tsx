@@ -1,17 +1,39 @@
 import parse from "html-react-parser"
 import { Articles, Issues } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import { PageType, getPermalink } from "../../../../lib/utils"
+import { PageType, getIssueData, getPermalink, getSpecialIssueData } from "../../../../lib/utils"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
-interface NextPrevProps {
-  issueData?: Issues
-}
-
-export const NextPrev = (props: ArticleProps & NextPrevProps) => {
-  const { issueBasics, currentSection, articleData, issueData } = props
+export const NextPrev = (props: ArticleProps) => {
+  const { issueBasics, currentSection, articleData } = props
   const { slug } = articleData
   const issueName = issueBasics.title
+
+  const [issueData, setIssueData] = useState<Issues | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // TODO: Refactor this to use a single function to fetch issue data from APIs
+      let issueDataPromise
+      if (!issueData) {
+        if (issueBasics.special_issue) {
+          issueDataPromise = !issueData ? getSpecialIssueData({ slug: issueBasics.slug }) : Promise.resolve(issueData)
+        } else {
+          issueDataPromise = !issueData
+            ? getIssueData({ year: issueBasics.year, month: issueBasics.month })
+            : Promise.resolve(issueData)
+        }
+        // Fetch all the data in parallel
+        const [fetchedIssueData] = await Promise.all([issueDataPromise])
+        // Update the state with the fetched data as it becomes available
+        setIssueData(fetchedIssueData)
+      }
+    }
+    // Call the fetchData function and handle any errors
+    fetchData().catch((error) => console.error("Failed to fetch data on Article page:", error))
+  }, [issueBasics, issueData, setIssueData])
+
   if (!issueData || !currentSection) {
     return <LoadingNextPrev />
   }
@@ -92,7 +114,10 @@ const LoadingNextPrev = () => {
     <nav className="next-prev loading">
       <div className="prev">
         <div>
-          <span></span>
+          <span className="nav"></span>
+          <h4>
+            <span style={{ width: `60px` }}></span>
+          </h4>
           <h3>
             <span style={{ width: `255px` }}></span>
           </h3>
@@ -100,7 +125,10 @@ const LoadingNextPrev = () => {
       </div>
       <div className="next">
         <div>
-          <span></span>
+          <span className="nav"></span>
+          <h4>
+            <span style={{ width: `60px` }}></span>
+          </h4>
           <h3>
             <span style={{ width: `255px` }}></span>
           </h3>

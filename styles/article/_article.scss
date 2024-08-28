@@ -119,9 +119,13 @@ article.article-diff {
       span {
         @include u-margin-y("2px");
         @include u-bg("gray-10");
-        @include u-height("105");
+        @include u-height(2);
         @include u-width(9);
         @include u-display("block");
+      }
+      span.nav {
+        @include u-margin-bottom(1);
+        @include u-height("105");
       }
       h3 {
         @include u-display("flex");

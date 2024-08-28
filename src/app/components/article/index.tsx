@@ -22,36 +22,6 @@ const Article = (props: ArticleProps) => {
 
   const issueClass = `issue-${issueBasics.slug.toLowerCase()}`
 
-  const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
-  const [issueData, setIssueData] = useState<Issues | null>(null)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueBasics.id}`, {
-        next: { revalidate: 10 },
-      })
-      const sections = await res.json()
-      // TODO: Refactor this to use a single function to fetch issue data from APIs
-      let issueDataPromise
-      if (!issueData) {
-        if (issueBasics.special_issue) {
-          issueDataPromise = !issueData ? getSpecialIssueData({ slug: issueBasics.slug }) : Promise.resolve(issueData)
-        } else {
-          issueDataPromise = !issueData
-            ? getIssueData({ year: issueBasics.year, month: issueBasics.month })
-            : Promise.resolve(issueData)
-        }
-        // Fetch all the data in parallel
-        const [fetchedSections, fetchedIssueData] = await Promise.all([sections, issueDataPromise])
-        // Update the state with the fetched data as it becomes available
-        setIssueSections(fetchedSections)
-        setIssueData(fetchedIssueData)
-      }
-    }
-    // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch data on Article page:", error))
-  }, [issueBasics, issueSections, setIssueSections, issueData, setIssueData])
-
   return (
     <>
       <div className={`paper ${issueClass}`}>
@@ -89,7 +59,7 @@ const Article = (props: ArticleProps) => {
                 </div>
 
                 <article className="article">
-                  {issueData && <NextPrev {...props} currentSection={section} issueData={issueData} />}
+                  <NextPrev {...props} currentSection={section} />
                   <ArticleHead {...props} />
                   <ArticleBody {...props} />
                   {endnote && (
