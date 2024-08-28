@@ -73,10 +73,6 @@ const IssueArticles = (props: IssueArticlesProps) => {
   issueData.articles.forEach((article: Articles) => {
     // If the section for this article is editorsmessage, change the section to criticspage
     if (article.section.slug === "editorsmessage") {
-      console.log("editorsmessage ====")
-      console.log("article.section.slug", article.section.slug)
-      console.log("article", article.title)
-
       // Change the section to criticspage
       article.section.id = criticspage ? criticspage : 0
       article.section.slug = "criticspage"
@@ -104,9 +100,6 @@ const IssueArticles = (props: IssueArticlesProps) => {
     },
     {},
   )
-
-  // Log the final articles by section
-  console.log("Final articlesBySection:", articlesBySection)
 
   return (
     <>
