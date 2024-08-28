@@ -15,7 +15,7 @@ article.article {
   @include at-media("widescreen") {
     @include u-margin-right(2);
   }
-  @include u-padding-top(3);
+  @include u-padding-top("205");
 
   // see article-header.scss for header styles
 
@@ -75,7 +75,7 @@ article.article-diff {
   @include u-border-bottom("black", "2px", "dotted");
   @include u-margin-bottom(4);
   a {
-    @include u-padding-bottom(3);
+    @include u-padding-bottom("205");
     @include u-display("block");
     @include u-text("no-underline");
     @include u-text("black");
@@ -85,14 +85,22 @@ article.article-diff {
       }
     }
     span {
+      @include u-display("block");
       @include u-text("uppercase");
-      @include u-font("sans", "2xs");
+      @include u-font("sans", "3xs");
       @include u-text("light");
+      @include u-margin-bottom(1);
+    }
+    h4 {
+      @include u-font("sans", "3xs");
+      @include u-text("uppercase");
+      @include u-margin-bottom("05");
     }
     h3 {
       @include u-margin(0);
       @include u-font("sans", "sm");
-      @include u-text("medium");
+      @include u-text("normal");
+      // @include u-text("light");
     }
   }
   .next {

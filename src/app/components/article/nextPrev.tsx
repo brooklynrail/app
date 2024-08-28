@@ -12,10 +12,15 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
   const { issueBasics, currentSection, articleData, issueData } = props
   const { slug } = articleData
   const issueName = issueBasics.title
-  const issueSlug = issueBasics.slug
   if (!issueData || !currentSection) {
     return <LoadingNextPrev />
   }
+
+  const issuePermalink = getPermalink({
+    year: issueData.year,
+    month: issueData.month,
+    type: PageType.Issue,
+  })
 
   const issueArticles = issueData.articles
 
@@ -28,7 +33,7 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
     if (currentArticleIndex == 0 || currentArticleIndex == articlesListCount) {
       return (
         <div className="prev">
-          <Link href={issueSlug}>
+          <Link href={issuePermalink}>
             <span>ISSUE</span>
             <h3>{issueName}</h3>
           </Link>
@@ -48,6 +53,7 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
       <div className="prev">
         <Link href={prevPermalink}>
           <span>Previous</span>
+          <h4>{parse(prev.section.name)}</h4>
           <h3>{parse(prev.title)}</h3>
         </Link>
       </div>
@@ -70,6 +76,7 @@ export const NextPrev = (props: ArticleProps & NextPrevProps) => {
         <div className="next">
           <Link href={nextPermalink}>
             <span>Next</span>
+            <h4>{parse(next.section.name)}</h4>
             <h3>{parse(next.title)}</h3>
           </Link>
         </div>

@@ -14,10 +14,11 @@ import ArticleHead from "./articleHead"
 import ArticleBody from "./articleBody"
 import parse from "html-react-parser"
 import Script from "next/script"
+import NextPrev from "./nextPrev"
 
 const Article = (props: ArticleProps) => {
   const { articleData, issueBasics } = props
-  const { contributors, endnote } = articleData
+  const { contributors, endnote, section } = articleData
 
   const issueClass = `issue-${issueBasics.slug.toLowerCase()}`
 
@@ -88,7 +89,7 @@ const Article = (props: ArticleProps) => {
                 </div>
 
                 <article className="article">
-                  {/* <NextPrev {...props} currentSection={currentSection} issueData={issueData} /> */}
+                  {issueData && <NextPrev {...props} currentSection={section} issueData={issueData} />}
                   <ArticleHead {...props} />
                   <ArticleBody {...props} />
                   {endnote && (
