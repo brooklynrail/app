@@ -79,6 +79,7 @@
   .mobile_nav_btn {
     @include u-font("sans", "md");
     @include u-text("medium");
+    @include u-text("uppercase");
     @include u-text("no-underline");
     @include u-color("red-50v");
 
@@ -86,6 +87,9 @@
     @include u-display("block");
     @include at-media("tablet-lg") {
       @include u-display("none");
+    }
+    &:hover {
+      @include u-text("underline");
     }
   }
 }
