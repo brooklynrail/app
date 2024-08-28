@@ -19,37 +19,48 @@ const SectionLayout = (props: LayoutProps) => {
     return article.section.slug === currentSection.slug
   })
 
-  const allArticles = (
-    <section className="collection">
-      {currentArticles.map((article: Articles, i: number) => {
-        const order = article.sort
-        const permalink = getPermalink({
-          year: year,
-          month: month,
-          section: article.section.slug,
-          slug: article.slug,
-          type: PageType.Article,
-        })
-        const sectionPermalink = getPermalink({
-          year: year,
-          month: month,
-          section: article.section.slug,
-          type: PageType.Section,
-        })
-        return (
-          <PromoSection
-            key={`article-${i}`}
-            article={article}
-            permalink={permalink}
-            sectionPermalink={sectionPermalink}
-            showImage={true}
-            showSection={true}
-            order={order}
-          />
-        )
-      })}
-    </section>
-  )
+  // find the articles that belong to the Editors Message section
+  const editorsMessage = issueData.articles.find((article: Articles) => {
+    return article.section.slug === "editorsmessage"
+  })
+  // add those articles to the beginning of the currentArticles array
+  if (editorsMessage) {
+    currentArticles.unshift(editorsMessage)
+  }
+
+  const AllArticles = () => {
+    return (
+      <section className="collection">
+        {currentArticles.map((article: Articles, i: number) => {
+          const order = article.sort
+          const permalink = getPermalink({
+            year: year,
+            month: month,
+            section: article.section.slug,
+            slug: article.slug,
+            type: PageType.Article,
+          })
+          const sectionPermalink = getPermalink({
+            year: year,
+            month: month,
+            section: article.section.slug,
+            type: PageType.Section,
+          })
+          return (
+            <PromoSection
+              key={`article-${i}`}
+              article={article}
+              permalink={permalink}
+              sectionPermalink={sectionPermalink}
+              showImage={true}
+              showSection={true}
+              order={order}
+            />
+          )
+        })}
+      </section>
+    )
+  }
 
   return (
     <div className="grid-col-8">
@@ -61,7 +72,9 @@ const SectionLayout = (props: LayoutProps) => {
         </div>
       </div>
       <div className="grid-row grid-gap-4">
-        <div className="grid-col-12">{allArticles}</div>
+        <div className="grid-col-12">
+          <AllArticles />
+        </div>
       </div>
       <SubscribeAd />
     </div>
