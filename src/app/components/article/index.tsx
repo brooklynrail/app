@@ -2,23 +2,37 @@
 import IssueRail from "../issueRail"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
-import { Articles, Issues, Sections } from "../../../../lib/types"
+import { Ads, Articles } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import ContributorsBox from "./contributors"
-import { getIssueData, getSpecialIssueData } from "../../../../lib/utils"
+import { getAds } from "../../../../lib/utils"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import ArticleHead from "./articleHead"
 import ArticleBody from "./articleBody"
 import parse from "html-react-parser"
 import Script from "next/script"
 import NextPrev from "./nextPrev"
+import Ad970 from "../ads/ad970"
 
 const Article = (props: ArticleProps) => {
   const { articleData, issueBasics } = props
   const { contributors, endnote, section } = articleData
+  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!currentAds) {
+        const ads = getAds()
+        // Fetch all the data in parallel
+        const [fetchedAds] = await Promise.all([ads])
+        // Update the state with the fetched data as it becomes available
+        setCurrentAds(fetchedAds)
+      }
+    }
+
+    // Call the fetchData function and handle any errors
+    fetchData().catch((error) => console.error("Failed to fetch Ad data on Article page:", error))
+  }, [currentAds])
 
   const issueClass = `issue-${issueBasics.slug.toLowerCase()}`
 
@@ -51,10 +65,7 @@ const Article = (props: ArticleProps) => {
                   </nav>
                 </header>
 
-                <div className="ad ad_970">
-                  <p>Advertisement</p>
-                  <div></div>
-                </div>
+                <Ad970 currentAds={currentAds} />
 
                 <article className="article">
                   <NextPrev {...props} currentSection={section} />
