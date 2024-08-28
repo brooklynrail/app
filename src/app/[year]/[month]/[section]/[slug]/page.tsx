@@ -1,5 +1,5 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getArticle, getIssueBasics, getOGImage, getPermalink } from "../../../../../../lib/utils"
+import { PageType, getArticle, getIssueData, getOGImage, getPermalink } from "../../../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 }
 export interface ArticleProps {
   articleData: Articles
-  issueBasics: Issues
+  thisIssueData: Issues
   currentSection?: Sections
   permalink: string
   errorCode?: number
@@ -76,8 +76,8 @@ async function getData({ params }: { params: ArticleParams }) {
   const slug: string = params.slug.toString()
   const section: string = params.section.toString()
 
-  const issueBasics = await getIssueBasics({ year, month }) // A limited set of data for the issue
-  if (!issueBasics) {
+  const thisIssueData = await getIssueData({ year, month }) // A limited set of data for the issue
+  if (!thisIssueData) {
     return notFound()
   }
 
@@ -94,8 +94,8 @@ async function getData({ params }: { params: ArticleParams }) {
   }
 
   const permalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
+    year: thisIssueData.year,
+    month: thisIssueData.month,
     section: currentSection.slug,
     slug: articleData.slug,
     type: PageType.Article,
@@ -104,7 +104,7 @@ async function getData({ params }: { params: ArticleParams }) {
   return {
     props: {
       articleData,
-      issueBasics,
+      thisIssueData,
       currentSection,
       permalink,
     },

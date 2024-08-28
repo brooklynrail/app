@@ -14,12 +14,12 @@ import parse from "html-react-parser"
 import Script from "next/script"
 import NextPrev from "./nextPrev"
 import Ad970 from "../ads/ad970"
-import { get } from "http"
 
 const Article = (props: ArticleProps) => {
-  const { articleData, issueBasics } = props
+  const { articleData, thisIssueData } = props
   const { contributors, endnote, section } = articleData
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
+
   useEffect(() => {
     const fetchData = async () => {
       if (!currentAds) {
@@ -35,11 +35,11 @@ const Article = (props: ArticleProps) => {
     fetchData().catch((error) => console.error("Failed to fetch Ad data on Article page:", error))
   }, [currentAds])
 
-  const issueClass = `issue-${issueBasics.slug.toLowerCase()}`
+  const issueClass = `issue-${thisIssueData.slug.toLowerCase()}`
 
   const issuePermalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
+    year: thisIssueData.year,
+    month: thisIssueData.month,
     type: PageType.Issue,
   })
 
@@ -50,13 +50,13 @@ const Article = (props: ArticleProps) => {
           <div className="grid-container">
             <div className="grid-row grid-gap-3">
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <IssueRail currentIssueBasics={issueBasics} />
+                <IssueRail thisIssueData={thisIssueData} />
               </div>
 
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
                 <header id="article_header">
                   <Link className="mobile_nav_btn" href={issuePermalink}>
-                    <i className="fas fa-angle-double-left"></i> <span>{props.issueBasics.title}</span> Issue
+                    <i className="fas fa-angle-double-left"></i> <span>{props.thisIssueData.title}</span> Issue
                   </Link>
 
                   <nav>

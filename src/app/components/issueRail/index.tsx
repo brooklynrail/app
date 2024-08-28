@@ -2,7 +2,6 @@
 import Link from "next/link"
 import { Articles, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
-import { useState, useEffect } from "react"
 import { CoverImage } from "./coverImage"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapPin } from "@fortawesome/free-solid-svg-icons"
@@ -30,7 +29,7 @@ const ArticleList = (props: ArticleListProps) => {
 
     const hide_bylines_downstream = article.hide_bylines_downstream
 
-    console.log("article", article)
+    const guestCritic = article.section.slug === "editorsmessage"
 
     return (
       <li key={i} data-sort={article.sort}>
@@ -40,7 +39,11 @@ const ArticleList = (props: ArticleListProps) => {
           </Link>
         </h4>
         {!hide_bylines_downstream && (
-          <Bylines byline_override={article.byline_override} contributors={article.contributors} />
+          <Bylines
+            byline_override={article.byline_override}
+            contributors={article.contributors}
+            guestCritic={guestCritic}
+          />
         )}
       </li>
     )
@@ -49,75 +52,39 @@ const ArticleList = (props: ArticleListProps) => {
 }
 
 interface IssueArticlesProps {
-  issueData?: Issues
-  issueSections?: Array<Sections>
+  thisIssueData: Issues
+  issueSections: Array<Sections>
 }
 
 const IssueArticles = (props: IssueArticlesProps) => {
-  const { issueData, issueSections } = props
+  const { thisIssueData, issueSections } = props
 
-  if (!issueData || !issueSections) {
-    return (
-      <div className={`loading-issue-index`}>
-        <LoadingIssueIndex />
-      </div>
-    )
-  }
-
-  const { year, month } = issueData
-
-  // get the criticspage section ID from issueSections
-  const criticspage = issueSections.find((section) => section.slug === "criticspage")?.id
-
-  // Assume criticspage is the correct ID for the 'criticspage' section
-  let updatedArticles: Articles[] = [] // Array to store the modified articles
-
-  // Iterate over articles and modify sections as needed
-  issueData.articles.forEach((article: Articles) => {
-    // If the section for this article is editorsmessage, change the section to criticspage
-    if (article.section.slug === "editorsmessage") {
-      // Change the section to criticspage
-      article.section.id = criticspage ? criticspage : 0
-
-      // Add the modified article to the updatedArticles array
-      updatedArticles.push(article)
-    } else {
-      // Add the article as is if it's not editorsmessage
-      updatedArticles.push(article)
-    }
-  })
-
-  // Create a map where each key is a section ID and each value is an array of articles for that section
-  const articlesBySection: Record<string, Articles[]> = updatedArticles.reduce(
-    (acc: Record<string, Articles[]>, article: Articles) => {
-      const sectionId = article.section.id
-
-      if (!acc[sectionId]) {
-        acc[sectionId] = []
-      }
-
-      acc[sectionId].push(article)
-      return acc
-    },
-    {},
-  )
+  const { year, month } = thisIssueData
 
   return (
     <>
       {issueSections.map((section: Sections, i: number) => {
-        if (section.slug === "publishersmessage") {
+        if (section.slug === "publishersmessage" || section.slug === "editorsmessage") {
           return null // Skip rendering this section
         }
 
-        // Check if there are articles for this section
-        const sectionArticles = articlesBySection[section.id]
+        // Check if there are articles in this section in thisIssueData.articles
+        const sectionArticles = thisIssueData.articles.filter((article) => article.section.slug === section.slug)
         if (!sectionArticles || sectionArticles.length === 0) {
           return null // Skip rendering this section
         }
 
+        // get the editors message articls from thisIssueData.articles
+        const editorsMessage = thisIssueData.articles.find((article) => article.section.slug === "editorsmessage")
+
+        // if section is criticspage, add the editors message to the top of the list
+        if (section.slug === "criticspage" && editorsMessage) {
+          sectionArticles.unshift(editorsMessage)
+        }
+
         const sectionPermalink = getPermalink({
-          year: issueData.year,
-          month: issueData.month,
+          year: thisIssueData.year,
+          month: thisIssueData.month,
           section: section.slug,
           type: PageType.Section,
         })
@@ -137,57 +104,20 @@ const IssueArticles = (props: IssueArticlesProps) => {
   )
 }
 
-const LoadingIssueIndex = () => {
-  return [...Array(12)].map((_, index) => (
-    <div key={index}>
-      <h3>
-        <span style={{ width: `100px` }}></span>
-      </h3>
-      <ul>
-        <li>
-          <h4>
-            <span style={{ width: `200px` }}></span>
-          </h4>
-          <cite>
-            <span style={{ width: `80px` }}></span>
-          </cite>
-        </li>
-        <li>
-          <h4>
-            <span style={{ width: `235px` }}></span>
-          </h4>
-          <cite>
-            <span style={{ width: `70px` }}></span>
-          </cite>
-        </li>
-      </ul>
-    </div>
-  ))
-}
-
 interface PublishersMessageProps {
-  issueData?: Issues
+  thisIssueData: Issues
 }
 
-const PublishersMessage = ({ issueData }: PublishersMessageProps) => {
-  if (!issueData) {
-    return (
-      <p className="publishers-message loading">
-        <span></span>
-        <span style={{ width: "75%" }}></span>
-        <span style={{ width: "65%" }}></span>
-      </p>
-    )
-  }
-
-  const publishersMessage = issueData.articles.find((article) => article.section.slug === "publishersmessage")
+const PublishersMessage = ({ thisIssueData }: PublishersMessageProps) => {
+  const publishersMessage = thisIssueData.articles.find((article) => article.section.slug === "publishersmessage")
 
   if (!publishersMessage) {
     return <></>
   }
+
   const permalink = getPermalink({
-    year: issueData.year,
-    month: issueData.month,
+    year: thisIssueData.year,
+    month: thisIssueData.month,
     section: publishersMessage.section.slug,
     slug: publishersMessage.slug,
     type: PageType.Article,
@@ -202,47 +132,19 @@ const PublishersMessage = ({ issueData }: PublishersMessageProps) => {
 }
 
 interface IssueRailProps {
-  currentIssueBasics: Issues
+  thisIssueData: Issues
 }
 const IssueRail = (props: IssueRailProps) => {
-  const { currentIssueBasics } = props
-  const [issueSections, setIssueSections] = useState<Sections[] | undefined>(undefined)
-  const [issueData, setIssueData] = useState<Issues | undefined>(undefined)
+  const { thisIssueData } = props
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // if currentIssueBasics is not defined, fetch the current issue
-      if (!issueData) {
-        const issueAPI = currentIssueBasics.special_issue
-          ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/special/${currentIssueBasics.slug}`
-          : `${process.env.NEXT_PUBLIC_BASE_URL}/api/${currentIssueBasics.year}/${currentIssueBasics.month}`
-        const issueResponse = await fetch(issueAPI, {
-          next: { revalidate: 10 },
-        })
-        if (!issueData) {
-          const fetchedIssueData = await issueResponse.json()
-          setIssueData(fetchedIssueData)
-        }
-      }
-
-      if (issueData && !issueSections) {
-        const sectionsResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections?issueId=${issueData.id}`,
-          {
-            next: { revalidate: 10 },
-          },
-        )
-        const fetchedSectionData = await sectionsResponse.json()
-        setIssueSections(fetchedSectionData)
-      }
-    }
-
-    fetchData().catch((error) => console.error("Failed to fetch data Issue Rail:", error))
-  }, [issueSections, setIssueSections, issueData, setIssueData, currentIssueBasics])
+  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
+  const issueSections = thisIssueData.articles
+    .map((article) => article.section)
+    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
   let logosrc = "/images/brooklynrail-logo.svg"
-  if (currentIssueBasics.special_issue) {
-    logosrc = `/images/brooklynrail-logo-issue-${currentIssueBasics.issue_number}.svg`
+  if (thisIssueData.special_issue) {
+    logosrc = `/images/brooklynrail-logo-issue-${thisIssueData.issue_number}.svg`
   }
 
   return (
@@ -251,7 +153,7 @@ const IssueRail = (props: IssueRailProps) => {
 
       <header className="issue-header">
         <h3 className="issue-name">
-          <Link href={`/${currentIssueBasics.slug}/`}>{currentIssueBasics.title}</Link>
+          <Link href={`/${thisIssueData.slug}/`}>{thisIssueData.title}</Link>
         </h3>
 
         <Link className="archive" href="/archive" title="All Issues Archive">
@@ -263,7 +165,7 @@ const IssueRail = (props: IssueRailProps) => {
         <div className="issue-details">
           <div className="grid-row">
             <div className="grid-col-6">
-              <CoverImage issueBasics={currentIssueBasics} />
+              <CoverImage issueBasics={thisIssueData} />
             </div>
             <div className="grid-col-6">
               <div className="issue-links">
@@ -283,13 +185,13 @@ const IssueRail = (props: IssueRailProps) => {
                     </Link>
                   </p>
                 </div>
-                <PublishersMessage issueData={issueData} />
+                <PublishersMessage thisIssueData={thisIssueData} />
               </div>
             </div>
           </div>
         </div>
 
-        <IssueArticles issueData={issueData} issueSections={issueSections} />
+        <IssueArticles thisIssueData={thisIssueData} issueSections={issueSections} />
       </nav>
     </section>
   )
