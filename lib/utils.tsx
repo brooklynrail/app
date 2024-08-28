@@ -1007,8 +1007,10 @@ export async function getContributor(slug: string) {
     `&fields[]=articles.articles_slug.section.slug` +
     `&fields[]=articles.articles_slug.section.name` +
     `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_in]=published` +
+    `&filter[status][_eq]=published` +
     `&filter[articles][_nnull]=true` +
+    `&deep[articles][_filter][articles_slug][status][_eq]=published` +
+    `&deep[articles][_sort]=-articles_slug.issue.year,-articles_slug.issue.month` +
     `&deep[articles][issue][_nnull]=true`
 
   try {
