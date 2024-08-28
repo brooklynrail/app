@@ -11,7 +11,7 @@ const oldLogo = (
   <svg width="396px" height="68px" viewBox="0 0 600 103" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>Brooklynrail Logo</title>
 
-    <g id="brooklynrail-logo-ex" stroke="none" stroke-width="1" fill="none" fillRule="evenodd">
+    <g id="brooklynrail-logo-ex" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g id="Group-2">
         <g id="Group" fill="#E52207">
           <polyline
