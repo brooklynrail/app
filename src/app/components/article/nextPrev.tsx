@@ -71,11 +71,15 @@ export const NextPrev = (props: ArticleProps) => {
       slug: prev.slug,
       type: PageType.Article,
     })
+    const prevKicker = prev.kicker ? `<span>${parse(prev.kicker)}</span>` : null
     return (
       <div className="prev">
         <Link href={prevPermalink}>
           <span>Previous</span>
-          <h4>{parse(prev.section.name)}</h4>
+          <h4>
+            {parse(prev.section.name)}
+            {prevKicker}
+          </h4>
           <h3>{parse(prev.title)}</h3>
         </Link>
       </div>
@@ -102,11 +106,16 @@ export const NextPrev = (props: ArticleProps) => {
       slug: next.slug,
       type: PageType.Article,
     })
+    const nextKicker = next.kicker ? `<span>${parse(next.kicker)}</span>` : null
     return (
       <div className="next">
         <Link href={nextPermalink}>
           <span>Next</span>
-          <h4>{parse(next.section.name)}</h4>
+          <h4>
+            {parse(next.section.name)}
+            {nextKicker}
+          </h4>
+
           <h3>{parse(next.title)}</h3>
         </Link>
       </div>

@@ -99,6 +99,13 @@ article.article-diff {
       @include u-font("sans", "3xs");
       @include u-text("uppercase");
       @include u-margin-bottom("05");
+      span {
+        @include u-margin-left(1);
+        @include u-padding-left(1);
+        @include u-text("light");
+        @include u-display("inline");
+        @include u-border-left("black", "1px", "solid");
+      }
     }
     h3 {
       @include u-margin(0);
