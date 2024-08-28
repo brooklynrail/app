@@ -1,7 +1,14 @@
 import { MetadataRoute } from "next"
 import { getArticlePages, getIssues, getSpecialArticlePages, getSpecialIssues } from "../../lib/utils"
 import { Articles, Issues } from "../../lib/types"
-import { notFound } from "next/navigation"
+
+// Dynamic segments not included in generateStaticParams are generated on demand.
+// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
+export const dynamicParams = true
+
+// Next.js will invalidate the cache when a
+// request comes in, at most once every 60 mins.
+export const revalidate = 3600
 
 interface SiteLinksProps {
   url: string
