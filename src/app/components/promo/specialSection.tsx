@@ -48,7 +48,7 @@ const PromoSpecialSection = (props: PromoProps) => {
                   {parse(title)}
                 </Link>
               </h4>
-              <p className="excerpt">{parse(excerpt)}</p>
+              <div className="excerpt">{parse(excerpt)}</div>
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@ const PromoSpecialSection = (props: PromoProps) => {
                 {parse(title)}
               </Link>
             </h4>
-            <p className="excerpt">{parse(excerpt)}</p>
+            <div className="excerpt">{parse(excerpt)}</div>
           </div>
           <div className="grid-col-12 tablet:grid-col-4">
             {showImage && featured_image && (

@@ -50,7 +50,7 @@ const PromoThumb = (props: PromoProps) => {
           </Link>
         </h4>
         <cite className="byline">By {names} </cite>
-        <p className="excerpt">{parse(excerpt)}</p>
+        <div className="excerpt">{parse(excerpt)}</div>
       </div>
     </>
   )
