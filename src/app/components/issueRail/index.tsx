@@ -115,9 +115,18 @@ const IssueArticles = (props: IssueArticlesProps) => {
           return null // Skip rendering this section
         }
 
+        const sectionPermalink = getPermalink({
+          year: issueData.year,
+          month: issueData.month,
+          section: section.slug,
+          type: PageType.Section,
+        })
+
         return (
           <div key={i}>
-            <h3>{section.name}</h3>
+            <h3>
+              <Link href={sectionPermalink}>{section.name}</Link>
+            </h3>
             <ul>
               <ArticleList sectionArticles={sectionArticles} year={year} month={month} />
             </ul>

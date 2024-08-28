@@ -181,6 +181,9 @@
       @include u-text("uppercase");
       @include u-position("sticky");
       @include u-top(0);
+      a:hover {
+        @include u-text("black");
+      }
     }
     ul {
       @include list-reset();
