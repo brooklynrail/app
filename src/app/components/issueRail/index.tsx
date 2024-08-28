@@ -9,6 +9,7 @@ import { faMapPin } from "@fortawesome/free-solid-svg-icons"
 import parse from "html-react-parser"
 import IssueRailHeader from "./header"
 import Bylines from "./bylines"
+import { stripHtml } from "string-strip-html"
 
 interface ArticleListProps {
   sectionArticles: Array<Articles>
@@ -29,10 +30,12 @@ const ArticleList = (props: ArticleListProps) => {
 
     const hide_bylines_downstream = article.hide_bylines_downstream
 
+    console.log("article", article)
+
     return (
-      <li key={i}>
+      <li key={i} data-sort={article.sort}>
         <h4>
-          <Link href={`${permalink}`}>
+          <Link href={`${permalink}`} title={`${stripHtml(article.title).result} (${article.sort})`}>
             <span>{parse(article.title)}</span>
           </Link>
         </h4>
