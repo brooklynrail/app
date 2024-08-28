@@ -12,13 +12,6 @@ export const dynamicParams = true
 // request comes in, at most once every 60 seconds.
 export const revalidate = 60
 
-// Set the Viewport to show the full page of the Rail on mobile devices
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 0.405,
-  // interactiveWidget: "resizes-visual",
-}
-
 export enum PageLayout {
   Issue = "issue",
   Section = "section",
