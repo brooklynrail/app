@@ -158,12 +158,22 @@ const PublishersMessage = ({ issueData }: PublishersMessageProps) => {
       </p>
     )
   }
+
+  const publishersMessage = issueData.articles.find((article) => article.section.slug === "publishersmessage")
+
+  if (!publishersMessage) {
+    return <></>
+  }
+  const permalink = getPermalink({
+    year: issueData.year,
+    month: issueData.month,
+    section: publishersMessage.section.slug,
+    slug: publishersMessage.slug,
+    type: PageType.Article,
+  })
   return (
     <p className="publishers-message">
-      <Link
-        href="/2024/07/publishersmessage/Dear-Friends-and-Readers-July-24/"
-        title="A message from Publisher and Artistic Director, Phong Bui"
-      >
+      <Link href={permalink} title="A message from Publisher and Artistic Director, Phong Bui">
         <strong>A message from Phong Bui</strong>, Publisher and Artistic Director
       </Link>
     </p>
