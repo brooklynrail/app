@@ -45,7 +45,7 @@ const PromoSection = (props: PromoProps) => {
   return (
     <div className="promo promo-section" itemType="http://schema.org/Article">
       <div className="grid-row grid-gap-4">
-        <div className="grid-col-12 tablet:grid-col-8">
+        <div className="grid-col-8 tablet:grid-col-8">
           {showSection && <PromoSectionName {...props} />}
           <h4>
             {orderNum}
@@ -55,7 +55,7 @@ const PromoSection = (props: PromoProps) => {
           </h4>
           <div className="excerpt">{parse(excerpt)}</div>
         </div>
-        <div className="grid-col-12 tablet:grid-col-4">
+        <div className="grid-col-4 tablet:grid-col-4">
           {showImage && featured_image && (
             <div className={`media`}>
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
