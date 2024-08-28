@@ -92,7 +92,6 @@ export const BookshopWidget = (props: Articles) => {
   if (!isbn) {
     return <></>
   }
-  console.log("isbn ==============", isbn)
   return (
     <div>
       <Script
