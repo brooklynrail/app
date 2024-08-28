@@ -61,7 +61,7 @@ export async function getAllIssues() {
         `&limit=100` +
         `&offset=${page * 100 - 100}`
 
-      const res = await fetch(allIssuesDataAPI, { cache: "force-cache" })
+      const res = await fetch(allIssuesDataAPI)
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         console.error(`Failed to fetch AllIssues data: ${res.statusText}`)
@@ -97,7 +97,7 @@ export async function getIssues() {
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
-      const res = await fetch(issuesDataAPI, { cache: "force-cache" })
+      const res = await fetch(issuesDataAPI)
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch getIssues data")
@@ -130,7 +130,7 @@ export async function getSpecialIssues() {
       `&page=${page}` +
       `&limit=100` +
       `&offset=${page * 100 - 100}`
-    const res = await fetch(issuesDataAPI, { cache: "force-cache" })
+    const res = await fetch(issuesDataAPI)
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       throw new Error("Failed to fetch getSpecialIssues data")
@@ -214,7 +214,7 @@ export const getPageData = cache(async (slug: string) => {
 
 export async function getGlobalSettings() {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
-  const res = await fetch(globalSettingsAPI, { cache: "force-cache" })
+  const res = await fetch(globalSettingsAPI)
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch getGlobalSettings data")
@@ -354,7 +354,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
   try {
-    const res = await fetch(issueDataAPI, { cache: "force-cache" })
+    const res = await fetch(issueDataAPI)
 
     if (!res.ok) {
       console.error(`Failed to fetch issue data: ${res.statusText}`)
@@ -483,7 +483,7 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
     `&deep[articles][_limit]=-1`
 
   try {
-    const res = await fetch(issueDataAPI, { cache: "force-cache" })
+    const res = await fetch(issueDataAPI)
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       throw new Error("Failed to fetch getSpecialIssueData data")
@@ -526,7 +526,7 @@ export async function getIssueBasics(props: IssueBasicsProps) {
     `&filter[status][_eq]=published` +
     `&filter[special_issue][_eq]=false`
   try {
-    const res = await fetch(issueBasicsAPI, { cache: "force-cache" })
+    const res = await fetch(issueBasicsAPI)
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       console.error(`Failed to fetch IssueBasics data: ${res.statusText}`)
@@ -567,7 +567,7 @@ export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
     `&filter[status][_in]=published` +
     `&filter[special_issue][_eq]=true`
   try {
-    const res = await fetch(specialIssueBasicsAPI, { cache: "force-cache" })
+    const res = await fetch(specialIssueBasicsAPI)
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       throw new Error("Failed to fetch getSpecialIssueBasics data")
@@ -627,7 +627,7 @@ export async function getSpecialArticlePages() {
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
-      const res = await fetch(specialArticleDataAPI, { cache: "force-cache" })
+      const res = await fetch(specialArticleDataAPI)
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch getSpecialArticlePages data")
@@ -666,7 +666,7 @@ export async function getArticlePages() {
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
-      const res = await fetch(articleDataAPI, { cache: "force-cache" })
+      const res = await fetch(articleDataAPI)
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch getArticlePages data")
@@ -1018,7 +1018,7 @@ export async function getContributor(slug: string) {
     `&deep[articles][issue][_nnull]=true`
 
   try {
-    const res = await fetch(issueDataAPI, { cache: "force-cache" })
+    const res = await fetch(issueDataAPI)
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       throw new Error("Failed to fetch getContributor data")
@@ -1040,7 +1040,7 @@ export async function getAllContributors() {
     let isMore = true
     while (isMore) {
       const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_nnull]=true&page=${page}&limit=100&offset=${page * 100 - 100}`
-      const res = await fetch(contributorsAPI, { cache: "force-cache" })
+      const res = await fetch(contributorsAPI)
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch getAllContributors data")
