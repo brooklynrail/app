@@ -80,33 +80,38 @@ export async function getAllIssues() {
 }
 
 export async function getIssues() {
-  let allIssues: Issues[] = []
-  let page = 1
-  let isMore = true
-  while (isMore) {
-    const issuesDataAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
-      `?fields[]=id` +
-      `&fields[]=year` +
-      `&fields[]=month` +
-      `&fields[]=slug` +
-      `&fields[]=special_issue` +
-      `&filter[status][_in]=published` +
-      `&filter[special_issue][_eq]=false` +
-      `&page=${page}` +
-      `&limit=100` +
-      `&offset=${page * 100 - 100}`
-    const res = await fetch(issuesDataAPI, { cache: "force-cache" })
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch getIssues data")
+  try {
+    let allIssues: Issues[] = []
+    let page = 1
+    let isMore = true
+    while (isMore) {
+      const issuesDataAPI =
+        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
+        `?fields[]=id` +
+        `&fields[]=year` +
+        `&fields[]=month` +
+        `&fields[]=slug` +
+        `&fields[]=special_issue` +
+        `&filter[status][_in]=published` +
+        `&filter[special_issue][_eq]=false` +
+        `&page=${page}` +
+        `&limit=100` +
+        `&offset=${page * 100 - 100}`
+      const res = await fetch(issuesDataAPI, { cache: "force-cache" })
+      if (!res.ok) {
+        // This will activate the closest `error.js` Error Boundary
+        throw new Error("Failed to fetch getIssues data")
+      }
+      const data = await res.json()
+      allIssues = allIssues.concat(data.data)
+      isMore = data.data.length === 100 // assumes there is another page of records
+      page++
     }
-    const data = await res.json()
-    allIssues = allIssues.concat(data.data)
-    isMore = data.data.length === 100 // assumes there is another page of records
-    page++
+    return allIssues as Issues[]
+  } catch (error) {
+    console.error("Error fetching getIssues:", error)
+    return null
   }
-  return allIssues as Issues[]
 }
 
 // only used for building pages in Special Issues

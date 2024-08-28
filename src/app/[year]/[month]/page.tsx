@@ -1,6 +1,13 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getIssueData, getOGImage, getPermalink, getSectionsByIssueId } from "../../../../lib/utils"
+import {
+  PageType,
+  getIssueData,
+  getIssues,
+  getOGImage,
+  getPermalink,
+  getSectionsByIssueId,
+} from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -8,6 +15,10 @@ import { notFound } from "next/navigation"
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
 export const dynamicParams = true
+
+// Next.js will invalidate the cache when a
+// request comes in, at most once every 60 seconds.
+export const revalidate = 60
 
 export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -57,6 +68,7 @@ async function getData({ params }: { params: IssueParams }) {
   if (!issueData) {
     return notFound()
   }
+
   // Get the current list of Sections used in this Issue (draft or published)
   const sections = await getSectionsByIssueId(issueData.id, issueData.status)
   if (!sections) {
@@ -76,14 +88,16 @@ async function getData({ params }: { params: IssueParams }) {
   }
 }
 
-// export async function generateStaticParams() {
-//   const allIssues = await getIssues()
-
-//   return allIssues.map((issue) => {
-//     const month = issue.month < 10 ? String(`0${issue.month}`) : String(issue.month)
-//     return {
-//       year: String(issue.year),
-//       month: month,
-//     }
-//   })
-// }
+export async function generateStaticParams() {
+  const allIssues = await getIssues()
+  if (!allIssues) {
+    return notFound()
+  }
+  return allIssues.map((issue) => {
+    const month = issue.month < 10 ? String(`0${issue.month}`) : String(issue.month)
+    return {
+      year: String(issue.year),
+      month: month,
+    }
+  })
+}
