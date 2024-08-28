@@ -9,6 +9,7 @@
   @include u-font("serif", "md");
   @include u-line-height("sans", 2);
   overflow-wrap: break-word;
+  clear: both;
 
   // [dropcap letter="A"]
   .dropcap {
