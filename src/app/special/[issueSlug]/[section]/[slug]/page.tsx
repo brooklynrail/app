@@ -9,8 +9,8 @@ import { notFound } from "next/navigation"
 export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
-// request comes in, at most once every 60 seconds.
-export const revalidate = 60
+// request comes in, at most once every 60 mins.
+export const revalidate = 3600
 
 export async function generateMetadata({ params }: { params: SpecialArticleParams }): Promise<Metadata> {
   const data = await getData({ params })
