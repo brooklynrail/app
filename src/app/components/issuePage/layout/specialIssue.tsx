@@ -6,19 +6,19 @@ import { LayoutProps } from "./issue"
 import SubscribeAd from "../subscribeAd"
 
 const SpecialIssue = (props: LayoutProps) => {
-  const { issueData } = props
+  const { thisIssueData } = props
 
-  const currentArticles = issueData.articles
+  const currentArticles = thisIssueData.articles
 
   const allArticles = currentArticles.map((article: Articles, i: number) => {
     const permalink = getPermalink({
-      issueSlug: issueData.slug,
+      issueSlug: thisIssueData.slug,
       section: article.section.slug,
       type: PageType.SpecialIssueArticle,
       slug: article.slug,
     })
     const sectionPermalink = getPermalink({
-      issueSlug: issueData.slug,
+      issueSlug: thisIssueData.slug,
       section: article.section.slug,
       type: PageType.SpecialIssueSection,
       slug: article.section.slug,
@@ -38,11 +38,11 @@ const SpecialIssue = (props: LayoutProps) => {
 
   return (
     <div className="grid-col-8">
-      {(issueData.summary || issueData.credits) && (
+      {(thisIssueData.summary || thisIssueData.credits) && (
         <header className="section">
           <div className="description">
-            {issueData.summary && <div className="blurb">{parse(issueData.summary)}</div>}
-            {issueData.credits && <div className="credits">{parse(issueData.credits)}</div>}
+            {thisIssueData.summary && <div className="blurb">{parse(thisIssueData.summary)}</div>}
+            {thisIssueData.credits && <div className="credits">{parse(thisIssueData.credits)}</div>}
           </div>
         </header>
       )}
