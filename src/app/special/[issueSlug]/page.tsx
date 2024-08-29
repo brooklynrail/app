@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 export async function generateMetadata({ params }: { params: SpecialSectionParams }): Promise<Metadata> {
   const data = await getData({ params })
 
-  const { title, cover_1, issue_number } = data.props.issueData
+  const { title, cover_1, issue_number } = data.props.thisIssueData
   const ogtitle = `${stripHtml(title).result}`
   const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -55,38 +55,28 @@ interface SpecialSectionParams {
 
 async function getData({ params }: { params: SpecialSectionParams }) {
   const issueSlug = params.issueSlug.toString()
-  const issueData = await getSpecialIssueData({
+  const thisIssueData = await getSpecialIssueData({
     slug: issueSlug,
   })
-  if (!issueData) {
+  if (!thisIssueData) {
     return notFound()
   }
 
-  // Get the current list of Sections used in this Issue (draft or published)
-  const sections = await getSectionsByIssueId(issueData.id, issueData.status)
-  if (!sections) {
-    return notFound()
-  }
+  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
+  const issueSections = thisIssueData.articles
+    .map((article) => article.section)
+    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
+
   const permalink = getPermalink({
-    issueSlug: issueData.slug,
+    issueSlug: thisIssueData.slug,
     type: PageType.SpecialIssue,
   })
 
   return {
     props: {
-      issueData,
-      sections,
+      thisIssueData,
+      issueSections,
       permalink,
     },
   }
 }
-
-// export async function generateStaticParams() {
-//   const specialIssues = await getSpecialIssues()
-
-//   return specialIssues.map(async (issue: Issues) => {
-//     return {
-//       issueSlug: issue.slug,
-//     }
-//   })
-// }

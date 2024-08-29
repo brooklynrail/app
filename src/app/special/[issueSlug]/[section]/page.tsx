@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: SpecialSectionParam
   }
 
   const { name } = data.props.currentSection
-  const { title, cover_1, issue_number } = data.props.issueData
+  const { title, cover_1, issue_number } = data.props.thisIssueData
   const ogtitle = `${name} – ${stripHtml(title).result}`
   const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -69,39 +69,35 @@ async function getData({ params }: { params: SpecialSectionParams }) {
   const issueSlug: string = params.issueSlug.toString()
   const section = params.section.toString()
 
-  const issueData = await getSpecialIssueData({
+  const thisIssueData = await getSpecialIssueData({
     slug: issueSlug,
   })
 
-  if (!issueData) {
+  if (!thisIssueData) {
     return notFound()
   }
 
-  // Get only the sections that are used in the articles in the current issue
-  const currentSections = await getSectionsByIssueId(issueData.id, issueData.status)
-  if (!currentSections) {
-    return notFound()
-  }
+  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
+  const issueSections = thisIssueData.articles
+    .map((article) => article.section)
+    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
-  if (!currentSections) {
-    return { props: { errorCode: 404, errorMessage: "No currentSections found" } }
-  }
-  const currentSection = currentSections.find((s: Sections) => s.slug === section)
+  const currentSection = issueSections.find((s: Sections) => s.slug === section)
   // If `section` does not exist, set errorCode to a string
   if (!currentSection) {
     return { props: { errorCode: 404, errorMessage: "This section does not exist" } }
   }
 
   const permalink = getPermalink({
-    issueSlug: issueData.slug,
+    issueSlug: thisIssueData.slug,
     section: currentSection.slug,
     type: PageType.SpecialIssueSection,
   })
 
   return {
     props: {
-      issueData,
-      sections: currentSections,
+      thisIssueData,
+      issueSections,
       currentSection,
       permalink,
     },

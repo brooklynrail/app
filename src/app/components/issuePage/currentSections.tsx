@@ -3,13 +3,13 @@ import { Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
 
 interface CurrentSectionsProps {
-  sections: Array<Sections>
-  issueData: Issues
+  issueSections: Array<Sections>
+  thisIssueData: Issues
 }
 
 const CurrentSections = (props: CurrentSectionsProps) => {
-  const { sections, issueData } = props
-  const { year, month, slug, special_issue } = issueData
+  const { issueSections, thisIssueData } = props
+  const { year, month, slug, special_issue } = thisIssueData
   const sectionsToRemove = ["publishersmessage", "editorsmessage"]
 
   const issuePermalink = special_issue
@@ -23,7 +23,7 @@ const CurrentSections = (props: CurrentSectionsProps) => {
         type: PageType.Issue,
       })
 
-  const sectionsList = sections.map((section: Sections, i: number) => {
+  const sectionsList = issueSections.map((section: Sections, i: number) => {
     const sectionPermalink = special_issue
       ? getPermalink({
           issueSlug: slug,

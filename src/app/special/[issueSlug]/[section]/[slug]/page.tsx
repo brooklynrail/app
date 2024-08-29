@@ -1,5 +1,5 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getArticle, getOGImage, getPermalink, getSpecialIssueBasics } from "../../../../../../lib/utils"
+import { PageType, getArticle, getOGImage, getPermalink, getSpecialIssueData } from "../../../../../../lib/utils"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
 import { notFound } from "next/navigation"
@@ -65,20 +65,20 @@ interface SpecialArticleParams {
 async function getData({ params }: { params: SpecialArticleParams }) {
   const slug = String(params.slug)
   const issueSlug = String(params.issueSlug)
-  // const section = String(params.section)
 
-  const issueBasics = await getSpecialIssueBasics({ slug: issueSlug }) // A limited set of data for the issue
+  const thisIssueData = await getSpecialIssueData({ slug: issueSlug }) // A limited set of data for the issue
   const articleData = await getArticle(slug, "published")
-  if (!articleData || !issueBasics) {
+
+  if (!articleData || !thisIssueData) {
     return notFound()
   }
 
   const currentSection = articleData.section
 
   const permalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
-    issueSlug: issueBasics.slug,
+    year: thisIssueData.year,
+    month: thisIssueData.month,
+    issueSlug: thisIssueData.slug,
     section: currentSection.slug,
     slug: articleData.slug,
     type: PageType.SpecialIssueArticle,
@@ -87,27 +87,9 @@ async function getData({ params }: { params: SpecialArticleParams }) {
   return {
     props: {
       articleData,
-      issueBasics,
+      thisIssueData,
       currentSection,
       permalink,
     },
   }
 }
-
-// export async function generateStaticParams() {
-//   const specialArticlePages = await getSpecialArticlePages()
-
-//   return specialArticlePages.map((article: Articles) => {
-//     // NOTE: This is returning articles with no issues.
-//     // These are the articles that are part of the "Special Issues"
-//     // This might be a BUG, or might be how the REST API is set up.
-//     if (!article.issue) {
-//       return
-//     }
-//     return {
-//       issueSlug: article.issue.slug,
-//       section: article.section.slug,
-//       slug: article.slug,
-//     }
-//   })
-// }

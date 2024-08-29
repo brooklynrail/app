@@ -13,7 +13,7 @@ import IssuePreview from "@/app/components/preview/issue"
 import { notFound } from "next/navigation"
 
 export interface IssuePreviewProps {
-  issueData: Issues
+  thisIssueData: Issues
   sections: Sections[]
   permalink: string
   errorCode?: number
@@ -28,7 +28,7 @@ export interface IssuePreviewProps {
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
   const data = await getData({ params })
 
-  const { title } = data.issueData
+  const { title } = data.thisIssueData
   const ogtitle = stripHtml(title).result
   const ogdescription = ""
 
@@ -63,13 +63,13 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
 
   const data = await getData({ params })
 
-  const { issueData, sections, permalink, directusUrl, previewPassword } = data
-  if (!issueData || !sections || !permalink || !previewPassword || !directusUrl) {
+  const { thisIssueData, sections, permalink, directusUrl, previewPassword } = data
+  if (!thisIssueData || !sections || !permalink || !previewPassword || !directusUrl) {
     return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
   }
 
   const issuePreviewProps = {
-    issueData,
+    thisIssueData,
     sections,
     permalink,
     directusUrl,
@@ -91,20 +91,20 @@ async function getData({ params }: { params: PreviewParams }) {
   const year = parseInt(params.year, 10)
   const month = parseInt(params.month, 10)
 
-  const issueData = await getPreviewIssue(year, month)
-  if (!issueData) {
+  const thisIssueData = await getPreviewIssue(year, month)
+  if (!thisIssueData) {
     return notFound()
   }
   // Get the current list of Sections used in this Issue (draft or published)
-  const sections = await getSectionsByIssueId(issueData.id, issueData.status)
+  const sections = await getSectionsByIssueId(thisIssueData.id, thisIssueData.status)
 
   if (!sections) {
     return notFound()
   }
 
   const permalink = getPermalink({
-    year: issueData.year,
-    month: issueData.month,
+    year: thisIssueData.year,
+    month: thisIssueData.month,
     type: PageType.Issue,
   })
 
@@ -112,7 +112,7 @@ async function getData({ params }: { params: PreviewParams }) {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
 
   return {
-    issueData,
+    thisIssueData,
     sections,
     permalink,
     previewPassword,

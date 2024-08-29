@@ -217,23 +217,6 @@ export async function getGlobalSettings() {
   return data as GlobalSettings
 }
 
-export async function getCurrentIssueBasics() {
-  try {
-    const settings = await getGlobalSettings()
-
-    const issueData = await getIssueBasics({
-      year: settings.current_issue.year,
-      month: settings.current_issue.month,
-    })
-
-    // return the first issue in the array
-    return issueData as Issues
-  } catch (error) {
-    console.error("Error fetching current issue basics data:", error)
-    return null
-  }
-}
-
 // Explore making this get IssueData by ID
 // NOTE: we need to use `readItems` instead of `readItem` because we are querying the `issues` collection
 // instead of a single issue by ID
@@ -488,89 +471,6 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
   } catch (error) {
     // Handle the error here
     console.error("Error fetching getSpecialIssueData data:", error)
-    return null
-  }
-}
-
-interface IssueBasicsProps {
-  year: number
-  month: number
-}
-
-export async function getIssueBasics(props: IssueBasicsProps) {
-  const { year, month } = props
-  const issueBasicsAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
-    `?fields[]=id` +
-    `&fields[]=title` +
-    `&fields[]=slug` +
-    `&fields[]=year` +
-    `&fields[]=month` +
-    `&fields[]=status` +
-    `&fields[]=issue_number` +
-    `&fields[]=special_issue` +
-    `&fields[]=section.slug` +
-    `&fields[]=cover_1.caption` +
-    `&fields[]=cover_1.filename_disk` +
-    `&fields[]=cover_1.width` +
-    `&fields[]=cover_1.height` +
-    `&fields[]=cover_1.type` +
-    `&filter[year][_eq]=${year}` +
-    `&filter[month][_eq]=${month}` +
-    `&filter[status][_eq]=published` +
-    `&filter[special_issue][_eq]=false`
-  try {
-    const res = await fetch(issueBasicsAPI)
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      console.error(`Failed to fetch IssueBasics data: ${res.statusText}`)
-      return null
-    }
-
-    const { data } = await res.json()
-    return data[0] as Issues
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-}
-
-interface SpecialIssueBasicsProps {
-  slug: string
-}
-
-export async function getSpecialIssueBasics(props: SpecialIssueBasicsProps) {
-  const { slug } = props
-  const specialIssueBasicsAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
-    `?fields[]=id` +
-    `&fields[]=title` +
-    `&fields[]=slug` +
-    `&fields[]=year` +
-    `&fields[]=month` +
-    `&fields[]=status` +
-    `&fields[]=issue_number` +
-    `&fields[]=special_issue` +
-    `&fields[]=section.slug` +
-    `&fields[]=cover_1.caption` +
-    `&fields[]=cover_1.filename_disk` +
-    `&fields[]=cover_1.width` +
-    `&fields[]=cover_1.height` +
-    `&fields[]=cover_1.type` +
-    `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_in]=published` +
-    `&filter[special_issue][_eq]=true`
-  try {
-    const res = await fetch(specialIssueBasicsAPI)
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch getSpecialIssueBasics data")
-    }
-
-    const { data } = await res.json()
-    return data[0] as Issues
-  } catch (error) {
-    console.error("Error fetching getSpecialIssueBasics data:", error)
     return null
   }
 }

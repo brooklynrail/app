@@ -1,6 +1,6 @@
 import parse from "html-react-parser"
-import { ArticlesContributors, Contributors, Issues } from "../../../../lib/types"
-import { getContributor, getCurrentIssueBasics, getPermalink, PageType } from "../../../../lib/utils"
+import { ArticlesContributors } from "../../../../lib/types"
+import { getContributor, getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
 import PromoSection from "@/app/components/promo/section"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
@@ -117,7 +117,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
         <div className="grid-container">
           <div className="grid-row grid-gap-3">
             <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-              <IssueRail currentIssueBasics={data.currentIssueBasics} />
+              <IssueRail thisIssueData={data.thisIssueData} />
             </div>
 
             <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
@@ -164,14 +164,14 @@ interface ContributorsParams {
 
 async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
-  const currentIssueBasics = await getCurrentIssueBasics()
+  const thisIssueData = await getCurrentIssueData()
 
   // Get all contributors
   // NOTE: There are multiple contributors with the same slug
   // This returns all contributors with the same slug, but their specific name and bio information may be different
   const allContributors = await getContributor(slug)
 
-  if (!allContributors || allContributors.length == 0 || !currentIssueBasics) {
+  if (!allContributors || allContributors.length == 0 || !thisIssueData) {
     return notFound()
   }
 
@@ -190,13 +190,16 @@ async function getData({ params }: { params: ContributorsParams }) {
   })
 
   return {
-    currentIssueBasics,
+    thisIssueData,
     contributorData,
     articles: allArticles,
     permalink,
   }
 }
 
+function getCurrentIssue() {
+  throw new Error("Function not implemented.")
+}
 // export async function generateStaticParams() {
 //   let allContributors = await getAllContributors()
 //   // filter out contributors with no articles

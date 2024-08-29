@@ -10,15 +10,15 @@ import TableOfContents from "../tableOfContents"
 import SubscribeAd from "../subscribeAd"
 
 export interface LayoutProps {
-  issueData: Issues
+  thisIssueData: Issues
   currentSection?: Sections
 }
 
 const IssueLayout = (props: IssuePageProps) => {
-  const { issueData, sections, permalink } = props
-  const currentSections = sections
-  const { year, month } = issueData
-  const currentArticles = issueData.articles
+  const { thisIssueData, issueSections, permalink } = props
+  const currentSections = issueSections
+  const { year, month } = thisIssueData
+  const currentArticles = thisIssueData.articles
 
   // Filter the currentArticles to get only the articles with a slideshow image
   const currentSlides: Articles[] = []
@@ -29,7 +29,7 @@ const IssueLayout = (props: IssuePageProps) => {
   })
 
   const promoProps = { currentArticles, year, month }
-  const tocProps = { issueData, currentSections, permalink, year, month }
+  const tocProps = { thisIssueData, currentSections, permalink, year, month }
 
   return (
     <>

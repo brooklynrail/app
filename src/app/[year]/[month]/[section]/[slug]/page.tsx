@@ -76,7 +76,7 @@ async function getData({ params }: { params: ArticleParams }) {
   const slug: string = params.slug.toString()
   const section: string = params.section.toString()
 
-  const thisIssueData = await getIssueData({ year, month }) // A limited set of data for the issue
+  const thisIssueData = await getIssueData({ year, month })
   if (!thisIssueData) {
     return notFound()
   }

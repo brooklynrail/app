@@ -28,7 +28,7 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { issueData, currentSection, sections, previewURL } = props
+  const { thisIssueData, currentSection, issueSections, previewURL } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
   useEffect(() => {
@@ -41,24 +41,23 @@ const IssuePage = (props: IssuePageProps) => {
         setCurrentAds(fetchedAds)
       }
     }
-
     // Call the fetchData function and handle any errors
     fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
-  }, [issueData, currentAds])
+  }, [currentAds])
 
-  const { slug } = issueData
+  const { slug } = thisIssueData
   const issueClass = `issue-${slug.toLowerCase()}`
 
   let layout
   switch (props.layout) {
     case PageLayout.Section:
-      layout = <SectionLayout issueData={issueData} currentSection={currentSection} />
+      layout = <SectionLayout thisIssueData={thisIssueData} currentSection={currentSection} />
       break
     case PageLayout.SpecialSection:
-      layout = <SpecialSection issueData={issueData} currentSection={currentSection} />
+      layout = <SpecialSection thisIssueData={thisIssueData} currentSection={currentSection} />
       break
     case PageLayout.SpecialIssue:
-      layout = <SpecialIssue issueData={issueData} />
+      layout = <SpecialIssue thisIssueData={thisIssueData} />
       break
     case PageLayout.TableOfContents:
       layout = <TableOfContentsPage {...props} />
@@ -79,9 +78,9 @@ const IssuePage = (props: IssuePageProps) => {
                 <div className="grid-row">
                   <div className="grid-col-12">
                     <Header
-                      special_issue={issueData.special_issue}
-                      issue_number={issueData.issue_number}
-                      title={issueData.title}
+                      special_issue={thisIssueData.special_issue}
+                      issue_number={thisIssueData.issue_number}
+                      title={thisIssueData.title}
                     />
                   </div>
                 </div>
@@ -97,10 +96,10 @@ const IssuePage = (props: IssuePageProps) => {
                     <div id="issuecolumn">
                       <div className="youarehereissue">
                         <IssueSelect currentIssueSlug={slug} />
-                        <CoverImage issueBasics={issueData} />
+                        <CoverImage thisIssueData={thisIssueData} />
                       </div>
 
-                      <CurrentSections sections={sections} issueData={issueData} />
+                      <CurrentSections issueSections={issueSections} thisIssueData={thisIssueData} />
 
                       {/* <Link className="search_btn" href="/search" title="Search All Issues">
                         <span>Search</span> <i className="fas fa-search"></i>

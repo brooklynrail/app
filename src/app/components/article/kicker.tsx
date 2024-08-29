@@ -4,15 +4,15 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 
 interface KickerProps {
   kicker?: string | null
-  issueBasics?: Issues
+  thisIssueData?: Issues
   currentSection?: Sections
 }
 const Kicker = (props: KickerProps) => {
-  const { kicker, issueBasics, currentSection } = props
-  if (!issueBasics || !currentSection) {
+  const { kicker, thisIssueData, currentSection } = props
+  if (!thisIssueData || !currentSection) {
     return <></>
   }
-  const { year, month } = issueBasics
+  const { year, month } = thisIssueData
 
   const sectionPermalink = getPermalink({
     year: year,

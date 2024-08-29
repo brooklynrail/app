@@ -2,7 +2,6 @@ import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/app/components/issuePage"
 import { getCurrentIssueData, getPermalink, getSectionsByIssueId, PageType } from "../../lib/utils"
 import { notFound } from "next/navigation"
-import { Viewport } from "next"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -21,9 +20,9 @@ export enum PageLayout {
   TableOfContents = "table-of-contents",
 }
 export interface IssuePageProps {
-  issueData: Issues
+  thisIssueData: Issues
+  issueSections: Sections[]
   previewURL?: string
-  sections: Sections[]
   currentSection?: Sections
   permalink: string
   errorCode?: number
@@ -34,7 +33,7 @@ export interface IssuePageProps {
 export default async function Homepage() {
   const data = await getData()
 
-  if (!data.issueData || !data.permalink) {
+  if (!data.thisIssueData || !data.permalink) {
     return notFound()
   }
 
@@ -42,25 +41,24 @@ export default async function Homepage() {
 }
 
 async function getData() {
-  const issueData = await getCurrentIssueData()
+  const thisIssueData = await getCurrentIssueData()
 
-  if (!issueData) {
+  if (!thisIssueData) {
     return notFound()
   }
 
-  // Get the current list of Sections used in this Issue (draft or published)
-  const sections = await getSectionsByIssueId(issueData.id, issueData.status)
-  if (!sections) {
-    return notFound()
-  }
+  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
+  const issueSections = thisIssueData.articles
+    .map((article) => article.section)
+    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
   const permalink = getPermalink({
     type: PageType.Home,
   })
 
   return {
-    issueData,
-    sections,
+    thisIssueData,
+    issueSections,
     permalink,
   }
 }

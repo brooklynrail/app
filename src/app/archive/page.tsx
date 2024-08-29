@@ -25,14 +25,6 @@ export enum PageLayout {
   SpecialSection = "special-section",
   Contributor = "contributor",
 }
-export interface IssuePageProps {
-  issueData: Issues
-  currentSection?: Sections
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  layout: PageLayout
-}
 
 export default async function Homepage() {
   const data = await getData()

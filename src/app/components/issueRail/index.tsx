@@ -165,7 +165,7 @@ const IssueRail = (props: IssueRailProps) => {
         <div className="issue-details">
           <div className="grid-row">
             <div className="grid-col-6">
-              <CoverImage issueBasics={thisIssueData} />
+              <CoverImage thisIssueData={thisIssueData} />
             </div>
             <div className="grid-col-6">
               <div className="issue-links">
