@@ -5,24 +5,22 @@ module.exports = {
       version: "detect",
     },
   },
-  parser: "@typescript-eslint/parser", // Specifies the ESLint parser
+  parser: "@typescript-eslint/parser",
   extends: [
-    "plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "plugin:prettier/recommended", // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+    "plugin:prettier/recommended",
     "plugin:@next/next/recommended",
     "next/core-web-vitals",
     "prettier",
   ],
   plugins: ["@typescript-eslint"],
   parserOptions: {
-    ecmaVersion: 6, // Allows for the parsing of modern ECMAScript features
-    sourceType: "module", // Allows for the use of imports
-    project: ["./tsconfig.json", "./app/tsconfig.json"], // Update the project property to include the path to the tsconfig.json file
+    ecmaVersion: 6,
+    sourceType: "module",
+    project: ["./tsconfig.json", "./app/tsconfig.json"],
   },
   rules: {
-    // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-    // e.g. "@typescript-eslint/explicit-function-return-type": "off",
     curly: "error",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -37,12 +35,9 @@ module.exports = {
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-parameter-properties": "off",
     "@typescript-eslint/no-floating-promises": "error",
-    "@typescript-eslint/no-floating-promises": "error",
-    "react/prop-types": "warn",
+    "react/prop-types": "off",
     "@typescript-eslint/ban-ts-comment": "warn",
     "react/display-name": "warn",
-    "react/prop-types": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
     "react/no-unescaped-entities": "off",
     "prefer-const": "error",
     "default-case": "error",
@@ -64,17 +59,11 @@ module.exports = {
         format: ["camelCase"],
         leadingUnderscore: "allow",
       },
-    ],
-    "@typescript-eslint/naming-convention": [
-      "warn",
       {
         selector: "variable",
         format: ["camelCase", "UPPER_CASE"],
         leadingUnderscore: "allow",
       },
-    ],
-    "@typescript-eslint/naming-convention": [
-      "warn",
       {
         selector: ["typeLike", "enumMember"],
         format: ["PascalCase"],
