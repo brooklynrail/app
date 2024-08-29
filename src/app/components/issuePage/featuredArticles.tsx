@@ -29,6 +29,7 @@ const FeaturedArticles = (props: PromoProps) => {
           slug: article.slug,
           type: PageType.Article,
         })
+        console.log("featuref article permalink: ===========", permalink)
         const sectionPermalink = getPermalink({
           year: year,
           month: month,
