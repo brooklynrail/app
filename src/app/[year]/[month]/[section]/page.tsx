@@ -1,5 +1,5 @@
 import { PageLayout } from "@/app/page"
-import { PageType, getIssueData, getOGImage, getPermalink, getSectionsByIssueId } from "../../../../../lib/utils"
+import { PageType, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"

@@ -1,11 +1,5 @@
 import { stripHtml } from "string-strip-html"
-import {
-  PageType,
-  getPermalink,
-  getPreviewIssue,
-  getPreviewPassword,
-  getSectionsByIssueId,
-} from "../../../../../../lib/utils"
+import { PageType, getPermalink, getPreviewIssue, getPreviewPassword } from "../../../../../../lib/utils"
 import { Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -14,7 +8,7 @@ import { notFound } from "next/navigation"
 
 export interface IssuePreviewProps {
   thisIssueData: Issues
-  sections: Sections[]
+  issueSections: Sections[]
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -63,14 +57,14 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
 
   const data = await getData({ params })
 
-  const { thisIssueData, sections, permalink, directusUrl, previewPassword } = data
-  if (!thisIssueData || !sections || !permalink || !previewPassword || !directusUrl) {
+  const { thisIssueData, issueSections, permalink, directusUrl, previewPassword } = data
+  if (!thisIssueData || !issueSections || !permalink || !previewPassword || !directusUrl) {
     return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
   }
 
   const issuePreviewProps = {
     thisIssueData,
-    sections,
+    issueSections,
     permalink,
     directusUrl,
     previewPassword,
@@ -95,10 +89,13 @@ async function getData({ params }: { params: PreviewParams }) {
   if (!thisIssueData) {
     return notFound()
   }
-  // Get the current list of Sections used in this Issue (draft or published)
-  const sections = await getSectionsByIssueId(thisIssueData.id, thisIssueData.status)
 
-  if (!sections) {
+  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
+  const issueSections = thisIssueData.articles
+    .map((article) => article.section)
+    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
+
+  if (!issueSections) {
     return notFound()
   }
 
@@ -113,7 +110,7 @@ async function getData({ params }: { params: PreviewParams }) {
 
   return {
     thisIssueData,
-    sections,
+    issueSections,
     permalink,
     previewPassword,
     directusUrl,

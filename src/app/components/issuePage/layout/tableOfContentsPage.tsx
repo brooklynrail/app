@@ -3,11 +3,11 @@ import SubscribeAd from "../subscribeAd"
 import TableOfContents from "../tableOfContents"
 
 const TableOfContentsPage = (props: IssuePageProps) => {
-  const { issueData, sections, permalink } = props
-  const currentSections = sections
+  const { thisIssueData, issueSections, permalink } = props
+  const currentSections = issueSections
 
-  const { year, month } = issueData
-  const tocProps = { issueData, currentSections, permalink, year, month }
+  const { year, month } = thisIssueData
+  const tocProps = { thisIssueData, currentSections, permalink, year, month }
 
   return (
     <div className="grid-col-8">

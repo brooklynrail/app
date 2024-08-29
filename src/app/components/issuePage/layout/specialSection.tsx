@@ -5,14 +5,14 @@ import SubscribeAd from "../subscribeAd"
 import { LayoutProps } from "./issue"
 
 const SpecialSection = (props: LayoutProps) => {
-  const { issueData, currentSection } = props
+  const { thisIssueData, currentSection } = props
 
   if (!currentSection) {
     return <></>
   }
 
-  const { year, month } = issueData
-  const currentArticles = issueData.articles
+  const { year, month } = thisIssueData
+  const currentArticles = thisIssueData.articles
 
   const allArticles = (
     <section className="collection">

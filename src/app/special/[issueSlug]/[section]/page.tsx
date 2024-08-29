@@ -1,6 +1,6 @@
 import { Metadata, Viewport } from "next"
 import { PageLayout } from "@/app/page"
-import { PageType, getOGImage, getPermalink, getSectionsByIssueId, getSpecialIssueData } from "../../../../../lib/utils"
+import { PageType, getOGImage, getPermalink, getSpecialIssueData } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
