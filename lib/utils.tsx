@@ -841,29 +841,29 @@ export function getPermalink(props: PermalinkProps) {
 
   switch (type) {
     case PageType.Article:
-      return `/${year}/${month}/${section}/${slug}/`
+      return `./${year}/${month}/${section}/${slug}/`
     case PageType.Section:
-      return `/${year}/${month}/${section}/`
+      return `./${year}/${month}/${section}/`
     case PageType.Issue:
-      return `/${year}/${month}/`
+      return `./${year}/${month}/`
     case PageType.Contributor:
-      return `/contributor/${slug}/`
+      return `./contributor/${slug}/`
     case PageType.Page:
-      return `/${slug}/`
+      return `./${slug}/`
     case PageType.Preview:
-      return `/preview/${slug}/`
+      return `./preview/${slug}/`
     case PageType.SpecialIssue:
-      return `/special/${issueSlug}/`
+      return `./special/${issueSlug}/`
     case PageType.SpecialIssueSection:
-      return `/special/${issueSlug}/${section}/`
+      return `./special/${issueSlug}/${section}/`
     case PageType.SpecialIssueArticle:
-      return `/special/${issueSlug}/${section}/${slug}/`
+      return `./special/${issueSlug}/${section}/${slug}/`
     case PageType.Archive:
-      return `/archive/`
+      return `./archive/`
     case PageType.Search:
-      return `/search/`
+      return `./search/`
     default:
-      return `/`
+      return `./`
   }
 }
 
