@@ -841,29 +841,29 @@ export function getPermalink(props: PermalinkProps) {
 
   switch (type) {
     case PageType.Article:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}/${slug}/`
+      return `/${year}/${month}/${section}/${slug}/`
     case PageType.Section:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}/`
+      return `/${year}/${month}/${section}/`
     case PageType.Issue:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/`
+      return `/${year}/${month}/`
     case PageType.Contributor:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}/`
+      return `/contributor/${slug}/`
     case PageType.Page:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/`
+      return `/${slug}/`
     case PageType.Preview:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}/`
+      return `/preview/${slug}/`
     case PageType.SpecialIssue:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/`
+      return `/special/${issueSlug}/`
     case PageType.SpecialIssueSection:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/`
+      return `/special/${issueSlug}/${section}/`
     case PageType.SpecialIssueArticle:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/${slug}/`
+      return `/special/${issueSlug}/${section}/${slug}/`
     case PageType.Archive:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/archive/`
+      return `/archive/`
     case PageType.Search:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/search/`
+      return `/search/`
     default:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/`
+      return `/`
   }
 }
 
