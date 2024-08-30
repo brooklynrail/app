@@ -2,11 +2,11 @@ import { revalidatePath } from "next/cache"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
-    const { searchParams } = new URL(request.url)
-    const secret = searchParams.get("secret")
-    const path = searchParams.get("path")
+    const body = await request.json() // Parse the incoming JSON data
+
+    const { secret, title, slug, url, articlePath, sectionPath, issuePath } = body // Extract `secret` and `path` from the JSON data
 
     // Check if the secret matches the expected secret
     if (secret !== process.env.REVALIDATION_SECRET) {
@@ -14,14 +14,16 @@ export async function GET(request: Request) {
     }
 
     // Check if the path is provided
-    if (!path) {
+    if (!articlePath) {
       return new Response("Path is required", { status: 400 })
     }
 
     // Start revalidation
-    revalidatePath(path)
-    const message = `Revalidation started for path: ${path}`
-    return new Response(message, { status: 200 })
+    console.log("Revalidating:", articlePath)
+    revalidatePath(articlePath)
+    revalidatePath(sectionPath)
+    revalidatePath(issuePath)
+    return new Response("Revalidation started", { status: 200 })
   } catch (err) {
     // Log the error for debugging purposes
     console.error("Revalidation error:", err)
