@@ -33,6 +33,7 @@ const IssuePage = (props: IssuePageProps) => {
 
   const env = process.env.NODE_ENV
   console.log("env", env)
+  console.log("NEXT_PUBLIC_BASE_URL: ", process.env.NEXT_PUBLIC_BASE_URL)
 
   useEffect(() => {
     const fetchData = async () => {
