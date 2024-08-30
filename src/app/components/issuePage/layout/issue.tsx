@@ -20,6 +20,8 @@ const IssueLayout = (props: IssuePageProps) => {
   const { year, month } = thisIssueData
   const currentArticles = thisIssueData.articles
 
+  console.log("Issue Layout", props)
+
   // Filter the currentArticles to get only the articles with a slideshow image
   const currentSlides: Articles[] = []
   currentArticles.forEach((article: Articles) => {
