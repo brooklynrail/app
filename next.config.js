@@ -222,6 +222,11 @@ module.exports = {
         permanent: false,
       },
       {
+        source: "/2024/07/special-report/",
+        destination: "/2024/07/dispatches/",
+        permanent: false,
+      },
+      {
         source: "/archives",
         destination: "/archive",
         permanent: false,
