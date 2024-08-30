@@ -840,31 +840,39 @@ export function getPermalink(props: PermalinkProps) {
   const { year, section, slug, issueSlug, type } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
 
+  // Production URL: NEXT_PUBLIC_BASE_URL https://brooklynrail.org
+  // Preview URL: NEXT_PUBLIC_BASE_URL https://preview.brooklynrail.org
+  // Branch Previews: VERCEL_URL
+  // Localhost: NEXT_PUBLIC_BASE_URL http://localhost:3000
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL
+    ? process.env.NEXT_PUBLIC_BASE_URL
+    : `https://${process.env.VERCEL_URL}`
+
   switch (type) {
     case PageType.Article:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}/${slug}/`
+      return `${baseURL}/${year}/${month}/${section}/${slug}/`
     case PageType.Section:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/${section}/`
+      return `${baseURL}/${year}/${month}/${section}/`
     case PageType.Issue:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${year}/${month}/`
+      return `${baseURL}/${year}/${month}/`
     case PageType.Contributor:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}/`
+      return `${baseURL}/contributor/${slug}/`
     case PageType.Page:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}/`
+      return `${baseURL}/${slug}/`
     case PageType.Preview:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/preview/${slug}/`
+      return `${baseURL}/preview/${slug}/`
     case PageType.SpecialIssue:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/`
+      return `${baseURL}/special/${issueSlug}/`
     case PageType.SpecialIssueSection:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/`
+      return `${baseURL}/special/${issueSlug}/${section}/`
     case PageType.SpecialIssueArticle:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/${slug}/`
+      return `${baseURL}/special/${issueSlug}/${section}/${slug}/`
     case PageType.Archive:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/archive/`
+      return `${baseURL}/archive/`
     case PageType.Search:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/search/`
+      return `${baseURL}/search/`
     default:
-      return `${process.env.NEXT_PUBLIC_BASE_URL}/`
+      return `${baseURL}/`
   }
 }
 
