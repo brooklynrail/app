@@ -1,33 +1,36 @@
+import { NextApiRequest, NextApiResponse } from "next"
 import { revalidatePath } from "next/cache"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json() // Parse the incoming JSON data
+// pages/api/refresh.js
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === "POST") {
+    const data = await req.body
+    console.log("Req body", req.body)
+    console.log("Req data", data)
+    const { secret, title, slug, url, articlePath, sectionPath, issuePath } = req.body
 
-    const { secret, title, slug, url, articlePath, sectionPath, issuePath } = body // Extract `secret` and `path` from the JSON data
+    // if (!secret || secret !== process.env.REVALIDATION_SECRET) {
+    //   // Respond with an unauthorized error if the secret is incorrect
+    //   return res.status(401).json({ message: "Unauthorized" })
+    // }
 
-    // Check if the secret matches the expected secret
-    if (secret !== process.env.REVALIDATION_SECRET) {
-      return new Response("Unauthorized", { status: 401 })
-    }
-
-    // Check if the path is provided
     if (!articlePath) {
-      return new Response("Path is required", { status: 400 })
+      // Respond with an error if the articlePath is missing
+      return res.status(400).json({ message: "Path is required" })
     }
 
-    // Start revalidation
-    console.log("Revalidating:", articlePath)
-    revalidatePath(articlePath)
-    revalidatePath(sectionPath)
-    revalidatePath(issuePath)
-    return new Response("Revalidation started", { status: 200 })
-  } catch (err) {
-    // Log the error for debugging purposes
-    console.error("Revalidation error:", err)
-    // Return a generic error response
-    return new Response("Error revalidating", { status: 500 })
+    try {
+      // Perform revalidation logic
+      revalidatePath(articlePath)
+      return res.json({ message: "Revalidation successful" })
+    } catch (error) {
+      console.error("Error revalidating:", error)
+      return res.status(500).json({ message: "Error revalidating" })
+    }
+  } else {
+    // If not a POST request, return method not allowed
+    return res.status(405).json({ message: "Method not allowed" })
   }
 }
