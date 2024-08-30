@@ -128,26 +128,26 @@ export default async function ArticlePageController({ params }: { params: Articl
   return <Article {...data.props} />
 }
 
-export async function generateStaticParams() {
-  const articlePages = await getArticlePages()
+// export async function generateStaticParams() {
+//   const articlePages = await getArticlePages()
 
-  if (!articlePages) {
-    return notFound()
-  }
+//   if (!articlePages) {
+//     return notFound()
+//   }
 
-  return articlePages.map((article: Articles) => {
-    // NOTE: This is returning articles with no issues.
-    // These are the articles that are part of the "Special Issues"
-    // This might be a BUG, or might be how the REST API is set up.
-    if (!article.issue) {
-      return
-    }
-    const month = article.issue.month
-    return {
-      year: article.issue.year.toString(),
-      month: month < 10 ? `0${month.toString()}` : month.toString(),
-      section: article.section.slug,
-      slug: article.slug,
-    }
-  })
-}
+//   return articlePages.map((article: Articles) => {
+//     // NOTE: This is returning articles with no issues.
+//     // These are the articles that are part of the "Special Issues"
+//     // This might be a BUG, or might be how the REST API is set up.
+//     if (!article.issue) {
+//       return
+//     }
+//     const month = article.issue.month
+//     return {
+//       year: article.issue.year.toString(),
+//       month: month < 10 ? `0${month.toString()}` : month.toString(),
+//       section: article.section.slug,
+//       slug: article.slug,
+//     }
+//   })
+// }
