@@ -31,6 +31,9 @@ const IssuePage = (props: IssuePageProps) => {
   const { thisIssueData, currentSection, issueSections, previewURL } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
+  const env = process.env.NODE_ENV
+  console.log("env", env)
+
   useEffect(() => {
     const fetchData = async () => {
       if (!currentAds) {
