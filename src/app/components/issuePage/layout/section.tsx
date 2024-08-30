@@ -2,6 +2,7 @@ import { Articles } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import PromoSection from "../../promo/section"
 import SubscribeAd from "../subscribeAd"
+import parse from "html-react-parser"
 
 import { LayoutProps } from "./issue"
 
@@ -30,6 +31,10 @@ const SectionLayout = (props: LayoutProps) => {
       currentArticles.unshift(editorsMessage)
     }
   }
+
+  const description = currentSection.description ? (
+    <div className={`description`}>{parse(currentSection.description)}</div>
+  ) : null
 
   const AllArticles = () => {
     return (
@@ -71,6 +76,7 @@ const SectionLayout = (props: LayoutProps) => {
         <div className="grid-col-12">
           <header className="section">
             <h2>{currentSection.name}</h2>
+            {description}
           </header>
         </div>
       </div>

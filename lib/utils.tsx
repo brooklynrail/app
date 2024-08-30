@@ -332,6 +332,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.issue.slug` +
     `&fields[]=articles.section.id` +
     `&fields[]=articles.section.name` +
+    `&fields[]=articles.section.description` +
     `&fields[]=articles.section.slug` +
     `&fields[]=articles.images.directus_files_id.id` +
     `&fields[]=articles.images.directus_files_id.caption` +
@@ -579,7 +580,7 @@ export const getSectionsByIssueId = cache(async (issueId: string, status: string
   try {
     const sections = await directus.request(
       readItems("sections", {
-        fields: ["id", "name", "slug", "articles", "old_id"],
+        fields: ["id", "name", "description", "slug", "articles", "old_id"],
         filter: {
           _and: [
             {
