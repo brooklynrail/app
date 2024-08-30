@@ -212,6 +212,21 @@ module.exports = {
         permanent: false,
       },
       {
+        source: "/2024/07/special-report/This-Is-Not-a-Just-Image",
+        destination: "/2024/07/dispatches/This-Is-Not-a-Just-Image",
+        permanent: false,
+      },
+      {
+        source: "/2024/07/special-report/Dispatch-on-the-political-conventions-2024",
+        destination: "/2024/07/dispatches/Dispatch-on-the-political-conventions-2024",
+        permanent: false,
+      },
+      {
+        source: "/2024/07/special-report/",
+        destination: "/2024/07/dispatches/",
+        permanent: false,
+      },
+      {
         source: "/archives",
         destination: "/archive",
         permanent: false,

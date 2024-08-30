@@ -19,8 +19,13 @@ export async function GET(request: Request) {
     }
 
     // Start revalidation
+    // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
+    const sectionPath = path.split("/").slice(0, 4).join("/") // /2024/09/architecture/
+    const issuePath = path.split("/").slice(0, 3).join("/") // /2024/09/
     revalidatePath(path)
-    const message = `Revalidation started for path: ${path}`
+    revalidatePath(sectionPath)
+    revalidatePath(issuePath)
+    const message = `Revalidation started for paths: ${path}, ${sectionPath}, ${issuePath}`
     return new Response(message, { status: 200 })
   } catch (err) {
     // Log the error for debugging purposes

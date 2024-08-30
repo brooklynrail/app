@@ -502,6 +502,7 @@ export type Sections = {
   date_updated?: string | null
   id: number
   name: string
+  description?: string | null
   old_id: number
   slug: string
   sort?: number | null

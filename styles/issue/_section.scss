@@ -7,6 +7,13 @@ header.section {
     @include u-font("sans", "2xl");
     @include u-text("thin");
   }
+  .description {
+    @include u-margin-left("2px");
+    @include u-margin-bottom(1);
+    @include u-font("sans", "md");
+    @include u-text("thin");
+    @include u-measure(4);
+  }
   .bio {
     @include u-margin-y(2);
     @include u-font("sans", "sm");
