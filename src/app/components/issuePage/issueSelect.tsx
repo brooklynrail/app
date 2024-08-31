@@ -10,10 +10,6 @@ const IssueSelect = (props: IssueSelectProps) => {
   const { currentIssueSlug, allIssues } = props
   const [selectedIssueSlug, setSelectedIssueSlug] = useState<string | undefined>(currentIssueSlug)
 
-  if (!allIssues) {
-    return <div className="loading_issue_select"></div>
-  }
-
   const handleIssueChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value
     // check for the issue
