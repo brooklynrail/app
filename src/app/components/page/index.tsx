@@ -6,6 +6,7 @@ import Link from "next/link"
 import { PageProps } from "@/app/[...slug]/page"
 import PageHead from "./pageHead"
 import PageBody from "./pageBody"
+import MapEmbed from "./map"
 
 const Page = (props: PageProps) => {
   const { thisIssueData } = props
@@ -96,18 +97,8 @@ const Page = (props: PageProps) => {
                       </li>
                     </ul>
                   </div>
-                  <section className="content">
-                    <PageBody {...props} />
-                    <p>
-                      <iframe
-                        src="https://www.google.com/maps/d/u/0/embed?mid=1d9gC__bvp0PFNyo2ygOKqsxTKeWeY5dU"
-                        width="640"
-                        height="480"
-                        sandbox=""
-                        allow="allow-scripts"
-                      ></iframe>
-                    </p>
-                  </section>
+                  <PageBody {...props} />
+                  <MapEmbed {...props} />
                 </article>
               </div>
             </div>

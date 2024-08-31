@@ -21,6 +21,9 @@ article.article {
 
   // see content.scss for content styles
 
+  .allcontributors {
+    clear: both;
+  }
   footer {
     .contributors {
       @include u-margin-bottom(9);

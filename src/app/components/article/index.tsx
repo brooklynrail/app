@@ -2,7 +2,7 @@
 import IssueRail from "../issueRail"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
-import { Ads, Articles } from "../../../../lib/types"
+import { Ads } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import ContributorsBox from "./contributors"
 import { getAds, getPermalink, PageType } from "../../../../lib/utils"
@@ -11,10 +11,8 @@ import { useEffect, useState } from "react"
 import ArticleHead from "./articleHead"
 import ArticleBody from "./articleBody"
 import parse from "html-react-parser"
-import Script from "next/script"
 import NextPrev from "./nextPrev"
 import Ad970 from "../ads/ad970"
-import Head from "next/head"
 import BookshopWidget from "./bookshop"
 
 const Article = (props: ArticleProps) => {
@@ -89,7 +87,7 @@ const Article = (props: ArticleProps) => {
                     </div>
                   )}
                   <BookshopWidget {...articleData} />
-                  <div className="content">
+                  <div className="content allcontributors">
                     <ContributorsBox contributors={contributors} />
                   </div>
                   <NextPrev {...props} currentSection={section} />
