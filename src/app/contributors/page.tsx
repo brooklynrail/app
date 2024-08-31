@@ -10,7 +10,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 5 mins.
-export const revalidate = 300
+export const revalidate = process.env.VERCEL_ENV === "production" ? 600 : 0
 
 export default async function ContributorsIndex() {
   const data = await getData()

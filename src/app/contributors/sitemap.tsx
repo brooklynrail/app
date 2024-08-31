@@ -9,7 +9,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 mins.
-export const revalidate = 3600
+export const revalidate = process.env.VERCEL_ENV === "production" ? 3600 : 0
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let allContributors = await getAllContributors()

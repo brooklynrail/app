@@ -10,7 +10,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
-export const revalidate = 600
+export const revalidate = process.env.VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
 export const viewport: Viewport = {
