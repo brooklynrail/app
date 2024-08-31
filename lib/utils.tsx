@@ -846,7 +846,7 @@ export function getPermalink(props: PermalinkProps) {
   // Localhost: NEXT_PUBLIC_BASE_URL http://localhost:3000
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL
     ? process.env.NEXT_PUBLIC_BASE_URL
-    : `https://${process.env.VERCEL_URL}`
+    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
 
   switch (type) {
     case PageType.Article:
