@@ -53,6 +53,7 @@ export const CoverImage = (props: CoverImagesProps) => {
             height: "auto",
           }}
           alt={alt}
+          sizes="25vw"
           onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
         />
       </div>
