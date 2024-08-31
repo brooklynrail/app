@@ -1,6 +1,6 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
@@ -63,8 +63,12 @@ async function getData({ params }: { params: IssueParams }) {
     year: year,
     month: month,
   })
-
   if (!thisIssueData) {
+    return notFound()
+  }
+
+  const allIssues = await getAllIssues()
+  if (!allIssues) {
     return notFound()
   }
 
@@ -82,6 +86,7 @@ async function getData({ params }: { params: IssueParams }) {
   return {
     thisIssueData,
     issueSections,
+    allIssues,
     permalink,
   }
 }

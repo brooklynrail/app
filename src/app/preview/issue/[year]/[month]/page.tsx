@@ -1,5 +1,5 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getPermalink, getPreviewIssue, getPreviewPassword } from "../../../../../../lib/utils"
+import { PageType, getAllIssues, getPermalink, getPreviewIssue, getPreviewPassword } from "../../../../../../lib/utils"
 import { Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -9,6 +9,7 @@ import { notFound } from "next/navigation"
 export interface IssuePreviewProps {
   thisIssueData: Issues
   issueSections: Sections[]
+  allIssues: Issues[]
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -57,14 +58,15 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
 
   const data = await getData({ params })
 
-  const { thisIssueData, issueSections, permalink, directusUrl, previewPassword } = data
+  const { thisIssueData, issueSections, permalink, directusUrl, previewPassword, allIssues } = data
   if (!thisIssueData || !issueSections || !permalink || !previewPassword || !directusUrl) {
-    return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
+    return notFound()
   }
 
   const issuePreviewProps = {
     thisIssueData,
     issueSections,
+    allIssues,
     permalink,
     directusUrl,
     previewPassword,
@@ -90,6 +92,11 @@ async function getData({ params }: { params: PreviewParams }) {
     return notFound()
   }
 
+  const allIssues = await getAllIssues()
+  if (!allIssues) {
+    return notFound()
+  }
+
   // make an array of all the sections used in thisIssueData.articles and remove any duplicates
   const issueSections = thisIssueData.articles
     .map((article) => article.section)
@@ -111,6 +118,7 @@ async function getData({ params }: { params: PreviewParams }) {
   return {
     thisIssueData,
     issueSections,
+    allIssues,
     permalink,
     previewPassword,
     directusUrl,

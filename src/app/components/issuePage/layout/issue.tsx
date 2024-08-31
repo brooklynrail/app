@@ -28,8 +28,6 @@ const IssueLayout = (props: IssuePageProps) => {
     }
   })
 
-  console.log("VERCEL_ENV", process.env.NEXT_PUBLIC_VERCEL_ENV)
-
   const promoProps = { currentArticles, year, month }
   const tocProps = { thisIssueData, currentSections, permalink, year, month }
 

@@ -1,27 +1,14 @@
 import { Issues } from "../../../../lib/types"
-import { useEffect, useState } from "react"
-import { getAllIssues } from "../../../../lib/utils"
+import { useState } from "react"
 
 interface IssueSelectProps {
   currentIssueSlug: string
+  allIssues: Issues[]
 }
 
 const IssueSelect = (props: IssueSelectProps) => {
-  const { currentIssueSlug } = props
-  const [allIssues, setAllIssues] = useState<Issues[] | null>(null)
+  const { currentIssueSlug, allIssues } = props
   const [selectedIssueSlug, setSelectedIssueSlug] = useState<string | undefined>(currentIssueSlug)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const issues = !allIssues ? getAllIssues() : Promise.resolve(allIssues)
-      // Fetch all the data in parallel
-      const [fetchedIssues] = await Promise.all([issues])
-      // Update the state with the fetched data as it becomes available
-      setAllIssues(fetchedIssues)
-    }
-    // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch data on Issue Select:", error))
-  }, [allIssues])
 
   if (!allIssues) {
     return <div className="loading_issue_select"></div>

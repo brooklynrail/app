@@ -1,6 +1,6 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getOGImage, getPermalink, getSpecialIssueData } from "../../../../lib/utils"
+import { PageType, getAllIssues, getOGImage, getPermalink, getSpecialIssueData } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
@@ -67,6 +67,11 @@ async function getData({ params }: { params: SpecialSectionParams }) {
     .map((article) => article.section)
     .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
+  const allIssues = await getAllIssues()
+  if (!allIssues) {
+    return notFound()
+  }
+
   const permalink = getPermalink({
     issueSlug: thisIssueData.slug,
     type: PageType.SpecialIssue,
@@ -76,6 +81,7 @@ async function getData({ params }: { params: SpecialSectionParams }) {
     props: {
       thisIssueData,
       issueSections,
+      allIssues,
       permalink,
     },
   }

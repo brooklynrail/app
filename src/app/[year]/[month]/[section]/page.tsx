@@ -1,5 +1,5 @@
 import { PageLayout } from "@/app/page"
-import { PageType, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
@@ -75,8 +75,12 @@ async function getData({ params }: { params: SectionParams }) {
     year: year,
     month: month,
   })
-
   if (!thisIssueData) {
+    return notFound()
+  }
+
+  const allIssues = await getAllIssues()
+  if (!allIssues) {
     return notFound()
   }
 
@@ -104,6 +108,7 @@ async function getData({ params }: { params: SectionParams }) {
       thisIssueData,
       issueSections,
       currentSection,
+      allIssues,
       permalink,
     },
   }
