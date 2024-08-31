@@ -14,6 +14,8 @@ import parse from "html-react-parser"
 import Script from "next/script"
 import NextPrev from "./nextPrev"
 import Ad970 from "../ads/ad970"
+import Head from "next/head"
+import BookshopWidget from "./bookshop"
 
 const Article = (props: ArticleProps) => {
   const { articleData, thisIssueData } = props
@@ -100,28 +102,6 @@ const Article = (props: ArticleProps) => {
       </div>
       <CoversPopup />
     </>
-  )
-}
-
-export const BookshopWidget = (props: Articles) => {
-  const { isbn } = props
-
-  if (!isbn) {
-    return <></>
-  }
-  return (
-    <div>
-      <Script
-        src={`https://bookshop.org/widgets.js`}
-        data-type={`book_button`}
-        data-affiliate-id={`24114`}
-        data-sku={isbn}
-        strategy="lazyOnload"
-        onError={(e: Error) => {
-          console.error("Script failed to load", e)
-        }}
-      />
-    </div>
   )
 }
 
