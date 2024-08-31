@@ -28,7 +28,7 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { thisIssueData, currentSection, issueSections, previewURL } = props
+  const { thisIssueData, currentSection, issueSections, previewURL, allIssues } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
   useEffect(() => {
@@ -95,7 +95,7 @@ const IssuePage = (props: IssuePageProps) => {
                   <div className="grid-col-2">
                     <div id="issuecolumn">
                       <div className="youarehereissue">
-                        <IssueSelect currentIssueSlug={slug} />
+                        <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
                         <CoverImage thisIssueData={thisIssueData} />
                       </div>
 

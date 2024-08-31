@@ -1,6 +1,6 @@
 import { Issues, Sections } from "../../lib/types"
 import IssuePage from "@/app/components/issuePage"
-import { getCurrentIssueData, getPermalink, PageType } from "../../lib/utils"
+import { getAllIssues, getCurrentIssueData, getPermalink, PageType } from "../../lib/utils"
 import { notFound } from "next/navigation"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
@@ -21,6 +21,7 @@ export enum PageLayout {
 }
 export interface IssuePageProps {
   thisIssueData: Issues
+  allIssues: Issues[]
   issueSections: Sections[]
   previewURL?: string
   currentSection?: Sections
@@ -52,6 +53,11 @@ async function getData() {
     .map((article) => article.section)
     .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
+  const allIssues = await getAllIssues()
+  if (!allIssues) {
+    return notFound()
+  }
+
   const permalink = getPermalink({
     type: PageType.Home,
   })
@@ -59,6 +65,7 @@ async function getData() {
   return {
     thisIssueData,
     issueSections,
+    allIssues,
     permalink,
   }
 }
