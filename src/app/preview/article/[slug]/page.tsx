@@ -8,7 +8,7 @@ import { notFound } from "next/navigation"
 
 export interface ArticlePreviewProps {
   articleData: Articles
-  issueBasics?: Issues
+  thisIssueData?: Issues
   currentSection?: Sections
   permalink: string
   errorCode?: number
@@ -70,14 +70,14 @@ export default async function ArticlePreviewPage({ params }: { params: PreviewPa
 
   const data = await getData({ params })
 
-  const { articleData, issueBasics, permalink, currentSection, directusUrl, previewPassword } = data
+  const { articleData, thisIssueData, permalink, currentSection, directusUrl, previewPassword } = data
   if (!articleData || !permalink || !previewPassword || !directusUrl) {
     return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
   }
 
   const articlePreviewProps = {
     articleData,
-    issueBasics,
+    thisIssueData,
     permalink,
     currentSection,
     directusUrl,
@@ -103,7 +103,7 @@ async function getData({ params }: { params: PreviewParams }) {
     return notFound()
   }
 
-  const issueBasics = articleData.issue
+  const thisIssueData = articleData.issue
   const currentSection = articleData.section
 
   const permalink = getPermalink({
@@ -117,7 +117,7 @@ async function getData({ params }: { params: PreviewParams }) {
   return {
     articleData,
     currentSection,
-    issueBasics,
+    thisIssueData,
     permalink,
     previewPassword,
     directusUrl,

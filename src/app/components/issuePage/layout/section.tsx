@@ -7,23 +7,23 @@ import parse from "html-react-parser"
 import { LayoutProps } from "./issue"
 
 const SectionLayout = (props: LayoutProps) => {
-  const { issueData, currentSection } = props
+  const { thisIssueData, currentSection } = props
 
   if (!currentSection) {
     return <></>
   }
 
-  const { year, month } = issueData
+  const { year, month } = thisIssueData
 
   // get the articles that belong to the current section
-  const currentArticles = issueData.articles.filter((article: Articles) => {
+  const currentArticles = thisIssueData.articles.filter((article: Articles) => {
     return article.section.slug === currentSection.slug
   })
 
   // If the current section is the Critics Page, add the Editors Message to the beginning of the currentArticles array
   if (currentSection.slug === "criticspage") {
     // find the articles that belong to the Editors Message section
-    const editorsMessage = issueData.articles.find((article: Articles) => {
+    const editorsMessage = thisIssueData.articles.find((article: Articles) => {
       return article.section.slug === "editorsmessage"
     })
     // add those articles to the beginning of the currentArticles array

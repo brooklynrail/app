@@ -1,5 +1,12 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getArticle, getIssueBasics, getOGImage, getPermalink } from "../../../../../../lib/utils"
+import {
+  PageType,
+  getArticle,
+  getArticlePages,
+  getIssueData,
+  getOGImage,
+  getPermalink,
+} from "../../../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
@@ -11,7 +18,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every day.
-export const revalidate = 3600
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 3600 : 0
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -56,7 +63,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 }
 export interface ArticleProps {
   articleData: Articles
-  issueBasics: Issues
+  thisIssueData: Issues
   currentSection?: Sections
   permalink: string
   errorCode?: number
@@ -76,8 +83,8 @@ async function getData({ params }: { params: ArticleParams }) {
   const slug: string = params.slug.toString()
   const section: string = params.section.toString()
 
-  const issueBasics = await getIssueBasics({ year, month }) // A limited set of data for the issue
-  if (!issueBasics) {
+  const thisIssueData = await getIssueData({ year, month })
+  if (!thisIssueData) {
     return notFound()
   }
 
@@ -94,8 +101,8 @@ async function getData({ params }: { params: ArticleParams }) {
   }
 
   const permalink = getPermalink({
-    year: issueBasics.year,
-    month: issueBasics.month,
+    year: thisIssueData.year,
+    month: thisIssueData.month,
     section: currentSection.slug,
     slug: articleData.slug,
     type: PageType.Article,
@@ -104,7 +111,7 @@ async function getData({ params }: { params: ArticleParams }) {
   return {
     props: {
       articleData,
-      issueBasics,
+      thisIssueData,
       currentSection,
       permalink,
     },
@@ -120,3 +127,27 @@ export default async function ArticlePageController({ params }: { params: Articl
 
   return <Article {...data.props} />
 }
+
+// export async function generateStaticParams() {
+//   const articlePages = await getArticlePages()
+
+//   if (!articlePages) {
+//     return notFound()
+//   }
+
+//   return articlePages.map((article: Articles) => {
+//     // NOTE: This is returning articles with no issues.
+//     // These are the articles that are part of the "Special Issues"
+//     // This might be a BUG, or might be how the REST API is set up.
+//     if (!article.issue) {
+//       return
+//     }
+//     const month = article.issue.month
+//     return {
+//       year: article.issue.year.toString(),
+//       month: month < 10 ? `0${month.toString()}` : month.toString(),
+//       section: article.section.slug,
+//       slug: article.slug,
+//     }
+//   })
+// }

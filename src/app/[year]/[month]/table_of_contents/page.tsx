@@ -1,6 +1,6 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getIssueData, getOGImage, getPermalink, getSectionsByIssueId } from "../../../../../lib/utils"
+import { PageType, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
@@ -11,7 +11,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 5 mins.
-export const revalidate = 300
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
 export const viewport: Viewport = {
@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {
   const data = await getData({ params })
 
-  const { title, cover_1, issue_number } = data.issueData
+  const { title, cover_1, issue_number } = data.thisIssueData
   const ogtitle = `${stripHtml(title).result}`
   const ogdescription = `Issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -59,31 +59,29 @@ async function getData({ params }: { params: IssueParams }) {
   const year = Number(params.year)
   const month = Number(params.month)
 
-  const issueData = await getIssueData({
+  const thisIssueData = await getIssueData({
     year: year,
     month: month,
   })
 
-  if (!issueData) {
+  if (!thisIssueData) {
     return notFound()
   }
 
-  // Get the current list of Sections used in this Issue (draft or published)
-  const sections = await getSectionsByIssueId(issueData.id, issueData.status)
-
-  if (!sections) {
-    return notFound()
-  }
+  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
+  const issueSections = thisIssueData.articles
+    .map((article) => article.section)
+    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
   const permalink = getPermalink({
-    year: issueData.year,
-    month: issueData.month,
+    year: thisIssueData.year,
+    month: thisIssueData.month,
     type: PageType.Issue,
   })
 
   return {
-    issueData,
-    sections,
+    thisIssueData,
+    issueSections,
     permalink,
   }
 }

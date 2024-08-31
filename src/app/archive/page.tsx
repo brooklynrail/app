@@ -10,7 +10,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
-export const revalidate = 600
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
 export const viewport: Viewport = {
@@ -24,14 +24,6 @@ export enum PageLayout {
   SpecialIssue = "special-issue",
   SpecialSection = "special-section",
   Contributor = "contributor",
-}
-export interface IssuePageProps {
-  issueData: Issues
-  currentSection?: Sections
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  layout: PageLayout
 }
 
 export default async function Homepage() {

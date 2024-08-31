@@ -6,8 +6,8 @@ import IssuePage from "../../issuePage"
 import { PageLayout } from "@/app/page"
 
 const IssuePreview = (props: IssuePreviewProps) => {
-  const { issueData, isEnabled, previewPassword } = props
-  const cookieSlug = `rail_preview_${issueData.slug}`
+  const { thisIssueData, isEnabled, previewPassword } = props
+  const cookieSlug = `rail_preview_${thisIssueData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
   const [passwordError, setPasswordError] = useState<string | undefined>()
@@ -44,7 +44,7 @@ const IssuePreview = (props: IssuePreviewProps) => {
     return <Password {...passwordProps} />
   }
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${issueData.year}/${issueData.month}`
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${thisIssueData.year}/${thisIssueData.month}`
   return (
     <>
       <IssuePage {...props} layout={PageLayout.Issue} previewURL={previewURL} />

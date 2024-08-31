@@ -42,7 +42,7 @@ const FeaturedImage = (props: FeaturedImageProps) => {
 
 interface ArticleHeadProps {
   permalink: string
-  issueBasics?: Issues
+  thisIssueData?: Issues
   currentSection?: Sections
   articleData: Articles
 }
@@ -90,10 +90,10 @@ const Authors = (props: AuthorsProps) => {
 }
 
 const ArticleHead = (props: ArticleHeadProps) => {
-  const { permalink, issueBasics, currentSection, articleData } = props
+  const { permalink, thisIssueData, currentSection, articleData } = props
   const { kicker, title, deck, featured_image, header_type, contributors, hide_bylines, byline_override } = articleData
 
-  const kickerProps = { kicker, issueBasics, currentSection }
+  const kickerProps = { kicker, thisIssueData, currentSection }
 
   const articleMeta = (
     <div className="article-meta">
@@ -112,7 +112,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
         </cite>
       )}
 
-      {issueBasics && <div className="date">{issueBasics.title}</div>}
+      {thisIssueData && <div className="date">{thisIssueData.title}</div>}
 
       <div className="share-tools">
         <Link

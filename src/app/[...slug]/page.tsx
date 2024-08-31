@@ -9,10 +9,10 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
-export const revalidate = 600
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 export interface PageProps {
   pageData: Pages
-  issueBasics: Issues
+  thisIssueData: Issues
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -20,13 +20,13 @@ export interface PageProps {
 
 interface PageParams {
   slug: string
-  issueBasics: Issues
+  thisIssueData: Issues
 }
 
 export default async function SinglePage({ params }: { params: PageParams }) {
   const data = await getData({ params })
 
-  if (!data.issueBasics || !data.pageData || !data.permalink) {
+  if (!data.thisIssueData || !data.pageData || !data.permalink) {
     return notFound()
   }
 
@@ -45,8 +45,8 @@ async function getData({ params }: { params: PageParams }) {
     return notFound()
   }
 
-  const issueBasics = await getCurrentIssueData()
-  if (!issueBasics) {
+  const thisIssueData = await getCurrentIssueData()
+  if (!thisIssueData) {
     return notFound()
   }
 
@@ -57,7 +57,7 @@ async function getData({ params }: { params: PageParams }) {
 
   return {
     pageData,
-    issueBasics,
+    thisIssueData,
     permalink,
   }
 }

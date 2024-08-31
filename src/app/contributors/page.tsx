@@ -1,5 +1,5 @@
 import { Contributors, Issues } from "../../../lib/types"
-import { getAllContributors, getCurrentIssueBasics, getPermalink, PageType } from "../../../lib/utils"
+import { getAllContributors, getCurrentIssueData, getPermalink, PageType } from "../../../lib/utils"
 import Link from "next/link"
 import IssueRail from "../components/issueRail"
 import { notFound } from "next/navigation"
@@ -10,7 +10,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 5 mins.
-export const revalidate = 300
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 export default async function ContributorsIndex() {
   const data = await getData()
@@ -40,7 +40,7 @@ export default async function ContributorsIndex() {
         <div className="grid-container">
           <div className="grid-row grid-gap-3">
             <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-              <IssueRail currentIssueBasics={data.currentIssueBasics} />
+              <IssueRail thisIssueData={data.thisIssueData} />
             </div>
 
             <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
@@ -87,14 +87,14 @@ async function getData() {
   }
   // filter out contributors with no articles
   allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)
-  const currentIssueBasics = await getCurrentIssueBasics()
+  const thisIssueData = await getCurrentIssueData()
 
-  if (!currentIssueBasics) {
+  if (!thisIssueData) {
     return notFound()
   }
 
   return {
-    currentIssueBasics,
+    thisIssueData,
     allContributors,
   }
 }

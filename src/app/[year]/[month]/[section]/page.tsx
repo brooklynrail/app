@@ -1,5 +1,5 @@
 import { PageLayout } from "@/app/page"
-import { PageType, getIssueData, getOGImage, getPermalink, getSectionsByIssueId } from "../../../../../lib/utils"
+import { PageType, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
@@ -12,7 +12,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
-export const revalidate = 600
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
 export const viewport: Viewport = {
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: SectionParams }): P
   }
 
   const { name } = data.props.currentSection
-  const { title, cover_1, issue_number } = data.props.issueData
+  const { title, cover_1, issue_number } = data.props.thisIssueData
   const ogtitle = `${name} – ${stripHtml(title).result}`
   const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
   const ogimageprops = { ogimage: cover_1, title }
@@ -71,23 +71,21 @@ async function getData({ params }: { params: SectionParams }) {
   const month = Number(params.month)
   const section = params.section.toString()
 
-  const issueData = await getIssueData({
+  const thisIssueData = await getIssueData({
     year: year,
     month: month,
   })
 
-  if (!issueData) {
+  if (!thisIssueData) {
     return notFound()
   }
 
-  // Get the current list of Sections used in this Issue (draft or published)
-  const currentSections = await getSectionsByIssueId(issueData.id, issueData.status)
+  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
+  const issueSections = thisIssueData.articles
+    .map((article) => article.section)
+    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
-  if (!currentSections) {
-    return { props: { errorCode: 404, errorMessage: "No currentSections found" } }
-  }
-
-  const currentSection = currentSections.find((s: Sections) => s.slug === section)
+  const currentSection = issueSections.find((s: Sections) => s.slug === section)
 
   // If `section` does not exist, set errorCode to a string
   if (!currentSection) {
@@ -95,16 +93,16 @@ async function getData({ params }: { params: SectionParams }) {
   }
 
   const permalink = getPermalink({
-    year: issueData.year,
-    month: issueData.month,
+    year: thisIssueData.year,
+    month: thisIssueData.month,
     section: currentSection.slug,
     type: PageType.Section,
   })
 
   return {
     props: {
-      issueData,
-      sections: currentSections,
+      thisIssueData,
+      issueSections,
       currentSection,
       permalink,
     },
