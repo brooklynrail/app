@@ -48,7 +48,6 @@ const PromoStandard = (props: PromoProps) => {
   const { article, showSection, showImage, permalink, order } = props
   const { title, excerpt, promo_banner } = article
 
-  console.log("promo standard", props)
   const orderNum = (
     <span className="sort">
       <span>{order}</span>
