@@ -8,7 +8,7 @@ import ArticleHead from "../../article/articleHead"
 import ArticleBody from "../../article/articleBody"
 import PreviewHeader from "../previewHead"
 import parse from "html-react-parser"
-import { BookshopWidget } from "../../article"
+import BookshopWidget from "../../article/bookshop"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
