@@ -476,6 +476,55 @@ export async function getSpecialIssueData(props: SpecialIssueDataProps) {
   }
 }
 
+interface SectionDataProps {
+  slug: string
+}
+export async function getSectionData(props: SectionDataProps) {
+  const { slug } = props
+
+  try {
+    const sections = await directus.request(
+      readItems("sections", {
+        fields: [
+          "id",
+          "name",
+          "slug",
+          "old_id",
+          {
+            articles: [
+              "slug",
+              "title",
+              "excerpt",
+              "sort",
+              "status",
+              {
+                section: ["name", "slug"],
+              },
+              {
+                issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+              },
+              {
+                contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+              },
+              {
+                featured_image: ["id", "width", "height", "filename_disk", "caption"],
+              },
+            ],
+          },
+        ],
+        filter: {
+          slug: { _eq: slug },
+        },
+      }),
+    )
+
+    return sections[0] as Sections
+  } catch (error) {
+    console.error("Error fetching section data:", error)
+    return null
+  }
+}
+
 export const getSectionsByIssueId = cache(async (issueId: string, status: string) => {
   try {
     const sections = await directus.request(
@@ -585,8 +634,8 @@ export async function getPreviewArticle(slug: string) {
         version: "draft",
         fields: [
           "*",
-          { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { section: ["id", "name", "slug"] },
+          { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
           { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
           { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
