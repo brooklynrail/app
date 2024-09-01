@@ -1,0 +1,99 @@
+// Ads
+
+.onair {
+  @include u-padding-x(2);
+  @include u-padding-bottom(4);
+  @include u-position("fixed");
+  @include u-bottom(0);
+  @include u-left(0);
+  @include u-right(0);
+  @include u-z(200);
+  a {
+    @include u-text("black");
+    @include u-text("no-underline");
+    &:hover {
+      p span {
+        @include u-text("underline");
+      }
+    }
+  }
+  .bar {
+    @include u-padding-right("05");
+    @include u-display("flex");
+    @include u-flex("justify");
+    @include u-flex("align-center");
+    @include u-font("sans", "xs");
+    @include u-width("full");
+    @include u-radius("pill");
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .bug {
+      @include u-padding-y("205");
+
+      h4 {
+        @include u-padding-left(4);
+        @include u-padding-right(3);
+        @include u-font("sans", "xs");
+        @include u-text("medium");
+        @include u-text("white");
+        white-space: nowrap;
+      }
+    }
+    .marquee {
+      @include u-font("sans", "sm");
+      @include u-radius-right("pill");
+      background-color: rgba(255, 255, 255, 0.9);
+      @include u-padding-y(2);
+      @include u-width("full");
+      @include u-overflow("hidden");
+      --gap: 0.1rem;
+      display: flex;
+      overflow: hidden;
+      user-select: none;
+      gap: var(--gap);
+      p {
+        @include u-padding-x(0);
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-around;
+        gap: var(--gap);
+        animation: scroll 15s linear infinite;
+        white-space: nowrap;
+        @include u-text("light");
+        strong {
+          @include u-text("medium");
+          @include u-padding-right("05");
+        }
+        span {
+          @include u-padding-right(3);
+        }
+        .register {
+          @include u-text("indigo-60v");
+          @include u-text("medium");
+          @include u-text("uppercase");
+        }
+      }
+    }
+    @keyframes scroll {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(calc(-100% - var(--gap)));
+      }
+    }
+  }
+}

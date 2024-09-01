@@ -8,6 +8,7 @@ import { Articles, Issues, Sections } from "../../../../../lib/types"
 import { IssuePageProps, PageLayout } from "@/app/page"
 import TableOfContents from "../tableOfContents"
 import SubscribeAd from "../subscribeAd"
+import OnAir from "../../onAir"
 
 export interface LayoutProps {
   thisIssueData: Issues
