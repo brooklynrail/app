@@ -55,6 +55,10 @@ export type Articles = {
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
+export interface Redirects {
+  path: string
+  articles: Articles
+}
 
 export type ArticlesContributors = {
   articles_slug?: Articles | null
@@ -545,4 +549,5 @@ export type CustomDirectusTypes = {
   issues: Issues[]
   pages: Pages[]
   sections: Sections[]
+  redirects: Redirects[]
 }

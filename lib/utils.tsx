@@ -1,7 +1,7 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
-import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues, Pages, Sections } from "./types"
+import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues, Pages, Redirects, Sections } from "./types"
 import { stripHtml } from "string-strip-html"
 import { cache } from "react"
 
@@ -782,6 +782,39 @@ export async function getArticle(slug: string, status?: string) {
     return data[0] as Articles
   } catch (error) {
     console.error(error)
+    return null
+  }
+}
+
+export async function getRedirect(slug: string) {
+  try {
+    const redirect = await directus.request(
+      readItems("redirects", {
+        fields: [
+          "path",
+          {
+            articles: [
+              "slug",
+              "title",
+              {
+                issue: ["year", "month", "slug", "special_issue"],
+              },
+              {
+                section: ["slug"],
+              },
+            ],
+          },
+        ],
+        filter: {
+          path: {
+            _contains: slug,
+          },
+        },
+      }),
+    )
+    return redirect[0] as Redirects
+  } catch (error) {
+    console.error("Error in getRedirect", error)
     return null
   }
 }

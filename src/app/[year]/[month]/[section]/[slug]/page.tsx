@@ -1,16 +1,10 @@
 import { stripHtml } from "string-strip-html"
-import {
-  PageType,
-  getArticle,
-  getArticlePages,
-  getIssueData,
-  getOGImage,
-  getPermalink,
-} from "../../../../../../lib/utils"
+import { PageType, getArticle, getIssueData, getOGImage, getPermalink, getRedirect } from "../../../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
 import { notFound } from "next/navigation"
+import { AddRedirect } from "@/app/actions/redirect"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -90,7 +84,13 @@ async function getData({ params }: { params: ArticleParams }) {
 
   const articleData = await getArticle(slug, "published")
   if (!articleData) {
-    return notFound()
+    if (!articleData) {
+      const redirect = await getRedirect(slug)
+      if (redirect) {
+        await AddRedirect(redirect)
+      }
+      return notFound()
+    }
   }
 
   const currentSection = articleData.section
