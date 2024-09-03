@@ -38,23 +38,27 @@ const OnAir = () => {
       timeZoneName: "short",
     })
 
+  const time = nextEventTime && nextEventTime.replace("AM", "a.m.").replace("PM", "p.m.")
+
+  // if the date is today, show "Today", if the date is tomorrow, show "Tomorrow", otherwise, show the date
+  const timetext = nextEvent && nextEvent.start_date.includes("T00:00:00") ? "Today" : "Tomorrow"
+
   return (
     <div className="onair">
       <Link href={nextEvent ? nextEvent.url : `/events`}>
         <div className="bar">
           <div className="bug">
-            <h4>TODAY</h4>
+            <h4>On The New Social Environment</h4>
           </div>
           {nextEvent ? (
             <div className="marquee">
               {[...Array(10)].map((_, i) => (
                 <>
                   <p key={i} aria-hidden={i == 0 ? false : true}>
-                    <span>
-                      <strong>{nextEvent.title}</strong>
+                    <span className="event-title">
+                      <strong>{nextEvent.title}</strong> {timetext} {time}
                     </span>
-                    <span>{nextEventTime}</span>
-                    <span className="register">Sign up</span>
+                    <span>•</span>
                   </p>
                 </>
               ))}
@@ -68,6 +72,9 @@ const OnAir = () => {
               ))}
             </div>
           )}
+          <div className="bug">
+            <h4>Join us</h4>
+          </div>
         </div>
       </Link>
     </div>

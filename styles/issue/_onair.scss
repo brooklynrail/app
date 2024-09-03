@@ -12,13 +12,13 @@
     @include u-text("black");
     @include u-text("no-underline");
     &:hover {
-      p span {
+      p span.event-title {
         @include u-text("underline");
       }
     }
   }
   .bar {
-    @include u-padding-right("05");
+    // @include u-padding-right("05");
     @include u-display("flex");
     @include u-flex("justify");
     @include u-flex("align-center");
@@ -54,7 +54,6 @@
     }
     .marquee {
       @include u-font("sans", "sm");
-      @include u-radius-right("pill");
       background-color: rgba(255, 255, 255, 0.9);
       @include u-padding-y(2);
       @include u-width("full");
