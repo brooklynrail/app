@@ -1,5 +1,5 @@
 .preview-info {
-  @include u-margin-top(4);
+  @include u-margin-top("205");
   @include u-margin-right(2);
   @include u-bg("blue-warm-5");
   @include u-font("sans", "2xs");
@@ -125,19 +125,42 @@
     @include u-display("flex");
     @include u-flex("align-center");
     @include u-text("medium");
+    p {
+      @include u-display("flex");
+      @include u-flex("column");
+      * {
+        @include u-margin-top("2px");
+      }
+    }
     strong {
       @include u-display("block");
       @include u-text("uppercase");
-      @include u-text("red-50v");
       @include u-text("medium");
+    }
+    .status-draft {
+      @include u-text("red-50v");
+    }
+    .status-published {
+      @include u-text("green-40v");
     }
     em {
       @include u-text("normal");
+      @include u-text("no-italic");
       @include u-display("block");
+      @include u-text("gray-warm-50");
     }
     .avatar {
       @include u-margin-right(1);
       @include u-radius("pill");
+    }
+    a {
+      @include u-margin-top(1);
+      display: inline-block;
+      @include u-text("blue-warm-60v");
+      &:hover {
+        @include u-text("blue-warm-70v");
+        @include u-text("underline");
+      }
     }
   }
   hr {
