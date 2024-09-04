@@ -34,13 +34,19 @@ export const PromoImage = (props: PromoImageProps) => {
 
 const PromoSection = (props: PromoProps) => {
   const { article, showSection, showImage, permalink, order } = props
-  const { title, excerpt, featured_image } = article
+  const { title, excerpt, featured_image, hide_bylines_downstream, contributors } = article
 
   const orderNum = (
     <span className="sort">
       <span>{order}</span>
     </span>
   )
+
+  const names = contributors.map((contributor: any, i: number) => {
+    const { first_name, last_name } = contributor.contributors_id
+    const name = `${first_name} ${last_name}`
+    return <span key={`first_name-last_name-${i}`}>{name}</span>
+  })
 
   return (
     <div className="promo promo-section" itemType="http://schema.org/Article">
@@ -53,6 +59,7 @@ const PromoSection = (props: PromoProps) => {
               {parse(title)}
             </Link>
           </h4>
+          {!hide_bylines_downstream && <cite className="byline">By {names} </cite>}
           <div className="excerpt">{parse(excerpt)}</div>
         </div>
         <div className="grid-col-4 tablet:grid-col-4">
