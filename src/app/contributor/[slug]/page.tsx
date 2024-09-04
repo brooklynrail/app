@@ -197,9 +197,6 @@ async function getData({ params }: { params: ContributorsParams }) {
   }
 }
 
-function getCurrentIssue() {
-  throw new Error("Function not implemented.")
-}
 // export async function generateStaticParams() {
 //   let allContributors = await getAllContributors()
 //   // filter out contributors with no articles
