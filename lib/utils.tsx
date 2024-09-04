@@ -997,6 +997,12 @@ export async function getContributor(slug: string) {
     `&fields[]=articles.articles_slug.issue.special_issue` +
     `&fields[]=articles.articles_slug.section.slug` +
     `&fields[]=articles.articles_slug.section.name` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.id` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.first_name` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.last_name` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.old_id` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.slug` +
+    `&fields[]=articles.articles_slug.contributors.contributors_id.bio` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
     `&filter[articles][_nnull]=true` +
