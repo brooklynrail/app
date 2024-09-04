@@ -14,6 +14,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
   const { contributors } = articleData
 
+  // cookieSlug is the cookie that gets set after you enter the password
   const cookieSlug = `rail_preview_${articleData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
@@ -25,10 +26,27 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   // if either of these cookies are set, the article will be viewable
   useEffect(() => {
     // Read the cookie
-    if (isEnabled) {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim())
+    const previewCookie = cookies.find((cookie) => cookie.includes(cookieSlug))
+    const directusCookie = cookies.find((cookie) => cookie.includes("directus_session_token"))
+    console.log("Cookies", cookies)
+    console.log("previewCookie", previewCookie)
+    console.log("directusCookie", directusCookie)
+    // If the cookie is set, show the article
+    if (previewCookie || directusCookie) {
+      console.log("Preview cookie found", previewCookie)
+      console.log("Directus cookie found", directusCookie)
       setIsViewable(true)
     }
-  }, [isEnabled])
+    if (isViewable) {
+      console.log("isViewable mode enabled")
+      setIsViewable(true)
+    }
+    if (isEnabled) {
+      console.log("Preview mode enabled")
+      setIsViewable(true)
+    }
+  }, [isEnabled, isViewable])
 
   const handlePasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault()
