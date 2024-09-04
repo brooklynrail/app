@@ -29,7 +29,7 @@ const Password = (props: PasswordProps) => {
                     onChange={(event) => handlePasswordChange(event)}
                     placeholder="password..."
                   />
-                  <button type="submit">👁️</button>
+                  <button type="submit">Submit</button>
                 </div>
                 <p>{passwordError}</p>
               </div>

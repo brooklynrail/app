@@ -247,12 +247,14 @@
       button {
         @include u-margin-left(1);
         @include u-border(0);
-        @include u-font("sans", "xl");
-        @include u-padding(1);
+        @include u-font("sans", "md");
+        @include u-padding-y("105");
+        @include u-padding-x(2);
         @include u-radius("md");
-        @include u-bg("white");
+        @include u-text("white");
+        @include u-bg("blue-warm-40v");
         &:hover {
-          @include u-bg("base-lightest");
+          @include u-bg("blue-warm-50v");
           @include u-cursor("pointer");
         }
       }
