@@ -3,6 +3,9 @@ import Image from "next/image"
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
 import PromoBuilder from "./promoBuilder"
+import { get } from "http"
+import { getPermalink, PageType } from "../../../../lib/utils"
+import Link from "next/link"
 
 interface PreviewImageProps {
   image: DirectusFiles
@@ -39,9 +42,11 @@ const PreviewImage = (props: PreviewImageProps) => {
 
 interface EditorInfoProps {
   date: string
+  status: string
+  permalink: string | null
 }
 const EditorInfo = (props: DirectusUsers & EditorInfoProps) => {
-  const { first_name, last_name, avatar, date } = props
+  const { first_name, last_name, avatar, date, status, permalink } = props
   const profileImg = avatar ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${avatar}` : ""
   const today = new Date().toLocaleString("en-US", {
     month: "short",
@@ -57,15 +62,22 @@ const EditorInfo = (props: DirectusUsers & EditorInfoProps) => {
     hour12: false,
   })
 
+  console.log("permalink", permalink)
+
   return (
     <div className="editor">
-      <Image className="avatar" src={profileImg} alt={`${first_name} ${last_name}`} width={35} height={35} />
+      <Image className="avatar" src={profileImg} alt={`${first_name} ${last_name}`} width={45} height={45} />
       <p>
-        <strong>Draft</strong>
+        <strong className={`status status-${status}`}>{status}</strong>
         <span>{`Last updated by ${first_name} ${last_name}`}</span>
         <em>
           {today == newdate ? `Today` : `${newdate}`} at {time}
         </em>
+        {permalink && (
+          <Link target="_blank" href={permalink}>
+            LIVE URL »
+          </Link>
+        )}
       </p>
     </div>
   )
@@ -78,6 +90,7 @@ interface PreviewInfoProps {
 
 const PreviewInfo = (props: PreviewInfoProps) => {
   const {
+    status,
     excerpt,
     images,
     title,
@@ -89,28 +102,36 @@ const PreviewInfo = (props: PreviewInfoProps) => {
     slideshow_image,
     promo_thumb,
     promo_banner,
+    issue,
+    slug,
   } = props.articleData
 
-  const allImages = images
-    ? images.map((image: ArticlesFiles, i: number) => {
-        if (!image.directus_files_id || typeof image.directus_files_id === "string") {
-          return <></>
-        }
-        const img = image.directus_files_id
-        return <PreviewImage key={i} order={i} image={img} directusUrl={props.directusUrl} showShortcode={true} />
-      })
-    : null
+  const permalink =
+    status === "published"
+      ? getPermalink({
+          slug: slug,
+          year: issue.year,
+          month: issue.month,
+          section: section.slug,
+          type: PageType.Article,
+        })
+      : null
 
   return (
     <div className="preview-info">
       {user_updated && typeof user_updated !== "string" && (
         <div className="block updated">
-          <EditorInfo {...user_updated} date={date_updated} />
+          <EditorInfo {...user_updated} date={date_updated} status={status} permalink={permalink} />
         </div>
       )}
       <div className="block">
         <h4>Title</h4>
         <p className="title">{parse(title)}</p>
+      </div>
+
+      <div className="block">
+        <h4>Excerpt</h4>
+        {parse(excerpt)}
       </div>
 
       <div className="block">
@@ -124,10 +145,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           <PreviewImage order={1} image={featured_image} directusUrl={props.directusUrl} showShortcode={false} />
         </div>
       )}
-      <div className="block">
-        <h4>Excerpt</h4>
-        {parse(excerpt)}
-      </div>
+
       <div className="block">
         <h4>SEO Title</h4>
         <p>{title_tag ? stripHtml(title_tag).result : stripHtml(title).result}</p>
@@ -163,11 +181,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           <PreviewImage order={1} image={promo_thumb} directusUrl={props.directusUrl} showShortcode={false} />
         </div>
       )}
-      <div className="block hidden">
-        <h4>Article Images</h4>
-        <div className="all-images">{allImages}</div>
-      </div>
-      <hr />
+
       <PromoBuilder />
     </div>
   )

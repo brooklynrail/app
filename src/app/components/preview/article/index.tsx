@@ -11,16 +11,16 @@ import parse from "html-react-parser"
 import BookshopWidget from "../../article/bookshop"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
-  const { articleData, isStudioPreview, previewPassword, directusUrl } = props
+  const { articleData, isEnabled, previewPassword, directusUrl } = props
   const { contributors } = articleData
 
   // cookieSlug is the cookie that gets set after you enter the password
   const cookieSlug = `rail_preview_${articleData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
+  const [isStudioPreview, setIsStudioPreview] = useState(false)
   const [passwordError, setPasswordError] = useState<string | undefined>()
 
-  console.log("First isStudioPreview: ", isStudioPreview)
   // the previewCookie is set on a per-article basis
   // this way, writers will have to enter the password for each article they want to preview
   // the isStudioPreview param is set to `true` when you are logged in to Directus
@@ -28,32 +28,28 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   useEffect(() => {
     // get the URL of the current page
     const currentUrl = window.location.href
-    console.log("currentUrl: ", currentUrl)
 
     // Read the cookie
     const cookies = document.cookie.split(";").map((cookie) => cookie.trim())
     const previewCookie = cookies.find((cookie) => cookie.includes(cookieSlug))
-    const directus_session_token = cookies.find((cookie) => cookie.includes(`directus_session_token`))
-    console.log("directus_session_token: ", directus_session_token)
 
     // If the Preview Password has been previously entered, the preview cookie should be set
     // then the article should be viewable
     if (previewCookie) {
-      console.log("previewCookie found: ", previewCookie)
       setIsViewable(true)
     }
     // If the Preview Password has been previously entered, the preview cookie should be set
     if (isViewable) {
-      console.log("isViewable: ", isViewable)
       setIsViewable(true)
     }
+
     if (currentUrl.includes("draftMode")) {
-      console.log("currentUrl contains draftMode!")
       setIsViewable(true)
+      setIsStudioPreview(true)
     }
-    if (isStudioPreview) {
-      console.log("isStudioPreview: ", isStudioPreview)
+    if (isEnabled) {
       setIsViewable(true)
+      setIsStudioPreview(true)
     }
   }, [isStudioPreview, isViewable])
 

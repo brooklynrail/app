@@ -13,7 +13,7 @@ export interface IssuePreviewProps {
   permalink: string
   errorCode?: number
   errorMessage?: string
-  isStudioPreview: boolean
+  isEnabled: boolean
   previewPassword: string
   directusUrl: string
 }
@@ -70,7 +70,7 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
     permalink,
     directusUrl,
     previewPassword,
-    isStudioPreview: isEnabled,
+    isEnabled,
   }
 
   return <IssuePreview {...issuePreviewProps} />

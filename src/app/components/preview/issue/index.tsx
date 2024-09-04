@@ -6,10 +6,11 @@ import IssuePage from "../../issuePage"
 import { PageLayout } from "@/app/page"
 
 const IssuePreview = (props: IssuePreviewProps) => {
-  const { thisIssueData, isStudioPreview, previewPassword } = props
+  const { thisIssueData, isEnabled, previewPassword } = props
   const cookieSlug = `rail_preview_${thisIssueData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
+  const [isStudioPreview, setIsStudioPreview] = useState(false)
   const [passwordError, setPasswordError] = useState<string | undefined>()
 
   // the previewCookie is set on a per-article basis
@@ -17,11 +18,32 @@ const IssuePreview = (props: IssuePreviewProps) => {
   // the directusCookie is set when you are logged in to Directus
   // if either of these cookies are set, the article will be viewable
   useEffect(() => {
+    // get the URL of the current page
+    const currentUrl = window.location.href
+
     // Read the cookie
-    if (isStudioPreview) {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim())
+    const previewCookie = cookies.find((cookie) => cookie.includes(cookieSlug))
+
+    // If the Preview Password has been previously entered, the preview cookie should be set
+    // then the article should be viewable
+    if (previewCookie) {
       setIsViewable(true)
     }
-  }, [isStudioPreview])
+    // If the Preview Password has been previously entered, the preview cookie should be set
+    if (isViewable) {
+      setIsViewable(true)
+    }
+
+    if (currentUrl.includes("draftMode")) {
+      setIsViewable(true)
+      setIsStudioPreview(true)
+    }
+    if (isEnabled) {
+      setIsViewable(true)
+      setIsStudioPreview(true)
+    }
+  }, [isStudioPreview, isViewable])
 
   const handlePasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault()
