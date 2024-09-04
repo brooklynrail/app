@@ -28,24 +28,18 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
     // Read the cookie
     const cookies = document.cookie.split(";").map((cookie) => cookie.trim())
     const previewCookie = cookies.find((cookie) => cookie.includes(cookieSlug))
-    const directusCookie = cookies.find((cookie) => cookie.includes("directus_session_token"))
-    console.log("====================================")
-    console.log("Cookies", cookies)
     console.log("previewCookie", previewCookie)
-    console.log("directusCookie", directusCookie)
-    console.log("isStudioPreview", isStudioPreview)
-    // If the cookie is set, show the article
-    if (previewCookie || directusCookie) {
-      console.log("Preview cookie found", previewCookie)
-      console.log("Directus cookie found", directusCookie)
+
+    // If the Preview Password has been previously entered, the preview cookie should be set
+    // then the article should be viewable
+    if (previewCookie) {
       setIsViewable(true)
     }
+    // If the Preview Password has been previously entered, the preview cookie should be set
     if (isViewable) {
-      console.log("isViewable mode enabled")
       setIsViewable(true)
     }
     if (isStudioPreview) {
-      console.log("Studio Preview mode enabled")
       setIsViewable(true)
     }
   }, [isStudioPreview, isViewable])
