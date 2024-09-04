@@ -1,5 +1,6 @@
 import { draftMode } from "next/headers"
 import { getPreviewArticle } from "../../../../../lib/utils"
+import { redirect } from "next/navigation"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -22,10 +23,11 @@ export async function GET(request: Request) {
 
   draftMode().enable()
 
-  return new Response(null, {
-    status: 307,
-    headers: {
-      Location: `/preview/article/${article.slug}?draftMode=true`,
-    },
-  })
+  const { isEnabled } = draftMode()
+  console.log("API Draft mode enabled: ", isEnabled)
+
+  // Redirect to the path
+  const path = `/preview/article/${article.slug}?draftMode=true`
+  console.log("Redirecting to", path)
+  redirect(path)
 }

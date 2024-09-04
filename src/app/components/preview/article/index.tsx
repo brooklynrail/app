@@ -20,26 +20,39 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   const [isViewable, setIsViewable] = useState(false)
   const [passwordError, setPasswordError] = useState<string | undefined>()
 
+  console.log("First isStudioPreview: ", isStudioPreview)
   // the previewCookie is set on a per-article basis
   // this way, writers will have to enter the password for each article they want to preview
-  // the directusCookie is set when you are logged in to Directus
+  // the isStudioPreview param is set to `true` when you are logged in to Directus
   // if either of these cookies are set, the article will be viewable
   useEffect(() => {
+    // get the URL of the current page
+    const currentUrl = window.location.href
+    console.log("currentUrl: ", currentUrl)
+
     // Read the cookie
     const cookies = document.cookie.split(";").map((cookie) => cookie.trim())
     const previewCookie = cookies.find((cookie) => cookie.includes(cookieSlug))
-    console.log("previewCookie", previewCookie)
+    const directus_session_token = cookies.find((cookie) => cookie.includes(`directus_session_token`))
+    console.log("directus_session_token: ", directus_session_token)
 
     // If the Preview Password has been previously entered, the preview cookie should be set
     // then the article should be viewable
     if (previewCookie) {
+      console.log("previewCookie found: ", previewCookie)
       setIsViewable(true)
     }
     // If the Preview Password has been previously entered, the preview cookie should be set
     if (isViewable) {
+      console.log("isViewable: ", isViewable)
+      setIsViewable(true)
+    }
+    if (currentUrl.includes("draftMode")) {
+      console.log("currentUrl contains draftMode!")
       setIsViewable(true)
     }
     if (isStudioPreview) {
+      console.log("isStudioPreview: ", isStudioPreview)
       setIsViewable(true)
     }
   }, [isStudioPreview, isViewable])
@@ -52,7 +65,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
       // Redirect to the article preview
       setIsViewable(true)
       // set a cookie
-      document.cookie = `${cookieSlug}=true; path=/; max-age=3600; samesite=strict; secure`
+      document.cookie = `${cookieSlug}=true; path=/; max-age=3600; SameSite=None; Secure`
     } else {
       // Show an error message for incorrect password
       setPasswordError("Incorrect password")
@@ -93,9 +106,11 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                   )}
                 </article>
               </div>
-              <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <PreviewInfo articleData={articleData} directusUrl={directusUrl} />
-              </div>
+              {isStudioPreview && (
+                <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
+                  <PreviewInfo articleData={articleData} directusUrl={directusUrl} />
+                </div>
+              )}
             </div>
           </div>
         </main>
