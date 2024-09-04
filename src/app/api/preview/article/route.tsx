@@ -24,10 +24,14 @@ export async function GET(request: Request) {
   draftMode().enable()
 
   const { isEnabled } = draftMode()
-  console.log("API Draft mode enabled: ", isEnabled)
 
   // Redirect to the path
   const path = `/preview/article/${article.slug}?draftMode=true`
-  console.log("Redirecting to", path)
-  redirect(path)
+  // redirect(path)
+  return new Response(null, {
+    status: 307,
+    headers: {
+      Location: path,
+    },
+  })
 }
