@@ -13,7 +13,7 @@ export interface ArticlePreviewProps {
   permalink: string
   errorCode?: number
   errorMessage?: string
-  isEnabled: boolean
+  isStudioPreview: boolean
   previewPassword: string
   directusUrl: string
 }
@@ -82,7 +82,7 @@ export default async function ArticlePreviewPage({ params }: { params: PreviewPa
     currentSection,
     directusUrl,
     previewPassword,
-    isEnabled,
+    isStudioPreview: isEnabled,
   }
 
   return <ArticlePreview {...articlePreviewProps} />

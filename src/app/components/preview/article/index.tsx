@@ -11,7 +11,7 @@ import parse from "html-react-parser"
 import BookshopWidget from "../../article/bookshop"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
-  const { articleData, isEnabled, previewPassword, directusUrl } = props
+  const { articleData, isStudioPreview, previewPassword, directusUrl } = props
   const { contributors } = articleData
 
   // cookieSlug is the cookie that gets set after you enter the password
@@ -29,10 +29,11 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
     const cookies = document.cookie.split(";").map((cookie) => cookie.trim())
     const previewCookie = cookies.find((cookie) => cookie.includes(cookieSlug))
     const directusCookie = cookies.find((cookie) => cookie.includes("directus_session_token"))
-    console.log("Coolie log", document.cookie)
+    console.log("====================================")
     console.log("Cookies", cookies)
     console.log("previewCookie", previewCookie)
     console.log("directusCookie", directusCookie)
+    console.log("isStudioPreview", isStudioPreview)
     // If the cookie is set, show the article
     if (previewCookie || directusCookie) {
       console.log("Preview cookie found", previewCookie)
@@ -43,11 +44,11 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
       console.log("isViewable mode enabled")
       setIsViewable(true)
     }
-    if (isEnabled) {
-      console.log("Preview mode enabled")
+    if (isStudioPreview) {
+      console.log("Studio Preview mode enabled")
       setIsViewable(true)
     }
-  }, [isEnabled, isViewable])
+  }, [isStudioPreview, isViewable])
 
   const handlePasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault()

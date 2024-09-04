@@ -6,7 +6,7 @@ import IssuePage from "../../issuePage"
 import { PageLayout } from "@/app/page"
 
 const IssuePreview = (props: IssuePreviewProps) => {
-  const { thisIssueData, isEnabled, previewPassword } = props
+  const { thisIssueData, isStudioPreview, previewPassword } = props
   const cookieSlug = `rail_preview_${thisIssueData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
@@ -18,10 +18,10 @@ const IssuePreview = (props: IssuePreviewProps) => {
   // if either of these cookies are set, the article will be viewable
   useEffect(() => {
     // Read the cookie
-    if (isEnabled) {
+    if (isStudioPreview) {
       setIsViewable(true)
     }
-  }, [isEnabled])
+  }, [isStudioPreview])
 
   const handlePasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault()
