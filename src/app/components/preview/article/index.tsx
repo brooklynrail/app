@@ -29,6 +29,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
     const cookies = document.cookie.split(";").map((cookie) => cookie.trim())
     const previewCookie = cookies.find((cookie) => cookie.includes(cookieSlug))
     const directusCookie = cookies.find((cookie) => cookie.includes("directus_session_token"))
+    console.log("Coolie log", document.cookie)
     console.log("Cookies", cookies)
     console.log("previewCookie", previewCookie)
     console.log("directusCookie", directusCookie)
