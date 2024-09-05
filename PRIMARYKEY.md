@@ -27,14 +27,20 @@ ADD CONSTRAINT unique_article_id UNIQUE (id);
 
 ## 2. Add the article_id to the join tables
 
-1. Add the new column to the join table:
+All of the join tables currently have three columns:
+
+- id
+- articles_slug
+- contributors_slug (changes)
+
+1. Add the new `article_id` column to the join table:
 
 ```
 ALTER TABLE articles_contributors
 ADD COLUMN article_id UUID;
 ```
 
-2. populate the new article_id column with the correct UUID values from the articles table by joining on the article_slug:
+2. populate the new `article_id` column with the correct UUID values from the articles table by joining on the `article_slug`:
 
 ```
 UPDATE articles_contributors jt
@@ -43,7 +49,7 @@ FROM articles a
 WHERE jt.articles_slug = a.slug;
 ```
 
-3. create a foreign key constraint on the article_id column in the join table:
+3. create a foreign key constraint on the `article_id` column in the join table:
 
 ```
 ALTER TABLE articles_contributors
