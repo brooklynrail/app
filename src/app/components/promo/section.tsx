@@ -1,5 +1,5 @@
 import parse from "html-react-parser"
-import { DirectusFiles } from "../../../../lib/types"
+import { ArticlesContributors, DirectusFiles } from "../../../../lib/types"
 import { stripHtml } from "string-strip-html"
 import Image from "next/image"
 import { PromoProps, PromoSectionName } from "./standard"
@@ -42,10 +42,31 @@ const PromoSection = (props: PromoProps) => {
     </span>
   )
 
-  const names = contributors.map((contributor: any, i: number) => {
-    const { first_name, last_name } = contributor.contributors_id
-    const name = `${first_name} ${last_name}`
-    return <span key={`first_name-last_name-${i}`}>{name}</span>
+  const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
+    if (!contributor.contributors_id) {
+      return <></>
+    }
+
+    let separator
+    // if there are two authors, use " and " as the separator
+    if (contributors.length === 2 && i === 0) {
+      separator = " and "
+      // if there are more than two authors, and this is the last iteration, use ", and "
+    } else if (contributors.length > 2 && i == contributors.length - 2) {
+      separator = ", and "
+      // if there are more than two authors, use ", " as the separator
+    } else if (i < contributors.length - 1) {
+      separator = ", "
+    }
+
+    // if there is only one author, don't use a separator
+    const author = (
+      <span key={i}>
+        {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
+        {separator}
+      </span>
+    )
+    return author
   })
 
   return (
@@ -59,7 +80,7 @@ const PromoSection = (props: PromoProps) => {
               {parse(title)}
             </Link>
           </h4>
-          {!hide_bylines_downstream && <cite className="byline">By {names} </cite>}
+          {!hide_bylines_downstream && <cite className="byline">By {authors} </cite>}
           <div className="excerpt">{parse(excerpt)}</div>
         </div>
         <div className="grid-col-4 tablet:grid-col-4">
