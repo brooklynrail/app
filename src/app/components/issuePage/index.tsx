@@ -20,6 +20,7 @@ import { PopupProvider } from "../issueRail/popupProvider"
 import { CoverImage } from "../issueRail/coverImage"
 import PreviewHeader from "../preview/previewHead"
 import TableOfContentsPage from "./layout/tableOfContentsPage"
+import Footer from "../footer"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -122,6 +123,7 @@ const IssuePage = (props: IssuePageProps) => {
               </div>
             </section>
           </div>
+          <Footer />
         </div>
         <CoversPopup />
       </PopupProvider>

@@ -5,6 +5,7 @@ import Image from "next/image"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
+import Footer from "../footer"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -102,6 +103,7 @@ const ArchivePage = (props: ArchivePageProps) => {
             </div>
           </section>
         </div>
+        <Footer />
       </div>
     </>
   )
