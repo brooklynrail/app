@@ -169,8 +169,7 @@ export const getCurrentIssueData = cache(async () => {
       })
     } else {
       issueData = await getIssueData({
-        year: curruentIssueData.year,
-        month: curruentIssueData.month,
+        slug: curruentIssueData.slug,
       })
     }
 
@@ -222,11 +221,10 @@ export async function getGlobalSettings() {
 // instead of a single issue by ID
 // This returns a single issue object
 interface IssueDataProps {
-  year: number
-  month: number
+  slug: string
 }
 export async function getIssueData(props: IssueDataProps) {
-  const { year, month } = props
+  const { slug } = props
   const issueDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
     `?fields[]=id` +
@@ -324,8 +322,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.images.directus_files_id.height` +
     `&fields[]=articles.images.directus_files_id.type` +
     `&fields[]=articles.images.directus_files_id.shortcode_key` +
-    `&filter[year][_eq]=${year}` +
-    `&filter[month][_eq]=${month}` +
+    `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
     `&filter[special_issue][_eq]=false` +
     `&deep[articles][_filter][status][_eq]=published` +
@@ -936,7 +933,7 @@ export function getPermalink(props: PermalinkProps) {
     case PageType.Section:
       return `${baseURL}/${year}/${month}/${section}/`
     case PageType.Issue:
-      return `${baseURL}/${year}/${month}/`
+      return `${baseURL}/issues/${slug}`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
     case PageType.Page:
