@@ -77,11 +77,6 @@ async function getData({ params }: { params: ArticleParams }) {
   const slug: string = params.slug.toString()
   const section: string = params.section.toString()
 
-  const thisIssueData = await getIssueData({ year, month })
-  if (!thisIssueData) {
-    return notFound()
-  }
-
   const articleData = await getArticle(slug, "published")
   if (!articleData) {
     if (!articleData) {
@@ -91,6 +86,11 @@ async function getData({ params }: { params: ArticleParams }) {
       }
       return notFound()
     }
+  }
+
+  const thisIssueData = await getIssueData({ slug: articleData.issue.slug })
+  if (!thisIssueData) {
+    return notFound()
   }
 
   const currentSection = articleData.section
