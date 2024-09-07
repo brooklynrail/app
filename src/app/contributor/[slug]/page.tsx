@@ -88,8 +88,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
             type: PageType.Article,
           })
           sectionPermalink = getPermalink({
-            year: issue.year,
-            month: issue.month,
+            issueSlug: issue.slug,
             section: article.section.slug,
             type: PageType.Section,
           })

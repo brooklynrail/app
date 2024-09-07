@@ -17,14 +17,14 @@ interface IssueSectionProps {
   articles: Articles[]
   year: number
   month: number
+  issueSlug: string
 }
 const IssueSection = (props: IssueSectionProps) => {
-  const { section, articles, year, month } = props
+  const { section, articles, year, month, issueSlug } = props
   const sectionName = section.name
 
   const sectionPermalink = getPermalink({
-    year: year,
-    month: month,
+    issueSlug: issueSlug,
     section: section.slug,
     type: PageType.Section,
   })
@@ -78,6 +78,7 @@ const TableOfContents = (props: TableOfContentsProps) => {
                 permalink={permalink}
                 year={year}
                 month={month}
+                issueSlug={thisIssueData.slug}
               />
             )
           })

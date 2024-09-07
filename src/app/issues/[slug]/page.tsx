@@ -55,9 +55,9 @@ interface IssueParams {
 }
 
 async function getData({ params }: { params: IssueParams }) {
-  const slug = params.slug
+  const issueSlug = params.slug
 
-  const thisIssueData = await getIssueData({ slug: slug })
+  const thisIssueData = await getIssueData({ slug: issueSlug })
   if (!thisIssueData) {
     return notFound()
   }
@@ -73,7 +73,7 @@ async function getData({ params }: { params: IssueParams }) {
     .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
   const permalink = getPermalink({
-    slug: slug,
+    issueSlug: issueSlug,
     type: PageType.Issue,
   })
 

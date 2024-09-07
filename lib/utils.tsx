@@ -931,9 +931,9 @@ export function getPermalink(props: PermalinkProps) {
     case PageType.Article:
       return `${baseURL}/${year}/${month}/${section}/${slug}/`
     case PageType.Section:
-      return `${baseURL}/${year}/${month}/${section}/`
+      return `${baseURL}/issue/${issueSlug}/${section}/`
     case PageType.Issue:
-      return `${baseURL}/issues/${slug}`
+      return `${baseURL}/issues/${issueSlug}`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
     case PageType.Page:

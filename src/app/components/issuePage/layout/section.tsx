@@ -49,8 +49,7 @@ const SectionLayout = (props: LayoutProps) => {
             type: PageType.Article,
           })
           const sectionPermalink = getPermalink({
-            year: year,
-            month: month,
+            issueSlug: article.issue.slug,
             section: article.section.slug,
             type: PageType.Section,
           })

@@ -9,7 +9,7 @@ interface CurrentSectionsProps {
 
 const CurrentSections = (props: CurrentSectionsProps) => {
   const { issueSections, thisIssueData } = props
-  const { year, month, slug, special_issue } = thisIssueData
+  const { slug, special_issue } = thisIssueData
   const sectionsToRemove = ["publishersmessage", "editorsmessage"]
 
   const issuePermalink = special_issue
@@ -18,8 +18,7 @@ const CurrentSections = (props: CurrentSectionsProps) => {
         type: PageType.SpecialIssue,
       })
     : getPermalink({
-        year: year,
-        month: month,
+        issueSlug: thisIssueData.slug,
         type: PageType.Issue,
       })
 
@@ -31,8 +30,7 @@ const CurrentSections = (props: CurrentSectionsProps) => {
           type: PageType.SpecialIssueSection,
         })
       : getPermalink({
-          year: year,
-          month: month,
+          issueSlug: thisIssueData.slug,
           section: section.slug,
           type: PageType.Section,
         })

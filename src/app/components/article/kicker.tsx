@@ -12,11 +12,10 @@ const Kicker = (props: KickerProps) => {
   if (!thisIssueData || !currentSection) {
     return <></>
   }
-  const { year, month } = thisIssueData
+  const { slug } = thisIssueData
 
   const sectionPermalink = getPermalink({
-    year: year,
-    month: month,
+    issueSlug: slug,
     section: currentSection.slug,
     type: PageType.Section,
   })

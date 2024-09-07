@@ -66,11 +66,11 @@ interface SectionParams {
 }
 
 async function getData({ params }: { params: SectionParams }) {
-  const slug = params.slug
+  const issueSlug = params.slug
   const section = params.section.toString()
 
   const thisIssueData = await getIssueData({
-    slug: slug,
+    slug: issueSlug,
   })
   if (!thisIssueData) {
     return notFound()
@@ -94,8 +94,7 @@ async function getData({ params }: { params: SectionParams }) {
   }
 
   const permalink = getPermalink({
-    year: thisIssueData.year,
-    month: thisIssueData.month,
+    issueSlug: issueSlug,
     section: currentSection.slug,
     type: PageType.Section,
   })

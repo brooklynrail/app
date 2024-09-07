@@ -83,8 +83,7 @@ const IssueArticles = (props: IssueArticlesProps) => {
         }
 
         const sectionPermalink = getPermalink({
-          year: thisIssueData.year,
-          month: thisIssueData.month,
+          issueSlug: thisIssueData.slug,
           section: section.slug,
           type: PageType.Section,
         })
