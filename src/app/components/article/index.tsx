@@ -1,4 +1,5 @@
 "use client"
+
 import IssueRail from "../issueRail"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
@@ -14,6 +15,7 @@ import parse from "html-react-parser"
 import NextPrev from "./nextPrev"
 import Ad970 from "../ads/ad970"
 import BookshopWidget from "./bookshop"
+import styles from "./article.module.scss"
 
 const Article = (props: ArticleProps) => {
   const { articleData, thisIssueData } = props
@@ -46,7 +48,7 @@ const Article = (props: ArticleProps) => {
   return (
     <>
       <div className={`paper ${issueClass}`}>
-        <main>
+        <main className={styles.article}>
           <div className="grid-container">
             <div className="grid-row grid-gap-3">
               <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
