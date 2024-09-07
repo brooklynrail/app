@@ -61,19 +61,16 @@ export default async function SectionPage({ params }: { params: SectionParams })
 }
 
 interface SectionParams {
-  year: string
-  month: string
+  slug: string
   section: string
 }
 
 async function getData({ params }: { params: SectionParams }) {
-  const year = Number(params.year)
-  const month = Number(params.month)
+  const slug = params.slug
   const section = params.section.toString()
 
   const thisIssueData = await getIssueData({
-    year: year,
-    month: month,
+    slug: slug,
   })
   if (!thisIssueData) {
     return notFound()
