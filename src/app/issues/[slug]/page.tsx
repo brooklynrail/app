@@ -51,18 +51,13 @@ export default async function Issue({ params }: { params: IssueParams }) {
 }
 
 interface IssueParams {
-  year: string
-  month: string
+  slug: string
 }
 
 async function getData({ params }: { params: IssueParams }) {
-  const year = Number(params.year)
-  const month = Number(params.month)
+  const slug = params.slug
 
-  const thisIssueData = await getIssueData({
-    year: year,
-    month: month,
-  })
+  const thisIssueData = await getIssueData({ slug: slug })
   if (!thisIssueData) {
     return notFound()
   }
@@ -78,8 +73,7 @@ async function getData({ params }: { params: IssueParams }) {
     .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
   const permalink = getPermalink({
-    year: thisIssueData.year,
-    month: thisIssueData.month,
+    slug: slug,
     type: PageType.Issue,
   })
 
