@@ -51,11 +51,11 @@ export default async function Issue({ params }: { params: IssueParams }) {
 }
 
 interface IssueParams {
-  slug: string
+  issueSlug: string
 }
 
 async function getData({ params }: { params: IssueParams }) {
-  const issueSlug = params.slug
+  const issueSlug = params.issueSlug
 
   const thisIssueData = await getIssueData({ slug: issueSlug })
   if (!thisIssueData) {

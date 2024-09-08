@@ -61,12 +61,12 @@ export default async function SectionPage({ params }: { params: SectionParams })
 }
 
 interface SectionParams {
-  slug: string
+  issueSlug: string
   section: string
 }
 
 async function getData({ params }: { params: SectionParams }) {
-  const issueSlug = params.slug
+  const issueSlug = params.issueSlug
   const section = params.section.toString()
 
   const thisIssueData = await getIssueData({
