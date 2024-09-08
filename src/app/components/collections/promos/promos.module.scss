@@ -1,0 +1,10 @@
+.promo {
+  h3 {
+    @apply text-xl;
+    @apply font-thin;
+  }
+  .excerpt {
+    @apply text-xs;
+    @apply font-normal;
+  }
+}

@@ -1,0 +1,10 @@
+.collection {
+  @apply py-4;
+  @apply px-6;
+  //   @apply bg-gray-100;
+  h2 {
+    @apply mb-4;
+    @apply text-2xl;
+    @apply font-bold;
+  }
+}
