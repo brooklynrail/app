@@ -430,6 +430,7 @@ export async function getArticlePages() {
         `&filter[status][_eq]=published` +
         `&filter[slug][_nempty]=true` +
         `&filter[issue][_nnull]=true` +
+        `&sort[]=-date_updated` +
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
