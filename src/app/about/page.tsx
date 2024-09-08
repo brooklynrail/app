@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { Issues, Pages } from "../../../lib/types"
-import { getCurrentIssueData, getPageData, getPermalink, PageType } from "../../../lib/utils"
+import { getAllPages, getCurrentIssueData, getPageData, getPermalink, PageType } from "../../../lib/utils"
 import Page from "../components/page"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
@@ -23,9 +23,8 @@ interface PageParams {
   thisIssueData: Issues
 }
 
-export default async function SinglePage({ params }: { params: PageParams }) {
-  const data = await getData({ params })
-
+export default async function AboutPage({ params }: { params: PageParams }) {
+  const data = await getData()
   if (!data.thisIssueData || !data.pageData || !data.permalink) {
     return notFound()
   }
@@ -37,11 +36,14 @@ interface PageParams {
   slug: string
 }
 
-async function getData({ params }: { params: PageParams }) {
-  const slug = String(params.slug)
-
-  const pageData = await getPageData(slug)
+async function getData() {
+  const pageData = await getPageData("about")
   if (!pageData) {
+    return notFound()
+  }
+
+  const pagesData = await getAllPages()
+  if (!pagesData) {
     return notFound()
   }
 
@@ -57,6 +59,7 @@ async function getData({ params }: { params: PageParams }) {
 
   return {
     pageData,
+    pagesData,
     thisIssueData,
     permalink,
   }

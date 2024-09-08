@@ -93,7 +93,6 @@ export async function getIssues() {
         `&fields[]=slug` +
         `&fields[]=special_issue` +
         `&filter[status][_in]=published` +
-        `&filter[special_issue][_eq]=false` +
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
@@ -112,35 +111,6 @@ export async function getIssues() {
     console.error("Error fetching getIssues:", error)
     return null
   }
-}
-
-// only used for building pages in Special Issues
-export async function getSpecialIssues() {
-  let allIssues: Issues[] = []
-  let page = 1
-  let isMore = true
-  while (isMore) {
-    const issuesDataAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
-      `?fields[]=slug` +
-      `&fields[]=special_issue` +
-      `&fields[]=issue_number` +
-      `&filter[special_issue][_eq]=true` +
-      `&filter[status][_in]=published` +
-      `&page=${page}` +
-      `&limit=100` +
-      `&offset=${page * 100 - 100}`
-    const res = await fetch(issuesDataAPI)
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch getSpecialIssues data")
-    }
-    const data = await res.json()
-    allIssues = allIssues.concat(data.data)
-    isMore = data.data.length === 100 // assumes there is another page of records
-    page++
-  }
-  return allIssues as Issues[]
 }
 
 export const getCurrentIssueData = cache(async () => {
@@ -162,17 +132,10 @@ export const getCurrentIssueData = cache(async () => {
       return
     }
 
-    let issueData
-    if (curruentIssueData.special_issue && curruentIssueData.special_issue === true) {
-      issueData = await getSpecialIssueData({
-        slug: curruentIssueData.slug,
-      })
-    } else {
-      issueData = await getIssueData({
-        year: curruentIssueData.year,
-        month: curruentIssueData.month,
-      })
-    }
+    // 802-522-0165
+    const issueData = await getIssueData({
+      slug: curruentIssueData.slug,
+    })
 
     return issueData as Issues
   } catch (error) {
@@ -206,6 +169,31 @@ export const getPageData = cache(async (slug: string) => {
   }
 })
 
+export const getAllPages = cache(async () => {
+  try {
+    const pagesData = await directus.request(
+      readItems("pages", {
+        fields: [
+          "*",
+          "title",
+          "slug",
+          "status",
+          "body_text",
+          {
+            images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+          },
+        ],
+        filter: { status: { _eq: "published" } },
+      }),
+    )
+
+    return pagesData as Pages[]
+  } catch (error) {
+    console.error("Error fetching all pages data:", error)
+    return null
+  }
+})
+
 export async function getGlobalSettings() {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
   const res = await fetch(globalSettingsAPI)
@@ -222,11 +210,10 @@ export async function getGlobalSettings() {
 // instead of a single issue by ID
 // This returns a single issue object
 interface IssueDataProps {
-  year: number
-  month: number
+  slug: string
 }
 export async function getIssueData(props: IssueDataProps) {
-  const { year, month } = props
+  const { slug } = props
   const issueDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
     `?fields[]=id` +
@@ -324,10 +311,8 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.images.directus_files_id.height` +
     `&fields[]=articles.images.directus_files_id.type` +
     `&fields[]=articles.images.directus_files_id.shortcode_key` +
-    `&filter[year][_eq]=${year}` +
-    `&filter[month][_eq]=${month}` +
+    `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
-    `&filter[special_issue][_eq]=false` +
     `&deep[articles][_filter][status][_eq]=published` +
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
@@ -348,130 +333,6 @@ export async function getIssueData(props: IssueDataProps) {
     return json.data[0] as Issues
   } catch (error) {
     console.error("Error fetching issue data:", error)
-    return null
-  }
-}
-
-interface SpecialIssueDataProps {
-  slug: string
-}
-export async function getSpecialIssueData(props: SpecialIssueDataProps) {
-  const { slug } = props
-  const issueDataAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
-    `?fields[]=id` +
-    `&fields[]=title` +
-    `&fields[]=slug` +
-    `&fields[]=year` +
-    `&fields[]=month` +
-    `&fields[]=status` +
-    `&fields[]=issue_number` +
-    `&fields[]=special_issue` +
-    `&fields[]=old_id` +
-    `&fields[]=summary` +
-    `&fields[]=credits` +
-    `&fields[]=cover_1.caption` +
-    `&fields[]=cover_1.filename_disk` +
-    `&fields[]=cover_1.width` +
-    `&fields[]=cover_1.height` +
-    `&fields[]=cover_1.type` +
-    `&fields[]=cover_2.caption` +
-    `&fields[]=cover_2.filename_disk` +
-    `&fields[]=cover_2.width` +
-    `&fields[]=cover_2.height` +
-    `&fields[]=cover_2.type` +
-    `&fields[]=cover_3.caption` +
-    `&fields[]=cover_3.filename_disk` +
-    `&fields[]=cover_3.width` +
-    `&fields[]=cover_3.height` +
-    `&fields[]=cover_3.type` +
-    `&fields[]=cover_4.caption` +
-    `&fields[]=cover_4.filename_disk` +
-    `&fields[]=cover_4.width` +
-    `&fields[]=cover_4.height` +
-    `&fields[]=cover_4.type` +
-    `&fields[]=cover_5.caption` +
-    `&fields[]=cover_5.filename_disk` +
-    `&fields[]=cover_5.width` +
-    `&fields[]=cover_5.height` +
-    `&fields[]=cover_5.type` +
-    `&fields[]=cover_6.caption` +
-    `&fields[]=cover_6.filename_disk` +
-    `&fields[]=cover_6.width` +
-    `&fields[]=cover_6.height` +
-    `&fields[]=cover_6.type` +
-    `&fields[]=articles.sort` +
-    `&fields[]=articles.status` +
-    `&fields[]=articles.slug` +
-    `&fields[]=articles.title` +
-    `&fields[]=articles.excerpt` +
-    `&fields[]=articles.kicker` +
-    `&fields[]=articles.featured` +
-    `&fields[]=articles.hide_bylines` +
-    `&fields[]=articles.hide_bylines_downstream` +
-    `&fields[]=articles.byline_override` +
-    `&fields[]=articles.featured_image.id` +
-    `&fields[]=articles.featured_image.caption` +
-    `&fields[]=articles.featured_image.filename_disk` +
-    `&fields[]=articles.featured_image.width` +
-    `&fields[]=articles.featured_image.height` +
-    `&fields[]=articles.featured_image.type` +
-    `&fields[]=articles.slideshow_image.id` +
-    `&fields[]=articles.slideshow_image.caption` +
-    `&fields[]=articles.slideshow_image.filename_disk` +
-    `&fields[]=articles.slideshow_image.width` +
-    `&fields[]=articles.slideshow_image.height` +
-    `&fields[]=articles.slideshow_image.type` +
-    `&fields[]=articles.promo_banner.id` +
-    `&fields[]=articles.promo_banner.caption` +
-    `&fields[]=articles.promo_banner.filename_disk` +
-    `&fields[]=articles.promo_banner.width` +
-    `&fields[]=articles.promo_banner.height` +
-    `&fields[]=articles.promo_banner.type` +
-    `&fields[]=articles.promo_thumb.id` +
-    `&fields[]=articles.promo_thumb.caption` +
-    `&fields[]=articles.promo_thumb.filename_disk` +
-    `&fields[]=articles.promo_thumb.width` +
-    `&fields[]=articles.promo_thumb.height` +
-    `&fields[]=articles.promo_thumb.type` +
-    `&fields[]=articles.contributors.contributors_id.id` +
-    `&fields[]=articles.contributors.contributors_id.first_name` +
-    `&fields[]=articles.contributors.contributors_id.last_name` +
-    `&fields[]=articles.contributors.contributors_id.old_id` +
-    `&fields[]=articles.contributors.contributors_id.slug` +
-    `&fields[]=articles.contributors.contributors_id.bio` +
-    `&fields[]=articles.issue.title` +
-    `&fields[]=articles.issue.slug` +
-    `&fields[]=articles.section.id` +
-    `&fields[]=articles.section.slug` +
-    `&fields[]=articles.section.name` +
-    `&fields[]=articles.section.old_id` +
-    `&fields[]=articles.images.directus_files_id.id` +
-    `&fields[]=articles.images.directus_files_id.caption` +
-    `&fields[]=articles.images.directus_files_id.filename_disk` +
-    `&fields[]=articles.images.directus_files_id.width` +
-    `&fields[]=articles.images.directus_files_id.height` +
-    `&fields[]=articles.images.directus_files_id.type` +
-    `&fields[]=articles.images.directus_files_id.shortcode_key` +
-    `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_eq]=published` +
-    `&filter[special_issue][_eq]=true` +
-    `&deep[articles][_filter][status][_eq]=published` +
-    `&deep[articles][_sort]=sort` +
-    `&deep[articles][_limit]=-1`
-
-  try {
-    const res = await fetch(issueDataAPI)
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch getSpecialIssueData data")
-    }
-
-    const { data } = await res.json()
-    return data[0] as Issues
-  } catch (error) {
-    // Handle the error here
-    console.error("Error fetching getSpecialIssueData data:", error)
     return null
   }
 }
@@ -551,43 +412,6 @@ export const getSectionsByIssueId = cache(async (issueId: string, status: string
   }
 })
 
-export async function getSpecialArticlePages() {
-  try {
-    let specialArticlePages: Articles[] = []
-    let page = 1
-    let isMore = true
-    while (isMore) {
-      const specialArticleDataAPI =
-        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
-        `?fields[]=slug` +
-        `&fields[]=section.slug` +
-        `&fields[]=issue.slug` +
-        `&fields[]=issue.special_issue` +
-        `&fields[]=issue.status` +
-        `&filter[status][_eq]=published` +
-        `&filter[slug][_nempty]=true` +
-        `&filter[issue][_nnull]=true` +
-        `&deep[issue][_filter][special_issue][_eq]=true` +
-        `&page=${page}` +
-        `&limit=100` +
-        `&offset=${page * 100 - 100}`
-      const res = await fetch(specialArticleDataAPI)
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error("Failed to fetch getSpecialArticlePages data")
-      }
-      const data = await res.json()
-      specialArticlePages = specialArticlePages.concat(data.data)
-      isMore = data.data.length === 100 // assumes there is another page of records
-      page++
-    }
-    return specialArticlePages
-  } catch (error) {
-    console.error("error in getSpecialArticlePages", error)
-    throw error
-  }
-}
-
 export async function getArticlePages() {
   try {
     let articlePages: Articles[] = []
@@ -606,7 +430,7 @@ export async function getArticlePages() {
         `&filter[status][_eq]=published` +
         `&filter[slug][_nempty]=true` +
         `&filter[issue][_nnull]=true` +
-        `&deep[issue][_filter][special_issue][_eq]=false` +
+        `&sort[]=-date_updated` +
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
@@ -903,6 +727,7 @@ export enum PageType {
   Home = "home",
   Contributor = "contributor",
   Page = "page",
+  ChildPage = "child_page",
   Preview = "preview",
   SpecialIssue = "special_issue",
   SpecialIssueSection = "special_issue_section",
@@ -934,21 +759,17 @@ export function getPermalink(props: PermalinkProps) {
     case PageType.Article:
       return `${baseURL}/${year}/${month}/${section}/${slug}/`
     case PageType.Section:
-      return `${baseURL}/${year}/${month}/${section}/`
+      return `${baseURL}/issues/${issueSlug}/${section}/`
     case PageType.Issue:
-      return `${baseURL}/${year}/${month}/`
+      return `${baseURL}/issues/${issueSlug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
     case PageType.Page:
       return `${baseURL}/${slug}/`
+    case PageType.ChildPage:
+      return `${baseURL}/about/${slug}/`
     case PageType.Preview:
       return `${baseURL}/preview/${slug}/`
-    case PageType.SpecialIssue:
-      return `${baseURL}/special/${issueSlug}/`
-    case PageType.SpecialIssueSection:
-      return `${baseURL}/special/${issueSlug}/${section}/`
-    case PageType.SpecialIssueArticle:
-      return `${baseURL}/special/${issueSlug}/${section}/${slug}/`
     case PageType.Archive:
       return `${baseURL}/archive/`
     case PageType.Search:

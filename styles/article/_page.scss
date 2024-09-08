@@ -70,10 +70,10 @@
     @include u-margin-left(3);
   }
   ul {
-    @include u-margin-bottom(2);
     @include u-font("sans", "xs");
     @include u-text("normal");
     @include add-list-reset;
+    @include u-margin-bottom(1);
     li {
       @include u-padding-y("05");
     }

@@ -19,7 +19,7 @@ const IssueSelect = (props: IssueSelectProps) => {
       const path = selectedIssue.special_issue ? `special/${selectedIssue.slug}` : selectedIssue.slug
       // Set the selected issue slug
       setSelectedIssueSlug(selectedIssue.slug)
-      window.location.href = `/${path}/`
+      window.location.href = `/issues/${path}/`
     }
   }
 

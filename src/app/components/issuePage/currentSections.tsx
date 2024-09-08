@@ -9,33 +9,20 @@ interface CurrentSectionsProps {
 
 const CurrentSections = (props: CurrentSectionsProps) => {
   const { issueSections, thisIssueData } = props
-  const { year, month, slug, special_issue } = thisIssueData
+  const { slug, special_issue } = thisIssueData
   const sectionsToRemove = ["publishersmessage", "editorsmessage"]
 
-  const issuePermalink = special_issue
-    ? getPermalink({
-        issueSlug: slug,
-        type: PageType.SpecialIssue,
-      })
-    : getPermalink({
-        year: year,
-        month: month,
-        type: PageType.Issue,
-      })
+  const issuePermalink = getPermalink({
+    issueSlug: thisIssueData.slug,
+    type: PageType.Issue,
+  })
 
   const sectionsList = issueSections.map((section: Sections, i: number) => {
-    const sectionPermalink = special_issue
-      ? getPermalink({
-          issueSlug: slug,
-          section: section.slug,
-          type: PageType.SpecialIssueSection,
-        })
-      : getPermalink({
-          year: year,
-          month: month,
-          section: section.slug,
-          type: PageType.Section,
-        })
+    const sectionPermalink = getPermalink({
+      issueSlug: thisIssueData.slug,
+      section: section.slug,
+      type: PageType.Section,
+    })
     if (sectionsToRemove.includes(section.slug)) {
       return
     }

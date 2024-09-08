@@ -83,8 +83,7 @@ const IssueArticles = (props: IssueArticlesProps) => {
         }
 
         const sectionPermalink = getPermalink({
-          year: thisIssueData.year,
-          month: thisIssueData.month,
+          issueSlug: thisIssueData.slug,
           section: section.slug,
           type: PageType.Section,
         })
@@ -147,13 +146,18 @@ const IssueRail = (props: IssueRailProps) => {
     logosrc = `/images/brooklynrail-logo-issue-${thisIssueData.issue_number}.svg`
   }
 
+  const issuePermalink = getPermalink({
+    issueSlug: thisIssueData.slug,
+    type: PageType.Issue,
+  })
+
   return (
     <section id="rail">
       <IssueRailHeader logosrc={logosrc} />
 
       <header className="issue-header">
         <h3 className="issue-name">
-          <Link href={`/${thisIssueData.slug}/`}>{thisIssueData.title}</Link>
+          <Link href={issuePermalink}>{thisIssueData.title}</Link>
         </h3>
 
         <Link className="archive" href="/archive" title="All Issues Archive">

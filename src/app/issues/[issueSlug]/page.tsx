@@ -1,6 +1,6 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
@@ -10,7 +10,7 @@ import { notFound } from "next/navigation"
 export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
-// request comes in, at most once every 5 mins.
+// request comes in, at most once every 60 seconds.
 export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
@@ -44,25 +44,20 @@ export async function generateMetadata({ params }: { params: IssueParams }): Pro
   }
 }
 
-export default async function TOC({ params }: { params: IssueParams }) {
+export default async function Issue({ params }: { params: IssueParams }) {
   const data = await getData({ params })
 
-  return <IssuePage {...data} layout={PageLayout.TableOfContents} />
+  return <IssuePage {...data} layout={data.thisIssueData.special_issue ? PageLayout.SpecialIssue : PageLayout.Issue} />
 }
 
 interface IssueParams {
-  year: string
-  month: string
+  issueSlug: string
 }
 
 async function getData({ params }: { params: IssueParams }) {
-  const year = Number(params.year)
-  const month = Number(params.month)
+  const issueSlug = params.issueSlug
 
-  const thisIssueData = await getIssueData({
-    year: year,
-    month: month,
-  })
+  const thisIssueData = await getIssueData({ slug: issueSlug })
   if (!thisIssueData) {
     return notFound()
   }
@@ -78,8 +73,7 @@ async function getData({ params }: { params: IssueParams }) {
     .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
   const permalink = getPermalink({
-    year: thisIssueData.year,
-    month: thisIssueData.month,
+    issueSlug: issueSlug,
     type: PageType.Issue,
   })
 
@@ -90,3 +84,17 @@ async function getData({ params }: { params: IssueParams }) {
     permalink,
   }
 }
+
+// export async function generateStaticParams() {
+//   const allIssues = await getIssues()
+//   if (!allIssues) {
+//     return notFound()
+//   }
+//   return allIssues.map((issue) => {
+//     const month = issue.month < 10 ? String(`0${issue.month}`) : String(issue.month)
+//     return {
+//       year: String(issue.year),
+//       month: month,
+//     }
+//   })
+// }

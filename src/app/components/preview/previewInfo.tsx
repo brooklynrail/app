@@ -62,8 +62,6 @@ const EditorInfo = (props: DirectusUsers & EditorInfoProps) => {
     hour12: false,
   })
 
-  console.log("permalink", permalink)
-
   return (
     <div className="editor">
       <Image className="avatar" src={profileImg} alt={`${first_name} ${last_name}`} width={45} height={45} />

@@ -1,9 +1,9 @@
-import { Metadata, Viewport } from "next"
 import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getOGImage, getPermalink, getSpecialIssueData } from "../../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
+import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
@@ -11,8 +11,8 @@ import { notFound } from "next/navigation"
 export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
-// request comes in, at most once every 60 mins.
-export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 3600 : 0
+// request comes in, at most once every 60 seconds.
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
 export const viewport: Viewport = {
@@ -20,7 +20,7 @@ export const viewport: Viewport = {
   initialScale: 0.405,
 }
 
-export async function generateMetadata({ params }: { params: SpecialSectionParams }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
   const data = await getData({ params })
 
   if (!data.props.currentSection) {
@@ -50,26 +50,31 @@ export async function generateMetadata({ params }: { params: SpecialSectionParam
   }
 }
 
-export default async function SectionPage({ params }: { params: SpecialSectionParams }) {
+export default async function SectionPage({ params }: { params: SectionParams }) {
   const data = await getData({ params })
 
-  if (!data.props.permalink) {
+  if (!data.props.currentSection) {
     return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
   }
 
-  return <IssuePage {...data.props} layout={PageLayout.SpecialSection} />
+  return (
+    <IssuePage
+      {...data.props}
+      layout={data.props.thisIssueData.special_issue ? PageLayout.SpecialSection : PageLayout.Section}
+    />
+  )
 }
 
-interface SpecialSectionParams {
+interface SectionParams {
   issueSlug: string
   section: string
 }
 
-async function getData({ params }: { params: SpecialSectionParams }) {
-  const issueSlug: string = params.issueSlug.toString()
+async function getData({ params }: { params: SectionParams }) {
+  const issueSlug = params.issueSlug
   const section = params.section.toString()
 
-  const thisIssueData = await getSpecialIssueData({
+  const thisIssueData = await getIssueData({
     slug: issueSlug,
   })
   if (!thisIssueData) {
@@ -87,23 +92,24 @@ async function getData({ params }: { params: SpecialSectionParams }) {
     .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
   const currentSection = issueSections.find((s: Sections) => s.slug === section)
+
   // If `section` does not exist, set errorCode to a string
   if (!currentSection) {
     return { props: { errorCode: 404, errorMessage: "This section does not exist" } }
   }
 
   const permalink = getPermalink({
-    issueSlug: thisIssueData.slug,
+    issueSlug: issueSlug,
     section: currentSection.slug,
-    type: PageType.SpecialIssueSection,
+    type: PageType.Section,
   })
 
   return {
     props: {
       thisIssueData,
       issueSections,
-      allIssues,
       currentSection,
+      allIssues,
       permalink,
     },
   }
