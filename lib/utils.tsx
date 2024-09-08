@@ -324,7 +324,6 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.images.directus_files_id.shortcode_key` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
-    `&filter[special_issue][_eq]=false` +
     `&deep[articles][_filter][status][_eq]=published` +
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
