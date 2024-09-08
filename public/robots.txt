@@ -228,5 +228,6 @@ User-agent: FacebookBot
 Disallow: /
 
 Sitemap: https://brooklynrail.org/sitemap.xml
+Sitemap: https://brooklynrail.org/issues/sitemap.xml
 Sitemap: https://brooklynrail.org/contributors/sitemap.xml
 
