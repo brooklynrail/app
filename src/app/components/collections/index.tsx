@@ -15,14 +15,14 @@ const Collections = (props: CollectionsProps) => {
     return (
       <section key={section.id} className={styles.collection}>
         <div className="grid-row">
-          <div className="grid grid-cols-4 lg:grid-cols-12">
+          <div className="grid grid-cols-4 tablet:grid-cols-12">
             <div className="col-span-12">
               <h2>{section.name}</h2>
             </div>
           </div>
         </div>
         <div className="grid-row">
-          <div className="grid grid-cols-4 lg:grid-cols-12 gap-4 lg:gap-6 gap-y-4">
+          <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 tablet:gap-6 gap-y-4">
             <Promos articles={section.articles} />
           </div>
         </div>
