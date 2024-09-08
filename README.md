@@ -14,21 +14,53 @@ yarn dev
 
 Open [https://localhost:3000](https://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Redirects
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**2024-09-07** — we made a series of redirects across the Rail to provide more flexibility around Issues, Special Issues, and Articles.
 
-## Learn More
+These changes will make it easier to
 
-To learn more about Next.js, take a look at the following resources:
+- Publish Issues that are out of the year/month model (like Special Issues)
+- Make it easier to display Articles outside of the context of an Issue in the front-end site
+- Greatly reduce the amount of logic in the code to support Special Issues
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Issue redirects
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+| Old Path                                                               | Redirects To                                                                       |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [https://brooklynrail.org/2024/09/](https://brooklynrail.org/2024/09/) | [https://brooklynrail.org/issues/2024-09](https://brooklynrail.org/issues/2024-09) |
+| [https://brooklynrail.org/2024/08/](https://brooklynrail.org/2024/08/) | [https://brooklynrail.org/issues/2024-08](https://brooklynrail.org/issues/2024-08) |
+| [https://brooklynrail.org/2024/06/](https://brooklynrail.org/2024/06/) | [https://brooklynrail.org/issues/2024-07](https://brooklynrail.org/issues/2024-07) |
 
-## Deploy on Vercel
+### Issue Section Redirects
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Old Section Path                                                                       | Redirects To                                                                                       |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [https://brooklynrail.org/2024/09/artseen/](https://brooklynrail.org/2024/09/artseen/) | [https://brooklynrail.org/issues/2024-09/artseen](https://brooklynrail.org/issues/2024-09/artseen) |
+| [https://brooklynrail.org/2024/09/art/](https://brooklynrail.org/2024/09/art/)         | [https://brooklynrail.org/issues/2024-09/art](https://brooklynrail.org/issues/2024-09/art)         |
+| [https://brooklynrail.org/2024/09/poetry/](https://brooklynrail.org/2024/09/poetry/)   | [https://brooklynrail.org/issues/2024-09/poetry](https://brooklynrail.org/issues/2024-09/poetry)   |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Special Section Redirects
+
+| Old Path                                                                                                             | Redirects To                                                                                                       |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| [https://brooklynrail.org/special/River_Rail_Puerto_Rico/](https://brooklynrail.org/special/River_Rail_Puerto_Rico/) | [https://brooklynrail.org/issues/River_Rail_Puerto_Rico/](https://brooklynrail.org/issues/River_Rail_Puerto_Rico/) |
+| [https://brooklynrail.org/special/River_Rail/](https://brooklynrail.org/special/River_Rail/)                         | [https://brooklynrail.org/issues/River_Rail/](https://brooklynrail.org/issues/River_Rail/)                         |
+| [https://brooklynrail.org/special/I_Love_John_Giorno/](https://brooklynrail.org/special/I_Love_John_Giorno/)         | [https://brooklynrail.org/issues/I_Love_John_Giorno/](https://brooklynrail.org/issues/I_Love_John_Giorno/)         |
+| [https://brooklynrail.org/special/River_Rail_Colby/](https://brooklynrail.org/special/River_Rail_Colby/)             | [https://brooklynrail.org/issues/River_Rail_Colby/](https://brooklynrail.org/issues/River_Rail_Colby/)             |
+| [https://brooklynrail.org/special/Art_Crit_Europe/](https://brooklynrail.org/special/Art_Crit_Europe/)               | [https://brooklynrail.org/issues/Art_Crit_Europe/](https://brooklynrail.org/issues/Art_Crit_Europe/)               |
+| [https://brooklynrail.org/special/Ad_Reinhardt/](https://brooklynrail.org/special/Ad_Reinhardt/)                     | [https://brooklynrail.org/issues/Ad_Reinhardt/](https://brooklynrail.org/issues/Ad_Reinhardt/)                     |
+
+### Pages Redirects
+
+| **Current Path**                                                                       | **Redirect Path**                                                                                  |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [https://brooklynrail.org/advertise](https://brooklynrail.org/advertise)               | [https://brooklynrail.org/about/advertise](https://brooklynrail.org/about/advertise)               |
+| [https://brooklynrail.org/contact-us](https://brooklynrail.org/contact-us)             | [https://brooklynrail.org/about/contact-us](https://brooklynrail.org/about/contact-us)             |
+| [https://brooklynrail.org/history](https://brooklynrail.org/history)                   | [https://brooklynrail.org/about/history](https://brooklynrail.org/about/history)                   |
+| [https://brooklynrail.org/notefrompub](https://brooklynrail.org/notefrompub)           | [https://brooklynrail.org/about/notefrompub](https://brooklynrail.org/about/notefrompub)           |
+| [https://brooklynrail.org/our-supporters](https://brooklynrail.org/our-supporters)     | [https://brooklynrail.org/about/our-supporters](https://brooklynrail.org/about/our-supporters)     |
+| [https://brooklynrail.org/staff](https://brooklynrail.org/staff)                       | [https://brooklynrail.org/about/staff](https://brooklynrail.org/about/staff)                       |
+| [https://brooklynrail.org/submissions](https://brooklynrail.org/submissions)           | [https://brooklynrail.org/about/submissions](https://brooklynrail.org/about/submissions)           |
+| [https://brooklynrail.org/terms-of-service](https://brooklynrail.org/terms-of-service) | [https://brooklynrail.org/about/terms-of-service](https://brooklynrail.org/about/terms-of-service) |
+| [https://brooklynrail.org/where-to-find-us](https://brooklynrail.org/where-to-find-us) | [https://brooklynrail.org/about/where-to-find-us](https://brooklynrail.org/about/where-to-find-us) |
