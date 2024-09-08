@@ -760,7 +760,7 @@ export function getPermalink(props: PermalinkProps) {
     case PageType.Section:
       return `${baseURL}/issues/${issueSlug}/${section}/`
     case PageType.Issue:
-      return `${baseURL}/issues/${issueSlug}`
+      return `${baseURL}/issues/${issueSlug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
     case PageType.Page:
@@ -769,12 +769,6 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/about/${slug}/`
     case PageType.Preview:
       return `${baseURL}/preview/${slug}/`
-    case PageType.SpecialIssue:
-      return `${baseURL}/special/${issueSlug}/`
-    case PageType.SpecialIssueSection:
-      return `${baseURL}/special/${issueSlug}/${section}/`
-    case PageType.SpecialIssueArticle:
-      return `${baseURL}/special/${issueSlug}/${section}/${slug}/`
     case PageType.Archive:
       return `${baseURL}/archive/`
     case PageType.Search:

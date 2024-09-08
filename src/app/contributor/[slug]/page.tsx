@@ -67,32 +67,18 @@ export default async function Contributor({ params }: { params: ContributorsPara
         }
         const issue = article.issue
 
-        let permalink
-        let sectionPermalink
-        if (issue.special_issue) {
-          permalink = getPermalink({
-            section: article.section,
-            slug: article.slug,
-            type: PageType.SpecialIssueArticle,
-          })
-          sectionPermalink = getPermalink({
-            section: article.section,
-            type: PageType.SpecialIssueSection,
-          })
-        } else {
-          permalink = getPermalink({
-            year: issue.year,
-            month: issue.month,
-            section: article.section.slug,
-            slug: article.slug,
-            type: PageType.Article,
-          })
-          sectionPermalink = getPermalink({
-            issueSlug: issue.slug,
-            section: article.section.slug,
-            type: PageType.Section,
-          })
-        }
+        const permalink = getPermalink({
+          year: issue.year,
+          month: issue.month,
+          section: article.section.slug,
+          slug: article.slug,
+          type: PageType.Article,
+        })
+        const sectionPermalink = getPermalink({
+          issueSlug: issue.slug,
+          section: article.section.slug,
+          type: PageType.Section,
+        })
         return (
           <PromoSection
             key={`article-${i}`}
