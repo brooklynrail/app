@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: { params: IssueParams }): Pro
 export default async function Issue({ params }: { params: IssueParams }) {
   const data = await getData({ params })
 
-  return <IssuePage {...data} layout={PageLayout.Issue} />
+  return <IssuePage {...data} layout={data.thisIssueData.special_issue ? PageLayout.SpecialIssue : PageLayout.Issue} />
 }
 
 interface IssueParams {

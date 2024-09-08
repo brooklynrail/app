@@ -57,7 +57,12 @@ export default async function SectionPage({ params }: { params: SectionParams })
     return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
   }
 
-  return <IssuePage {...data.props} layout={PageLayout.Section} />
+  return (
+    <IssuePage
+      {...data.props}
+      layout={data.props.thisIssueData.special_issue ? PageLayout.SpecialSection : PageLayout.Section}
+    />
+  )
 }
 
 interface SectionParams {
