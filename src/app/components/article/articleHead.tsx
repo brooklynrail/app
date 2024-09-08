@@ -7,7 +7,6 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSquareFacebook, faTwitter } from "@fortawesome/free-brands-svg-icons"
 import Kicker from "./kicker"
-import { faEye } from "@fortawesome/free-solid-svg-icons"
 
 interface FeaturedImageProps {
   image: DirectusFiles

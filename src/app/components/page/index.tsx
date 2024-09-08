@@ -9,6 +9,7 @@ import PageBody from "./pageBody"
 import MapEmbed from "./map"
 import { Pages } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
+import parse from "html-react-parser"
 
 const Page = (props: PageProps) => {
   const { thisIssueData, pagesData } = props
@@ -82,7 +83,7 @@ const PageNav = (props: PageNavProps) => {
 
     return (
       <li key={page.slug}>
-        <Link href={page.slug === "about" ? pageURL : childPageURL}>{page.title}</Link>
+        <Link href={page.slug === "about" ? pageURL : childPageURL}>{parse(page.title)}</Link>
       </li>
     )
   })
