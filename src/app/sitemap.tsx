@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next"
-import { getArticlePages, getIssues, getSpecialArticlePages, getSpecialIssues } from "../../lib/utils"
+import { getArticlePages, getIssues } from "../../lib/utils"
 import { Articles, Issues } from "../../lib/types"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
@@ -45,29 +45,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
   }
 
-  const specialArticlePages = await getSpecialArticlePages()
-  // // NOTE: This is returning articles with no issues.
-  // // These are the articles that are part of the "Special Issues"
-  // // This might be a BUG, or might be how the REST API is set up.
-  // // remove all articles from specialArticlePages that have an empty issues array
-  let specialArticles: SiteLinksProps[] = []
-  if (specialArticlePages) {
-    specialArticles = specialArticlePages
-      .filter((article: Articles) => article.issue)
-      .map((article: Articles) => {
-        const slug = article.slug
-        const issueSlug = article.issue.slug
-        const section = article.section.slug
-
-        return {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/${section}/${slug}/`,
-          lastModified: article.date_updated,
-          changeFrequency: "weekly" as const,
-          priority: 1,
-        }
-      })
-  }
-
   const allIssues = await getIssues()
 
   let issues: SiteLinksProps[] = []
@@ -84,19 +61,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   }
 
-  const allSpecialIssues = await getSpecialIssues()
-  let specialIssues: SiteLinksProps[] = []
-  if (allSpecialIssues) {
-    specialIssues = allSpecialIssues.map((issue: Issues) => {
-      const issueSlug = issue.slug
-      return {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/special/${issueSlug}/`,
-        lastModified: issue.date_updated,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      }
-    })
-  }
-
-  return [...articles, ...specialArticles, ...issues, ...specialIssues]
+  return [...articles, ...issues]
 }
