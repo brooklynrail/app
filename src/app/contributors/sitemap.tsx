@@ -24,8 +24,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return {
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/contributor/${slug}/`,
       lastModified: contributor.date_updated,
-      changeFrequency: "yearly" as const,
-      priority: 0.5,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     }
   })
 
