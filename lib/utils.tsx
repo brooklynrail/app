@@ -341,9 +341,10 @@ export async function getIssueData(props: IssueDataProps) {
 
 interface SectionDataProps {
   slug: string
+  limit?: number
 }
 export async function getSectionData(props: SectionDataProps) {
-  const { slug } = props
+  const { slug, limit } = props
 
   try {
     const sections = await directus.request(
@@ -377,6 +378,11 @@ export async function getSectionData(props: SectionDataProps) {
         ],
         filter: {
           slug: { _eq: slug },
+        },
+        deep: {
+          articles: {
+            _limit: limit ? limit : 20,
+          },
         },
       }),
     )
