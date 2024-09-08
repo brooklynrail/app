@@ -360,6 +360,7 @@ export async function getSectionData(props: SectionDataProps) {
               "title",
               "excerpt",
               "sort",
+              "date_updated",
               "status",
               {
                 section: ["name", "slug"],
@@ -381,6 +382,7 @@ export async function getSectionData(props: SectionDataProps) {
         },
         deep: {
           articles: {
+            _sort: "-date_updated",
             _limit: limit ? limit : 20,
           },
         },
