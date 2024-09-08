@@ -94,6 +94,59 @@ module.exports = {
         permanent: true,
       },
 
+      // ===================================
+      // PAGES REDIRECTS
+      {
+        source: "/advertise",
+        destination: "/about/advertise",
+        permanent: true,
+      },
+      {
+        source: "/contact-us",
+        destination: "/about/contact-us",
+        permanent: true,
+      },
+      {
+        source: "/history",
+        destination: "/about/history",
+        permanent: true,
+      },
+      {
+        source: "/notefrompub",
+        destination: "/about/notefrompub",
+        permanent: true,
+      },
+      {
+        source: "/our-supporters",
+        destination: "/about/our-supporters",
+        permanent: true,
+      },
+      {
+        source: "/staff",
+        destination: "/about/staff",
+        permanent: true,
+      },
+      {
+        source: "/submissions",
+        destination: "/about/submissions",
+        permanent: true,
+      },
+      {
+        source: "/terms-of-service",
+        destination: "/about/terms-of-service",
+        permanent: true,
+      },
+      {
+        source: "/distributors",
+        destination: "/about/where-to-find-us",
+        permanent: true,
+      },
+      {
+        source: "/where-to-find-us",
+        destination: "/about/where-to-find-us",
+        permanent: true,
+      },
+
       // Redirect the old admin page to the homepage
       {
         source: "/admin",
