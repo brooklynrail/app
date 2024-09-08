@@ -3,13 +3,15 @@ import IssueRail from "../issueRail"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
 import Link from "next/link"
-import { PageProps } from "@/app/[...slug]/page"
+import { PageProps } from "@/app/about/[slug]/page"
 import PageHead from "./pageHead"
 import PageBody from "./pageBody"
 import MapEmbed from "./map"
+import { Pages } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
 
 const Page = (props: PageProps) => {
-  const { thisIssueData } = props
+  const { thisIssueData, pagesData } = props
 
   return (
     <>
@@ -47,56 +49,7 @@ const Page = (props: PageProps) => {
 
                 <article className="article article-page">
                   <PageHead {...props} />
-                  <div id="page-nav">
-                    <ul>
-                      <li>
-                        <Link href="/notefrompub">A Note from the Publisher</Link>
-                      </li>
-                      <li>
-                        <Link href="/about">
-                          About the <em>Rail</em>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/history">History</Link>
-                      </li>
-                      <li>
-                        <Link href="/staff">Staff</Link>
-                      </li>
-                      <li>
-                        <Link href="/our-supporters">Supporters</Link>
-                      </li>
-                      <li>
-                        <Link href="/contributors">Contributors</Link>
-                      </li>
-                      <li>
-                        <Link href="/submissions">Submission guidelines</Link>
-                      </li>
-                    </ul>
-
-                    <ul>
-                      <li>
-                        <Link href="/donate">
-                          Donate to the <em>Rail</em>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/subscribe">Subscribe</Link>
-                      </li>
-                      <li>
-                        <Link href="/submissions">Find the Rail in print</Link>
-                      </li>
-                      <li>
-                        <Link href="/advertise">Advertise</Link>
-                      </li>
-                      <li>
-                        <Link href="/newsletter">Sign up for our newsletter</Link>
-                      </li>
-                      <li>
-                        <Link href="/contact">Contact Us</Link>
-                      </li>
-                    </ul>
-                  </div>
+                  <PageNav pages={pagesData} />
                   <PageBody {...props} />
                   <MapEmbed {...props} />
                 </article>
@@ -108,6 +61,52 @@ const Page = (props: PageProps) => {
       </div>
       <CoversPopup />
     </>
+  )
+}
+
+interface PageNavProps {
+  pages: Pages[]
+}
+
+const PageNav = (props: PageNavProps) => {
+  const { pages } = props
+  const allPages = pages.map((page) => {
+    const pageURL = getPermalink({
+      slug: page.slug,
+      type: PageType.Page,
+    })
+    const childPageURL = getPermalink({
+      slug: page.slug,
+      type: PageType.ChildPage,
+    })
+
+    return (
+      <li key={page.slug}>
+        <Link href={page.slug === "about" ? pageURL : childPageURL}>{page.title}</Link>
+      </li>
+    )
+  })
+
+  return (
+    <div id="page-nav">
+      <ul>{allPages}</ul>
+      <ul>
+        <li>
+          <Link href="/contributors">Contributors</Link>
+        </li>
+        <li>
+          <Link href="/donate">
+            Donate to the <em>Rail</em>
+          </Link>
+        </li>
+        <li>
+          <Link href="/subscribe">Subscribe</Link>
+        </li>
+        <li>
+          <Link href="/newsletter">Sign up for our newsletter</Link>
+        </li>
+      </ul>
+    </div>
   )
 }
 
