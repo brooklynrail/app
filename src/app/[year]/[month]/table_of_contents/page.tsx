@@ -51,18 +51,13 @@ export default async function TOC({ params }: { params: IssueParams }) {
 }
 
 interface IssueParams {
-  year: string
-  month: string
+  issueSlug: string
 }
 
 async function getData({ params }: { params: IssueParams }) {
-  const year = Number(params.year)
-  const month = Number(params.month)
+  const issueSlug = params.issueSlug
 
-  const thisIssueData = await getIssueData({
-    year: year,
-    month: month,
-  })
+  const thisIssueData = await getIssueData({ slug: issueSlug })
   if (!thisIssueData) {
     return notFound()
   }
