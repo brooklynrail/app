@@ -35,6 +35,12 @@ module.exports = {
         destination: "/issues/:year-:month/:sectionSlug",
         permanent: true,
       },
+      // ISSUE/TOC REDIRECT
+      {
+        source: "/:year(\\d{4})/:month(\\d{2})/table_of_contents",
+        destination: "/issues/:year-:month/table_of_contents",
+        permanent: true,
+      },
       // ===================================
       // SPECIAL ISSUE REDIRECTS
       // Redirect special issues to new path
