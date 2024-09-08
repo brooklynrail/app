@@ -93,6 +93,8 @@ export async function getIssues() {
         `&fields[]=slug` +
         `&fields[]=special_issue` +
         `&filter[status][_in]=published` +
+        `&sort[]=-year` +
+        `&sort[]=-month` +
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
