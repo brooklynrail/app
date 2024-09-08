@@ -20,6 +20,80 @@ module.exports = {
   // Redirects
   async redirects() {
     return [
+      // ===================================
+      // ISSUE REDIRECT
+      // Redirect old issue paths to new issue paths
+      {
+        source: "/:year(\\d{4})/:month(\\d{2})/",
+        destination: "/issues/:year-:month",
+        permanent: true,
+      },
+      // ISSUE/SECTION REDIRECT
+      // Redirect old section paths to new section paths
+      {
+        source: "/:year(\\d{4})/:month(\\d{2})/:sectionSlug",
+        destination: "/issues/:year-:month/:sectionSlug",
+        permanent: true,
+      },
+      // ===================================
+      // SPECIAL ISSUE REDIRECTS
+      // Redirect special issues to new path
+      {
+        source: "/special/:issueSlug/",
+        destination: "/issues/:issueSlug/",
+        permanent: true,
+      },
+      // SPECIAL ISSUE/SECTION REDIRECT
+      // Redirect section pages for special issues
+      {
+        source: "/special/:issueSlug/:sectionSlug/",
+        destination: "/issues/:issueSlug/:sectionSlug/",
+        permanent: true,
+      },
+      // SPECIAL ISSUE/SECTION/ARTICLE REDIRECTS
+      // Redirects for all articles in the special issue "River_Rail_Puerto_Rico"
+      // 2021/08
+      {
+        source: "/special/River_Rail_Puerto_Rico/:sectionSlug/:articleSlug",
+        destination: "/2021/08/:sectionSlug/:articleSlug",
+        permanent: true,
+      },
+      // Redirects for all articles in the special issue "River_Rail_Colby"
+      // 2019/10
+      {
+        source: "/special/River_Rail_Colby/:sectionSlug/:articleSlug",
+        destination: "/2019/10/:sectionSlug/:articleSlug",
+        permanent: true,
+      },
+      // Redirects for all articles in the special issue "River_Rail"
+      // 2018/01
+      {
+        source: "/special/River_Rail/:sectionSlug/:articleSlug",
+        destination: "/2018/01/:sectionSlug/:articleSlug",
+        permanent: true,
+      },
+      // Redirects for all articles in the special issue "I_Love_John_Giorno"
+      // 2017/07
+      {
+        source: "/special/I_Love_John_Giorno/:sectionSlug/:articleSlug",
+        destination: "/2017/07/:sectionSlug/:articleSlug",
+        permanent: true,
+      },
+      // Redirects for all articles in the special issue "Art_Crit_Europe"
+      // 2014/05
+      {
+        source: "/special/Art_Crit_Europe/:sectionSlug/:articleSlug",
+        destination: "/2014/05/:sectionSlug/:articleSlug",
+        permanent: true,
+      },
+      // Redirects for all articles in the special issue "Ad_Reinhardt"
+      // 2014/01
+      {
+        source: "/special/Ad_Reinhardt/:sectionSlug/:articleSlug",
+        destination: "/2014/01/:sectionSlug/:articleSlug",
+        permanent: true,
+      },
+
       // Redirect the old admin page to the homepage
       {
         source: "/admin",
