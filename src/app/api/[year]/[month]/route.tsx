@@ -1,11 +1,10 @@
 import { notFound } from "next/navigation"
 import { getIssueData } from "../../../../../lib/utils"
 
-export async function GET(request: Request, { params }: { params: { year: string; month: string } }) {
-  const year = Number(params.year)
-  const month = Number(params.month)
+export async function GET(request: Request, { params }: { params: { issueSlug: string } }) {
+  const issueSlug = params.issueSlug
 
-  const issueData = await getIssueData({ year: year, month: month })
+  const issueData = await getIssueData({ slug: issueSlug })
 
   if (!issueData) {
     return notFound()
