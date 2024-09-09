@@ -29,8 +29,7 @@ const ArchivePage = (props: ArchivePageProps) => {
     }
 
     const permalink = getPermalink({
-      year: issue.year,
-      month: issue.month,
+      issueSlug: issue.slug,
       type: PageType.Issue,
     })
 
