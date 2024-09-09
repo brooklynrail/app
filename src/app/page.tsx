@@ -1,5 +1,4 @@
 import { Issues, Sections } from "../../lib/types"
-import IssuePage from "@/app/components/issuePage"
 import { getAllIssues, getCurrentIssueData, getPermalink, getSectionData, PageType } from "../../lib/utils"
 import { notFound } from "next/navigation"
 import { Viewport } from "next"

@@ -1,4 +1,4 @@
-import { IssuePageProps } from "@/app/page"
+import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
 import SubscribeAd from "../subscribeAd"
 import TableOfContents from "../tableOfContents"
 

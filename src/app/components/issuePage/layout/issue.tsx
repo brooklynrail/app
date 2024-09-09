@@ -5,9 +5,10 @@ import PublishersMessage from "../publishersMessage"
 import SlideShow from "../slideshow"
 import FeaturedArticles from "../featuredArticles"
 import { Articles, Issues, Sections } from "../../../../../lib/types"
-import { IssuePageProps, PageLayout } from "@/app/page"
+import { PageLayout } from "@/app/page"
 import TableOfContents from "../tableOfContents"
 import SubscribeAd from "../subscribeAd"
+import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
 
 export interface LayoutProps {
   thisIssueData: Issues

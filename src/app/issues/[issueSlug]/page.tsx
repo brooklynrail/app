@@ -4,6 +4,7 @@ import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "
 import { stripHtml } from "string-strip-html"
 import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
+import { Issues, Sections } from "../../../../lib/types"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -17,6 +18,18 @@ export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 0.405,
+}
+
+export interface IssuePageProps {
+  thisIssueData: Issues
+  allIssues: Issues[]
+  issueSections: Sections[]
+  previewURL?: string
+  currentSection?: Sections
+  permalink: string
+  errorCode?: number
+  errorMessage?: string
+  layout: PageLayout
 }
 
 export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {

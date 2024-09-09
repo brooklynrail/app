@@ -1,6 +1,6 @@
 "use client"
 import CoversPopup from "../issueRail/coversPopup"
-import { IssuePageProps, PageLayout } from "@/app/page"
+import { PageLayout } from "@/app/page"
 import AdsTile from "../ads/adsTile"
 import IssueSelect from "./issueSelect"
 import CurrentSections from "./currentSections"
@@ -21,6 +21,7 @@ import { CoverImage } from "../issueRail/coverImage"
 import PreviewHeader from "../preview/previewHead"
 import TableOfContentsPage from "./layout/tableOfContentsPage"
 import Footer from "../footer"
+import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
 
 export interface PromoProps {
   currentArticles: Articles[]
