@@ -382,6 +382,7 @@ export async function getSectionData(props: SectionDataProps) {
         },
         deep: {
           articles: {
+            _filter: { status: { _eq: "published" } },
             _sort: "-date_updated",
             _limit: limit ? limit : 20,
           },
