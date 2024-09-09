@@ -1,8 +1,13 @@
 .promo {
   h3 {
-    @apply mb-2;
+  }
+  .byline {
     @apply text-md;
-    @apply font-thin;
+    @apply not-italic;
+    @apply font-light;
+    .name {
+      @apply font-medium;
+    }
   }
   .excerpt {
     @apply text-xs;

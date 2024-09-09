@@ -11,9 +11,9 @@ export interface PromoProps {
   article: Articles
 }
 
-const PromoBasic = (props: PromoProps) => {
+const PromoFeatured = (props: PromoProps) => {
   const { article } = props
-  const { title, featured_image, issue, section } = article
+  const { title, featured_image, issue, section, contributors } = article
 
   const permalink = getPermalink({
     year: issue.year,
@@ -25,28 +25,24 @@ const PromoBasic = (props: PromoProps) => {
 
   return (
     <>
-      <div
-        className={`${styles.promo} py-4 first:pt-0 last:pb-0 flex flex-row space-x-4`}
-        itemType="http://schema.org/Article"
-      >
+      <div className={`${styles.promo} flex flex-col space-y-4`} itemType="http://schema.org/Article">
         {featured_image && (
           <div className={styles.media}>
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <FeaturedImage image={featured_image} title={title} size={ImageSize.Small} />
+              <FeaturedImage image={featured_image} title={title} size={ImageSize.Auto} />
             </Link>
           </div>
         )}
         <div className="flex flex-col space-y-2">
-          <h3 className="text-xl font-thin hover:underline">
+          <h3 className="text-2xl font-thin hover:underline">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
               {parse(title)}
             </Link>
           </h3>
           <Bylines article={article} />
         </div>
-        {/* <div className={styles.excerpt}>{parse(excerpt)}</div> */}
       </div>
     </>
   )
 }
-export default PromoBasic
+export default PromoFeatured
