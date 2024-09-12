@@ -34,7 +34,7 @@ const ArticleList = (props: ArticleListProps) => {
     return (
       <li key={i} data-sort={article.sort}>
         <h4>
-          <Link href={`${permalink}`} title={`${stripHtml(article.title).result} (${article.sort})`}>
+          <Link prefetch={false} href={`${permalink}`} title={`${stripHtml(article.title).result} (${article.sort})`}>
             <span>{parse(article.title)}</span>
           </Link>
         </h4>
@@ -91,7 +91,9 @@ const IssueArticles = (props: IssueArticlesProps) => {
         return (
           <div key={i}>
             <h3>
-              <Link href={sectionPermalink}>{section.name}</Link>
+              <Link prefetch={false} href={sectionPermalink}>
+                {section.name}
+              </Link>
             </h3>
             <ul>
               <ArticleList sectionArticles={sectionArticles} year={year} month={month} />
@@ -123,7 +125,7 @@ const PublishersMessage = ({ thisIssueData }: PublishersMessageProps) => {
   })
   return (
     <p className="publishers-message">
-      <Link href={permalink} title="A message from Publisher and Artistic Director, Phong Bui">
+      <Link prefetch={false} href={permalink} title="A message from Publisher and Artistic Director, Phong Bui">
         <strong>A message from Phong Bui</strong>, Publisher and Artistic Director
       </Link>
     </p>
@@ -157,10 +159,12 @@ const IssueRail = (props: IssueRailProps) => {
 
       <header className="issue-header">
         <h3 className="issue-name">
-          <Link href={issuePermalink}>{thisIssueData.title}</Link>
+          <Link prefetch={false} href={issuePermalink}>
+            {thisIssueData.title}
+          </Link>
         </h3>
 
-        <Link className="archive" href="/archive" title="All Issues Archive">
+        <Link prefetch={false} className="archive" href="/archive" title="All Issues Archive">
           <span>All Issues</span> <i className="fas fa-angle-double-right"></i>
         </Link>
       </header>
@@ -184,7 +188,7 @@ const IssueRail = (props: IssueRailProps) => {
                     </Link>
                   </p>
                   <p className="find-us">
-                    <Link href="/where-to-find-us">
+                    <Link prefetch={false} href="/where-to-find-us">
                       <FontAwesomeIcon icon={faMapPin} /> Get <em>the RAIL</em> in print
                     </Link>
                   </p>

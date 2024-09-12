@@ -32,7 +32,7 @@ const IssueSection = (props: IssueSectionProps) => {
   return (
     <>
       <h3>
-        <Link href={sectionPermalink} title={`Go to ${sectionName}`}>
+        <Link prefetch={false} href={sectionPermalink} title={`Go to ${sectionName}`}>
           {sectionName}
         </Link>
       </h3>
@@ -47,7 +47,15 @@ const IssueSection = (props: IssueSectionProps) => {
             slug: article.slug,
             type: PageType.Article,
           })
-          return <PromoSlim key={`toc-article-${i}`} article={article} permalink={permalink} order={order} />
+          return (
+            <PromoSlim
+              key={`toc-article-${i}`}
+              article={article}
+              permalink={permalink}
+              order={order}
+              prefetch={false}
+            />
+          )
         })}
       </ul>
     </>

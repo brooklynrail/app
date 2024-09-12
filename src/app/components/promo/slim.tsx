@@ -9,10 +9,11 @@ interface PromoSlimProps {
   i?: number
   permalink: string
   order?: number | null
+  prefetch?: boolean
 }
 
 const PromoSlim = (props: PromoSlimProps) => {
-  const { article, i = 0, permalink, order } = props
+  const { article, i = 0, permalink, order, prefetch } = props
   const { title, contributors, byline_override, hide_bylines_downstream } = article
 
   const orderNum = (
@@ -27,7 +28,12 @@ const PromoSlim = (props: PromoSlimProps) => {
     <li className={`promo promo-slim ${altClass}`} itemType="http://schema.org/Article">
       <h4>
         {orderNum}
-        <Link href={permalink} itemProp="name" title={`Visit ${stripHtml(title).result}`}>
+        <Link
+          prefetch={prefetch === false ? false : true}
+          href={permalink}
+          itemProp="name"
+          title={`Visit ${stripHtml(title).result}`}
+        >
           {parse(title)}
         </Link>
       </h4>
