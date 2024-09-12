@@ -501,6 +501,26 @@ export type Pages = {
   user_updated?: string | DirectusUsers | null
 }
 
+export type People = {
+  id: string
+  bio?: string | null
+  date_created: string
+  date_updated: string
+  email?: string | null
+  first_name?: string | null
+  last_name?: string | null
+  pronouns?: string | null
+  slug: string
+  sort?: number | null
+  status?: string | null
+  website?: string | null
+  instagram?: string | null
+  linkedin?: string | null
+  twitter?: string | null
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+}
+
 export type Sections = {
   articles: Articles[]
   date_created?: string | null
@@ -548,6 +568,7 @@ export type CustomDirectusTypes = {
   global_settings: GlobalSettings
   issues: Issues[]
   pages: Pages[]
+  people: People[]
   sections: Sections[]
   redirects: Redirects[]
 }
