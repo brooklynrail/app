@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "./fonts.css";
+
+:root {
+  --font-family-sans: "Untitled Sans";
+  --font-family-serif: "Untitled Serif";
+  --font-family-mono: "Courier New";
+  --font-family-display: "Untitled Sans";
+  --font-family-body: "Untitled Serif";
+}
+
+:root {
+  /* Font Sizes */
+  --font-size-2xs: 10px;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-base: 16px;
+  --font-size-lg: 20px;
+  --font-size-lgm: 20px;
+  --font-size-xl: 24px;
+  --font-size-xlm: 24px;
+  --font-size-2xl: 32px;
+  --font-size-3xl: 40px;
+  --font-size-4xl: 60px;
+
+  /* Line Heights */
+  --line-height-xs: 150%;
+  --line-height-sm: 150%;
+  --line-height-md: 150%;
+  --line-height-base: 150%;
+  --line-height-lg: 120%;
+  --line-height-lgm: 120%;
+  --line-height-xl: 120%;
+  --line-height-xlm: 120%;
+  --line-height-2xl: 120%;
+  --line-height-3xl: 120%;
+  --line-height-4xl: 120%;
+
+  /* Font Weights */
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+}
