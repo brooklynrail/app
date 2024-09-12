@@ -353,7 +353,8 @@ export async function getIssueData(props: IssueDataProps) {
 interface SectionDataProps {
   slug: string
 }
-export async function getSectionData(props: SectionDataProps) {
+
+export const getSectionData = cache(async (props: SectionDataProps) => {
   const { slug } = props
 
   try {
@@ -397,7 +398,7 @@ export async function getSectionData(props: SectionDataProps) {
     console.error("Error fetching section data:", error)
     return null
   }
-}
+})
 
 export const getSectionsByIssueId = cache(async (issueId: string, status: string) => {
   try {
