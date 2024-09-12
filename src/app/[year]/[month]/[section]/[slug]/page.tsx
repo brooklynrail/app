@@ -12,7 +12,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every day.
-export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 3600 : 0
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 14400 : 0
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })

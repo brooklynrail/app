@@ -54,6 +54,14 @@
     @include u-line-height("sans", 5);
   }
 
+  a {
+    @include u-text("blue-warm-60v");
+    @include u-text("underline");
+    &:hover {
+      @include u-text("blue-warm-70v");
+    }
+  }
+
   // [blockquote cite="name" url=""]...[/blockquote]
   blockquote {
     @include u-margin-left(0);

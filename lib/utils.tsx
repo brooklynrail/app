@@ -1,7 +1,18 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
 import { readItem, readItems, readSingleton } from "@directus/sdk"
-import { Ads, Articles, Contributors, DirectusFiles, GlobalSettings, Issues, Pages, Redirects, Sections } from "./types"
+import {
+  Ads,
+  Articles,
+  Contributors,
+  DirectusFiles,
+  GlobalSettings,
+  Issues,
+  Pages,
+  People,
+  Redirects,
+  Sections,
+} from "./types"
 import { stripHtml } from "string-strip-html"
 import { cache } from "react"
 
@@ -882,4 +893,13 @@ export async function getAllContributors() {
     console.error("Failed to fetch getAllContributors data", error)
     return null
   }
+}
+
+export async function getAllPeople() {
+  const people = await directus.request(
+    readItems("people", {
+      fields: ["*"],
+    }),
+  )
+  return people as People[]
 }
