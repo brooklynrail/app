@@ -558,6 +558,20 @@ export type Sections = {
   user_updated?: string | DirectusUsers | null
 }
 
+export type Tributes = {
+  id: number
+  articles: Articles[]
+  date_created?: string | null
+  date_updated?: string | null
+  title: string
+  slug: string
+  description?: string | null
+  sort?: number | null
+  curators: Contributors[]
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+}
+
 export type CustomDirectusTypes = {
   ads: Ads[]
   articles: Articles[]
@@ -594,5 +608,6 @@ export type CustomDirectusTypes = {
   pages: Pages[]
   people: People[]
   sections: Sections[]
+  tributes: Tributes[]
   redirects: Redirects[]
 }

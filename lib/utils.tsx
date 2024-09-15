@@ -13,6 +13,7 @@ import {
   People,
   Redirects,
   Sections,
+  Tributes,
 } from "./types"
 import { stripHtml } from "string-strip-html"
 import { cache } from "react"
@@ -761,6 +762,7 @@ export enum PageType {
   Section = "section",
   Issue = "issue",
   Event = "event",
+  Tribute = "tribute",
   Home = "home",
   Contributor = "contributor",
   Page = "page",
@@ -780,9 +782,10 @@ interface PermalinkProps {
   section?: string | Sections
   slug?: string
   issueSlug?: string
+  tributeSlug?: string
 }
 export function getPermalink(props: PermalinkProps) {
-  const { year, section, slug, issueSlug, type } = props
+  const { year, section, slug, issueSlug, type, tributeSlug } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
   const day = props.day && props.day < 10 ? `0${props.day}` : props.day
 
@@ -803,6 +806,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/issues/${issueSlug}/`
     case PageType.Event:
       return `${baseURL}/event/${year}/${month}/${day}/${slug}/`
+    case PageType.Tribute:
+      return `${baseURL}/tribute/${tributeSlug}/${slug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
     case PageType.Page:
@@ -912,6 +917,21 @@ export async function getAllContributors() {
     console.error("Failed to fetch getAllContributors data", error)
     return null
   }
+}
+
+export async function getTributeData(slug: string) {
+  console.log("slug", slug)
+  const tribute = await directus.request(
+    readItems("tributes", {
+      fields: ["*"],
+      filter: {
+        slug: {
+          _eq: slug,
+        },
+      },
+    }),
+  )
+  return tribute as Tributes[]
 }
 
 export async function getAllPeople() {
