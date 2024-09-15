@@ -79,13 +79,11 @@ async function getData({ params }: { params: ArticleParams }) {
 
   const articleData = await getArticle(slug, "published")
   if (!articleData) {
-    if (!articleData) {
-      const redirect = await getRedirect(slug)
-      if (redirect) {
-        await AddRedirect(redirect)
-      }
-      return notFound()
+    const redirect = await getRedirect(slug)
+    if (redirect) {
+      await AddRedirect(redirect)
     }
+    return notFound()
   }
 
   const thisIssueData = await getIssueData({ slug: articleData.issue.slug })
