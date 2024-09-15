@@ -450,6 +450,29 @@ export type DirectusWebhooks = {
   url: string
 }
 
+export type Events = {
+  title: string
+  deck?: string | null
+  summary: string
+  slug: string
+  series?: string | null
+  start_date: string
+  end_date: string
+  body?: string | null
+  youtube_id?: string | null
+  event_id?: string | null
+  section: Sections
+  date_created: string
+  date_updated: string
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+  id: string
+  sort?: number | null
+  status: string
+  people: People[]
+  poets: People[]
+}
+
 export type GlobalSettings = {
   preview_password: string
   current_issue: Issues
@@ -565,6 +588,7 @@ export type CustomDirectusTypes = {
   directus_users: DirectusUsers[]
   directus_versions: DirectusVersions[]
   directus_webhooks: DirectusWebhooks[]
+  events: Events[]
   global_settings: GlobalSettings
   issues: Issues[]
   pages: Pages[]

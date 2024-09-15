@@ -6,6 +6,7 @@ import {
   Articles,
   Contributors,
   DirectusFiles,
+  Events,
   GlobalSettings,
   Issues,
   Pages,
@@ -624,6 +625,27 @@ export async function getArticle(slug: string, status?: string) {
   }
 }
 
+export const getEvent = cache(async (slug: string) => {
+  const events = await directus.request(
+    readItems("events", {
+      fields: ["*"],
+      filter: {
+        _and: [
+          {
+            slug: {
+              _eq: slug,
+            },
+            status: {
+              _in: ["published"],
+            },
+          },
+        ],
+      },
+    }),
+  )
+  return events as Events[]
+})
+
 export async function getRedirect(slug: string) {
   try {
     const redirect = await directus.request(
@@ -738,6 +760,7 @@ export enum PageType {
   Article = "article",
   Section = "section",
   Issue = "issue",
+  Event = "event",
   Home = "home",
   Contributor = "contributor",
   Page = "page",
@@ -753,6 +776,7 @@ interface PermalinkProps {
   type: PageType
   year?: number
   month?: number
+  day?: number
   section?: string | Sections
   slug?: string
   issueSlug?: string
@@ -760,6 +784,7 @@ interface PermalinkProps {
 export function getPermalink(props: PermalinkProps) {
   const { year, section, slug, issueSlug, type } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
+  const day = props.day && props.day < 10 ? `0${props.day}` : props.day
 
   // Production URL: NEXT_PUBLIC_BASE_URL https://brooklynrail.org
   // Preview URL: NEXT_PUBLIC_BASE_URL https://preview.brooklynrail.org
@@ -776,6 +801,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/issues/${issueSlug}/${section}/`
     case PageType.Issue:
       return `${baseURL}/issues/${issueSlug}/`
+    case PageType.Event:
+      return `${baseURL}/event/${year}/${month}/${day}/${slug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
     case PageType.Page:
