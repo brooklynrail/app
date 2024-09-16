@@ -12,7 +12,7 @@ interface FeaturedImageProps {
   image: DirectusFiles
   title: string
 }
-const FeaturedImage = (props: FeaturedImageProps) => {
+export const FeaturedImage = (props: FeaturedImageProps) => {
   const { filename_disk, caption, width, height } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const desc = caption ? <figcaption>{parse(caption)}</figcaption> : null
