@@ -1,3 +1,10 @@
+.googleSearch {
+  @include u-minh("mobile-lg");
+  .gsc-control-cse {
+    padding: 0;
+  }
+}
+
 .issues-archive {
   h1 {
     @include u-font("sans", "2xl");
