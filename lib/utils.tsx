@@ -763,6 +763,7 @@ export enum PageType {
   Issue = "issue",
   Event = "event",
   Tribute = "tribute",
+  TributeArticle = "tribute_article",
   Home = "home",
   Contributor = "contributor",
   Page = "page",
@@ -807,6 +808,8 @@ export function getPermalink(props: PermalinkProps) {
     case PageType.Event:
       return `${baseURL}/event/${year}/${month}/${day}/${slug}/`
     case PageType.Tribute:
+      return `${baseURL}/tribute/${tributeSlug}/`
+    case PageType.TributeArticle:
       return `${baseURL}/tribute/${tributeSlug}/${slug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
@@ -931,7 +934,7 @@ export async function getTributeData(slug: string) {
       },
     }),
   )
-  return tribute as Tributes[]
+  return tribute[0] as Tributes
 }
 
 export async function getAllPeople() {
