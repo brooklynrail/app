@@ -564,8 +564,12 @@ export type Tributes = {
   date_created?: string | null
   date_updated?: string | null
   title: string
+  title_tag?: string | null
   slug: string
-  description?: string | null
+  blurb?: string | null
+  summary?: string | null
+  excerpt?: string | null
+  featured_image?: DirectusFiles
   sort?: number | null
   curators: Contributors[]
   user_created?: string | DirectusUsers | null
