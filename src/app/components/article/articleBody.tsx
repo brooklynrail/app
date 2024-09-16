@@ -1,6 +1,5 @@
 import { Articles } from "../../../../lib/types"
 import BodyText from "./bodyText"
-import BodyCode from "./bodyCode"
 
 export enum ArticleType {
   BodyText = "body_text",
@@ -13,16 +12,8 @@ interface ArticleBodyProps {
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
-  const { type, articleData, preview } = props
-  const { body_type } = articleData
+  const { articleData, preview } = props
 
-  switch (type ? type : body_type) {
-    case `body_text`:
-      return <BodyText {...articleData} preview={preview} />
-    case `body_code`:
-      return <BodyCode {...articleData} />
-    default:
-      return <></>
-  }
+  return <BodyText {...articleData} preview={preview} />
 }
 export default ArticleBody
