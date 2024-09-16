@@ -4,9 +4,10 @@ interface BylinesProps {
   contributors: ArticlesContributors[]
   byline_override?: string | null
   guestCritic?: boolean
+  hideBy?: boolean
 }
 const Bylines = (props: BylinesProps) => {
-  const { contributors, byline_override, guestCritic } = props
+  const { contributors, byline_override, guestCritic, hideBy } = props
   if (!contributors || contributors.length === 0) {
     return null
   }
@@ -17,7 +18,7 @@ const Bylines = (props: BylinesProps) => {
         <span>{byline_override}</span>
       ) : (
         <>
-          <span>{by} </span>
+          {!hideBy && <span>{by} </span>}
           {contributors.map((contributor: any, i: number) => {
             const isLast = i === contributors.length - 1
             const isFirst = i === 0
