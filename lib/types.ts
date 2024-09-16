@@ -571,9 +571,15 @@ export type Tributes = {
   excerpt?: string | null
   featured_image?: DirectusFiles
   sort?: number | null
-  curators: Contributors[]
+  curators: TributesContributors[]
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+}
+
+export type TributesContributors = {
+  tributes_id?: Tributes | null
+  contributors_id?: Contributors | null
+  id: number
 }
 
 export type CustomDirectusTypes = {
