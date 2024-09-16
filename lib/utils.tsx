@@ -922,16 +922,67 @@ export async function getAllContributors() {
   }
 }
 
-export async function getTributeData(slug: string) {
-  console.log("slug", slug)
+interface TributeDataParams {
+  tributeSlug: string
+  slug: string
+}
+
+export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
   const tribute = await directus.request(
     readItems("tributes", {
-      fields: ["*"],
+      fields: [
+        "title",
+        "slug",
+        "blurb",
+        "summary",
+        "excerpt",
+        "title_tag",
+        {
+          curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+        },
+        {
+          featured_image: ["id", "width", "height", "filename_disk", "caption"],
+        },
+        {
+          articles: [
+            "slug",
+            "title",
+            "excerpt",
+            "body_text",
+            "sort",
+            "status",
+            {
+              images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+            },
+            {
+              section: ["name", "slug"],
+            },
+            {
+              issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+            },
+            {
+              contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+            },
+            {
+              featured_image: ["id", "width", "height", "filename_disk", "caption"],
+            },
+          ],
+        },
+      ],
       filter: {
         slug: {
-          _eq: slug,
+          _eq: tributeSlug,
         },
       },
+      // deep: {
+      //   articles: {
+      //     _filter: {
+      //       slug: {
+      //         _eq: slug,
+      //       },
+      //     },
+      //   },
+      // },
     }),
   )
   return tribute[0] as Tributes
