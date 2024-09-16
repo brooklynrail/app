@@ -1,0 +1,21 @@
+.tribute_head {
+  @apply py-4;
+  @apply border-b-2;
+  @apply border-black;
+  @apply border-dotted;
+  h1 {
+    @apply border-b-2;
+    @apply border-black;
+    @apply border-dotted;
+  }
+}
+
+.writer {
+  @apply border-b-2 py-2;
+  @apply border-black;
+  @apply border-dotted;
+  h4 {
+    @apply font-bold;
+    @apply uppercase;
+  }
+}
