@@ -1,8 +1,40 @@
 #textflag {
   display: none;
 }
+header.head {
+  @apply pb-4;
+  @apply border-b-2;
+  @apply border-black;
+  @apply border-dotted;
+}
+
+.subhead {
+  @apply text-lg;
+  @apply font-normal;
+  @apply font-sans;
+  @apply uppercase;
+  span {
+    @apply text-2xl;
+    @apply font-bold;
+  }
+}
 
 .banner {
   @apply py-4;
   @apply px-6;
+  @apply w-full;
+}
+
+.button {
+  @apply bg-white;
+  @apply text-black;
+  @apply shadow-lg;
+  @apply px-4;
+  @apply py-4;
+  @apply text-lg;
+  @apply rounded;
+  @apply uppercase;
+}
+
+.button_menu {
 }
