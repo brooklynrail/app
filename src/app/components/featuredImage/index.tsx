@@ -2,7 +2,7 @@ import { DirectusFiles } from "../../../../lib/types"
 import Image from "next/image"
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
-import styles from "../header/header.module.scss"
+import styles from "./featuredImage.module.scss"
 
 interface FeaturedImageProps {
   image: DirectusFiles
@@ -15,7 +15,7 @@ const FeaturedImage = (props: FeaturedImageProps) => {
   const alt = caption ? caption : `${stripHtml(props.title).result}`
 
   return (
-    <div className="featured-image media">
+    <div className={`media ${styles.media}`}>
       <div>
         <Image
           priority
