@@ -73,12 +73,13 @@ const TributePage = (props: TributePageProps) => {
 
               <div className={styles.tribute_main}>
                 <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
-                  <div className="col-span-4">
+                  <div className="col-span-3">
                     <TributeWriters articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
                   </div>
-                  <div className="col-span-8">
+                  <div className="col-span-9">
                     <h1>{articleData.title}</h1>
                     <Bylines contributors={articleData.contributors} />
+
                     <ArticleBody articleData={articleData} />
                   </div>
                 </div>
