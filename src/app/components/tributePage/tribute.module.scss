@@ -1,5 +1,8 @@
+.main {
+  @apply p-0 !important;
+}
 .tribute_head {
-  @apply py-4;
+  // @apply py-4;
   @apply border-b-2;
   @apply border-black;
   @apply border-dotted;
@@ -8,6 +11,13 @@
     @apply border-black;
     @apply border-dotted;
   }
+  .summary {
+    @apply text-sm text-gray-400;
+    max-width: 114ex;
+  }
+}
+.tribute_main {
+  @apply px-4;
 }
 
 .writer {

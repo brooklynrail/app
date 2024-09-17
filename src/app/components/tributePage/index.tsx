@@ -48,25 +48,26 @@ const TributePage = (props: TributePageProps) => {
           <div className="">
             <Header />
 
-            <Ad970 currentAds={currentAds} />
+            {/* <Ad970 currentAds={currentAds} /> */}
 
-            <section id="main" className="px-4">
+            <section id="main" className={styles.main}>
               <div className={styles.tribute_head}>
                 <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
                   <div className="col-span-12">
-                    <h1 className="font-sans font-bold text-2xl">{title}</h1>
+                    <h1 className="px-4 py-4 font-sans font-bold text-2xl">{title}</h1>
                   </div>
                 </div>
-
-                <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
-                  <div className="col-span-8">
-                    <div className="flex flex-col justify-between h-full">
-                      <div className="text-2xl font-serif">{blurb && parse(blurb)}</div>
-                      <div className="">{summary && parse(summary)}</div>
+                <div className="p-4">
+                  <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
+                    <div className="col-span-8">
+                      <div className="flex flex-col justify-between h-full">
+                        <div className="text-2xl font-serif font-light">{blurb && parse(blurb)}</div>
+                        <div className={styles.summary}>{summary && parse(summary)}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-span-4">
-                    {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
+                    <div className="col-span-4">
+                      {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
+                    </div>
                   </div>
                 </div>
               </div>
