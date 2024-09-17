@@ -10,10 +10,10 @@ import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
 import Paper from "../paper"
 import Header from "../header"
 import styles from "./tribute.module.scss"
-import { FeaturedImage } from "../article/articleHead"
 import Bylines from "../issueRail/bylines"
 import ArticleBody from "../article/articleBody"
 import parse from "html-react-parser"
+import FeaturedImage from "../featuredImage"
 
 const TributePage = (props: TributePageProps) => {
   const { thisTributeData, permalink } = props

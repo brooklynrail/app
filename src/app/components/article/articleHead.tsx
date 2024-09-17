@@ -7,37 +7,7 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSquareFacebook, faTwitter } from "@fortawesome/free-brands-svg-icons"
 import Kicker from "./kicker"
-
-interface FeaturedImageProps {
-  image: DirectusFiles
-  title: string
-}
-export const FeaturedImage = (props: FeaturedImageProps) => {
-  const { filename_disk, caption, width, height } = props.image
-  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
-  const desc = caption ? <figcaption>{parse(caption)}</figcaption> : null
-  const alt = caption ? caption : `${stripHtml(props.title).result}`
-
-  return (
-    <div className="featured-image">
-      <div>
-        <Image
-          priority
-          src={src}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          width={width}
-          height={height}
-          style={{
-            width: "100%",
-            height: "auto",
-          }}
-          alt={alt}
-        />
-        {desc}
-      </div>
-    </div>
-  )
-}
+import FeaturedImage from "../featuredImage"
 
 interface ArticleHeadProps {
   permalink: string
