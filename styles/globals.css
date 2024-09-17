@@ -18,8 +18,8 @@
   --font-size-sm: 14px;
   --font-size-md: 18px;
   --font-size-base: 18px;
-  --font-size-lg: 20px;
-  --font-size-xl: 22px;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 28px;
   --font-size-2xl: 32px;
   --font-size-3xl: 40px;
   --font-size-4xl: 60px;
@@ -29,7 +29,7 @@
   --line-height-sm: 150%;
   --line-height-md: 150%;
   --line-height-base: 150%;
-  --line-height-lg: 120%;
+  --line-height-lg: 1.6;
   --line-height-xl: 120%;
   --line-height-2xl: 120%;
   --line-height-3xl: 120%;
@@ -72,4 +72,19 @@ h6 {
 html,
 body {
   @apply text-base font-normal;
+}
+
+.content {
+  @apply text-lg font-normal font-serif;
+  p {
+    max-width: 72ex;
+    @apply mb-6;
+  }
+}
+
+.media {
+  figcaption {
+    max-width: 114ex;
+    @apply py-2 pb-6 text-sm font-normal font-sans text-gray-400;
+  }
 }
