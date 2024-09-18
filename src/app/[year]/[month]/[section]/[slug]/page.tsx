@@ -3,8 +3,9 @@ import { PageType, getArticle, getIssueData, getOGImage, getPermalink, getRedire
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { AddRedirect } from "@/app/actions/redirect"
+import { revalidatePath } from "next/cache"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -79,11 +80,19 @@ async function getData({ params }: { params: ArticleParams }) {
 
   const articleData = await getArticle(slug, "published")
   if (!articleData) {
+    // check if a redirect exists
     const redirect = await getRedirect(slug)
     if (redirect) {
       await AddRedirect(redirect)
     }
     return notFound()
+  }
+
+  // If the article is part of a tribute, redirect to the tribute page for that article
+  if (articleData.tribute) {
+    const path = `/tribute/${articleData.tribute.slug}/${articleData.slug}/`
+    revalidatePath(path) // Update cached special issue
+    redirect(path) // Navigate to the new article page
   }
 
   const thisIssueData = await getIssueData({ slug: articleData.issue.slug })

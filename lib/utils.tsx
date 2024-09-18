@@ -607,6 +607,8 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=images.directus_files_id.height` +
     `&fields[]=images.directus_files_id.type` +
     `&fields[]=images.directus_files_id.shortcode_key` +
+    `&fields[]=tribute.title` +
+    `&fields[]=tribute.slug` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_in]=${status}`
 

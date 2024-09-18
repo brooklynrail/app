@@ -52,6 +52,7 @@ export type Articles = {
   tags: string
   title: string
   title_tag?: string
+  tribute: Tributes
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
