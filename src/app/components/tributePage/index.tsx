@@ -52,13 +52,13 @@ const TributePage = (props: TributePageProps) => {
 
             <section id="main" className={styles.main}>
               <div className={styles.tribute_head}>
-                <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
+                <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
                   <div className="col-span-12">
                     <h1 className="px-4 py-4 font-sans font-bold text-2xl">{title}</h1>
                   </div>
                 </div>
                 <div className="p-4">
-                  <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
+                  <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
                     <div className="col-span-8">
                       <div className="flex flex-col justify-between h-full">
                         <div className="text-2xl font-serif font-light">{blurb && parse(blurb)}</div>

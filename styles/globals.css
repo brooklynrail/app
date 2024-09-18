@@ -85,6 +85,6 @@ body {
 .media {
   figcaption {
     max-width: 114ex;
-    @apply py-2 pb-6 text-sm font-normal font-sans text-gray-400;
+    @apply pt-2 pb-6 text-sm font-normal font-sans text-gray-400;
   }
 }
