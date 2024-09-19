@@ -9,9 +9,10 @@ header.head {
 }
 
 .subhead {
-  @apply text-lg;
-  @apply font-normal;
-  @apply font-sans;
+  // @apply text-lg;
+  font-size: 1.6vw;
+  @apply text-nowrap;
+  @apply font-light font-sans;
   @apply uppercase;
   span {
     @apply text-2xl;
@@ -27,11 +28,12 @@ header.head {
 
 .button {
   @apply bg-white;
-  @apply text-black;
-  @apply shadow-lg;
+  @apply text-black text-md;
+  @apply font-medium;
+  @apply shadow-xl;
   @apply px-4;
-  @apply py-4;
-  @apply text-lg;
+  @apply py-3;
+  // font-size: 1.25vw;
   @apply rounded;
   @apply uppercase;
 }
