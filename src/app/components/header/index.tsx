@@ -20,7 +20,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <>
-      <header className={styles.head}>
+      <header className={`${styles.head} border-b-2 border-black dark:border-white border-dotted`}>
         <div className="logo">
           <div id={styles.textflag}>
             <h1>The Brooklyn Rail </h1>

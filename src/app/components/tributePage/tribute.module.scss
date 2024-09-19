@@ -2,32 +2,27 @@
   @apply p-0 !important;
 }
 .tribute_head {
-  @apply py-4;
-  @apply border-b-2;
-  @apply border-black;
-  @apply border-dotted;
   h1 {
-    @apply border-b-2;
-    @apply border-black;
-    @apply border-dotted;
+    // @apply border-b-2 border-black border-dotted;
   }
   .summary {
     @apply text-sm text-gray-400;
     max-width: 114ex;
   }
 }
-global.dark .tribute_head {
-  @apply border-white;
-}
 
 .tribute_main {
   @apply px-4;
+  .head {
+    @apply py-4 pb-8;
+    h1 {
+      @apply text-md font-bold;
+    }
+  }
 }
 
 .writer {
-  @apply border-b-2 py-2;
-  @apply border-black dark:border-white;
-  @apply border-dotted;
+  @apply py-2;
   h4 {
     @apply font-bold text-md;
     @apply uppercase;

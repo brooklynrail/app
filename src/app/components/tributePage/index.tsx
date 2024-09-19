@@ -38,6 +38,7 @@ const TributePage = (props: TributePageProps) => {
   const tributeClass = `tribute-${slug.toLowerCase()}`
 
   const title = thisTributeData.title
+  const deck = thisTributeData.deck
   const featured_image = thisTributeData.featured_image
   const blurb = thisTributeData.blurb
   const summary = thisTributeData.summary
@@ -52,10 +53,13 @@ const TributePage = (props: TributePageProps) => {
             {/* <Ad970 currentAds={currentAds} /> */}
 
             <section id="main" className={styles.main}>
-              <div className={`${styles.tribute_head} border-b-2 border-dotted border-black dark:border-white`}>
+              <div className="border-b-2 border-black dark:border-white border-dotted">
                 <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
                   <div className="col-span-12">
-                    <h1 className="px-4 py-4 font-sans font-bold text-2xl">{title}</h1>
+                    <div className="px-4 py-4 font-sans border-b-2 border-black dark:border-white border-dotted">
+                      <h1 className="font-bold text-2xl">{title}</h1>
+                      {deck && <p className="font-normal text-2xl">{deck}</p>}
+                    </div>
                   </div>
                 </div>
                 <div className="p-4">
@@ -74,14 +78,15 @@ const TributePage = (props: TributePageProps) => {
               </div>
 
               <div className={styles.tribute_main}>
-                <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
+                <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
                   <div className="col-span-3">
                     <TributeWriters articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
                   </div>
                   <div className="col-span-9">
-                    <h1>{articleData.title}</h1>
-                    <Bylines contributors={articleData.contributors} />
-
+                    <div className={styles.head}>
+                      <h1>{articleData.title}</h1>
+                      <Bylines contributors={articleData.contributors} linked={true} />
+                    </div>
                     <ArticleBody articleData={articleData} />
                   </div>
                 </div>
@@ -112,8 +117,8 @@ const TributeWriters = (props: TributeWritersProps) => {
     })
 
     return (
-      <li key={index} className={styles.writer}>
-        <h4>
+      <li key={index} className={`${styles.writer} mr-4`}>
+        <h4 className="">
           <a href={permalink}>
             <Bylines hideBy={true} contributors={article.contributors} />
           </a>
@@ -123,8 +128,8 @@ const TributeWriters = (props: TributeWritersProps) => {
   })
 
   return (
-    <div>
-      <ul>{list}</ul>
+    <div className="border-r-2 border-black dark:border-white border-dotted">
+      <ul className="divide-y-2 divide-dotted divide-black dark:divide-white">{list}</ul>
     </div>
   )
 }

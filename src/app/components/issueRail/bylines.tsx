@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { ArticlesContributors } from "../../../../lib/types"
 
 interface BylinesProps {
@@ -5,9 +6,10 @@ interface BylinesProps {
   byline_override?: string | null
   guestCritic?: boolean
   hideBy?: boolean
+  linked?: boolean
 }
 const Bylines = (props: BylinesProps) => {
-  const { contributors, byline_override, guestCritic, hideBy } = props
+  const { contributors, byline_override, guestCritic, hideBy, linked } = props
   if (!contributors || contributors.length === 0) {
     return null
   }
@@ -32,6 +34,16 @@ const Bylines = (props: BylinesProps) => {
               separator = ""
             }
 
+            if (linked) {
+              return (
+                <Link key={i} href={`/contributors/${contributor.contributors_id.slug}`}>
+                  <span>
+                    {!isFirst && separator}
+                    {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
+                  </span>
+                </Link>
+              )
+            }
             return (
               <span key={i}>
                 {!isFirst && separator}
