@@ -9,7 +9,7 @@ interface ThumbProps {
   image: DirectusFiles
   title: string
 }
-export const Thumb = (props: ThumbProps) => {
+const Thumb = (props: ThumbProps) => {
   const { image, title } = props
   const { filename_disk } = image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
