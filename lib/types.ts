@@ -565,6 +565,7 @@ export type Tributes = {
   date_created?: string | null
   date_updated?: string | null
   title: string
+  deck: string
   title_tag?: string | null
   slug: string
   blurb?: string | null

@@ -983,6 +983,7 @@ export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
     readItems("tributes", {
       fields: [
         "title",
+        "deck",
         "slug",
         "blurb",
         "summary",
@@ -1012,7 +1013,7 @@ export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
               issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
             },
             {
-              contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+              contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
             },
             {
               featured_image: ["id", "width", "height", "filename_disk", "caption"],
@@ -1025,15 +1026,6 @@ export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
           _eq: tributeSlug,
         },
       },
-      // deep: {
-      //   articles: {
-      //     _filter: {
-      //       slug: {
-      //         _eq: slug,
-      //       },
-      //     },
-      //   },
-      // },
     }),
   )
   return tribute[0] as Tributes
