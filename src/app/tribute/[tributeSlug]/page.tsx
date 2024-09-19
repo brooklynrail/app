@@ -1,4 +1,4 @@
-import { PageType, getPermalink, getTributeData } from "../../../../lib/utils"
+import { PageType, getOGImage, getPermalink, getTributeData } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Articles, Tributes } from "../../../../lib/types"
 import { Metadata, Viewport } from "next"
@@ -25,35 +25,30 @@ export interface TributePageProps {
   permalink: string
 }
 
-// export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
-//   const data = await getData({ params })
+export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
+  const data = await getData({ params })
 
-//   if (!data.props.currentSection) {
-//     return {}
-//   }
+  const { title, excerpt, featured_image } = data.props.thisTributeData
+  const ogtitle = `${stripHtml(title).result}`
+  const ogdescription = excerpt
+  const ogimageprops = { ogimage: featured_image, title }
+  const ogimages = getOGImage(ogimageprops)
 
-//   const { name } = data.props.currentSection
-//   const { title, cover_1, issue_number } = data.props.thisIssueData
-//   const ogtitle = `${name} – ${stripHtml(title).result}`
-//   const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
-//   const ogimageprops = { ogimage: cover_1, title }
-//   const ogimages = getOGImage(ogimageprops)
-
-//   return {
-//     title: `${ogtitle}`,
-//     description: ogdescription,
-//     alternates: {
-//       canonical: `${data.props.permalink}`,
-//     },
-//     openGraph: {
-//       title: `${ogtitle}`,
-//       description: ogdescription,
-//       url: data.props.permalink,
-//       images: ogimages,
-//       type: `website`,
-//     },
-//   }
-// }
+  return {
+    title: `${ogtitle}`,
+    description: ogdescription,
+    alternates: {
+      canonical: `${data.props.permalink}`,
+    },
+    openGraph: {
+      title: `${ogtitle}`,
+      description: ogdescription,
+      url: data.props.permalink,
+      images: ogimages,
+      type: `website`,
+    },
+  }
+}
 
 export default async function Tribute({ params }: { params: TributeParams }) {
   const data = await getData({ params })
@@ -68,7 +63,6 @@ interface TributeParams {
 async function getData({ params }: { params: TributeParams }) {
   const tributeSlug = params.tributeSlug
 
-  console.log("tributeSlug", tributeSlug)
   const thisTributeData = await getTributeData({ tributeSlug: tributeSlug, slug: "" })
   if (!thisTributeData) {
     return notFound()

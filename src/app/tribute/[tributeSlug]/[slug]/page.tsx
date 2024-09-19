@@ -1,7 +1,8 @@
 import TributePage from "@/app/components/tributePage"
-import { PageType, getPermalink, getTributeData } from "../../../../../lib/utils"
+import { PageType, getOGImage, getPermalink, getTributeData } from "../../../../../lib/utils"
 import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
+import { stripHtml } from "string-strip-html"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -17,35 +18,30 @@ export const viewport: Viewport = {
   initialScale: 0.405,
 }
 
-// export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
-//   const data = await getData({ params })
+export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
+  const data = await getData({ params })
 
-//   if (!data.props.currentSection) {
-//     return {}
-//   }
+  const { title, excerpt, featured_image } = data.props.thisTributeData
+  const ogtitle = stripHtml(title).result
+  const ogdescription = stripHtml(excerpt).result
+  const ogimageprops = { ogimage: featured_image, title }
+  const ogimages = getOGImage(ogimageprops)
 
-//   const { name } = data.props.currentSection
-//   const { title, cover_1, issue_number } = data.props.thisIssueData
-//   const ogtitle = `${name} – ${stripHtml(title).result}`
-//   const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
-//   const ogimageprops = { ogimage: cover_1, title }
-//   const ogimages = getOGImage(ogimageprops)
-
-//   return {
-//     title: `${ogtitle}`,
-//     description: ogdescription,
-//     alternates: {
-//       canonical: `${data.props.permalink}`,
-//     },
-//     openGraph: {
-//       title: `${ogtitle}`,
-//       description: ogdescription,
-//       url: data.props.permalink,
-//       images: ogimages,
-//       type: `website`,
-//     },
-//   }
-// }
+  return {
+    title: `${ogtitle}`,
+    description: ogdescription,
+    alternates: {
+      canonical: `${data.props.permalink}`,
+    },
+    openGraph: {
+      title: `${ogtitle}`,
+      description: ogdescription,
+      url: data.props.permalink,
+      images: ogimages,
+      type: `website`,
+    },
+  }
+}
 
 export default async function TributeArticle({ params }: { params: TributeParams }) {
   const data = await getData({ params })
