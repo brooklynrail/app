@@ -47,10 +47,6 @@
   --font-weight-black: 900;
 }
 
-body {
-  @apply font-sans;
-}
-
 h1 {
   @apply text-4xl font-thin;
 }
@@ -72,6 +68,13 @@ h6 {
 html,
 body {
   @apply text-base font-normal;
+  @apply font-sans;
+  @apply bg-red-600 text-black;
+}
+
+.paper {
+  @apply bg-white dark:bg-black;
+  @apply text-black dark:text-white;
 }
 
 .content {
