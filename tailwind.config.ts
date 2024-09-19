@@ -1,11 +1,9 @@
 import type { Config } from "tailwindcss"
 
 const config: Config = {
+  darkMode: "selector",
+  // darkMode: ["class", ":global(.dark)"],
   content: ["./src/app/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/components/**/*.{js,ts,jsx,tsx,mdx}"],
-  purge: {
-    enabled: true,
-    content: ["./src/app/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/components/**/*.{js,ts,jsx,tsx,mdx}"],
-  },
   theme: {
     screens: {
       card: "160px",
@@ -79,4 +77,5 @@ const config: Config = {
 
   plugins: [],
 }
+
 export default config
