@@ -14,6 +14,7 @@ import Bylines from "../issueRail/bylines"
 import ArticleBody from "../article/articleBody"
 import parse from "html-react-parser"
 import FeaturedImage from "../featuredImage"
+import ThemeToggle from "../themeToggle"
 
 const TributePage = (props: TributePageProps) => {
   const { thisTributeData, permalink } = props
@@ -44,14 +45,14 @@ const TributePage = (props: TributePageProps) => {
   return (
     <>
       <PopupProvider>
-        <Paper pageClass={tributeClass}>
+        <Paper pageClass={`${tributeClass}`}>
           <div className="">
             <Header />
 
             {/* <Ad970 currentAds={currentAds} /> */}
 
             <section id="main" className={styles.main}>
-              <div className={styles.tribute_head}>
+              <div className={`${styles.tribute_head} border-b-2 border-dotted border-black dark:border-white`}>
                 <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
                   <div className="col-span-12">
                     <h1 className="px-4 py-4 font-sans font-bold text-2xl">{title}</h1>
