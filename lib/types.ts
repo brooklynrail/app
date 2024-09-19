@@ -569,7 +569,7 @@ export type Tributes = {
   slug: string
   blurb?: string | null
   summary?: string | null
-  excerpt?: string | null
+  excerpt: string
   featured_image?: DirectusFiles
   sort?: number | null
   curators: TributesContributors[]
