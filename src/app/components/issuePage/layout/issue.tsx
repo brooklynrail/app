@@ -44,7 +44,7 @@ const IssueLayout = (props: IssuePageProps) => {
         <div className="grid-row grid-gap-4">
           <div className="grid-col-6">
             <FeaturedArticles {...promoProps} />
-            <InMemoriam tributesData={tributesData} />
+            {tributesData && <InMemoriam tributesData={tributesData} />}
           </div>
           <div className="grid-col-6">
             <PublishersMessage {...promoProps} />
