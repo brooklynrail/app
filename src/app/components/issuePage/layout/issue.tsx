@@ -8,6 +8,7 @@ import { Articles, Issues, Sections } from "../../../../../lib/types"
 import { IssuePageProps, PageLayout } from "@/app/page"
 import TableOfContents from "../tableOfContents"
 import SubscribeAd from "../subscribeAd"
+import InMemoriam from "../inMemoriam"
 
 export interface LayoutProps {
   thisIssueData: Issues
@@ -15,7 +16,7 @@ export interface LayoutProps {
 }
 
 const IssueLayout = (props: IssuePageProps) => {
-  const { thisIssueData, issueSections, permalink } = props
+  const { thisIssueData, issueSections, permalink, tributesData } = props
   const currentSections = issueSections
   const { year, month } = thisIssueData
   const currentArticles = thisIssueData.articles
@@ -43,6 +44,7 @@ const IssueLayout = (props: IssuePageProps) => {
         <div className="grid-row grid-gap-4">
           <div className="grid-col-6">
             <FeaturedArticles {...promoProps} />
+            <InMemoriam tributesData={tributesData} />
           </div>
           <div className="grid-col-6">
             <PublishersMessage {...promoProps} />
