@@ -319,6 +319,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.section.name` +
     `&fields[]=articles.section.description` +
     `&fields[]=articles.section.slug` +
+    `&fields[]=articles.tribute.slug` +
     `&fields[]=articles.images.directus_files_id.id` +
     `&fields[]=articles.images.directus_files_id.caption` +
     `&fields[]=articles.images.directus_files_id.filename_disk` +
@@ -922,6 +923,54 @@ export async function getAllContributors() {
     console.error("Failed to fetch getAllContributors data", error)
     return null
   }
+}
+
+interface TributesParams {
+  thisIssueData: Issues
+}
+
+export async function getTributes(props: TributesParams) {
+  const { thisIssueData } = props
+
+  // filter out the articles where tribute is not null
+  const tributeArticles = thisIssueData.articles.filter((article) => article.tribute !== null)
+  // make an array of the tribute slugs in the tributeArticles and remove all duplicates
+  const currentTributes = Array.from(new Set(tributeArticles.map((article) => article.tribute.slug)))
+
+  const tributes = await directus.request(
+    readItems("tributes", {
+      fields: [
+        "id",
+        "title",
+        "slug",
+        "excerpt",
+        "title_tag",
+        {
+          curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+        },
+        {
+          featured_image: ["id", "width", "height", "filename_disk", "caption"],
+        },
+        {
+          articles: [
+            "slug",
+            "title",
+            "excerpt",
+            "status",
+            {
+              tribute: ["slug"],
+            },
+          ],
+        },
+      ],
+      filter: {
+        slug: {
+          _in: currentTributes,
+        },
+      },
+    }),
+  )
+  return tributes as Tributes[]
 }
 
 interface TributeDataParams {
