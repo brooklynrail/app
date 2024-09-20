@@ -1,9 +1,8 @@
 "use client"
 import CoversPopup from "../issueRail/coversPopup"
-import Ad970 from "../ads/ad970"
-import { Ads, Articles, Contributors } from "../../../../lib/types"
+import { Ads } from "../../../../lib/types"
 import { useEffect, useState } from "react"
-import { getAds, getPermalink, PageType } from "../../../../lib/utils"
+import { getAds } from "../../../../lib/utils"
 import { PopupProvider } from "../issueRail/popupProvider"
 import Footer from "../footer"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
@@ -14,7 +13,8 @@ import Bylines from "../issueRail/bylines"
 import ArticleBody from "../article/articleBody"
 import parse from "html-react-parser"
 import FeaturedImage from "../featuredImage"
-import ThemeToggle from "../themeToggle"
+import TributeWriters from "./writers"
+import TributeWritersList from "./writersList"
 
 const TributePage = (props: TributePageProps) => {
   const { thisTributeData, permalink } = props
@@ -54,20 +54,21 @@ const TributePage = (props: TributePageProps) => {
 
             <section id="main" className={styles.main}>
               <div className="border-b-2 border-black dark:border-white border-dotted">
-                <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
-                  <div className="col-span-12">
-                    <div className="px-4 py-4 font-sans border-b-2 border-black dark:border-white border-dotted">
-                      <h1 className="font-bold text-2xl">{title}</h1>
-                      {deck && <p className="font-normal text-2xl">{deck}</p>}
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4">
+                <div className="px-6 py-4">
                   <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
                     <div className="col-span-8">
-                      <div className="flex flex-col justify-between h-full">
-                        <div className="text-2xl font-serif font-light">{blurb && parse(blurb)}</div>
-                        <div className={styles.summary}>{summary && parse(summary)}</div>
+                      <div className="flex flex-col justify-between h-full px-4">
+                        <div className="flex flex-col space-y-6">
+                          <div className="flex flex-col space-y-2">
+                            <h1 className="text-center font-bold text-3xl">{title}</h1>
+                            {deck && <p className="text-center font-light text-3xl">{deck}</p>}
+                          </div>
+                          <div className="text-lg text-center font-serif font-light">{blurb && parse(blurb)}</div>
+                        </div>
+                        <div className="flex flex-col space-y-2 text-md text-gray-600">
+                          {summary && parse(summary)}
+                          <TributeWritersList articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
+                        </div>
                       </div>
                     </div>
                     <div className="col-span-4">
@@ -77,14 +78,14 @@ const TributePage = (props: TributePageProps) => {
                 </div>
               </div>
 
-              <div className={styles.tribute_main}>
+              <div className="py-3 px-9">
                 <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
-                  <div className="col-span-3">
+                  <div className="col-span-3 border-r-2 border-black dark:border-white border-dotted">
                     <TributeWriters articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
                   </div>
                   <div className="col-span-9">
-                    <div className={styles.head}>
-                      <h1>{articleData.title}</h1>
+                    <div className="py-4 pb-8">
+                      <h1 className="text-md font-bold">{articleData.title}</h1>
                       <Bylines contributors={articleData.contributors} linked={true} />
                     </div>
                     <ArticleBody articleData={articleData} />
@@ -98,39 +99,6 @@ const TributePage = (props: TributePageProps) => {
         <CoversPopup />
       </PopupProvider>
     </>
-  )
-}
-
-interface TributeWritersProps {
-  articles: Articles[]
-  tributeSlug: string
-}
-
-const TributeWriters = (props: TributeWritersProps) => {
-  const { articles, tributeSlug } = props
-
-  const list = articles.map((article, index) => {
-    const permalink = getPermalink({
-      tributeSlug: tributeSlug,
-      slug: article.slug,
-      type: PageType.TributeArticle,
-    })
-
-    return (
-      <li key={index} className={`${styles.writer} mr-4`}>
-        <h4 className="">
-          <a href={permalink}>
-            <Bylines hideBy={true} contributors={article.contributors} />
-          </a>
-        </h4>
-      </li>
-    )
-  })
-
-  return (
-    <div className="border-r-2 border-black dark:border-white border-dotted">
-      <ul className="divide-y-2 divide-dotted divide-black dark:divide-white">{list}</ul>
-    </div>
   )
 }
 

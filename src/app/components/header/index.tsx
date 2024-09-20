@@ -30,7 +30,7 @@ const Header = (props: HeaderProps) => {
           <Link href="/">
             <Banner theme={theme} />
           </Link>
-          <div className="px-4">
+          <div className="px-8 py-4">
             <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
               <div className="col-span-12">
                 <div className="flex justify-between items-center">
