@@ -66,7 +66,6 @@ const TributePage = (props: TributePageProps) => {
                           <div className="text-lg text-center font-serif font-light">{blurb && parse(blurb)}</div>
                         </div>
                         <div className="flex flex-col space-y-2 text-md text-gray-600">
-                          {summary && parse(summary)}
                           <TributeWritersList articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
                         </div>
                       </div>
@@ -81,7 +80,10 @@ const TributePage = (props: TributePageProps) => {
               <div className="py-3 px-9">
                 <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
                   <div className="col-span-3 border-r-2 border-black dark:border-white border-dotted">
-                    <TributeWriters articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
+                    <div className="divide-y-2 divide-dotted divide-black dark:divide-white mr-3">
+                      <div className="text-sm pl-3 py-3">{summary && parse(summary)}</div>
+                      <TributeWriters articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
+                    </div>
                   </div>
                   <div className="col-span-9">
                     <div className="py-4 pb-8">

@@ -22,7 +22,7 @@ const TributeWriters = (props: TributeWritersProps) => {
     const intro = "Introduction"
 
     return (
-      <li key={index} className="mr-3 pl-3 py-2">
+      <li key={index} className="pl-3 py-2">
         {index === 0 && <p>{intro}</p>}
         <h4 className="font-bold text-md uppercase">
           <a href={permalink}>
