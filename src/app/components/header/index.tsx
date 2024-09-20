@@ -20,9 +20,9 @@ const Header = (props: HeaderProps) => {
 
   return (
     <>
-      <header className={`${styles.head} border-b-2 border-black dark:border-white border-dotted`}>
+      <header className="border-b-2 border-black dark:border-white border-dotted pb-4">
         <div className="logo">
-          <div id={styles.textflag}>
+          <div className="hidden">
             <h1>The Brooklyn Rail </h1>
             <h2>Critical Perspectives on Art, Politics and Culture</h2>
             {title && <h3>{title}</h3>}
@@ -35,8 +35,9 @@ const Header = (props: HeaderProps) => {
               <div className="col-span-12">
                 <div className="flex justify-between items-center">
                   <ButtonMenu />
-                  <h2 className={styles.subhead}>
-                    Critical Perspectives on Arts, Politics, and Culture <span>·</span> Independent and Free
+                  <h2 className="text-nowrap font-light font-sans uppercase text-[1.6vw]">
+                    Critical Perspectives on Arts, Politics, and Culture <span className="text-2xl font-bold">·</span>{" "}
+                    Independent and Free
                   </h2>
                   <div className="flex space-x-4">
                     <Button text="Subscribe" />
