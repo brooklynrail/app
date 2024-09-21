@@ -53,25 +53,23 @@ const TributePage = (props: TributePageProps) => {
             {/* <Ad970 currentAds={currentAds} /> */}
 
             <section id="main" className={styles.main}>
-              <div className="border-b-2 border-black dark:border-white border-dotted">
-                <div className="px-6 py-4">
-                  <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
-                    <div className="col-span-8">
-                      <div className="flex flex-col justify-between h-full px-4">
-                        <div className="flex flex-col space-y-6">
-                          <div className="flex flex-col space-y-2">
-                            <h1 className="text-center font-bold text-3xl">{title}</h1>
-                            {deck && <p className="text-center font-light text-3xl">{deck}</p>}
-                          </div>
-                          <div className="text-lg text-center font-serif font-light">{blurb && parse(blurb)}</div>
-                        </div>
-                        <div className="flex flex-col space-y-2 text-md text-gray-600">
-                          <TributeWritersList articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
-                        </div>
+              <div className="border-b-2 border-black dark:border-white border-dotted py-3">
+                <div className="px-6 grid grid-cols-4 tablet:grid-cols-12 grid-rows-3 gap-3">
+                  <div className="col-span-4 tablet:col-span-8 row-span-4 tablet:row-span-2 ">
+                    <div className="flex flex-col space-y-6 px-3">
+                      <div className="flex flex-col space-y-2">
+                        <h1 className="text-center font-bold text-3xl">{title}</h1>
+                        {deck && <p className="text-center font-light text-3xl">{deck}</p>}
                       </div>
+                      <div className="text-lg text-center font-serif font-light">{blurb && parse(blurb)}</div>
                     </div>
-                    <div className="col-span-4">
-                      {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
+                  </div>
+                  <div className="col-span-4 tablet:col-span-4 row-span-4 tablet:row-span-3 tablet:col-start-9">
+                    {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
+                  </div>
+                  <div className="col-span-4 tablet:col-span-8 tablet:row-start-3">
+                    <div className="flex flex-col justify-end h-full px-3">
+                      <TributeWritersList articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
                     </div>
                   </div>
                 </div>
