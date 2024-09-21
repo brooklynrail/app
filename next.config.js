@@ -375,12 +375,7 @@ module.exports = {
         destination: "/",
         permanent: false,
       },
-      // Search is coming back shortly!
-      {
-        source: "/search",
-        destination: "/",
-        permanent: false,
-      },
+
       // {
       //   source: "/article_image/image/:id/:filename",
       //   destination:

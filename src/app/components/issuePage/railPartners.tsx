@@ -51,6 +51,10 @@ const RailPartners = () => {
         <Image src="/images/banners-left/glasserie-card.png" width="124" height="62" alt="Glasserie Restaurant" />
       </Link>
 
+      <Link href="https://centerforfiction.org/?br" target="out-rail">
+        <Image src="/images/banners-left/cff-logo.jpg" width="124" height="124" alt="Glasserie Restaurant" />
+      </Link>
+
       <Link href="http://studioinaschool.org/" target="out-rail">
         <Image src="/images/banners-left/STUDIO_LOGO_COLOR.jpg" width="124" height="52" alt="Studio in a School" />
       </Link>
