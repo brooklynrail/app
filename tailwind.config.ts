@@ -1,11 +1,9 @@
 import type { Config } from "tailwindcss"
 
 const config: Config = {
+  darkMode: "selector",
+  // darkMode: ["class", ":global(.dark)"],
   content: ["./src/app/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/components/**/*.{js,ts,jsx,tsx,mdx}"],
-  purge: {
-    enabled: true,
-    content: ["./src/app/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/components/**/*.{js,ts,jsx,tsx,mdx}"],
-  },
   theme: {
     screens: {
       card: "160px",
@@ -38,11 +36,7 @@ const config: Config = {
       md: ["var(--font-size-md)", "var(--line-height-md)"],
       base: ["var(--font-size-md)", "var(--line-height-md)"],
       lg: ["var(--font-size-lg)", "var(--line-height-lg)"],
-      lgm: ["var(--font-size-lgm)", "var(--line-height-lgm)"],
       xl: ["var(--font-size-xl)", "var(--line-height-xl)"],
-      // public marketing pages only
-      // remove once OLD styles have been removed
-      xlm: ["var(--font-size-xlm)", "var(--line-height-xlm)"],
       "2xl": ["var(--font-size-2xl)", "var(--line-height-2xl)"],
       "3xl": ["var(--font-size-3xl)", "var(--line-height-3xl)"],
       "4xl": ["var(--font-size-4xl)", "var(--line-height-4xl)"],
@@ -83,4 +77,5 @@ const config: Config = {
 
   plugins: [],
 }
+
 export default config

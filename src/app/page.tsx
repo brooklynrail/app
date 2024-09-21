@@ -1,5 +1,5 @@
-import { Issues, Sections } from "../../lib/types"
-import { getAllIssues, getCurrentIssueData, getPermalink, getSectionData, PageType } from "../../lib/utils"
+import { Issues, Sections, Tributes } from "../../lib/types"
+import { getAllIssues, getCurrentIssueData, getPermalink, getSectionData, getTributes, PageType } from "../../lib/utils"
 import { notFound } from "next/navigation"
 import { Viewport } from "next"
 import Homepage from "./components/homepage"
@@ -29,6 +29,11 @@ export enum PageLayout {
 export interface HomePageProps {
   collectionsData: Sections[]
   thisIssueData: Issues
+  allIssues: Issues[]
+  tributesData?: Tributes[]
+  issueSections: Sections[]
+  previewURL?: string
+  currentSection?: Sections
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -63,6 +68,12 @@ async function getData() {
   }
 
   // Use props as needed
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
+  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
+  const issueSections = thisIssueData.articles
+    .map((article) => article.section)
+    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
 
   const allIssues = await getAllIssues()
   if (!allIssues) {
@@ -76,6 +87,9 @@ async function getData() {
   return {
     collectionsData: filteredCollectionsData,
     thisIssueData,
+    issueSections,
+    tributesData,
+    allIssues,
     permalink,
   }
 }

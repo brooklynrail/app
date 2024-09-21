@@ -1,8 +1,13 @@
-#textflag {
-  display: none;
+.button {
+  @apply bg-white;
+  @apply text-black text-md;
+  @apply font-medium;
+  @apply shadow-xl;
+  @apply px-4;
+  @apply py-3;
+  @apply rounded;
+  @apply uppercase;
 }
 
-.banner {
-  @apply py-4;
-  @apply px-6;
+.button_menu {
 }

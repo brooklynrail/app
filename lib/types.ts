@@ -52,6 +52,7 @@ export type Articles = {
   tags: string
   title: string
   title_tag?: string
+  tribute: Tributes
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
@@ -558,6 +559,31 @@ export type Sections = {
   user_updated?: string | DirectusUsers | null
 }
 
+export type Tributes = {
+  id: number
+  articles: Articles[]
+  date_created?: string | null
+  date_updated?: string | null
+  title: string
+  deck: string
+  title_tag?: string | null
+  slug: string
+  blurb?: string | null
+  summary?: string | null
+  excerpt: string
+  featured_image?: DirectusFiles
+  sort?: number | null
+  curators: TributesContributors[]
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+}
+
+export type TributesContributors = {
+  tributes_id?: Tributes | null
+  contributors_id?: Contributors | null
+  id: number
+}
+
 export type CustomDirectusTypes = {
   ads: Ads[]
   articles: Articles[]
@@ -594,5 +620,6 @@ export type CustomDirectusTypes = {
   pages: Pages[]
   people: People[]
   sections: Sections[]
+  tributes: Tributes[]
   redirects: Redirects[]
 }

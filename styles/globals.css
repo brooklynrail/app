@@ -16,12 +16,10 @@
   --font-size-2xs: 10px;
   --font-size-xs: 12px;
   --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-base: 16px;
-  --font-size-lg: 20px;
-  --font-size-lgm: 20px;
-  --font-size-xl: 24px;
-  --font-size-xlm: 24px;
+  --font-size-md: 18px;
+  --font-size-base: 18px;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 28px;
   --font-size-2xl: 32px;
   --font-size-3xl: 40px;
   --font-size-4xl: 60px;
@@ -31,10 +29,8 @@
   --line-height-sm: 150%;
   --line-height-md: 150%;
   --line-height-base: 150%;
-  --line-height-lg: 120%;
-  --line-height-lgm: 120%;
+  --line-height-lg: 1.6;
   --line-height-xl: 120%;
-  --line-height-xlm: 120%;
   --line-height-2xl: 120%;
   --line-height-3xl: 120%;
   --line-height-4xl: 120%;
@@ -49,4 +45,49 @@
   --font-weight-bold: 700;
   --font-weight-extrabold: 800;
   --font-weight-black: 900;
+}
+
+h1 {
+  @apply text-4xl font-thin;
+}
+h2 {
+  @apply text-3xl font-thin;
+}
+h3 {
+  @apply text-2xl font-thin;
+}
+h4 {
+  @apply text-xl font-thin;
+}
+h5 {
+  @apply text-lg font-thin;
+}
+h6 {
+  @apply text-base font-thin;
+}
+html,
+body {
+  @apply text-base font-normal;
+  @apply font-sans;
+  @apply bg-red-600 text-black;
+}
+
+.paper {
+  @apply bg-white dark:bg-black;
+  @apply text-black dark:text-white;
+}
+
+.content {
+  @apply text-lg font-normal font-serif;
+  p {
+    max-width: 72ex;
+    @apply mb-6;
+  }
+}
+
+.media {
+  figcaption {
+    max-width: 114ex;
+    @apply pt-2 pb-6 text-sm font-normal font-sans text-gray-400;
+  }
 }

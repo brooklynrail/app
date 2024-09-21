@@ -13,6 +13,7 @@ import {
   People,
   Redirects,
   Sections,
+  Tributes,
 } from "./types"
 import { stripHtml } from "string-strip-html"
 import { cache } from "react"
@@ -318,6 +319,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.section.name` +
     `&fields[]=articles.section.description` +
     `&fields[]=articles.section.slug` +
+    `&fields[]=articles.tribute.slug` +
     `&fields[]=articles.images.directus_files_id.id` +
     `&fields[]=articles.images.directus_files_id.caption` +
     `&fields[]=articles.images.directus_files_id.filename_disk` +
@@ -615,6 +617,8 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=images.directus_files_id.height` +
     `&fields[]=images.directus_files_id.type` +
     `&fields[]=images.directus_files_id.shortcode_key` +
+    `&fields[]=tribute.title` +
+    `&fields[]=tribute.slug` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_in]=${status}`
 
@@ -770,6 +774,8 @@ export enum PageType {
   Section = "section",
   Issue = "issue",
   Event = "event",
+  Tribute = "tribute",
+  TributeArticle = "tribute_article",
   Home = "home",
   Contributor = "contributor",
   Page = "page",
@@ -789,9 +795,10 @@ interface PermalinkProps {
   section?: string | Sections
   slug?: string
   issueSlug?: string
+  tributeSlug?: string
 }
 export function getPermalink(props: PermalinkProps) {
-  const { year, section, slug, issueSlug, type } = props
+  const { year, section, slug, issueSlug, type, tributeSlug } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
   const day = props.day && props.day < 10 ? `0${props.day}` : props.day
 
@@ -812,6 +819,10 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/issues/${issueSlug}/`
     case PageType.Event:
       return `${baseURL}/event/${year}/${month}/${day}/${slug}/`
+    case PageType.Tribute:
+      return `${baseURL}/tribute/${tributeSlug}/`
+    case PageType.TributeArticle:
+      return `${baseURL}/tribute/${tributeSlug}/${slug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
     case PageType.Page:
@@ -921,6 +932,112 @@ export async function getAllContributors() {
     console.error("Failed to fetch getAllContributors data", error)
     return null
   }
+}
+
+interface TributesParams {
+  thisIssueData: Issues
+}
+
+export async function getTributes(props: TributesParams) {
+  const { thisIssueData } = props
+
+  // filter out the articles where tribute is not null
+  const tributeArticles = thisIssueData.articles.filter((article) => article.tribute !== null)
+  // make an array of the tribute slugs in the tributeArticles and remove all duplicates
+  const currentTributes = Array.from(new Set(tributeArticles.map((article) => article.tribute.slug)))
+
+  const tributes = await directus.request(
+    readItems("tributes", {
+      fields: [
+        "id",
+        "title",
+        "slug",
+        "excerpt",
+        "title_tag",
+        {
+          curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+        },
+        {
+          featured_image: ["id", "width", "height", "filename_disk", "caption"],
+        },
+        {
+          articles: [
+            "slug",
+            "title",
+            "excerpt",
+            "status",
+            {
+              tribute: ["slug"],
+            },
+          ],
+        },
+      ],
+      filter: {
+        slug: {
+          _in: currentTributes,
+        },
+      },
+    }),
+  )
+  return tributes as Tributes[]
+}
+
+interface TributeDataParams {
+  tributeSlug: string
+  slug: string
+}
+
+export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
+  const tribute = await directus.request(
+    readItems("tributes", {
+      fields: [
+        "title",
+        "deck",
+        "slug",
+        "blurb",
+        "summary",
+        "excerpt",
+        "title_tag",
+        {
+          curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+        },
+        {
+          featured_image: ["id", "width", "height", "filename_disk", "caption"],
+        },
+        {
+          articles: [
+            "slug",
+            "title",
+            "excerpt",
+            "body_text",
+            "sort",
+            "status",
+            {
+              images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+            },
+            {
+              section: ["name", "slug"],
+            },
+            {
+              issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+            },
+            {
+              contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
+            },
+            {
+              featured_image: ["id", "width", "height", "filename_disk", "caption"],
+            },
+          ],
+        },
+      ],
+      filter: {
+        slug: {
+          _eq: tributeSlug,
+        },
+      },
+    }),
+  )
+  return tribute[0] as Tributes
 }
 
 export async function getAllPeople() {
