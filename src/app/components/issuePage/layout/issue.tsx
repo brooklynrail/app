@@ -9,6 +9,7 @@ import { PageLayout } from "@/app/page"
 import TableOfContents from "../tableOfContents"
 import SubscribeAd from "../subscribeAd"
 import InMemoriam from "../inMemoriam"
+import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
 
 export interface LayoutProps {
   thisIssueData: Issues

@@ -4,7 +4,7 @@ import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTrib
 import { stripHtml } from "string-strip-html"
 import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
-import { Issues, Sections } from "../../../../lib/types"
+import { Issues, Sections, Tributes } from "../../../../lib/types"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -22,6 +22,7 @@ export const viewport: Viewport = {
 
 export interface IssuePageProps {
   thisIssueData: Issues
+  tributesData: Tributes[]
   allIssues: Issues[]
   issueSections: Sections[]
   previewURL?: string
