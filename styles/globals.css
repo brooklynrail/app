@@ -13,27 +13,30 @@
 
 :root {
   /* Font Sizes */
-  --font-size-2xs: 10px;
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-size-md: 18px;
-  --font-size-base: 18px;
-  --font-size-lg: 1.25rem;
-  --font-size-xl: 28px;
-  --font-size-2xl: 32px;
-  --font-size-3xl: 40px;
-  --font-size-4xl: 60px;
+  --font-size-3xs: 12px;
+  --font-size-2xs: 15px;
+  --font-size-xs: 18px;
+  --font-size-sm: 21px;
+  --font-size-base: 24px;
+  --font-size-lg: 27px;
+  --font-size-xl: 36px;
+  --font-size-2xl: 48px;
+  --font-size-3xl: 60px;
+  --font-size-4xl: 84px;
+  --font-size-5xl: 96px;
 
   /* Line Heights */
-  --line-height-xs: 150%;
-  --line-height-sm: 150%;
-  --line-height-md: 150%;
-  --line-height-base: 150%;
-  --line-height-lg: 1.6;
-  --line-height-xl: 120%;
-  --line-height-2xl: 120%;
-  --line-height-3xl: 120%;
-  --line-height-4xl: 120%;
+  --line-height-3xs: 18px;
+  --line-height-2xs: 21px;
+  --line-height-xs: 24px;
+  --line-height-sm: 30px;
+  --line-height-base: 30px;
+  --line-height-lg: 33px;
+  --line-height-xl: 42px;
+  --line-height-2xl: 60px;
+  --line-height-3xl: 66px;
+  --line-height-4xl: 84px;
+  --line-height-5xl: 96px;
 
   /* Font Weights */
   --font-weight-thin: 100;
@@ -65,6 +68,7 @@ h5 {
 h6 {
   @apply text-base font-thin;
 }
+
 html,
 body {
   @apply text-base font-normal;
@@ -78,7 +82,7 @@ body {
 }
 
 .content {
-  @apply text-lg font-normal font-serif;
+  @apply text-base font-normal font-serif;
   p {
     max-width: 72ex;
     @apply mb-6;
