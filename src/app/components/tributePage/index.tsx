@@ -58,8 +58,8 @@ const TributePage = (props: TributePageProps) => {
                   <div className="col-span-4 tablet:col-span-8 row-span-4 tablet:row-span-2 ">
                     <div className="flex flex-col space-y-6 px-3">
                       <div className="flex flex-col space-y-2">
-                        <h1 className="text-center font-bold text-3xl">{title}</h1>
-                        {deck && <p className="text-center font-light text-3xl">{deck}</p>}
+                        <h1 className="text-center font-semibold text-2xl">{title}</h1>
+                        {deck && <p className="text-center font-thin text-2xl">{deck}</p>}
                       </div>
                       <div className="text-lg text-center font-serif font-light">{blurb && parse(blurb)}</div>
                     </div>
@@ -79,7 +79,7 @@ const TributePage = (props: TributePageProps) => {
                 <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
                   <div className="col-span-3 border-r-2 border-black dark:border-white border-dotted">
                     <div className="divide-y-2 divide-dotted divide-black dark:divide-white mr-3">
-                      <div className="text-sm pl-3 py-3">{summary && parse(summary)}</div>
+                      <div className="text-2xs pl-3 py-3">{summary && parse(summary)}</div>
                       <TributeWriters articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
                     </div>
                   </div>
@@ -94,7 +94,6 @@ const TributePage = (props: TributePageProps) => {
               </div>
             </section>
           </div>
-          <Footer />
         </Paper>
         <CoversPopup />
       </PopupProvider>

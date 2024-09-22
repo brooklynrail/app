@@ -1,4 +1,4 @@
-import "../../../styles/issue/styles.scss"
+// import "../../../styles/issue/styles.scss"
 import Footer from "../components/footer"
 
 export default function ContributorLayout({ children }: { children: React.ReactNode }) {

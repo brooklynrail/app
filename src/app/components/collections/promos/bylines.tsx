@@ -1,5 +1,4 @@
 import { Articles } from "../../../../../lib/types"
-import styles from "./promos.module.scss"
 
 interface BylinesProps {
   article: Articles
@@ -9,10 +8,16 @@ const Bylines = (props: BylinesProps) => {
   const { article } = props
   const { contributors, byline_override, hide_bylines, hide_bylines_downstream } = article
 
+  if (hide_bylines_downstream) {
+    return <></>
+  }
+
   const by = "By"
 
+  const sizes = ["text-xs"]
+
   return (
-    <cite className={styles.byline}>
+    <cite className={`${sizes[0]} not-italic`}>
       {byline_override ? (
         <span className="byline-override">{byline_override}</span>
       ) : (
@@ -32,7 +37,7 @@ const Bylines = (props: BylinesProps) => {
             }
 
             return (
-              <span key={i} className={styles.name}>
+              <span key={i} className="">
                 {!isFirst && separator}
                 {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
               </span>

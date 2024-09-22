@@ -40,9 +40,20 @@ function ThemeToggle(props: ThemeToggleProps) {
   }
 
   return (
-    <button className={styles.theme_toggle} onClick={toggleTheme}>
-      {theme === "dark" ? "🌙" : "🌞"}
-    </button>
+    <div className="flex space-x-3 items-center fixed bottom-4 left-4">
+      <button className={styles.theme_toggle} onClick={toggleTheme}>
+        {theme === "dark" ? "🌙" : "🌞"}
+      </button>
+      <p className="text-xs">
+        <span className={`bg-slate-200 px-1 rounded hidden widescreen:block`}>widescreen</span>
+        <span className={`bg-slate-200 px-1 rounded hidden desktop-lg:max-widescreen:block`}>desktop-lg</span>
+        <span className={`bg-slate-200 px-1 rounded hidden desktop:max-desktop-lg:block`}>desktop</span>
+        <span className={`bg-slate-200 px-1 rounded hidden tablet-lg:max-desktop:block`}>tablet-lg</span>
+        <span className={`bg-slate-200 px-1 rounded hidden tablet:max-tablet-lg:block`}>tablet</span>
+        <span className={`bg-slate-200 px-1 rounded hidden mobile-lg:max-tablet:block`}>mobile-lg</span>
+        <span className={`bg-slate-200 px-1 rounded hidden mobile:max-mobile-lg:block`}>mobile</span>
+      </p>
+    </div>
   )
 }
 

@@ -484,6 +484,22 @@ export type GlobalSettings = {
   user_updated?: string | DirectusUsers | null
 }
 
+export type Homepage = {
+  date_created?: string | null
+  date_updated?: string | null
+  id: string
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+  collections: HomepageCollections[]
+}
+export type HomepageCollections = {
+  id: string
+  homepage_id: string
+  item: Sections | Tributes
+  collection: string
+  sort: number
+}
+
 export type Issues = {
   articles: Articles[]
   cover_1?: DirectusFiles
@@ -616,6 +632,8 @@ export type CustomDirectusTypes = {
   directus_webhooks: DirectusWebhooks[]
   events: Events[]
   global_settings: GlobalSettings
+  homepage: Homepage
+  homepage_collections: HomepageCollections[]
   issues: Issues[]
   pages: Pages[]
   people: People[]

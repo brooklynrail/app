@@ -23,8 +23,8 @@ const TributeWriters = (props: TributeWritersProps) => {
 
     return (
       <li key={index} className="pl-3 py-2">
-        {index === 0 && <p>{intro}</p>}
-        <h4 className="font-bold text-md uppercase">
+        {index === 0 && <p className="text-2xs">{intro}</p>}
+        <h4 className="font-bold text-xs uppercase">
           <a href={permalink}>
             <Bylines hideBy={true} contributors={article.contributors} />
           </a>

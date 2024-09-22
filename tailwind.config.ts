@@ -41,6 +41,9 @@ const config: Config = {
       "3xl": ["var(--font-size-3xl)", "var(--line-height-3xl)"],
       "4xl": ["var(--font-size-4xl)", "var(--line-height-4xl)"],
       "5xl": ["var(--font-size-5xl)", "var(--line-height-5xl)"],
+      "6xl": ["var(--font-size-6xl)", "var(--line-height-6xl)"],
+      "7xl": ["var(--font-size-7xl)", "var(--line-height-7xl)"],
+      "8xl": ["var(--font-size-8xl)", "var(--line-height-8xl)"],
     },
 
     fontWeight: {
