@@ -8,6 +8,7 @@ import {
   DirectusFiles,
   Events,
   GlobalSettings,
+  Homepage,
   Issues,
   Pages,
   People,
@@ -155,6 +156,95 @@ export const getCurrentIssueData = cache(async () => {
     return issueData as Issues
   } catch (error) {
     console.error("Error fetching CurrentIssueData data:", error)
+    return null
+  }
+})
+
+export const getHomepageData = cache(async () => {
+  try {
+    const homepageData = await directus.request(
+      readSingleton("homepage", {
+        fields: [
+          {
+            collections: [
+              "collection",
+              {
+                item: {
+                  sections: [
+                    "name",
+                    "slug",
+                    {
+                      articles: [
+                        "slug",
+                        "title",
+                        "deck",
+                        "excerpt",
+                        "kicker",
+                        "sort",
+                        "status",
+                        "hide_bylines_downstream",
+                        {
+                          section: ["name", "slug"],
+                        },
+                        {
+                          issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+                        },
+                        {
+                          contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+                        },
+                        {
+                          featured_image: ["id", "width", "height", "filename_disk", "caption"],
+                        },
+                        {
+                          promo_banner: ["id", "width", "height", "filename_disk", "caption"],
+                        },
+                        {
+                          section: ["name", "slug"],
+                        },
+                        {
+                          issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+                        },
+                        {
+                          contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+                        },
+                        {
+                          featured_image: ["id", "width", "height", "filename_disk", "caption"],
+                        },
+                        "sort",
+                        "status",
+                      ],
+                    },
+                  ],
+                  tributes: [
+                    "id",
+                    "title",
+                    "deck",
+                    "slug",
+                    "curators",
+                    {
+                      articles: ["slug", "title", "deck", "excerpt", "sort", "status"],
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+        deep: {
+          collections: {
+            item: {
+              articles: {
+                _limit: 2,
+              },
+            },
+          },
+        },
+      }),
+    )
+
+    return homepageData as Homepage
+  } catch (error) {
+    console.error("Error fetching Homepage data:", error)
     return null
   }
 })
