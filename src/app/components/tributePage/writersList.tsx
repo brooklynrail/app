@@ -34,7 +34,7 @@ const TributeWritersList = (props: TributeWritersProps) => {
     )
   })
 
-  return <p className="text-sm">With contributions from {list}.</p>
+  return <aside className="text-sm">With contributions from {list}.</aside>
 }
 
 export default TributeWritersList
