@@ -5,7 +5,6 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
 import { stripHtml } from "string-strip-html"
-import parse from "html-react-parser"
 import Bylines, { BylineType } from "./promos/bylines"
 import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
@@ -17,15 +16,12 @@ const CollectionArt = (collection: Sections) => {
   // get the first article in the section.articles array
   const leadArticle = collection.articles[0]
   // get the list of articles in the section.articles array minus the first article
-  const restOfArticles = collection.articles.slice(1, 5)
+  const restOfArticles = collection.articles.slice(1)
 
   const permalink = getPermalink({
     section: collection.slug,
     type: PageType.Section,
   })
-
-  const grid_rows = `grid-rows-${restOfArticles.length}`
-  // const grid_rows = `grid-rows-1`
 
   return (
     <>
@@ -33,7 +29,7 @@ const CollectionArt = (collection: Sections) => {
         <div>
           <div className="px-6 pb-16 border-b-2 border-dotted border-black">
             <CollectionHead title={collection.name} slug={collection.slug} permalink={permalink} />
-            <div className={`grid grid-cols-4 tablet:grid-cols-12 ${grid_rows}`}>
+            <div className={`grid grid-cols-4 tablet:grid-cols-12`}>
               <div className="col-span-4 tablet:col-span-6 tablet:row-span-4 tablet:border-r-2 border-black border-dotted tablet:pr-3">
                 <div className="grid grid-cols-4 tablet:grid-cols-6 gap-3">
                   <div className="col-span-4 tablet:col-span-6">
