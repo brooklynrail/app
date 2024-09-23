@@ -1,8 +1,16 @@
-import { Issues, Sections, Tributes } from "../../lib/types"
-import { getAllIssues, getCurrentIssueData, getPermalink, getSectionData, getTributes, PageType } from "../../lib/utils"
+import { Homepage, Issues, Sections, Tributes } from "../../lib/types"
+import {
+  getAllIssues,
+  getCurrentIssueData,
+  getHomepageData,
+  getPermalink,
+  getSectionData,
+  getTributes,
+  PageType,
+} from "../../lib/utils"
 import { notFound } from "next/navigation"
 import { Viewport } from "next"
-import Homepage from "./components/homepage"
+import HomePage from "./components/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -27,13 +35,7 @@ export enum PageLayout {
   TableOfContents = "table-of-contents",
 }
 export interface HomePageProps {
-  collectionsData: Sections[]
-  thisIssueData: Issues
-  allIssues: Issues[]
-  tributesData?: Tributes[]
-  issueSections: Sections[]
-  previewURL?: string
-  currentSection?: Sections
+  homepageData: Homepage
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -42,41 +44,12 @@ export interface HomePageProps {
 export default async function HomepagePage() {
   const data = await getData()
 
-  if (!data.thisIssueData || !data.permalink || !data.collectionsData) {
-    return notFound()
-  }
-
-  return <Homepage {...data} />
+  return <HomePage {...data} />
 }
 
 async function getData() {
-  const thisIssueData = await getCurrentIssueData()
-
-  if (!thisIssueData) {
-    return notFound()
-  }
-
-  const sections = ["art", "artseen", "criticspage", "books", "artbooks", "film", "music", "poetry", "theater"]
-
-  const collectionsData = await Promise.all(
-    sections.map(async (section) => await getSectionData({ slug: section, limit: 12 })),
-  )
-  const filteredCollectionsData = collectionsData.filter((data): data is Sections => data !== null)
-
-  if (!filteredCollectionsData.length) {
-    return notFound()
-  }
-
-  // Use props as needed
-  const tributesData = await getTributes({ thisIssueData: thisIssueData })
-
-  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
-  const issueSections = thisIssueData.articles
-    .map((article) => article.section)
-    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
-
-  const allIssues = await getAllIssues()
-  if (!allIssues) {
+  const homepageData = await getHomepageData()
+  if (!homepageData) {
     return notFound()
   }
 
@@ -85,11 +58,7 @@ async function getData() {
   })
 
   return {
-    collectionsData: filteredCollectionsData,
-    thisIssueData,
-    issueSections,
-    tributesData,
-    allIssues,
+    homepageData,
     permalink,
   }
 }

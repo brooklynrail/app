@@ -1,13 +1,11 @@
 "use client"
 import CoversPopup from "../issueRail/coversPopup"
-import { HomePageProps, PageLayout } from "@/app/page"
+import { HomePageProps } from "@/app/page"
 import Header from "../header"
-import { Ads, Articles } from "../../../../lib/types"
-import { useEffect, useState } from "react"
-import { getAds } from "../../../../lib/utils"
+import { Articles, Sections, Tributes } from "../../../../lib/types"
 import { PopupProvider } from "../issueRail/popupProvider"
-import PreviewHeader from "../preview/previewHead"
-import Collections from "../collections"
+import CollectionArt from "../collections/art"
+import CollectionArtSeen from "../collections/artSeen"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -15,26 +13,20 @@ export interface PromoProps {
   month: number
 }
 
-const Homepage = (props: HomePageProps) => {
-  const { collectionsData, thisIssueData } = props
-  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
+const HomePage = (props: HomePageProps) => {
+  const { homepageData } = props
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!currentAds) {
-        const ads = getAds()
-        // Fetch all the data in parallel
-        const [fetchedAds] = await Promise.all([ads])
-        // Update the state with the fetched data as it becomes available
-        setCurrentAds(fetchedAds)
-      }
+  const allCollections = homepageData.collections.map((collection) => {
+    if (collection.collection === "sections" && "name" in collection.item) {
+      return <CollectionSection key={collection.item.slug} {...collection.item} />
+    } else if (collection.collection === "tributes" && "title" in collection.item) {
+      return <CollectionTribute key={collection.item.slug} {...collection.item} />
     }
-    // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
-  }, [currentAds])
+    return null
+  })
 
-  const { slug } = thisIssueData
-  const issueClass = `issue-${slug.toLowerCase()}`
+  // const { slug } = thisIssueData
+  const issueClass = `issue-}`
 
   return (
     <>
@@ -42,21 +34,14 @@ const Homepage = (props: HomePageProps) => {
         <div className={`paper ${issueClass}`}>
           <div className="wrapper home">
             <header role="banner">
-              <div className="grid-row">
-                <div className="grid grid-cols-4 lg:grid-cols-12">
-                  <div className="col-span-12">
-                    <Header
-                      special_issue={thisIssueData.special_issue}
-                      issue_number={thisIssueData.issue_number}
-                      title={thisIssueData.title}
-                    />
-                  </div>
+              <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
+                <div className="col-span-12">
+                  <Header />
                 </div>
               </div>
             </header>
-            <main>
-              <Collections collectionsData={collectionsData} />
-            </main>
+
+            <main>{allCollections}</main>
           </div>
         </div>
         <CoversPopup />
@@ -65,4 +50,47 @@ const Homepage = (props: HomePageProps) => {
   )
 }
 
-export default Homepage
+export enum Collection {
+  Art = "art",
+  ArtSeen = "artseen",
+  Books = "books",
+  Dance = "dance",
+  Film = "film",
+  Music = "music",
+  Theater = "theater",
+}
+
+const CollectionSection = (collection: Sections) => {
+  const { slug } = collection
+
+  switch (slug) {
+    case Collection.Art:
+      return <CollectionArt {...collection} />
+    case Collection.ArtSeen:
+      return <CollectionArtSeen {...collection} />
+    case Collection.Books:
+      console.log("Books")
+      break
+    case Collection.Dance:
+      console.log("Dance")
+      break
+    case Collection.Film:
+      console.log("Film")
+      break
+    case Collection.Music:
+      console.log("Music")
+      break
+    case Collection.Theater:
+      console.log("Theater")
+      break
+    default:
+      console.log("Default")
+      break
+  }
+}
+
+const CollectionTribute = (collection: Tributes) => {
+  return <CollectionTribute {...collection} />
+}
+
+export default HomePage
