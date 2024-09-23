@@ -468,8 +468,10 @@ export async function getArticlePages() {
 
 export async function getPreviewArticle(slug: string) {
   try {
+    // Search for the article with the matching slug
+    // assuming that slug is unique!
     const preview = await directus.request(
-      readItem("articles", slug, {
+      readItems("articles", {
         version: "draft",
         fields: [
           "*",
@@ -483,9 +485,12 @@ export async function getPreviewArticle(slug: string) {
           { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
           { user_updated: ["id", "first_name", "last_name", "avatar"] },
         ],
+        filter: {
+          slug: { _eq: slug },
+        },
       }),
     )
-    return preview as Articles
+    return preview[0] as Articles
   } catch (error) {
     console.error("error in getPreviewArticle", error)
     return null
