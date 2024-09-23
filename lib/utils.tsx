@@ -250,9 +250,9 @@ export const getHomepageData = cache(async () => {
         ],
         deep: {
           collections: {
-            item: {
+            "item:sections": {
               articles: {
-                _limit: 2,
+                _limit: 4,
               },
             },
           },
