@@ -29,7 +29,7 @@ const FeaturedImage = (props: FeaturedImageProps) => {
           alt={alt}
         />
         {!props.hideCaption && caption && (
-          <figcaption className="pt-1 text-2xs text-gray-500">{parse(caption)}</figcaption>
+          <figcaption className="pt-1 text-xs text-gray-500">{parse(caption)}</figcaption>
         )}
       </div>
     </div>

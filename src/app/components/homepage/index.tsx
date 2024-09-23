@@ -7,6 +7,7 @@ import { PopupProvider } from "../issueRail/popupProvider"
 import CollectionArt from "../collections/art"
 import CollectionArtSeen from "../collections/artSeen"
 import CollectionTribute from "../collections/tribute"
+import CollectionCriticsPage from "../collections/criticspage"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -68,13 +69,11 @@ const CollectionSection = (collection: Sections) => {
       return <CollectionArt {...collection} />
     case Collection.ArtSeen:
       return <CollectionArtSeen {...collection} />
-      break
     case Collection.Books:
       console.log("Books")
       break
     case Collection.CriticsPage:
-      console.log("CriticsPage")
-      break
+      return <CollectionCriticsPage {...collection} />
     case Collection.Dance:
       console.log("Dance")
       break

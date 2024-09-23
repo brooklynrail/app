@@ -1,28 +1,31 @@
 import { Articles } from "../../../../../lib/types"
 
+export enum BylineType {
+  Default = "default",
+  CriticsPage = "critics-page",
+}
+
 interface BylinesProps {
   article: Articles
+  asTitle?: boolean
+  type: BylineType
 }
 
 const Bylines = (props: BylinesProps) => {
-  const { article } = props
+  const { article, asTitle, type } = props
   const { contributors, byline_override, hide_bylines, hide_bylines_downstream } = article
 
   if (hide_bylines_downstream) {
     return <></>
   }
 
-  const by = "By"
-
-  const sizes = ["text-xs"]
-
-  return (
-    <cite className={`${sizes[0]} not-italic`}>
+  const byline = (
+    <>
       {byline_override ? (
         <span className="byline-override">{byline_override}</span>
       ) : (
         <>
-          <span>{by} </span>
+          {!asTitle && <span>By </span>}
           {contributors.map((contributor: any, i: number) => {
             const isLast = i === contributors.length - 1
             const isFirst = i === 0
@@ -45,7 +48,17 @@ const Bylines = (props: BylinesProps) => {
           })}
         </>
       )}
-    </cite>
+    </>
+  )
+
+  if (!asTitle) {
+    return <cite className={`text-sm not-italic`}>{byline}</cite>
+  }
+
+  return (
+    <h2 className="text-2xl font-bold">
+      <cite className={`not-italic`}>{byline}</cite>
+    </h2>
   )
 }
 export default Bylines

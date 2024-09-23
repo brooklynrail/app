@@ -5,15 +5,11 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
 import { stripHtml } from "string-strip-html"
-import parse from "html-react-parser"
 import Bylines, { BylineType } from "./promos/bylines"
-import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
 import Excerpt, { ExcerptType } from "./promos/excerpt"
 
-const CollectionArt = (collection: Sections) => {
-  // ==================================================
-
+const CollectionCriticsPage = (collection: Sections) => {
   // get the first article in the section.articles array
   const leadArticle = collection.articles[0]
   // get the list of articles in the section.articles array minus the first article
@@ -24,8 +20,8 @@ const CollectionArt = (collection: Sections) => {
     type: PageType.Section,
   })
 
-  const grid_rows = `grid-rows-${restOfArticles.length}`
-  // const grid_rows = `grid-rows-1`
+  // const grid_rows = `grid-rows-${restOfArticles.length}`
+  const grid_rows = `grid-rows-1`
 
   return (
     <>
@@ -42,7 +38,7 @@ const CollectionArt = (collection: Sections) => {
                 </div>
               </div>
               <div
-                className={`col-span-4 tablet:col-span-6 tablet:col-start-7 tablet:ml-3 divide-y-2 divide-black divide-dotted`}
+                className={`col-span-4 tablet:col-span-6 tablet-lg:col-start-7 row-start-1 tablet:ml-3 divide-y-2 divide-black divide-dotted`}
                 itemType="http://schema.org/Article"
               >
                 <Promos articles={restOfArticles} />
@@ -61,7 +57,7 @@ interface PromoProps {
 
 const Promos = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, excerpt, promo_banner, kicker } = article
+    const { issue, section, title, featured_image } = article
     const permalink = getPermalink({
       year: issue.year,
       month: issue.month,
@@ -71,24 +67,11 @@ const Promos = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-6">
+      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-3">
         <div className="col-span-4 tablet:col-span-6">
-          <Kicker article={article} />
-        </div>
-        <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
-          {promo_banner && (
-            <div className="">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={promo_banner} title={title} />
-              </Link>
-            </div>
-          )}
-        </div>
-        <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-3">
-          <div className="flex flex-col space-y-2">
-            <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
-            <Bylines article={article} type={BylineType.Default} />
-            <Excerpt excerpt={article.excerpt} type={ExcerptType.Art} />
+          <div className="flex flex-col space-y-1">
+            <Bylines article={article} asTitle={true} type={BylineType.CriticsPage} />
+            <Title title={article.title} permalink={permalink} type={TitleType.XSmall} />
           </div>
         </div>
       </div>
@@ -103,7 +86,7 @@ interface LeadPromoProps {
 }
 const LeadPromo = (props: LeadPromoProps) => {
   const { article } = props
-  const { title, issue, section, promo_banner } = article
+  const { title, featured_image, issue, section, contributors, promo_banner } = article
 
   const permalink = getPermalink({
     year: issue.year,
@@ -114,30 +97,25 @@ const LeadPromo = (props: LeadPromoProps) => {
   })
 
   return (
-    <>
-      <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 pt-3 pb-6">
-        <div className="col-span-4 tablet:col-span-6">
-          <Kicker article={article} />
-        </div>
-        <div className="col-span-4 tablet:col-span-6" itemType="http://schema.org/Article">
-          {promo_banner && (
-            <div className="">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={promo_banner} title={title} />
-              </Link>
-            </div>
-          )}
-        </div>
-        <div className="col-span-4 tablet:col-span-6">
-          <div className="flex flex-col space-y-3">
-            <Title title={article.title} permalink={permalink} type={TitleType.Lead} />
-            <Bylines article={article} type={BylineType.Default} />
-            <Excerpt excerpt={article.excerpt} type={ExcerptType.ArtLead} />
+    <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 pt-3 pb-3">
+      <div className="col-span-4 tablet:col-span-3" itemType="http://schema.org/Article">
+        {featured_image && (
+          <div className="">
+            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+              <FeaturedImage image={featured_image} title={title} />
+            </Link>
           </div>
+        )}
+      </div>
+      <div className="col-span-4 tablet:col-span-3">
+        <div className="flex flex-col space-y-3">
+          <Title title={article.title} permalink={permalink} type={TitleType.CriticsPage} />
+          <Bylines article={article} type={BylineType.Default} />
+          <Excerpt excerpt={article.excerpt} type={ExcerptType.CriticsPage} />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
-export default CollectionArt
+export default CollectionCriticsPage
