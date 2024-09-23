@@ -6,6 +6,7 @@ import { Articles, Sections, Tributes } from "../../../../lib/types"
 import { PopupProvider } from "../issueRail/popupProvider"
 import CollectionArt from "../collections/art"
 import CollectionArtSeen from "../collections/artSeen"
+import CollectionTribute from "../collections/tribute"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -30,22 +31,20 @@ const HomePage = (props: HomePageProps) => {
 
   return (
     <>
-      <PopupProvider>
-        <div className={`paper ${issueClass}`}>
-          <div className="wrapper home">
-            <header role="banner">
-              <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
-                <div className="col-span-12">
-                  <Header />
-                </div>
+      <div className={`paper ${issueClass}`}>
+        <div className="wrapper home">
+          <header role="banner">
+            <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
+              <div className="col-span-12">
+                <Header />
               </div>
-            </header>
+            </div>
+          </header>
 
-            <main>{allCollections}</main>
-          </div>
+          <main>{allCollections}</main>
         </div>
-        <CoversPopup />
-      </PopupProvider>
+      </div>
+      <CoversPopup />
     </>
   )
 }
@@ -54,6 +53,7 @@ export enum Collection {
   Art = "art",
   ArtSeen = "artseen",
   Books = "books",
+  CriticsPage = "criticspage",
   Dance = "dance",
   Film = "film",
   Music = "music",
@@ -68,8 +68,12 @@ const CollectionSection = (collection: Sections) => {
       return <CollectionArt {...collection} />
     case Collection.ArtSeen:
       return <CollectionArtSeen {...collection} />
+      break
     case Collection.Books:
       console.log("Books")
+      break
+    case Collection.CriticsPage:
+      console.log("CriticsPage")
       break
     case Collection.Dance:
       console.log("Dance")
@@ -87,10 +91,6 @@ const CollectionSection = (collection: Sections) => {
       console.log("Default")
       break
   }
-}
-
-const CollectionTribute = (collection: Tributes) => {
-  return <CollectionTribute {...collection} />
 }
 
 export default HomePage
