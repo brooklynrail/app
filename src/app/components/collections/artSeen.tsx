@@ -81,7 +81,7 @@ const Promos = (props: PromoProps) => {
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-5">
           <div className="flex flex-col space-y-2">
             <Title title={article.title} permalink={permalink} type={TitleType.Small} />
-            <Bylines article={article} />
+            <Bylines article={article} type={BylineType.Default} />
           </div>
         </div>
       </div>
