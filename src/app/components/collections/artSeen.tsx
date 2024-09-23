@@ -5,7 +5,7 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
 import { stripHtml } from "string-strip-html"
-import Bylines from "./promos/bylines"
+import Bylines, { BylineType } from "./promos/bylines"
 import Title, { TitleType } from "./promos/title"
 
 const CollectionArtSeen = (collection: Sections) => {
@@ -120,7 +120,7 @@ const LeadPromo = (props: LeadPromoProps) => {
       <div className="col-span-4 tablet:col-span-6">
         <div className="flex flex-col space-y-3">
           <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
-          <Bylines article={article} />
+          <Bylines article={article} type={BylineType.Default} />
         </div>
       </div>
     </div>
