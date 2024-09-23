@@ -4,17 +4,16 @@ import { Ads } from "../../../../lib/types"
 import { useEffect, useState } from "react"
 import { getAds } from "../../../../lib/utils"
 import { PopupProvider } from "../issueRail/popupProvider"
-import Footer from "../footer"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
 import Paper from "../paper"
 import Header from "../header"
 import styles from "./tribute.module.scss"
-import Bylines from "../issueRail/bylines"
 import ArticleBody from "../article/articleBody"
 import parse from "html-react-parser"
 import FeaturedImage from "../featuredImage"
 import TributeWriters from "./writers"
 import TributeWritersList from "./writersList"
+import Bylines, { BylineType } from "../collections/promos/bylines"
 
 const TributePage = (props: TributePageProps) => {
   const { thisTributeData, permalink } = props
@@ -43,6 +42,7 @@ const TributePage = (props: TributePageProps) => {
   const blurb = thisTributeData.blurb
   const summary = thisTributeData.summary
   const articleData = props.articleData ? props.articleData : thisTributeData.articles[0]
+
   return (
     <>
       <PopupProvider>
@@ -58,10 +58,10 @@ const TributePage = (props: TributePageProps) => {
                   <div className="col-span-4 tablet:col-span-8 row-span-4 tablet:row-span-2 ">
                     <div className="flex flex-col space-y-6 px-3">
                       <div className="flex flex-col space-y-2">
-                        <h1 className="text-center font-semibold text-2xl">{title}</h1>
-                        {deck && <p className="text-center font-thin text-2xl">{deck}</p>}
+                        <h1 className="text-center font-semibold text-5xl">{title}</h1>
+                        {deck && <p className="text-center font-thin text-5xl">{deck}</p>}
                       </div>
-                      <div className="text-lg text-center font-serif font-light">{blurb && parse(blurb)}</div>
+                      <div className="text-2xl text-center font-serif font-medium">{blurb && parse(blurb)}</div>
                     </div>
                   </div>
                   <div className="col-span-4 tablet:col-span-4 row-span-4 tablet:row-span-3 tablet:col-start-9">
@@ -79,14 +79,14 @@ const TributePage = (props: TributePageProps) => {
                 <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
                   <div className="col-span-3 border-r-2 border-black dark:border-white border-dotted">
                     <div className="divide-y-2 divide-dotted divide-black dark:divide-white mr-3">
-                      <div className="text-2xs pl-3 py-3">{summary && parse(summary)}</div>
+                      <aside className="text-sm pl-3 py-3">{summary && parse(summary)}</aside>
                       <TributeWriters articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
                     </div>
                   </div>
                   <div className="col-span-9">
                     <div className="py-4 pb-8">
                       <h1 className="text-md font-bold">{articleData.title}</h1>
-                      <Bylines contributors={articleData.contributors} linked={true} />
+                      <Bylines article={articleData} type={BylineType.Default} linked={true} />
                     </div>
                     <ArticleBody articleData={articleData} />
                   </div>
