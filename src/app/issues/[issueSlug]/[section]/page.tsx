@@ -1,5 +1,5 @@
 import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
@@ -81,6 +81,8 @@ async function getData({ params }: { params: SectionParams }) {
     return notFound()
   }
 
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
   const allIssues = await getAllIssues()
   if (!allIssues) {
     return notFound()
@@ -108,6 +110,7 @@ async function getData({ params }: { params: SectionParams }) {
     props: {
       thisIssueData,
       issueSections,
+      tributesData,
       currentSection,
       allIssues,
       permalink,
