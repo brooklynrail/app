@@ -72,7 +72,7 @@ async function getData({ params }: { params: TributeParams }) {
   const permalink = getPermalink({
     tributeSlug: tributeSlug,
     slug: slug,
-    type: PageType.Tribute,
+    type: PageType.TributeArticle,
   })
 
   return {
