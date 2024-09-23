@@ -5,7 +5,7 @@ import Link from "next/link"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import styles from "./promos.module.scss"
 import FeaturedImage, { ImageSize } from "./featuredImage"
-import Bylines from "./bylines"
+import Bylines, { BylineType } from "./bylines"
 
 export interface PromoProps {
   article: Articles
@@ -42,7 +42,7 @@ const PromoBasic = (props: PromoProps) => {
               {parse(title)}
             </Link>
           </h3>
-          <Bylines article={article} />
+          <Bylines article={article} type={BylineType.Default} />
         </div>
         {/* <div className={styles.excerpt}>{parse(excerpt)}</div> */}
       </div>
