@@ -219,10 +219,28 @@ export const getHomepageData = cache(async () => {
                     "id",
                     "title",
                     "deck",
+                    "blurb",
+                    "summary",
+                    "excerpt",
                     "slug",
-                    "curators",
                     {
-                      articles: ["slug", "title", "deck", "excerpt", "sort", "status"],
+                      curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+                    },
+                    {
+                      articles: [
+                        "slug",
+                        "title",
+                        "deck",
+                        "excerpt",
+                        "sort",
+                        "status",
+                        {
+                          contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
+                        },
+                      ],
+                    },
+                    {
+                      featured_image: ["id", "width", "height", "filename_disk", "caption"],
                     },
                   ],
                 },
