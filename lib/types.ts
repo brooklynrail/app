@@ -61,13 +61,13 @@ export interface Redirects {
 }
 
 export type ArticlesContributors = {
-  articles_slug?: Articles | null
+  articles_contributors_id?: Articles | null
   contributors_id?: Contributors | null
   id: number
 }
 
 export type ArticlesFiles = {
-  articles_slug?: string | Articles | null
+  articles_files_id?: string | Articles | null
   directus_files_id?: DirectusFiles
   id: number
 }
