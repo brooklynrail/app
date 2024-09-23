@@ -5,10 +5,7 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
 import { stripHtml } from "string-strip-html"
-import parse from "html-react-parser"
 import Bylines from "./promos/bylines"
-import Kicker from "./promos/kicker"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import Title, { TitleType } from "./promos/title"
 
 const CollectionArtSeen = (collection: Sections) => {
@@ -71,7 +68,7 @@ const Promos = (props: PromoProps) => {
     })
 
     return (
-      <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-3">
+      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-3">
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-1">
           {featured_image && (
             <div className="">

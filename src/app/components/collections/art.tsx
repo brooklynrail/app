@@ -8,7 +8,6 @@ import { stripHtml } from "string-strip-html"
 import parse from "html-react-parser"
 import Bylines from "./promos/bylines"
 import Kicker from "./promos/kicker"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import Title, { TitleType } from "./promos/title"
 
 const CollectionArt = (collection: Sections) => {
@@ -70,11 +69,8 @@ const Promos = (props: PromoProps) => {
       type: PageType.Article,
     })
 
-    const row_start = i > 0 ? `row-start-${i + 1}` : ``
-    const skip_divide = i === 0 ? `!border-t-0` : ``
-
     return (
-      <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-6">
+      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-6">
         <div className="col-span-4 tablet:col-span-6">
           <Kicker article={article} />
         </div>
