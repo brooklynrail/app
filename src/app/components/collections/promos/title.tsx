@@ -7,17 +7,17 @@ export enum TitleType {
   Small = "text-2xl font-light",
   Medium = "text-3xl tablet:text-4xl font-light",
   Lead = "text-4xl tablet:text-5xl desktop:text-6xl font-light",
+  Tribute = "text-center font-bold text-5xl",
 }
 
 interface TitleProps {
-  article: Articles
+  title: string
   permalink: string
   type: TitleType
 }
 
 const Title = (props: TitleProps) => {
-  const { article, permalink, type } = props
-  const { title } = article
+  const { title, permalink, type } = props
 
   if (!title) {
     return <></>
@@ -30,11 +30,11 @@ const Title = (props: TitleProps) => {
   }
 
   return (
-    <h3 className={`${type} font-thin hover:underline`}>
+    <h2 className={`${type}`}>
       <Link href={permalink} title={`Visit ${stripHtml(replaceNbsps(title)).result}`}>
         {parse(replaceNbsps(title))}
       </Link>
-    </h3>
+    </h2>
   )
 }
 export default Title

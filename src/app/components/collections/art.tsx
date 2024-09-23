@@ -85,7 +85,7 @@ const Promos = (props: PromoProps) => {
         </div>
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-3">
           <div className="flex flex-col space-y-2">
-            <Title article={article} permalink={permalink} type={TitleType.Medium} />
+            <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
             <Bylines article={article} />
             <div className="text-sm tablet-lg:text-md desktop-lg:text-lg font-normal">{parse(excerpt)}</div>
           </div>
@@ -129,7 +129,7 @@ const LeadPromo = (props: LeadPromoProps) => {
         </div>
         <div className="col-span-4 tablet:col-span-6">
           <div className="flex flex-col space-y-3">
-            <Title article={article} permalink={permalink} type={TitleType.Lead} />
+            <Title title={article.title} permalink={permalink} type={TitleType.Lead} />
             <Bylines article={article} />
             <div className="text-lg tablet-lg:text-xl desktop-lg:text-2xl font-normal">{parse(article.excerpt)}</div>
           </div>
