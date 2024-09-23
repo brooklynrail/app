@@ -161,7 +161,7 @@ export const getCurrentIssueData = cache(async () => {
 export const getPageData = cache(async (slug: string) => {
   try {
     const pageData = await directus.request(
-      readItem("pages", slug, {
+      readItems("pages", {
         fields: [
           "*",
           "title",
@@ -172,11 +172,11 @@ export const getPageData = cache(async (slug: string) => {
             images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
           },
         ],
-        filter: { status: { _eq: "published" } },
+        filter: { status: { _eq: "published" }, slug: { _eq: slug } },
       }),
     )
 
-    return pageData as Pages
+    return pageData[0] as Pages
   } catch (error) {
     console.error("Error fetching page data:", error)
     return null
