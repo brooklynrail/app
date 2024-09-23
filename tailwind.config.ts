@@ -4,6 +4,7 @@ const config: Config = {
   darkMode: "selector",
   // darkMode: ["class", ":global(.dark)"],
   content: ["./src/app/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/components/**/*.{js,ts,jsx,tsx,mdx}"],
+  // content: ["./src/app/components/tributePage/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     screens: {
       card: "160px",
@@ -33,13 +34,17 @@ const config: Config = {
       "2xs": ["var(--font-size-2xs)", "var(--line-height-2xs)"],
       xs: ["var(--font-size-xs)", "var(--line-height-xs)"],
       sm: ["var(--font-size-sm)", "var(--line-height-sm)"],
-      md: ["var(--font-size-md)", "var(--line-height-md)"],
-      base: ["var(--font-size-md)", "var(--line-height-md)"],
+      md: ["var(--font-size-base)", "var(--line-height-base)"],
+      base: ["var(--font-size-base)", "var(--line-height-base)"],
       lg: ["var(--font-size-lg)", "var(--line-height-lg)"],
       xl: ["var(--font-size-xl)", "var(--line-height-xl)"],
       "2xl": ["var(--font-size-2xl)", "var(--line-height-2xl)"],
       "3xl": ["var(--font-size-3xl)", "var(--line-height-3xl)"],
       "4xl": ["var(--font-size-4xl)", "var(--line-height-4xl)"],
+      "5xl": ["var(--font-size-5xl)", "var(--line-height-5xl)"],
+      "6xl": ["var(--font-size-6xl)", "var(--line-height-6xl)"],
+      "7xl": ["var(--font-size-7xl)", "var(--line-height-7xl)"],
+      "8xl": ["var(--font-size-8xl)", "var(--line-height-8xl)"],
     },
 
     fontWeight: {
