@@ -6,7 +6,7 @@ import IssuePage from "../../issuePage"
 import { PageLayout } from "@/app/page"
 
 const IssuePreview = (props: IssuePreviewProps) => {
-  const { thisIssueData, isEnabled, previewPassword } = props
+  const { thisIssueData, isEnabled, previewPassword, tributesData } = props
   const cookieSlug = `rail_preview_${thisIssueData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)

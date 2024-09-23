@@ -1,6 +1,13 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getAllIssues, getPermalink, getPreviewIssue, getPreviewPassword } from "../../../../../../lib/utils"
-import { Issues, Sections } from "../../../../../../lib/types"
+import {
+  PageType,
+  getAllIssues,
+  getPermalink,
+  getPreviewIssue,
+  getPreviewPassword,
+  getTributes,
+} from "../../../../../../lib/utils"
+import { Issues, Sections, Tributes } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import IssuePreview from "@/app/components/preview/issue"
@@ -10,6 +17,7 @@ export interface IssuePreviewProps {
   thisIssueData: Issues
   issueSections: Sections[]
   allIssues: Issues[]
+  tributesData: Tributes[]
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -63,10 +71,13 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
     return notFound()
   }
 
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
   const issuePreviewProps = {
     thisIssueData,
     issueSections,
     allIssues,
+    tributesData,
     permalink,
     directusUrl,
     previewPassword,
