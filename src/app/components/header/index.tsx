@@ -20,7 +20,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <>
-      <header className="border-b-2 border-black dark:border-white border-dotted pb-4">
+      <header id={styles.rail_header} className="border-b-2 border-black dark:border-white border-dotted pb-4">
         <div className="logo">
           <div className="hidden">
             <h1>The Brooklyn Rail </h1>
@@ -30,18 +30,18 @@ const Header = (props: HeaderProps) => {
           <Link href="/">
             <Banner theme={theme} />
           </Link>
-          <div className="px-8 py-4">
+          <div className="px-8 py-4 hidden">
             <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
               <div className="col-span-12">
                 <div className="flex justify-between items-center">
                   <ButtonMenu />
-                  <h2 className="text-nowrap font-light font-sans uppercase text-[1.6vw]">
+                  <h2 className="text-nowrap font-light font-sans uppercase text-base">
                     Critical Perspectives on Arts, Politics, and Culture <span className="text-2xl font-bold">·</span>{" "}
                     Independent and Free
                   </h2>
                   <div className="flex space-x-4">
-                    <Button text="Subscribe" />
-                    <Button text="Donate" />
+                    <Button text="Subscribe" permalink="#" />
+                    <Button text="Donate" permalink="#" />
                   </div>
                 </div>
               </div>
