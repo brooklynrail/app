@@ -32,7 +32,6 @@ const CollectionTribute = (collection: Tributes) => {
                 <div className="text-3xl text-center font-serif font-light">{blurb && parse(blurb)}</div>
               </div>
               <div className="flex flex-col space-y-3">
-                <div className="text-sm">{summary && parse(summary)}</div>
                 <TributeWritersList articles={collection.articles} tributeSlug={collection.slug} />
               </div>
             </div>
