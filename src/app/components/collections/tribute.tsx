@@ -26,7 +26,7 @@ const CollectionTribute = (collection: Tributes) => {
             <div className="flex flex-col justify-between h-full space-y-4 px-3">
               <div className="flex flex-col space-y-6">
                 <div className="flex flex-col space-y-3">
-                  <Title title={title} permalink="*" type={TitleType.Tribute} />
+                  <Title title={title} permalink={permalink} type={TitleType.Tribute} />
                   {deck && <p className="text-center font-thin text-5xl">{deck}</p>}
                 </div>
                 <div className="text-3xl text-center font-serif font-light">{blurb && parse(blurb)}</div>
