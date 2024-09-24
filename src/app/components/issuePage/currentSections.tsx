@@ -27,7 +27,7 @@ const CurrentSections = (props: CurrentSectionsProps) => {
       return
     }
     return (
-      <li key={`${i}`}>
+      <li key={`${i}`} className="py-0.5">
         <Link href={sectionPermalink} title={`Go to the ${section.name} section`}>
           {section.name}
         </Link>
@@ -37,20 +37,20 @@ const CurrentSections = (props: CurrentSectionsProps) => {
 
   return (
     <>
-      <div className="issue_sections">
-        <ul>
-          <li>
+      <div className="leading-4">
+        <ul className="font-medium flex flex-col divide-y-[1px] divide-dotted divide-gray-700 text-sm">
+          <li className="py-0.5">
             <Link href={issuePermalink} title="Go to the Issue home">
               Issue Home
             </Link>
           </li>
           {sectionsList}
-          <li>
+          <li className="py-0.5">
             <Link href={`https://intranslation.brooklynrail.org/?br`} title="Go to In Translation">
               In Translation
             </Link>
           </li>
-          <li>
+          <li className="py-0.5">
             <Link href={`${issuePermalink}table_of_contents`} title="Go to Table of Contents">
               Table of Contents
             </Link>
