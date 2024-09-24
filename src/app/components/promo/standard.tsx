@@ -18,14 +18,14 @@ export const PromoSectionName = (props: PromoProps) => {
   const { section, kicker } = article
   const sectionName = section.name
   return (
-    <p className="article_type">
-      <Link className="section" href={sectionPermalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
+    <p className="text-sm">
+      <Link className="font-bold" href={sectionPermalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
         {sectionName}
       </Link>
       {kicker && (
         <>
-          <span className="divider"></span>
-          <span className="type">{article.kicker}</span>
+          <span className="mx-2 text-xs border-l-[1px] border-gray-700 border-solid"></span>
+          <span className="text-red-600 uppercase">{article.kicker}</span>
         </>
       )}
     </p>
@@ -48,30 +48,25 @@ const PromoStandard = (props: PromoProps) => {
   const { article, showSection, showImage, permalink, order } = props
   const { title, excerpt, promo_banner } = article
 
-  const orderNum = (
-    <span className="sort">
-      <span>{order}</span>
-    </span>
-  )
-
   return (
     <>
-      <div className="promo promo-standard" itemType="http://schema.org/Article">
+      <div className="py-2 pb-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
         {showSection && <PromoSectionName {...props} />}
-        {showImage && promo_banner && (
-          <div className={`media media-thumb`}>
+        <div className="flex flex-col space-y-2">
+          {showImage && promo_banner && (
+            <div className={`media media-thumb`}>
+              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+                <PromoBanner image={promo_banner} title={title} />
+              </Link>
+            </div>
+          )}
+          <h4 className="text-lg font-normal">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <PromoBanner image={promo_banner} title={title} />
+              {parse(title)}
             </Link>
-          </div>
-        )}
-        <h4>
-          {orderNum}
-          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-            {parse(title)}
-          </Link>
-        </h4>
-        <div className="excerpt">{parse(excerpt)}</div>
+          </h4>
+          <div className="text-sm font-serif">{parse(excerpt)}</div>
+        </div>
       </div>
     </>
   )

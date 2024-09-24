@@ -26,31 +26,28 @@ const PromoThumb = (props: PromoProps) => {
     return <span key={`first_name-last_name-${i}`}>{name}</span>
   })
 
-  const orderNum = (
-    <span className="sort">
-      <span>{order}</span>
-    </span>
-  )
-
   return (
     <>
-      <div className="promo promo-thumb" itemType="http://schema.org/Article">
+      <div className="py-2 pb-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
         {showSection && <PromoSectionName {...props} />}
-        {showImage && promo_thumb && (
-          <div className={`media media-thumb`}>
+        <div className="">
+          {showImage && promo_thumb && (
+            <div className={`float-right`}>
+              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+                <Thumb image={promo_thumb} title={title} />
+              </Link>
+            </div>
+          )}
+
+          <h4 className="text-lg font-normal">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <Thumb image={promo_thumb} title={title} />
+              {parse(title)}
             </Link>
-          </div>
-        )}
-        <h4>
-          {orderNum}
-          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-            {parse(title)}
-          </Link>
-        </h4>
-        <cite className="byline">By {names} </cite>
-        <div className="excerpt">{parse(excerpt)}</div>
+          </h4>
+
+          <cite className="text-sm py-2 block font-sans text-gray-700">By {names} </cite>
+          <div className="text-sm font-serif">{parse(excerpt)}</div>
+        </div>
       </div>
     </>
   )

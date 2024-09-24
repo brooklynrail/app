@@ -19,10 +19,9 @@ const PublishersMessage = (props: PromoProps) => {
   }
 
   return (
-    <div className="collection">
-      <h3>From the Publisher & Artistic Director</h3>
+    <div className="py-2 pb-3 flex flex-col space-y-1">
+      <h3 className="font-bold">From the Publisher & Artistic Director</h3>
       {publishersMessage.map((articleIssue: Articles, i: number) => {
-        const order = articleIssue.sort
         const article = articleIssue
         const permalink = getPermalink({
           year: year,
@@ -44,7 +43,6 @@ const PublishersMessage = (props: PromoProps) => {
             showSection={false}
             sectionPermalink={sectionPermalink}
             permalink={permalink}
-            order={order}
           />
         )
       })}

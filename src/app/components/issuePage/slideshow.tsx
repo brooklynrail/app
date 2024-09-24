@@ -17,8 +17,8 @@ const SlideImage = (props: SlideImageProps) => {
   return (
     <Image
       priority
-      className="bannerimg"
-      width={664}
+      className="relative top-0 left-0"
+      width={680}
       height={282}
       alt={stripHtml(alt).result}
       src={src}
@@ -66,9 +66,9 @@ const SlideShow = (props: SlideshowProps) => {
     })
 
     return (
-      <Link key={i} className="banner" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
+      <Link key={i} href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
         <SlideImage slideshow_image={slideshow_image} alt={title} />
-        <h2>{parse(title)}</h2>
+        <h2 className="py-1 font-normal text-xl">{parse(title)}</h2>
       </Link>
     )
   })
@@ -79,16 +79,24 @@ const SlideShow = (props: SlideshowProps) => {
   })
 
   return (
-    <div id="bannercontainer">
-      <div id="banner">
-        <div id="bannerimg-container">{slides}</div>
-        <div id="banner-indicator">{indicator}</div>
+    <div className="pb-2">
+      <div className="relative">
+        <div className="relative">{slides}</div>
+        <div className="flex items-center py-2 justify-center">{indicator}</div>
 
-        <div id="banner-prev" className="bannercontrols" onClick={handlePrevSlide}>
+        <div
+          id="banner-prev"
+          className="left-0 h-[282px] z-[999] px-4 top-0 absolute cursor-pointer flex flex-col justify-center"
+          onClick={handlePrevSlide}
+        >
           <Image src="/images/banner-prev.png" width={25} height={31} alt="Previous" />
         </div>
 
-        <div id="banner-next" className="bannercontrols" onClick={handleNextSlide}>
+        <div
+          id="banner-next"
+          className="right-0 h-[282px] z-[999] px-4 top-0 absolute cursor-pointer flex flex-col justify-center"
+          onClick={handleNextSlide}
+        >
           <Image src="/images/banner-next.png" width={25} height={31} alt="Next" />
         </div>
       </div>

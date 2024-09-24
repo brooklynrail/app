@@ -156,28 +156,6 @@ sub {
 /* BANNER
  ************************************************/
 
-#bannercontainer {
-  border-bottom: 1px dotted #aaa;
-  margin: 0 0 7px 0;
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-
-#banner {
-  &:hover .bannercontrols {
-    @include u-display("flex");
-  }
-}
-
-#bannerimg-container {
-  position: relative;
-  // width: 650px;
-  // height: 277px;
-  @include at-media("widescreen") {
-    // width: 664px;
-    // height: 282px;
-  }
-}
-
 .banner {
   display: block;
   // @include u-padding-bottom(2);
@@ -188,47 +166,6 @@ sub {
       text-decoration: underline;
     }
   }
-}
-
-.bannerimg {
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 277px;
-  width: 650px;
-  @include at-media("widescreen") {
-    height: 282px;
-    width: 664px;
-  }
-}
-
-.bannercontrols {
-  height: 282px;
-  z-index: 999;
-  @include u-padding-x(1);
-  @include u-top(0);
-  @include u-position("absolute");
-  // @include u-bg("red-10");
-  cursor: pointer;
-  @include u-display("flex");
-  @include u-flex("column");
-  @include u-flex("justify-center");
-  @include u-display("none");
-}
-
-#banner-prev {
-  left: 0;
-}
-
-#banner-next {
-  right: 0;
-}
-
-#banner-indicator {
-  @include u-padding-y("105");
-  @include u-display("flex");
-  @include u-flex("align-center");
-  @include u-flex("justify-center");
 }
 
 #banner-textblock {

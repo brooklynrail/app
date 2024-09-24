@@ -19,8 +19,8 @@ const ArtSeen = (props: PromoProps) => {
   }
 
   return (
-    <div className="collection">
-      <h3>ArtSeen</h3>
+    <div className="py-2 pb-3 flex flex-col space-y-1">
+      <h3 className="font-bold">ArtSeen</h3>
       <ul>
         {artSeen.map((article: Articles, i: number) => {
           const order = article.sort

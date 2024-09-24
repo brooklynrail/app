@@ -19,7 +19,7 @@ const FeaturedArticles = (props: PromoProps) => {
   }
 
   return (
-    <div className="collection">
+    <>
       {featuredArticles.map((articleIssue: Articles, i: number) => {
         const article = articleIssue
         const permalink = getPermalink({
@@ -42,11 +42,10 @@ const FeaturedArticles = (props: PromoProps) => {
             showImage={true}
             showSection={true}
             sectionPermalink={sectionPermalink}
-            order={article.sort}
           />
         )
       })}
-    </div>
+    </>
   )
 }
 

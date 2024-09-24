@@ -16,18 +16,11 @@ const PromoSlim = (props: PromoSlimProps) => {
   const { article, i = 0, permalink, order, prefetch } = props
   const { title, contributors, byline_override, hide_bylines_downstream } = article
 
-  const orderNum = (
-    <span className="sort">
-      <span>{order}</span>
-    </span>
-  )
-
   const altClass = i % 2 === 0 ? "" : "promo-slim-alt"
 
   return (
-    <li className={`promo promo-slim ${altClass}`} itemType="http://schema.org/Article">
-      <h4>
-        {orderNum}
+    <li className={`py-1 px-1 text-xs ${altClass}`} itemType="http://schema.org/Article">
+      <h4 className="font-medium inline">
         <Link
           prefetch={prefetch === false ? false : true}
           href={permalink}
@@ -38,7 +31,7 @@ const PromoSlim = (props: PromoSlimProps) => {
         </Link>
       </h4>
       {!hide_bylines_downstream && contributors && contributors.length != 0 && (
-        <cite className="byline">
+        <cite className="not-italic inline">
           {` –`} <Bylines byline_override={byline_override} contributors={contributors} />
         </cite>
       )}
