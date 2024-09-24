@@ -102,7 +102,7 @@ const Header = (props: HeaderProps) => {
       oldLogo
     )
   return (
-    <div className="flex justify-between items-center border-b border-gray-700 border-dotted py-2 mx-2">
+    <div className="flex flex-col tablet-lg:flex-row justify-between items-center border-b border-gray-700 border-dotted py-2 mx-2 space-x-4">
       <div className="logo">
         <div className="hidden">
           <h1>The Brooklyn Rail </h1>

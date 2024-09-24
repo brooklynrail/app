@@ -33,14 +33,8 @@ export const PromoImage = (props: PromoImageProps) => {
 }
 
 const PromoSection = (props: PromoProps) => {
-  const { article, showSection, showImage, permalink, order } = props
+  const { article, showSection, showImage, permalink } = props
   const { title, excerpt, featured_image, hide_bylines_downstream, contributors } = article
-
-  const orderNum = (
-    <span className="sort">
-      <span>{order}</span>
-    </span>
-  )
 
   const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
     if (!contributor.contributors_id) {
@@ -70,20 +64,21 @@ const PromoSection = (props: PromoProps) => {
   })
 
   return (
-    <div className="promo promo-section" itemType="http://schema.org/Article">
-      <div className="grid-row grid-gap-4">
-        <div className="grid-col-8 tablet:grid-col-8">
+    <div className="py-2 pb-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
+      <div className="flex space-x-4">
+        <div className="">
           {showSection && <PromoSectionName {...props} />}
-          <h4>
-            {orderNum}
+          <h4 className="text-2xl font-light">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
               {parse(title)}
             </Link>
           </h4>
-          {!hide_bylines_downstream && <cite className="byline">By {authors} </cite>}
-          <div className="excerpt">{parse(excerpt)}</div>
+          {!hide_bylines_downstream && (
+            <cite className="text-sm py-2 block font-sans text-gray-700">By {authors} </cite>
+          )}
+          <div className="text-sm font-serif">{parse(excerpt)}</div>
         </div>
-        <div className="grid-col-4 tablet:grid-col-4">
+        <div className="w-card-lg flex-none">
           {showImage && featured_image && (
             <div className={`media`}>
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>

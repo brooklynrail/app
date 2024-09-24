@@ -18,8 +18,8 @@ const SlideImage = (props: SlideImageProps) => {
     <Image
       priority
       className="relative top-0 left-0"
-      width={680}
-      height={282}
+      width={1680}
+      height={1282}
       alt={stripHtml(alt).result}
       src={src}
       sizes={"60vw"}

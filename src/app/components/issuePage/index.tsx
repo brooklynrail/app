@@ -10,8 +10,6 @@ import Header from "./header"
 import Ad970 from "../ads/ad970"
 import { Ads, Articles } from "../../../../lib/types"
 import Link from "next/link"
-import SpecialIssue from "./layout/specialIssue"
-import SpecialSection from "./layout/specialSection"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
@@ -21,6 +19,7 @@ import { CoverImage } from "../issueRail/coverImage"
 import PreviewHeader from "../preview/previewHead"
 import TableOfContentsPage from "./layout/tableOfContentsPage"
 import Footer from "../footer"
+import ThemeToggle from "../themeToggle"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -31,6 +30,10 @@ export interface PromoProps {
 const IssuePage = (props: IssuePageProps) => {
   const { thisIssueData, currentSection, issueSections, previewURL, allIssues } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
+
+  const [theme, setTheme] = useState<string | null>(null)
+
+  const themeSettings = { theme, setTheme }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,12 +57,6 @@ const IssuePage = (props: IssuePageProps) => {
     case PageLayout.Section:
       layout = <SectionLayout thisIssueData={thisIssueData} currentSection={currentSection} />
       break
-    case PageLayout.SpecialSection:
-      layout = <SpecialSection thisIssueData={thisIssueData} currentSection={currentSection} />
-      break
-    case PageLayout.SpecialIssue:
-      layout = <SpecialIssue thisIssueData={thisIssueData} />
-      break
     case PageLayout.TableOfContents:
       layout = <TableOfContentsPage {...props} />
       break
@@ -73,18 +70,21 @@ const IssuePage = (props: IssuePageProps) => {
       <PopupProvider>
         <div className={`paper ${issueClass}`}>
           {previewURL && <PreviewHeader previewURL={previewURL} />}
-          <div className="px-0 w-desktop mx-auto">
-            <div className="grid grid-cols-4 tablet:grid-cols-12 gap-6">
-              <div className="col-span-4 tablet:col-span-12">
-                <Header
-                  special_issue={thisIssueData.special_issue}
-                  issue_number={thisIssueData.issue_number}
-                  title={thisIssueData.title}
-                />
-                <Ad970 currentAds={currentAds} />
+          <ThemeToggle {...themeSettings} />
+          <div className="px-0 desktop:w-desktop mx-auto">
+            <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-6">
+              <div className="col-span-4 tablet-lg:col-span-12">
+                <div className="px-3 tablet-lg:px-0">
+                  <Header
+                    special_issue={thisIssueData.special_issue}
+                    issue_number={thisIssueData.issue_number}
+                    title={thisIssueData.title}
+                  />
+                  <Ad970 currentAds={currentAds} />
+                </div>
               </div>
 
-              <div className="col-span-4 tablet:col-span-2">
+              <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
                 <div className="flex flex-col space-y-2">
                   <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
                   <CoverImage thisIssueData={thisIssueData} />
@@ -110,8 +110,10 @@ const IssuePage = (props: IssuePageProps) => {
                 <RailProjects />
                 <RailPartners />
               </div>
-              <div className="col-span-4 tablet:col-span-8">{layout}</div>
-              <div className="col-span-4 tablet:col-span-2">
+              <div className="col-span-4 tablet-lg:col-span-8">
+                <div className="px-3 tablet-lg:px-0">{layout}</div>
+              </div>
+              <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
                 <AdsTile currentAds={currentAds} />
               </div>
             </div>

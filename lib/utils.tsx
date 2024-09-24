@@ -105,7 +105,7 @@ export async function getIssues() {
         `&fields[]=month` +
         `&fields[]=slug` +
         `&fields[]=special_issue` +
-        `&filter[status][_in]=published` +
+        `&filter[status][_eq]=published` +
         `&sort[]=-year` +
         `&sort[]=-month` +
         `&page=${page}` +
@@ -611,7 +611,7 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=tribute.title` +
     `&fields[]=tribute.slug` +
     `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_in]=${status}`
+    `&filter[status][_eq]=${status}`
 
   try {
     const res = await fetch(articleAPI)
@@ -935,7 +935,7 @@ export async function getTributes(props: TributesParams) {
   // filter out the articles where tribute is not null
   const tributeArticles = thisIssueData.articles.filter((article) => article.tribute !== null)
   // make an array of the tribute slugs in the tributeArticles and remove all duplicates
-  const currentTributes = Array.from(new Set(tributeArticles.map((article) => article.tribute.slug)))
+  const currentTributes: Array<string> = Array.from(new Set(tributeArticles.map((article) => article.tribute.slug)))
 
   const tributes = await directus.request(
     readItems("tributes", {
@@ -965,7 +965,7 @@ export async function getTributes(props: TributesParams) {
       ],
       filter: {
         slug: {
-          _in: currentTributes,
+          _in: currentTributes.length > 0 ? currentTributes : ["none"],
         },
       },
     }),

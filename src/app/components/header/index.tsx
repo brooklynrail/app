@@ -40,8 +40,8 @@ const Header = (props: HeaderProps) => {
                     Independent and Free
                   </h2>
                   <div className="flex space-x-4">
-                    <Button text="Subscribe" permalink="#" />
-                    <Button text="Donate" permalink="#" />
+                    <Button text="Subscribe" />
+                    <Button text="Donate" />
                   </div>
                 </div>
               </div>

@@ -52,20 +52,22 @@ const PromoStandard = (props: PromoProps) => {
     <>
       <div className="py-2 pb-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
         {showSection && <PromoSectionName {...props} />}
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col tablet:flex-row-reverse tablet-lg:flex-col tablet-lg:space-x-0 space-y-2">
           {showImage && promo_banner && (
-            <div className={`media media-thumb`}>
+            <div className={`flex-none`}>
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
                 <PromoBanner image={promo_banner} title={title} />
               </Link>
             </div>
           )}
-          <h4 className="text-lg font-normal">
-            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              {parse(title)}
-            </Link>
-          </h4>
-          <div className="text-sm font-serif">{parse(excerpt)}</div>
+          <div className="flex flex-col space-y-2">
+            <h4 className="text-lg font-normal">
+              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+                {parse(title)}
+              </Link>
+            </h4>
+            <div className="text-sm font-serif">{parse(excerpt)}</div>
+          </div>
         </div>
       </div>
     </>

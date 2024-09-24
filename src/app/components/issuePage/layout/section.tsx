@@ -38,53 +38,48 @@ const SectionLayout = (props: LayoutProps) => {
 
   const AllArticles = () => {
     return (
-      <section className="collection">
-        {currentArticles.map((article: Articles, i: number) => {
-          const order = article.sort
-          const permalink = getPermalink({
-            year: year,
-            month: month,
-            section: article.section.slug,
-            slug: article.slug,
-            type: PageType.Article,
-          })
-          const sectionPermalink = getPermalink({
-            issueSlug: article.issue.slug,
-            section: article.section.slug,
-            type: PageType.Section,
-          })
-          return (
-            <PromoSection
-              key={`article-${i}`}
-              article={article}
-              permalink={permalink}
-              sectionPermalink={sectionPermalink}
-              showImage={true}
-              showSection={true}
-              order={order}
-            />
-          )
-        })}
+      <section className="py-3 border-t-[1px] border-black border-dotted">
+        <div className="divide-y-[1px] divide-black divide-dotted">
+          {currentArticles.map((article: Articles, i: number) => {
+            const order = article.sort
+            const permalink = getPermalink({
+              year: year,
+              month: month,
+              section: article.section.slug,
+              slug: article.slug,
+              type: PageType.Article,
+            })
+            const sectionPermalink = getPermalink({
+              issueSlug: article.issue.slug,
+              section: article.section.slug,
+              type: PageType.Section,
+            })
+            return (
+              <PromoSection
+                key={`article-${i}`}
+                article={article}
+                permalink={permalink}
+                sectionPermalink={sectionPermalink}
+                showImage={true}
+                showSection={true}
+                order={order}
+              />
+            )
+          })}
+        </div>
       </section>
     )
   }
 
   return (
-    <div className="grid-col-8">
-      <div className="grid-row grid-gap-4">
-        <div className="grid-col-12">
-          <header className="section">
-            <h2>{currentSection.name}</h2>
-            {description}
-          </header>
-        </div>
+    <div className="grid grid-cols-4 tablet-lg:grid-cols-8 gap-6">
+      <div className="col-span-4 tablet:col-span-8">
+        <header className="pb-6">
+          <h2 className="text-4xl tablet-lg:text-5xl font-light">{currentSection.name}</h2>
+          {description}
+        </header>
+        <AllArticles />
       </div>
-      <div className="grid-row grid-gap-4">
-        <div className="grid-col-12">
-          <AllArticles />
-        </div>
-      </div>
-      <SubscribeAd />
     </div>
   )
 }
