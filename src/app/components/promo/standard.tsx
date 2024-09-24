@@ -41,11 +41,11 @@ const PromoBanner = (props: PromoBannerProps) => {
   const { filename_disk } = image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const alt = image.caption ? `${stripHtml(image.caption).result}` : `${stripHtml(title).result}`
-  return <Image src={src} width={316} height={96} alt={alt} sizes="33vw" />
+  return <Image src={src} width={516} height={296} alt={alt} sizes="33vw" />
 }
 
 const PromoStandard = (props: PromoProps) => {
-  const { article, showSection, showImage, permalink, order } = props
+  const { article, showSection, showImage, permalink } = props
   const { title, excerpt, promo_banner } = article
 
   return (
@@ -54,7 +54,7 @@ const PromoStandard = (props: PromoProps) => {
         {showSection && <PromoSectionName {...props} />}
         <div className="flex flex-col tablet:flex-row-reverse tablet-lg:flex-col tablet-lg:space-x-0 space-y-2">
           {showImage && promo_banner && (
-            <div className={`flex-none`}>
+            <div className={`flex-none w-full tablet:w-96 tablet-lg:w-full`}>
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
                 <PromoBanner image={promo_banner} title={title} />
               </Link>
