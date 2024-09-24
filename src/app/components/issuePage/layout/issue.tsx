@@ -34,30 +34,28 @@ const IssueLayout = (props: IssuePageProps) => {
 
   return (
     <>
-      <div className="grid-col-8">
-        <div className="grid-row">
-          <div className="grid-col-12">
-            {currentSlides && <SlideShow currentSlides={currentSlides} year={year} month={month} />}
+      <div className="divide-y-[1px] divide-black divide-dotted">
+        {currentSlides && <SlideShow currentSlides={currentSlides} year={year} month={month} />}
+        <div className="grid grid-cols-8 gap-6">
+          <div className="col-span-4 py-1">
+            <div className="flex flex-col divide-y-[1px] divide-black divide-dotted">
+              <FeaturedArticles {...promoProps} />
+              {tributesData && <InMemoriam tributesData={tributesData} />}
+            </div>
+          </div>
+          <div className="col-span-4 col-start-5 py-1">
+            <div className="flex flex-col divide-y-[1px] divide-black divide-dotted">
+              <PublishersMessage {...promoProps} />
+              <EditorsMessage {...promoProps} />
+              <CriticsPage {...promoProps} />
+              <ArtSeen {...promoProps} />
+            </div>
           </div>
         </div>
 
-        <div className="grid-row grid-gap-4">
-          <div className="grid-col-6">
-            <FeaturedArticles {...promoProps} />
-            {tributesData && <InMemoriam tributesData={tributesData} />}
-          </div>
-          <div className="grid-col-6">
-            <PublishersMessage {...promoProps} />
-
-            <EditorsMessage {...promoProps} />
-
-            <CriticsPage {...promoProps} />
-
-            <ArtSeen {...promoProps} />
-          </div>
+        <div className="grid grid-cols-8 gap-6">
+          <div className="col-span-8">{props.layout === PageLayout.Issue && <TableOfContents {...tocProps} />}</div>
         </div>
-        <div className="grid-row">{props.layout === PageLayout.Issue && <TableOfContents {...tocProps} />}</div>
-        <SubscribeAd />
       </div>
     </>
   )

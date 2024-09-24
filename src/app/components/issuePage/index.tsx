@@ -73,58 +73,51 @@ const IssuePage = (props: IssuePageProps) => {
       <PopupProvider>
         <div className={`paper ${issueClass}`}>
           {previewURL && <PreviewHeader previewURL={previewURL} />}
-          <div className="wrapper home">
-            <header role="banner">
-              <div className="grid-container grid-container-desktop">
-                <div className="grid-row">
-                  <div className="grid-col-12">
-                    <Header
-                      special_issue={thisIssueData.special_issue}
-                      issue_number={thisIssueData.issue_number}
-                      title={thisIssueData.title}
-                    />
-                  </div>
-                </div>
+          <div className="px-0 w-desktop mx-auto">
+            <div className="grid grid-cols-4 tablet:grid-cols-12 gap-6">
+              <div className="col-span-4 tablet:col-span-12">
+                <Header
+                  special_issue={thisIssueData.special_issue}
+                  issue_number={thisIssueData.issue_number}
+                  title={thisIssueData.title}
+                />
+                <Ad970 currentAds={currentAds} />
               </div>
-            </header>
 
-            <Ad970 currentAds={currentAds} />
-
-            <section id="main">
-              <div className="grid-container grid-container-desktop">
-                <div className="grid-row grid-gap-3">
-                  <div className="grid-col-2">
-                    <div id="issuecolumn">
-                      <div className="youarehereissue">
-                        <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
-                        <CoverImage thisIssueData={thisIssueData} />
-                      </div>
-
-                      <CurrentSections issueSections={issueSections} thisIssueData={thisIssueData} />
-
-                      <Link className="search_btn" href="/search" title="Search All Issues">
-                        <span>Search</span> <i className="fas fa-search"></i>
-                      </Link>
-                      <Link className="archives_btn" href="/archive" title="View Archive">
-                        <span>View Archive</span>
-                      </Link>
-
-                      <RailProjects />
-                      <RailPartners />
-                    </div>
-                  </div>
-
-                  {layout}
-
-                  <div className="ad_column grid-col-2">
-                    <AdsTile currentAds={currentAds} />
-                  </div>
+              <div className="col-span-4 tablet:col-span-2">
+                <div className="flex flex-col space-y-2">
+                  <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
+                  <CoverImage thisIssueData={thisIssueData} />
+                  <CurrentSections issueSections={issueSections} thisIssueData={thisIssueData} />
                 </div>
+                <div className="py-4 flex flex-col space-y-2">
+                  <Link
+                    className="font-medium text-sm py-1 text-center inline-block border-[1px] border-black border-solid rounded-sm"
+                    href="/search"
+                    title="Search All Issues"
+                  >
+                    <span>Search</span> <i className="fas fa-search"></i>
+                  </Link>
+                  <Link
+                    className="font-medium text-sm py-1 text-center inline-block border-[1px] border-black border-solid rounded-sm"
+                    href="/archive"
+                    title="View Archive"
+                  >
+                    <span>View Archive</span>
+                  </Link>
+                </div>
+
+                <RailProjects />
+                <RailPartners />
               </div>
-            </section>
+              <div className="col-span-4 tablet:col-span-8">{layout}</div>
+              <div className="col-span-4 tablet:col-span-2">
+                <AdsTile currentAds={currentAds} />
+              </div>
+            </div>
           </div>
-          <Footer />
         </div>
+        <Footer />
         <CoversPopup />
       </PopupProvider>
     </>

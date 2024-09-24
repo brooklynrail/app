@@ -25,7 +25,7 @@ const IssueSelect = (props: IssueSelectProps) => {
 
   return (
     <>
-      <select id="issue_select" value={selectedIssueSlug} onChange={handleIssueChange}>
+      <select id="issue_select" value={selectedIssueSlug} onChange={handleIssueChange} className="leading-4">
         {allIssues.map((issue: Issues) => {
           if (!issue.slug) {
             return <></>
