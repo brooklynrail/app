@@ -20,7 +20,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <>
-      <header id={styles.rail_header} className="border-b-2 border-black dark:border-white border-dotted pb-4">
+      <header id={styles.rail_header} className="border-b-2 border-zinc-900 dark:border-indigo-50 border-dotted pb-4">
         <div className="logo">
           <div className="hidden">
             <h1>The Brooklyn Rail </h1>

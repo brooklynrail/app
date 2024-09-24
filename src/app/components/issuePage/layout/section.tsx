@@ -38,8 +38,8 @@ const SectionLayout = (props: LayoutProps) => {
 
   const AllArticles = () => {
     return (
-      <section className="py-3 border-t-[1px] border-black border-dotted">
-        <div className="divide-y-[1px] divide-black divide-dotted">
+      <section className="py-3 border-t-[1px] border-zinc-900 border-dotted">
+        <div className="divide-y-[1px] divide-zinc-900 divide-dotted">
           {currentArticles.map((article: Articles, i: number) => {
             const order = article.sort
             const permalink = getPermalink({

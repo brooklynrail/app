@@ -8,13 +8,13 @@ export enum TitleType {
   Medium = "text-3xl tablet:text-4xl font-light",
   Lead = "text-4xl tablet:text-5xl desktop:text-6xl font-light",
   TributeArticle = "text-xl font-serif font-light",
-  Tribute = "text-center font-bold text-5xl",
+  Tribute = "text-center font-bold text-4xl tablet-lg:text-5xl",
   CriticsPage = "text-center font-normal font-serif text-6xl",
 }
 
 interface TitleProps {
   title: string
-  permalink: string
+  permalink?: string
   type: TitleType
 }
 
@@ -40,10 +40,16 @@ const Title = (props: TitleProps) => {
     return str
   }
 
+  const title_contents = parse(replaceNbsps(title))
+
+  if (!permalink) {
+    return <h2 className={`${type}`}>{title_contents}</h2>
+  }
+
   return (
     <h2 className={`${type}`}>
       <Link href={permalink} title={`Visit ${stripHtml(replaceNbsps(title)).result}`}>
-        {parse(replaceNbsps(title))}
+        {title_contents}
       </Link>
     </h2>
   )

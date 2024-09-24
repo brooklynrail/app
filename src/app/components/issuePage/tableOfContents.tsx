@@ -30,7 +30,7 @@ const IssueSection = (props: IssueSectionProps) => {
   })
 
   return (
-    <div className="py-1 pb-3 border-t-[1px] border-black border-dotted">
+    <div className="py-1 pb-3 border-t-[1px] border-zinc-900 border-dotted">
       <h3 className="font-bold text-sm px-1 pb-2">
         <Link prefetch={false} href={sectionPermalink} title={`Go to ${sectionName}`}>
           {sectionName}

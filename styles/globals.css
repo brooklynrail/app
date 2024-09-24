@@ -82,7 +82,7 @@ body {
 }
 
 .paper {
-  @apply bg-slate-50 dark:bg-zinc-800;
+  @apply bg-slate-100 dark:bg-zinc-800;
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
@@ -96,16 +96,16 @@ a {
 }
 
 .content {
-  @apply text-base font-normal font-serif;
+  @apply text-lg tablet-lg:text-2xl font-normal font-serif;
   p {
     max-width: 72ex;
-    @apply mb-6;
+    @apply mb-3 tablet:mb-6;
   }
 }
 
 .media {
   figcaption {
     max-width: 114ex;
-    @apply pt-2 pb-6 text-sm font-normal font-sans text-gray-400;
+    @apply pt-2 pb-3 tablet:pb-6 text-sm font-normal font-sans text-zinc-500;
   }
 }

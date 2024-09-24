@@ -1,7 +1,7 @@
 "use client"
 import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import Bylines from "../issueRail/bylines"
+import Bylines, { BylineType } from "../collections/promos/bylines"
 
 interface TributeWritersProps {
   articles: Articles[]
@@ -27,14 +27,14 @@ const TributeWritersList = (props: TributeWritersProps) => {
     return (
       <>
         <a href={permalink} className="font-medium">
-          <Bylines hideBy={true} contributors={article.contributors} />
+          <Bylines hideBy={true} article={article} type={BylineType.TributeWritersList} />
         </a>
         {separator}
       </>
     )
   })
 
-  return <aside className="text-sm">With contributions from {list}.</aside>
+  return <aside className="text-sm desktop-lg:text-lg tablet-lg:text-center">With contributions from {list}.</aside>
 }
 
 export default TributeWritersList
