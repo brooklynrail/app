@@ -1,7 +1,7 @@
 // Ads
 
 .ad {
-  @include u-bg("white");
+  // @include u-bg("white");
   text-align: center;
   @include u-color("white");
   // display: table;
@@ -24,14 +24,14 @@
     // @include u-margin-left("205");
   }
   // @include u-border('1px', 'solid', 'gray-cool-10');
-  @include u-bg("gray-cool-3");
+  // @include u-bg("gray-cool-3");
   p {
     @include u-margin(0);
     @include u-padding-bottom("05");
     @include u-text("black");
     @include u-text("light");
     @include u-text("gray-cool-50");
-    @include u-font("sans", "3xs");
+    // @include u-font("sans", "3xs");
   }
   a {
     @include u-display("flex");
