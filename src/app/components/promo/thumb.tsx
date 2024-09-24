@@ -28,7 +28,7 @@ const PromoThumb = (props: PromoProps) => {
 
   return (
     <>
-      <div className="py-2 pb-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
+      <div className="py-1 pb-2 flex flex-col space-y-1" itemType="http://schema.org/Article">
         {showSection && <PromoSectionName {...props} />}
         <div className="">
           {showImage && promo_thumb && (
@@ -45,7 +45,7 @@ const PromoThumb = (props: PromoProps) => {
             </Link>
           </h4>
 
-          <cite className="text-sm py-2 block font-sans text-gray-700">By {names} </cite>
+          <cite className="not-italic text-sm py-2 block font-sans text-gray-700">By {names} </cite>
           <div className="text-sm font-serif">{parse(excerpt)}</div>
         </div>
       </div>

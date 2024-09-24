@@ -68,7 +68,7 @@ const IssuePage = (props: IssuePageProps) => {
   return (
     <>
       <PopupProvider>
-        <div className={`paper ${issueClass}`}>
+        <div className={`paper paper-old ${issueClass}`}>
           {previewURL && <PreviewHeader previewURL={previewURL} />}
           <ThemeToggle {...themeSettings} />
           <div className="px-0 desktop:w-desktop mx-auto">
@@ -85,12 +85,12 @@ const IssuePage = (props: IssuePageProps) => {
               </div>
 
               <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-2 pl-3">
                   <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
                   <CoverImage thisIssueData={thisIssueData} />
                   <CurrentSections issueSections={issueSections} thisIssueData={thisIssueData} />
                 </div>
-                <div className="py-4 flex flex-col space-y-2">
+                <div className="py-4 flex flex-col space-y-2 pl-3">
                   <Link
                     className="font-medium text-sm py-1 text-center inline-block border-[1px] border-black border-solid rounded-sm"
                     href="/search"
@@ -105,16 +105,17 @@ const IssuePage = (props: IssuePageProps) => {
                   >
                     <span>View Archive</span>
                   </Link>
+                  <RailProjects />
+                  <RailPartners />
                 </div>
-
-                <RailProjects />
-                <RailPartners />
               </div>
               <div className="col-span-4 tablet-lg:col-span-8">
                 <div className="px-3 tablet-lg:px-0">{layout}</div>
               </div>
               <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
-                <AdsTile currentAds={currentAds} />
+                <div className="pr-3">
+                  <AdsTile currentAds={currentAds} />
+                </div>
               </div>
             </div>
           </div>

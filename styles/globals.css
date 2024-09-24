@@ -82,6 +82,11 @@ body {
 }
 
 .paper {
+  @apply bg-slate-50 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
+.paper-old {
   @apply bg-white dark:bg-black;
   @apply text-black dark:text-white;
 }

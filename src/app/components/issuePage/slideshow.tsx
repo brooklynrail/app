@@ -74,15 +74,15 @@ const SlideShow = (props: SlideshowProps) => {
   })
 
   const indicator = currentSlides.map((article: Articles, i: number) => {
-    const show = i === slidePosition ? "show" : ""
-    return <div key={i} className={`bannerblock ${show}`} onClick={() => setSlidePosition(i)}></div>
+    const show = i === slidePosition ? "bg-red-500" : "bg-gray-300"
+    return <div key={i} className={`w-3 h-3 px-1 rounded-full ${show}`} onClick={() => setSlidePosition(i)}></div>
   })
 
   return (
     <div className="pb-2">
       <div className="relative">
         <div className="relative">{slides}</div>
-        <div className="flex items-center py-2 justify-center">{indicator}</div>
+        <div className="flex items-center py-2 justify-center space-x-1">{indicator}</div>
 
         <div
           id="banner-prev"

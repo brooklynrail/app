@@ -23,7 +23,6 @@ const ArtSeen = (props: PromoProps) => {
       <h3 className="font-bold">ArtSeen</h3>
       <ul>
         {artSeen.map((article: Articles, i: number) => {
-          const order = article.sort
           const permalink = getPermalink({
             year: year,
             month: month,
@@ -31,7 +30,7 @@ const ArtSeen = (props: PromoProps) => {
             slug: article.slug,
             type: PageType.Article,
           })
-          return <PromoSlim key={`artseen-${i}`} i={i} article={article} permalink={permalink} order={order} />
+          return <PromoSlim key={`artseen-${i}`} i={i} article={article} permalink={permalink} />
         })}
       </ul>
     </div>

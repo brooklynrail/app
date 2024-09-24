@@ -8,15 +8,14 @@ interface PromoSlimProps {
   article: Articles
   i?: number
   permalink: string
-  order?: number | null
   prefetch?: boolean
 }
 
 const PromoSlim = (props: PromoSlimProps) => {
-  const { article, i = 0, permalink, order, prefetch } = props
+  const { article, i = 0, permalink, prefetch } = props
   const { title, contributors, byline_override, hide_bylines_downstream } = article
 
-  const altClass = i % 2 === 0 ? "" : "promo-slim-alt"
+  const altClass = i % 2 === 0 ? "" : "bg-gray-200"
 
   return (
     <li className={`py-1 px-1 text-xs ${altClass}`} itemType="http://schema.org/Article">

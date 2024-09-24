@@ -23,7 +23,6 @@ const CriticsPage = (props: PromoProps) => {
       <h3 className="font-bold">Critics Page</h3>
       <ul>
         {criticsPage.map((article: Articles, i: number) => {
-          const order = article.sort
           const permalink = getPermalink({
             year: year,
             month: month,

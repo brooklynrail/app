@@ -1,8 +1,5 @@
 button.theme_toggle {
-  @apply w-12 h-12 rounded-full outline-none;
-  @apply text-2xl z-50;
-  @apply bg-gray-800 dark:bg-red-500;
-  &:focus {
-    @apply outline-none;
-  }
+  @apply w-10 h-10 rounded-full outline-none;
+  @apply text-xl z-50;
+  @apply bg-gray-800;
 }
