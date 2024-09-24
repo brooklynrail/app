@@ -15,7 +15,7 @@ const PromoSlim = (props: PromoSlimProps) => {
   const { article, i = 0, permalink, prefetch } = props
   const { title, contributors, byline_override, hide_bylines_downstream } = article
 
-  const altClass = i % 2 === 0 ? "" : "bg-gray-200"
+  const altClass = i % 2 === 0 ? "" : "bg-zinc-200 dark:bg-zinc-700"
 
   return (
     <li className={`py-1 px-1 text-xs ${altClass}`} itemType="http://schema.org/Article">

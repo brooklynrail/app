@@ -34,17 +34,17 @@ const IssueLayout = (props: IssuePageProps) => {
 
   return (
     <>
-      <div className="divide-y-[1px] divide-zinc-900 divide-dotted">
+      <div className="divide-y-[1px] divide-zinc-900 dark:divide-slate-100 divide-dotted">
         {currentSlides && <SlideShow currentSlides={currentSlides} year={year} month={month} />}
         <div className="grid grid-cols-4 tablet-lg:grid-cols-8 gap-6">
           <div className="col-span-4 py-1">
-            <div className="flex flex-col divide-y-[1px] divide-zinc-900 divide-dotted">
+            <div className="flex flex-col divide-y-[1px] divide-zinc-900 dark:divide-slate-100 divide-dotted">
               <FeaturedArticles {...promoProps} />
               {tributesData && <InMemoriam tributesData={tributesData} />}
             </div>
           </div>
           <div className="col-span-4 tablet-lg:col-start-5 py-1">
-            <div className="flex flex-col divide-y-[1px] divide-zinc-900 divide-dotted">
+            <div className="flex flex-col divide-y-[1px] divide-zinc-900 dark:divide-slate-100 divide-dotted">
               <PublishersMessage {...promoProps} />
               <EditorsMessage {...promoProps} />
               <CriticsPage {...promoProps} />

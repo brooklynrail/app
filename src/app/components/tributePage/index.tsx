@@ -17,7 +17,7 @@ import Bylines, { BylineType } from "../collections/promos/bylines"
 import Title, { TitleType } from "../collections/promos/title"
 
 const TributePage = (props: TributePageProps) => {
-  const { thisTributeData, permalink } = props
+  const { thisTributeData } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
   useEffect(() => {
@@ -59,13 +59,13 @@ const TributePage = (props: TributePageProps) => {
             {/* <Ad970 currentAds={currentAds} /> */}
 
             <section id="main" className={styles.main}>
-              <div className="border-b-2 border-zinc-900 dark:border-indigo-50 border-dotted py-3">
+              <div className="tablet-lg:border-b-2 border-zinc-900 dark:border-indigo-50 border-dotted py-3">
                 <div className="px-6 grid grid-cols-4 tablet:grid-cols-12 gap-3">
                   <div className="col-span-4 tablet:col-span-8">
                     <div className="flex flex-col space-y-6 px-3 tablet-lg:px-12 desktop:px-24">
                       <div className="flex flex-col space-y-3">
                         <Title title={title} type={TitleType.Tribute} />
-                        {deck && <p className="text-center font-thin text-3xl tablet-lg:text-5xl">{deck}</p>}
+                        {deck && <p className="text-center font-thin text-4xl tablet-lg:text-5xl">{deck}</p>}
                       </div>
                       <div className="text-xl tablet:text-2xl text-center font-serif font-normal">
                         {blurb && parse(blurb)}
@@ -78,7 +78,7 @@ const TributePage = (props: TributePageProps) => {
                     </div>
                   </div>
                   <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-8">
-                    <div className="flex flex-col justify-end h-full px-3 tablet:px-6">
+                    <div className="flex flex-col pt-9 justify-end h-full tablet:px-3 tablet-lg:px-6">
                       <TributeWritersList articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
                     </div>
                   </div>
@@ -89,7 +89,7 @@ const TributePage = (props: TributePageProps) => {
                 <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
                   <div className="col-span-4 tablet-lg:col-span-3 tablet-lg:border-r-2 border-zinc-900 dark:border-indigo-50 border-dotted">
                     <div className="divide-y-2 divide-dotted divide-zinc-900 dark:divide-indigo-50 tablet-lg:mr-3">
-                      <aside className="text-sm pl-3 pb-3 tablet-lg:py-3">{summary && parse(summary)}</aside>
+                      <aside className="text-sm tablet-lg:pl-3 pb-3 tablet-lg:py-3">{summary && parse(summary)}</aside>
                       <TributeWriters
                         currentSlug={articleData.slug}
                         articles={thisTributeData.articles}

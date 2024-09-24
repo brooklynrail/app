@@ -40,12 +40,12 @@ const TributeWriters = (props: TributeWritersProps) => {
 
     const intro = "Introduction"
 
-    const isCurrent = currentSlug === article.slug ? "bg-white" : ""
+    const isCurrent = currentSlug === article.slug ? "bg-white dark:bg-zinc-700" : ""
 
     return (
-      <li key={`item-${index}`} className={`${isCurrent} pl-3 py-2`}>
+      <li key={`item-${index}`} className={`${isCurrent} pl-3 py-1 desktop:py-2`}>
         {index === 0 && <p className="text-2xs">{intro}</p>}
-        <h4 className="font-bold text-lg uppercase">
+        <h4 className="font-bold text-md desktop:text-lg uppercase">
           <a href={permalink}>
             <Bylines hideBy={true} article={article} type={BylineType.None} />
           </a>
@@ -63,16 +63,17 @@ const TributeWriters = (props: TributeWritersProps) => {
   })
 
   return (
-    <aside>
+    <>
       <select
-        className="px-2 py-2 uppercase text-lg font-bold w-full tablet-lg:py-3 tablet:hidden"
+        className="px-2 py-2 uppercase text-lg font-bold w-full tablet-lg:py-3 tablet-lg:hidden"
         onChange={handleArticleChange}
         value={selectedArticle}
       >
         {options}
       </select>
-      <ul className="hidden tablet:block divide-y-2 divide-dotted divide-zinc-900 dark:divide-indigo-50">{list}</ul>
-    </aside>
+
+      <ul className="hidden tablet-lg:block divide-y-2 divide-dotted divide-zinc-900 dark:divide-indigo-50">{list}</ul>
+    </>
   )
 }
 

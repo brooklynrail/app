@@ -38,7 +38,7 @@ const CurrentSections = (props: CurrentSectionsProps) => {
   return (
     <>
       <div className="leading-4">
-        <ul className="font-medium flex flex-col divide-y-[1px] divide-dotted divide-gray-700 text-sm">
+        <ul className="font-medium flex flex-col divide-y-[1px] divide-dotted divide-zinc-900 dark:divide-slate-100 text-sm">
           <li className="py-0.5">
             <Link href={issuePermalink} title="Go to the Issue home">
               Issue Home

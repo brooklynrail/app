@@ -6,7 +6,7 @@ export enum BylineType {
   Option = "option",
   None = "not-italic",
   Default = "text-sm not-italic",
-  TributeArticle = "text-2xl font-bold font-serif not-italic",
+  TributeArticle = "text-lg tablet-lg:text-2xl font-bold font-serif not-italic",
   TributeWritersList = "text-sm desktop-lg:text-lg not-italic inline",
   CriticsPage = "text-2xl font-bold",
 }

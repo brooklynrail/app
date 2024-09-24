@@ -74,7 +74,7 @@ const PromoSection = (props: PromoProps) => {
             </Link>
           </h4>
           {!hide_bylines_downstream && (
-            <cite className="text-sm py-2 block font-sans text-gray-700">By {authors} </cite>
+            <cite className="text-sm py-2 block font-sans text-zinc-600 dark:text-slate-100">By {authors} </cite>
           )}
           <div className="text-sm font-serif">{parse(excerpt)}</div>
         </div>

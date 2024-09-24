@@ -45,7 +45,7 @@ const PromoThumb = (props: PromoProps) => {
             </Link>
           </h4>
 
-          <cite className="not-italic text-sm py-2 block font-sans text-gray-700">By {names} </cite>
+          <cite className="not-italic text-sm py-2 block font-sans text-zinc-600 dark:text-slate-100">By {names} </cite>
           <div className="text-sm font-serif">{parse(excerpt)}</div>
         </div>
       </div>

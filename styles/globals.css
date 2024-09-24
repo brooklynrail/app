@@ -86,11 +86,6 @@ body {
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
-.paper-old {
-  @apply bg-white dark:bg-black;
-  @apply text-black dark:text-white;
-}
-
 a {
   @apply hover:underline underline-offset-2;
 }
@@ -106,6 +101,6 @@ a {
 .media {
   figcaption {
     max-width: 114ex;
-    @apply pt-2 pb-3 tablet:pb-6 text-sm font-normal font-sans text-zinc-500;
+    @apply pt-2 pb-3 tablet:pb-6 text-xs tablet:text-sm font-normal font-sans text-zinc-500;
   }
 }
