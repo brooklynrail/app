@@ -14,10 +14,10 @@ export const dynamicParams = true
 export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 0.405,
-}
+// export const viewport: Viewport = {
+//   width: "device-width",
+//   initialScale: 0.405,
+// }
 
 export interface TributePageProps {
   thisTributeData: Tributes

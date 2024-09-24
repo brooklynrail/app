@@ -102,9 +102,9 @@ const Header = (props: HeaderProps) => {
       oldLogo
     )
   return (
-    <div id="header_section">
+    <div className="flex justify-between items-center border-b border-gray-700 border-dotted py-2 mx-2">
       <div className="logo">
-        <div id="textflag">
+        <div className="hidden">
           <h1>The Brooklyn Rail </h1>
           <h2>Critical Perspectives on Art, Politics and Culture</h2>
           {title && <h3>{title}</h3>}
@@ -113,7 +113,7 @@ const Header = (props: HeaderProps) => {
       </div>
 
       <nav>
-        <ul>
+        <ul className="flex justify-end items-center text-sm uppercase font-medium space-x-4 text-red-600">
           <li>
             <Link href="/about" title="About">
               <span>About</span>
@@ -139,8 +139,8 @@ const Header = (props: HeaderProps) => {
               <span>Shop</span>
             </Link>
           </li>
-          <li className="btn btn-donate">
-            <Link href="https://brooklynrail.org/donate" title="Donate">
+          <li className="bg-red-600 px-4 py-2 rounded-sm text-white">
+            <Link className="hover:text-white" href="https://brooklynrail.org/donate" title="Donate">
               <span>Donate</span>
             </Link>
           </li>

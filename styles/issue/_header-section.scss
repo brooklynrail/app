@@ -1,59 +1,49 @@
-#header_section{
-  @include u-margin-top(1);
-  @include u-margin-bottom('105');
-  @include u-padding-bottom('105');
-  @include u-border-bottom('1px', 'dotted', 'black');
-  @include u-display('flex');
-  @include u-flex('justify');
-  @include u-flex('align-center');
-  .logo{
-    #textflag{
-      @include u-display('none');
-    }
-  }
+#header_section {
+  // wrttien as Tailwind Classes
+  // flex justify-between items-center border-b border-gray-300 py-4 px-4 mb-4
 
-  nav{
-    ul{
-      @include u-display('flex');
-      @include u-flex('justify-end');
-      li{
-        @include u-margin-x('05');
-        @include u-font('sans', 'xs');
-        a{
-          @include u-padding-y('05');
-          @include u-padding-x('05');
-          @include u-text('red-50v');
-          @include u-text('medium');
-          @include u-text('uppercase');
-          @include u-text('no-underline');
-          span{
+  nav {
+    ul {
+      @include u-display("flex");
+      @include u-flex("justify-end");
+      li {
+        @include u-margin-x("05");
+        @include u-font("sans", "xs");
+        a {
+          @include u-padding-y("05");
+          @include u-padding-x("05");
+          @include u-text("red-50v");
+          @include u-text("medium");
+          @include u-text("uppercase");
+          @include u-text("no-underline");
+          span {
             @include u-padding-bottom(2px);
           }
-          &:hover{
-            span{
-              @include u-border-bottom('2px', 'dotted', 'red-50v');
+          &:hover {
+            span {
+              @include u-border-bottom("2px", "dotted", "red-50v");
             }
           }
         }
-        &:last-child{
+        &:last-child {
           @include u-margin-right(0);
         }
       }
 
-      li.btn-donate{
-        @include u-margin-left('105');
-        a{
-          @include u-padding-y('105');
+      li.btn-donate {
+        @include u-margin-left("105");
+        a {
+          @include u-padding-y("105");
           @include u-padding-x(2);
-          @include u-bg('red-50v');
-          @include u-text('white');
-          @include u-radius('sm');
-          span{
+          @include u-bg("red-50v");
+          @include u-text("white");
+          @include u-radius("sm");
+          span {
             @include u-padding-bottom(0);
           }
-          &:hover{
-            span{
-              @include u-border-bottom('2px', 'solid', 'white');
+          &:hover {
+            span {
+              @include u-border-bottom("2px", "solid", "white");
             }
           }
         }
