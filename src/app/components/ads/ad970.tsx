@@ -42,12 +42,12 @@ const Ad970 = (props: Ad970Props) => {
 
   return (
     <>
-      <div className="m-0 mx-6">
-        <p className="text-[11px] leading-4 text-center uppercase text-gray-500">Advertisement</p>
+      <div className="m-0 mt-2">
+        <p className="text-[11px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
         <div>
           <Link href={randomAd.ad_url} target="_blank">
             <Image
-              className="hidden tablet:block"
+              className="hidden tablet:block mx-auto"
               src={srcDesktop}
               width={desktopWidth}
               height={desktopHeight}

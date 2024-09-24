@@ -73,7 +73,7 @@ const AdsTile = (props: AdsTileProps) => {
 
   return (
     <div className="flex flex-col divide-y-2 divide-dotted divide-gray-700">
-      <p className="text-[11px] leading-4 text-center uppercase text-gray-500">Advertisements</p>
+      <p className="text-[11px] leading-4 text-center uppercase text-gray-700">Advertisements</p>
       <div className="py-2 flex flex-col space-y-4">{tiles}</div>
     </div>
   )

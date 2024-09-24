@@ -87,7 +87,7 @@ body {
 }
 
 a {
-  @apply hover:underline underline-offset-4;
+  @apply hover:underline underline-offset-2;
 }
 
 .content {
