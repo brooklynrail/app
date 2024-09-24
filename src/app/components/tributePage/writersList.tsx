@@ -25,12 +25,12 @@ const TributeWritersList = (props: TributeWritersProps) => {
       separator = ""
     }
     return (
-      <>
+      <span key={index}>
         <a href={permalink} className="font-medium">
           <Bylines hideBy={true} article={article} type={BylineType.TributeWritersList} />
         </a>
         {separator}
-      </>
+      </span>
     )
   })
 

@@ -99,7 +99,7 @@ const TributePage = (props: TributePageProps) => {
                   </div>
                   <div className="col-span-4 tablet-lg:col-span-9">
                     <div className="py-3 pb-9">
-                      <Title title={articleData.title} permalink={articlePermalink} type={TitleType.TributeArticle} />
+                      <Title title={articleData.title} type={TitleType.TributeArticle} />
                       <Bylines article={articleData} type={BylineType.TributeArticle} linked={true} hideBy={true} />
                     </div>
                     <ArticleBody articleData={articleData} />

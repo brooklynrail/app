@@ -1,7 +1,9 @@
 "use client"
+import { useState } from "react"
 import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
+import { get } from "http"
 
 interface TributeWritersProps {
   articles: Articles[]
@@ -12,6 +14,23 @@ interface TributeWritersProps {
 const TributeWriters = (props: TributeWritersProps) => {
   const { articles, tributeSlug, currentSlug } = props
 
+  const [selectedArticle, setSelectedArticle] = useState<string>(currentSlug)
+  console.log("selectedArticle", selectedArticle)
+
+  const handleArticleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value
+    // Set the selected article slug
+    setSelectedArticle(selectedValue)
+    // navigate to the selected article via the path
+    const path = getPermalink({
+      tributeSlug: tributeSlug,
+      slug: selectedValue,
+      type: PageType.TributeArticle,
+    })
+    // const path = `/tribute/${tributeSlug}/${selectedValue}`
+    window.location.href = path
+  }
+
   const list = articles.map((article, index) => {
     const permalink = getPermalink({
       tributeSlug: tributeSlug,
@@ -21,10 +40,10 @@ const TributeWriters = (props: TributeWritersProps) => {
 
     const intro = "Introduction"
 
-    const isCurrent = currentSlug === article.slug ? "bg-red-300" : ""
+    const isCurrent = currentSlug === article.slug ? "bg-white" : ""
 
     return (
-      <li key={index} className={`${isCurrent} pl-3 py-2`}>
+      <li key={`item-${index}`} className={`${isCurrent} pl-3 py-2`}>
         {index === 0 && <p className="text-2xs">{intro}</p>}
         <h4 className="font-bold text-lg uppercase">
           <a href={permalink}>
@@ -35,9 +54,24 @@ const TributeWriters = (props: TributeWritersProps) => {
     )
   })
 
+  const options = articles.map((article, index) => {
+    return (
+      <option key={`option-${index}`} value={article.slug}>
+        <Bylines hideBy={true} article={article} type={BylineType.Option} />
+      </option>
+    )
+  })
+
   return (
     <aside>
-      <ul className="divide-y-2 divide-dotted divide-zinc-900 dark:divide-indigo-50">{list}</ul>
+      <select
+        className="px-2 py-2 uppercase text-lg font-bold w-full tablet-lg:py-3 tablet:hidden"
+        onChange={handleArticleChange}
+        value={selectedArticle}
+      >
+        {options}
+      </select>
+      <ul className="hidden tablet:block divide-y-2 divide-dotted divide-zinc-900 dark:divide-indigo-50">{list}</ul>
     </aside>
   )
 }

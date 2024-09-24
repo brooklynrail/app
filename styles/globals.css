@@ -77,7 +77,7 @@ h6 {
 html,
 body {
   @apply text-base font-normal;
-  @apply font-sans;
+  @apply font-sans antialiased;
   @apply bg-red-600 text-black;
 }
 

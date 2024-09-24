@@ -3,9 +3,10 @@ import { getPermalink, PageType } from "../../../../../lib/utils"
 import Link from "next/link"
 
 export enum BylineType {
+  Option = "option",
   None = "not-italic",
   Default = "text-sm not-italic",
-  TributeArticle = "text-xl font-bold font-serif not-italic",
+  TributeArticle = "text-2xl font-bold font-serif not-italic",
   TributeWritersList = "text-sm desktop-lg:text-lg not-italic inline",
   CriticsPage = "text-2xl font-bold",
 }
@@ -59,6 +60,11 @@ const Bylines = (props: BylinesProps) => {
                 </Link>
               )
             }
+
+            if (type === BylineType.Option) {
+              return `${!isFirst ? separator : ""} ${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name}`
+            }
+
             return (
               <span key={i} className="">
                 {!isFirst && separator}
@@ -70,6 +76,10 @@ const Bylines = (props: BylinesProps) => {
       )}
     </>
   )
+
+  if (type === BylineType.Option) {
+    return <>{byline_contents}</>
+  }
 
   if (asTitle) {
     return (

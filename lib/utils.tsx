@@ -960,6 +960,9 @@ export async function getTributes(props: TributesParams) {
             {
               tribute: ["slug"],
             },
+            {
+              contributors: [{ contributors_id: ["id", "slug", "first_name", "last_name"] }],
+            },
           ],
         },
       ],
