@@ -1,12 +1,12 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
+import { useTheme } from "../theme"
 
 interface HeaderProps {
   special_issue?: boolean | null
   issue_number?: number
   title?: string
-  theme: string | null
 }
 
 interface OldLogoProps {
@@ -98,7 +98,9 @@ const OldLogo = (props: OldLogoProps) => {
 }
 
 const Header = (props: HeaderProps) => {
-  const { special_issue, issue_number, title, theme } = props
+  const { special_issue, issue_number, title } = props
+
+  const { theme } = useTheme()
 
   const logo =
     special_issue && special_issue !== null ? (
