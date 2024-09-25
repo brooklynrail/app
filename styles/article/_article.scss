@@ -81,6 +81,7 @@ article.article-diff {
   @include u-flex("justify");
   @include u-border-bottom("black", "2px", "dotted");
   @include u-margin-bottom(4);
+  @include u-line-height("sans", 4);
   a {
     @include u-padding-bottom("205");
     @include u-display("block");
@@ -101,7 +102,8 @@ article.article-diff {
     h4 {
       @include u-font("sans", "3xs");
       @include u-text("uppercase");
-      @include u-margin-bottom("05");
+      @include u-text("bold");
+      @include u-margin-bottom(0);
       span {
         @include u-margin-left(1);
         @include u-padding-left(1);

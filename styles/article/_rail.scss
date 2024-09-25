@@ -199,6 +199,7 @@
       li {
         @include u-padding-y(1);
         @include u-padding-x(0);
+        @include u-line-height("sans", 3);
         @include u-padding-right("05");
         @include u-border-bottom("gray-40", "1px", "dotted");
         @include u-position("relative");
