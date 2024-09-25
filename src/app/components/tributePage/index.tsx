@@ -17,6 +17,8 @@ import Bylines, { BylineType } from "../collections/promos/bylines"
 import Title, { TitleType } from "../collections/promos/title"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
+import Contributors from "../contributors"
+import NextPrev from "../nextPrev"
 
 const TributePage = (props: TributePageProps) => {
   const { thisTributeData } = props
@@ -107,6 +109,12 @@ const TributePage = (props: TributePageProps) => {
                       <Bylines article={articleData} type={BylineType.TributeArticle} linked={true} hideBy={true} />
                     </div>
                     <ArticleBody articleData={articleData} />
+                    <Contributors contributors={articleData.contributors} />
+                    <NextPrev
+                      articles={thisTributeData.articles}
+                      currentSlug={articleData.slug}
+                      tribute={thisTributeData}
+                    />
                   </div>
                 </div>
               </div>

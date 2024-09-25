@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { stripHtml } from "string-strip-html"
 import parse from "html-react-parser"
+import { cleanup } from "../../../../../lib/utils"
 
 export enum TitleType {
   XSmall = "text-base font-serif font-normal",
@@ -25,22 +26,7 @@ const Title = (props: TitleProps) => {
     return <></>
   }
 
-  // remove some of the HTML from the titles
-  function replaceNbsps(str: string) {
-    // Replace non-breaking spaces
-    var reNbsp = new RegExp(String.fromCharCode(160), "g")
-    str = str.replace(reNbsp, " ")
-
-    // Remove <br/> tags
-    str = str.replace(/<br\s*\/?>/gi, " ")
-
-    // Remove <span> tags with specific styles while preserving the text within
-    str = str.replace(/<span[^>]*style=["'][^"']*font-size:\s*80%[^"']*["'][^>]*>(.*?)<\/span>/gi, "$1")
-
-    return str
-  }
-
-  const title_contents = parse(replaceNbsps(title))
+  const title_contents = parse(cleanup(title))
 
   if (!permalink) {
     return <h2 className={`${type}`}>{title_contents}</h2>
@@ -48,7 +34,7 @@ const Title = (props: TitleProps) => {
 
   return (
     <h2 className={`${type}`}>
-      <Link href={permalink} title={`Visit ${stripHtml(replaceNbsps(title)).result}`}>
+      <Link href={permalink} title={`Visit ${stripHtml(cleanup(title)).result}`}>
         {title_contents}
       </Link>
     </h2>
