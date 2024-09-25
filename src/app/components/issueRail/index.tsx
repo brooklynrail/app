@@ -31,6 +31,11 @@ const ArticleList = (props: ArticleListProps) => {
 
     const guestCritic = article.section.slug === "editorsmessage"
 
+    // if the section.slug is "in-memoriam" then return just the first Article and skip the rest
+    if (article.section.slug === "in-memoriam" && article.tribute && i > 0) {
+      return null
+    }
+
     return (
       <li key={i} data-sort={article.sort}>
         <h4 className="leading-4">
