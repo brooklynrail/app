@@ -78,7 +78,6 @@ const IssuePage = (props: IssuePageProps) => {
                     special_issue={thisIssueData.special_issue}
                     issue_number={thisIssueData.issue_number}
                     title={thisIssueData.title}
-                    theme={theme}
                   />
                   <Ad970 currentAds={currentAds} />
                 </div>
