@@ -1042,3 +1042,17 @@ export async function getAllPeople() {
   )
   return people as People[]
 }
+
+export const cleanup = (str: string) => {
+  // Replace non-breaking spaces
+  var reNbsp = new RegExp(String.fromCharCode(160), "g")
+  str = str.replace(reNbsp, " ")
+
+  // Remove <br/> tags
+  str = str.replace(/<br\s*\/?>/gi, " ")
+
+  // Remove <span> tags with specific styles while preserving the text within
+  str = str.replace(/<span[^>]*style=["'][^"']*font-size:\s*80%[^"']*["'][^>]*>(.*?)<\/span>/gi, "$1")
+
+  return str
+}
