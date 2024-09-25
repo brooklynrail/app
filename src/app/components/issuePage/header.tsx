@@ -114,7 +114,7 @@ const Header = (props: HeaderProps) => {
       <OldLogo theme={theme} />
     )
   return (
-    <div className="flex flex-col tablet-lg:flex-row justify-between items-center border-b border-zinc-900 dark:border-slate-100 border-dotted py-2 mx-2 space-x-4">
+    <div className="flex flex-col tablet-lg:flex-row justify-between items-center border-b-[1px] rail-border py-2 mx-2 space-x-4">
       <div className="logo">
         <div className="hidden">
           <h1>The Brooklyn Rail </h1>

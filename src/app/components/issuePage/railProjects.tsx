@@ -3,7 +3,7 @@ import Image from "next/image"
 
 const RailProjects = () => {
   return (
-    <div className="py-4 flex flex-col space-y-6 items-center border-2 border-zinc-900 border-solid rounded-sm bg-white">
+    <div className="py-4 flex flex-col space-y-6 items-center border-2 rail-border-solid rounded-sm bg-white">
       <Link href="https://shop.brooklynrail.org/collections/books" target="out-rail">
         <Image src="/images/banners-left/Rail-Ed-WEB.jpg" width={120} height={73} alt="Rail Editions" />
       </Link>

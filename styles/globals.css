@@ -74,6 +74,23 @@ h6 {
   @apply text-base font-thin;
 } */
 
+.rail-bg {
+  @apply bg-slate-100 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+.rail-border {
+  @apply border-zinc-600 dark:border-slate-300 border-dotted;
+}
+.rail-border-solid {
+  @apply rail-border !border-solid;
+}
+.rail-divide {
+  @apply divide-zinc-600 dark:divide-slate-300 divide-dotted;
+}
+.rail-divide-solid {
+  @apply rail-divide !border-solid;
+}
+
 html,
 body {
   @apply text-base font-normal;
@@ -82,8 +99,7 @@ body {
 }
 
 .paper {
-  @apply bg-slate-100 dark:bg-zinc-800;
-  @apply text-zinc-900 dark:text-indigo-50;
+  @apply rail-bg;
 }
 
 a {

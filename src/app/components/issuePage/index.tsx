@@ -92,14 +92,14 @@ const IssuePage = (props: IssuePageProps) => {
                 </div>
                 <div className="py-4 flex flex-col space-y-2 pl-3">
                   <Link
-                    className="font-medium text-sm py-1 text-center inline-block border-[1px] border-zinc-900 dark:border-slate-100 border-solid rounded-sm"
+                    className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
                     href="/search"
                     title="Search All Issues"
                   >
                     <span>Search</span> <i className="fas fa-search"></i>
                   </Link>
                   <Link
-                    className="font-medium text-sm py-1 text-center inline-block border-[1px] border-zinc-900 dark:border-slate-100 border-solid rounded-sm"
+                    className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
                     href="/archive"
                     title="View Archive"
                   >

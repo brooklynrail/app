@@ -4,7 +4,7 @@
 .collection {
   @include u-padding-y("105");
   @include u-border-top("1px", "dotted", "base");
-  // tailwindcss: border-t-1 border-dotted border-base
+
   &:first-child {
     @include u-padding-top(0);
     @include u-border-top(0);

@@ -15,9 +15,13 @@ import TributeWriters from "./writers"
 import TributeWritersList from "./writersList"
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Title, { TitleType } from "../collections/promos/title"
+import ThemeToggle from "../themeToggle"
+import { useTheme } from "../theme"
 
 const TributePage = (props: TributePageProps) => {
   const { thisTributeData } = props
+  const { theme, setTheme } = useTheme()
+
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
   useEffect(() => {
@@ -59,7 +63,7 @@ const TributePage = (props: TributePageProps) => {
             {/* <Ad970 currentAds={currentAds} /> */}
 
             <section id="main" className={styles.main}>
-              <div className="tablet-lg:border-b-2 border-zinc-900 dark:border-indigo-50 border-dotted py-3">
+              <div className="tablet-lg:border-b-[1px] rail-border py-3">
                 <div className="px-6 grid grid-cols-4 tablet:grid-cols-12 gap-3">
                   <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-8 row-start-2 tablet-lg:row-start-1">
                     <div className="flex flex-col space-y-6 px-3 tablet-lg:px-12 desktop:px-24">
@@ -87,8 +91,8 @@ const TributePage = (props: TributePageProps) => {
 
               <div className="py-3 px-6 tablet:px-9">
                 <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-                  <div className="col-span-4 tablet-lg:col-span-3 tablet-lg:border-r-2 border-zinc-900 dark:border-indigo-50 border-dotted">
-                    <div className="divide-y-2 divide-dotted divide-zinc-900 dark:divide-indigo-50 tablet-lg:mr-3">
+                  <div className="col-span-4 tablet-lg:col-span-3 tablet-lg:border-r-[1px] rail-border">
+                    <div className="divide-y-[1px] rail-divide tablet-lg:mr-3">
                       <aside className="text-sm tablet-lg:pl-3 pb-3 tablet-lg:py-3">{summary && parse(summary)}</aside>
                       <TributeWriters
                         currentSlug={articleData.slug}
@@ -109,6 +113,7 @@ const TributePage = (props: TributePageProps) => {
             </section>
           </div>
         </Paper>
+        <ThemeToggle {...{ theme, setTheme }} />
         <CoversPopup />
       </PopupProvider>
     </>
