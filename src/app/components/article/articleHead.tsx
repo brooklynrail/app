@@ -1,5 +1,4 @@
 import Link from "next/link"
-import Image from "next/image"
 import { Articles, ArticlesContributors, DirectusFiles, Issues, Sections } from "../../../../lib/types"
 import { stripHtml } from "string-strip-html"
 import parse from "html-react-parser"
