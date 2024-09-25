@@ -20,6 +20,7 @@ import PreviewHeader from "../preview/previewHead"
 import TableOfContentsPage from "./layout/tableOfContentsPage"
 import Footer from "../footer"
 import ThemeToggle from "../themeToggle"
+import { useTheme } from "@/app/components/theme"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -31,9 +32,7 @@ const IssuePage = (props: IssuePageProps) => {
   const { thisIssueData, currentSection, issueSections, previewURL, allIssues } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
-  const [theme, setTheme] = useState<string | null>(null)
-
-  const themeSettings = { theme, setTheme }
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +69,7 @@ const IssuePage = (props: IssuePageProps) => {
       <PopupProvider>
         <div className={`paper paper-old ${issueClass}`}>
           {previewURL && <PreviewHeader previewURL={previewURL} />}
-          <ThemeToggle {...themeSettings} />
+
           <div className="px-0 desktop:w-desktop mx-auto">
             <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-6">
               <div className="col-span-4 tablet-lg:col-span-12">
@@ -122,6 +121,7 @@ const IssuePage = (props: IssuePageProps) => {
           </div>
         </div>
         <Footer />
+        <ThemeToggle {...{ theme, setTheme }} />
         <CoversPopup />
       </PopupProvider>
     </>

@@ -34,7 +34,7 @@ const TributeWritersList = (props: TributeWritersProps) => {
     )
   })
 
-  return <aside className="text-sm desktop-lg:text-lg tablet-lg:text-center">With contributions from {list}.</aside>
+  return <aside className="text-sm desktop-lg:text-lg text-center">With contributions from {list}.</aside>
 }
 
 export default TributeWritersList

@@ -1,11 +1,7 @@
-import styles from "./header.module.scss"
+import { useTheme } from "@/app/components/theme"
 
-interface BannerProps {
-  theme: string | null
-}
-
-const Banner = (props: BannerProps) => {
-  const { theme } = props
+const Banner = () => {
+  const { theme } = useTheme()
   const pathfill = theme === "dark" ? "fill-none tablet:fill-white" : "fill-none tablet:fill-zinc-900"
   const textfill = theme === "dark" ? "fill-slate-100 tablet:fill-none" : "fill-zinc-900 tablet:fill-none"
   return (

@@ -61,7 +61,7 @@ const TributePage = (props: TributePageProps) => {
             <section id="main" className={styles.main}>
               <div className="tablet-lg:border-b-2 border-zinc-900 dark:border-indigo-50 border-dotted py-3">
                 <div className="px-6 grid grid-cols-4 tablet:grid-cols-12 gap-3">
-                  <div className="col-span-4 tablet:col-span-8">
+                  <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-8 row-start-2 tablet-lg:row-start-1">
                     <div className="flex flex-col space-y-6 px-3 tablet-lg:px-12 desktop:px-24">
                       <div className="flex flex-col space-y-3">
                         <Title title={title} type={TitleType.Tribute} />
@@ -72,8 +72,8 @@ const TributePage = (props: TributePageProps) => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-4 tablet:col-span-4 tablet-lg:row-span-2 tablet:col-start-9">
-                    <div className="flex flex-col justify-center py-9 px-24 tablet:p-0 h-full">
+                  <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-4 desktop:row-span-2 tablet-lg:col-start-9">
+                    <div className="flex flex-col justify-center py-6 px-24 tablet-lg:p-0 h-full">
                       {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
                     </div>
                   </div>
