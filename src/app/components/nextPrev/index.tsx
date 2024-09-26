@@ -83,10 +83,7 @@ const NextPrev = (props: NextPrevProps) => {
         <Link href={nextPermalink} className="text-sm tablet-lg:text-md flex flex-col space-y-2">
           <div>
             <span className="uppercase text-xs">Next</span>
-            <h4>
-              {parse(next.section.name)}
-              {nextKicker}
-            </h4>
+            <h4>{parse(tribute.title)}</h4>
           </div>
 
           <Bylines article={next} type={BylineType.TributeNextPrev} hideBy={true} />
