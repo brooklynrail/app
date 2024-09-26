@@ -8,6 +8,7 @@ import {
   DirectusFiles,
   Events,
   GlobalSettings,
+  GlobalSettingsNavigation,
   Issues,
   Pages,
   People,
@@ -209,7 +210,7 @@ export const getAllPages = cache(async () => {
   }
 })
 
-export async function getGlobalSettings() {
+export const getGlobalSettings = cache(async () => {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
   const res = await fetch(globalSettingsAPI)
   if (!res.ok) {
@@ -218,7 +219,7 @@ export async function getGlobalSettings() {
   }
   const { data } = await res.json()
   return data as GlobalSettings
-}
+})
 
 // Explore making this get IssueData by ID
 // NOTE: we need to use `readItems` instead of `readItem` because we are querying the `issues` collection
@@ -477,6 +478,7 @@ export async function getPreviewArticle(slug: string) {
         version: "draft",
         fields: [
           "*",
+          "tribute",
           { section: ["id", "name", "slug"] },
           { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
@@ -1047,6 +1049,30 @@ export const getAllPeople = cache(async () => {
     }),
   )
   return people as People[]
+})
+
+export const getNavigation = cache(async () => {
+  const global_settings = await directus.request(
+    readSingleton("global_settings", {
+      fields: [
+        {
+          current_issue: ["title", "slug"],
+        },
+        {
+          navigation: [
+            "collection",
+            {
+              item: {
+                sections: ["name", "slug"],
+                tributes: ["title", "slug"],
+              },
+            },
+          ],
+        },
+      ],
+    }),
+  )
+  return global_settings as GlobalSettings
 })
 
 export const cleanup = (str: string) => {

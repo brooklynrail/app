@@ -482,6 +482,15 @@ export type GlobalSettings = {
   id: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+  navigation: any[] | GlobalSettingsNavigation[]
+}
+
+export type GlobalSettingsNavigation = {
+  collection?: string | null
+  global_settings_id?: string | GlobalSettings | null
+  id: number
+  item?: string | any | null
+  sort?: number | null
 }
 
 export type Issues = {
@@ -616,6 +625,7 @@ export type CustomDirectusTypes = {
   directus_webhooks: DirectusWebhooks[]
   events: Events[]
   global_settings: GlobalSettings
+  global_settings_navigation: GlobalSettingsNavigation
   issues: Issues[]
   pages: Pages[]
   people: People[]
