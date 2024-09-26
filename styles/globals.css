@@ -116,7 +116,7 @@ a {
 
 .media {
   figcaption {
-    max-width: 114ex;
+    max-width: 134ex;
     @apply pt-2 pb-3 tablet:pb-6 text-xs tablet:text-sm font-normal font-sans text-zinc-500;
   }
 }
