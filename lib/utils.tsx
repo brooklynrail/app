@@ -650,7 +650,7 @@ export const getEvent = cache(async (slug: string) => {
   return events as Events[]
 })
 
-export async function getRedirect(slug: string) {
+export const getRedirect = cache(async (slug: string) => {
   try {
     const redirect = await directus.request(
       readItems("redirects", {
@@ -681,7 +681,7 @@ export async function getRedirect(slug: string) {
     console.error("Error in getRedirect", error)
     return null
   }
-}
+})
 
 export const getAds = cache(async () => {
   // const today = new Date()
@@ -899,7 +899,7 @@ export async function getContributor(slug: string) {
   }
 }
 
-export async function getAllContributors() {
+export const getAllContributors = cache(async () => {
   try {
     let contributorPages: Contributors[] = []
     let page = 1
@@ -923,13 +923,13 @@ export async function getAllContributors() {
     console.error("Failed to fetch getAllContributors data", error)
     return null
   }
-}
+})
 
 interface TributesParams {
   thisIssueData: Issues
 }
 
-export async function getTributes(props: TributesParams) {
+export const getTributes = cache(async (props: TributesParams) => {
   const { thisIssueData } = props
 
   // filter out the articles where tribute is not null
@@ -974,14 +974,14 @@ export async function getTributes(props: TributesParams) {
     }),
   )
   return tributes as Tributes[]
-}
+})
 
 interface TributeDataParams {
   tributeSlug: string
   slug: string
 }
 
-export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
+export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataParams) => {
   const tribute = await directus.request(
     readItems("tributes", {
       fields: [
@@ -1032,16 +1032,16 @@ export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
     }),
   )
   return tribute[0] as Tributes
-}
+})
 
-export async function getAllPeople() {
+export const getAllPeople = cache(async () => {
   const people = await directus.request(
     readItems("people", {
       fields: ["*"],
     }),
   )
   return people as People[]
-}
+})
 
 export const cleanup = (str: string) => {
   // Replace non-breaking spaces
