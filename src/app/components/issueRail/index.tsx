@@ -82,14 +82,6 @@ const IssueArticles = (props: IssueArticlesProps) => {
           sectionArticles.unshift(editorsMessage)
         }
 
-        // If the section is "in-memoriam" and the article has a tribute, then get the first article from that tribute and skip the rest
-        if (section.slug === "in-memoriam") {
-          const inMemoriamArticles = sectionArticles.filter((article) => article.tribute)
-          if (inMemoriamArticles.length > 0) {
-            sectionArticles.length = 1
-          }
-        }
-
         const sectionPermalink = getPermalink({
           issueSlug: thisIssueData.slug,
           section: section.slug,
