@@ -78,13 +78,13 @@ const TributePage = (props: TributePageProps) => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-4 desktop:row-span-2 tablet-lg:col-start-9">
+                  <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-3 desktop:row-span-2 tablet-lg:col-start-10">
                     <div className="flex flex-col justify-center py-6 px-24 tablet-lg:p-0 h-full">
                       {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
                     </div>
                   </div>
                   <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-8">
-                    <div className="flex flex-col pt-9 justify-end h-full tablet:px-3 tablet-lg:px-6">
+                    <div className="flex flex-col pt-9 justify-end h-full tablet:px-3 tablet-lg:px-6 pb-6">
                       <TributeWritersList articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
                     </div>
                   </div>
