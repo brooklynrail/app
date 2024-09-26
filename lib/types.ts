@@ -53,6 +53,7 @@ export type Articles = {
   title: string
   title_tag?: string
   tribute: Tributes
+  hide_title?: boolean | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }

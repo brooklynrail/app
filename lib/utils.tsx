@@ -617,6 +617,7 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=images.directus_files_id.shortcode_key` +
     `&fields[]=tribute.title` +
     `&fields[]=tribute.slug` +
+    `&fields[]=hide_title` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=${status}`
 
@@ -968,6 +969,7 @@ export const getTributes = cache(async (props: TributesParams) => {
             {
               tribute: ["slug"],
             },
+            "hide_title",
             {
               contributors: [{ contributors_id: ["id", "slug", "first_name", "last_name"] }],
             },
@@ -1013,6 +1015,7 @@ export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataPar
             "excerpt",
             "body_text",
             "sort",
+            "hide_title",
             "status",
             {
               images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
