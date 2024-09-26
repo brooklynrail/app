@@ -162,7 +162,7 @@ export const getCurrentIssueData = cache(async () => {
 export const getPageData = cache(async (slug: string) => {
   try {
     const pageData = await directus.request(
-      readItem("pages", slug, {
+      readItems("pages", {
         fields: [
           "*",
           "title",
@@ -173,11 +173,11 @@ export const getPageData = cache(async (slug: string) => {
             images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
           },
         ],
-        filter: { status: { _eq: "published" } },
+        filter: { status: { _eq: "published" }, slug: { _eq: slug } },
       }),
     )
 
-    return pageData as Pages
+    return pageData[0] as Pages
   } catch (error) {
     console.error("Error fetching page data:", error)
     return null
@@ -470,8 +470,10 @@ export async function getArticlePages() {
 
 export async function getPreviewArticle(slug: string) {
   try {
+    // Search for the article with the matching slug
+    // assuming that slug is unique!
     const preview = await directus.request(
-      readItem("articles", slug, {
+      readItems("articles", {
         version: "draft",
         fields: [
           "*",
@@ -485,9 +487,12 @@ export async function getPreviewArticle(slug: string) {
           { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
           { user_updated: ["id", "first_name", "last_name", "avatar"] },
         ],
+        filter: {
+          slug: { _eq: slug },
+        },
       }),
     )
-    return preview as Articles
+    return preview[0] as Articles
   } catch (error) {
     console.error("error in getPreviewArticle", error)
     return null
@@ -851,36 +856,37 @@ export async function getContributor(slug: string) {
     `&fields[]=old_id` +
     `&fields[]=date_updated` +
     `&fields[]=date_created` +
-    `&fields[]=articles.articles_slug.status` +
-    `&fields[]=articles.articles_slug.slug` +
-    `&fields[]=articles.articles_slug.title` +
-    `&fields[]=articles.articles_slug.excerpt` +
-    `&fields[]=articles.articles_slug.kicker` +
-    `&fields[]=articles.articles_slug.featured` +
-    `&fields[]=articles.articles_slug.featured_image.id` +
-    `&fields[]=articles.articles_slug.featured_image.caption` +
-    `&fields[]=articles.articles_slug.featured_image.filename_disk` +
-    `&fields[]=articles.articles_slug.featured_image.width` +
-    `&fields[]=articles.articles_slug.featured_image.height` +
-    `&fields[]=articles.articles_slug.featured_image.type` +
-    `&fields[]=articles.articles_slug.issue.title` +
-    `&fields[]=articles.articles_slug.issue.year` +
-    `&fields[]=articles.articles_slug.issue.month` +
-    `&fields[]=articles.articles_slug.issue.slug` +
-    `&fields[]=articles.articles_slug.issue.special_issue` +
-    `&fields[]=articles.articles_slug.section.slug` +
-    `&fields[]=articles.articles_slug.section.name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.id` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.first_name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.last_name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.old_id` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.slug` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.bio` +
+    // `&fields[]=articles` +
+    `&fields[]=articles.articles_contributors_id.slug` +
+    `&fields[]=articles.articles_contributors_id.title` +
+    `&fields[]=articles.articles_contributors_id.status` +
+    `&fields[]=articles.articles_contributors_id.excerpt` +
+    `&fields[]=articles.articles_contributors_id.kicker` +
+    `&fields[]=articles.articles_contributors_id.featured` +
+    `&fields[]=articles.articles_contributors_id.featured_image.id` +
+    `&fields[]=articles.articles_contributors_id.featured_image.caption` +
+    `&fields[]=articles.articles_contributors_id.featured_image.filename_disk` +
+    `&fields[]=articles.articles_contributors_id.featured_image.width` +
+    `&fields[]=articles.articles_contributors_id.featured_image.height` +
+    `&fields[]=articles.articles_contributors_id.featured_image.type` +
+    `&fields[]=articles.articles_contributors_id.issue.title` +
+    `&fields[]=articles.articles_contributors_id.issue.year` +
+    `&fields[]=articles.articles_contributors_id.issue.month` +
+    `&fields[]=articles.articles_contributors_id.issue.slug` +
+    `&fields[]=articles.articles_contributors_id.issue.special_issue` +
+    `&fields[]=articles.articles_contributors_id.section.slug` +
+    `&fields[]=articles.articles_contributors_id.section.name` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.id` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.first_name` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.last_name` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.old_id` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.slug` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.bio` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
     `&filter[articles][_nnull]=true` +
-    `&deep[articles][_filter][articles_slug][status][_eq]=published` +
-    `&deep[articles][_sort]=-articles_slug.issue.year,-articles_slug.issue.month` +
+    `&deep[articles][_filter][articles_contributors_id][status][_eq]=published` +
+    `&deep[articles][_sort]=-articles_contributors_id.issue.year,-articles_contributors_id.issue.month` +
     `&deep[articles][issue][_nnull]=true`
 
   try {

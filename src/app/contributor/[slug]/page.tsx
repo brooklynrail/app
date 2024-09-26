@@ -61,7 +61,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
   const allArticles = (
     <section className="collection">
       {currentArticles.map((articleContributor: ArticlesContributors, i: number) => {
-        const article = articleContributor.articles_slug
+        const article = articleContributor.articles_contributors_id
         if (!article) {
           return <></>
         }
