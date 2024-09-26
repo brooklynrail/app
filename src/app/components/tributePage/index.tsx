@@ -94,13 +94,17 @@ const TributePage = (props: TributePageProps) => {
               <div className="py-3 px-6 tablet:px-9">
                 <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
                   <div className="col-span-4 tablet-lg:col-span-3 tablet-lg:border-r-[1px] rail-border">
-                    <div className="divide-y-[1px] rail-divide tablet-lg:mr-3">
-                      <aside className="text-sm tablet-lg:pl-3 pb-3 tablet-lg:py-3">{summary && parse(summary)}</aside>
-                      <TributeWriters
-                        currentSlug={articleData.slug}
-                        articles={thisTributeData.articles}
-                        tributeSlug={thisTributeData.slug}
-                      />
+                    <div className="sticky top-0 overflow-y-auto h-screen mb-6">
+                      <div className="divide-y-[1px] rail-divide tablet-lg:mr-3">
+                        <aside className="text-sm tablet-lg:pl-3 pb-3 tablet-lg:py-3">
+                          {summary && parse(summary)}
+                        </aside>
+                        <TributeWriters
+                          currentSlug={articleData.slug}
+                          articles={thisTributeData.articles}
+                          tributeSlug={thisTributeData.slug}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="col-span-4 tablet-lg:col-span-9">

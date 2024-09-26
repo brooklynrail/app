@@ -72,7 +72,7 @@ const TributeWriters = (props: TributeWritersProps) => {
         {options}
       </select>
 
-      <ul className="hidden tablet-lg:block divide-y-[1px] rail-divide">{list}</ul>
+      <ul className="hidden  tablet-lg:block divide-y-[1px] rail-divide">{list}</ul>
     </>
   )
 }
