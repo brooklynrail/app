@@ -20,6 +20,7 @@ export type Ads = {
 }
 
 export type Articles = {
+  id: string
   body: string
   body_code?: string | null
   body_text?: string | null
