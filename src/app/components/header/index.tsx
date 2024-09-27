@@ -15,11 +15,10 @@ interface HeaderProps {
   issue_number?: number
   title?: string
   useOldLogo?: boolean
-  thisIssueData: Issues
 }
 
 const Header = (props: HeaderProps) => {
-  const { title, useOldLogo, thisIssueData } = props
+  const { title, useOldLogo } = props
 
   return (
     <>
