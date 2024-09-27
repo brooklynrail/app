@@ -75,7 +75,7 @@ const IssuePage = (props: IssuePageProps) => {
             <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-6">
               <div className="col-span-4 tablet-lg:col-span-12">
                 <div className="px-3">
-                  <Header useOldLogo={true} thisIssueData={thisIssueData} />
+                  <Header useOldLogo={true} />
                   <Ad970 currentAds={currentAds} />
                 </div>
               </div>
