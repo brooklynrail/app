@@ -9,6 +9,8 @@ import ArticleBody from "../../article/articleBody"
 import PreviewHeader from "../previewHead"
 import parse from "html-react-parser"
 import BookshopWidget from "../../article/bookshop"
+import Title, { TitleType } from "../../collections/promos/title"
+import Bylines, { BylineType } from "../../collections/promos/bylines"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
@@ -74,6 +76,8 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
     return <Password {...passwordProps} />
   }
 
+  const tributeArticle = articleData.tribute
+
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.slug}/`
   return (
     <>
@@ -84,7 +88,18 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
             <div className="grid-row grid-gap-3">
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
                 <article className="article">
-                  <ArticleHead {...props} />
+                  {tributeArticle ? (
+                    <div className="article-head-preview">
+                      {!articleData.hide_title && (
+                        <div className="preview-title">
+                          <Title title={articleData.title} type={TitleType.TributeArticle} />
+                        </div>
+                      )}
+                      <Bylines article={articleData} type={BylineType.TributeArticle} linked={true} hideBy={true} />
+                    </div>
+                  ) : (
+                    <ArticleHead {...props} />
+                  )}
                   <ArticleBody {...props} preview={true} />
                   {articleData.endnote && (
                     <div className="content">
