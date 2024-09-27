@@ -475,6 +475,8 @@ export async function getPreviewArticle(slug: string) {
         version: "draft",
         fields: [
           "*",
+          "tribute",
+          "hide_title",
           { section: ["id", "name", "slug"] },
           { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
@@ -927,4 +929,18 @@ export async function getAllPeople() {
     }),
   )
   return people as People[]
+}
+
+export const cleanup = (str: string) => {
+  // Replace non-breaking spaces
+  var reNbsp = new RegExp(String.fromCharCode(160), "g")
+  str = str.replace(reNbsp, " ")
+
+  // Remove <br/> tags
+  str = str.replace(/<br\s*\/?>/gi, " ")
+
+  // Remove <span> tags with specific styles while preserving the text within
+  str = str.replace(/<span[^>]*style=["'][^"']*font-size:\s*80%[^"']*["'][^>]*>(.*?)<\/span>/gi, "$1")
+
+  return str
 }
