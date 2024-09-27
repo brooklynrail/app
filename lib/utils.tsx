@@ -466,7 +466,7 @@ export async function getArticlePages() {
   }
 }
 
-export async function getPreviewArticle(slug: string) {
+export async function getPreviewArticle(id: string) {
   try {
     // Search for the article with the matching slug
     // assuming that slug is unique!
@@ -488,7 +488,7 @@ export async function getPreviewArticle(slug: string) {
           { user_updated: ["id", "first_name", "last_name", "avatar"] },
         ],
         filter: {
-          slug: { _eq: slug },
+          id: { _eq: id },
         },
       }),
     )

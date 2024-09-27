@@ -89,16 +89,13 @@ export default async function ArticlePreviewPage({ params }: { params: PreviewPa
 }
 
 interface PreviewParams {
-  year: string
-  month: string
-  section: string
-  slug: string
+  id: string
 }
 
 async function getData({ params }: { params: PreviewParams }) {
-  const slug = String(params.slug)
+  const id = String(params.id)
 
-  const articleData = await getPreviewArticle(slug)
+  const articleData = await getPreviewArticle(id)
   if (!articleData) {
     return notFound()
   }
