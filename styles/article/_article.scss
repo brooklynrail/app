@@ -72,6 +72,17 @@ article.article-diff {
   @include u-margin-bottom(1);
 }
 
+.article-head-preview {
+  @include u-font("serif", "md");
+  @include u-text("bold");
+  .preview-title {
+    @include u-padding-bottom(1);
+    h2 {
+      @include u-text("normal", !important);
+    }
+  }
+}
+
 .next-prev {
   .next,
   .prev {

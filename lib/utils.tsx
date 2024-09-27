@@ -469,7 +469,7 @@ export async function getArticlePages() {
   }
 }
 
-export async function getPreviewArticle(slug: string) {
+export async function getPreviewArticle(id: string) {
   try {
     // Search for the article with the matching slug
     // assuming that slug is unique!
@@ -479,6 +479,7 @@ export async function getPreviewArticle(slug: string) {
         fields: [
           "*",
           "tribute",
+          "hide_title",
           { section: ["id", "name", "slug"] },
           { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
@@ -490,7 +491,7 @@ export async function getPreviewArticle(slug: string) {
           { user_updated: ["id", "first_name", "last_name", "avatar"] },
         ],
         filter: {
-          slug: { _eq: slug },
+          id: { _eq: id },
         },
       }),
     )
@@ -944,7 +945,9 @@ export const getTributes = cache(async (props: TributesParams) => {
   // filter out the articles where tribute is not null
   const tributeArticles = thisIssueData.articles.filter((article) => article.tribute !== null)
   // make an array of the tribute slugs in the tributeArticles and remove all duplicates
-  const currentTributes: Array<string> = Array.from(new Set(tributeArticles.map((article) => article.tribute.slug)))
+  const currentTributes: Array<string> = Array.from(
+    new Set(tributeArticles.map((article: Articles) => article.tribute && article.tribute.slug)),
+  )
 
   const tributes = await directus.request(
     readItems("tributes", {

@@ -20,6 +20,7 @@ export type Ads = {
 }
 
 export type Articles = {
+  id: string
   body: string
   body_code?: string | null
   body_text?: string | null
@@ -40,6 +41,7 @@ export type Articles = {
   kicker?: string | null
   hide_bylines: boolean
   hide_bylines_downstream: boolean
+  hide_title?: boolean | null
   isbn?: number
   old_id?: number | null
   promo_banner?: DirectusFiles
@@ -52,8 +54,7 @@ export type Articles = {
   tags: string
   title: string
   title_tag?: string
-  tribute: Tributes
-  hide_title?: boolean | null
+  tribute?: Tributes | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }

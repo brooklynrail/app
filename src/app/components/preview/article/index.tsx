@@ -1,6 +1,6 @@
 "use client"
 import ContributorsBox from "../../article/contributors"
-import { ArticlePreviewProps } from "@/app/preview/article/[slug]/page"
+import { ArticlePreviewProps } from "@/app/preview/article/[id]/page"
 import { useState, useEffect } from "react"
 import Password from "../password"
 import PreviewInfo from "../previewInfo"
@@ -78,8 +78,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   }
 
   const isTribute = articleData.tribute
-
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.slug}/`
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.id}/`
   return (
     <>
       <div className="paper">
