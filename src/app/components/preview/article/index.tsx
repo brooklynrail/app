@@ -78,7 +78,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
 
   const tributeArticle = articleData.tribute
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.slug}/`
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.id}/`
   return (
     <>
       <div className="paper">
