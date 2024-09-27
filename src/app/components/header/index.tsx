@@ -3,44 +3,63 @@ import Banner from "./banner"
 import styles from "./header.module.scss"
 import Button from "../button"
 import ButtonMenu from "../button-menu"
+import OldNav from "./oldNav"
+import OldLogo from "./oldLogo"
+import { useEffect, useState } from "react"
+import OldMenu from "./oldMenu"
+import { Issues } from "../../../../lib/types"
+import MenuButton from "./menuButton"
 
 interface HeaderProps {
   special_issue?: boolean | null
   issue_number?: number
   title?: string
+  useOldLogo?: boolean
+  thisIssueData: Issues
 }
 
 const Header = (props: HeaderProps) => {
-  const { title } = props
+  const { title, useOldLogo, thisIssueData } = props
+
   return (
     <>
-      <header id={styles.rail_header} className="border-b-[1px] rail-border pb-4">
-        <div className="logo">
+      <header id={styles.rail_header} className="border-b-[1px] rail-border">
+        <div className="relative">
           <div className="hidden">
             <h1>The Brooklyn Rail </h1>
             <h2>Critical Perspectives on Art, Politics and Culture</h2>
             {title && <h3>{title}</h3>}
           </div>
-          <Link href="/">
-            <Banner />
-          </Link>
-          <div className="px-8 py-4 hidden">
-            <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
-              <div className="col-span-12">
-                <div className="flex justify-between items-center">
-                  <ButtonMenu />
-                  <h2 className="text-nowrap font-light font-sans uppercase text-base">
-                    Critical Perspectives on Arts, Politics, and Culture <span className="text-2xl font-bold">·</span>{" "}
-                    Independent and Free
-                  </h2>
-                  <div className="flex space-x-4">
-                    <Button text="Subscribe" />
-                    <Button text="Donate" />
+
+          {useOldLogo ? (
+            <div className="py-4">
+              <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
+                <div className="col-span-4 tablet-lg:col-span-4 desktop:col-span-5">
+                  <div className="rail_logo">
+                    <Link href="/">{useOldLogo ? <OldLogo /> : <Banner />}</Link>
+                  </div>
+                  <MenuButton />
+                </div>
+                <div className="hidden tablet-lg:block col-span-12 tablet-lg:col-span-8 desktop:col-span-7">
+                  <div className="flex flex-col h-full justify-center">
+                    <OldNav />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="py-0">
+              <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-6 gap-y-4">
+                <div className="col-span-12">
+                  <div className="px-9">
+                    <Link href="/">
+                      <Banner />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </header>
     </>

@@ -16,6 +16,8 @@ import NextPrev from "./nextPrev"
 import Ad970 from "../ads/ad970"
 import BookshopWidget from "./bookshop"
 import styles from "./article.module.scss"
+import OldMenu from "../header/oldMenu"
+import MenuButton from "../header/menuButton"
 
 const Article = (props: ArticleProps) => {
   const { articleData, thisIssueData } = props
@@ -51,7 +53,7 @@ const Article = (props: ArticleProps) => {
         <main className={styles.article}>
           <div className="grid-container">
             <div className="grid-row grid-gap-3">
-              <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
+              <div className="grid-col-12 hidden tablet-lg:block tablet-lg:grid-col-4 desktop-lg:grid-col-3">
                 <IssueRail thisIssueData={thisIssueData} />
               </div>
 

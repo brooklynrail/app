@@ -6,7 +6,6 @@ import IssueSelect from "./issueSelect"
 import CurrentSections from "./currentSections"
 import RailPartners from "./railPartners"
 import RailProjects from "./railProjects"
-import Header from "./header"
 import Ad970 from "../ads/ad970"
 import { Ads, Articles } from "../../../../lib/types"
 import Link from "next/link"
@@ -21,6 +20,8 @@ import TableOfContentsPage from "./layout/tableOfContentsPage"
 import Footer from "../footer"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "@/app/components/theme"
+import Header from "../header"
+import OldMenu from "../header/oldMenu"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -73,12 +74,8 @@ const IssuePage = (props: IssuePageProps) => {
           <div className="px-0 desktop:w-desktop mx-auto">
             <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-6">
               <div className="col-span-4 tablet-lg:col-span-12">
-                <div className="px-3 tablet-lg:px-0">
-                  <Header
-                    special_issue={thisIssueData.special_issue}
-                    issue_number={thisIssueData.issue_number}
-                    title={thisIssueData.title}
-                  />
+                <div className="px-3">
+                  <Header useOldLogo={true} thisIssueData={thisIssueData} />
                   <Ad970 currentAds={currentAds} />
                 </div>
               </div>

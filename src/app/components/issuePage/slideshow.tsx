@@ -86,7 +86,7 @@ const SlideShow = (props: SlideshowProps) => {
 
         <div
           id="banner-prev"
-          className="left-0 h-[282px] z-[999] px-4 top-0 absolute cursor-pointer flex flex-col justify-center"
+          className="left-0 h-[282px] z-10 px-4 top-0 absolute cursor-pointer flex flex-col justify-center"
           onClick={handlePrevSlide}
         >
           <Image src="/images/banner-prev.png" width={25} height={31} alt="Previous" />
