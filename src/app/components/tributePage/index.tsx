@@ -6,7 +6,7 @@ import { getAds, getPermalink, PageType } from "../../../../lib/utils"
 import { PopupProvider } from "../issueRail/popupProvider"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
 import Paper from "../paper"
-import Header from "../header"
+import Header, { HeaderType } from "../header"
 import styles from "./tribute.module.scss"
 import ArticleBody from "../article/articleBody"
 import parse from "html-react-parser"
@@ -60,7 +60,7 @@ const TributePage = (props: TributePageProps) => {
       <PopupProvider>
         <Paper pageClass={`${tributeClass}`}>
           <div className="">
-            <Header />
+            <Header type={HeaderType.Default} />
 
             {/* <Ad970 currentAds={currentAds} /> */}
 
