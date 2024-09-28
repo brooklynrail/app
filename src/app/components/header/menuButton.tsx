@@ -74,7 +74,7 @@ const MenuButton = () => {
             onClick={closeMenu}
             className="bg-zinc-800 opacity-80 cursor-pointer fixed z-50 w-screen h-screen top-0 bottom-0 right-0 left-0"
           ></div>
-          <OldMenu />
+          <OldMenu closeMenu={closeMenu} />
         </>
       )}
     </>
