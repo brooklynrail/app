@@ -72,7 +72,7 @@ const IssuePage = (props: IssuePageProps) => {
           {previewURL && <PreviewHeader previewURL={previewURL} />}
 
           <div className="px-0 desktop:w-desktop mx-auto">
-            <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-6">
+            <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-6">
               <div className="col-span-4 tablet-lg:col-span-12">
                 <div className="px-3">
                   <Header useOldLogo={true} />

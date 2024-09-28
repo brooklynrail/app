@@ -29,7 +29,7 @@ const OldMenu = () => {
 
   return (
     <>
-      <div className="top-0 left-0 w-mobile rail-bg h-screen fixed z-50 overflow-y-auto">
+      <div className="top-0 left-0 w-mobile rail-bg h-screen fixed z-50 overflow-y-auto !m-0">
         <nav className="p-6 bg-slate-700 dark:bg-slate-900 text-white">
           <ul>
             <li>
