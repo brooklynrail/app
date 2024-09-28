@@ -10,6 +10,7 @@ import MapEmbed from "./map"
 import { Pages } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import parse from "html-react-parser"
+import Header, { HeaderType } from "../header"
 
 const Page = (props: PageProps) => {
   const { thisIssueData, pagesData } = props
@@ -20,33 +21,12 @@ const Page = (props: PageProps) => {
         <main>
           <div className="grid-container">
             <div className="grid-row grid-gap-3">
-              <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
+              <div className="grid-col-12 hidden tablet-lg:block tablet-lg:grid-col-4 desktop-lg:grid-col-3">
                 <IssueRail thisIssueData={thisIssueData} />
               </div>
 
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
-                <header id="article_header">
-                  <Link className="mobile_nav_btn" href="">
-                    <i className="fas fa-angle-double-left"></i> <span>{props.thisIssueData.title}</span> Issue
-                  </Link>
-
-                  <nav>
-                    <div>
-                      <Link
-                        className="btn btn-sm donate"
-                        href="https://brooklynrail.org/donate?a"
-                        title="Donate to the Brooklyn Rail"
-                      >
-                        <span>Donate</span>
-                      </Link>
-                    </div>
-                  </nav>
-                </header>
-
-                <div className="ad ad_970">
-                  <p>Advertisement</p>
-                  <div></div>
-                </div>
+                <Header type={HeaderType.Article} />
 
                 <article className="article article-page">
                   <PageHead {...props} />

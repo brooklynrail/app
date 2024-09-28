@@ -20,7 +20,7 @@ import TableOfContentsPage from "./layout/tableOfContentsPage"
 import Footer from "../footer"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "@/app/components/theme"
-import Header from "../header"
+import Header, { HeaderType } from "../header"
 import OldMenu from "../header/oldMenu"
 
 export interface PromoProps {
@@ -68,14 +68,14 @@ const IssuePage = (props: IssuePageProps) => {
   return (
     <>
       <PopupProvider>
-        <div className={`paper paper-old ${issueClass}`}>
+        <div className={`paper ${issueClass}`}>
           {previewURL && <PreviewHeader previewURL={previewURL} />}
 
           <div className="px-0 desktop:w-desktop mx-auto">
             <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-6">
               <div className="col-span-4 tablet-lg:col-span-12">
                 <div className="px-3">
-                  <Header useOldLogo={true} />
+                  <Header type={HeaderType.Issue} />
                   <Ad970 currentAds={currentAds} />
                 </div>
               </div>
