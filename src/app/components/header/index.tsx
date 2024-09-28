@@ -41,7 +41,9 @@ const Header = (props: HeaderProps) => {
                 </div>
                 <div className="col-span-4 tablet-lg:col-span-8 desktop:col-span-7">
                   <div className="flex flex-row h-full justify-between tablet-lg:justify-end">
-                    <MenuButton />
+                    <div className="block tablet-lg:hidden">
+                      <MenuButton />
+                    </div>
 
                     <div className="tablet-lg:hidden flex space-x-3 items-center">
                       <Button link={`/subscribe`} text={"Subscribe"} type={ButtonType.Subscribe}></Button>
