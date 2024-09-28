@@ -170,55 +170,6 @@
     @include u-border-bottom(0);
   }
 }
-.preview-info {
-  .promo-builder {
-    .field {
-      @include u-display("flex");
-      @include u-flex("column");
-      label {
-        @include u-font("sans", "3xs");
-        @include u-text("gray-cool-60");
-        @include u-margin-right(1);
-      }
-      select {
-        @include u-border("base-light", "1px", "solid");
-      }
-      input {
-        @include u-margin(0);
-        // @include u-padding(3);
-        @include u-padding("05");
-        @include u-radius("sm");
-        @include u-border("base-light", "1px", "solid");
-        @include u-font("sans", "2xs");
-        @include u-text("light");
-        @include u-color("black");
-        @include u-bg("white");
-        @include u-width("full");
-
-        &:focus {
-          // @include u-border("all", "sm", "primary");
-          @include u-bg("white");
-          outline: 0;
-        }
-      }
-    }
-    pre {
-      @include u-bg("white");
-      @include u-padding("105");
-      @include u-margin-top(2);
-      @include u-margin-bottom(2);
-      @include u-font("sans", "3xs");
-      @include u-text("red-60v");
-      @include u-radius("md");
-      code {
-        // wrap the text
-        white-space: pre-wrap;
-        // make sure the text is not broken
-        word-break: break-word;
-      }
-    }
-  }
-}
 
 .preview-pass {
   @include u-bg("white");

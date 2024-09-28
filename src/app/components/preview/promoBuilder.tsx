@@ -19,7 +19,7 @@ const Field = (props: {
 }) => {
   return (
     <div className="field">
-      <label htmlFor={props.label}>
+      <label className="text-xs mr-1" htmlFor={props.label}>
         {props.label}
         {props.required && `*`}
       </label>
@@ -29,6 +29,7 @@ const Field = (props: {
         placeholder={props.placeholder}
         value={props.value}
         onChange={props.onChange}
+        className="m-0 p-0.5 rounded-sm border border-base-light font-sans text-2xs text-light text-black bg-white w-full"
       />
     </div>
   )
@@ -232,12 +233,19 @@ const PromoBuilder = () => {
   }
 
   return (
-    <div className="block promo-builder">
-      <h4>Promo Builder</h4>
+    <div className="">
+      <h4 className="text-xs uppercase">Promo Builder</h4>
       <div>
-        <div className="field">
-          <label htmlFor="type">Type</label>
-          <select id="type" value={type} onChange={handleSelectChange(setType)}>
+        <div className="flex flex-col">
+          <label className="text-xs mr-1 text-slate-500" htmlFor="type">
+            Type
+          </label>
+          <select
+            id="type"
+            className="border-[1px] border-slate-500"
+            value={type}
+            onChange={handleSelectChange(setType)}
+          >
             <option value={PromoType.ArtSeen}>Artseen</option>
             <option value={PromoType.ArtBooks}>Art Books</option>
             <option value={PromoType.Books}>Books</option>
@@ -249,9 +257,9 @@ const PromoBuilder = () => {
         </div>
         {promoForm(type)}
       </div>
-      <div className="generated">
-        <pre>
-          <code>{generatePromoCode(type)}</code>
+      <div className="">
+        <pre className="bg-white p-4 mt-2 mb-2 font-sans text-xs text-red-600 rounded-md">
+          <code className="whitespace-pre-wrap">{generatePromoCode(type)}</code>
         </pre>
       </div>
     </div>
