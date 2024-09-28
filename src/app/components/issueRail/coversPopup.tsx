@@ -6,8 +6,6 @@ import Image from "next/image"
 const CoversPopup = () => {
   const { showPopup, images } = usePopup()
 
-  console.log("CoversPopup ===", showPopup, images)
-
   const { setShowPopup } = usePopup()
 
   if (!showPopup) {
