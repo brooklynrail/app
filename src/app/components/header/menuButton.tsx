@@ -23,7 +23,7 @@ const MenuButton = () => {
   return (
     <>
       <svg
-        className=" flex-none w-[50px] h-[51px] tablet-lg:w-[66px] tablet-lg:h-[67px] relative -left-1"
+        className=" flex-none w-[40px] h-[41px] tablet:w-[50px] tablet:h-[51px] tablet-lg:w-[66px] tablet-lg:h-[67px] relative -left-1"
         onClick={openMenu}
         viewBox="0 0 66 67"
         fill="none"
