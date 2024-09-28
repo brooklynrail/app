@@ -66,39 +66,44 @@ const SlideShow = (props: SlideshowProps) => {
     })
 
     return (
-      <Link key={i} href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
-        <SlideImage slideshow_image={slideshow_image} alt={title} />
-        <h2 className="py-1 font-normal text-xl">{parse(title)}</h2>
-      </Link>
+      <>
+        <div className="relative tablet:max-h-[288px]">
+          <Link key={i} className="block" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
+            <SlideImage slideshow_image={slideshow_image} alt={title} />
+          </Link>
+          <div
+            id="banner-prev"
+            className="left-0 h-full z-10 px-3 top-0 absolute cursor-pointer flex flex-col justify-center"
+            onClick={handlePrevSlide}
+          >
+            <Image src="/images/banner-prev.png" width={25} height={31} alt="Previous" />
+          </div>
+
+          <div
+            id=""
+            className="right-0 h-full z-10 px-3 top-0 absolute cursor-pointer flex flex-col justify-center"
+            onClick={handleNextSlide}
+          >
+            <Image src="/images/banner-next.png" width={25} height={31} alt="Next" />
+          </div>
+        </div>
+        <Link key={i} className="block" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
+          <h2 className="py-1 font-normal text-xl">{parse(title)}</h2>
+        </Link>
+      </>
     )
   })
 
   const indicator = currentSlides.map((article: Articles, i: number) => {
     const show = i === slidePosition ? "bg-red-500" : "bg-gray-300"
-    return <div key={i} className={`w-3 h-3 px-1 rounded-full ${show}`} onClick={() => setSlidePosition(i)}></div>
+    return <div key={i} className={`w-2.5 h-2.5 px-1 rounded-full ${show}`} onClick={() => setSlidePosition(i)}></div>
   })
 
   return (
     <div className="pb-2">
       <div className="relative">
         <div className="relative">{slides}</div>
-        <div className="flex items-center py-2 justify-center space-x-1">{indicator}</div>
-
-        <div
-          id="banner-prev"
-          className="left-0 h-[282px] z-10 px-4 top-0 absolute cursor-pointer flex flex-col justify-center"
-          onClick={handlePrevSlide}
-        >
-          <Image src="/images/banner-prev.png" width={25} height={31} alt="Previous" />
-        </div>
-
-        <div
-          id="banner-next"
-          className="right-0 h-[282px] z-[999] px-4 top-0 absolute cursor-pointer flex flex-col justify-center"
-          onClick={handleNextSlide}
-        >
-          <Image src="/images/banner-next.png" width={25} height={31} alt="Next" />
-        </div>
+        <div className="flex items-center py-2 justify-center space-x-2">{indicator}</div>
       </div>
     </div>
   )
