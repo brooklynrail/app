@@ -66,7 +66,7 @@ const SlideShow = (props: SlideshowProps) => {
     })
 
     return (
-      <>
+      <div key={i}>
         <div className="relative tablet:max-h-[288px]">
           <Link key={i} className="block" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
             <SlideImage slideshow_image={slideshow_image} alt={title} />
@@ -90,7 +90,7 @@ const SlideShow = (props: SlideshowProps) => {
         <Link key={i} className="block" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
           <h2 className="py-1 font-normal text-xl">{parse(title)}</h2>
         </Link>
-      </>
+      </div>
     )
   })
 
