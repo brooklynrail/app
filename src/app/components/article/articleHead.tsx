@@ -7,11 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSquareFacebook, faTwitter } from "@fortawesome/free-brands-svg-icons"
 import Kicker from "./kicker"
 import FeaturedImage from "../featuredImage"
+import Title, { TitleType } from "../collections/promos/title"
+import Bylines, { BylineType } from "../collections/promos/bylines"
 
 interface ArticleHeadProps {
   permalink: string
   thisIssueData?: Issues
-  currentSection?: Sections
+  currentSection: Sections
   articleData: Articles
 }
 interface AuthorsProps {
@@ -64,32 +66,18 @@ const ArticleHead = (props: ArticleHeadProps) => {
   const kickerProps = { kicker, thisIssueData, currentSection }
 
   const articleMeta = (
-    <div className="article-meta">
-      <div className="date">MAY 2024</div>
+    <div className="flex flex-col items-center space-y-3">
+      <Bylines article={articleData} type={BylineType.ArticleHeadDiptych} linked={true} />
+      {thisIssueData && <div className="uppercase text-sm">{thisIssueData.title}</div>}
 
-      {!hide_bylines && contributors && contributors.length != 0 && (
-        <cite className="byline">
-          {byline_override ? (
-            <span>{byline_override}</span>
-          ) : (
-            <>
-              <span>By </span>
-              <Authors contributors={contributors} />
-            </>
-          )}
-        </cite>
-      )}
-
-      {thisIssueData && <div className="date">{thisIssueData.title}</div>}
-
-      <div className="share-tools">
+      <div className="flex border-2 rail-border p-1 divide-x-2 rail-divide">
         <Link
-          className="twitter"
+          className="px-4 pr-5"
           href={`https://twitter.com/share?url=${permalink}&text=${encodeURIComponent(`${stripHtml(title).result} — @thebrooklynrail`)}`}
         >
           <FontAwesomeIcon icon={faTwitter} />
         </Link>
-        <Link className="facebook" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
+        <Link className="px-4 pl-5" href={`https://www.facebook.com/sharer.php?u=${permalink}`}>
           <FontAwesomeIcon icon={faSquareFacebook} />
         </Link>
       </div>
@@ -99,15 +87,21 @@ const ArticleHead = (props: ArticleHeadProps) => {
     case "diptych":
       return (
         <header className="article-header diptych">
-          <div className="grid-row grid-gap-4">
-            <div className="grid-col-12 tablet:grid-col-7">
-              <Kicker {...kickerProps} />
-              <h1>{parse(title)}</h1>
-              {deck && <h2 className="deck">{parse(deck)}</h2>}
-              {articleMeta}
+          <div className="grid grid-cols-4 tablet-lg:grid-cols-9 gap-3">
+            <div className="col-span-4 tablet-lg:col-span-5">
+              <div className="space-y-16">
+                <div className="space-y-6">
+                  <Kicker {...kickerProps} />
+                  <div className="space-y-3">
+                    <Title title={title} type={TitleType.ArticleHeadDiptych} />
+                    {deck && <h2 className="text-center text-4xl font-light">{parse(deck)}</h2>}
+                  </div>
+                </div>
+                {articleMeta}
+              </div>
             </div>
 
-            <div className="grid-col-12 tablet:grid-col-5">
+            <div className="col-span-4 tablet-lg:col-span-4">
               {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
             </div>
           </div>
@@ -115,10 +109,12 @@ const ArticleHead = (props: ArticleHeadProps) => {
       )
     default:
       return (
-        <header className="article-header">
+        <header className="">
           <Kicker {...kickerProps} />
-          <h1>{parse(title)}</h1>
-          {deck && <h2 className="deck">{parse(deck)}</h2>}
+          <div>
+            <h1>{parse(title)}</h1>
+            {deck && <h2 className="deck">{parse(deck)}</h2>}
+          </div>
           {articleMeta}
         </header>
       )

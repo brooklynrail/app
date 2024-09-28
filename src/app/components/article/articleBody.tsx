@@ -1,19 +1,46 @@
 import { Articles } from "../../../../lib/types"
-import BodyText from "./bodyText"
+import parse from "html-react-parser"
+import replaceShortcodes from "./shortcodes"
+import BookshopWidget from "./bookshop"
+import ContributorsBox from "./contributors"
+import styles from "./bodytext.module.scss"
+import Contributors from "../contributors"
 
-export enum ArticleType {
-  BodyText = "body_text",
-  BodyCode = "body_code",
-}
 interface ArticleBodyProps {
-  type?: ArticleType
   articleData: Articles
   preview?: boolean
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
   const { articleData, preview } = props
+  const { body_text, images } = articleData
+  if (!body_text) {
+    return <></>
+  }
 
-  return <BodyText {...articleData} preview={preview} />
+  return (
+    <div className="py-6">
+      <div className="grid grid-cols-4 tablet-lg:grid-cols-9 gap-3">
+        <div className="col-span-4 tablet-lg:col-span-9">
+          <div className={`content`}>
+            {replaceShortcodes({ html: body_text, images: images, preview: preview })}
+
+            {articleData.endnote && (
+              <div className="endnote">
+                <span className="line"></span>
+                {parse(articleData.endnote)}
+              </div>
+            )}
+            <BookshopWidget {...articleData} />
+            {articleData.contributors && (
+              <div className="">
+                <Contributors contributors={articleData.contributors} />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 export default ArticleBody

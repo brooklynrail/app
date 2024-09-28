@@ -9,7 +9,7 @@ import { notFound } from "next/navigation"
 export interface ArticlePreviewProps {
   articleData: Articles
   thisIssueData?: Issues
-  currentSection?: Sections
+  currentSection: Sections
   permalink: string
   errorCode?: number
   errorMessage?: string

@@ -1,29 +1,25 @@
 "use client"
-
 import IssueRail from "../issueRail"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
 import { Ads } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import ContributorsBox from "./contributors"
 import { getAds, getPermalink, PageType } from "../../../../lib/utils"
-import Link from "next/link"
 import { useEffect, useState } from "react"
 import ArticleHead from "./articleHead"
 import ArticleBody from "./articleBody"
-import parse from "html-react-parser"
 import NextPrev from "./nextPrev"
 import Ad970 from "../ads/ad970"
-import BookshopWidget from "./bookshop"
-import styles from "./article.module.scss"
-import OldMenu from "../header/oldMenu"
-import MenuButton from "../header/menuButton"
 import Header, { HeaderType } from "../header"
+import ThemeToggle from "../themeToggle"
+import { useTheme } from "../theme"
 
 const Article = (props: ArticleProps) => {
   const { articleData, thisIssueData } = props
-  const { contributors, endnote, section } = articleData
+  const { section } = articleData
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
+
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,42 +47,29 @@ const Article = (props: ArticleProps) => {
   return (
     <>
       <div className={`paper ${issueClass}`}>
-        <main className={styles.article}>
-          <div className="grid-container">
-            <div className="grid-row grid-gap-3">
-              <div className="grid-col-12 hidden tablet-lg:block tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                <IssueRail thisIssueData={thisIssueData} />
-              </div>
+        <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
+          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-10">
+            <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-3 ">
+              <IssueRail thisIssueData={thisIssueData} />
+            </aside>
 
-              <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
-                <Header type={HeaderType.Article} />
+            <div className="col-span-4 tablet-lg:col-span-9 ">
+              <Header type={HeaderType.Article} />
 
-                <Ad970 currentAds={currentAds} />
+              <Ad970 currentAds={currentAds} />
 
-                <article className="article">
-                  <NextPrev {...props} currentSection={section} />
-                  <ArticleHead {...props} />
-                  <ArticleBody {...props} />
-                  {endnote && (
-                    <div className="content">
-                      <div className="endnote">
-                        <span className="line"></span>
-                        {parse(endnote)}
-                      </div>
-                    </div>
-                  )}
-                  <BookshopWidget {...articleData} />
-                  <div className="content allcontributors">
-                    <ContributorsBox contributors={contributors} />
-                  </div>
-                  <NextPrev {...props} currentSection={section} />
-                </article>
-              </div>
+              <article className="">
+                <NextPrev {...props} currentSection={section} />
+                <ArticleHead {...props} />
+                <ArticleBody {...props} />
+                <NextPrev {...props} currentSection={section} />
+              </article>
             </div>
           </div>
         </main>
         <Footer />
       </div>
+      <ThemeToggle {...{ theme, setTheme }} />
       <CoversPopup />
     </>
   )

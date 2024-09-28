@@ -34,21 +34,18 @@ const Contributors = (props: ContributorsProps) => {
     // If there is a Bio, and the name is not included in the Bio, show the name with the link plus the Bio.
 
     return (
-      <div rel="author" key={i}>
+      <div rel="author" className="text-lg" key={i}>
         {(!hasAuthorName || !bio) && <h4 className="text-lg">{authorLink}</h4>}
-        {bio && (
-          <div className="text-lg">
-            {addAuthorLinkToBio({
-              authorName: authorName,
-              authorLink: authorLink,
-              bio: bio,
-            })}
-          </div>
-        )}
+        {bio &&
+          addAuthorLinkToBio({
+            authorName: authorName,
+            authorLink: authorLink,
+            bio: bio,
+          })}
       </div>
     )
   })
-  return <section className="border-t-[1px] rail-border py-6">{authors}</section>
+  return <section className="border-t-[1px] rail-border py-6 font-sans">{authors}</section>
 }
 
 interface AuthorLinkProps {

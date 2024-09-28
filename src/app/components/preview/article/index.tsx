@@ -82,43 +82,45 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   return (
     <>
       <div className="paper">
-        <main>
-          <div className="grid-container">
-            <PreviewHeader previewURL={previewURL} />
-            <div className="grid-row grid-gap-3">
-              <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
-                <article className="article">
-                  {isTribute ? (
-                    <div className="py-3 pb-9">
-                      <Title title={articleData.title} type={TitleType.TributeArticle} />
-                      <Bylines article={articleData} type={BylineType.TributeArticle} linked={true} hideBy={true} />
-                    </div>
-                  ) : (
-                    <ArticleHead {...props} />
-                  )}
-                  <ArticleBody {...props} preview={true} />
-                  {articleData.endnote && (
-                    <div className="content">
-                      <div className="endnote">
-                        <span className="line"></span>
-                        {parse(articleData.endnote)}
+        <main className="desktop:max-w-screen-widescreen mx-auto">
+          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
+            <aside className="col-span-4 tablet-lg:col-span-12">
+              <PreviewHeader previewURL={previewURL} />
+              <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
+                <div className="col-span-4 tablet-lg:col-span-9">
+                  <article className="py-12">
+                    {isTribute ? (
+                      <div className="py-3 pb-9">
+                        <Title title={articleData.title} type={TitleType.TributeArticle} />
+                        <Bylines article={articleData} type={BylineType.TributeArticle} linked={true} hideBy={true} />
                       </div>
-                    </div>
-                  )}
-                  <BookshopWidget {...articleData} />
-                  {contributors && contributors.length > 0 && (
-                    <div className="content">
-                      <ContributorsBox contributors={contributors} />
-                    </div>
-                  )}
-                </article>
-              </div>
-              {isStudioPreview && (
-                <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-                  <PreviewInfo articleData={articleData} directusUrl={directusUrl} />
+                    ) : (
+                      <ArticleHead {...props} />
+                    )}
+                    <ArticleBody {...props} preview={true} />
+                    {articleData.endnote && (
+                      <div className="content">
+                        <div className="endnote">
+                          <span className="line"></span>
+                          {parse(articleData.endnote)}
+                        </div>
+                      </div>
+                    )}
+                    <BookshopWidget {...articleData} />
+                    {contributors && contributors.length > 0 && (
+                      <div className="content">
+                        <ContributorsBox contributors={contributors} />
+                      </div>
+                    )}
+                  </article>
                 </div>
-              )}
-            </div>
+                {isStudioPreview && (
+                  <div className="col-span-4 tablet-lg:col-span-3">
+                    <PreviewInfo articleData={articleData} directusUrl={directusUrl} />
+                  </div>
+                )}
+              </div>
+            </aside>
           </div>
         </main>
       </div>

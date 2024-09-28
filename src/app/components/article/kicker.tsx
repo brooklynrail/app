@@ -5,11 +5,11 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 interface KickerProps {
   kicker?: string | null
   thisIssueData?: Issues
-  currentSection?: Sections
+  currentSection: Sections
 }
 const Kicker = (props: KickerProps) => {
   const { kicker, thisIssueData, currentSection } = props
-  if (!thisIssueData || !currentSection) {
+  if (!thisIssueData) {
     return <></>
   }
   const { slug } = thisIssueData
@@ -20,22 +20,19 @@ const Kicker = (props: KickerProps) => {
     type: PageType.Section,
   })
 
-  if (!currentSection && !kicker) {
+  if (!kicker) {
     return <></>
   }
 
   return (
-    <h6 className="kicker">
-      {currentSection && (
-        <>
-          <Link href={sectionPermalink} title={`Go to the ${currentSection.name} section`}>
-            {currentSection.name}
-          </Link>
-        </>
-      )}
+    <h6 className="text-lg space-x-2 text-center">
+      <Link className="font-black" href={sectionPermalink} title={`Go to the ${currentSection.name} section`}>
+        {currentSection.name}
+      </Link>
+
       {kicker && (
         <>
-          <span className="divider"></span> <span>{kicker}</span>
+          <span className="border-r-[1px] border-zinc-900"></span> <span>{kicker}</span>
         </>
       )}
     </h6>

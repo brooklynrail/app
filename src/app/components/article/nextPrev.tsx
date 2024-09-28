@@ -42,16 +42,21 @@ export const NextPrev = (props: ArticleProps) => {
       slug: prev.slug,
       type: PageType.Article,
     })
-    const prevKicker = prev.kicker ? <span>{parse(prev.kicker)}</span> : null
+    const prevKicker = prev.kicker ? (
+      <>
+        <span className="border-r-[1px] border-zinc-900"></span>
+        <span>{parse(prev.kicker)}</span>
+      </>
+    ) : null
     return (
-      <div className="prev">
+      <div className="text-xs">
         <Link href={prevPermalink}>
-          <span>Previous</span>
-          <h4>
-            {parse(prev.section.name)}
+          <span className="uppercase">Previous</span>
+          <h4 className="uppercase space-x-1.5">
+            <strong>{parse(prev.section.name)}</strong>
             {prevKicker}
           </h4>
-          <h3>{parse(prev.title)}</h3>
+          <h3 className="text-sm font-light">{parse(prev.title)}</h3>
         </Link>
       </div>
     )
@@ -77,17 +82,21 @@ export const NextPrev = (props: ArticleProps) => {
       slug: next.slug,
       type: PageType.Article,
     })
-    const nextKicker = next.kicker ? <span>{parse(next.kicker)}</span> : null
+    const nextKicker = next.kicker ? (
+      <>
+        <span className="border-r-[1px] border-zinc-900"></span>
+        <span>{parse(next.kicker)}</span>
+      </>
+    ) : null
     return (
-      <div className="next">
+      <div className="text-xs text-right">
         <Link href={nextPermalink}>
-          <span>Next</span>
-          <h4>
-            {parse(next.section.name)}
+          <span className="uppercase">Next</span>
+          <h4 className="uppercase space-x-1.5">
+            <strong>{parse(next.section.name)}</strong>
             {nextKicker}
           </h4>
-
-          <h3>{parse(next.title)}</h3>
+          <h3 className="text-sm font-light">{parse(next.title)}</h3>
         </Link>
       </div>
     )
@@ -96,7 +105,7 @@ export const NextPrev = (props: ArticleProps) => {
   const next: Articles = issueArticles[currentArticleIndex + 1]
 
   return (
-    <nav className="next-prev">
+    <nav className="flex w-full justify-between py-6">
       {prevLink()}
       {nextLink()}
     </nav>
