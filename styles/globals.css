@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import "./fonts.css";
+@import "./content.css";
 
 :root {
   --font-family-sans: "Untitled Sans";
@@ -104,19 +105,4 @@ body {
 
 a {
   @apply hover:underline underline-offset-2;
-}
-
-.content {
-  @apply text-lg tablet-lg:text-2xl font-normal font-serif;
-  p {
-    max-width: 72ex;
-    @apply mb-3 tablet:mb-6;
-  }
-}
-
-.media {
-  figcaption {
-    max-width: 134ex;
-    @apply pt-2 pb-3 tablet:pb-6 text-xs tablet:text-sm font-normal font-sans text-zinc-500;
-  }
 }

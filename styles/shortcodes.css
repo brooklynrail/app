@@ -1,0 +1,42 @@
+.content {
+  /* // [lead] text goes here [/lead] */
+  .lead * {
+    max-width: 45ch;
+    @apply font-serif text-3xl font-normal;
+
+    .dropcap {
+      font-size: 2.9em;
+    }
+  }
+  /* // [pullquote cite="" url=""] ... [/pullquote] */
+  .pullquote {
+    @apply mt-28 ml-2 mb-3 pt-28 float-right border-t-2 border-black border-solid font-sans text-md font-extrabold leading-8;
+
+    cite {
+      @apply mt-28 block text-right font-light italic font-sans text-sm;
+    }
+  }
+
+  /* promo type="free-text"] text goes here [/promo] */
+  .promo {
+    @apply mt-3 ml-3 p-3 bg-gray-200 font-sans text-md  text-zinc-700 float-right clear-both;
+
+    strong {
+      @apply font-medium;
+    }
+
+    h6 {
+      @apply text-sm uppercase;
+    }
+  }
+
+  /* // [center] text goes here [/center] */
+  .text-align-center > * {
+    @apply px-4 text-center;
+  }
+
+  /* // [right] text goes here [/right] */
+  .text-align-right > * {
+    @apply pl-4 text-right;
+  }
+}

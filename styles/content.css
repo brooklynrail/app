@@ -1,0 +1,110 @@
+.content {
+  @apply text-lg tablet-lg:text-xl font-normal font-serif;
+
+  p,
+  blockquote,
+  li,
+  pre {
+    max-width: 72ex;
+    @apply mb-3 tablet:mb-6;
+  }
+
+  ul,
+  ol {
+    @apply pl-6 mb-3;
+  }
+
+  li {
+    list-style-type: disc;
+  }
+  ol li {
+    list-style-type: number;
+  }
+
+  /* // [blockquote cite="name" url=""]...[/blockquote] */
+  blockquote {
+    @apply ml-0 pl-5 pr-1 tablet:pl-6 tablet:pr-3;
+    cite {
+      @apply mt-1 mr-3 block text-right italic;
+    }
+  }
+
+  /* [rule] */
+  hr {
+    margin: 2em 0;
+    border: 0;
+    border-top: 1px #555 solid;
+    clear: both;
+  }
+  hr.sm {
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+  }
+  hr.md {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  hr.lg {
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+  }
+  hr.xl {
+    width: 100%;
+  }
+
+  pre {
+    @apply whitespace-pre-wrap break-words p-2 max-w-2xl rounded-sm bg-slate-200 font-mono font-bold text-sm text-red-600;
+    code {
+      @apply p-0 bg-transparent;
+    }
+  }
+  code {
+    @apply py-0.5 px-1 bg-slate-200 text-red-600 font-mono font-bold text-sm rounded-sm;
+  }
+
+  .endnote {
+    @apply my-8;
+    @apply font-normal font-sans text-sm;
+    li {
+      @apply mb-2 tablet:mb-3;
+    }
+
+    .line {
+      @apply mb-6 block w-20;
+      @apply border-b-[1px] border-gray-500 border-solid;
+    }
+  }
+
+  .media {
+    @apply clear-both mt-3;
+
+    .frame {
+      @apply m-0 w-full;
+    }
+
+    figcaption {
+      @apply w-full;
+      max-width: 134ex;
+      @apply pt-2 pb-3 px-1 tablet:pb-6 text-xs tablet-lg:text-sm font-sans font-normal text-zinc-500;
+    }
+  }
+}
+
+.width-lg {
+  margin: 0 0 1.8em 0;
+  width: 100%;
+  @apply w-full;
+}
+.width-md {
+  margin: 0 0 1.8em 1em;
+  width: 42.8%;
+  @apply float-right;
+}
+.width-sm {
+  margin: 0 0 1.8em 0.65em;
+  width: 15rem;
+  @apply float-right;
+}
