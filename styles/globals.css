@@ -3,6 +3,7 @@
 @tailwind utilities;
 @import "./fonts.css";
 @import "./content.css";
+@import "./shortcodes.css";
 
 :root {
   --font-family-sans: "Untitled Sans";
@@ -56,24 +57,29 @@ html {
   --font-weight-black: 900;
 }
 
-/* h1 {
-  @apply text-4xl font-thin;
+strong,
+b {
+  @apply font-bold;
+}
+
+h1 {
+  @apply hidden;
 }
 h2 {
-  @apply text-3xl font-thin;
+  @apply text-3xl font-medium font-sans;
 }
 h3 {
-  @apply text-2xl font-thin;
+  @apply text-2xl font-medium font-sans;
 }
 h4 {
-  @apply text-xl font-thin;
+  @apply text-xl font-medium font-sans;
 }
 h5 {
-  @apply text-lg font-thin;
+  @apply text-lg font-thin font-sans;
 }
 h6 {
-  @apply text-base font-thin;
-} */
+  @apply text-sm font-thin uppercase font-sans;
+}
 
 .rail-bg {
   @apply bg-slate-100 dark:bg-zinc-800;

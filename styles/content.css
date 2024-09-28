@@ -9,6 +9,10 @@
     @apply mb-3 tablet:mb-6;
   }
 
+  div > p:last-child {
+    @apply mb-0;
+  }
+
   ul,
   ol {
     @apply pl-6 mb-3;

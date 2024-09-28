@@ -57,11 +57,12 @@ const Article = (props: ArticleProps) => {
               <Header type={HeaderType.Article} />
 
               <Ad970 currentAds={currentAds} />
-
-              <article className="">
+              <article className="border-t rail-border divide-y rail-divide my-6">
                 <NextPrev {...props} currentSection={section} />
+
                 <ArticleHead {...props} />
                 <ArticleBody {...props} />
+
                 <NextPrev {...props} currentSection={section} />
               </article>
             </div>

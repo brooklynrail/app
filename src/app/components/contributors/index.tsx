@@ -29,6 +29,12 @@ const Contributors = (props: ContributorsProps) => {
     const hasAuthorName = contributor.contributors_id.bio.includes(authorName)
     const bio = contributor.contributors_id.bio
 
+    const modifiedBio = addAuthorLinkToBio({
+      authorName: authorName,
+      authorLink: authorLink,
+      bio: bio,
+    })
+
     // If there is no Bio, show the author name with the link
     // If there is a Bio, and the name is included in the Bio, show only the Bio with the name linked.
     // If there is a Bio, and the name is not included in the Bio, show the name with the link plus the Bio.
@@ -36,16 +42,16 @@ const Contributors = (props: ContributorsProps) => {
     return (
       <div rel="author" className="text-lg" key={i}>
         {(!hasAuthorName || !bio) && <h4 className="text-lg">{authorLink}</h4>}
-        {bio &&
-          addAuthorLinkToBio({
-            authorName: authorName,
-            authorLink: authorLink,
-            bio: bio,
-          })}
+        {bio && modifiedBio}
       </div>
     )
   })
-  return <section className="border-t-[1px] rail-border py-6 font-sans">{authors}</section>
+  return (
+    <section className="border-t-[1px] rail-border py-3 font-sans content space-y-6">
+      <h2 className="text-md font-medium uppercase">Contributors</h2>
+      {authors}
+    </section>
+  )
 }
 
 interface AuthorLinkProps {
@@ -59,17 +65,31 @@ const addAuthorLinkToBio = (props: AuthorLinkProps) => {
 
   // Define a regex to find all occurrences of the authorName
   const regex = new RegExp(`(${authorName})`, "g")
-  // Split the bio text by the authorName
-  const parts = bio.split(regex)
-  // Map over the parts and replace occurrences of authorName with the authorLink JSX
-  const bioUpdated = parts.map((part, index) => {
-    // If the part matches authorName, return the authorLink JSX component
-    if (part === authorName) {
-      return <Fragment key={index}>{authorLink}</Fragment>
-    }
-    // Otherwise, return the part as plain text
-    // NOTE: this is HTML coming from the database, so we need to parse it
-    return <Fragment key={index}>{parse(part)}</Fragment>
+  // Parse the bio HTML and manipulate the resulting React elements
+  // Parse the bio HTML and manipulate the resulting React elements
+  const bioUpdated = parse(bio, {
+    replace: (domNode) => {
+      if (domNode.type === "tag" && domNode.name === "strong") {
+        const child = domNode.children && domNode.children[0]
+        if (child && child.type === "text" && child.data === authorName) {
+          return <strong>{authorLink}</strong>
+        }
+      }
+      if (domNode.type === "text" && domNode.data.includes(authorName)) {
+        const parts = domNode.data.split(regex)
+        return (
+          <>
+            {parts.map((part, index) =>
+              part === authorName ? (
+                <Fragment key={index}>{authorLink}</Fragment>
+              ) : (
+                <Fragment key={index}>{part}</Fragment>
+              ),
+            )}
+          </>
+        )
+      }
+    },
   })
 
   // Return the array of JSX elements, which will render as expected

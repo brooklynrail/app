@@ -32,8 +32,8 @@ const ArticleList = (props: ArticleListProps) => {
     const guestCritic = article.section.slug === "editorsmessage"
 
     return (
-      <li key={i} data-sort={article.sort} className="py-2">
-        <h4 className="leading-4 font-medium">
+      <li key={i} data-sort={article.sort} className="py-2 text-xs">
+        <h4 className="leading-4 text-sm font-medium">
           <Link prefetch={false} href={`${permalink}`} title={`${stripHtml(article.title).result} (${article.sort})`}>
             <span>{parse(article.title)}</span>
           </Link>

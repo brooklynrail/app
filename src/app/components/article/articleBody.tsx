@@ -2,8 +2,6 @@ import { Articles } from "../../../../lib/types"
 import parse from "html-react-parser"
 import replaceShortcodes from "./shortcodes"
 import BookshopWidget from "./bookshop"
-import ContributorsBox from "./contributors"
-import styles from "./bodytext.module.scss"
 import Contributors from "../contributors"
 
 interface ArticleBodyProps {
@@ -19,7 +17,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
   }
 
   return (
-    <div className="py-6">
+    <div className="">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-9 gap-3">
         <div className="col-span-4 tablet-lg:col-span-9">
           <div className={`content`}>

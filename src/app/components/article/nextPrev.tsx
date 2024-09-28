@@ -25,10 +25,10 @@ export const NextPrev = (props: ArticleProps) => {
     // if is the first article
     if (currentArticleIndex == 0 || currentArticleIndex == articlesListCount) {
       return (
-        <div className="prev">
+        <div className="text-xs">
           <Link href={issuePermalink}>
-            <span>ISSUE</span>
-            <h3 className="issueName">{issueName}</h3>
+            <span className="">ISSUE</span>
+            <h3 className="text-xs uppercase font-bold">{issueName}</h3>
           </Link>
         </div>
       )
@@ -52,7 +52,7 @@ export const NextPrev = (props: ArticleProps) => {
       <div className="text-xs">
         <Link href={prevPermalink}>
           <span className="uppercase">Previous</span>
-          <h4 className="uppercase space-x-1.5">
+          <h4 className="uppercase text-xs space-x-1.5">
             <strong>{parse(prev.section.name)}</strong>
             {prevKicker}
           </h4>
@@ -67,10 +67,10 @@ export const NextPrev = (props: ArticleProps) => {
 
     if (currentArticleIndex === articlesListCount - 1) {
       return (
-        <div className="next">
+        <div className="text-xs text-right">
           <Link href={issuePermalink}>
-            <span>ISSUE</span>
-            <h3 className="issueName">{issueName}</h3>
+            <span className="">ISSUE</span>
+            <h3 className="text-xs uppercase font-bold">{issueName}</h3>
           </Link>
         </div>
       )
@@ -92,7 +92,7 @@ export const NextPrev = (props: ArticleProps) => {
       <div className="text-xs text-right">
         <Link href={nextPermalink}>
           <span className="uppercase">Next</span>
-          <h4 className="uppercase space-x-1.5">
+          <h4 className="uppercase text-xs space-x-1.5">
             <strong>{parse(next.section.name)}</strong>
             {nextKicker}
           </h4>
@@ -105,7 +105,7 @@ export const NextPrev = (props: ArticleProps) => {
   const next: Articles = issueArticles[currentArticleIndex + 1]
 
   return (
-    <nav className="flex w-full justify-between py-6">
+    <nav className="flex w-full justify-between py-3 ">
       {prevLink()}
       {nextLink()}
     </nav>

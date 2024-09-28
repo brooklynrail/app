@@ -86,7 +86,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
   switch (header_type) {
     case "diptych":
       return (
-        <header className="article-header diptych">
+        <header className="article-header diptych py-6">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-9 gap-3">
             <div className="col-span-4 tablet-lg:col-span-5">
               <div className="space-y-16">

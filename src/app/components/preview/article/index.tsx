@@ -1,5 +1,4 @@
 "use client"
-import ContributorsBox from "../../article/contributors"
 import { ArticlePreviewProps } from "@/app/preview/article/[id]/page"
 import { useState, useEffect } from "react"
 import Password from "../password"
@@ -7,15 +6,11 @@ import PreviewInfo from "../previewInfo"
 import ArticleHead from "../../article/articleHead"
 import ArticleBody from "../../article/articleBody"
 import PreviewHeader from "../previewHead"
-import parse from "html-react-parser"
-import BookshopWidget from "../../article/bookshop"
 import Title, { TitleType } from "../../collections/promos/title"
 import Bylines, { BylineType } from "../../collections/promos/bylines"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
-
-  const { contributors } = articleData
 
   // cookieSlug is the cookie that gets set after you enter the password
   const cookieSlug = `rail_preview_${articleData.slug}`
@@ -88,7 +83,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
               <PreviewHeader previewURL={previewURL} />
               <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
                 <div className="col-span-4 tablet-lg:col-span-9">
-                  <article className="py-12">
+                  <article className="px-6 py-12">
                     {isTribute ? (
                       <div className="py-3 pb-9">
                         <Title title={articleData.title} type={TitleType.TributeArticle} />
@@ -98,20 +93,6 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                       <ArticleHead {...props} />
                     )}
                     <ArticleBody {...props} preview={true} />
-                    {articleData.endnote && (
-                      <div className="content">
-                        <div className="endnote">
-                          <span className="line"></span>
-                          {parse(articleData.endnote)}
-                        </div>
-                      </div>
-                    )}
-                    <BookshopWidget {...articleData} />
-                    {contributors && contributors.length > 0 && (
-                      <div className="content">
-                        <ContributorsBox contributors={contributors} />
-                      </div>
-                    )}
                   </article>
                 </div>
                 {isStudioPreview && (
