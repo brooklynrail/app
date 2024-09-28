@@ -18,6 +18,7 @@ import BookshopWidget from "./bookshop"
 import styles from "./article.module.scss"
 import OldMenu from "../header/oldMenu"
 import MenuButton from "../header/menuButton"
+import Header, { HeaderType } from "../header"
 
 const Article = (props: ArticleProps) => {
   const { articleData, thisIssueData } = props
@@ -58,23 +59,7 @@ const Article = (props: ArticleProps) => {
               </div>
 
               <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
-                <header id="article_header">
-                  <Link className="mobile_nav_btn" href={issuePermalink}>
-                    <i className="fas fa-angle-double-left"></i> <span>{props.thisIssueData.title}</span> Issue
-                  </Link>
-
-                  <nav>
-                    <div>
-                      <Link
-                        className="btn btn-sm donate"
-                        href="https://brooklynrail.org/donate?a"
-                        title="Donate to the Brooklyn Rail"
-                      >
-                        <span>Donate</span>
-                      </Link>
-                    </div>
-                  </nav>
-                </header>
+                <Header type={HeaderType.Article} />
 
                 <Ad970 currentAds={currentAds} />
 
