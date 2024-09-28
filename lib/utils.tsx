@@ -946,7 +946,7 @@ export const getTributes = cache(async (props: TributesParams) => {
   const tributeArticles = thisIssueData.articles.filter((article) => article.tribute !== null)
   // make an array of the tribute slugs in the tributeArticles and remove all duplicates
   const currentTributes: Array<string> = Array.from(
-    new Set(tributeArticles.map((article: Articles) => article.tribute && article.tribute.slug)),
+    new Set(tributeArticles.map((article: Articles) => article.tribute?.slug).filter((slug): slug is string => !!slug)),
   )
 
   const tributes = await directus.request(
