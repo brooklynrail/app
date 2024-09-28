@@ -294,32 +294,3 @@
     }
   }
 }
-
-.covers {
-  @include u-border-top("black", "2px", "dotted");
-  z-index: 1000;
-  @include u-position("fixed");
-  @include u-width("full");
-  @include u-height("full");
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
-  @include u-display("flex");
-  @include u-flex("column");
-  @include u-flex("align-center");
-  @include u-overflow("scroll");
-  @include u-padding-y(6);
-
-  .cover {
-    @include u-margin(0);
-    @include u-padding-y(2);
-    width: 370px;
-    figcaption {
-      @include u-padding-top(1);
-      @include u-text("white");
-      @include u-font("sans", "3xs");
-    }
-  }
-}

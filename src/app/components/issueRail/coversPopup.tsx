@@ -6,6 +6,8 @@ import Image from "next/image"
 const CoversPopup = () => {
   const { showPopup, images } = usePopup()
 
+  console.log("CoversPopup ===", showPopup, images)
+
   const { setShowPopup } = usePopup()
 
   if (!showPopup) {
@@ -28,19 +30,26 @@ const CoversPopup = () => {
       const height = (cover.height * width) / cover.width
       const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`
       const alt = cover.caption ? `${stripHtml(cover.caption).result}` : "The Brooklyn Rail"
-      const caption = parse(cover.caption)
+      const caption = (
+        <>
+          <span className="uppercase font-medium">{`Cover ${i + 1}`}</span>: {parse(cover.caption)}
+        </>
+      )
       const key = `cover-${i}`
       return (
-        <div key={`cover-${i}`} className="cover">
+        <div key={`cover-${i}`} className="m-0 py-2 w-card-lg tablet-lg:w-card-lg flex-none">
           <Image src={src} width={width} height={height} alt={alt} sizes="35vw" />
-          <figcaption className="text-sm">{caption}</figcaption>
+          <figcaption className="pt-2 text-white text-xs">{caption}</figcaption>
         </div>
       )
     })
 
   return (
-    <div className="covers" onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}>
-      {allCovers}
+    <div
+      className="z-[1000] fixed w-full h-full top-0 left-0 right-0 bottom-0 bg-black bg-opacity-85 flex flex-col justify-center py-9"
+      onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
+    >
+      <div className="flex items-start overflow-x-auto space-x-9 px-20">{allCovers}</div>
     </div>
   )
 }
