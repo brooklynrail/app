@@ -111,23 +111,27 @@
 }
 
 figcaption {
+  @apply w-full max-w-[134ex];
+  @apply pt-2 px-1 text-xs tablet-lg:text-sm font-sans font-normal text-zinc-500 dark:text-zinc-300;
+}
+
+.media.width-xl,
+.media.width-lg,
+.media.width-md,
+.media.width-sm {
+  margin: 0 0 1.8em 0;
+}
+
+.width-xl {
   @apply w-full;
-  max-width: 134ex;
-  @apply pt-2 pb-3 px-1 tablet:pb-6 text-xs tablet-lg:text-sm font-sans font-normal text-zinc-500 dark:text-zinc-300;
 }
 
 .width-lg {
-  margin: 0 0 1.8em 0;
-  width: 100%;
-  @apply w-full;
+  @apply w-[50rem];
 }
 .width-md {
-  margin: 0 0 1.8em 1em;
-  width: 42.8%;
-  @apply float-right;
+  @apply w-card tablet:w-mobile desktop-lg:w-mobile-lg float-right;
 }
 .width-sm {
-  margin: 0 0 1.8em 0.65em;
-  width: 15rem;
-  @apply float-right;
+  @apply w-card desktop:w-card-lg float-right;
 }
