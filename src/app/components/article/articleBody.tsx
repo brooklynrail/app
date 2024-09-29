@@ -3,13 +3,14 @@ import parse from "html-react-parser"
 import replaceShortcodes from "./shortcodes"
 import BookshopWidget from "./bookshop"
 import Contributors from "../contributors"
+import ArticleHead from "./articleHead"
+import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 
 interface ArticleBodyProps {
-  articleData: Articles
   preview?: boolean
 }
 
-const ArticleBody = (props: ArticleBodyProps) => {
+const ArticleBody = (props: ArticleProps & ArticleBodyProps) => {
   const { articleData, preview } = props
   const { body_text, images } = articleData
   if (!body_text) {
@@ -18,6 +19,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
   return (
     <div className="">
+      <ArticleHead {...props} />
       <div className="grid grid-cols-4 tablet-lg:grid-cols-9 gap-3">
         <div className="col-span-4 tablet-lg:col-span-9">
           <div className={`content`}>
@@ -30,12 +32,8 @@ const ArticleBody = (props: ArticleBodyProps) => {
               </div>
             )}
             <BookshopWidget {...articleData} />
-            {articleData.contributors && (
-              <div className="">
-                <Contributors contributors={articleData.contributors} />
-              </div>
-            )}
           </div>
+          {articleData.contributors && <Contributors contributors={articleData.contributors} />}
         </div>
       </div>
     </div>

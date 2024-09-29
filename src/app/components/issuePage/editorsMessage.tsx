@@ -20,7 +20,7 @@ const EditorsMessage = (props: PromoProps) => {
 
   return (
     <div className="py-2 pb-3 flex flex-col space-y-1">
-      <h3 className="font-bold">Editor's Message</h3>
+      <h3 className="font-bold text-md">Editor's Message</h3>
       {editorsMessage.map((article: Articles, i: number) => {
         // const article = articleIssue
         const permalink = getPermalink({

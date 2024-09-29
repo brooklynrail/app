@@ -62,25 +62,6 @@ b {
   @apply font-bold;
 }
 
-h1 {
-  @apply hidden;
-}
-h2 {
-  @apply text-3xl font-medium font-sans;
-}
-h3 {
-  @apply text-2xl font-medium font-sans;
-}
-h4 {
-  @apply text-xl font-medium font-sans;
-}
-h5 {
-  @apply text-lg font-thin font-sans;
-}
-h6 {
-  @apply text-sm font-thin uppercase font-sans;
-}
-
 .rail-bg {
   @apply bg-slate-100 dark:bg-zinc-800;
   @apply text-zinc-900 dark:text-indigo-50;

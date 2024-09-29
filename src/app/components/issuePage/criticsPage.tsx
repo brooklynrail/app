@@ -20,7 +20,7 @@ const CriticsPage = (props: PromoProps) => {
 
   return (
     <div className="py-2 pb-3 flex flex-col space-y-1">
-      <h3 className="font-bold">Critics Page</h3>
+      <h3 className="font-bold text-md">Critics Page</h3>
       <ul>
         {criticsPage.map((article: Articles, i: number) => {
           const permalink = getPermalink({

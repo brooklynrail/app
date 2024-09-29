@@ -60,7 +60,6 @@ const Article = (props: ArticleProps) => {
               <article className="border-t rail-border divide-y rail-divide my-6">
                 <NextPrev {...props} currentSection={section} />
 
-                <ArticleHead {...props} />
                 <ArticleBody {...props} />
 
                 <NextPrev {...props} currentSection={section} />

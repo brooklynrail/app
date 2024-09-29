@@ -30,6 +30,21 @@
     }
   }
 
+  .poetry {
+    @apply mb-8 border-[1px] border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-lg rounded-sm overflow-x-scroll;
+    .poem {
+      @apply p-6 w-[62.1rem];
+    }
+    p {
+      @apply max-w-full;
+    }
+  }
+  .poetry-indented {
+    p {
+      @apply ml-7 -indent-7;
+    }
+  }
+
   /* // [center] text goes here [/center] */
   .text-align-center > * {
     @apply px-4 text-center;

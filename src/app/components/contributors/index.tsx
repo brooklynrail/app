@@ -40,15 +40,15 @@ const Contributors = (props: ContributorsProps) => {
     // If there is a Bio, and the name is not included in the Bio, show the name with the link plus the Bio.
 
     return (
-      <div rel="author" className="text-lg" key={i}>
+      <div rel="author" className="text-lg max-w-[72ex]" key={i}>
         {(!hasAuthorName || !bio) && <h4 className="text-lg">{authorLink}</h4>}
         {bio && modifiedBio}
       </div>
     )
   })
   return (
-    <section className="border-t-[1px] rail-border py-3 font-sans content space-y-6">
-      <h2 className="text-md font-medium uppercase">Contributors</h2>
+    <section className="border-t-[1px] rail-border pt-3 pb-6 font-sans space-y-6">
+      <h2 className="text-sm font-medium uppercase">Contributors</h2>
       {authors}
     </section>
   )
