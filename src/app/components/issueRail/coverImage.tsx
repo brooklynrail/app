@@ -31,7 +31,6 @@ export const CoverImage = (props: CoverImagesProps) => {
 
   const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault()
-    console.log("clicked")
     setImages(covers)
     setShowPopup(true)
   }
