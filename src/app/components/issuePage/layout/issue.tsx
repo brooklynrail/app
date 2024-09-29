@@ -40,7 +40,7 @@ const IssueLayout = (props: IssuePageProps) => {
           <div className="col-span-4 py-1">
             <div className="flex flex-col divide-y-[1px] rail-divide">
               <FeaturedArticles {...promoProps} />
-              {tributesData && <InMemoriam tributesData={tributesData} />}
+              {tributesData && tributesData.length > 0 && <InMemoriam tributesData={tributesData} />}
             </div>
           </div>
           <div className="col-span-4 tablet-lg:col-start-5 py-1">
