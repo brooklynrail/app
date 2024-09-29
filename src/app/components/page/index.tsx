@@ -22,7 +22,7 @@ const Page = (props: PageProps) => {
   return (
     <>
       <PopupProvider>
-        <div className={`paper`}>
+        <div className={`paper-page`}>
           <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
             <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
               <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3">

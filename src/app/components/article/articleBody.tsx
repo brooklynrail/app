@@ -1,4 +1,4 @@
-import { Articles } from "../../../../lib/types"
+import { Articles, Issues, Sections } from "../../../../lib/types"
 import parse from "html-react-parser"
 import replaceShortcodes from "./shortcodes"
 import BookshopWidget from "./bookshop"
@@ -8,10 +8,14 @@ import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 
 interface ArticleBodyProps {
   preview?: boolean
+  articleData: Articles
+  thisIssueData?: Issues
+  currentSection?: Sections
+  permalink?: string
 }
 
-const ArticleBody = (props: ArticleProps & ArticleBodyProps) => {
-  const { articleData, preview } = props
+const ArticleBody = (props: ArticleBodyProps) => {
+  const { articleData, preview, thisIssueData, currentSection, permalink } = props
   const { body_text, images } = articleData
   if (!body_text) {
     return <></>
@@ -19,7 +23,9 @@ const ArticleBody = (props: ArticleProps & ArticleBodyProps) => {
 
   return (
     <div className="">
-      <ArticleHead {...props} />
+      {thisIssueData && currentSection && permalink && (
+        <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
+      )}
       <div className="grid grid-cols-4 tablet-lg:grid-cols-9 gap-3">
         <div className="col-span-4 tablet-lg:col-span-9">
           <div className={`content`}>

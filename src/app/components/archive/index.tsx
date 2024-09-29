@@ -6,6 +6,7 @@ import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Footer from "../footer"
 import Header, { HeaderType } from "../header"
+import Paper from "../paper"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -79,7 +80,7 @@ const ArchivePage = (props: ArchivePageProps) => {
 
   return (
     <>
-      <div className={`paper`}>
+      <Paper pageClass="paper-archive">
         <div className="px-3 desktop:w-desktop mx-auto">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
             <div className="col-span-4 tablet-lg:col-span-12">
@@ -97,7 +98,7 @@ const ArchivePage = (props: ArchivePageProps) => {
           </section>
         </div>
         <Footer />
-      </div>
+      </Paper>
     </>
   )
 }

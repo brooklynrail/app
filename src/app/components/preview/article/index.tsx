@@ -8,6 +8,7 @@ import ArticleBody from "../../article/articleBody"
 import PreviewHeader from "../previewHead"
 import Title, { TitleType } from "../../collections/promos/title"
 import Bylines, { BylineType } from "../../collections/promos/bylines"
+import Paper from "../../paper"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
@@ -76,7 +77,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.id}/`
   return (
     <>
-      <div className="paper">
+      <Paper pageClass="paper-preview">
         <main className="desktop:max-w-screen-widescreen mx-auto">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
             <aside className="col-span-4 tablet-lg:col-span-12">
@@ -104,7 +105,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
             </aside>
           </div>
         </main>
-      </div>
+      </Paper>
     </>
   )
 }

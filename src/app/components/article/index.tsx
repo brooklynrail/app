@@ -14,6 +14,7 @@ import Header, { HeaderType } from "../header"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
 import { PopupProvider } from "../issueRail/popupProvider"
+import Paper from "../paper"
 
 const Article = (props: ArticleProps) => {
   const { articleData, thisIssueData } = props
@@ -48,31 +49,33 @@ const Article = (props: ArticleProps) => {
   return (
     <>
       <PopupProvider>
-        <div className={`paper ${issueClass}`}>
-          <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
-            <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-              <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3">
-                <IssueRail thisIssueData={thisIssueData} />
-              </aside>
+        <Paper pageClass="paper-article">
+          <div className={`paper ${issueClass}`}>
+            <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
+              <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
+                <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3">
+                  <IssueRail thisIssueData={thisIssueData} />
+                </aside>
 
-              <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-                <Header type={HeaderType.Article} />
+                <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
+                  <Header type={HeaderType.Article} />
 
-                <Ad970 currentAds={currentAds} />
-                <article className="border-t rail-border divide-y rail-divide my-6">
-                  <NextPrev {...props} currentSection={section} />
+                  <Ad970 currentAds={currentAds} />
+                  <article className="border-t rail-border divide-y rail-divide my-6">
+                    <NextPrev {...props} currentSection={section} />
 
-                  <ArticleBody {...props} />
+                    <ArticleBody {...props} />
 
-                  <NextPrev {...props} currentSection={section} />
-                </article>
+                    <NextPrev {...props} currentSection={section} />
+                  </article>
+                </div>
               </div>
-            </div>
-          </main>
-          <Footer />
-        </div>
-        <ThemeToggle {...{ theme, setTheme }} />
-        <CoversPopup />
+            </main>
+            <Footer />
+          </div>
+          <ThemeToggle {...{ theme, setTheme }} />
+          <CoversPopup />
+        </Paper>
       </PopupProvider>
     </>
   )

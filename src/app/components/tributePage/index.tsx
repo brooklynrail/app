@@ -58,11 +58,9 @@ const TributePage = (props: TributePageProps) => {
   return (
     <>
       <PopupProvider>
-        <Paper pageClass={`${tributeClass}`}>
+        <Paper pageClass={`paper-tribute ${tributeClass}`}>
           <div className="">
             <Header type={HeaderType.Default} />
-
-            {/* <Ad970 currentAds={currentAds} /> */}
 
             <section id="main" className={styles.main}>
               <div className="tablet-lg:border-b-[1px] rail-border py-3">
