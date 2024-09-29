@@ -6,9 +6,8 @@ import { Ads } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import { getAds, getPermalink, PageType } from "../../../../lib/utils"
 import { useEffect, useState } from "react"
-import ArticleHead from "./articleHead"
 import ArticleBody from "./articleBody"
-import NextPrev from "./nextPrev"
+import NextPrev, { NextPrevType } from "../nextPrev"
 import Ad970 from "../ads/ad970"
 import Header, { HeaderType } from "../header"
 import ThemeToggle from "../themeToggle"
@@ -62,11 +61,21 @@ const Article = (props: ArticleProps) => {
 
                   <Ad970 currentAds={currentAds} />
                   <article className="border-t rail-border divide-y rail-divide my-6">
-                    <NextPrev {...props} currentSection={section} />
+                    <NextPrev
+                      parentCollection={thisIssueData}
+                      articles={thisIssueData.articles}
+                      currentSlug={articleData.slug}
+                      type={NextPrevType.Issues}
+                    />
 
                     <ArticleBody {...props} />
 
-                    <NextPrev {...props} currentSection={section} />
+                    <NextPrev
+                      parentCollection={thisIssueData}
+                      articles={thisIssueData.articles}
+                      currentSlug={articleData.slug}
+                      type={NextPrevType.Issues}
+                    />
                   </article>
                 </div>
               </div>

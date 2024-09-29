@@ -315,6 +315,8 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.contributors.contributors_id.bio` +
     `&fields[]=articles.issue.id` +
     `&fields[]=articles.issue.title` +
+    `&fields[]=articles.issue.year` +
+    `&fields[]=articles.issue.month` +
     `&fields[]=articles.issue.slug` +
     `&fields[]=articles.section.id` +
     `&fields[]=articles.section.name` +

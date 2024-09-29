@@ -17,7 +17,7 @@ import Bylines, { BylineType } from "../collections/promos/bylines"
 import Title, { TitleType } from "../collections/promos/title"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
-import NextPrev from "../nextPrev"
+import NextPrev, { NextPrevType } from "../nextPrev"
 import ContributorsBox from "../contributorsBox"
 
 const TributePage = (props: TributePageProps) => {
@@ -115,7 +115,8 @@ const TributePage = (props: TributePageProps) => {
                     <NextPrev
                       articles={thisTributeData.articles}
                       currentSlug={articleData.slug}
-                      tribute={thisTributeData}
+                      parentCollection={thisTributeData}
+                      type={NextPrevType.Tributes}
                     />
                   </div>
                 </div>

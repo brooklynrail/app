@@ -29,7 +29,8 @@ const Kicker = (props: KickerProps) => {
 
       {kicker && (
         <>
-          <span className="border-r-[1px] border-zinc-900"></span> <span>{kicker}</span>
+          <span className="border-r rail-border !border-solid h-4 inline-block relative top-0.5"></span>
+          <span>{kicker}</span>
         </>
       )}
     </h6>

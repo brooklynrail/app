@@ -10,7 +10,7 @@ export enum BylineType {
   ArticleHead = "text-md tablet-lg:text-lg font-sans not-italic",
   SectionPromo = "text-md font-sans not-italic",
   TributeArticle = "text-lg tablet-lg:text-2xl font-bold font-serif not-italic",
-  TributeNextPrev = "text-sm tablet-lg:text-md font-bold font-sans not-italic",
+  TributeNextPrev = "text-sm tablet-lg:text-md font-medium font-sans not-italic",
   TributeWritersList = "text-sm desktop-lg:text-lg not-italic inline",
   CriticsPage = "text-2xl font-bold",
 }
