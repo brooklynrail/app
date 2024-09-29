@@ -4,6 +4,7 @@ import replaceShortcodes from "./shortcodes"
 import BookshopWidget from "./bookshop"
 import ArticleHead from "./articleHead"
 import ContributorsBox from "../contributorsBox"
+import styles from "./poetry.module.scss"
 
 interface ArticleBodyProps {
   preview?: boolean
@@ -27,7 +28,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
       )}
       <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
         <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-          <div className={`content`}>
+          <div className={`content ${currentSection && currentSection.slug === "poetry" && styles.content_poetry}`}>
             {replaceShortcodes({ html: body_text, images: images, preview: preview })}
 
             {articleData.endnote && (
