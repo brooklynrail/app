@@ -6,9 +6,10 @@ interface KickerProps {
   kicker?: string | null
   thisIssueData?: Issues
   currentSection: Sections
+  centered: boolean
 }
 const Kicker = (props: KickerProps) => {
-  const { kicker, thisIssueData, currentSection } = props
+  const { kicker, thisIssueData, currentSection, centered } = props
   if (!thisIssueData) {
     return <></>
   }
@@ -20,12 +21,8 @@ const Kicker = (props: KickerProps) => {
     type: PageType.Section,
   })
 
-  if (!kicker) {
-    return <></>
-  }
-
   return (
-    <h6 className="text-lg space-x-2 text-center">
+    <h6 className={`text-lg space-x-2 ${centered ? "text-center" : "text-left"}`}>
       <Link className="font-black" href={sectionPermalink} title={`Go to the ${currentSection.name} section`}>
         {currentSection.name}
       </Link>
