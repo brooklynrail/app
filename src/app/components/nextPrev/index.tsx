@@ -11,6 +11,7 @@ export enum NextPrevType {
   Sections = "sections",
   Events = "events",
 }
+
 interface NextPrevProps {
   articles: Articles[]
   currentSlug: string
@@ -18,104 +19,75 @@ interface NextPrevProps {
   type: NextPrevType
 }
 
-const NextPrev = (props: NextPrevProps) => {
-  const { articles, currentSlug, parentCollection, type } = props
-
+const NextPrev = ({ articles, currentSlug, parentCollection, type }: NextPrevProps) => {
+  const currentArticleIndex = articles.findIndex((article) => article.slug === currentSlug)
   const articlesListCount = articles.length
-  // get the currentArticleIndex
-  const currentArticleIndex = articles.findIndex((article: Articles) => article.slug === currentSlug)
 
-  const parentPermalink = (() => {
-    switch (type) {
-      case NextPrevType.Issues:
-        return getPermalink({
-          issueSlug: parentCollection.slug,
-          type: PageType.Issue,
-        })
-      case NextPrevType.Tributes:
-        return getPermalink({
-          tributeSlug: parentCollection.slug,
-          type: PageType.Tribute,
-        })
-      default:
-        return ""
-    }
-  })()
-
-  const articlePermalink = (article: Articles, type: NextPrevType) => {
-    switch (type) {
-      case NextPrevType.Issues:
-        return getPermalink({
-          year: article.issue.year,
-          month: article.issue.month,
-          section: article.section.slug,
-          slug: article.slug,
-          type: PageType.Article,
-        })
-      case NextPrevType.Tributes:
-        return getPermalink({
-          tributeSlug: parentCollection.slug,
-          slug: article.slug,
-          type: PageType.TributeArticle,
-        })
-      default:
-        return ""
-    }
+  const getParentPermalink = () => {
+    const params = { slug: parentCollection.slug }
+    return getPermalink({
+      ...params,
+      type: type === NextPrevType.Issues ? PageType.Issue : PageType.Tribute,
+    })
   }
 
-  const parentCollectionType = (type: NextPrevType) => {
-    switch (type) {
-      case NextPrevType.Issues:
-        return "Issue"
-      case NextPrevType.Tributes:
-        return "In Memorium"
-      default:
-        return ""
+  const getArticlePermalink = (article: Articles) => {
+    if (type === NextPrevType.Issues) {
+      return getPermalink({
+        year: article.issue.year,
+        month: article.issue.month,
+        section: article.section.slug,
+        slug: article.slug,
+        type: PageType.Article,
+      })
     }
+    return getPermalink({
+      tributeSlug: parentCollection.slug,
+      slug: article.slug,
+      type: PageType.TributeArticle,
+    })
   }
 
-  const parentCollectionTitle = (type: NextPrevType) => {
-    switch (type) {
-      case NextPrevType.Issues:
-        return <h3 className="uppercase font-bold text-sm">{parentCollection.title}</h3>
-      case NextPrevType.Tributes:
-        return <h3 className="">{parentCollection.title}</h3>
-      default:
-        return ""
-    }
-  }
+  const getParentCollectionTitle = () => (
+    <h3 className={type === NextPrevType.Issues ? "uppercase font-bold text-sm" : ""}>{parentCollection.title}</h3>
+  )
+
+  const renderLink = (article: Articles, text: string) => (
+    <ArticleLink
+      article={article}
+      permalink={getArticlePermalink(article)}
+      text={text}
+      parentCollection={parentCollection}
+      type={type}
+    />
+  )
 
   const prevLink = () => {
-    // if is the first article
-    if (currentArticleIndex == 0 || currentArticleIndex == articlesListCount) {
+    if (currentArticleIndex <= 0) {
       return (
-        <div className="prev">
-          <Link href={parentPermalink} className="text-sm tablet-lg:text-md">
-            <span className="uppercase text-xs">{parentCollectionType(type)}</span>
-            {parentCollectionTitle(type)}
+        <div className="text-xs">
+          <Link href={getParentPermalink()}>
+            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memorium"}</span>
+            {getParentCollectionTitle()}
           </Link>
         </div>
       )
     }
-    const prev: Articles = articles[currentArticleIndex - 1]
-
-    return <ArticleLink {...props} permalink={articlePermalink(prev, type)} article={prev} text="Previous" />
+    return renderLink(articles[currentArticleIndex - 1], "Previous")
   }
 
   const nextLink = () => {
-    if (currentArticleIndex === articlesListCount - 1) {
+    if (currentArticleIndex >= articlesListCount - 1) {
       return (
         <div className="text-xs text-right">
-          <Link href={parentPermalink}>
-            <span className="uppercase">{parentCollectionType(type)}</span>
-            {parentCollectionTitle(type)}
+          <Link href={getParentPermalink()}>
+            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memorium"}</span>
+            {getParentCollectionTitle()}
           </Link>
         </div>
       )
     }
-
-    const next: Articles = articles[currentArticleIndex + 1]
-    return <ArticleLink {...props} permalink={articlePermalink(next, type)} article={next} text="Next" />
+    return renderLink(articles[currentArticleIndex + 1], "Next")
   }
 
   return (
@@ -135,24 +107,20 @@ const Section = ({
   type: NextPrevType
   parentCollection: Tributes | Issues
 }) => {
-  switch (type) {
-    case NextPrevType.Issues:
-      return (
-        <h4 className="text-sm space-x-2">
-          <span className="font-bold">{parse(article.section.name)}</span>
-          {article.kicker && (
-            <>
-              <span className="border-r rail-border !border-solid h-3 relative top-[1px] inline-block"></span>
-              <span>{parse(article.kicker)}</span>
-            </>
-          )}
-        </h4>
-      )
-    case NextPrevType.Tributes:
-      return <>{parentCollection.title}</>
-    default:
-      return <></>
+  if (type === NextPrevType.Issues) {
+    return (
+      <h4 className="text-sm space-x-2">
+        <span className="font-bold">{parse(article.section.name)}</span>
+        {article.kicker && (
+          <>
+            <span className="border-r rail-border !border-solid h-3 relative top-[1px] inline-block"></span>
+            <span>{parse(article.kicker)}</span>
+          </>
+        )}
+      </h4>
+    )
   }
+  return <>{parentCollection.title}</>
 }
 
 const ArticleLink = ({
@@ -167,27 +135,21 @@ const ArticleLink = ({
   text: string
   parentCollection: Tributes | Issues
   type: NextPrevType
-}) => {
-  return (
-    <div className={`text-xs ${text === "Next" && "text-right"}`}>
-      <Link href={permalink}>
-        <span className="uppercase block">{text}</span>
-        <Section article={article} parentCollection={parentCollection} type={type} />
-        <ArticleTitle article={article} type={type} />
-      </Link>
-    </div>
-  )
-}
+}) => (
+  <div className={`text-xs ${text === "Next" && "text-right"}`}>
+    <Link href={permalink}>
+      <span className="uppercase block">{text}</span>
+      <Section article={article} parentCollection={parentCollection} type={type} />
+      <ArticleTitle article={article} type={type} />
+    </Link>
+  </div>
+)
 
 const ArticleTitle = ({ article, type }: { article: Articles; type: NextPrevType }) => {
-  switch (type) {
-    case NextPrevType.Issues:
-      return <Title title={article.title} type={TitleType.NextPrev} />
-    case NextPrevType.Tributes:
-      return <Bylines article={article} type={BylineType.TributeNextPrev} hideBy={true} />
-    default:
-      return <></>
+  if (type === NextPrevType.Issues) {
+    return <Title title={article.title} type={TitleType.NextPrev} />
   }
+  return <Bylines article={article} type={BylineType.TributeNextPrev} hideBy={true} />
 }
 
 export default NextPrev
