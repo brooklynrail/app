@@ -166,7 +166,16 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
     },
   }
 
-  return parse(cleanedHtml, options)
+  // Clean up the HTML content before parsing
+  const finalHtml = cleanup(cleanedHtml)
+  return parse(finalHtml, options)
+}
+
+const cleanup = (str: string) => {
+  // remove and <p> tags that are wrapping <div> tags
+  str = str.replace(/<p>\s*(<div[^>]*>)\s*<\/p>/g, "$1")
+
+  return str
 }
 
 export default replaceShortcodes
