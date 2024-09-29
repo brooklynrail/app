@@ -63,9 +63,15 @@ b {
 }
 
 .rail-bg {
+  @apply bg-white dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
+.rail-tribute-bg {
   @apply bg-slate-100 dark:bg-zinc-800;
   @apply text-zinc-900 dark:text-indigo-50;
 }
+
 .rail-border {
   @apply border-zinc-600 dark:border-slate-300 border-dotted;
 }
@@ -88,6 +94,10 @@ body {
 
 .paper {
   @apply rail-bg;
+}
+
+.paper-tribute {
+  @apply rail-tribute-bg;
 }
 
 a {

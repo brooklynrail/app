@@ -155,7 +155,7 @@ const IssueRail = (props: IssueRailProps) => {
   })
 
   return (
-    <section className="p-3 bg-white dark:bg-zinc-700 divide-y rail-divide space-y-4 sticky top-0">
+    <section className="p-3 bg-gray-100 dark:bg-zinc-700 divide-y rail-divide space-y-4 sticky top-0">
       {!inMenu && <IssueRailHeader logosrc={logosrc} />}
 
       <div className={inMenu ? `` : `overflow-y-auto h-screen top-0`}>
