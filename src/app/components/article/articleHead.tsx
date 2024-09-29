@@ -36,7 +36,10 @@ const ArticleHead = (props: ArticleHeadProps) => {
       </Link>
     </div>
   )
-  switch (header_type) {
+
+  const new_header_type = articleData.tribute ? "tribute" : header_type
+
+  switch (new_header_type) {
     case "diptych":
       return (
         <header className="py-6">
@@ -62,6 +65,13 @@ const ArticleHead = (props: ArticleHeadProps) => {
             </div>
           </div>
         </header>
+      )
+    case "tribute":
+      return (
+        <div className="py-3 pb-9">
+          <Title title={articleData.title} type={TitleType.TributeArticle} />
+          <Bylines article={articleData} type={BylineType.TributeArticle} linked={true} hideBy={true} />
+        </div>
       )
     default:
       return (

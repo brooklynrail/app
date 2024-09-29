@@ -84,15 +84,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
               <PreviewHeader previewURL={previewURL} />
               <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
                 <div className="col-span-4 tablet-lg:col-span-9">
-                  <article className="px-6 py-12">
-                    {isTribute ? (
-                      <div className="py-3 pb-9">
-                        <Title title={articleData.title} type={TitleType.TributeArticle} />
-                        <Bylines article={articleData} type={BylineType.TributeArticle} linked={true} hideBy={true} />
-                      </div>
-                    ) : (
-                      <ArticleHead {...props} />
-                    )}
+                  <article className="px-6 py-3">
                     <ArticleBody {...props} preview={true} />
                   </article>
                 </div>
