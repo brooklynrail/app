@@ -1,99 +1,73 @@
+"use client"
+import IssueRail from "../issueRail"
+import Footer from "../footer"
+import CoversPopup from "../issueRail/coversPopup"
+import Header, { HeaderType } from "../header"
+import ThemeToggle from "../themeToggle"
+import { useTheme } from "../theme"
+import { PopupProvider } from "../issueRail/popupProvider"
+import { Contributors, Issues } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
+import Paper from "../paper"
 import Link from "next/link"
-import { ArticlesContributors } from "../../../../lib/types"
-import parse from "html-react-parser"
-import { HtmlContext } from "next/dist/server/future/route-modules/app-page/vendored/contexts/entrypoints"
-import { Fragment } from "react"
 
-interface ContributorsProps {
-  contributors: ArticlesContributors[]
+interface ContributorsPageProps {
+  thisIssueData: Issues
+  allContributors: Contributors[]
 }
 
-const Contributors = (props: ContributorsProps) => {
-  const { contributors } = props
+const ContributorsPage = (props: ContributorsPageProps) => {
+  const { thisIssueData, allContributors } = props
+  const { theme, setTheme } = useTheme()
 
-  const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
-    if (!contributor.contributors_id) {
-      return <></>
-    }
+  const all = (
+    <>
+      {allContributors.map((contributor: Contributors, i: number) => {
+        const permalink = getPermalink({
+          slug: contributor.slug,
+          type: PageType.Contributor,
+        })
 
-    // check if authorName exists as a string within the bio
-    if (!contributor.contributors_id.bio) {
-      return <></>
-    }
-    const authorName = `${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name}`
-    const authorLink = (
-      <Link href={`/contributors/${contributor.contributors_id.slug}`}>
-        <strong>{authorName}</strong>
-      </Link>
-    )
-    const hasAuthorName = contributor.contributors_id.bio.includes(authorName)
-    const bio = contributor.contributors_id.bio
+        return (
+          <h3 key={i}>
+            <Link href={permalink} title={`${contributor.first_name} ${contributor.last_name}`}>
+              {contributor.first_name} {contributor.last_name}
+            </Link>
+          </h3>
+        )
+      })}
+    </>
+  )
 
-    const modifiedBio = addAuthorLinkToBio({
-      authorName: authorName,
-      authorLink: authorLink,
-      bio: bio,
-    })
-
-    // If there is no Bio, show the author name with the link
-    // If there is a Bio, and the name is included in the Bio, show only the Bio with the name linked.
-    // If there is a Bio, and the name is not included in the Bio, show the name with the link plus the Bio.
-
-    return (
-      <div rel="author" className="text-lg max-w-[72ex]" key={i}>
-        {(!hasAuthorName || !bio) && <h4 className="text-lg">{authorLink}</h4>}
-        {bio && modifiedBio}
-      </div>
-    )
-  })
   return (
-    <section className="border-t-[1px] rail-border pt-3 pb-6 font-sans space-y-6">
-      <h2 className="text-sm font-medium uppercase">Contributors</h2>
-      {authors}
-    </section>
+    <>
+      <PopupProvider>
+        <Paper pageClass="paper-contributor">
+          <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
+            <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
+              <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3">
+                <IssueRail thisIssueData={thisIssueData} />
+              </aside>
+
+              <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
+                <Header type={HeaderType.Article} />
+
+                <div className="pb-12">
+                  <header className="py-12">
+                    <h1 className="font-light text-5xl">Contributors</h1>
+                  </header>
+                  <div className="contributors">{all}</div>
+                </div>
+              </div>
+            </div>
+          </main>
+          <Footer />
+          <ThemeToggle {...{ theme, setTheme }} />
+          <CoversPopup />
+        </Paper>
+      </PopupProvider>
+    </>
   )
 }
 
-interface AuthorLinkProps {
-  authorName: string
-  authorLink: any
-  bio: string
-}
-
-const addAuthorLinkToBio = (props: AuthorLinkProps) => {
-  const { authorName, authorLink, bio } = props
-
-  // Define a regex to find all occurrences of the authorName
-  const regex = new RegExp(`(${authorName})`, "g")
-  // Parse the bio HTML and manipulate the resulting React elements
-  // Parse the bio HTML and manipulate the resulting React elements
-  const bioUpdated = parse(bio, {
-    replace: (domNode) => {
-      if (domNode.type === "tag" && domNode.name === "strong") {
-        const child = domNode.children && domNode.children[0]
-        if (child && child.type === "text" && child.data === authorName) {
-          return <strong>{authorLink}</strong>
-        }
-      }
-      if (domNode.type === "text" && domNode.data.includes(authorName)) {
-        const parts = domNode.data.split(regex)
-        return (
-          <>
-            {parts.map((part, index) =>
-              part === authorName ? (
-                <Fragment key={index}>{authorLink}</Fragment>
-              ) : (
-                <Fragment key={index}>{part}</Fragment>
-              ),
-            )}
-          </>
-        )
-      }
-    },
-  })
-
-  // Return the array of JSX elements, which will render as expected
-  return <>{bioUpdated}</>
-}
-
-export default Contributors
+export default ContributorsPage

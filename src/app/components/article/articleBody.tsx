@@ -2,9 +2,8 @@ import { Articles, Issues, Sections } from "../../../../lib/types"
 import parse from "html-react-parser"
 import replaceShortcodes from "./shortcodes"
 import BookshopWidget from "./bookshop"
-import Contributors from "../contributors"
 import ArticleHead from "./articleHead"
-import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
+import ContributorsBox from "../contributorsBox"
 
 interface ArticleBodyProps {
   preview?: boolean
@@ -39,7 +38,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
             )}
             <BookshopWidget {...articleData} />
           </div>
-          {articleData.contributors && <Contributors contributors={articleData.contributors} />}
+          {articleData.contributors && <ContributorsBox contributors={articleData.contributors} />}
         </div>
       </div>
     </div>
