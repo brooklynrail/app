@@ -4,6 +4,8 @@ import { stripHtml } from "string-strip-html"
 import Image from "next/image"
 import { PromoProps, PromoSectionName } from "./standard"
 import Link from "next/link"
+import Bylines, { BylineType } from "../collections/promos/bylines"
+import Title, { TitleType } from "../collections/promos/title"
 
 interface PromoImageProps {
   image: DirectusFiles
@@ -64,19 +66,13 @@ const PromoSection = (props: PromoProps) => {
   })
 
   return (
-    <div className="py-2 pb-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
-      <div className="flex space-x-4">
-        <div className="">
+    <div className="py-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
+      <div className="flex space-x-4 justify-between">
+        <div className="space-y-1">
           {showSection && <PromoSectionName {...props} />}
-          <h4 className="text-2xl font-light">
-            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              {parse(title)}
-            </Link>
-          </h4>
-          {!hide_bylines_downstream && (
-            <cite className="text-sm py-2 block font-sans text-zinc-600 dark:text-slate-100">By {authors} </cite>
-          )}
-          <div className="text-sm font-serif">{parse(excerpt)}</div>
+          <Title title={title} permalink={permalink} type={TitleType.SectionPromo} />
+          <Bylines article={article} type={BylineType.SectionPromo} />
+          <div className="text-md font-serif">{parse(excerpt)}</div>
         </div>
         <div className="w-card-lg flex-none">
           {showImage && featured_image && (
