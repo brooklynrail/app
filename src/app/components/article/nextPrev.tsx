@@ -56,7 +56,7 @@ export const NextPrev = (props: ArticleProps) => {
             <strong>{parse(prev.section.name)}</strong>
             {prevKicker}
           </h4>
-          <h3 className="text-sm font-light">{parse(prev.title)}</h3>
+          <h3 className="text-md font-light">{parse(prev.title)}</h3>
         </Link>
       </div>
     )
@@ -96,7 +96,7 @@ export const NextPrev = (props: ArticleProps) => {
             <strong>{parse(next.section.name)}</strong>
             {nextKicker}
           </h4>
-          <h3 className="text-sm font-light">{parse(next.title)}</h3>
+          <h3 className="text-md font-light">{parse(next.title)}</h3>
         </Link>
       </div>
     )
