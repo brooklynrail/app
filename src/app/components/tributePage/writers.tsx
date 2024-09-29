@@ -15,7 +15,6 @@ const TributeWriters = (props: TributeWritersProps) => {
   const { articles, tributeSlug, currentSlug } = props
 
   const [selectedArticle, setSelectedArticle] = useState<string>(currentSlug)
-  console.log("selectedArticle", selectedArticle)
 
   const handleArticleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value
