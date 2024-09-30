@@ -12,7 +12,6 @@ const ContributorsBox = (props: ContributorsProps) => {
   const { contributors } = props
 
   const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
-    console.log("contributor", contributor)
     if (!contributor.contributors_id) {
       return <></>
     }

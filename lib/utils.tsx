@@ -608,6 +608,8 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=contributors.contributors_id.bio` +
     `&fields[]=issue.title` +
     `&fields[]=issue.slug` +
+    `&fields[]=issue.year` +
+    `&fields[]=issue.month` +
     `&fields[]=section.slug` +
     `&fields[]=section.name` +
     `&fields[]=images.sort` +

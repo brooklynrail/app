@@ -58,7 +58,6 @@ const TributeBody = (props: TributePageProps) => {
     }
   }, "")
 
-  console.log("issueTitles", issueTitles)
   return (
     <div className="py-3 px-6 tablet:px-9" ref={articleRef}>
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">

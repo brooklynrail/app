@@ -25,7 +25,7 @@ export const PromoSectionName = (props: PromoProps) => {
       {kicker && (
         <>
           <span className="mx-2 text-xs border-l-[1px] rail-border border-solid"></span>
-          <span className="text-red-600 uppercase">{article.kicker}</span>
+          <span className="text-red-600 dark:text-red-500 uppercase">{article.kicker}</span>
         </>
       )}
     </p>

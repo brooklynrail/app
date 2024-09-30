@@ -9,6 +9,7 @@ import parse from "html-react-parser"
 import IssueRailHeader from "./header"
 import Bylines from "./bylines"
 import { stripHtml } from "string-strip-html"
+import { useArticleContext } from "@/app/context/ArticleProvider"
 
 interface ArticleListProps {
   sectionArticles: Array<Articles>
@@ -19,6 +20,8 @@ interface ArticleListProps {
 const ArticleList = (props: ArticleListProps) => {
   const { sectionArticles, year, month } = props
   const list = sectionArticles.map((article: Articles, i: number) => {
+    const { setArticleSlug, currentArticle } = useArticleContext()
+
     const permalink = getPermalink({
       year: year,
       month: month,
@@ -34,7 +37,15 @@ const ArticleList = (props: ArticleListProps) => {
     return (
       <li key={i} data-sort={article.sort} className="py-2 text-xs">
         <h4 className="leading-4 text-sm font-medium">
-          <Link prefetch={false} href={`${permalink}`} title={`${stripHtml(article.title).result} (${article.sort})`}>
+          <Link
+            prefetch={false}
+            href={`${permalink}`}
+            title={`${stripHtml(article.title).result} (${article.sort})`}
+            onClick={(e) => {
+              e.preventDefault() // Prevent the default link behavior
+              setArticleSlug(article.slug) // Trigger article change
+            }}
+          >
             <span>{parse(article.title)}</span>
           </Link>
         </h4>
