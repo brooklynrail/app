@@ -55,9 +55,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
       <div className="">
         {thisIssueData && currentSection && permalink && (
-          <>
-            <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
-          </>
+          <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
         )}
         <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">

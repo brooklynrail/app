@@ -3,12 +3,16 @@ import { ArticlePreviewProps } from "@/app/preview/article/[id]/page"
 import { useState, useEffect } from "react"
 import Password from "../password"
 import PreviewInfo from "../previewInfo"
-import ArticleHead from "../../article/articleHead"
-import ArticleBody from "../../article/articleBody"
 import PreviewHeader from "../previewHead"
 import Title, { TitleType } from "../../collections/promos/title"
 import Bylines, { BylineType } from "../../collections/promos/bylines"
 import Paper from "../../paper"
+import parse from "html-react-parser"
+import BookshopWidget from "../../article/bookshop"
+import styles from "../../article/poetry.module.scss"
+import replaceShortcodes from "../../article/shortcodes"
+import ContributorsBox from "../../contributorsBox"
+import ArticleHead from "../../article/articleHead"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl } = props
@@ -85,7 +89,43 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
               <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
                 <div className="col-span-4 tablet-lg:col-span-9">
                   <article className="px-6 py-3">
-                    <ArticleBody {...props} preview={true} />
+                    {isTribute ? (
+                      <div className="py-3 pb-9">
+                        {!articleData.hide_title && <Title title={articleData.title} type={TitleType.TributeArticle} />}
+                        <Bylines
+                          article={articleData}
+                          type={BylineType.TributeArticle}
+                          asTitle={true}
+                          hideBy={true}
+                          linked={true}
+                        />
+                      </div>
+                    ) : (
+                      <ArticleHead {...{ permalink: previewURL, articleData, currentSection: articleData.section }} />
+                    )}
+                    <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
+                      <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
+                        <div
+                          className={`content ${articleData.section.slug === "poetry" ? styles.content_poetry : ""}`}
+                        >
+                          {articleData.body_text &&
+                            replaceShortcodes({
+                              html: articleData.body_text,
+                              images: articleData.images,
+                              preview: true,
+                            })}
+
+                          {articleData.endnote && (
+                            <div className="endnote">
+                              <span className="line"></span>
+                              {parse(articleData.endnote)}
+                            </div>
+                          )}
+                          <BookshopWidget {...articleData} />
+                        </div>
+                        {articleData.contributors && <ContributorsBox contributors={articleData.contributors} />}
+                      </div>
+                    </div>
                   </article>
                 </div>
                 {isStudioPreview && (

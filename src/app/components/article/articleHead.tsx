@@ -12,7 +12,7 @@ import Bylines, { BylineType } from "../collections/promos/bylines"
 
 interface ArticleHeadProps {
   permalink: string
-  thisIssueData: Issues
+  thisIssueData?: Issues
   currentSection: Sections
   articleData: Articles
 }

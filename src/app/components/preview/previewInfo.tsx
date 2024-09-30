@@ -133,7 +133,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
   }
 
   return (
-    <div className="bg-slate-200 my-6 h-screen overflow-y-auto">
+    <div className="bg-slate-200 my-6 h-screen overflow-y-auto sticky top-0">
       {user_updated && typeof user_updated !== "string" && (
         <EditorInfo {...user_updated} date={date_updated} status={status} permalink={permalink} />
       )}

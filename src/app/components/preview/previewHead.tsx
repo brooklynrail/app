@@ -10,10 +10,10 @@ const PreviewHeader = (props: PreviewHeaderProps) => {
 
   return (
     <>
-      <header className="border-b rail-border py-6">
+      <header className="border-b rail-border py-6 px-6">
         <nav className="flex space-x-6">
           <svg
-            className="br-logo w-16"
+            className="br-logo w-16 flex-none"
             width="71"
             height="68"
             viewBox="0 0 71 68"
@@ -55,7 +55,7 @@ const PreviewHeader = (props: PreviewHeaderProps) => {
           <div className="flex flex-col justify-center space-y-1">
             <h2 className="text-lg font-bold">Preview</h2>
             <Link
-              className="py-0.5 px-1 rounded-sm text-xs font-sans bg-white border border-gray-300 text-red-600 overflow-hidden whitespace-nowrap"
+              className="py-0.5 px-1 rounded-sm text-sm font-sans bg-white border border-gray-300 text-red-600 overflow-hidden whitespace-nowrap"
               href={previewURL}
               target="_blank"
             >
