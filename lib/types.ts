@@ -583,8 +583,9 @@ export type Tributes = {
   summary?: string | null
   excerpt: string
   featured_image?: DirectusFiles
+  published?: string | null
   sort?: number | null
-  curators: TributesContributors[]
+  editors: TributesContributors[]
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }

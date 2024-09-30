@@ -1,4 +1,4 @@
-import { Articles } from "../../../../../lib/types"
+import { Articles, ArticlesContributors } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import Link from "next/link"
 
@@ -11,7 +11,7 @@ export enum BylineType {
   SectionPromo = "text-md font-sans not-italic",
   TributeArticle = "text-lg tablet-lg:text-2xl font-bold font-serif not-italic",
   TributeNextPrev = "text-sm tablet-lg:text-md font-medium font-sans not-italic",
-  TributeWritersList = "text-sm desktop-lg:text-lg not-italic inline",
+  TributeWritersList = "text-sm not-italic inline",
   CriticsPage = "text-2xl font-bold",
 }
 
@@ -27,7 +27,7 @@ const Bylines = (props: BylinesProps) => {
   const { article, asTitle, type, hideBy, linked } = props
   const { contributors, byline_override, hide_bylines, hide_bylines_downstream } = article
 
-  if (hide_bylines_downstream) {
+  if (hide_bylines_downstream || article.contributors.length === 0) {
     return <></>
   }
 
@@ -37,8 +37,11 @@ const Bylines = (props: BylinesProps) => {
         <span className="byline-override">{byline_override}</span>
       ) : (
         <>
-          {!asTitle && !hideBy && <span>By </span>}
-          {contributors.map((contributor: any, i: number) => {
+          {!hideBy && <span>By </span>}
+          {contributors.map((contributor: ArticlesContributors, i: number) => {
+            if (!contributor.contributors_id) {
+              return <></>
+            }
             const isLast = i === contributors.length - 1
             const isFirst = i === 0
             let separator = ", "
@@ -88,7 +91,7 @@ const Bylines = (props: BylinesProps) => {
   if (asTitle) {
     return (
       <h2 className={type}>
-        <address className={`author`}>{byline_contents}</address>
+        <address className={`author not-italic`}>{byline_contents}</address>
       </h2>
     )
   }

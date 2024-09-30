@@ -21,7 +21,7 @@ export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 
 
 export interface TributePageProps {
   thisTributeData: Tributes
-  articleData?: Articles
+  articleData: Articles
   permalink: string
 }
 
@@ -68,6 +68,8 @@ async function getData({ params }: { params: TributeParams }) {
     return notFound()
   }
 
+  const articleData = thisTributeData.articles[0]
+
   const permalink = getPermalink({
     tributeSlug: tributeSlug,
     type: PageType.Tribute,
@@ -76,6 +78,7 @@ async function getData({ params }: { params: TributeParams }) {
   return {
     props: {
       thisTributeData,
+      articleData,
       permalink,
     },
   }

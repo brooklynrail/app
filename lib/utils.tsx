@@ -618,6 +618,7 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=images.directus_files_id.height` +
     `&fields[]=images.directus_files_id.type` +
     `&fields[]=images.directus_files_id.shortcode_key` +
+    `&fields[]=tribute` +
     `&fields[]=tribute.title` +
     `&fields[]=tribute.slug` +
     `&fields[]=hide_title` +
@@ -633,6 +634,7 @@ export async function getArticle(slug: string, status?: string) {
     }
 
     const { data } = await res.json()
+
     return data[0] as Articles
   } catch (error) {
     console.error(error)
@@ -960,7 +962,7 @@ export const getTributes = cache(async (props: TributesParams) => {
         "excerpt",
         "title_tag",
         {
-          curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+          editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
         },
         {
           featured_image: ["id", "width", "height", "filename_disk", "caption"],
@@ -1006,9 +1008,10 @@ export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataPar
         "blurb",
         "summary",
         "excerpt",
+        "published",
         "title_tag",
         {
-          curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+          editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
         },
         {
           featured_image: ["id", "width", "height", "filename_disk", "caption"],

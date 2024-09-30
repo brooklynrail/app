@@ -12,28 +12,21 @@ const ContributorsBox = (props: ContributorsProps) => {
   const { contributors } = props
 
   const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
+    console.log("contributor", contributor)
     if (!contributor.contributors_id) {
       return <></>
     }
 
     // check if authorName exists as a string within the bio
-    if (!contributor.contributors_id.bio) {
-      return <></>
-    }
+
     const authorName = `${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name}`
     const authorLink = (
       <Link href={`/contributors/${contributor.contributors_id.slug}`}>
         <strong>{authorName}</strong>
       </Link>
     )
-    const hasAuthorName = contributor.contributors_id.bio.includes(authorName)
     const bio = contributor.contributors_id.bio
-
-    const modifiedBio = addAuthorLinkToBio({
-      authorName: authorName,
-      authorLink: authorLink,
-      bio: bio,
-    })
+    const hasAuthorName = bio && bio.includes(authorName)
 
     // If there is no Bio, show the author name with the link
     // If there is a Bio, and the name is included in the Bio, show only the Bio with the name linked.
@@ -42,7 +35,12 @@ const ContributorsBox = (props: ContributorsProps) => {
     return (
       <div rel="author" className="text-lg max-w-[72ex]" key={i}>
         {(!hasAuthorName || !bio) && <h4 className="text-lg">{authorLink}</h4>}
-        {bio && modifiedBio}
+        {bio &&
+          addAuthorLinkToBio({
+            authorName: authorName,
+            authorLink: authorLink,
+            bio: bio,
+          })}
       </div>
     )
   })

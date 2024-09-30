@@ -4,6 +4,7 @@ import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Title, { TitleType } from "../collections/promos/title"
+import { useArticleContext } from "@/app/context/ArticleProvider"
 
 export enum NextPrevType {
   Issues = "issues",
@@ -135,15 +136,24 @@ const ArticleLink = ({
   text: string
   parentCollection: Tributes | Issues
   type: NextPrevType
-}) => (
-  <div className={`text-xs ${text === "Next" && "text-right"}`}>
-    <Link href={permalink}>
-      <span className="uppercase block">{text}</span>
-      <Section article={article} parentCollection={parentCollection} type={type} />
-      <ArticleTitle article={article} type={type} />
-    </Link>
-  </div>
-)
+}) => {
+  const { setArticleSlug } = useArticleContext()
+  return (
+    <div className={`text-xs ${text === "Next" && "text-right"}`}>
+      <Link
+        href={permalink}
+        onClick={(e) => {
+          e.preventDefault() // Prevent the default link behavior
+          setArticleSlug(article.slug) // Trigger article change
+        }}
+      >
+        <span className="uppercase block">{text}</span>
+        <Section article={article} parentCollection={parentCollection} type={type} />
+        <ArticleTitle article={article} type={type} />
+      </Link>
+    </div>
+  )
+}
 
 const ArticleTitle = ({ article, type }: { article: Articles; type: NextPrevType }) => {
   if (type === NextPrevType.Issues) {

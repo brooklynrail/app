@@ -11,12 +11,12 @@ interface PromoTributeProps {
 
 const PromoTribute = (props: PromoTributeProps) => {
   const { tribute, permalink } = props
-  const { title, excerpt, featured_image, curators } = tribute
-  const names = curators.map((contributor: any, i: number) => {
-    const { first_name, last_name } = contributor.contributors_id
-    const name = `${first_name} ${last_name}`
-    return <span key={`first_name-last_name-${i}`}>{name}</span>
-  })
+  const { title, excerpt, featured_image, editors } = tribute
+  // const names = editors.map((contributor: any, i: number) => {
+  //   const { first_name, last_name } = contributor.contributors_id
+  //   const name = `${first_name} ${last_name}`
+  //   return <span key={`first_name-last_name-${i}`}>{name}</span>
+  // })
 
   return (
     <>

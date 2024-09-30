@@ -13,7 +13,7 @@ export enum TitleType {
   Lead = "text-4xl tablet:text-5xl desktop:text-6xl font-light",
   NextPrev = "text-md font-sans font-light",
   TributeArticle = "text-lg tablet-lg:text-2xl font-serif font-light",
-  Tribute = "text-center font-bold text-4xl tablet-lg:text-5xl",
+  Tribute = "font-bold text-4xl tablet-lg:text-5xl",
   CriticsPage = "text-center font-normal font-serif text-6xl",
 }
 

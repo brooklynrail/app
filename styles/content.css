@@ -119,7 +119,11 @@ figcaption {
 .media.width-lg,
 .media.width-md,
 .media.width-sm {
-  margin: 0 0 1.8em 0;
+  @apply mt-3 mb-6;
+}
+
+.media.width-md {
+  @apply ml-6;
 }
 
 .width-xl {
@@ -127,7 +131,7 @@ figcaption {
 }
 
 .width-lg {
-  @apply w-[50rem];
+  @apply max-w-[50rem];
 }
 .width-md {
   @apply w-card tablet:w-mobile desktop-lg:w-mobile-lg float-right;
