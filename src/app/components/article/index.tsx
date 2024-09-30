@@ -48,7 +48,7 @@ const Article = (props: ArticleProps) => {
 
   return (
     <>
-      <ArticleProvider initialArticle={articleData}>
+      <ArticleProvider initialArticle={articleData} articles={thisIssueData.articles}>
         <PopupProvider>
           <Paper pageClass="paper-article">
             <div className={`paper ${issueClass}`}>

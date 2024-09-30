@@ -36,7 +36,7 @@ const TributePage = (props: TributePageProps) => {
 
   return (
     <>
-      <ArticleProvider initialArticle={articleData} tributeSlug={thisTributeData.slug}>
+      <ArticleProvider initialArticle={articleData} articles={thisTributeData.articles}>
         <PopupProvider>
           <Paper pageClass={`paper-tribute ${tributeClass}`}>
             <div className="">

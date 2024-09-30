@@ -26,9 +26,15 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type }: NextPrevPro
 
   const getParentPermalink = () => {
     const params = { slug: parentCollection.slug }
+    if (type === NextPrevType.Issues) {
+      return getPermalink({
+        issueSlug: parentCollection.slug,
+        type: PageType.Issue,
+      })
+    }
     return getPermalink({
-      ...params,
-      type: type === NextPrevType.Issues ? PageType.Issue : PageType.Tribute,
+      tributeSlug: parentCollection.slug,
+      type: PageType.Tribute,
     })
   }
 
