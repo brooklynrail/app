@@ -28,6 +28,10 @@ function ThemeToggle(props: ThemeToggleProps) {
     }
   }, [])
 
+  if (process.env.NODE_ENV === "production") {
+    return <></>
+  }
+
   // Toggle between dark and light themes
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark"
