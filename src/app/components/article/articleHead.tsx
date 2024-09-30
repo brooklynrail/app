@@ -68,7 +68,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
       )
     case "tribute":
       return (
-        <div className="py-3 pb-9">
+        <div className="py-3 pb-9 space-y-1">
           {!articleData.hide_title && <Title title={articleData.title} type={TitleType.TributeArticle} />}
           <Bylines article={articleData} type={BylineType.TributeArticle} asTitle={true} hideBy={true} linked={true} />
         </div>
