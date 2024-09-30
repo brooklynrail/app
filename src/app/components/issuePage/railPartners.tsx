@@ -62,6 +62,9 @@ const RailPartners = () => {
       <Link href="https://secondshiftstudiospace.org/" target="out-rail">
         <Image src="/images/banners-left/second_shift_ad.jpg" width="124" height="62" alt="Second Shift Studios" />
       </Link>
+      <Link href="https://aubinpictures.com/" target="out-rail">
+        <Image src="/images/banners-left/aubin-pictures.png" width="124" height="62" alt="Aubin Pictures" />
+      </Link>
     </div>
   )
 }
