@@ -32,14 +32,6 @@ export const useArticleSwitcher = (initialArticle: Articles, tributeSlug?: strin
             })
           }
 
-          console.log("year", newArticle.issue.year)
-          console.log("month", newArticle.issue.month)
-          console.log("section", newArticle.section.slug)
-          console.log("slug", newArticle.slug)
-          console.log("newArticle.tribute", newArticle.tribute)
-          console.log("articlePermalink", articlePermalink)
-          console.log("newArticle", newArticle)
-
           window.history.pushState({}, "", articlePermalink)
         }
       } catch (error) {
