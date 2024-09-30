@@ -9,16 +9,23 @@ import { useArticleContext } from "@/app/context/ArticleProvider"
 import NextPrev, { NextPrevType } from "../nextPrev"
 import { useEffect, useRef } from "react"
 
+export enum BodyTypes {
+  Article = "article",
+  Tribute = "tribute",
+}
+
 interface ArticleBodyProps {
   preview?: boolean
   articleData: Articles
-  thisIssueData?: Issues
+  thisIssueData: Issues
   currentSection?: Sections
   permalink?: string
+  articles: Articles[]
+  type: BodyTypes
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
-  const { preview, thisIssueData, currentSection, permalink } = props
+  const { preview, thisIssueData, currentSection, permalink, articles, type } = props
   const { currentArticle, setArticleRef, swipeHandlers } = useArticleContext()
   const articleData = currentArticle
   const articleRef = useRef<HTMLDivElement>(null)
@@ -32,12 +39,15 @@ const ArticleBody = (props: ArticleBodyProps) => {
     setArticleRef(articleRef.current)
   }, [setArticleRef])
 
+  const articleStyles =
+    type === BodyTypes.Tribute ? "divide-y rail-divide" : "border-t rail-border divide-y rail-divide my-6"
+
   return (
-    <article className="border-t rail-border divide-y rail-divide my-6" {...{ ...swipeHandlers, ref: articleRef }}>
-      {thisIssueData && (
+    <article className={articleStyles} {...{ ...swipeHandlers, ref: articleRef }}>
+      {thisIssueData && type === BodyTypes.Article && (
         <NextPrev
           parentCollection={thisIssueData}
-          articles={thisIssueData.articles}
+          articles={articles}
           currentSlug={articleData.slug}
           type={NextPrevType.Issues}
         />
@@ -45,7 +55,9 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
       <div className="">
         {thisIssueData && currentSection && permalink && (
-          <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
+          <>
+            <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
+          </>
         )}
         <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
@@ -70,7 +82,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
       {thisIssueData && (
         <NextPrev
           parentCollection={thisIssueData}
-          articles={thisIssueData.articles}
+          articles={articles}
           currentSlug={articleData.slug}
           type={NextPrevType.Issues}
         />

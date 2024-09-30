@@ -17,20 +17,22 @@ const TributeHead = (props: TributePageProps) => {
     <div className="tablet-lg:border-b-[1px] rail-border py-3">
       <div className="px-6 grid grid-cols-4 tablet:grid-cols-12 gap-3 gap-y-6">
         <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-9">
-          <div className="flex flex-col space-y-3 px-0 tablet-lg:px-6">
+          <div className="flex flex-col space-y-3 px-0 py-6 tablet-lg:py-0 tablet-lg:px-6">
             <Title title={title} type={TitleType.Tribute} />
             {deck && <p className="font-thin text-4xl desktop-lg:text-5xl">{deck}</p>}
           </div>
         </div>
         <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-3 row-span-2 tablet-lg:col-start-10">
-          <div className="flex flex-col justify-center pt-6 px-6">
+          <div className="flex flex-col justify-center px-0">
             {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
           </div>
         </div>
         <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-9">
           <div className="flex flex-col space-y-6 px-0 tablet-lg:px-6">
             {blurb && <Blurb text={blurb} />}
-            <TributeWritersList articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
+            <div className="hidden tablet-lg:block">
+              <TributeWritersList articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
+            </div>
           </div>
         </div>
       </div>

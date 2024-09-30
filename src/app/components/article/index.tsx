@@ -6,7 +6,7 @@ import { Ads } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import { getAds, getPermalink, PageType } from "../../../../lib/utils"
 import { useEffect, useState } from "react"
-import ArticleBody from "./articleBody"
+import ArticleBody, { BodyTypes } from "./articleBody"
 import NextPrev, { NextPrevType } from "../nextPrev"
 import Ad970 from "../ads/ad970"
 import Header, { HeaderType } from "../header"
@@ -46,6 +46,7 @@ const Article = (props: ArticleProps) => {
     type: PageType.Issue,
   })
 
+  console.log("thisIssueData.articles", thisIssueData.articles)
   return (
     <>
       <ArticleProvider initialArticle={articleData} articles={thisIssueData.articles}>
@@ -62,7 +63,7 @@ const Article = (props: ArticleProps) => {
                     <Header type={HeaderType.Article} />
 
                     <Ad970 currentAds={currentAds} />
-                    <ArticleBody {...props} />
+                    <ArticleBody {...props} articles={thisIssueData.articles} type={BodyTypes.Article} />
                   </div>
                 </div>
               </main>

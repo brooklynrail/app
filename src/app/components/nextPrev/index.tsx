@@ -25,7 +25,6 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type }: NextPrevPro
   const articlesListCount = articles.length
 
   const getParentPermalink = () => {
-    const params = { slug: parentCollection.slug }
     if (type === NextPrevType.Issues) {
       return getPermalink({
         issueSlug: parentCollection.slug,
@@ -98,7 +97,7 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type }: NextPrevPro
   }
 
   return (
-    <nav className="flex justify-between border-t-[1px] rail-border py-6">
+    <nav className="flex justify-between py-6">
       {prevLink()}
       {nextLink()}
     </nav>
