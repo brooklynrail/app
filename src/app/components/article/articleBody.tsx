@@ -19,7 +19,7 @@ interface ArticleBodyProps {
 
 const ArticleBody = (props: ArticleBodyProps) => {
   const { preview, thisIssueData, currentSection, permalink } = props
-  const { currentArticle, setArticleRef } = useArticleContext()
+  const { currentArticle, setArticleRef, swipeHandlers } = useArticleContext()
   const articleData = currentArticle
   const articleRef = useRef<HTMLDivElement>(null)
   const { body_text, images } = articleData
@@ -33,7 +33,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
   }, [setArticleRef])
 
   return (
-    <article className="border-t rail-border divide-y rail-divide my-6" ref={articleRef}>
+    <article className="border-t rail-border divide-y rail-divide my-6" {...{ ...swipeHandlers, ref: articleRef }}>
       {thisIssueData && (
         <NextPrev
           parentCollection={thisIssueData}

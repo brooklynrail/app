@@ -2,17 +2,25 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 
 import { useArticleSwitcher } from "../hooks/useArticleSwitcher"
 import { Articles } from "../../../lib/types"
+import { SwipeableHandlers } from "react-swipeable"
 
 interface ArticleContextProps {
   currentArticle: Articles
   setArticleSlug: (slug: string) => void
   setArticleRef: (ref: HTMLDivElement | null) => void
+  swipeHandlers: SwipeableHandlers
 }
 
 const ArticleContext = createContext<ArticleContextProps | undefined>(undefined)
 
-export const ArticleProvider = ({ children, initialArticle, tributeSlug }: any) => {
-  const { currentArticle, setArticleSlug } = useArticleSwitcher(initialArticle, tributeSlug)
+interface ArticleProviderProps {
+  initialArticle: Articles
+  articles: Articles[]
+  children: React.ReactNode
+}
+
+export const ArticleProvider = ({ children, initialArticle, articles }: ArticleProviderProps) => {
+  const { currentArticle, setArticleSlug, swipeHandlers } = useArticleSwitcher(initialArticle, articles)
 
   // Track the ref for the current article element
   const [articleRef, setArticleRef] = useState<HTMLDivElement | null>(null)
@@ -26,7 +34,7 @@ export const ArticleProvider = ({ children, initialArticle, tributeSlug }: any) 
   }, [currentArticle, articleRef])
 
   return (
-    <ArticleContext.Provider value={{ currentArticle, setArticleSlug, setArticleRef }}>
+    <ArticleContext.Provider value={{ currentArticle, setArticleSlug, setArticleRef, swipeHandlers }}>
       {children}
     </ArticleContext.Provider>
   )
