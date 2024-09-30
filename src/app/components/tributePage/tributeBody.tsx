@@ -96,11 +96,15 @@ const PublishInfo = (props: PublishInfoProps) => {
   // get all of the Issue Titles that are used in the thisTributeData.articles.issue.title
   const getIssueTitles = Array.from(new Set(thisTributeData.articles.map((article) => article.issue.title)))
 
+  // Look through the thisTributeData.articles and check if any of the articles are marked as in print
+  const isInPrint = thisTributeData.articles.some((article) => article.in_print)
   // List the issue titles. use the Oxford comma rules and wrap each title in a span tag
   const issueCount = getIssueTitles.length
   const issueTitles = getIssueTitles.reduce((acc, title, index) => {
     const issueTitle = `<span className="uppercase">${title}</span>`
-    if (index === getIssueTitles.length - 1) {
+    if (issueCount === 1) {
+      return issueTitle
+    } else if (index === getIssueTitles.length - 1) {
       return `${acc} and ${issueTitle}`
     } else if (index === getIssueTitles.length - 2 && issueCount === 2) {
       return `${acc} ${issueTitle}`
@@ -117,10 +121,13 @@ const PublishInfo = (props: PublishInfoProps) => {
         “{thisTributeData.title} {thisTributeData.deck}”
       </p>
       <p>
-        Published on {publishedOn} and printed in the {parse(issueTitles)} {issueCount > 1 ? "issues" : "issue"} of The
-        Brooklyn Rail.
+        Published on {publishedOn}{" "}
+        {isInPrint &&
+          `and printed in the ${parse(issueTitles)} ${issueCount > 1 ? "issues" : "issue"} of The
+        Brooklyn Rail`}
+        .
       </p>
-      <p>Edited by {editedBy}</p>
+      {editedBy && <p>Edited by {editedBy}.</p>}
     </div>
   )
 }
