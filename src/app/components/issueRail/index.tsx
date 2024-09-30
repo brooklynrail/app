@@ -19,6 +19,7 @@ interface ArticleListProps {
 
 const ArticleList = (props: ArticleListProps) => {
   const { sectionArticles, year, month } = props
+
   const list = sectionArticles.map((article: Articles, i: number) => {
     const { setArticleSlug, currentArticle } = useArticleContext()
 
@@ -91,6 +92,27 @@ const IssueArticles = (props: IssueArticlesProps) => {
         // if section is criticspage, add the editors message to the top of the list
         if (section.slug === "criticspage" && editorsMessage) {
           sectionArticles.unshift(editorsMessage)
+        }
+
+        // if the current section is In Memoriam, show only the articles that do not have a article.tribute or have an empty article.tribute array
+        let tributes: string[] = []
+        if (section.slug === "in-memoriam") {
+          const inMemoriamArticles = sectionArticles.filter((article: Articles) => {
+            if (article.tribute) {
+              // if the article.tribute is not included in the tributes array, return the article
+              if (!tributes.includes(article.tribute.slug)) {
+                // push the article.tribute to the tributes array without duplicates
+                tributes.push(article.tribute.slug)
+                return article
+              }
+            }
+            // if the article.tribute is empty, return the article
+            if (!article.tribute) {
+              return article
+            }
+          })
+          sectionArticles.length = 0
+          sectionArticles.push(...inMemoriamArticles)
         }
 
         const sectionPermalink = getPermalink({
