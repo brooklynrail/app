@@ -1,4 +1,4 @@
-import { Articles } from "../../../../../lib/types"
+import { Articles, Tributes } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import PromoSection from "../../promo/section"
 import SubscribeAd from "../subscribeAd"
@@ -30,6 +30,27 @@ const SectionLayout = (props: LayoutProps) => {
     if (editorsMessage) {
       currentArticles.unshift(editorsMessage)
     }
+  }
+
+  // if the current section is In Memoriam, show only the articles that do not have a article.tribute or have an empty article.tribute array
+  let tributes: string[] = []
+  if (currentSection.slug === "in-memoriam") {
+    const inMemoriamArticles = currentArticles.filter((article: Articles) => {
+      if (article.tribute) {
+        // if the article.tribute is not included in the tributes array, return the article
+        if (!tributes.includes(article.tribute.slug)) {
+          // push the article.tribute to the tributes array without duplicates
+          tributes.push(article.tribute.slug)
+          return article
+        }
+      }
+      // if the article.tribute is empty, return the article
+      if (!article.tribute) {
+        return article
+      }
+    })
+    currentArticles.length = 0
+    currentArticles.push(...inMemoriamArticles)
   }
 
   const description = currentSection.description ? (
