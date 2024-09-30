@@ -79,13 +79,15 @@ const PublishInfo = (props: PublishInfoProps) => {
       day: "numeric",
     })
 
-  // list all of the editors, separated by commas and an "and" before the last editor
+  // list all of the editors, separated by commas and an "and" before the last editor if there are more than one
   const editedBy = thisTributeData.editors.reduce((acc, editor, index) => {
     const editorName = `${editor.contributors_id?.first_name ?? ""} ${editor.contributors_id?.last_name ?? ""}`
-    if (index === thisTributeData.editors.length - 1) {
-      return `${acc} and ${editorName}`
+    if (thisTributeData.editors.length === 1) {
+      return editorName
+    } else if (index === thisTributeData.editors.length - 1) {
+      return `${acc}, and ${editorName}`
     } else if (index === thisTributeData.editors.length - 2) {
-      return `${acc}${editorName}, `
+      return `${acc}${editorName}`
     } else {
       return `${acc}${editorName}, `
     }
@@ -100,6 +102,8 @@ const PublishInfo = (props: PublishInfoProps) => {
     const issueTitle = `<span className="uppercase">${title}</span>`
     if (index === getIssueTitles.length - 1) {
       return `${acc} and ${issueTitle}`
+    } else if (index === getIssueTitles.length - 2 && issueCount === 2) {
+      return `${acc} ${issueTitle}`
     } else if (index === getIssueTitles.length - 2) {
       return `${acc}${issueTitle}, `
     } else {
@@ -108,7 +112,7 @@ const PublishInfo = (props: PublishInfoProps) => {
   }, "")
 
   return (
-    <div className="text-xs py-6 tablet:px-3 space-y-1">
+    <div className="text-xs py-6 tablet:px-3 space-y-2">
       <p>
         “{thisTributeData.title} {thisTributeData.deck}”
       </p>
