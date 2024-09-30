@@ -65,7 +65,6 @@ const TributeWriters = (props: TributeWritersProps) => {
       <div className="space-y-3 py-3 block tablet-lg:hidden">
         <TributeWritersList articles={articles} tributeSlug={tributeSlug} />
         <select
-          // className="px-2 pr-6 py-2 bg-zinc-50 dark:bg-zinc-700 uppercase text-sm font-bold w-full tablet-lg:py-3 tablet-lg:hidden order-last tablet-lg:order-none focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500"
           className="w-full bg-zinc-50 dark:bg-zinc-700 rounded-full border-r-8 border-transparent px-3 py-1 text-sm tablet-lg:hidden outline order-last tablet-lg:order-none outline-neutral-700"
           onChange={(event) => setArticleSlug(event.target.value)}
           value={selectedArticle}
