@@ -46,7 +46,6 @@ const Article = (props: ArticleProps) => {
     type: PageType.Issue,
   })
 
-  console.log("thisIssueData.articles", thisIssueData.articles)
   return (
     <>
       <ArticleProvider initialArticle={articleData} articles={thisIssueData.articles}>
