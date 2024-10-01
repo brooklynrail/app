@@ -8,7 +8,7 @@ import { useArticleState } from "@/app/hooks/useArticleState"
 
 const TributeHead = (props: TributePageProps) => {
   const { thisTributeData, articleData } = props
-  const { currentArticle, switchArticle } = useArticleState(articleData, thisTributeData.articles)
+  const { switchArticle } = useArticleState(articleData, thisTributeData.articles)
 
   const title = thisTributeData.title
   const deck = thisTributeData.deck
@@ -29,7 +29,7 @@ const TributeHead = (props: TributePageProps) => {
             {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
           </div>
         </div>
-        <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-9">
+        <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-9 desktop-lg:col-span-8">
           <div className="flex flex-col space-y-6 px-0 tablet-lg:px-6">
             {blurb && <Blurb text={blurb} />}
             <div className="hidden tablet-lg:block">
