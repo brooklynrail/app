@@ -15,11 +15,11 @@ const FeaturedArticles = (props: PromoProps) => {
   })
 
   if (featuredArticles.length === 0) {
-    return <></>
+    return null
   }
 
   return (
-    <>
+    <div>
       {featuredArticles.map((articleIssue: Articles, i: number) => {
         const article = articleIssue
         const permalink = getPermalink({
@@ -45,7 +45,7 @@ const FeaturedArticles = (props: PromoProps) => {
           />
         )
       })}
-    </>
+    </div>
   )
 }
 
