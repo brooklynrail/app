@@ -1,5 +1,4 @@
 "use client"
-import { useArticleContext } from "@/app/context/ArticleProvider"
 import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
@@ -7,11 +6,11 @@ import Bylines, { BylineType } from "../collections/promos/bylines"
 interface TributeWritersProps {
   articles: Articles[]
   tributeSlug: string
+  switchArticle: (slug: string) => void
 }
 
 const TributeWritersList = (props: TributeWritersProps) => {
-  const { articles, tributeSlug } = props
-  const { setArticleSlug } = useArticleContext()
+  const { articles, tributeSlug, switchArticle } = props
 
   const list = articles.map((article, index) => {
     const permalink = getPermalink({
@@ -33,7 +32,7 @@ const TributeWritersList = (props: TributeWritersProps) => {
           className="font-medium"
           onClick={(e) => {
             e.preventDefault() // Prevent the default link behavior
-            setArticleSlug(article.slug) // Trigger article change
+            switchArticle(article.slug) // Trigger article change
           }}
         >
           <Bylines hideBy={true} article={article} type={BylineType.TributeWritersList} />

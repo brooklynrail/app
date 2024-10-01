@@ -1027,7 +1027,9 @@ export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataPar
             "sort",
             "hide_title",
             "status",
-            "tribute",
+            {
+              tribute: ["slug"],
+            },
             {
               images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
             },

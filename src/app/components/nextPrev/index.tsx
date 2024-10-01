@@ -4,7 +4,6 @@ import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Title, { TitleType } from "../collections/promos/title"
-import { useArticleContext } from "@/app/context/ArticleProvider"
 
 export enum NextPrevType {
   Issues = "issues",
@@ -18,9 +17,10 @@ interface NextPrevProps {
   currentSlug: string
   parentCollection: Tributes | Issues
   type: NextPrevType
+  switchArticle?: (slug: string) => void
 }
 
-const NextPrev = ({ articles, currentSlug, parentCollection, type }: NextPrevProps) => {
+const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle }: NextPrevProps) => {
   const currentArticleIndex = articles.findIndex((article) => article.slug === currentSlug)
   const articlesListCount = articles.length
 
@@ -65,6 +65,7 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type }: NextPrevPro
       text={text}
       parentCollection={parentCollection}
       type={type}
+      switchArticle={switchArticle}
     />
   )
 
@@ -135,21 +136,25 @@ const ArticleLink = ({
   text,
   parentCollection,
   type,
+  switchArticle,
 }: {
   article: Articles
   permalink: string
   text: string
   parentCollection: Tributes | Issues
   type: NextPrevType
+  switchArticle?: (slug: string) => void
 }) => {
-  const { setArticleSlug } = useArticleContext()
   return (
     <div className={`text-xs ${text === "Next" && "text-right"}`}>
       <Link
         href={permalink}
         onClick={(e) => {
-          e.preventDefault() // Prevent the default link behavior
-          setArticleSlug(article.slug) // Trigger article change
+          // Conditionally handle link behavior based on the presence of `switchArticle`
+          if (switchArticle) {
+            e.preventDefault() // Prevent default navigation behavior
+            switchArticle(article.slug) // Trigger article switch
+          }
         }}
       >
         <span className="uppercase block">{text}</span>

@@ -10,11 +10,10 @@ import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
 import TributeHead from "./tributeHead"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
-import { ArticleProvider } from "@/app/context/ArticleProvider"
 import TributeBody from "./tributeBody"
 
 const TributePage = (props: TributePageProps) => {
-  const { thisTributeData, articleData } = props
+  const { thisTributeData } = props
   const { theme, setTheme } = useTheme()
 
   // State management for ads and articles
@@ -36,20 +35,18 @@ const TributePage = (props: TributePageProps) => {
 
   return (
     <>
-      <ArticleProvider initialArticle={articleData} articles={thisTributeData.articles}>
-        <PopupProvider>
-          <Paper pageClass={`paper-tribute ${tributeClass}`}>
-            <div className="">
-              <Header type={HeaderType.Default} />
-              <section id="main" className={styles.main}>
-                <TributeHead {...props} />
-                <TributeBody {...props} />
-              </section>
-            </div>
-          </Paper>
-          <ThemeToggle {...{ theme, setTheme }} />
-        </PopupProvider>
-      </ArticleProvider>
+      <PopupProvider>
+        <Paper pageClass={`paper-tribute ${tributeClass}`}>
+          <div className="">
+            <Header type={HeaderType.Default} />
+            <section id="main" className={styles.main}>
+              <TributeHead {...props} />
+              <TributeBody {...props} />
+            </section>
+          </div>
+        </Paper>
+        <ThemeToggle {...{ theme, setTheme }} />
+      </PopupProvider>
     </>
   )
 }

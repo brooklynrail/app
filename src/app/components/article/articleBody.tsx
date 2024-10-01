@@ -5,9 +5,7 @@ import BookshopWidget from "./bookshop"
 import ArticleHead from "./articleHead"
 import ContributorsBox from "../contributorsBox"
 import styles from "./poetry.module.scss"
-import { useArticleContext } from "@/app/context/ArticleProvider"
 import NextPrev, { NextPrevType } from "../nextPrev"
-import { useEffect, useRef } from "react"
 
 export enum BodyTypes {
   Article = "article",
@@ -17,39 +15,35 @@ export enum BodyTypes {
 interface ArticleBodyProps {
   preview?: boolean
   articleData: Articles
+  currentArticle?: Articles
   thisIssueData: Issues
   currentSection?: Sections
   permalink?: string
   articles: Articles[]
   type: BodyTypes
+  switchArticle?: (slug: string) => void
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
-  const { preview, thisIssueData, currentSection, permalink, articles, type } = props
-  const { currentArticle, setArticleRef, swipeHandlers } = useArticleContext()
-  const articleData = currentArticle
-  const articleRef = useRef<HTMLDivElement>(null)
+  const { articleData, preview, thisIssueData, currentSection, permalink, articles, type, switchArticle } = props
+
   const { body_text, images } = articleData
   if (!body_text) {
     return <></>
   }
 
-  // Pass the ref to the global context on mount
-  useEffect(() => {
-    setArticleRef(articleRef.current)
-  }, [setArticleRef])
-
   const articleStyles =
     type === BodyTypes.Tribute ? "divide-y rail-divide" : "border-t rail-border divide-y rail-divide my-6"
 
   return (
-    <article className={articleStyles} {...{ ...swipeHandlers, ref: articleRef }}>
+    <article className={articleStyles}>
       {thisIssueData && type === BodyTypes.Article && (
         <NextPrev
           parentCollection={thisIssueData}
           articles={articles}
           currentSlug={articleData.slug}
           type={NextPrevType.Issues}
+          switchArticle={switchArticle}
         />
       )}
 
@@ -83,6 +77,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
           articles={articles}
           currentSlug={articleData.slug}
           type={NextPrevType.Issues}
+          switchArticle={switchArticle}
         />
       )}
     </article>

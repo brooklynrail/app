@@ -4,9 +4,11 @@ import Title, { TitleType } from "../collections/promos/title"
 import FeaturedImage from "../featuredImage"
 import Blurb from "../collections/promos/blurb"
 import TributeWritersList from "./writersList"
+import { useArticleState } from "@/app/hooks/useArticleState"
 
 const TributeHead = (props: TributePageProps) => {
-  const { thisTributeData } = props
+  const { thisTributeData, articleData } = props
+  const { currentArticle, switchArticle } = useArticleState(articleData, thisTributeData.articles)
 
   const title = thisTributeData.title
   const deck = thisTributeData.deck
@@ -31,7 +33,11 @@ const TributeHead = (props: TributePageProps) => {
           <div className="flex flex-col space-y-6 px-0 tablet-lg:px-6">
             {blurb && <Blurb text={blurb} />}
             <div className="hidden tablet-lg:block">
-              <TributeWritersList articles={thisTributeData.articles} tributeSlug={thisTributeData.slug} />
+              <TributeWritersList
+                articles={thisTributeData.articles}
+                tributeSlug={thisTributeData.slug}
+                switchArticle={switchArticle}
+              />
             </div>
           </div>
         </div>

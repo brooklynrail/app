@@ -19,7 +19,8 @@ interface ArticleHeadProps {
 
 const ArticleHead = (props: ArticleHeadProps) => {
   const { permalink, thisIssueData, currentSection, articleData } = props
-  const { kicker, title, deck, featured_image, header_type, contributors, hide_bylines, byline_override } = articleData
+
+  const { kicker, title, deck, featured_image, header_type } = articleData
 
   const kickerProps = { kicker, thisIssueData, currentSection }
 

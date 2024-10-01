@@ -4,24 +4,20 @@ import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
 import { Ads } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import { getAds, getPermalink, PageType } from "../../../../lib/utils"
+import { getAds } from "../../../../lib/utils"
 import { useEffect, useState } from "react"
-import ArticleBody, { BodyTypes } from "./articleBody"
-import NextPrev, { NextPrevType } from "../nextPrev"
 import Ad970 from "../ads/ad970"
 import Header, { HeaderType } from "../header"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
 import { PopupProvider } from "../issueRail/popupProvider"
 import Paper from "../paper"
-import { ArticleProvider } from "@/app/context/ArticleProvider"
+import ArticleBody, { BodyTypes } from "./articleBody"
 
 const Article = (props: ArticleProps) => {
-  const { articleData, thisIssueData } = props
-  const { section } = articleData
-  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
-
+  const { thisIssueData, articleData, permalink } = props
   const { theme, setTheme } = useTheme()
+  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,39 +36,39 @@ const Article = (props: ArticleProps) => {
 
   const issueClass = `issue-${thisIssueData.slug.toLowerCase()}`
 
-  const issuePermalink = getPermalink({
-    year: thisIssueData.year,
-    month: thisIssueData.month,
-    type: PageType.Issue,
-  })
-
   return (
     <>
-      <ArticleProvider initialArticle={articleData} articles={thisIssueData.articles}>
-        <PopupProvider>
-          <Paper pageClass="paper-article">
-            <div className={`paper ${issueClass}`}>
-              <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
-                <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-                  <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3">
-                    <IssueRail thisIssueData={thisIssueData} />
-                  </aside>
+      <PopupProvider>
+        <Paper pageClass="paper-article">
+          <div className={`paper ${issueClass}`}>
+            <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
+              <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
+                <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3 relative">
+                  <IssueRail key={thisIssueData.id} thisIssueData={thisIssueData} />
+                </aside>
 
-                  <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-                    <Header type={HeaderType.Article} />
+                <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
+                  <Header type={HeaderType.Article} />
 
-                    <Ad970 currentAds={currentAds} />
-                    <ArticleBody {...props} articles={thisIssueData.articles} type={BodyTypes.Article} />
-                  </div>
+                  <Ad970 currentAds={currentAds} />
+
+                  <ArticleBody
+                    articles={thisIssueData.articles}
+                    currentSection={articleData.section}
+                    thisIssueData={thisIssueData}
+                    type={BodyTypes.Article}
+                    articleData={articleData}
+                    permalink={permalink}
+                  />
                 </div>
-              </main>
-              <Footer />
-            </div>
-            <ThemeToggle {...{ theme, setTheme }} />
-            <CoversPopup />
-          </Paper>
-        </PopupProvider>
-      </ArticleProvider>
+              </div>
+            </main>
+            <Footer />
+          </div>
+          <ThemeToggle {...{ theme, setTheme }} />
+          <CoversPopup />
+        </Paper>
+      </PopupProvider>
     </>
   )
 }

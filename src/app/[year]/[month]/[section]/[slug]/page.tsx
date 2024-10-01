@@ -73,10 +73,7 @@ interface ArticleParams {
 }
 
 async function getData({ params }: { params: ArticleParams }) {
-  const year = Number(params.year)
-  const month = Number(params.month)
   const slug: string = params.slug.toString()
-  const section: string = params.section.toString()
 
   const articleData = await getArticle(slug, "published")
   if (!articleData) {

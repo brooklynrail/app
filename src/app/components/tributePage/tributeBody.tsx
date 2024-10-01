@@ -1,21 +1,26 @@
 "use client"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
-import Title, { TitleType } from "../collections/promos/title"
 import parse from "html-react-parser"
 import ArticleBody, { BodyTypes } from "../article/articleBody"
-import NextPrev, { NextPrevType } from "../nextPrev"
-import Bylines, { BylineType } from "../collections/promos/bylines"
 import TributeWriters from "./writers"
-import { useArticleContext } from "@/app/context/ArticleProvider"
 import { useEffect, useRef } from "react"
 import { getPermalink, PageType } from "../../../../lib/utils"
+import { useArticleState } from "@/app/hooks/useArticleState"
 
 const TributeBody = (props: TributePageProps) => {
-  const { thisTributeData } = props
+  const { thisTributeData, articleData } = props
   const { summary } = thisTributeData
+  const { currentArticle, switchArticle } = useArticleState(articleData, thisTributeData.articles)
 
-  const { currentArticle, setArticleRef } = useArticleContext()
-  const articleRef = useRef<HTMLDivElement>(null)
+  // Create a ref to keep track of the article content area
+  const articleContentRef = useRef<HTMLDivElement | null>(null)
+
+  // Effect to scroll to the top of the article content whenever the currentArticle changes
+  useEffect(() => {
+    if (articleContentRef.current) {
+      articleContentRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [currentArticle])
 
   const permalink = getPermalink({
     tributeSlug: thisTributeData.slug,
@@ -23,13 +28,8 @@ const TributeBody = (props: TributePageProps) => {
     type: PageType.TributeArticle,
   })
 
-  // Pass the ref to the global context on mount
-  useEffect(() => {
-    setArticleRef(articleRef.current)
-  }, [setArticleRef])
-
   return (
-    <div className="py-3 px-6 tablet:px-9" ref={articleRef}>
+    <div className="py-3 px-6 tablet:px-9" ref={articleContentRef}>
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-3 tablet-lg:border-r-[1px] rail-border">
           <div className="sticky top-0 tablet-lg:overflow-y-auto tablet-lg:h-screen">
@@ -40,6 +40,7 @@ const TributeBody = (props: TributePageProps) => {
                 currentSlug={currentArticle.slug}
                 articles={thisTributeData.articles}
                 tributeSlug={thisTributeData.slug}
+                switchArticle={switchArticle}
               />
               <div className="hidden tablet-lg:block">
                 <PublishInfo thisTributeData={thisTributeData} />
@@ -57,6 +58,7 @@ const TributeBody = (props: TributePageProps) => {
             permalink={permalink}
             currentSection={currentArticle.section}
             type={BodyTypes.Tribute}
+            switchArticle={switchArticle}
           />
           <div className="block tablet-lg:hidden">
             <PublishInfo thisTributeData={thisTributeData} />
