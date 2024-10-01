@@ -33,7 +33,7 @@ const IssueLayout = (props: IssuePageProps) => {
     }
   })
 
-  const promoProps = { currentArticles, year, month }
+  const promoProps = { currentArticles, year, month, thisIssueData }
   const tocProps = { thisIssueData, currentSections, permalink, year, month }
 
   return (
@@ -69,7 +69,7 @@ const IssueLayout = (props: IssuePageProps) => {
       <div className="grid grid-cols-4 tablet-lg:grid-cols-8 gap-6">
         <div className="col-span-4 py-1">
           <div className="flex flex-col divide-y-[1px] rail-divide">
-            <FeaturedArticles {...promoProps} />
+            <FeaturedArticles {...promoProps} thisIssueData={thisIssueData} />
             {tributesData && tributesData.length > 0 && <InMemoriam tributesData={tributesData} />}
           </div>
         </div>
