@@ -13,6 +13,7 @@ import { CoverImage } from "../../issueRail/coverImage"
 import Link from "next/link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapPin } from "@fortawesome/free-solid-svg-icons"
+import AdsTileStrip from "../../ads/adsTileStrip"
 
 export interface LayoutProps {
   thisIssueData: Issues
@@ -71,6 +72,7 @@ const IssueLayout = (props: IssuePageProps) => {
           <div className="flex flex-col divide-y-[1px] rail-divide">
             <FeaturedArticles {...promoProps} />
             {tributesData && tributesData.length > 0 && <InMemoriam tributesData={tributesData} />}
+            <AdsTileStrip />
           </div>
         </div>
         <div className="col-span-4 tablet-lg:col-start-5 py-1">
