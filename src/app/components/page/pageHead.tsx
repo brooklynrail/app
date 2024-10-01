@@ -10,8 +10,8 @@ const PageHead = (props: PageHeadProps) => {
   const { title } = pageData
 
   return (
-    <header>
-      <h1>{parse(title)}</h1>
+    <header className="py-12">
+      <h1 className="font-light text-5xl">{parse(title)}</h1>
     </header>
   )
 }

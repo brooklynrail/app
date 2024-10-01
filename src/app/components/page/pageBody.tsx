@@ -1,10 +1,6 @@
 import { Pages } from "../../../../lib/types"
-import BodyText from "../article/bodyText"
+import replaceShortcodes from "../article/shortcodes"
 
-export enum ArticleType {
-  BodyText = "body_text",
-  BodyCode = "body_code",
-}
 interface PageBodyProps {
   pageData: Pages
 }
@@ -12,6 +8,10 @@ interface PageBodyProps {
 const PageBody = (props: PageBodyProps) => {
   const { pageData } = props
 
-  return <BodyText body_text={pageData.body_text} images={pageData.images} />
+  if (!pageData.body_text) {
+    return <></>
+  }
+
+  return <div className={`content`}>{replaceShortcodes({ html: pageData.body_text, images: pageData.images })}</div>
 }
 export default PageBody

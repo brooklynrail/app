@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "./fonts.scss";
+@import "./content.scss";
+@import "./shortcodes.scss";
+
+:root {
+  --font-family-sans: "Untitled Sans";
+  --font-family-serif: "Untitled Serif";
+  --font-family-mono: "Courier New";
+  --font-family-display: "Untitled Sans";
+  --font-family-body: "Untitled Serif";
+}
+
+html {
+  font-size: 16px;
+}
+
+:root {
+  /* Font Sizes */
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.9375rem; /* 15px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.3125rem; /* 21px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.6875rem; /* 27px */
+  --font-size-4xl: 2.25rem; /* 36px */
+  --font-size-5xl: 3rem; /* 48px */
+  --font-size-6xl: 3.75rem; /* 60px */
+  --font-size-7xl: 5.25rem; /* 84px */
+  --font-size-8xl: 6rem; /* 96px */
+
+  --line-height-xs: 1.125rem; /* 18px */
+  --line-height-sm: 1.3125rem; /* 21px */
+  --line-height-base: 1.5rem; /* 24px */
+  --line-height-lg: 1.5rem; /* 24px */
+  --line-height-xl: 1.875rem; /* 30px */
+  --line-height-2xl: 1.875rem; /* 30px */
+  --line-height-3xl: 2.0625rem; /* 33px */
+  --line-height-4xl: 2.625rem; /* 42px */
+  --line-height-5xl: 3.375rem; /* 54px */
+  --line-height-6xl: 4.125rem; /* 66px */
+  --line-height-7xl: 5.25rem; /* 84px */
+  --line-height-8xl: 6rem; /* 96px */
+
+  /* Font Weights */
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+}
+
+strong,
+b {
+  @apply font-bold;
+}
+
+.rail-bg {
+  @apply bg-white dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
+.rail-tribute-bg {
+  @apply bg-slate-100 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
+.rail-border {
+  @apply border-zinc-600 dark:border-slate-300 border-dotted;
+}
+.rail-border-solid {
+  @apply rail-border !border-solid;
+}
+.rail-divide {
+  @apply divide-zinc-600 dark:divide-slate-300 divide-dotted;
+}
+.rail-divide-solid {
+  @apply rail-divide !border-solid;
+}
+
+html,
+body {
+  @apply text-base font-normal;
+  @apply font-sans antialiased;
+  @apply bg-red-600 text-black;
+}
+
+.paper {
+  @apply rail-bg;
+}
+
+.paper-tribute {
+  @apply rail-tribute-bg;
+}
+
+a {
+  @apply hover:underline underline-offset-2;
+}

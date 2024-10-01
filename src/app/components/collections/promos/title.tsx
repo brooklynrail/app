@@ -1,19 +1,25 @@
 import Link from "next/link"
 import { stripHtml } from "string-strip-html"
 import parse from "html-react-parser"
+import { cleanup } from "../../../../../lib/utils"
 
 export enum TitleType {
   XSmall = "text-base font-serif font-normal",
   Small = "text-2xl font-light",
   Medium = "text-3xl tablet:text-4xl font-light",
+  SectionPromo = "text-2xl tablet:text-3xl font-light",
+  ArticleHead = "text-5xl tablet:text-6xl font-light",
+  ArticleHeadDiptych = "text-5xl tablet:text-6xl font-light text-center",
   Lead = "text-4xl tablet:text-5xl desktop:text-6xl font-light",
-  Tribute = "text-center font-bold text-5xl",
+  NextPrev = "text-md font-sans font-light",
+  TributeArticle = "text-2xl tablet-lg:text-3xl font-sans font-light",
+  Tribute = "font-bold text-4xl tablet-lg:text-5xl",
   CriticsPage = "text-center font-normal font-serif text-6xl",
 }
 
 interface TitleProps {
   title: string
-  permalink: string
+  permalink?: string
   type: TitleType
 }
 
@@ -24,27 +30,21 @@ const Title = (props: TitleProps) => {
     return <></>
   }
 
-  // remove some of the HTML from the titles
-  function replaceNbsps(str: string) {
-    // Replace non-breaking spaces
-    var reNbsp = new RegExp(String.fromCharCode(160), "g")
-    str = str.replace(reNbsp, " ")
+  let title_contents = parse(cleanup(title))
 
-    // Remove <br/> tags
-    str = str.replace(/<br\s*\/?>/gi, " ")
-
-    // Remove <span> tags with specific styles while preserving the text within
-    str = str.replace(/<span[^>]*style=["'][^"']*font-size:\s*80%[^"']*["'][^>]*>(.*?)<\/span>/gi, "$1")
-
-    return str
+  if (permalink) {
+    title_contents = (
+      <Link href={permalink} title={`Visit ${stripHtml(cleanup(title)).result}`}>
+        {title_contents}
+      </Link>
+    )
   }
 
-  return (
-    <h2 className={`${type}`}>
-      <Link href={permalink} title={`Visit ${stripHtml(replaceNbsps(title)).result}`}>
-        {parse(replaceNbsps(title))}
-      </Link>
-    </h2>
-  )
+  switch (type) {
+    case TitleType.NextPrev:
+      return <h3 className={`${type}`}>{title_contents}</h3>
+    default:
+      return <h2 className={`${type}`}>{title_contents}</h2>
+  }
 }
 export default Title

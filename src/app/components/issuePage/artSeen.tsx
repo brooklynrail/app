@@ -19,11 +19,10 @@ const ArtSeen = (props: PromoProps) => {
   }
 
   return (
-    <div className="collection">
-      <h3>ArtSeen</h3>
+    <div className="py-2 pb-3 flex flex-col space-y-1">
+      <h3 className="font-bold">ArtSeen</h3>
       <ul>
         {artSeen.map((article: Articles, i: number) => {
-          const order = article.sort
           const permalink = getPermalink({
             year: year,
             month: month,
@@ -31,7 +30,7 @@ const ArtSeen = (props: PromoProps) => {
             slug: article.slug,
             type: PageType.Article,
           })
-          return <PromoSlim key={`artseen-${i}`} i={i} article={article} permalink={permalink} order={order} />
+          return <PromoSlim key={`artseen-${i}`} i={i} article={article} permalink={permalink} />
         })}
       </ul>
     </div>

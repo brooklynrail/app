@@ -11,7 +11,7 @@ const IssueRailHeader = (props: IssueRailHeaderProps) => {
 
   return (
     <>
-      <header id="rail-header">
+      <header className="pb-1">
         <h2>
           <Link href="/">
             <Image

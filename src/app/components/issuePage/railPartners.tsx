@@ -3,7 +3,7 @@ import Image from "next/image"
 
 const RailPartners = () => {
   return (
-    <div className="related rail_partners">
+    <div className="py-4 flex flex-col space-y-6 items-center bg-white">
       <Link href="https://www.metabolicstudio.org/" target="out-rail">
         <Image src="/images/banners-left/metabolic-studio.png" width="124" height="62" alt="Metabolic Studio" />
       </Link>
@@ -61,6 +61,9 @@ const RailPartners = () => {
 
       <Link href="https://secondshiftstudiospace.org/" target="out-rail">
         <Image src="/images/banners-left/second_shift_ad.jpg" width="124" height="62" alt="Second Shift Studios" />
+      </Link>
+      <Link href="https://aubinpictures.com/" target="out-rail">
+        <Image src="/images/banners-left/aubin-pictures.png" width="124" height="62" alt="Aubin Pictures" />
       </Link>
     </div>
   )

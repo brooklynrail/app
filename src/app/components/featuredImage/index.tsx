@@ -14,7 +14,7 @@ const FeaturedImage = (props: FeaturedImageProps) => {
   const alt = caption ? caption : `${stripHtml(props.title).result}`
 
   return (
-    <div className="">
+    <div className={`media`}>
       <div>
         <Image
           priority

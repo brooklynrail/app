@@ -19,11 +19,10 @@ const CriticsPage = (props: PromoProps) => {
   }
 
   return (
-    <div className="collection">
-      <h3>Critics Page</h3>
+    <div className="py-2 pb-3 flex flex-col space-y-1">
+      <h3 className="font-bold text-md">Critics Page</h3>
       <ul>
         {criticsPage.map((article: Articles, i: number) => {
-          const order = article.sort
           const permalink = getPermalink({
             year: year,
             month: month,
@@ -31,7 +30,7 @@ const CriticsPage = (props: PromoProps) => {
             slug: article.slug,
             type: PageType.Article,
           })
-          return <PromoSlim key={`criticspage-${i}`} i={i} article={article} permalink={permalink} order={order} />
+          return <PromoSlim key={`criticspage-${i}`} i={i} article={article} permalink={permalink} />
         })}
       </ul>
     </div>

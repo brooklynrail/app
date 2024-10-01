@@ -1,9 +1,9 @@
 "use client"
 import { useState, useEffect } from "react"
 import Password from "../password"
-import { IssuePreviewProps } from "@/app/preview/issue/[year]/[month]/page"
 import IssuePage from "../../issuePage"
 import { PageLayout } from "@/app/page"
+import { IssuePreviewProps } from "@/app/preview/issue/[id]/page"
 
 const IssuePreview = (props: IssuePreviewProps) => {
   const { thisIssueData, isEnabled, previewPassword, tributesData } = props
@@ -66,12 +66,8 @@ const IssuePreview = (props: IssuePreviewProps) => {
     return <Password {...passwordProps} />
   }
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${thisIssueData.year}/${thisIssueData.month}`
-  return (
-    <>
-      <IssuePage {...props} layout={PageLayout.Issue} previewURL={previewURL} />
-    </>
-  )
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${thisIssueData.id}`
+  return <IssuePage {...props} layout={PageLayout.Issue} previewURL={previewURL} />
 }
 
 export default IssuePreview

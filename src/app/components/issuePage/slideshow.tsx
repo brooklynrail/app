@@ -17,9 +17,9 @@ const SlideImage = (props: SlideImageProps) => {
   return (
     <Image
       priority
-      className="bannerimg"
-      width={664}
-      height={282}
+      className="relative top-0 left-0"
+      width={1680}
+      height={1282}
       alt={stripHtml(alt).result}
       src={src}
       sizes={"60vw"}
@@ -66,31 +66,44 @@ const SlideShow = (props: SlideshowProps) => {
     })
 
     return (
-      <Link key={i} className="banner" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
-        <SlideImage slideshow_image={slideshow_image} alt={title} />
-        <h2>{parse(title)}</h2>
-      </Link>
+      <div key={i}>
+        <div className="relative tablet:max-h-[288px]">
+          <Link key={i} className="block" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
+            <SlideImage slideshow_image={slideshow_image} alt={title} />
+          </Link>
+          <div
+            id="banner-prev"
+            className="left-0 h-full z-10 px-3 top-0 absolute cursor-pointer flex flex-col justify-center"
+            onClick={handlePrevSlide}
+          >
+            <Image src="/images/banner-prev.png" width={25} height={31} alt="Previous" />
+          </div>
+
+          <div
+            id=""
+            className="right-0 h-full z-10 px-3 top-0 absolute cursor-pointer flex flex-col justify-center"
+            onClick={handleNextSlide}
+          >
+            <Image src="/images/banner-next.png" width={25} height={31} alt="Next" />
+          </div>
+        </div>
+        <Link key={i} className="block" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
+          <h2 className="py-1 font-normal text-xl">{parse(title)}</h2>
+        </Link>
+      </div>
     )
   })
 
   const indicator = currentSlides.map((article: Articles, i: number) => {
-    const show = i === slidePosition ? "show" : ""
-    return <div key={i} className={`bannerblock ${show}`} onClick={() => setSlidePosition(i)}></div>
+    const show = i === slidePosition ? "bg-red-500" : "bg-gray-300"
+    return <div key={i} className={`w-2.5 h-2.5 px-1 rounded-full ${show}`} onClick={() => setSlidePosition(i)}></div>
   })
 
   return (
-    <div id="bannercontainer">
-      <div id="banner">
-        <div id="bannerimg-container">{slides}</div>
-        <div id="banner-indicator">{indicator}</div>
-
-        <div id="banner-prev" className="bannercontrols" onClick={handlePrevSlide}>
-          <Image src="/images/banner-prev.png" width={25} height={31} alt="Previous" />
-        </div>
-
-        <div id="banner-next" className="bannercontrols" onClick={handleNextSlide}>
-          <Image src="/images/banner-next.png" width={25} height={31} alt="Next" />
-        </div>
+    <div className="py-2 tablet-lg:py-0 tablet-lg:!border-t-0">
+      <div className="relative">
+        <div className="relative">{slides}</div>
+        <div className="flex items-center py-2 justify-center space-x-2">{indicator}</div>
       </div>
     </div>
   )

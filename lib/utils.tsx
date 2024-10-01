@@ -9,6 +9,7 @@ import {
   Events,
   GlobalSettings,
   Homepage,
+  GlobalSettingsNavigation,
   Issues,
   Pages,
   People,
@@ -106,7 +107,7 @@ export async function getIssues() {
         `&fields[]=month` +
         `&fields[]=slug` +
         `&fields[]=special_issue` +
-        `&filter[status][_in]=published` +
+        `&filter[status][_eq]=published` +
         `&sort[]=-year` +
         `&sort[]=-month` +
         `&page=${page}` +
@@ -224,7 +225,7 @@ export const getHomepageData = cache(async () => {
                     "excerpt",
                     "slug",
                     {
-                      curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+                      editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
                     },
                     {
                       articles: [
@@ -270,7 +271,7 @@ export const getHomepageData = cache(async () => {
 export const getPageData = cache(async (slug: string) => {
   try {
     const pageData = await directus.request(
-      readItem("pages", slug, {
+      readItems("pages", {
         fields: [
           "*",
           "title",
@@ -281,11 +282,11 @@ export const getPageData = cache(async (slug: string) => {
             images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
           },
         ],
-        filter: { status: { _eq: "published" } },
+        filter: { status: { _eq: "published" }, slug: { _eq: slug } },
       }),
     )
 
-    return pageData as Pages
+    return pageData[0] as Pages
   } catch (error) {
     console.error("Error fetching page data:", error)
     return null
@@ -317,7 +318,7 @@ export const getAllPages = cache(async () => {
   }
 })
 
-export async function getGlobalSettings() {
+export const getGlobalSettings = cache(async () => {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
   const res = await fetch(globalSettingsAPI)
   if (!res.ok) {
@@ -326,7 +327,7 @@ export async function getGlobalSettings() {
   }
   const { data } = await res.json()
   return data as GlobalSettings
-}
+})
 
 // Explore making this get IssueData by ID
 // NOTE: we need to use `readItems` instead of `readItem` because we are querying the `issues` collection
@@ -422,6 +423,8 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.contributors.contributors_id.bio` +
     `&fields[]=articles.issue.id` +
     `&fields[]=articles.issue.title` +
+    `&fields[]=articles.issue.year` +
+    `&fields[]=articles.issue.month` +
     `&fields[]=articles.issue.slug` +
     `&fields[]=articles.section.id` +
     `&fields[]=articles.section.name` +
@@ -585,13 +588,17 @@ export async function getArticlePages() {
   }
 }
 
-export async function getPreviewArticle(slug: string) {
+export async function getPreviewArticle(id: string) {
   try {
+    // Search for the article with the matching slug
+    // assuming that slug is unique!
     const preview = await directus.request(
-      readItem("articles", slug, {
+      readItems("articles", {
         version: "draft",
         fields: [
           "*",
+          "tribute",
+          "hide_title",
           { section: ["id", "name", "slug"] },
           { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
@@ -602,16 +609,19 @@ export async function getPreviewArticle(slug: string) {
           { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
           { user_updated: ["id", "first_name", "last_name", "avatar"] },
         ],
+        filter: {
+          id: { _eq: id },
+        },
       }),
     )
-    return preview as Articles
+    return preview[0] as Articles
   } catch (error) {
     console.error("error in getPreviewArticle", error)
     return null
   }
 }
 
-export async function getPreviewIssue(year: number, month: number) {
+export async function getPreviewIssue(id: string) {
   try {
     const preview = await directus.request(
       readItems("issues", {
@@ -643,18 +653,77 @@ export async function getPreviewIssue(year: number, month: number) {
           { user_updated: ["id", "first_name", "last_name", "avatar"] },
         ],
         filter: {
-          _and: [
-            {
-              year: { _eq: year },
-              month: { _eq: month },
-            },
-          ],
+          id: { _eq: id },
         },
       }),
     )
     return preview[0] as Issues
   } catch (error) {
     console.error("error in getPreviewIssue", error)
+    return null
+  }
+}
+
+export async function getPreviewTribute(id: string) {
+  try {
+    const preview = await directus.request(
+      readItems("tributes", {
+        fields: [
+          "id",
+          "title",
+          "deck",
+          "slug",
+          "blurb",
+          "summary",
+          "excerpt",
+          "published",
+          "title_tag",
+          {
+            editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+          },
+          {
+            featured_image: ["id", "width", "height", "filename_disk", "caption"],
+          },
+          {
+            articles: [
+              "slug",
+              "title",
+              "excerpt",
+              "body_text",
+              "sort",
+              "hide_title",
+              "status",
+              {
+                tribute: ["slug"],
+              },
+              {
+                images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+              },
+              {
+                section: ["name", "slug"],
+              },
+              {
+                issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+              },
+              {
+                contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
+              },
+              {
+                featured_image: ["id", "width", "height", "filename_disk", "caption"],
+              },
+            ],
+          },
+        ],
+        filter: {
+          id: {
+            _eq: id,
+          },
+        },
+      }),
+    )
+    return preview[0] as Tributes
+  } catch (error) {
+    console.error("error in getPreviewTribute", error)
     return null
   }
 }
@@ -715,6 +784,8 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=contributors.contributors_id.bio` +
     `&fields[]=issue.title` +
     `&fields[]=issue.slug` +
+    `&fields[]=issue.year` +
+    `&fields[]=issue.month` +
     `&fields[]=section.slug` +
     `&fields[]=section.name` +
     `&fields[]=images.sort` +
@@ -725,10 +796,12 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=images.directus_files_id.height` +
     `&fields[]=images.directus_files_id.type` +
     `&fields[]=images.directus_files_id.shortcode_key` +
+    `&fields[]=tribute` +
     `&fields[]=tribute.title` +
     `&fields[]=tribute.slug` +
+    `&fields[]=hide_title` +
     `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_in]=${status}`
+    `&filter[status][_eq]=${status}`
 
   try {
     const res = await fetch(articleAPI)
@@ -739,6 +812,7 @@ export async function getArticle(slug: string, status?: string) {
     }
 
     const { data } = await res.json()
+
     return data[0] as Articles
   } catch (error) {
     console.error(error)
@@ -767,7 +841,7 @@ export const getEvent = cache(async (slug: string) => {
   return events as Events[]
 })
 
-export async function getRedirect(slug: string) {
+export const getRedirect = cache(async (slug: string) => {
   try {
     const redirect = await directus.request(
       readItems("redirects", {
@@ -798,7 +872,7 @@ export async function getRedirect(slug: string) {
     console.error("Error in getRedirect", error)
     return null
   }
-}
+})
 
 export const getAds = cache(async () => {
   // const today = new Date()
@@ -888,7 +962,9 @@ export enum PageType {
   Contributor = "contributor",
   Page = "page",
   ChildPage = "child_page",
-  Preview = "preview",
+  PreviewArticle = "preview_article",
+  PreviewIssue = "preview_issue",
+  PreviewTribute = "preview_tribute",
   SpecialIssue = "special_issue",
   SpecialIssueSection = "special_issue_section",
   SpecialIssueArticle = "special_issue_article",
@@ -904,9 +980,12 @@ interface PermalinkProps {
   slug?: string
   issueSlug?: string
   tributeSlug?: string
+  articleId?: string
+  issueId?: string
+  tributeId?: string
 }
 export function getPermalink(props: PermalinkProps) {
-  const { year, section, slug, issueSlug, type, tributeSlug } = props
+  const { year, section, slug, issueSlug, type, tributeSlug, articleId, issueId, tributeId } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
   const day = props.day && props.day < 10 ? `0${props.day}` : props.day
 
@@ -937,8 +1016,12 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/${slug}/`
     case PageType.ChildPage:
       return `${baseURL}/about/${slug}/`
-    case PageType.Preview:
-      return `${baseURL}/preview/${slug}/`
+    case PageType.PreviewArticle:
+      return `${baseURL}/preview/article/${articleId}/`
+    case PageType.PreviewIssue:
+      return `${baseURL}/preview/issue/${issueId}/`
+    case PageType.PreviewTribute:
+      return `${baseURL}/preview/tribute/${tributeId}/`
     case PageType.Archive:
       return `${baseURL}/archive/`
     case PageType.Search:
@@ -968,36 +1051,37 @@ export async function getContributor(slug: string) {
     `&fields[]=old_id` +
     `&fields[]=date_updated` +
     `&fields[]=date_created` +
-    `&fields[]=articles.articles_slug.status` +
-    `&fields[]=articles.articles_slug.slug` +
-    `&fields[]=articles.articles_slug.title` +
-    `&fields[]=articles.articles_slug.excerpt` +
-    `&fields[]=articles.articles_slug.kicker` +
-    `&fields[]=articles.articles_slug.featured` +
-    `&fields[]=articles.articles_slug.featured_image.id` +
-    `&fields[]=articles.articles_slug.featured_image.caption` +
-    `&fields[]=articles.articles_slug.featured_image.filename_disk` +
-    `&fields[]=articles.articles_slug.featured_image.width` +
-    `&fields[]=articles.articles_slug.featured_image.height` +
-    `&fields[]=articles.articles_slug.featured_image.type` +
-    `&fields[]=articles.articles_slug.issue.title` +
-    `&fields[]=articles.articles_slug.issue.year` +
-    `&fields[]=articles.articles_slug.issue.month` +
-    `&fields[]=articles.articles_slug.issue.slug` +
-    `&fields[]=articles.articles_slug.issue.special_issue` +
-    `&fields[]=articles.articles_slug.section.slug` +
-    `&fields[]=articles.articles_slug.section.name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.id` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.first_name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.last_name` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.old_id` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.slug` +
-    `&fields[]=articles.articles_slug.contributors.contributors_id.bio` +
+    // `&fields[]=articles` +
+    `&fields[]=articles.articles_contributors_id.slug` +
+    `&fields[]=articles.articles_contributors_id.title` +
+    `&fields[]=articles.articles_contributors_id.status` +
+    `&fields[]=articles.articles_contributors_id.excerpt` +
+    `&fields[]=articles.articles_contributors_id.kicker` +
+    `&fields[]=articles.articles_contributors_id.featured` +
+    `&fields[]=articles.articles_contributors_id.featured_image.id` +
+    `&fields[]=articles.articles_contributors_id.featured_image.caption` +
+    `&fields[]=articles.articles_contributors_id.featured_image.filename_disk` +
+    `&fields[]=articles.articles_contributors_id.featured_image.width` +
+    `&fields[]=articles.articles_contributors_id.featured_image.height` +
+    `&fields[]=articles.articles_contributors_id.featured_image.type` +
+    `&fields[]=articles.articles_contributors_id.issue.title` +
+    `&fields[]=articles.articles_contributors_id.issue.year` +
+    `&fields[]=articles.articles_contributors_id.issue.month` +
+    `&fields[]=articles.articles_contributors_id.issue.slug` +
+    `&fields[]=articles.articles_contributors_id.issue.special_issue` +
+    `&fields[]=articles.articles_contributors_id.section.slug` +
+    `&fields[]=articles.articles_contributors_id.section.name` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.id` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.first_name` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.last_name` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.old_id` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.slug` +
+    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.bio` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
     `&filter[articles][_nnull]=true` +
-    `&deep[articles][_filter][articles_slug][status][_eq]=published` +
-    `&deep[articles][_sort]=-articles_slug.issue.year,-articles_slug.issue.month` +
+    `&deep[articles][_filter][articles_contributors_id][status][_eq]=published` +
+    `&deep[articles][_sort]=-articles_contributors_id.issue.year,-articles_contributors_id.issue.month` +
     `&deep[articles][issue][_nnull]=true`
 
   try {
@@ -1016,7 +1100,7 @@ export async function getContributor(slug: string) {
   }
 }
 
-export async function getAllContributors() {
+export const getAllContributors = cache(async () => {
   try {
     let contributorPages: Contributors[] = []
     let page = 1
@@ -1040,19 +1124,21 @@ export async function getAllContributors() {
     console.error("Failed to fetch getAllContributors data", error)
     return null
   }
-}
+})
 
 interface TributesParams {
   thisIssueData: Issues
 }
 
-export async function getTributes(props: TributesParams) {
+export const getTributes = cache(async (props: TributesParams) => {
   const { thisIssueData } = props
 
   // filter out the articles where tribute is not null
   const tributeArticles = thisIssueData.articles.filter((article) => article.tribute !== null)
   // make an array of the tribute slugs in the tributeArticles and remove all duplicates
-  const currentTributes = Array.from(new Set(tributeArticles.map((article) => article.tribute.slug)))
+  const currentTributes: Array<string> = Array.from(
+    new Set(tributeArticles.map((article: Articles) => article.tribute?.slug).filter((slug): slug is string => !!slug)),
+  )
 
   const tributes = await directus.request(
     readItems("tributes", {
@@ -1063,7 +1149,7 @@ export async function getTributes(props: TributesParams) {
         "excerpt",
         "title_tag",
         {
-          curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+          editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
         },
         {
           featured_image: ["id", "width", "height", "filename_disk", "caption"],
@@ -1077,25 +1163,29 @@ export async function getTributes(props: TributesParams) {
             {
               tribute: ["slug"],
             },
+            "hide_title",
+            {
+              contributors: [{ contributors_id: ["id", "slug", "first_name", "last_name"] }],
+            },
           ],
         },
       ],
       filter: {
         slug: {
-          _in: currentTributes,
+          _in: currentTributes.length > 0 ? currentTributes : ["none"],
         },
       },
     }),
   )
   return tributes as Tributes[]
-}
+})
 
 interface TributeDataParams {
   tributeSlug: string
   slug: string
 }
 
-export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
+export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataParams) => {
   const tribute = await directus.request(
     readItems("tributes", {
       fields: [
@@ -1105,9 +1195,10 @@ export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
         "blurb",
         "summary",
         "excerpt",
+        "published",
         "title_tag",
         {
-          curators: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+          editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
         },
         {
           featured_image: ["id", "width", "height", "filename_disk", "caption"],
@@ -1119,7 +1210,11 @@ export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
             "excerpt",
             "body_text",
             "sort",
+            "hide_title",
             "status",
+            {
+              tribute: ["slug"],
+            },
             {
               images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
             },
@@ -1146,13 +1241,51 @@ export async function getTributeData({ tributeSlug, slug }: TributeDataParams) {
     }),
   )
   return tribute[0] as Tributes
-}
+})
 
-export async function getAllPeople() {
+export const getAllPeople = cache(async () => {
   const people = await directus.request(
     readItems("people", {
       fields: ["*"],
     }),
   )
   return people as People[]
+})
+
+export const getNavigation = cache(async () => {
+  const global_settings = await directus.request(
+    readSingleton("global_settings", {
+      fields: [
+        {
+          current_issue: ["title", "slug"],
+        },
+        {
+          navigation: [
+            "collection",
+            {
+              item: {
+                sections: ["name", "slug"],
+                tributes: ["title", "slug"],
+              },
+            },
+          ],
+        },
+      ],
+    }),
+  )
+  return global_settings as GlobalSettings
+})
+
+export const cleanup = (str: string) => {
+  // Replace non-breaking spaces
+  var reNbsp = new RegExp(String.fromCharCode(160), "g")
+  str = str.replace(reNbsp, " ")
+
+  // Remove <br/> tags
+  str = str.replace(/<br\s*\/?>/gi, " ")
+
+  // Remove <span> tags with specific styles while preserving the text within
+  str = str.replace(/<span[^>]*style=["'][^"']*font-size:\s*80%[^"']*["'][^>]*>(.*?)<\/span>/gi, "$1")
+
+  return str
 }

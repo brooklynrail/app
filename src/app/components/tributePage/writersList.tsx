@@ -1,15 +1,16 @@
 "use client"
 import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import Bylines from "../issueRail/bylines"
+import Bylines, { BylineType } from "../collections/promos/bylines"
 
 interface TributeWritersProps {
   articles: Articles[]
   tributeSlug: string
+  switchArticle: (slug: string) => void
 }
 
 const TributeWritersList = (props: TributeWritersProps) => {
-  const { articles, tributeSlug } = props
+  const { articles, tributeSlug, switchArticle } = props
 
   const list = articles.map((article, index) => {
     const permalink = getPermalink({
@@ -25,12 +26,19 @@ const TributeWritersList = (props: TributeWritersProps) => {
       separator = ""
     }
     return (
-      <>
-        <a href={permalink} className="font-medium">
-          <Bylines hideBy={true} contributors={article.contributors} />
+      <span key={index}>
+        <a
+          href={permalink}
+          className="font-medium"
+          onClick={(e) => {
+            e.preventDefault() // Prevent the default link behavior
+            switchArticle(article.slug) // Trigger article change
+          }}
+        >
+          <Bylines hideBy={true} article={article} type={BylineType.TributeWritersList} />
         </a>
         {separator}
-      </>
+      </span>
     )
   })
 

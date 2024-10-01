@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 export interface ArticleProps {
   articleData: Articles
   thisIssueData: Issues
-  currentSection?: Sections
+  currentSection: Sections
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -73,10 +73,7 @@ interface ArticleParams {
 }
 
 async function getData({ params }: { params: ArticleParams }) {
-  const year = Number(params.year)
-  const month = Number(params.month)
   const slug: string = params.slug.toString()
-  const section: string = params.section.toString()
 
   const articleData = await getArticle(slug, "published")
   if (!articleData) {
@@ -102,11 +99,6 @@ async function getData({ params }: { params: ArticleParams }) {
 
   const currentSection = articleData.section
 
-  const errorCode = !currentSection || (currentSection.slug != section && "Section not found")
-  if (errorCode) {
-    return { props: { errorCode: 404, errorMessage: errorCode } }
-  }
-
   const permalink = getPermalink({
     year: thisIssueData.year,
     month: thisIssueData.month,
@@ -128,7 +120,7 @@ async function getData({ params }: { params: ArticleParams }) {
 export default async function ArticlePageController({ params }: { params: ArticleParams }) {
   const data = await getData({ params })
 
-  if (!data.props.articleData || !data.props.currentSection) {
+  if (!data.props.articleData) {
     return notFound()
   }
 

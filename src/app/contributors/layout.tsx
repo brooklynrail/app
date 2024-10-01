@@ -1,13 +1,5 @@
-// import "../../../styles/issue/styles.scss"
-import Footer from "../components/footer"
+import "../../../styles/globals.scss"
 
 export default function ContributorLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <div className={`paper`}>
-        {children}
-        <Footer />
-      </div>
-    </>
-  )
+  return <>{children}</>
 }

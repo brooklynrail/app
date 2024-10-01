@@ -1,0 +1,112 @@
+// Brooklyn Rail Header
+#article_header {
+  @include u-margin-x(0);
+  @include u-display("flex");
+  @include u-flex("align-center"); // Keeps the buttons aligned within the header
+  @include u-flex("justify");
+  @include u-flex("no-wrap");
+
+  @include u-position("sticky"); // makes the header stick on scroll
+  @include u-top(0);
+  @include u-bg("white");
+  z-index: 5;
+
+  @include at-media("tablet-lg") {
+    @include u-margin-x(1);
+    @include u-margin-right("105");
+    @include u-flex("justify-end");
+  }
+  @include at-media("desktop") {
+    @include u-margin-x(2);
+    @include u-margin-right("205");
+  }
+  @include at-media("desktop-lg") {
+    @include u-margin-x("205");
+    @include u-margin-right(3);
+  }
+  @include at-media("widescreen") {
+    @include u-margin-right(2);
+  }
+  @include u-padding-y("105");
+  @include u-border-bottom("black", "2px", "dotted");
+
+  nav {
+    @include u-display("flex");
+  }
+
+  .search {
+    margin-right: 0.35em;
+    padding: 4px 9px;
+    @include u-font("sans", "lg");
+    @include u-line-height("sans", 4);
+    @include u-border("white", "2px", "solid");
+    @include u-color("red-50v");
+    transition: border-color 0.2s;
+    @include u-radius("sm");
+    &:hover {
+      @include u-border("red-50v");
+    }
+    // Hides on mobile
+    @include u-display("none");
+    @include at-media("tablet-lg") {
+      @include u-display("block");
+    }
+  }
+
+  .donate {
+    @include u-padding-y(1);
+    @include u-padding-x("105");
+    @include u-display("inline-block");
+    @include u-radius("sm");
+    @include u-bg("red-50v");
+    @include u-color("white");
+    @include u-font("sans", "sm");
+    @include u-text("medium");
+    @include u-text("uppercase");
+    @include u-text("no-underline");
+    @include at-media("desktop") {
+      @include u-padding-y("105");
+      @include u-padding-x(2);
+      @include u-font("sans", "md");
+    }
+    &:hover {
+      span {
+        @include u-border-bottom("white", "2px", "solid");
+      }
+    }
+  }
+
+  .mobile_nav_btn {
+    @include u-font("sans", "md");
+    @include u-text("medium");
+    @include u-text("uppercase");
+    @include u-text("no-underline");
+    @include u-color("red-50v");
+
+    // Hides the mobile nav on tablet and above
+    @include u-display("block");
+    @include at-media("tablet-lg") {
+      @include u-display("none");
+    }
+    &:hover {
+      @include u-text("underline");
+    }
+  }
+}
+
+#article_header.preview {
+  @include u-flex("justify-start");
+  nav.preview {
+    @include u-display("flex");
+    @include u-flex("align-center");
+    .br-logo {
+      @include u-padding-right(2);
+    }
+    h2 {
+      @include u-padding-right(2);
+      @include u-font("sans", "lg");
+    }
+    .preview-url {
+    }
+  }
+}

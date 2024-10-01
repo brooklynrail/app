@@ -1,11 +1,12 @@
 "use client"
-import Header from "../issuePage/header"
 import { Articles, Issues } from "../../../../lib/types"
 import Image from "next/image"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Footer from "../footer"
+import Header, { HeaderType } from "../header"
+import Paper from "../paper"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -43,14 +44,14 @@ const ArchivePage = (props: ArchivePageProps) => {
       const alt = cover.caption ? stripHtml(cover.caption).result : `${title} — The Brooklyn Rail`
 
       return (
-        <li key={index} className="cover">
+        <li key={index} className="flex-none">
           <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
             <Image
               priority
               id={`cover-${index + 1}`}
               src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`}
-              width={100}
-              height={100}
+              width={150}
+              height={150}
               sizes="12vw"
               style={{
                 height: "auto",
@@ -63,47 +64,41 @@ const ArchivePage = (props: ArchivePageProps) => {
     })
 
     return (
-      <li key={id} className="issue">
+      <li key={id} className="pt-3">
         <div className="issueDetails">
-          <h6>Issue #{issue_number}</h6>
-          <h3>
+          <h4 className="text-xs uppercase">Issue #{issue_number}</h4>
+          <h3 className="text-md font-bold uppercase">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
               {title}
             </Link>
           </h3>
         </div>
-        <ul className="coversList">{coversList}</ul>
+        <ul className="py-3 flex space-x-3 overflow-x-auto">{coversList}</ul>
       </li>
     )
   })
 
   return (
     <>
-      <div className={`paper`}>
-        <div className="wrapper home">
-          <header role="banner">
-            <div className="grid-container grid-container-desktop">
-              <div className="grid-row">
-                <div className="grid-col-12">
-                  <Header />
-                </div>
-              </div>
+      <Paper pageClass="paper-archive">
+        <div className="px-3 desktop:w-desktop mx-auto">
+          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
+            <div className="col-span-4 tablet-lg:col-span-12">
+              <Header type={HeaderType.Issue} />
             </div>
-          </header>
+          </div>
 
-          <section id="main" className="issues-archive">
-            <div className="grid-container grid-container-desktop">
-              <div className="grid-row grid-gap-3">
-                <div className="grid-col-12">
-                  <h1>The Brooklyn Rail Archives</h1>
-                  <ul>{issueList}</ul>
-                </div>
+          <section id="main" className="">
+            <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
+              <div className="col-span-4 tablet-lg:col-span-12">
+                <h1 className="text-4xl tablet:text-5xl font-light">The Brooklyn Rail Archives</h1>
+                <ul className="flex flex-col space-y-6 divide-y-[1px] rail-divide">{issueList}</ul>
               </div>
             </div>
           </section>
         </div>
         <Footer />
-      </div>
+      </Paper>
     </>
   )
 }

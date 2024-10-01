@@ -1,5 +1,6 @@
-import "../../../../styles/globals.css"
+import { ThemeProvider } from "@/app/components/theme"
+import "../../../../styles/globals.scss"
 
 export default function TributeLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>
+  return <ThemeProvider>{children}</ThemeProvider>
 }

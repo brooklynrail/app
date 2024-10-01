@@ -4,6 +4,8 @@ import { stripHtml } from "string-strip-html"
 import Image from "next/image"
 import { PromoProps, PromoSectionName } from "./standard"
 import Link from "next/link"
+import Bylines, { BylineType } from "../collections/promos/bylines"
+import Title, { TitleType } from "../collections/promos/title"
 
 interface PromoImageProps {
   image: DirectusFiles
@@ -33,14 +35,8 @@ export const PromoImage = (props: PromoImageProps) => {
 }
 
 const PromoSection = (props: PromoProps) => {
-  const { article, showSection, showImage, permalink, order } = props
+  const { article, showSection, showImage, permalink } = props
   const { title, excerpt, featured_image, hide_bylines_downstream, contributors } = article
-
-  const orderNum = (
-    <span className="sort">
-      <span>{order}</span>
-    </span>
-  )
 
   const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
     if (!contributor.contributors_id) {
@@ -70,20 +66,15 @@ const PromoSection = (props: PromoProps) => {
   })
 
   return (
-    <div className="promo promo-section" itemType="http://schema.org/Article">
-      <div className="grid-row grid-gap-4">
-        <div className="grid-col-8 tablet:grid-col-8">
+    <div className="py-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
+      <div className="flex space-x-4 justify-between">
+        <div className="space-y-1">
           {showSection && <PromoSectionName {...props} />}
-          <h4>
-            {orderNum}
-            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              {parse(title)}
-            </Link>
-          </h4>
-          {!hide_bylines_downstream && <cite className="byline">By {authors} </cite>}
-          <div className="excerpt">{parse(excerpt)}</div>
+          <Title title={title} permalink={permalink} type={TitleType.SectionPromo} />
+          <Bylines article={article} type={BylineType.SectionPromo} />
+          <div className="text-md font-serif">{parse(excerpt)}</div>
         </div>
-        <div className="grid-col-4 tablet:grid-col-4">
+        <div className="w-card-lg flex-none">
           {showImage && featured_image && (
             <div className={`media`}>
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>

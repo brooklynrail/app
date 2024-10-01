@@ -20,6 +20,7 @@ export type Ads = {
 }
 
 export type Articles = {
+  id: string
   body: string
   body_code?: string | null
   body_text?: string | null
@@ -40,6 +41,7 @@ export type Articles = {
   kicker?: string | null
   hide_bylines: boolean
   hide_bylines_downstream: boolean
+  hide_title?: boolean | null
   isbn?: number
   old_id?: number | null
   promo_banner?: DirectusFiles
@@ -52,7 +54,7 @@ export type Articles = {
   tags: string
   title: string
   title_tag?: string
-  tribute: Tributes
+  tribute?: Tributes | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
@@ -62,13 +64,13 @@ export interface Redirects {
 }
 
 export type ArticlesContributors = {
-  articles_slug?: Articles | null
+  articles_contributors_id?: Articles | null
   contributors_id?: Contributors | null
   id: number
 }
 
 export type ArticlesFiles = {
-  articles_slug?: string | Articles | null
+  articles_files_id?: string | Articles | null
   directus_files_id?: DirectusFiles
   id: number
 }
@@ -482,6 +484,15 @@ export type GlobalSettings = {
   id: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+  navigation: any[] | GlobalSettingsNavigation[]
+}
+
+export type GlobalSettingsNavigation = {
+  collection?: string | null
+  global_settings_id?: string | GlobalSettings | null
+  id: number
+  item?: string | any | null
+  sort?: number | null
 }
 
 export type Homepage = {
@@ -576,7 +587,7 @@ export type Sections = {
 }
 
 export type Tributes = {
-  id: number
+  id: string
   articles: Articles[]
   date_created?: string | null
   date_updated?: string | null
@@ -588,8 +599,9 @@ export type Tributes = {
   summary?: string | null
   excerpt: string
   featured_image?: DirectusFiles
+  published?: string | null
   sort?: number | null
-  curators: TributesContributors[]
+  editors: TributesContributors[]
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
@@ -634,6 +646,7 @@ export type CustomDirectusTypes = {
   global_settings: GlobalSettings
   homepage: Homepage
   homepage_collections: HomepageCollections[]
+  global_settings_navigation: GlobalSettingsNavigation
   issues: Issues[]
   pages: Pages[]
   people: People[]

@@ -1,8 +1,9 @@
 import TributePage from "@/app/components/tributePage"
-import { PageType, getOGImage, getPermalink, getTributeData } from "../../../../../lib/utils"
+import { PageType, getArticle, getOGImage, getPermalink, getTributeData } from "../../../../../lib/utils"
 import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
+import { TributePageProps } from "../page"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -13,10 +14,10 @@ export const dynamicParams = true
 export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 0.405,
-}
+// export const viewport: Viewport = {
+//   width: "device-width",
+//   initialScale: 0.405,
+// }
 
 export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -64,7 +65,8 @@ async function getData({ params }: { params: TributeParams }) {
   }
 
   // find the article in the tribute data with the matching slug
-  const articleData = thisTributeData.articles.find((article) => article.slug === slug)
+  const articleData = await getArticle(slug, "published")
+  // const articleData = thisTributeData.articles.find((article) => article.slug === slug)
   if (!articleData) {
     return notFound()
   }
@@ -72,7 +74,7 @@ async function getData({ params }: { params: TributeParams }) {
   const permalink = getPermalink({
     tributeSlug: tributeSlug,
     slug: slug,
-    type: PageType.Tribute,
+    type: PageType.TributeArticle,
   })
 
   return {

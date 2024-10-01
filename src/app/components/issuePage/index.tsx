@@ -6,12 +6,9 @@ import IssueSelect from "./issueSelect"
 import CurrentSections from "./currentSections"
 import RailPartners from "./railPartners"
 import RailProjects from "./railProjects"
-import Header from "./header"
 import Ad970 from "../ads/ad970"
 import { Ads, Articles } from "../../../../lib/types"
 import Link from "next/link"
-import SpecialIssue from "./layout/specialIssue"
-import SpecialSection from "./layout/specialSection"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
@@ -21,6 +18,10 @@ import { CoverImage } from "../issueRail/coverImage"
 import PreviewHeader from "../preview/previewHead"
 import TableOfContentsPage from "./layout/tableOfContentsPage"
 import Footer from "../footer"
+import ThemeToggle from "../themeToggle"
+import { useTheme } from "@/app/components/theme"
+import Header, { HeaderType } from "../header"
+import Paper from "../paper"
 import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
 
 export interface PromoProps {
@@ -32,6 +33,8 @@ export interface PromoProps {
 const IssuePage = (props: IssuePageProps) => {
   const { thisIssueData, currentSection, issueSections, previewURL, allIssues } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
+
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,12 +58,6 @@ const IssuePage = (props: IssuePageProps) => {
     case PageLayout.Section:
       layout = <SectionLayout thisIssueData={thisIssueData} currentSection={currentSection} />
       break
-    case PageLayout.SpecialSection:
-      layout = <SpecialSection thisIssueData={thisIssueData} currentSection={currentSection} />
-      break
-    case PageLayout.SpecialIssue:
-      layout = <SpecialIssue thisIssueData={thisIssueData} />
-      break
     case PageLayout.TableOfContents:
       layout = <TableOfContentsPage {...props} />
       break
@@ -70,65 +67,59 @@ const IssuePage = (props: IssuePageProps) => {
   }
 
   return (
-    <>
-      <PopupProvider>
-        <div className={`paper ${issueClass}`}>
-          {previewURL && <PreviewHeader previewURL={previewURL} />}
-          <div className="wrapper home">
-            <header role="banner">
-              <div className="grid-container grid-container-desktop">
-                <div className="grid-row">
-                  <div className="grid-col-12">
-                    <Header
-                      special_issue={thisIssueData.special_issue}
-                      issue_number={thisIssueData.issue_number}
-                      title={thisIssueData.title}
-                    />
-                  </div>
-                </div>
+    <PopupProvider>
+      <Paper pageClass={`paper-issue ${issueClass}`}>
+        {previewURL && <PreviewHeader previewURL={previewURL} />}
+
+        <div className="px-0 desktop:w-desktop mx-auto">
+          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-6">
+            <div className="col-span-4 tablet-lg:col-span-12">
+              <div className="px-3">
+                <Header type={HeaderType.Issue} />
+                <Ad970 currentAds={currentAds} />
               </div>
-            </header>
+            </div>
 
-            <Ad970 currentAds={currentAds} />
-
-            <section id="main">
-              <div className="grid-container grid-container-desktop">
-                <div className="grid-row grid-gap-3">
-                  <div className="grid-col-2">
-                    <div id="issuecolumn">
-                      <div className="youarehereissue">
-                        <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
-                        <CoverImage thisIssueData={thisIssueData} />
-                      </div>
-
-                      <CurrentSections issueSections={issueSections} thisIssueData={thisIssueData} />
-
-                      <Link className="search_btn" href="/search" title="Search All Issues">
-                        <span>Search</span> <i className="fas fa-search"></i>
-                      </Link>
-                      <Link className="archives_btn" href="/archive" title="View Archive">
-                        <span>View Archive</span>
-                      </Link>
-
-                      <RailProjects />
-                      <RailPartners />
-                    </div>
-                  </div>
-
-                  {layout}
-
-                  <div className="ad_column grid-col-2">
-                    <AdsTile currentAds={currentAds} />
-                  </div>
-                </div>
+            <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
+              <div className="flex flex-col space-y-2 pl-3">
+                <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
+                <CoverImage thisIssueData={thisIssueData} />
+                <CurrentSections issueSections={issueSections} thisIssueData={thisIssueData} />
               </div>
-            </section>
+              <div className="py-4 flex flex-col space-y-2 pl-3">
+                <Link
+                  className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
+                  href="/search"
+                  title="Search All Issues"
+                >
+                  <span>Search</span> <i className="fas fa-search"></i>
+                </Link>
+                <Link
+                  className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
+                  href="/archive"
+                  title="View Archive"
+                >
+                  <span>View Archive</span>
+                </Link>
+                <RailProjects />
+                <RailPartners />
+              </div>
+            </div>
+            <div className="col-span-4 tablet-lg:col-span-8">
+              <div className="px-3 tablet-lg:px-0">{layout}</div>
+            </div>
+            <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
+              <div className="pr-3">
+                <AdsTile currentAds={currentAds} />
+              </div>
+            </div>
           </div>
-          <Footer />
         </div>
+        <Footer />
+        <ThemeToggle {...{ theme, setTheme }} />
         <CoversPopup />
-      </PopupProvider>
-    </>
+      </Paper>
+    </PopupProvider>
   )
 }
 

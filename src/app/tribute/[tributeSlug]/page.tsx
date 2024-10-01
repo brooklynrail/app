@@ -14,15 +14,16 @@ export const dynamicParams = true
 export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 0.405,
-}
+// export const viewport: Viewport = {
+//   width: "device-width",
+//   initialScale: 0.405,
+// }
 
 export interface TributePageProps {
   thisTributeData: Tributes
-  articleData?: Articles
+  articleData: Articles
   permalink: string
+  previewURL?: string
 }
 
 export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
@@ -68,6 +69,8 @@ async function getData({ params }: { params: TributeParams }) {
     return notFound()
   }
 
+  const articleData = thisTributeData.articles[0]
+
   const permalink = getPermalink({
     tributeSlug: tributeSlug,
     type: PageType.Tribute,
@@ -76,6 +79,7 @@ async function getData({ params }: { params: TributeParams }) {
   return {
     props: {
       thisTributeData,
+      articleData,
       permalink,
     },
   }

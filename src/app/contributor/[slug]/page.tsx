@@ -1,12 +1,8 @@
-import parse from "html-react-parser"
-import { ArticlesContributors } from "../../../../lib/types"
 import { getContributor, getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
-import PromoSection from "@/app/components/promo/section"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
-import Link from "next/link"
-import IssueRail from "@/app/components/issueRail"
 import { notFound } from "next/navigation"
+import ContributorPage from "@/app/components/contributor"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -58,88 +54,12 @@ export default async function Contributor({ params }: { params: ContributorsPara
     return <></>
   }
 
-  const allArticles = (
-    <section className="collection">
-      {currentArticles.map((articleContributor: ArticlesContributors, i: number) => {
-        const article = articleContributor.articles_slug
-        if (!article) {
-          return <></>
-        }
-        const issue = article.issue
-
-        const permalink = getPermalink({
-          year: issue.year,
-          month: issue.month,
-          section: article.section.slug,
-          slug: article.slug,
-          type: PageType.Article,
-        })
-        const sectionPermalink = getPermalink({
-          issueSlug: issue.slug,
-          section: article.section.slug,
-          type: PageType.Section,
-        })
-        return (
-          <PromoSection
-            key={`article-${i}`}
-            article={article}
-            permalink={permalink}
-            sectionPermalink={sectionPermalink}
-            showImage={true}
-            showSection={true}
-          />
-        )
-      })}
-    </section>
-  )
-
-  const first_name = contributorData.first_name ? parse(contributorData.first_name) : null
-  const last_name = contributorData.last_name ? parse(contributorData.last_name) : null
-
   return (
-    <>
-      <main>
-        <div className="grid-container">
-          <div className="grid-row grid-gap-3">
-            <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
-              <IssueRail thisIssueData={data.thisIssueData} />
-            </div>
-
-            <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
-              <header id="article_header">
-                <nav>
-                  <div>
-                    <Link
-                      className="btn btn-sm donate"
-                      href="https://brooklynrail.org/donate?a"
-                      title="Donate to the Brooklyn Rail"
-                    >
-                      <span>Donate</span>
-                    </Link>
-                  </div>
-                </nav>
-              </header>
-
-              <article className="article">
-                <div className="grid-row grid-gap-4">
-                  <div className="grid-col-12">
-                    <header className="section">
-                      <h2>
-                        {first_name} {last_name}
-                      </h2>
-                      {contributorData.bio && <div className="bio">{parse(contributorData.bio)}</div>}
-                    </header>
-                  </div>
-                </div>
-                <div className="grid-row grid-gap-4">
-                  <div className="grid-col-12">{allArticles}</div>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-      </main>
-    </>
+    <ContributorPage
+      contributorData={contributorData}
+      thisIssueData={data.thisIssueData}
+      currentArticles={currentArticles}
+    />
   )
 }
 

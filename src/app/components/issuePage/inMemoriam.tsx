@@ -12,7 +12,7 @@ const InMemoriam = (props: InMemoriamProps) => {
   const { tributesData } = props
 
   return (
-    <div className="collection">
+    <div className="">
       {tributesData.map((tribute: Tributes, i: number) => {
         const permalink = getPermalink({
           tributeSlug: tribute.slug,
