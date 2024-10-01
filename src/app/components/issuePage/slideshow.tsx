@@ -100,7 +100,7 @@ const SlideShow = (props: SlideshowProps) => {
   })
 
   return (
-    <div className="pb-2">
+    <div className="py-2 tablet-lg:py-0 tablet-lg:!border-t-0">
       <div className="relative">
         <div className="relative">{slides}</div>
         <div className="flex items-center py-2 justify-center space-x-2">{indicator}</div>
