@@ -87,23 +87,19 @@
   code {
     @apply py-0.5 px-1 bg-slate-200 text-red-600 font-mono font-bold text-sm rounded-sm;
   }
-
   .endnote {
     @apply my-8;
     @apply font-normal font-sans text-sm;
     li {
       @apply mb-2 tablet:mb-3;
     }
-
     .line {
       @apply mb-6 block w-20;
       @apply border-b-[1px] border-gray-500 border-solid;
     }
   }
-
   .media {
-    @apply clear-both mt-3;
-
+    @apply clear-both;
     .frame {
       @apply m-0 w-full;
     }
@@ -119,7 +115,7 @@ figcaption {
 .media.width-lg,
 .media.width-md,
 .media.width-sm {
-  @apply mt-3 mb-6;
+  @apply pt-3 mb-9 desktop:mb-12;
 }
 
 .media.width-md {
