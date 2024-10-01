@@ -9,7 +9,7 @@ interface CollectionHeadProps {
 }
 
 const CollectionHead = (props: CollectionHeadProps) => {
-  const { title, slug, permalink } = props
+  const { title, permalink } = props
 
   return (
     <div className="grid grid-cols-4 tablet-lg:grid-cols-12">

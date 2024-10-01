@@ -6,7 +6,7 @@ import Bylines, { BylineType } from "../collections/promos/bylines"
 interface TributeWritersProps {
   articles: Articles[]
   tributeSlug: string
-  switchArticle: (slug: string) => void
+  switchArticle?: (slug: string) => void
 }
 
 const TributeWritersList = (props: TributeWritersProps) => {
@@ -31,8 +31,10 @@ const TributeWritersList = (props: TributeWritersProps) => {
           href={permalink}
           className="font-medium"
           onClick={(e) => {
-            e.preventDefault() // Prevent the default link behavior
-            switchArticle(article.slug) // Trigger article change
+            if (switchArticle) {
+              e.preventDefault() // Prevent the default link behavior
+              switchArticle(article.slug) // Trigger article change
+            }
           }}
         >
           <Bylines hideBy={true} article={article} type={BylineType.TributeWritersList} />

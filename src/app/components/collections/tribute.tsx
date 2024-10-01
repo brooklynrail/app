@@ -10,8 +10,7 @@ import Title, { TitleType } from "./promos/title"
 import TributeWritersList from "../tributePage/writersList"
 
 const CollectionTribute = (collection: Tributes) => {
-  const { title, deck, summary, blurb, excerpt, curators, featured_image } = collection
-  // ==================================================
+  const { title, deck, summary, blurb, excerpt, editors, featured_image } = collection
 
   const permalink = getPermalink({
     tributeSlug: collection.slug,
