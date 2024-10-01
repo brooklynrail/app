@@ -82,6 +82,7 @@ interface PreviewParams {
 
 async function getData({ params }: { params: PreviewParams }) {
   const id = params.id
+  console.log("Issue ID: ", id)
 
   const thisIssueData = await getPreviewIssue(id)
   if (!thisIssueData) {

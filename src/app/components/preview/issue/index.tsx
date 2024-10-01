@@ -7,6 +7,7 @@ import { IssuePreviewProps } from "@/app/preview/issue/[id]/page"
 
 const IssuePreview = (props: IssuePreviewProps) => {
   const { thisIssueData, isEnabled, previewPassword } = props
+  console.log("Issue Data: ", thisIssueData)
   const cookieSlug = `rail_preview_${thisIssueData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
