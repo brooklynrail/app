@@ -66,7 +66,7 @@ const IssuePreview = (props: IssuePreviewProps) => {
     return <Password {...passwordProps} />
   }
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${thisIssueData.year}/${thisIssueData.month}`
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${thisIssueData.id}`
   return (
     <>
       <IssuePage {...props} layout={PageLayout.Issue} previewURL={previewURL} />

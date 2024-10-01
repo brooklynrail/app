@@ -104,8 +104,8 @@ async function getData({ params }: { params: PreviewParams }) {
   const currentSection = articleData.section
 
   const permalink = getPermalink({
-    slug: articleData.slug,
-    type: PageType.Preview,
+    articleId: articleData.id,
+    type: PageType.PreviewArticle,
   })
 
   const previewPassword = await getPreviewPassword()

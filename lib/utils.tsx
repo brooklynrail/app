@@ -504,7 +504,7 @@ export async function getPreviewArticle(id: string) {
   }
 }
 
-export async function getPreviewIssue(year: number, month: number) {
+export async function getPreviewIssue(id: string) {
   try {
     const preview = await directus.request(
       readItems("issues", {
@@ -536,12 +536,7 @@ export async function getPreviewIssue(year: number, month: number) {
           { user_updated: ["id", "first_name", "last_name", "avatar"] },
         ],
         filter: {
-          _and: [
-            {
-              year: { _eq: year },
-              month: { _eq: month },
-            },
-          ],
+          id: { _eq: id },
         },
       }),
     )
@@ -786,7 +781,8 @@ export enum PageType {
   Contributor = "contributor",
   Page = "page",
   ChildPage = "child_page",
-  Preview = "preview",
+  PreviewArticle = "preview_article",
+  PreviewIssue = "preview_issue",
   SpecialIssue = "special_issue",
   SpecialIssueSection = "special_issue_section",
   SpecialIssueArticle = "special_issue_article",
@@ -802,9 +798,11 @@ interface PermalinkProps {
   slug?: string
   issueSlug?: string
   tributeSlug?: string
+  articleId?: string
+  issueId?: string
 }
 export function getPermalink(props: PermalinkProps) {
-  const { year, section, slug, issueSlug, type, tributeSlug } = props
+  const { year, section, slug, issueSlug, type, tributeSlug, articleId, issueId } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
   const day = props.day && props.day < 10 ? `0${props.day}` : props.day
 
@@ -835,8 +833,10 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/${slug}/`
     case PageType.ChildPage:
       return `${baseURL}/about/${slug}/`
-    case PageType.Preview:
-      return `${baseURL}/preview/${slug}/`
+    case PageType.PreviewArticle:
+      return `${baseURL}/preview/article/${articleId}/`
+    case PageType.PreviewIssue:
+      return `${baseURL}/preview/issue/${issueId}/`
     case PageType.Archive:
       return `${baseURL}/archive/`
     case PageType.Search:

@@ -1,6 +1,6 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getAllIssues, getPermalink, getPreviewIssue, getPreviewPassword } from "../../../../../../lib/utils"
-import { Issues, Sections } from "../../../../../../lib/types"
+import { PageType, getAllIssues, getPermalink, getPreviewIssue, getPreviewPassword } from "../../../../../lib/utils"
+import { Issues, Sections } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import IssuePreview from "@/app/components/preview/issue"
@@ -77,17 +77,13 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
 }
 
 interface PreviewParams {
-  year: string
-  month: string
-  section: string
-  slug: string
+  id: string
 }
 
 async function getData({ params }: { params: PreviewParams }) {
-  const year = parseInt(params.year, 10)
-  const month = parseInt(params.month, 10)
+  const id = params.id
 
-  const thisIssueData = await getPreviewIssue(year, month)
+  const thisIssueData = await getPreviewIssue(id)
   if (!thisIssueData) {
     return notFound()
   }
@@ -107,9 +103,8 @@ async function getData({ params }: { params: PreviewParams }) {
   }
 
   const permalink = getPermalink({
-    year: thisIssueData.year,
-    month: thisIssueData.month,
-    type: PageType.Issue,
+    issueId: thisIssueData.id,
+    type: PageType.PreviewIssue,
   })
 
   const previewPassword = await getPreviewPassword()
