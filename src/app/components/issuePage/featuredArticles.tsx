@@ -3,11 +3,7 @@ import { PromoProps } from "."
 import { PageType, getPermalink } from "../../../../lib/utils"
 import { Articles, Issues } from "../../../../lib/types"
 
-interface FeaturedPromoProps {
-  thisIssueData: Issues
-}
-
-const FeaturedArticles = (props: PromoProps & FeaturedPromoProps) => {
+const FeaturedArticles = (props: PromoProps) => {
   const { currentArticles, year, month, thisIssueData } = props
 
   // Filter the currentArticles to get only the articles that are featured

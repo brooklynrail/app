@@ -7,7 +7,7 @@ import CurrentSections from "./currentSections"
 import RailPartners from "./railPartners"
 import RailProjects from "./railProjects"
 import Ad970 from "../ads/ad970"
-import { Ads, Articles } from "../../../../lib/types"
+import { Ads, Articles, Issues } from "../../../../lib/types"
 import Link from "next/link"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
@@ -27,6 +27,7 @@ export interface PromoProps {
   currentArticles: Articles[]
   year: number
   month: number
+  thisIssueData: Issues
 }
 
 const IssuePage = (props: IssuePageProps) => {
