@@ -18,14 +18,14 @@ export const PromoSectionName = (props: PromoProps) => {
   const { section, kicker } = article
   const sectionName = section.name
   return (
-    <p className="article_type">
-      <Link className="section" href={sectionPermalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
+    <p className="text-sm">
+      <Link className="font-bold" href={sectionPermalink} title={`Go to the ${stripHtml(sectionName).result} section`}>
         {sectionName}
       </Link>
       {kicker && (
         <>
-          <span className="divider"></span>
-          <span className="type">{article.kicker}</span>
+          <span className="mx-2 text-xs border-l-[1px] rail-border border-solid"></span>
+          <span className="text-red-600 dark:text-red-500 uppercase">{article.kicker}</span>
         </>
       )}
     </p>
@@ -41,37 +41,34 @@ const PromoBanner = (props: PromoBannerProps) => {
   const { filename_disk } = image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const alt = image.caption ? `${stripHtml(image.caption).result}` : `${stripHtml(title).result}`
-  return <Image src={src} width={316} height={96} alt={alt} sizes="33vw" />
+  return <Image src={src} width={516} height={296} alt={alt} sizes="33vw" />
 }
 
 const PromoStandard = (props: PromoProps) => {
-  const { article, showSection, showImage, permalink, order } = props
+  const { article, showSection, showImage, permalink } = props
   const { title, excerpt, promo_banner } = article
-
-  const orderNum = (
-    <span className="sort">
-      <span>{order}</span>
-    </span>
-  )
 
   return (
     <>
-      <div className="promo promo-standard" itemType="http://schema.org/Article">
+      <div className="py-2 pb-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
         {showSection && <PromoSectionName {...props} />}
-        {showImage && promo_banner && (
-          <div className={`media media-thumb`}>
-            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <PromoBanner image={promo_banner} title={title} />
-            </Link>
+        <div className="flex flex-col tablet:flex-row-reverse tablet-lg:flex-col tablet-lg:space-x-0 space-y-2">
+          {showImage && promo_banner && (
+            <div className={`flex-none w-full tablet:w-96 tablet-lg:w-full`}>
+              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+                <PromoBanner image={promo_banner} title={title} />
+              </Link>
+            </div>
+          )}
+          <div className="flex flex-col space-y-2">
+            <h4 className="text-lg font-normal">
+              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+                {parse(title)}
+              </Link>
+            </h4>
+            <div className="text-sm font-serif">{parse(excerpt)}</div>
           </div>
-        )}
-        <h4>
-          {orderNum}
-          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-            {parse(title)}
-          </Link>
-        </h4>
-        <div className="excerpt">{parse(excerpt)}</div>
+        </div>
       </div>
     </>
   )

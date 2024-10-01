@@ -1,6 +1,6 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
@@ -14,10 +14,10 @@ export const dynamicParams = true
 export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 0.405,
-}
+// export const viewport: Viewport = {
+//   width: "device-width",
+//   initialScale: 0.405,
+// }
 
 export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -67,6 +67,8 @@ async function getData({ params }: { params: IssueParams }) {
     return notFound()
   }
 
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
   // make an array of all the sections used in thisIssueData.articles and remove any duplicates
   const issueSections = thisIssueData.articles
     .map((article) => article.section)
@@ -80,6 +82,7 @@ async function getData({ params }: { params: IssueParams }) {
   return {
     thisIssueData,
     issueSections,
+    tributesData,
     allIssues,
     permalink,
   }

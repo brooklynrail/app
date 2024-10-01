@@ -34,7 +34,7 @@ const AdsTile = (props: AdsTileProps) => {
     const scaledHeight = width > size ? (size * height) / width : (height * scaledWidth) / width
 
     return (
-      <div key={`adtile-${i}`} className="ad">
+      <div key={`adtile-${i}`} className="">
         <Link href={ad.ad_url} target="_blank">
           <Image
             src={src}
@@ -72,11 +72,9 @@ const AdsTile = (props: AdsTileProps) => {
   })
 
   return (
-    <div id="extra">
-      <div id="ads">
-        <div className="ad_label">ADVERTISEMENTS</div>
-        <div className="ads_container">{tiles}</div>
-      </div>
+    <div className="flex flex-col divide-y-[1px] rail-divide">
+      <p className="pb-0.5 text-[11px] leading-4 uppercase text-zinc-700 dark:text-slate-400">Advertisements</p>
+      <div className="py-2 flex flex-col space-y-4">{tiles}</div>
     </div>
   )
 }

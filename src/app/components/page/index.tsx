@@ -10,45 +10,29 @@ import MapEmbed from "./map"
 import { Pages } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import parse from "html-react-parser"
+import Header, { HeaderType } from "../header"
+import ThemeToggle from "../themeToggle"
+import { useTheme } from "../theme"
+import { PopupProvider } from "../issueRail/popupProvider"
 
 const Page = (props: PageProps) => {
   const { thisIssueData, pagesData } = props
+  const { theme, setTheme } = useTheme()
 
   return (
     <>
-      <div className={`paper`}>
-        <main>
-          <div className="grid-container">
-            <div className="grid-row grid-gap-3">
-              <div className="grid-col-12 tablet-lg:grid-col-4 desktop-lg:grid-col-3">
+      <PopupProvider>
+        <div className={`paper-page`}>
+          <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
+            <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
+              <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3">
                 <IssueRail thisIssueData={thisIssueData} />
-              </div>
+              </aside>
 
-              <div className="grid-col-12 tablet-lg:grid-col-8 desktop-lg:grid-col-9">
-                <header id="article_header">
-                  <Link className="mobile_nav_btn" href="">
-                    <i className="fas fa-angle-double-left"></i> <span>{props.thisIssueData.title}</span> Issue
-                  </Link>
+              <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
+                <Header type={HeaderType.Article} />
 
-                  <nav>
-                    <div>
-                      <Link
-                        className="btn btn-sm donate"
-                        href="https://brooklynrail.org/donate?a"
-                        title="Donate to the Brooklyn Rail"
-                      >
-                        <span>Donate</span>
-                      </Link>
-                    </div>
-                  </nav>
-                </header>
-
-                <div className="ad ad_970">
-                  <p>Advertisement</p>
-                  <div></div>
-                </div>
-
-                <article className="article article-page">
+                <article className="pb-12">
                   <PageHead {...props} />
                   <PageNav pages={pagesData} />
                   <PageBody {...props} />
@@ -56,11 +40,12 @@ const Page = (props: PageProps) => {
                 </article>
               </div>
             </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-      <CoversPopup />
+          </main>
+          <Footer />
+        </div>
+        <ThemeToggle {...{ theme, setTheme }} />
+        <CoversPopup />
+      </PopupProvider>
     </>
   )
 }
@@ -89,7 +74,7 @@ const PageNav = (props: PageNavProps) => {
   })
 
   return (
-    <div id="page-nav">
+    <div className="w-card-lg bg-neutral-200 p-3 float-right mb-9 ml-6 mt-3">
       <ul>{allPages}</ul>
       <ul>
         <li>

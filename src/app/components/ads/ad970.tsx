@@ -42,71 +42,63 @@ const Ad970 = (props: Ad970Props) => {
 
   return (
     <>
-      <section className="banner">
-        <div className="grid-container grid-container-desktop">
-          <div className="grid-row">
-            <div className="grid-col-12">
-              <div className="ad ad_970 visible">
-                <p>Advertisement</p>
-                <div>
-                  <Link href={randomAd.ad_url} target="_blank">
-                    <Image
-                      className="image_desktop"
-                      src={srcDesktop}
-                      width={desktopWidth}
-                      height={desktopHeight}
-                      alt={alt}
-                      onLoad={() =>
-                        sendGAEvent("event", "impression", {
-                          event_category: "ads",
-                          event_label: randomAd.slug,
-                          event_value: randomAd.ad_url,
-                          ad_format: "banner",
-                          campaign: randomAd.campaign_title,
-                          campaign_id: randomAd.slug,
-                          ad_source: "br-studio",
-                        })
-                      }
-                      onClick={() =>
-                        sendGAEvent("event", "click", {
-                          event_category: "ads",
-                          event_label: randomAd.slug,
-                          event_value: randomAd.ad_url,
-                          ad_format: "banner",
-                          campaign: randomAd.campaign_title,
-                          campaign_id: randomAd.slug,
-                          ad_source: "br-studio",
-                        })
-                      }
-                    />
-                    <Image
-                      className="image_mobile"
-                      src={srcMobile}
-                      width={mobileWidth}
-                      height={mobileHeight}
-                      alt={alt}
-                      onLoad={() =>
-                        sendGAEvent("event", "impression", {
-                          event_category: "ads",
-                          event_label: randomAd.slug,
-                          event_value: randomAd.ad_url,
-                        })
-                      }
-                      onClick={() =>
-                        sendGAEvent("event", "click", {
-                          event_category: "ads",
-                          event_label: randomAd.slug,
-                          event_value: randomAd.ad_url,
-                        })
-                      }
-                    />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className="m-0 mt-2 relative bottom-0 left-0 right-0 z-10 tablet:relative bg-white tablet:bg-transparent">
+        <p className="text-[11px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
+        <div>
+          <Link href={randomAd.ad_url} target="_blank">
+            <Image
+              className="hidden tablet:block mx-auto"
+              src={srcDesktop}
+              width={desktopWidth}
+              height={desktopHeight}
+              alt={alt}
+              onLoad={() =>
+                sendGAEvent("event", "impression", {
+                  event_category: "ads",
+                  event_label: randomAd.slug,
+                  event_value: randomAd.ad_url,
+                  ad_format: "banner",
+                  campaign: randomAd.campaign_title,
+                  campaign_id: randomAd.slug,
+                  ad_source: "br-studio",
+                })
+              }
+              onClick={() =>
+                sendGAEvent("event", "click", {
+                  event_category: "ads",
+                  event_label: randomAd.slug,
+                  event_value: randomAd.ad_url,
+                  ad_format: "banner",
+                  campaign: randomAd.campaign_title,
+                  campaign_id: randomAd.slug,
+                  ad_source: "br-studio",
+                })
+              }
+            />
+            <Image
+              className="block tablet:hidden"
+              src={srcMobile}
+              width={mobileWidth}
+              height={mobileHeight}
+              alt={alt}
+              onLoad={() =>
+                sendGAEvent("event", "impression", {
+                  event_category: "ads",
+                  event_label: randomAd.slug,
+                  event_value: randomAd.ad_url,
+                })
+              }
+              onClick={() =>
+                sendGAEvent("event", "click", {
+                  event_category: "ads",
+                  event_label: randomAd.slug,
+                  event_value: randomAd.ad_url,
+                })
+              }
+            />
+          </Link>
         </div>
-      </section>
+      </div>
     </>
   )
 }

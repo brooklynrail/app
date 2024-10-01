@@ -8,8 +8,8 @@ import { notFound } from "next/navigation"
 
 export interface ArticlePreviewProps {
   articleData: Articles
-  thisIssueData?: Issues
-  currentSection?: Sections
+  thisIssueData: Issues
+  currentSection: Sections
   permalink: string
   errorCode?: number
   errorMessage?: string

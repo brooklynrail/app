@@ -1,12 +1,9 @@
 "use client"
-import Header from "../issuePage/header"
 import { Articles, Issues } from "../../../../lib/types"
-import Image from "next/image"
-import { stripHtml } from "string-strip-html"
-import Link from "next/link"
-import { getPermalink, PageType } from "../../../../lib/utils"
 import Footer from "../footer"
 import GoogleCSE from "../googleCSE"
+import Header, { HeaderType } from "../header"
+import Paper from "../paper"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -24,31 +21,25 @@ const SearchPage = (props: SearchPageProps) => {
 
   return (
     <>
-      <div className={`paper`}>
-        <div className="wrapper home">
-          <header role="banner">
-            <div className="grid-container grid-container-desktop">
-              <div className="grid-row">
-                <div className="grid-col-12">
-                  <Header />
-                </div>
-              </div>
+      <Paper pageClass="paper-search">
+        <div className="px-3 desktop:w-desktop mx-auto">
+          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
+            <div className="col-span-4 tablet-lg:col-span-12">
+              <Header type={HeaderType.Issue} />
             </div>
-          </header>
+          </div>
 
-          <section id="main" className="issues-archive">
-            <div className="grid-container grid-container-desktop">
-              <div className="grid-row grid-gap-3">
-                <div className="grid-col-12">
-                  <h1>Search</h1>
-                  <GoogleCSE />
-                </div>
+          <section id="main" className="py-9 h-screen">
+            <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
+              <div className="col-span-4 tablet-lg:col-span-12">
+                <h1 className="text-4xl tablet:text-5xl font-light">Search</h1>
+                <GoogleCSE />
               </div>
             </div>
           </section>
         </div>
         <Footer />
-      </div>
+      </Paper>
     </>
   )
 }

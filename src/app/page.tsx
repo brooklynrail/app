@@ -1,6 +1,6 @@
-import { Issues, Sections } from "../../lib/types"
+import { Issues, Sections, Tributes } from "../../lib/types"
 import IssuePage from "@/app/components/issuePage"
-import { getAllIssues, getCurrentIssueData, getPermalink, PageType } from "../../lib/utils"
+import { getAllIssues, getCurrentIssueData, getPermalink, getTributes, PageType } from "../../lib/utils"
 import { notFound } from "next/navigation"
 import { Viewport } from "next"
 
@@ -13,10 +13,10 @@ export const dynamicParams = true
 export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
 
 // Set the Viewport to show the full page of the Rail on mobile devices
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 0.405,
-}
+// export const viewport: Viewport = {
+//   width: "device-width",
+//   initialScale: 0.405,
+// }
 
 export enum PageLayout {
   Issue = "issue",
@@ -29,6 +29,7 @@ export enum PageLayout {
 export interface IssuePageProps {
   thisIssueData: Issues
   allIssues: Issues[]
+  tributesData?: Tributes[]
   issueSections: Sections[]
   previewURL?: string
   currentSection?: Sections
@@ -55,6 +56,8 @@ async function getData() {
     return notFound()
   }
 
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
   // make an array of all the sections used in thisIssueData.articles and remove any duplicates
   const issueSections = thisIssueData.articles
     .map((article) => article.section)
@@ -72,6 +75,7 @@ async function getData() {
   return {
     thisIssueData,
     issueSections,
+    tributesData,
     allIssues,
     permalink,
   }

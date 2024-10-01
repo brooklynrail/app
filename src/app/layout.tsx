@@ -1,11 +1,11 @@
-import "../../styles/issue/styles.scss"
-// import "../../styles/globals.css"
+import "../../styles/globals.css"
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
 config.autoAddCss = false
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 import { GoogleAnalytics } from "@next/third-parties/google"
+import { ThemeProvider } from "./components/theme"
 
 export const metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL
@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
         <GoogleAnalytics gaId="G-P4BEY1BZ04" />
         <Analytics />
         <SpeedInsights />

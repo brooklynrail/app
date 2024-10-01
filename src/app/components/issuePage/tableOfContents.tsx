@@ -30,8 +30,8 @@ const IssueSection = (props: IssueSectionProps) => {
   })
 
   return (
-    <>
-      <h3>
+    <div className="py-1 pb-3 border-t-[1px] rail-border">
+      <h3 className="font-bold text-sm px-1 pb-2">
         <Link prefetch={false} href={sectionPermalink} title={`Go to ${sectionName}`}>
           {sectionName}
         </Link>
@@ -47,18 +47,10 @@ const IssueSection = (props: IssueSectionProps) => {
             slug: article.slug,
             type: PageType.Article,
           })
-          return (
-            <PromoSlim
-              key={`toc-article-${i}`}
-              article={article}
-              permalink={permalink}
-              order={order}
-              prefetch={false}
-            />
-          )
+          return <PromoSlim key={`toc-article-${i}`} article={article} permalink={permalink} prefetch={false} />
         })}
       </ul>
-    </>
+    </div>
   )
 }
 
@@ -70,27 +62,29 @@ const TableOfContents = (props: TableOfContentsProps) => {
   const currentArticles = thisIssueData.articles
 
   return (
-    <div className="collection table-of-contents">
-      <h2>Table of Contents</h2>
-      {currentSections
-        ? currentSections.map((section, i) => {
-            // Filter the currentArticles to get only the articles in the current section
-            const articles = currentArticles.filter((articleIssue: Articles) => {
-              return articleIssue.section.slug === section.slug
+    <div className="pb-20">
+      <h2 className="font-bold text-xl py-4">Table of Contents</h2>
+      <div className="">
+        {currentSections
+          ? currentSections.map((section, i) => {
+              // Filter the currentArticles to get only the articles in the current section
+              const articles = currentArticles.filter((articleIssue: Articles) => {
+                return articleIssue.section.slug === section.slug
+              })
+              return (
+                <IssueSection
+                  key={`toc-section-${i}`}
+                  section={section}
+                  articles={articles}
+                  permalink={permalink}
+                  year={year}
+                  month={month}
+                  issueSlug={thisIssueData.slug}
+                />
+              )
             })
-            return (
-              <IssueSection
-                key={`toc-section-${i}`}
-                section={section}
-                articles={articles}
-                permalink={permalink}
-                year={year}
-                month={month}
-                issueSlug={thisIssueData.slug}
-              />
-            )
-          })
-        : loading}
+          : loading}
+      </div>
     </div>
   )
 }
