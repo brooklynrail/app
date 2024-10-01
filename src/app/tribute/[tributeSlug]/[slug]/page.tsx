@@ -82,6 +82,7 @@ async function getData({ params }: { params: TributeParams }) {
       thisTributeData,
       articleData,
       permalink,
+      currentArticleSlug: articleData.slug,
     },
   }
 }

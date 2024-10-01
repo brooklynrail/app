@@ -8,7 +8,7 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import { useArticleState } from "@/app/hooks/useArticleState"
 
 const TributeBody = (props: TributePageProps) => {
-  const { thisTributeData, articleData } = props
+  const { thisTributeData, articleData, currentArticleSlug } = props
   const { summary } = thisTributeData
   const { currentArticle, switchArticle } = useArticleState(articleData, thisTributeData.articles)
 
@@ -17,8 +17,10 @@ const TributeBody = (props: TributePageProps) => {
 
   // Effect to scroll to the top of the article content whenever the currentArticle changes
   useEffect(() => {
-    if (articleContentRef.current) {
-      articleContentRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+    if (currentArticleSlug != undefined) {
+      if (articleContentRef.current) {
+        articleContentRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+      }
     }
   }, [currentArticle])
 
