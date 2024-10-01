@@ -1,6 +1,6 @@
 "use client"
 
-import Button from "../button"
+import Button, { ButtonType } from "../button"
 
 interface CollectionHeadProps {
   title: string
@@ -16,7 +16,7 @@ const CollectionHead = (props: CollectionHeadProps) => {
       <div className="col-span-4 tablet-lg:col-span-12">
         <div className="flex justify-between py-3 pt-6 pb-5">
           <h2 className="text-4xl font-bold">{title}</h2>
-          <Button permalink={permalink} text={`All ${title}`} />
+          <Button link={permalink} text={`All ${title}`} type={ButtonType.Donate} />
         </div>
       </div>
     </div>
