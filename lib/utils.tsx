@@ -519,7 +519,7 @@ export async function getPreviewIssue(id: string) {
               "kicker",
               "sort",
               "featured",
-              { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
+              { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
               { section: ["slug", "name"] },
               { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
               { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
