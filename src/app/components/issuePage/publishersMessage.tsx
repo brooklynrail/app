@@ -4,7 +4,7 @@ import { PageType, getPermalink } from "../../../../lib/utils"
 import { Articles } from "../../../../lib/types"
 
 const PublishersMessage = (props: PromoProps) => {
-  const { currentArticles, year, month } = props
+  const { currentArticles, year, month, thisIssueData } = props
 
   // Filter the currentArticles to get only the articles in the `publishersmessage` section
   const publishersMessage: Articles[] = []
@@ -15,7 +15,7 @@ const PublishersMessage = (props: PromoProps) => {
   })
 
   if (publishersMessage.length === 0) {
-    return <></>
+    return null
   }
 
   return (
@@ -31,7 +31,7 @@ const PublishersMessage = (props: PromoProps) => {
           type: PageType.Article,
         })
         const sectionPermalink = getPermalink({
-          issueSlug: article.issue.slug,
+          issueSlug: thisIssueData.slug,
           section: article.section.slug,
           type: PageType.Section,
         })

@@ -4,7 +4,7 @@ import { PageType, getPermalink } from "../../../../lib/utils"
 import { Articles } from "../../../../lib/types"
 
 const CriticsPage = (props: PromoProps) => {
-  const { currentArticles, year, month } = props
+  const { currentArticles, year, month, thisIssueData } = props
 
   // Filter the currentArticles to get only the articles in the `criticspage` section
   const criticsPage: Articles[] = []
@@ -15,7 +15,7 @@ const CriticsPage = (props: PromoProps) => {
   })
 
   if (criticsPage.length === 0) {
-    return <></>
+    return null
   }
 
   return (
