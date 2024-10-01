@@ -33,7 +33,7 @@ const ArticleList = (props: ArticleListProps) => {
 
     return (
       <li key={i} data-sort={article.sort} className="py-2 text-xs">
-        <h4 className="leading-4 text-sm font-medium bg-pink-300">
+        <h4 className="leading-4 text-sm font-medium">
           <Link href={permalink} title={`${stripHtml(article.title).result} (${article.sort})`}>
             <span>{parse(article.title)}</span>
           </Link>
