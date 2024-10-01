@@ -9,8 +9,8 @@ const PreviewHeader = (props: PreviewHeaderProps) => {
   const { previewURL } = props
 
   return (
-    <>
-      <header className="border-b rail-border py-6 px-6">
+    <div className="w-desktop mx-auto">
+      <header className="border-b rail-border py-6 px-0">
         <nav className="flex space-x-6">
           <svg
             className="br-logo w-16 flex-none"
@@ -64,7 +64,7 @@ const PreviewHeader = (props: PreviewHeaderProps) => {
           </div>
         </nav>
       </header>
-    </>
+    </div>
   )
 }
 
