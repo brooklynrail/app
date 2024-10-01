@@ -103,12 +103,18 @@
     .frame {
       @apply m-0 w-full;
     }
+    figcaption,
+    figcaption p {
+      @apply max-w-[100ex];
+    }
   }
 }
 
-figcaption {
-  @apply w-full max-w-[134ex];
-  @apply pt-2 px-1 text-xs tablet-lg:text-sm font-sans font-normal text-zinc-500 dark:text-zinc-300;
+figcaption,
+figcaption p {
+  @apply max-w-[100ex];
+  @apply w-full;
+  @apply pt-1.5 px-0.5 text-xs tablet-lg:text-sm font-sans font-normal text-zinc-500 dark:text-zinc-300;
 }
 
 .media.width-xl,
