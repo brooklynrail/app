@@ -22,6 +22,9 @@ const FeaturedArticles = (props: PromoProps) => {
     <div>
       {featuredArticles.map((articleIssue: Articles, i: number) => {
         const article = articleIssue
+        if (!article.section.slug || !article.slug) {
+          return null
+        }
         const permalink = getPermalink({
           year: year,
           month: month,
