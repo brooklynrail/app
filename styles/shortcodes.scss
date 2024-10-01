@@ -19,7 +19,7 @@
 
   /* promo type="free-text"] text goes here [/promo] */
   .promo {
-    @apply mt-3 ml-3 p-3 bg-gray-200 font-sans text-md  text-zinc-700 float-right clear-both;
+    @apply mt-3 ml-3 p-3 bg-gray-200 dark:bg-zinc-600 font-sans text-md  text-zinc-800 dark:text-slate-100 float-right clear-both;
     text-transform: none;
     strong {
       @apply font-medium;
