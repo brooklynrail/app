@@ -21,7 +21,6 @@ import Footer from "../footer"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "@/app/components/theme"
 import Header, { HeaderType } from "../header"
-import OldMenu from "../header/oldMenu"
 import Paper from "../paper"
 
 export interface PromoProps {
