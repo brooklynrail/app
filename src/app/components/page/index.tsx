@@ -73,7 +73,7 @@ const PageNav = (props: PageNavProps) => {
   })
 
   return (
-    <div className="w-card-lg bg-neutral-200 p-3 float-right mb-9 ml-6 mt-3">
+    <div className="w-card-lg bg-neutral-200 dark:bg-zinc-400 text-zinc-900 p-3 float-right mb-9 ml-6 mt-3">
       <ul>{allPages}</ul>
       <ul>
         <li>
