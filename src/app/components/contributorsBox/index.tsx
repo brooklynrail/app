@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { ArticlesContributors } from "../../../../lib/types"
 import parse from "html-react-parser"
-import { HtmlContext } from "next/dist/server/future/route-modules/app-page/vendored/contexts/entrypoints"
 import { Fragment } from "react"
 
 interface ContributorsProps {
@@ -13,10 +12,8 @@ const ContributorsBox = (props: ContributorsProps) => {
 
   const authors = contributors.map((contributor: ArticlesContributors, i: number) => {
     if (!contributor.contributors_id) {
-      return <></>
+      return null
     }
-
-    // check if authorName exists as a string within the bio
 
     const authorName = `${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name}`
     const authorLink = (
@@ -26,10 +23,6 @@ const ContributorsBox = (props: ContributorsProps) => {
     )
     const bio = contributor.contributors_id.bio
     const hasAuthorName = bio && bio.includes(authorName)
-
-    // If there is no Bio, show the author name with the link
-    // If there is a Bio, and the name is included in the Bio, show only the Bio with the name linked.
-    // If there is a Bio, and the name is not included in the Bio, show the name with the link plus the Bio.
 
     return (
       <div rel="author" className="text-lg max-w-[72ex]" key={i}>
@@ -43,6 +36,7 @@ const ContributorsBox = (props: ContributorsProps) => {
       </div>
     )
   })
+
   return (
     <section className="border-t-[1px] rail-border pt-3 pb-6 font-sans space-y-6">
       <h2 className="text-sm font-medium uppercase">Contributors</h2>
@@ -60,36 +54,44 @@ interface AuthorLinkProps {
 const addAuthorLinkToBio = (props: AuthorLinkProps) => {
   const { authorName, authorLink, bio } = props
 
-  // Define a regex to find all occurrences of the authorName
-  const regex = new RegExp(`(${authorName})`, "g")
-  // Parse the bio HTML and manipulate the resulting React elements
-  // Parse the bio HTML and manipulate the resulting React elements
+  // Track whether the first instance has been replaced
+  let replaced = false
+
+  // Parse the bio and replace only the first occurrence of the author's name
   const bioUpdated = parse(bio, {
     replace: (domNode) => {
-      if (domNode.type === "tag" && domNode.name === "strong") {
-        const child = domNode.children && domNode.children[0]
-        if (child && child.type === "text" && child.data === authorName) {
-          return <strong>{authorLink}</strong>
-        }
-      }
       if (domNode.type === "text" && domNode.data.includes(authorName)) {
-        const parts = domNode.data.split(regex)
+        const parts = domNode.data.split(authorName)
+
         return (
           <>
-            {parts.map((part, index) =>
-              part === authorName ? (
-                <Fragment key={index}>{authorLink}</Fragment>
-              ) : (
-                <Fragment key={index}>{part}</Fragment>
-              ),
-            )}
+            {parts.reduce((acc: JSX.Element[], part, index) => {
+              if (index === 0) {
+                acc.push(<Fragment key={index}>{part}</Fragment>)
+              } else if (!replaced) {
+                acc.push(
+                  <Fragment key={index}>
+                    {authorLink}
+                    {part}
+                  </Fragment>,
+                )
+                replaced = true
+              } else {
+                acc.push(
+                  <Fragment key={index}>
+                    {authorName}
+                    {part}
+                  </Fragment>,
+                )
+              }
+              return acc
+            }, [])}
           </>
         )
       }
     },
   })
 
-  // Return the array of JSX elements, which will render as expected
   return <>{bioUpdated}</>
 }
 
