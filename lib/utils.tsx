@@ -547,6 +547,70 @@ export async function getPreviewIssue(id: string) {
   }
 }
 
+export async function getPreviewTribute(id: string) {
+  try {
+    const preview = await directus.request(
+      readItems("tributes", {
+        fields: [
+          "id",
+          "title",
+          "deck",
+          "slug",
+          "blurb",
+          "summary",
+          "excerpt",
+          "published",
+          "title_tag",
+          {
+            editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+          },
+          {
+            featured_image: ["id", "width", "height", "filename_disk", "caption"],
+          },
+          {
+            articles: [
+              "slug",
+              "title",
+              "excerpt",
+              "body_text",
+              "sort",
+              "hide_title",
+              "status",
+              {
+                tribute: ["slug"],
+              },
+              {
+                images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+              },
+              {
+                section: ["name", "slug"],
+              },
+              {
+                issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+              },
+              {
+                contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
+              },
+              {
+                featured_image: ["id", "width", "height", "filename_disk", "caption"],
+              },
+            ],
+          },
+        ],
+        filter: {
+          id: {
+            _eq: id,
+          },
+        },
+      }),
+    )
+    return preview[0] as Tributes
+  } catch (error) {
+    console.error("error in getPreviewTribute", error)
+    return null
+  }
+}
+
 export async function getArticle(slug: string, status?: string) {
   const articleAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
@@ -783,6 +847,7 @@ export enum PageType {
   ChildPage = "child_page",
   PreviewArticle = "preview_article",
   PreviewIssue = "preview_issue",
+  PreviewTribute = "preview_tribute",
   SpecialIssue = "special_issue",
   SpecialIssueSection = "special_issue_section",
   SpecialIssueArticle = "special_issue_article",
@@ -800,9 +865,10 @@ interface PermalinkProps {
   tributeSlug?: string
   articleId?: string
   issueId?: string
+  tributeId?: string
 }
 export function getPermalink(props: PermalinkProps) {
-  const { year, section, slug, issueSlug, type, tributeSlug, articleId, issueId } = props
+  const { year, section, slug, issueSlug, type, tributeSlug, articleId, issueId, tributeId } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
   const day = props.day && props.day < 10 ? `0${props.day}` : props.day
 
@@ -837,6 +903,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/preview/article/${articleId}/`
     case PageType.PreviewIssue:
       return `${baseURL}/preview/issue/${issueId}/`
+    case PageType.PreviewTribute:
+      return `${baseURL}/preview/tribute/${tributeId}/`
     case PageType.Archive:
       return `${baseURL}/archive/`
     case PageType.Search:

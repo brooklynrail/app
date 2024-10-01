@@ -571,7 +571,7 @@ export type Sections = {
 }
 
 export type Tributes = {
-  id: number
+  id: string
   articles: Articles[]
   date_created?: string | null
   date_updated?: string | null

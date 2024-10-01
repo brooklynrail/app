@@ -1,13 +1,13 @@
 "use client"
 import { useState, useEffect } from "react"
 import Password from "../password"
-import IssuePage from "../../issuePage"
-import { PageLayout } from "@/app/page"
-import { IssuePreviewProps } from "@/app/preview/issue/[id]/page"
+import TributePage from "../../tributePage"
+import { TributePreviewProps } from "@/app/preview/tribute/[id]/page"
+import { getPermalink, PageType } from "../../../../../lib/utils"
 
-const IssuePreview = (props: IssuePreviewProps) => {
-  const { thisIssueData, isEnabled, previewPassword } = props
-  const cookieSlug = `rail_preview_${thisIssueData.slug}`
+const TributePreview = (props: TributePreviewProps) => {
+  const { tributeData, isEnabled, previewPassword, articleData } = props
+  const cookieSlug = `rail_preview_${tributeData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
   const [isStudioPreview, setIsStudioPreview] = useState(false)
@@ -66,8 +66,20 @@ const IssuePreview = (props: IssuePreviewProps) => {
     return <Password {...passwordProps} />
   }
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${thisIssueData.id}`
-  return <IssuePage {...props} layout={PageLayout.Issue} previewURL={previewURL} />
+  const permalink = getPermalink({
+    tributeSlug: tributeData.slug,
+    type: PageType.Tribute,
+  })
+
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/tribute/${tributeData.id}`
+  return (
+    <TributePage
+      thisTributeData={tributeData}
+      articleData={articleData}
+      previewURL={previewURL}
+      permalink={permalink}
+    />
+  )
 }
 
-export default IssuePreview
+export default TributePreview

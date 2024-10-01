@@ -10,7 +10,7 @@ const PreviewHeader = (props: PreviewHeaderProps) => {
 
   return (
     <div className="w-desktop mx-auto">
-      <header className="border-b rail-border py-6 px-0">
+      <header className="border-b rail-border py-6 px-3">
         <nav className="flex space-x-6">
           <svg
             className="br-logo w-16 flex-none"

@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers"
-import { getPreviewIssue } from "../../../../../lib/utils"
+import { getPreviewTribute } from "../../../../../lib/utils"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -14,9 +14,9 @@ export async function GET(request: Request) {
     return new Response("Missing ID from URL", { status: 401 })
   }
 
-  const issue = await getPreviewIssue(id)
+  const tribute = await getPreviewTribute(id)
 
-  if (!issue) {
+  if (!tribute) {
     return new Response("Invalid ID", { status: 401 })
   }
 
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
   return new Response(null, {
     status: 307,
     headers: {
-      Location: `/preview/issue/${issue.id}/?draftMode=true`,
+      Location: `/preview/tribute/${tribute.id}/?draftMode=true`,
     },
   })
 }

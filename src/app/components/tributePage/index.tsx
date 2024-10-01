@@ -11,9 +11,10 @@ import { useTheme } from "../theme"
 import TributeHead from "./tributeHead"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
 import TributeBody from "./tributeBody"
+import PreviewHeader from "../preview/previewHead"
 
 const TributePage = (props: TributePageProps) => {
-  const { thisTributeData } = props
+  const { thisTributeData, previewURL } = props
   const { theme, setTheme } = useTheme()
 
   // State management for ads and articles
@@ -34,20 +35,19 @@ const TributePage = (props: TributePageProps) => {
   const tributeClass = `tribute-${slug.toLowerCase()}`
 
   return (
-    <>
-      <PopupProvider>
-        <Paper pageClass={`paper-tribute ${tributeClass}`}>
-          <div className="">
-            <Header type={HeaderType.Default} />
-            <section id="main" className={styles.main}>
-              <TributeHead {...props} />
-              <TributeBody {...props} />
-            </section>
-          </div>
-        </Paper>
-        <ThemeToggle {...{ theme, setTheme }} />
-      </PopupProvider>
-    </>
+    <PopupProvider>
+      <Paper pageClass={`paper-tribute ${tributeClass}`}>
+        {previewURL && <PreviewHeader previewURL={previewURL} />}
+        <div className="">
+          <Header type={HeaderType.Default} />
+          <section id="main" className={styles.main}>
+            <TributeHead {...props} />
+            <TributeBody {...props} />
+          </section>
+        </div>
+      </Paper>
+      <ThemeToggle {...{ theme, setTheme }} />
+    </PopupProvider>
   )
 }
 
