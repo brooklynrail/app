@@ -25,7 +25,7 @@
   li,
   pre {
     max-width: 72ex;
-    @apply mb-3 tablet:mb-6;
+    @apply mb-6 tablet:mb-6;
   }
 
   div > p:last-child {
