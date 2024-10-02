@@ -323,6 +323,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.section.description` +
     `&fields[]=articles.section.slug` +
     `&fields[]=articles.tribute.slug` +
+    `&fields[]=articles.tribute.title` +
     `&fields[]=articles.images.directus_files_id.id` +
     `&fields[]=articles.images.directus_files_id.caption` +
     `&fields[]=articles.images.directus_files_id.filename_disk` +

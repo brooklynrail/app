@@ -21,7 +21,7 @@ const ArticleList = (props: ArticleListProps) => {
   const { sectionArticles, year, month, section } = props
 
   const list = sectionArticles.map((article: Articles, i: number) => {
-    const permalink = getPermalink({
+    let permalink = getPermalink({
       year: year,
       month: month,
       section: article.section.slug,
@@ -32,22 +32,37 @@ const ArticleList = (props: ArticleListProps) => {
     const hide_bylines_downstream = article.hide_bylines_downstream
     const guestCritic = article.section.slug === "editorsmessage"
 
-    const bylines = !hide_bylines_downstream && (
-      <Bylines
-        byline_override={article.byline_override}
-        contributors={article.contributors}
-        guestCritic={guestCritic}
-      />
-    )
+    if (article.tribute && section.slug === "in-memoriam") {
+      permalink = getPermalink({
+        tributeSlug: article.tribute.slug,
+        type: PageType.Tribute,
+      })
+      return (
+        <li key={i} data-sort={article.sort} className="py-2 text-xs">
+          <h4 className="leading-4 text-sm font-medium">
+            <Link href={permalink} title={`${stripHtml(article.tribute.title).result}`}>
+              <span>{parse(article.tribute.title)}</span>
+            </Link>
+          </h4>
+        </li>
+      )
+    }
+
     return (
       <li key={i} data-sort={article.sort} className="py-2 text-xs">
         <h4 className="leading-4 text-sm font-medium">
-          <Link href={permalink} title={`${stripHtml(article.title).result} (${article.sort})`}>
+          <Link href={permalink} title={`${stripHtml(article.title).result}`}>
             <span>{parse(article.title)}</span>
           </Link>
         </h4>
 
-        {!article.tribute && bylines}
+        {!hide_bylines_downstream && (
+          <Bylines
+            byline_override={article.byline_override}
+            contributors={article.contributors}
+            guestCritic={guestCritic}
+          />
+        )}
       </li>
     )
   })
