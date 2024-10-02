@@ -19,7 +19,7 @@ const FeaturedArticles = (props: PromoProps) => {
   }
 
   return (
-    <div>
+    <>
       {featuredArticles.map((articleIssue: Articles, i: number) => {
         const article = articleIssue
 
@@ -46,7 +46,7 @@ const FeaturedArticles = (props: PromoProps) => {
           />
         )
       })}
-    </div>
+    </>
   )
 }
 
