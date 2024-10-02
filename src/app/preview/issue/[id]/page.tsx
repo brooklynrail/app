@@ -71,8 +71,6 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
     return notFound()
   }
 
-  const tributesData = await getTributes({ thisIssueData: thisIssueData })
-
   const issuePreviewProps = {
     thisIssueData,
     issueSections,
