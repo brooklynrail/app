@@ -44,7 +44,7 @@ const CoversPopup = () => {
 
   return (
     <div
-      className="z-[1000] fixed w-full h-full top-0 left-0 right-0 bottom-0 bg-black bg-opacity-85 flex flex-col justify-center py-9"
+      className="z-[1000] fixed w-full h-full top-0 left-0 right-0 bottom-0 bg-black bg-opacity-95 flex flex-col justify-center py-9"
       onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
     >
       <div className="flex items-start overflow-x-auto space-x-9 px-20">{allCovers}</div>
