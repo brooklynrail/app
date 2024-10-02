@@ -14,28 +14,26 @@ const PromoTribute = (props: PromoTributeProps) => {
   const { title, excerpt, featured_image, editors } = tribute
 
   return (
-    <>
-      <div className="py-1 pb-2 flex flex-col space-y-1" itemType="http://schema.org/Article">
-        <p className="text-sm font-bold float-right">In Memoriam</p>
+    <div className="py-1 pb-2 flex flex-col space-y-1" itemType="http://schema.org/Article">
+      <p className="text-sm font-bold float-right">In Memoriam</p>
 
-        <div>
-          {featured_image && (
-            <div className="float-right pl-2">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <Thumb image={featured_image} title={title} />
-              </Link>
-            </div>
-          )}
-
-          <h4 className="text-lg font-normal">
+      <div>
+        {featured_image && (
+          <div className="float-right pl-2">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              {parse(title)}
+              <Thumb image={featured_image} title={title} />
             </Link>
-          </h4>
-          <div className="pt-3 text-sm font-serif">{parse(excerpt)}</div>
-        </div>
+          </div>
+        )}
+
+        <h4 className="text-lg font-normal">
+          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+            {parse(title)}
+          </Link>
+        </h4>
+        <div className="pt-3 text-sm font-serif">{parse(excerpt)}</div>
       </div>
-    </>
+    </div>
   )
 }
 

@@ -1,6 +1,13 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getAllIssues, getPermalink, getPreviewIssue, getPreviewPassword } from "../../../../../lib/utils"
-import { Issues, Sections } from "../../../../../lib/types"
+import {
+  PageType,
+  getAllIssues,
+  getPermalink,
+  getPreviewIssue,
+  getPreviewPassword,
+  getTributes,
+} from "../../../../../lib/utils"
+import { Issues, Sections, Tributes } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import IssuePreview from "@/app/components/preview/issue"
@@ -10,6 +17,7 @@ export interface IssuePreviewProps {
   thisIssueData: Issues
   issueSections: Sections[]
   allIssues: Issues[]
+  tributesData: Tributes[]
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -58,7 +66,7 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
 
   const data = await getData({ params })
 
-  const { thisIssueData, issueSections, permalink, directusUrl, previewPassword, allIssues } = data
+  const { thisIssueData, tributesData, issueSections, permalink, directusUrl, previewPassword, allIssues } = data
   if (!thisIssueData || !issueSections || !permalink || !previewPassword || !directusUrl) {
     return notFound()
   }
@@ -67,6 +75,7 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
     thisIssueData,
     issueSections,
     allIssues,
+    tributesData,
     permalink,
     directusUrl,
     previewPassword,
@@ -102,6 +111,8 @@ async function getData({ params }: { params: PreviewParams }) {
     return notFound()
   }
 
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
   const permalink = getPermalink({
     issueId: thisIssueData.id,
     type: PageType.PreviewIssue,
@@ -113,6 +124,7 @@ async function getData({ params }: { params: PreviewParams }) {
   return {
     thisIssueData,
     issueSections,
+    tributesData,
     allIssues,
     permalink,
     previewPassword,
