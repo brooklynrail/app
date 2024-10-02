@@ -18,7 +18,7 @@ const ContributorsBox = (props: ContributorsProps) => {
 
     const authorName = `${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name}`
     const authorLink = (
-      <Link href={`/contributors/${contributor.contributors_id.slug}`}>
+      <Link href={`/contributor/${contributor.contributors_id.slug}`}>
         <strong>{authorName}</strong>
       </Link>
     )
