@@ -12,19 +12,22 @@ function ThemeToggle(props: ThemeToggleProps) {
   useEffect(() => {
     // Get the stored theme preference from localStorage
     const savedTheme = localStorage.getItem("theme")
+    const forcedTheme = "light"
 
     // If a theme is saved in localStorage, use it. Otherwise, use the system preference
     if (savedTheme) {
       setTheme(savedTheme)
-      document.documentElement.setAttribute("data-mode", savedTheme)
-      document.documentElement.classList.add(savedTheme)
+
+      document.documentElement.setAttribute("data-mode", forcedTheme)
+      document.documentElement.classList.add(forcedTheme)
       // add className to the HTML element
     } else {
       // Default to system setting
       const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-      setTheme(systemPrefersDark ? "dark" : "light")
-      document.documentElement.classList.add(systemPrefersDark ? "dark" : "light")
-      document.documentElement.setAttribute("data-mode", systemPrefersDark ? "dark" : "light")
+      // setTheme(systemPrefersDark ? "dark" : "light")
+      setTheme(systemPrefersDark ? forcedTheme : "light")
+      document.documentElement.classList.add(systemPrefersDark ? forcedTheme : "light")
+      document.documentElement.setAttribute("data-mode", systemPrefersDark ? forcedTheme : "light")
     }
   }, [])
 

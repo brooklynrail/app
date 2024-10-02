@@ -24,6 +24,7 @@ export interface TributePageProps {
   articleData: Articles
   permalink: string
   previewURL?: string
+  currentArticleSlug?: string
 }
 
 export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {

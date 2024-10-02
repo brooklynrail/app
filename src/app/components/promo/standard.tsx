@@ -61,12 +61,12 @@ const PromoStandard = (props: PromoProps) => {
             </div>
           )}
           <div className="flex flex-col space-y-2">
-            <h4 className="text-lg font-normal">
+            <h4 className="text-2xl tablet-lg:text-lg font-normal">
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
                 {parse(title)}
               </Link>
             </h4>
-            <div className="text-sm font-serif">{parse(excerpt)}</div>
+            <div className="text-md font-serif">{parse(excerpt)}</div>
           </div>
         </div>
       </div>

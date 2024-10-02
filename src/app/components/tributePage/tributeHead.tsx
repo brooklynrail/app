@@ -30,7 +30,9 @@ const TributeHead = (props: TributePageProps) => {
           </div>
         </div>
         <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-9 desktop-lg:col-span-8">
-          <div className="flex flex-col space-y-6 px-0 tablet-lg:px-6">
+          <div
+            className={`flex flex-col space-y-6 px-0 tablet-lg:px-6 h-full ${blurb ? "justify-between" : "justify-end"}`}
+          >
             {blurb && <Blurb text={blurb} />}
             <div className="hidden tablet-lg:block">
               <TributeWritersList

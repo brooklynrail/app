@@ -66,7 +66,7 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
 
   const data = await getData({ params })
 
-  const { thisIssueData, issueSections, permalink, directusUrl, previewPassword, allIssues } = data
+  const { thisIssueData, tributesData, issueSections, permalink, directusUrl, previewPassword, allIssues } = data
   if (!thisIssueData || !issueSections || !permalink || !previewPassword || !directusUrl) {
     return notFound()
   }
@@ -113,6 +113,8 @@ async function getData({ params }: { params: PreviewParams }) {
     return notFound()
   }
 
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
   const permalink = getPermalink({
     issueId: thisIssueData.id,
     type: PageType.PreviewIssue,
@@ -124,6 +126,7 @@ async function getData({ params }: { params: PreviewParams }) {
   return {
     thisIssueData,
     issueSections,
+    tributesData,
     allIssues,
     permalink,
     previewPassword,

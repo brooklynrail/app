@@ -1,5 +1,5 @@
 .content {
-  @apply text-lg tablet-lg:text-xl font-normal font-serif;
+  @apply text-2xl tablet-lg:text-xl font-normal font-serif;
 
   h1 {
     @apply hidden;
@@ -25,7 +25,7 @@
   li,
   pre {
     max-width: 72ex;
-    @apply mb-3 tablet:mb-6;
+    @apply mb-6 tablet:mb-6;
   }
 
   div > p:last-child {
@@ -90,6 +90,11 @@
   .endnote {
     @apply my-8;
     @apply font-normal font-sans text-sm;
+
+    a {
+      @apply underline;
+    }
+
     li {
       @apply mb-2 tablet:mb-3;
     }
@@ -121,7 +126,7 @@ figcaption p {
 .media.width-lg,
 .media.width-md,
 .media.width-sm {
-  @apply pt-3 mb-9 desktop:mb-12;
+  @apply pt-6 mb-12;
 }
 
 .media.width-md {
@@ -139,5 +144,5 @@ figcaption p {
   @apply w-card tablet:w-mobile desktop-lg:w-mobile-lg float-right;
 }
 .width-sm {
-  @apply w-card desktop:w-card-lg float-right;
+  @apply mb-6 w-card desktop:w-card-lg float-right;
 }

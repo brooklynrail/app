@@ -7,7 +7,7 @@ import CurrentSections from "./currentSections"
 import RailPartners from "./railPartners"
 import RailProjects from "./railProjects"
 import Ad970 from "../ads/ad970"
-import { Ads, Articles } from "../../../../lib/types"
+import { Ads, Articles, Issues } from "../../../../lib/types"
 import Link from "next/link"
 import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
@@ -28,10 +28,11 @@ export interface PromoProps {
   currentArticles: Articles[]
   year: number
   month: number
+  thisIssueData: Issues
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { thisIssueData, currentSection, issueSections, previewURL, allIssues } = props
+  const { thisIssueData, currentSection, issueSections, previewURL, allIssues, tributesData } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
   const { theme, setTheme } = useTheme()
@@ -56,7 +57,9 @@ const IssuePage = (props: IssuePageProps) => {
   let layout
   switch (props.layout) {
     case PageLayout.Section:
-      layout = <SectionLayout thisIssueData={thisIssueData} currentSection={currentSection} />
+      layout = (
+        <SectionLayout thisIssueData={thisIssueData} currentSection={currentSection} tributesData={tributesData} />
+      )
       break
     case PageLayout.TableOfContents:
       layout = <TableOfContentsPage {...props} />
@@ -108,7 +111,7 @@ const IssuePage = (props: IssuePageProps) => {
             <div className="col-span-4 tablet-lg:col-span-8">
               <div className="px-3 tablet-lg:px-0">{layout}</div>
             </div>
-            <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
+            <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-2">
               <div className="pr-3">
                 <AdsTile currentAds={currentAds} />
               </div>

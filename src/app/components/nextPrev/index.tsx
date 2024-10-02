@@ -98,7 +98,7 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle
   }
 
   return (
-    <nav className="flex justify-between py-6">
+    <nav className={`flex justify-between ${type === NextPrevType.Tributes ? "pt-0 pb-6" : "py-6"}`}>
       {prevLink()}
       {nextLink()}
     </nav>
@@ -158,7 +158,7 @@ const ArticleLink = ({
         }}
       >
         <span className="uppercase block">{text}</span>
-        <Section article={article} parentCollection={parentCollection} type={type} />
+        {type === NextPrevType.Issues && <Section article={article} parentCollection={parentCollection} type={type} />}
         <ArticleTitle article={article} type={type} />
       </Link>
     </div>

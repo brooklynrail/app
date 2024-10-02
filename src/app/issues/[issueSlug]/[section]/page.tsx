@@ -88,6 +88,8 @@ async function getData({ params }: { params: SectionParams }) {
     return notFound()
   }
 
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
   // make an array of all the sections used in thisIssueData.articles and remove any duplicates
   const issueSections = thisIssueData.articles
     .map((article) => article.section)
@@ -112,6 +114,7 @@ async function getData({ params }: { params: SectionParams }) {
       issueSections,
       tributesData,
       currentSection,
+      tributesData,
       allIssues,
       permalink,
     },

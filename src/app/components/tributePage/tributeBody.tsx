@@ -6,9 +6,10 @@ import TributeWriters from "./writers"
 import { useEffect, useRef } from "react"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { useArticleState } from "@/app/hooks/useArticleState"
+import NextPrev, { NextPrevType } from "../nextPrev"
 
 const TributeBody = (props: TributePageProps) => {
-  const { thisTributeData, articleData } = props
+  const { thisTributeData, articleData, currentArticleSlug } = props
   const { summary } = thisTributeData
   const { currentArticle, switchArticle } = useArticleState(articleData, thisTributeData.articles)
 
@@ -17,8 +18,10 @@ const TributeBody = (props: TributePageProps) => {
 
   // Effect to scroll to the top of the article content whenever the currentArticle changes
   useEffect(() => {
-    if (articleContentRef.current) {
-      articleContentRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+    if (currentArticleSlug != undefined) {
+      if (articleContentRef.current) {
+        articleContentRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+      }
     }
   }, [currentArticle])
 
@@ -33,7 +36,7 @@ const TributeBody = (props: TributePageProps) => {
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-3 tablet-lg:border-r-[1px] rail-border">
           <div className="sticky top-0 tablet-lg:overflow-y-auto tablet-lg:h-screen">
-            <div className="divide-y-[1px] rail-divide tablet-lg:mr-3 pb-3 tablet-lg:pb-12 flex flex-col">
+            <div className="divide-y-[1px] rail-divide tablet-lg:mr-3 pb-0 tablet-lg:pb-12 flex flex-col">
               <aside className="text-sm tablet-lg:pl-3 pb-3 tablet-lg:py-3">{summary && parse(summary)}</aside>
 
               <TributeWriters
@@ -51,6 +54,13 @@ const TributeBody = (props: TributePageProps) => {
 
         {/* Main Article Section */}
         <div className="col-span-4 tablet-lg:col-span-9">
+          <NextPrev
+            parentCollection={thisTributeData}
+            articles={thisTributeData.articles}
+            currentSlug={articleData.slug}
+            type={NextPrevType.Tributes}
+            switchArticle={switchArticle}
+          />
           <ArticleBody
             articles={thisTributeData.articles}
             articleData={currentArticle}
@@ -60,6 +70,15 @@ const TributeBody = (props: TributePageProps) => {
             type={BodyTypes.Tribute}
             switchArticle={switchArticle}
           />
+          <div className="py-3 border-t rail-border">
+            <NextPrev
+              parentCollection={thisTributeData}
+              articles={thisTributeData.articles}
+              currentSlug={articleData.slug}
+              type={NextPrevType.Tributes}
+              switchArticle={switchArticle}
+            />
+          </div>
           <div className="block tablet-lg:hidden">
             <PublishInfo thisTributeData={thisTributeData} />
           </div>

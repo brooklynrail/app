@@ -71,7 +71,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
         </div>
       </div>
 
-      {thisIssueData && (
+      {thisIssueData && type === BodyTypes.Article && (
         <NextPrev
           parentCollection={thisIssueData}
           articles={articles}

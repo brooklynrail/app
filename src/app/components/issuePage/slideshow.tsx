@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useState } from "react"
 import { PageType, getPermalink } from "../../../../lib/utils"
 import Link from "next/link"
+import { PromoSectionName } from "../promo/standard"
 
 interface SlideImageProps {
   slideshow_image: DirectusFiles
@@ -87,8 +88,9 @@ const SlideShow = (props: SlideshowProps) => {
             <Image src="/images/banner-next.png" width={25} height={31} alt="Next" />
           </div>
         </div>
-        <Link key={i} className="block" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
-          <h2 className="py-1 font-normal text-xl">{parse(title)}</h2>
+        <Link key={i} className="block py-1" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
+          {article.kicker && <span className="text-red-600 dark:text-red-500 uppercase">{article.kicker}</span>}
+          <h2 className="font-normal text-2xl tablet-lg:text-xl">{parse(title)}</h2>
         </Link>
       </div>
     )

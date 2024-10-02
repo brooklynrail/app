@@ -3,6 +3,7 @@ import { stripHtml } from "string-strip-html"
 import Link from "next/link"
 import Image from "next/image"
 import { DirectusFiles, Tributes } from "../../../../lib/types"
+import TributeWritersList from "../tributePage/writersList"
 
 interface PromoTributeProps {
   tribute: Tributes
@@ -12,35 +13,30 @@ interface PromoTributeProps {
 const PromoTribute = (props: PromoTributeProps) => {
   const { tribute, permalink } = props
   const { title, excerpt, featured_image, editors } = tribute
-  // const names = editors.map((contributor: any, i: number) => {
-  //   const { first_name, last_name } = contributor.contributors_id
-  //   const name = `${first_name} ${last_name}`
-  //   return <span key={`first_name-last_name-${i}`}>{name}</span>
-  // })
 
   return (
-    <>
-      <div className="py-1 pb-2 flex flex-col space-y-1" itemType="http://schema.org/Article">
-        <p className="text-sm font-bold float-right">In Memoriam</p>
+    <div className="py-1 pb-2 flex flex-col space-y-1" itemType="http://schema.org/Article">
+      <p className="text-sm font-bold float-right">In Memoriam</p>
 
-        <div>
-          {featured_image && (
-            <div className="float-right pl-2">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <Thumb image={featured_image} title={title} />
-              </Link>
-            </div>
-          )}
+      <div>
+        <h4 className="text-2xl tablet-lg:text-lg font-normal">
+          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+            {parse(title)}
+          </Link>
+        </h4>
 
-          <h4 className="text-lg font-normal">
+        {featured_image && (
+          <div className="float-right pl-3 pt-5 pb-3">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              {parse(title)}
+              <Thumb image={featured_image} title={title} />
             </Link>
-          </h4>
-          <div className="pt-3 text-sm font-serif">{parse(excerpt)}</div>
-        </div>
+          </div>
+        )}
+
+        <div className="py-3 text-md font-serif">{parse(excerpt)}</div>
+        <TributeWritersList articles={tribute.articles} tributeSlug={tribute.slug} />
       </div>
-    </>
+    </div>
   )
 }
 

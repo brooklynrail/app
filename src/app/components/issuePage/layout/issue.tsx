@@ -4,7 +4,7 @@ import EditorsMessage from "../editorsMessage"
 import PublishersMessage from "../publishersMessage"
 import SlideShow from "../slideshow"
 import FeaturedArticles from "../featuredArticles"
-import { Articles, Issues, Sections } from "../../../../../lib/types"
+import { Articles, Issues, Sections, Tributes } from "../../../../../lib/types"
 import { PageLayout } from "@/app/page"
 import TableOfContents from "../tableOfContents"
 import InMemoriam from "../inMemoriam"
@@ -13,11 +13,13 @@ import { CoverImage } from "../../issueRail/coverImage"
 import Link from "next/link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapPin } from "@fortawesome/free-solid-svg-icons"
+import AdsTileStrip from "../../ads/adsTileStrip"
 import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
 
 export interface LayoutProps {
   thisIssueData: Issues
   currentSection?: Sections
+  tributesData: Tributes[]
 }
 
 const IssueLayout = (props: IssuePageProps) => {
@@ -34,7 +36,7 @@ const IssueLayout = (props: IssuePageProps) => {
     }
   })
 
-  const promoProps = { currentArticles, year, month }
+  const promoProps = { currentArticles, year, month, thisIssueData }
   const tocProps = { thisIssueData, currentSections, permalink, year, month }
 
   return (
@@ -70,8 +72,9 @@ const IssueLayout = (props: IssuePageProps) => {
       <div className="grid grid-cols-4 tablet-lg:grid-cols-8 gap-6">
         <div className="col-span-4 py-1">
           <div className="flex flex-col divide-y-[1px] rail-divide">
-            <FeaturedArticles {...promoProps} />
             {tributesData && tributesData.length > 0 && <InMemoriam tributesData={tributesData} />}
+            <FeaturedArticles {...promoProps} />
+            <AdsTileStrip />
           </div>
         </div>
         <div className="col-span-4 tablet-lg:col-start-5 py-1">

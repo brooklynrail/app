@@ -422,15 +422,16 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.contributors.contributors_id.slug` +
     `&fields[]=articles.contributors.contributors_id.bio` +
     `&fields[]=articles.issue.id` +
+    `&fields[]=articles.issue.slug` +
     `&fields[]=articles.issue.title` +
     `&fields[]=articles.issue.year` +
     `&fields[]=articles.issue.month` +
-    `&fields[]=articles.issue.slug` +
     `&fields[]=articles.section.id` +
     `&fields[]=articles.section.name` +
     `&fields[]=articles.section.description` +
     `&fields[]=articles.section.slug` +
     `&fields[]=articles.tribute.slug` +
+    `&fields[]=articles.tribute.title` +
     `&fields[]=articles.images.directus_files_id.id` +
     `&fields[]=articles.images.directus_files_id.caption` +
     `&fields[]=articles.images.directus_files_id.filename_disk` +
@@ -601,7 +602,7 @@ export async function getPreviewArticle(id: string) {
           "hide_title",
           { section: ["id", "name", "slug"] },
           { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
-          { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
+          { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
           { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
           { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
           { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
@@ -636,7 +637,7 @@ export async function getPreviewIssue(id: string) {
               "kicker",
               "sort",
               "featured",
-              { contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }] },
+              { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
               { section: ["slug", "name"] },
               { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
               { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },

@@ -2,8 +2,8 @@ import { useTheme } from "@/app/components/theme"
 
 const Banner = () => {
   const { theme } = useTheme()
-  const pathfill = theme === "dark" ? "fill-none tablet:fill-white" : "fill-none tablet:fill-zinc-900"
-  const textfill = theme === "dark" ? "fill-slate-100 tablet:fill-none" : "fill-red-600 tablet:fill-none"
+  const pathfill = "fill-none tablet:fill-zinc-900"
+  const textfill = "fill-red-600 tablet:fill-none"
   return (
     <>
       <svg

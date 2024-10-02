@@ -9,7 +9,6 @@ interface CurrentSectionsProps {
 
 const CurrentSections = (props: CurrentSectionsProps) => {
   const { issueSections, thisIssueData } = props
-  const { slug, special_issue } = thisIssueData
   const sectionsToRemove = ["publishersmessage", "editorsmessage"]
 
   const issuePermalink = getPermalink({
@@ -36,28 +35,26 @@ const CurrentSections = (props: CurrentSectionsProps) => {
   })
 
   return (
-    <>
-      <div className="leading-4">
-        <ul className="font-medium flex flex-col divide-y-[1px] rail-divide text-sm">
-          <li className="py-0.5">
-            <Link href={issuePermalink} title="Go to the Issue home">
-              Issue Home
-            </Link>
-          </li>
-          {sectionsList}
-          <li className="py-0.5">
-            <Link href={`https://intranslation.brooklynrail.org/?br`} title="Go to In Translation">
-              In Translation
-            </Link>
-          </li>
-          <li className="py-0.5">
-            <Link href={`${issuePermalink}table_of_contents`} title="Go to Table of Contents">
-              Table of Contents
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </>
+    <div className="leading-4">
+      <ul className="font-medium flex flex-col divide-y-[1px] rail-divide text-sm">
+        <li className="py-0.5">
+          <Link href={issuePermalink} title="Go to the Issue home">
+            Issue Home
+          </Link>
+        </li>
+        {sectionsList}
+        <li className="py-0.5">
+          <Link href={`https://intranslation.brooklynrail.org/?br`} title="Go to In Translation">
+            In Translation
+          </Link>
+        </li>
+        <li className="py-0.5">
+          <Link href={`${issuePermalink}table_of_contents`} title="Go to Table of Contents">
+            Table of Contents
+          </Link>
+        </li>
+      </ul>
+    </div>
   )
 }
 

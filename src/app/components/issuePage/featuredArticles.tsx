@@ -1,10 +1,10 @@
 import PromoStandard from "../promo/standard"
 import { PromoProps } from "."
 import { PageType, getPermalink } from "../../../../lib/utils"
-import { Articles } from "../../../../lib/types"
+import { Articles, Issues } from "../../../../lib/types"
 
 const FeaturedArticles = (props: PromoProps) => {
-  const { currentArticles, year, month } = props
+  const { currentArticles, year, month, thisIssueData } = props
 
   // Filter the currentArticles to get only the articles that are featured
   const featuredArticles: Articles[] = []
@@ -15,13 +15,14 @@ const FeaturedArticles = (props: PromoProps) => {
   })
 
   if (featuredArticles.length === 0) {
-    return <></>
+    return null
   }
 
   return (
     <>
       {featuredArticles.map((articleIssue: Articles, i: number) => {
         const article = articleIssue
+
         const permalink = getPermalink({
           year: year,
           month: month,
@@ -30,7 +31,7 @@ const FeaturedArticles = (props: PromoProps) => {
           type: PageType.Article,
         })
         const sectionPermalink = getPermalink({
-          issueSlug: article.issue.slug,
+          issueSlug: thisIssueData.slug,
           section: article.section.slug,
           type: PageType.Section,
         })

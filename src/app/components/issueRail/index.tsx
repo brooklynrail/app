@@ -14,13 +14,14 @@ interface ArticleListProps {
   sectionArticles: Array<Articles>
   year: number
   month: number
+  section: Sections
 }
 
 const ArticleList = (props: ArticleListProps) => {
-  const { sectionArticles, year, month } = props
+  const { sectionArticles, year, month, section } = props
 
   const list = sectionArticles.map((article: Articles, i: number) => {
-    const permalink = getPermalink({
+    let permalink = getPermalink({
       year: year,
       month: month,
       section: article.section.slug,
@@ -31,13 +32,30 @@ const ArticleList = (props: ArticleListProps) => {
     const hide_bylines_downstream = article.hide_bylines_downstream
     const guestCritic = article.section.slug === "editorsmessage"
 
+    if (article.tribute && section.slug === "in-memoriam") {
+      permalink = getPermalink({
+        tributeSlug: article.tribute.slug,
+        type: PageType.Tribute,
+      })
+      return (
+        <li key={i} data-sort={article.sort} className="py-2 text-xs">
+          <h4 className="leading-4 text-sm font-medium">
+            <Link href={permalink} title={`${stripHtml(article.tribute.title).result}`}>
+              <span>{parse(article.tribute.title)}</span>
+            </Link>
+          </h4>
+        </li>
+      )
+    }
+
     return (
       <li key={i} data-sort={article.sort} className="py-2 text-xs">
         <h4 className="leading-4 text-sm font-medium">
-          <Link href={permalink} title={`${stripHtml(article.title).result} (${article.sort})`}>
+          <Link href={permalink} title={`${stripHtml(article.title).result}`}>
             <span>{parse(article.title)}</span>
           </Link>
         </h4>
+
         {!hide_bylines_downstream && (
           <Bylines
             byline_override={article.byline_override}
@@ -104,7 +122,7 @@ const IssueArticles = (props: IssueArticlesProps) => {
               </Link>
             </h3>
             <ul className="desktop:pl-10 divide-y-[1px] rail-divide">
-              <ArticleList sectionArticles={sectionArticles} year={year} month={month} />
+              <ArticleList sectionArticles={sectionArticles} year={year} month={month} section={section} />
             </ul>
           </div>
         )
@@ -173,7 +191,7 @@ const IssueRail = (props: IssueRailProps) => {
           </div>
         </header>
 
-        <nav className="flex flex-col mt-6 border-t-2 rail-border divide-y-[1px] rail-divide space-y-6">
+        <nav className="flex flex-col mt-6 border-t-2 rail-border divide-y-[1px] rail-divide space-y-6 pb-48">
           <IssueArticles thisIssueData={thisIssueData} issueSections={issueSections} />
         </nav>
       </div>

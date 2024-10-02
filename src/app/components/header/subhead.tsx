@@ -2,7 +2,7 @@ import { useTheme } from "../theme"
 
 const Subhead = () => {
   const { theme } = useTheme()
-  const subheadFill = theme === "dark" ? "fill-slate-100" : "fill-zinc-900"
+  const subheadFill = "fill-zinc-900"
   return (
     <svg viewBox="0 0 920 17" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path

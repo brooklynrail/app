@@ -42,12 +42,10 @@ const TributeWriters = (props: TributeWritersProps) => {
       type: PageType.TributeArticle,
     })
 
-    const intro = "Introduction"
     const isCurrent = currentSlug === article.slug ? "bg-white dark:bg-zinc-700" : ""
 
     return (
       <li key={`item-${index}`} className={`${isCurrent} pl-3 py-1 desktop:py-2`}>
-        {index === 0 && <p className="text-2xs">{intro}</p>}
         <h4 className="font-bold text-md desktop:text-lg">
           <a
             href={permalink}
@@ -75,15 +73,6 @@ const TributeWriters = (props: TributeWritersProps) => {
       <div className="space-y-3 py-3 block tablet-lg:hidden">
         {/* Writers list (hidden on tablet-lg and above) */}
         <TributeWritersList articles={articles} tributeSlug={tributeSlug} switchArticle={switchArticle} />
-
-        {/* Select dropdown for mobile view */}
-        <select
-          className="w-full bg-zinc-50 dark:bg-zinc-700 rounded-full border-r-8 border-transparent px-3 py-1 text-sm tablet-lg:hidden outline order-last tablet-lg:order-none outline-neutral-700"
-          value={selectedArticle}
-          onChange={handleSelectChange}
-        >
-          {options}
-        </select>
       </div>
 
       {/* Sidebar view: Render the list of articles */}

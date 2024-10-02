@@ -15,7 +15,7 @@ const ArtSeen = (props: PromoProps) => {
   })
 
   if (artSeen.length === 0) {
-    return <></>
+    return null
   }
 
   return (

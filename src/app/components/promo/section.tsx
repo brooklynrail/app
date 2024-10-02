@@ -74,7 +74,7 @@ const PromoSection = (props: PromoProps) => {
           <Bylines article={article} type={BylineType.SectionPromo} />
           <div className="text-md font-serif">{parse(excerpt)}</div>
         </div>
-        <div className="w-card-lg flex-none">
+        <div className="w-32 tablet-lg:w-card-lg flex-none">
           {showImage && featured_image && (
             <div className={`media`}>
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>

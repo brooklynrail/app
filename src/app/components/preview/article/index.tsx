@@ -80,65 +80,61 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   const isTribute = articleData.tribute
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.id}/`
   return (
-    <>
-      <Paper pageClass="paper-preview">
-        <main className="desktop:max-w-screen-widescreen mx-auto">
-          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
-            <aside className="col-span-4 tablet-lg:col-span-12">
-              <PreviewHeader previewURL={previewURL} />
-              <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
-                <div className="col-span-4 tablet-lg:col-span-9">
-                  <article className="px-6 py-3">
-                    {isTribute ? (
-                      <div className="py-3 pb-9">
-                        {!articleData.hide_title && <Title title={articleData.title} type={TitleType.TributeArticle} />}
-                        <Bylines
-                          article={articleData}
-                          type={BylineType.TributeArticle}
-                          asTitle={true}
-                          hideBy={true}
-                          linked={true}
-                        />
-                      </div>
-                    ) : (
-                      <ArticleHead {...{ permalink: previewURL, articleData, currentSection: articleData.section }} />
-                    )}
-                    <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
-                      <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-                        <div
-                          className={`content ${articleData.section.slug === "poetry" ? styles.content_poetry : ""}`}
-                        >
-                          {articleData.body_text &&
-                            replaceShortcodes({
-                              html: articleData.body_text,
-                              images: articleData.images,
-                              preview: true,
-                            })}
-
-                          {articleData.endnote && (
-                            <div className="endnote">
-                              <span className="line"></span>
-                              {parse(articleData.endnote)}
-                            </div>
-                          )}
-                          <BookshopWidget {...articleData} />
-                        </div>
-                        {articleData.contributors && <ContributorsBox contributors={articleData.contributors} />}
-                      </div>
-                    </div>
-                  </article>
-                </div>
-                {isStudioPreview && (
-                  <div className="col-span-4 tablet-lg:col-span-3">
-                    <PreviewInfo articleData={articleData} directusUrl={directusUrl} />
-                  </div>
-                )}
-              </div>
-            </aside>
+    <Paper pageClass="paper-preview">
+      <main className="">
+        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
+          <div className="col-span-4 tablet-lg:col-span-12">
+            <PreviewHeader previewURL={previewURL} />
           </div>
-        </main>
-      </Paper>
-    </>
+        </div>
+        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
+          <div className="col-span-4 tablet-lg:col-span-9">
+            <article className="px-6 py-3">
+              {isTribute ? (
+                <div className="py-3 pb-9">
+                  {!articleData.hide_title && <Title title={articleData.title} type={TitleType.TributeArticle} />}
+                  <Bylines
+                    article={articleData}
+                    type={BylineType.TributeArticle}
+                    asTitle={true}
+                    hideBy={true}
+                    linked={true}
+                  />
+                </div>
+              ) : (
+                <ArticleHead {...{ permalink: previewURL, articleData, currentSection: articleData.section }} />
+              )}
+              <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
+                <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
+                  <div className={`content ${articleData.section.slug === "poetry" ? styles.content_poetry : ""}`}>
+                    {articleData.body_text &&
+                      replaceShortcodes({
+                        html: articleData.body_text,
+                        images: articleData.images,
+                        preview: true,
+                      })}
+
+                    {articleData.endnote && (
+                      <div className="endnote">
+                        <span className="line"></span>
+                        {parse(articleData.endnote)}
+                      </div>
+                    )}
+                    <BookshopWidget {...articleData} />
+                  </div>
+                  {articleData.contributors && <ContributorsBox contributors={articleData.contributors} />}
+                </div>
+              </div>
+            </article>
+          </div>
+          {isStudioPreview && (
+            <div className="col-span-4 tablet-lg:col-span-3">
+              <PreviewInfo articleData={articleData} directusUrl={directusUrl} />
+            </div>
+          )}
+        </div>
+      </main>
+    </Paper>
   )
 }
 
