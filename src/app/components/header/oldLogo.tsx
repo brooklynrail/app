@@ -1,9 +1,10 @@
 import { useTheme } from "../theme"
 
 const OldLogo = () => {
-  const { theme } = useTheme()
-  const headFill = theme === "dark" ? "fill-slate-100" : "fill-red-600"
-  const subheadFill = theme === "dark" ? "fill-slate-100" : "fill-zinc-900"
+  // const { theme } = useTheme()
+
+  const headFill = "fill-red-600"
+  const subheadFill = "fill-zinc-900"
   return (
     <div className="flex flex-col space-y-1">
       <svg className={headFill} viewBox="0 0 396 52" fill="none" xmlns="http://www.w3.org/2000/svg">
