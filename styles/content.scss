@@ -1,5 +1,5 @@
 .content {
-  @apply text-xl tablet-lg:text-xl font-normal font-serif;
+  @apply text-2xl tablet-lg:text-xl font-normal font-serif;
 
   h1 {
     @apply hidden;
@@ -126,7 +126,7 @@ figcaption p {
 .media.width-lg,
 .media.width-md,
 .media.width-sm {
-  @apply pt-3 mb-9 desktop:mb-12;
+  @apply pt-6 mb-12;
 }
 
 .media.width-md {
@@ -144,5 +144,5 @@ figcaption p {
   @apply w-card tablet:w-mobile desktop-lg:w-mobile-lg float-right;
 }
 .width-sm {
-  @apply w-card desktop:w-card-lg float-right;
+  @apply mb-6 w-card desktop:w-card-lg float-right;
 }
