@@ -74,15 +74,6 @@ const TributeWriters = (props: TributeWritersProps) => {
       <div className="space-y-3 py-3 block tablet-lg:hidden">
         {/* Writers list (hidden on tablet-lg and above) */}
         <TributeWritersList articles={articles} tributeSlug={tributeSlug} switchArticle={switchArticle} />
-
-        {/* Select dropdown for mobile view */}
-        <select
-          className="w-full bg-zinc-50 dark:bg-zinc-700 rounded-full border-r-8 border-transparent px-3 py-1 text-sm tablet-lg:hidden outline order-last tablet-lg:order-none outline-neutral-700"
-          value={selectedArticle}
-          onChange={handleSelectChange}
-        >
-          {options}
-        </select>
       </div>
 
       {/* Sidebar view: Render the list of articles */}
