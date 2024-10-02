@@ -92,7 +92,7 @@ const TableOfContents = (props: TableOfContentsProps) => {
   const currentArticles = thisIssueData.articles
 
   return (
-    <div className="pb-20">
+    <div className="pt-12 pb-20">
       <h2 className="font-bold text-xl py-4">Table of Contents</h2>
       <div className="">
         {currentSections
