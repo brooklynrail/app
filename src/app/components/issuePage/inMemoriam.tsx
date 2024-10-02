@@ -23,7 +23,6 @@ const InMemoriam = (props: InMemoriamProps) => {
         return (
           <>
             <PromoTribute key={`featured-${i}`} tribute={tribute} permalink={permalink} />
-            <TributeWritersList articles={tribute.articles} tributeSlug={tribute.slug} />
           </>
         )
       })}

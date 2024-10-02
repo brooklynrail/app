@@ -3,6 +3,7 @@ import { stripHtml } from "string-strip-html"
 import Link from "next/link"
 import Image from "next/image"
 import { DirectusFiles, Tributes } from "../../../../lib/types"
+import TributeWritersList from "../tributePage/writersList"
 
 interface PromoTributeProps {
   tribute: Tributes
@@ -18,20 +19,22 @@ const PromoTribute = (props: PromoTributeProps) => {
       <p className="text-sm font-bold float-right">In Memoriam</p>
 
       <div>
+        <h4 className="text-2xl tablet-lg:text-lg font-light">
+          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+            {parse(title)}
+          </Link>
+        </h4>
+
         {featured_image && (
-          <div className="float-right pl-2">
+          <div className="float-right pl-3 pt-5 pb-3">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
               <Thumb image={featured_image} title={title} />
             </Link>
           </div>
         )}
 
-        <h4 className="text-lg font-normal">
-          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-            {parse(title)}
-          </Link>
-        </h4>
-        <div className="pt-3 text-sm font-serif">{parse(excerpt)}</div>
+        <div className="py-3 text-md font-serif">{parse(excerpt)}</div>
+        <TributeWritersList articles={tribute.articles} tributeSlug={tribute.slug} />
       </div>
     </div>
   )

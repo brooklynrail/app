@@ -29,7 +29,7 @@ const InMemoriamSection = (props: InMemoriamProps) => {
 
             <div className="flex space-x-4 justify-between">
               <div className="space-y-2">
-                <h4 className="text-4xl font-thin">
+                <h4 className="text-3xl font-light">
                   <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
                     {parse(title)}
                   </Link>
@@ -38,7 +38,7 @@ const InMemoriamSection = (props: InMemoriamProps) => {
                 <TributeWritersList articles={tribute.articles} tributeSlug={tribute.slug} switchArticle={() => {}} />
               </div>
 
-              <div className="w-card-lg flex-none">
+              <div className="w-32 tablet-lg:w-card-lg flex-none">
                 {featured_image && (
                   <div className={`media`}>
                     <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>

@@ -39,14 +39,14 @@ const PromoThumb = (props: PromoProps) => {
             </div>
           )}
 
-          <h4 className="text-lg font-normal">
+          <h4 className="text-2xl tablet-lg:text-lg font-light">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
               {parse(title)}
             </Link>
           </h4>
 
           <cite className="not-italic text-sm py-2 block font-sans text-zinc-600 dark:text-slate-100">By {names} </cite>
-          <div className="text-sm font-serif">{parse(excerpt)}</div>
+          <div className="text-md font-serif">{parse(excerpt)}</div>
         </div>
       </div>
     </>

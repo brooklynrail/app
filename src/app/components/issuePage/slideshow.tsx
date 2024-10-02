@@ -88,7 +88,7 @@ const SlideShow = (props: SlideshowProps) => {
           </div>
         </div>
         <Link key={i} className="block" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
-          <h2 className="py-1 font-normal text-xl">{parse(title)}</h2>
+          <h2 className="py-1 font-light text-2xl tablet-lg:text-xl">{parse(title)}</h2>
         </Link>
       </div>
     )

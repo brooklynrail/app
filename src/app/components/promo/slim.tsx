@@ -18,7 +18,7 @@ const PromoSlim = (props: PromoSlimProps) => {
   const altClass = i % 2 === 0 ? "" : "bg-zinc-200 dark:bg-zinc-700"
 
   return (
-    <li className={`py-1 px-1 text-xs ${altClass}`} itemType="http://schema.org/Article">
+    <li className={`py-1 px-1 text-sm ${altClass}`} itemType="http://schema.org/Article">
       <h4 className="font-medium inline">
         <Link
           prefetch={prefetch === false ? false : true}
