@@ -110,7 +110,7 @@ const IssuePage = (props: IssuePageProps) => {
             <div className="col-span-4 tablet-lg:col-span-8">
               <div className="px-3 tablet-lg:px-0">{layout}</div>
             </div>
-            <div className="col-span-4 tablet-lg:col-span-2">
+            <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-2">
               <div className="pr-3">
                 <AdsTile currentAds={currentAds} />
               </div>
