@@ -176,7 +176,7 @@ const IssueRail = (props: IssueRailProps) => {
           </div>
         </header>
 
-        <nav className="flex flex-col mt-6 border-t-2 rail-border divide-y-[1px] rail-divide space-y-6">
+        <nav className="flex flex-col mt-6 border-t-2 rail-border divide-y-[1px] rail-divide space-y-6 pb-48">
           <IssueArticles thisIssueData={thisIssueData} issueSections={issueSections} />
         </nav>
       </div>
