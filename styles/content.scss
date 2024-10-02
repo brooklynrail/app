@@ -90,6 +90,11 @@
   .endnote {
     @apply my-8;
     @apply font-normal font-sans text-sm;
+
+    a {
+      @apply underline;
+    }
+
     li {
       @apply mb-2 tablet:mb-3;
     }
