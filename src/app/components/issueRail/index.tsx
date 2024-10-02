@@ -14,10 +14,11 @@ interface ArticleListProps {
   sectionArticles: Array<Articles>
   year: number
   month: number
+  section: Sections
 }
 
 const ArticleList = (props: ArticleListProps) => {
-  const { sectionArticles, year, month } = props
+  const { sectionArticles, year, month, section } = props
 
   const list = sectionArticles.map((article: Articles, i: number) => {
     const permalink = getPermalink({
@@ -31,6 +32,13 @@ const ArticleList = (props: ArticleListProps) => {
     const hide_bylines_downstream = article.hide_bylines_downstream
     const guestCritic = article.section.slug === "editorsmessage"
 
+    const bylines = !hide_bylines_downstream && (
+      <Bylines
+        byline_override={article.byline_override}
+        contributors={article.contributors}
+        guestCritic={guestCritic}
+      />
+    )
     return (
       <li key={i} data-sort={article.sort} className="py-2 text-xs">
         <h4 className="leading-4 text-sm font-medium">
@@ -38,13 +46,8 @@ const ArticleList = (props: ArticleListProps) => {
             <span>{parse(article.title)}</span>
           </Link>
         </h4>
-        {!hide_bylines_downstream && (
-          <Bylines
-            byline_override={article.byline_override}
-            contributors={article.contributors}
-            guestCritic={guestCritic}
-          />
-        )}
+
+        {!article.tribute && bylines}
       </li>
     )
   })
@@ -104,7 +107,7 @@ const IssueArticles = (props: IssueArticlesProps) => {
               </Link>
             </h3>
             <ul className="desktop:pl-10 divide-y-[1px] rail-divide">
-              <ArticleList sectionArticles={sectionArticles} year={year} month={month} />
+              <ArticleList sectionArticles={sectionArticles} year={year} month={month} section={section} />
             </ul>
           </div>
         )
