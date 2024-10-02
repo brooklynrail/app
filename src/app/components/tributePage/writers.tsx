@@ -42,12 +42,10 @@ const TributeWriters = (props: TributeWritersProps) => {
       type: PageType.TributeArticle,
     })
 
-    const intro = "Introduction"
     const isCurrent = currentSlug === article.slug ? "bg-white dark:bg-zinc-700" : ""
 
     return (
       <li key={`item-${index}`} className={`${isCurrent} pl-3 py-1 desktop:py-2`}>
-        {index === 0 && <p className="text-2xs">{intro}</p>}
         <h4 className="font-bold text-md desktop:text-lg">
           <a
             href={permalink}
