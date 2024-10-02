@@ -1,5 +1,5 @@
 import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "../../../../../lib/utils"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../../lib/utils"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 import IssuePage from "@/app/components/issuePage"
@@ -86,6 +86,8 @@ async function getData({ params }: { params: SectionParams }) {
     return notFound()
   }
 
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
   // make an array of all the sections used in thisIssueData.articles and remove any duplicates
   const issueSections = thisIssueData.articles
     .map((article) => article.section)
@@ -109,6 +111,7 @@ async function getData({ params }: { params: SectionParams }) {
       thisIssueData,
       issueSections,
       currentSection,
+      tributesData,
       allIssues,
       permalink,
     },

@@ -31,7 +31,7 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { thisIssueData, currentSection, issueSections, previewURL, allIssues } = props
+  const { thisIssueData, currentSection, issueSections, previewURL, allIssues, tributesData } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
   const { theme, setTheme } = useTheme()
@@ -56,7 +56,9 @@ const IssuePage = (props: IssuePageProps) => {
   let layout
   switch (props.layout) {
     case PageLayout.Section:
-      layout = <SectionLayout thisIssueData={thisIssueData} currentSection={currentSection} />
+      layout = (
+        <SectionLayout thisIssueData={thisIssueData} currentSection={currentSection} tributesData={tributesData} />
+      )
       break
     case PageLayout.TableOfContents:
       layout = <TableOfContentsPage {...props} />

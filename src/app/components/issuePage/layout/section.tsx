@@ -1,16 +1,15 @@
 import { Articles, Tributes } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import PromoSection from "../../promo/section"
-import SubscribeAd from "../subscribeAd"
 import parse from "html-react-parser"
-
 import { LayoutProps } from "./issue"
+import InMemoriamSection from "../inMemoriamSection"
 
 const SectionLayout = (props: LayoutProps) => {
-  const { thisIssueData, currentSection } = props
+  const { thisIssueData, currentSection, tributesData } = props
 
   if (!currentSection) {
-    return <></>
+    return null
   }
 
   const { year, month } = thisIssueData
@@ -33,17 +32,9 @@ const SectionLayout = (props: LayoutProps) => {
   }
 
   // if the current section is In Memoriam, show only the articles that do not have a article.tribute or have an empty article.tribute array
-  let tributes: string[] = []
+
   if (currentSection.slug === "in-memoriam") {
     const inMemoriamArticles = currentArticles.filter((article: Articles) => {
-      if (article.tribute) {
-        // if the article.tribute is not included in the tributes array, return the article
-        if (!tributes.includes(article.tribute.slug)) {
-          // push the article.tribute to the tributes array without duplicates
-          tributes.push(article.tribute.slug)
-          return article
-        }
-      }
       // if the article.tribute is empty, return the article
       if (!article.tribute) {
         return article
@@ -60,6 +51,7 @@ const SectionLayout = (props: LayoutProps) => {
   const AllArticles = () => {
     return (
       <section className="py-3 border-t-[1px] rail-border">
+        {tributesData && tributesData.length > 0 && <InMemoriamSection tributesData={tributesData} />}
         <div className="divide-y-[1px] rail-divide">
           {currentArticles.map((article: Articles, i: number) => {
             const order = article.sort

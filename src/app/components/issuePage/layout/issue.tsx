@@ -4,7 +4,7 @@ import EditorsMessage from "../editorsMessage"
 import PublishersMessage from "../publishersMessage"
 import SlideShow from "../slideshow"
 import FeaturedArticles from "../featuredArticles"
-import { Articles, Issues, Sections } from "../../../../../lib/types"
+import { Articles, Issues, Sections, Tributes } from "../../../../../lib/types"
 import { IssuePageProps, PageLayout } from "@/app/page"
 import TableOfContents from "../tableOfContents"
 import InMemoriam from "../inMemoriam"
@@ -18,6 +18,7 @@ import AdsTileStrip from "../../ads/adsTileStrip"
 export interface LayoutProps {
   thisIssueData: Issues
   currentSection?: Sections
+  tributesData: Tributes[]
 }
 
 const IssueLayout = (props: IssuePageProps) => {
