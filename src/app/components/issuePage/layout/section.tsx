@@ -51,7 +51,9 @@ const SectionLayout = (props: LayoutProps) => {
   const AllArticles = () => {
     return (
       <section className="py-3 border-t-[1px] rail-border">
-        {tributesData && tributesData.length > 0 && <InMemoriamSection tributesData={tributesData} />}
+        {currentSection.slug === "in-memoriam" && tributesData && tributesData.length > 0 && (
+          <InMemoriamSection tributesData={tributesData} />
+        )}
         <div className="divide-y-[1px] rail-divide">
           {currentArticles.map((article: Articles, i: number) => {
             const order = article.sort
