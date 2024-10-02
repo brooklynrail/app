@@ -1,6 +1,6 @@
 "use client"
 import Footer from "../footer"
-import Header from "../header"
+import Header, { HeaderType } from "../header"
 import { PopupProvider } from "../issueRail/popupProvider"
 import Paper from "../paper"
 
@@ -40,7 +40,7 @@ const TypopgraphyStyles = () => {
       <PopupProvider>
         <Paper pageClass={`type`}>
           <div className="">
-            <Header />
+            <Header type={HeaderType.Default} />
 
             <section id="main" className="">
               <div className="border-b-2 border-black dark:border-white border-dotted py-3">
