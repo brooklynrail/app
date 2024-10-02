@@ -29,7 +29,7 @@ export enum PageLayout {
 export interface IssuePageProps {
   thisIssueData: Issues
   allIssues: Issues[]
-  tributesData?: Tributes[]
+  tributesData: Tributes[]
   issueSections: Sections[]
   previewURL?: string
   currentSection?: Sections
