@@ -19,7 +19,7 @@ const PromoTribute = (props: PromoTributeProps) => {
       <p className="text-sm font-bold float-right">In Memoriam</p>
 
       <div>
-        <h4 className="text-2xl tablet-lg:text-lg font-light">
+        <h4 className="text-2xl tablet-lg:text-lg font-normal">
           <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
             {parse(title)}
           </Link>

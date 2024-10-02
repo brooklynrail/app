@@ -39,7 +39,7 @@ const PromoThumb = (props: PromoProps) => {
             </div>
           )}
 
-          <h4 className="text-2xl tablet-lg:text-lg font-light">
+          <h4 className="text-2xl tablet-lg:text-lg font-normal">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
               {parse(title)}
             </Link>
