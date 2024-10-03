@@ -26,8 +26,8 @@ export async function GET(request: Request) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch article")
         const data: Articles = await response.json()
-        const path = revalidateArticle(data)
-        const issuePath = revalidateIssue(data.issue)
+        const path = await revalidateArticle(data)
+        const issuePath = await revalidateIssue(data.issue)
         return new Response(`Revalidation started for Article paths: ${path} and ${issuePath}`, { status: 200 })
 
       default:
