@@ -1,7 +1,10 @@
-import { revalidatePath } from "next/cache"
-import { Articles } from "../../../../lib/types"
-import { getPermalink, PageType } from "../../../../lib/utils"
-import { RevalidateType } from "../../../../lib/utils/revalidate"
+import {
+  revalidateArticle,
+  revalidateContributor,
+  revalidateIssue,
+  RevalidateType,
+} from "../../../../lib/utils/revalidate"
+import { Articles, Contributors } from "../../../../lib/types"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
@@ -38,49 +41,31 @@ export async function GET(request: Request) {
       return new Response("id and type are required", { status: 400 })
     }
 
+    let response: Response
+    let path: string
     switch (type) {
       case RevalidateType.Articles:
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
-        const response = await fetch(`/api/article/id/${id}`)
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch article")
-        const data: Articles = await response.json()
-        const articlePermalink = getPermalink({
-          year: data.issue.year,
-          month: data.issue.month,
-          section: data.section.slug,
-          slug: data.slug,
-          type: PageType.Article,
+        const articleData: Articles = await response.json()
+        path = await revalidateArticle(articleData)
+        const issuePath = await revalidateIssue(articleData.issue)
+        return new Response(`Revalidation started for paths: ${path} and ${issuePath}`, { status: 200 })
+
+      case RevalidateType.Contributors:
+        // Example path: /contributor/louis-block/
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`)
+        if (!response.ok) throw new Error("Failed to fetch article")
+        const contributorData: Contributors = await response.json()
+        path = await revalidateContributor(contributorData)
+        return new Response(`Revalidation started for paths: ${path}`, {
+          status: 200,
         })
-        const articlePath = articlePermalink
-        console.log("Revalidate API articlePath: ", articlePath)
-        revalidatePath(articlePath)
-        return new Response(`Revalidation started for path: ${articlePath}`, { status: 200 })
-
-      case RevalidateType.Section:
-        // Example path: /2024/09/architecture/
-        const sectionPath = `/section/${id}`
-        revalidatePath(sectionPath)
-        return new Response(`Revalidation started for path: ${sectionPath}`, { status: 200 })
-
-      case RevalidateType.Issue:
-        // Example path: /2024/09/
-        const issuePath = `/issue/${id}`
-        revalidatePath(issuePath)
-        return new Response(`Revalidation started for path: ${issuePath}`, { status: 200 })
 
       default:
-        return new Response("Invalid type", { status: 400 })
+        return new Response("Content type not set up yet", { status: 400 })
     }
-
-    // Start revalidation
-    // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
-    // const sectionPath = path.split("/").slice(0, 4).join("/") // /2024/09/architecture/
-    // const issuePath = path.split("/").slice(0, 3).join("/") // /2024/09/
-    // revalidatePath(path)
-    // revalidatePath(sectionPath)
-    // revalidatePath(issuePath)
-    // const message = `Revalidation started for paths: ${path}, ${sectionPath}, ${issuePath}`
-    // return new Response(message, { status: 200 })
   } catch (err) {
     // Log the error for debugging purposes
     console.error("Revalidation error:", err)

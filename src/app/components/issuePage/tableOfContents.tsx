@@ -68,7 +68,7 @@ const IssueSection = (props: IssueSectionProps) => {
               type: PageType.Tribute,
             })
             return (
-              <li className={`py-1 px-1 text-xs`} itemType="http://schema.org/Article">
+              <li key={`toc-article-${i}`} className={`py-1 px-1 text-xs`} itemType="http://schema.org/Article">
                 <h4 className="font-medium inline">
                   <Link href={permalink} itemProp="name" title={`Visit ${stripHtml(article.tribute.title).result}`}>
                     {parse(article.tribute.title)}

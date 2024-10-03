@@ -7,11 +7,11 @@ export async function GET(request: Request, { params }: { params: { id: string }
     return new Response("Missing id", { status: 401 })
   }
 
-  const articleData = await getRevalidateData(id, RevalidateType.Articles)
+  const data = await getRevalidateData(id, RevalidateType.Contributors)
 
-  if (!articleData) {
-    return new Response("Invalid slug", { status: 401 })
+  if (!data) {
+    return new Response("Invalid ID", { status: 401 })
   }
 
-  return Response.json(articleData)
+  return Response.json(data)
 }
