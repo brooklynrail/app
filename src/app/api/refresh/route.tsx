@@ -1,5 +1,10 @@
-import { revalidateArticle, revalidateIssue, RevalidateType } from "../../../../lib/utils/revalidate"
-import { Articles } from "../../../../lib/types"
+import {
+  revalidateArticle,
+  revalidateContributor,
+  revalidateIssue,
+  RevalidateType,
+} from "../../../../lib/utils/revalidate"
+import { Articles, Contributors } from "../../../../lib/types"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
@@ -20,18 +25,30 @@ export async function GET(request: Request) {
       return new Response("id and type are required", { status: 400 })
     }
 
+    let response: Response
+    let path: string
     switch (type) {
       case RevalidateType.Articles:
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch article")
-        const data: Articles = await response.json()
-        const path = await revalidateArticle(data)
-        const issuePath = await revalidateIssue(data.issue)
-        return new Response(`Revalidation started for Article paths: ${path} and ${issuePath}`, { status: 200 })
+        const articleData: Articles = await response.json()
+        path = await revalidateArticle(articleData)
+        const issuePath = await revalidateIssue(articleData.issue)
+        return new Response(`Revalidation started for paths: ${path} and ${issuePath}`, { status: 200 })
+
+      case RevalidateType.Contributors:
+        // Example path: /contributor/louis-block/
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`)
+        if (!response.ok) throw new Error("Failed to fetch article")
+        const contributorData: Contributors = await response.json()
+        path = await revalidateContributor(contributorData)
+        return new Response(`Revalidation started for paths: ${path}`, {
+          status: 200,
+        })
 
       default:
-        return new Response("Invalid type", { status: 400 })
+        return new Response("Content type not set up yet", { status: 400 })
     }
   } catch (err) {
     // Log the error for debugging purposes
