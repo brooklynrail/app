@@ -48,7 +48,7 @@ const SlideShow = (props: SlideshowProps) => {
   }
 
   const slides = currentSlides.map((article: Articles, i: number) => {
-    const { title, slideshow_image, section, slug } = article
+    const { slideshow_image, section, slug } = article
 
     if (slideshow_image === null || slideshow_image === undefined) {
       return
@@ -58,13 +58,23 @@ const SlideShow = (props: SlideshowProps) => {
       return
     }
 
-    const articlePermalink = getPermalink({
+    let articlePermalink = getPermalink({
       year: year,
       month: month,
       section: section.slug,
       slug: slug,
       type: PageType.Article,
     })
+    let title = article.title
+    let kicker = article.kicker
+    if (article.tribute) {
+      articlePermalink = getPermalink({
+        tributeSlug: article.tribute.slug,
+        type: PageType.Tribute,
+      })
+      title = article.tribute.title
+      kicker = "In Memoriam"
+    }
 
     return (
       <div key={i}>
@@ -89,8 +99,8 @@ const SlideShow = (props: SlideshowProps) => {
           </div>
         </div>
         <Link key={i} className="block py-1" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
-          {article.kicker && <span className="text-red-600 dark:text-red-500 uppercase">{article.kicker}</span>}
-          <h2 className="font-normal text-2xl tablet-lg:text-xl">{parse(title)}</h2>
+          {kicker && <span className="text-red-600 dark:text-red-500 uppercase">{kicker}</span>}
+          <h2 className="font-normal font-sans text-2xl tablet-lg:text-xl">{parse(title)}</h2>
         </Link>
       </div>
     )
