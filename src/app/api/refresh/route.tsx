@@ -39,7 +39,7 @@ export async function GET(request: Request) {
     }
 
     switch (type) {
-      case RevalidateType.Article:
+      case RevalidateType.Articles:
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
         const response = await fetch(`/api/article/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch article")
