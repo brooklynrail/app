@@ -29,7 +29,10 @@ export async function GET(request: Request) {
         const path = revalidateArticle(data)
         const issuePath = revalidateIssue(data.issue)
         const paths = [path, issuePath]
-        return new Response(`Revalidation started for Article paths: ${paths.join(", ")}`, { status: 200 })
+        return new Response(
+          `Revalidation started for Article paths: ${paths.map((path) => JSON.stringify(path)).join(", ")}`,
+          { status: 200 },
+        )
 
       default:
         return new Response("Invalid type", { status: 400 })
