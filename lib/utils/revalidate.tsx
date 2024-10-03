@@ -13,17 +13,16 @@ export enum RevalidateType {
 export const getRevalidateData = cache(async (id: string, type: RevalidateType) => {
   switch (type) {
     case RevalidateType.Article:
-      const response = await fetch(`/api/article/id/${id}`)
-      if (!response.ok) throw new Error("Failed to fetch article")
-      const data: Articles = await response.json()
-      // const data = await directus.request(
-      //   readItems("articles", {
-      //     fields: ["*"],
-      //   }),
-      // )
-      // return data as Articles[]
+      //   const response = await fetch(`/api/article/id/${id}`)
+      //   if (!response.ok) throw new Error("Failed to fetch article")
+      //   const data: Articles = await response.json()
+      const data = await directus.request(
+        readItems("articles", {
+          fields: ["*"],
+        }),
+      )
       console.log("Util articleData: ", data)
-      return data
+      return data as Articles[]
     default:
       return null
   }
