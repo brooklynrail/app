@@ -20,7 +20,15 @@ const AdsTile = (props: AdsTileProps) => {
     return <></>
   }
 
-  const ramdomizeTileAds = tileAds.sort(() => Math.random() - 0.5)
+  // get only the currentAds where today is equal to or between the start_date and end_date
+  const currentDate = new Date()
+  const filteredTileAds = tileAds.filter((ad: Ads) => {
+    const startDate = new Date(ad.start_date)
+    const endDate = new Date(ad.end_date)
+    return startDate <= currentDate && currentDate <= endDate
+  })
+
+  const ramdomizeTileAds = filteredTileAds.sort(() => Math.random() - 0.5)
   const tiles = ramdomizeTileAds.map((ad: Ads, i: number) => {
     if (!ad.tile_image || !ad.ad_url) {
       return
