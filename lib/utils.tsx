@@ -161,113 +161,6 @@ export const getCurrentIssueData = cache(async () => {
   }
 })
 
-export const getHomepageData = cache(async () => {
-  try {
-    const homepageData = await directus.request(
-      readSingleton("homepage", {
-        fields: [
-          {
-            collections: [
-              "collection",
-              {
-                item: {
-                  sections: [
-                    "name",
-                    "slug",
-                    {
-                      articles: [
-                        "slug",
-                        "title",
-                        "deck",
-                        "excerpt",
-                        "kicker",
-                        "sort",
-                        "status",
-                        "hide_bylines_downstream",
-                        {
-                          section: ["name", "slug"],
-                        },
-                        {
-                          issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
-                        },
-                        {
-                          contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-                        },
-                        {
-                          featured_image: ["id", "width", "height", "filename_disk", "caption"],
-                        },
-                        {
-                          promo_banner: ["id", "width", "height", "filename_disk", "caption"],
-                        },
-                        {
-                          section: ["name", "slug"],
-                        },
-                        {
-                          issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
-                        },
-                        {
-                          contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-                        },
-                        {
-                          featured_image: ["id", "width", "height", "filename_disk", "caption"],
-                        },
-                        "sort",
-                        "status",
-                      ],
-                    },
-                  ],
-                  tributes: [
-                    "id",
-                    "title",
-                    "deck",
-                    "blurb",
-                    "summary",
-                    "excerpt",
-                    "slug",
-                    {
-                      editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-                    },
-                    {
-                      articles: [
-                        "slug",
-                        "title",
-                        "deck",
-                        "excerpt",
-                        "sort",
-                        "status",
-                        {
-                          contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
-                        },
-                      ],
-                    },
-                    {
-                      featured_image: ["id", "width", "height", "filename_disk", "caption"],
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
-        deep: {
-          collections: {
-            "item:sections": {
-              articles: {
-                _limit: 4,
-              },
-            },
-          },
-        },
-      }),
-    )
-
-    return homepageData as Homepage
-  } catch (error) {
-    console.error("Error fetching Homepage data:", error)
-    return null
-  }
-})
-
 export const getPageData = cache(async (slug: string) => {
   try {
     const pageData = await directus.request(
@@ -955,6 +848,7 @@ export function getOGImage(props: OGImageProps) {
 export enum PageType {
   Article = "article",
   Section = "section",
+  SuperSection = "super_section",
   Issue = "issue",
   Event = "event",
   Tribute = "tribute",
@@ -984,9 +878,10 @@ interface PermalinkProps {
   articleId?: string
   issueId?: string
   tributeId?: string
+  sectionSlug?: string
 }
 export function getPermalink(props: PermalinkProps) {
-  const { year, section, slug, issueSlug, type, tributeSlug, articleId, issueId, tributeId } = props
+  const { year, section, slug, issueSlug, type, tributeSlug, articleId, issueId, tributeId, sectionSlug } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
   const day = props.day && props.day < 10 ? `0${props.day}` : props.day
 
@@ -1001,6 +896,8 @@ export function getPermalink(props: PermalinkProps) {
   switch (type) {
     case PageType.Article:
       return `${baseURL}/${year}/${month}/${section}/${slug}/`
+    case PageType.SuperSection:
+      return `${baseURL}/section/${sectionSlug}/`
     case PageType.Section:
       return `${baseURL}/issues/${issueSlug}/${section}/`
     case PageType.Issue:

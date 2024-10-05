@@ -2,12 +2,16 @@
 import CoversPopup from "../issueRail/coversPopup"
 import { HomePageProps } from "@/app/page"
 import Header, { HeaderType } from "../header"
-import { Articles, Sections, Tributes } from "../../../../lib/types"
+import { Articles, Collections, HomepageCollections, Sections, Tributes } from "../../../../lib/types"
 import { PopupProvider } from "../issueRail/popupProvider"
 import CollectionArt from "../collections/art"
 import CollectionArtSeen from "../collections/artSeen"
 import CollectionTribute from "../collections/tribute"
 import CollectionCriticsPage from "../collections/criticspage"
+import Paper from "../paper"
+import Footer from "../footer"
+import ThemeToggle from "../themeToggle"
+import { useTheme } from "../theme"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -15,38 +19,49 @@ export interface PromoProps {
   month: number
 }
 
+enum CollectionType {
+  Section = "section",
+  Tribute = "tribute",
+}
+
 const HomePage = (props: HomePageProps) => {
   const { homepageData } = props
+  const { theme, setTheme } = useTheme()
 
-  const allCollections = homepageData.collections.map((collection) => {
-    if (collection.collection === "sections" && "name" in collection.item) {
-      return <CollectionSection key={collection.item.slug} {...collection.item} />
-    } else if (collection.collection === "tributes" && "title" in collection.item) {
-      return <CollectionTribute key={collection.item.slug} {...collection.item} />
+  const allCollections = homepageData.collections.map((collection: HomepageCollections, i: number) => {
+    const thisCollection = collection.collections_id
+    if (!thisCollection) {
+      return null
     }
-    return null
+
+    switch (thisCollection.type) {
+      case CollectionType.Section:
+        return <CollectionSection key={`${i}-${thisCollection.id}`} {...thisCollection} />
+      case CollectionType.Tribute:
+        return <></>
+      // return <CollectionTribute {...thisCollection} />
+      default:
+        return null
+    }
   })
 
-  // const { slug } = thisIssueData
-  const issueClass = `issue-}`
-
   return (
-    <>
-      <div className={`paper ${issueClass}`}>
-        <div className="wrapper home">
-          <header role="banner">
-            <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
-              <div className="col-span-12">
-                <Header type={HeaderType.Default} />
-              </div>
+    <PopupProvider>
+      <Paper pageClass="paper-search">
+        <header role="banner">
+          <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
+            <div className="col-span-12">
+              <Header type={HeaderType.Default} />
             </div>
-          </header>
+          </div>
+        </header>
 
-          <main>{allCollections}</main>
-        </div>
-      </div>
+        <main>{allCollections}</main>
+        <Footer />
+      </Paper>
+      <ThemeToggle {...{ theme, setTheme }} />
       <CoversPopup />
-    </>
+    </PopupProvider>
   )
 }
 
@@ -61,10 +76,13 @@ export enum Collection {
   Theater = "theater",
 }
 
-const CollectionSection = (collection: Sections) => {
-  const { slug } = collection
+const CollectionSection = (collection: Collections) => {
+  const { title, section } = collection
+  if (!section) {
+    return null
+  }
 
-  switch (slug) {
+  switch (section.slug) {
     case Collection.Art:
       return <CollectionArt {...collection} />
     case Collection.ArtSeen:

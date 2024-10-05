@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { Articles, Sections } from "../../../../lib/types"
+import { Articles, Collections, Sections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
@@ -9,15 +9,21 @@ import Bylines, { BylineType } from "./promos/bylines"
 import Title, { TitleType } from "./promos/title"
 import Excerpt, { ExcerptType } from "./promos/excerpt"
 
-const CollectionCriticsPage = (collection: Sections) => {
-  // get the first article in the section.articles array
-  const leadArticle = collection.articles[0]
-  // get the list of articles in the section.articles array minus the first article
-  const restOfArticles = collection.articles.slice(1, 5)
+const CollectionCriticsPage = (collection: Collections) => {
+  const { section } = collection
+  if (!section) {
+    return null
+  }
+  const { articles } = section
 
-  const permalink = getPermalink({
-    section: collection.slug,
-    type: PageType.Section,
+  // get the first article in the section.articles array
+  const leadArticle = articles[0]
+  // get the list of articles in the section.articles array minus the first article
+  const restOfArticles = articles.slice(1, 5)
+
+  const sectionPermalink = getPermalink({
+    sectionSlug: section.slug,
+    type: PageType.SuperSection,
   })
 
   // const grid_rows = `grid-rows-${restOfArticles.length}`
@@ -28,7 +34,7 @@ const CollectionCriticsPage = (collection: Sections) => {
       <div key={collection.id}>
         <div>
           <div className="px-6 pb-16 border-b-2 border-dotted border-black">
-            <CollectionHead title={collection.name} slug={collection.slug} permalink={permalink} />
+            <CollectionHead title={section.name} permalink={sectionPermalink} />
             <div className={`grid grid-cols-4 tablet:grid-cols-12 ${grid_rows}`}>
               <div className="col-span-4 tablet:col-span-6 tablet:row-span-4 tablet:border-r-2 border-black border-dotted tablet:pr-3">
                 <div className="grid grid-cols-4 tablet:grid-cols-6 gap-3">

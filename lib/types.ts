@@ -34,6 +34,7 @@ export type Articles = {
   excerpt: string
   featured: boolean
   featured_image?: DirectusFiles
+  featured_artwork?: DirectusFiles
   header_type?: string | null
   images: any[] | ArticlesFiles[]
   in_print?: boolean | null
@@ -73,6 +74,22 @@ export type ArticlesFiles = {
   articles_files_id?: string | Articles | null
   directus_files_id?: DirectusFiles
   id: number
+}
+
+export type Collections = {
+  date_created?: string | null
+  date_updated?: string | null
+  deck?: string | null
+  homepage: any[] | HomepageCollections[]
+  id: string
+  section?: Sections | null
+  sort?: number | null
+  status: string
+  title: string
+  tribute?: string | Tributes | null
+  type: string
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
 }
 
 export type Contributors = {
@@ -524,19 +541,19 @@ export type GlobalSettingsNavigation = {
 }
 
 export type Homepage = {
+  collections: HomepageCollections[]
   date_created?: string | null
   date_updated?: string | null
   id: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
-  collections: HomepageCollections[]
 }
+
 export type HomepageCollections = {
-  id: string
-  homepage_id: string
-  item: Sections | Tributes
-  collection: string
-  sort: number
+  collections_id?: Collections | null
+  homepage_id?: Homepage | null
+  id: number
+  sort?: number | null
 }
 
 export type Issues = {
@@ -671,6 +688,7 @@ export type CustomDirectusTypes = {
   articles: Articles[]
   articles_contributors: ArticlesContributors[]
   articles_files: ArticlesFiles[]
+  collections: Collections[]
   contributors: Contributors[]
   directus_activity: DirectusActivity[]
   directus_collections: DirectusCollections[]

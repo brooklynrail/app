@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { Articles, Sections } from "../../../../lib/types"
+import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
@@ -10,17 +10,21 @@ import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
 import Excerpt, { ExcerptType } from "./promos/excerpt"
 
-const CollectionArt = (collection: Sections) => {
-  // ==================================================
+const CollectionArt = (collection: Collections) => {
+  const { section } = collection
+  if (!section) {
+    return null
+  }
+  const { articles } = section
 
   // get the first article in the section.articles array
-  const leadArticle = collection.articles[0]
+  const leadArticle = articles[0]
   // get the list of articles in the section.articles array minus the first article
-  const restOfArticles = collection.articles.slice(1)
+  const restOfArticles = articles.slice(1)
 
-  const permalink = getPermalink({
-    section: collection.slug,
-    type: PageType.Section,
+  const sectionPermalink = getPermalink({
+    sectionSlug: section.slug,
+    type: PageType.SuperSection,
   })
 
   return (
@@ -28,7 +32,7 @@ const CollectionArt = (collection: Sections) => {
       <div key={collection.id}>
         <div>
           <div className="px-6 pb-16 border-b-2 border-dotted border-black">
-            <CollectionHead title={collection.name} slug={collection.slug} permalink={permalink} />
+            <CollectionHead title={section.name} permalink={sectionPermalink} />
             <div className={`grid grid-cols-4 tablet:grid-cols-12`}>
               <div className="col-span-4 tablet:col-span-6 tablet:row-span-4 tablet:border-r-2 border-black border-dotted tablet:pr-3">
                 <div className="grid grid-cols-4 tablet:grid-cols-6 gap-3">
@@ -57,7 +61,8 @@ interface PromoProps {
 
 const Promos = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, excerpt, promo_banner, kicker } = article
+    const { issue, section, title, excerpt, featured_artwork, featured_image, kicker } = article
+    const artwork = featured_artwork ? featured_artwork : featured_image
     const permalink = getPermalink({
       year: issue.year,
       month: issue.month,
@@ -72,10 +77,10 @@ const Promos = (props: PromoProps) => {
           <Kicker article={article} />
         </div>
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
-          {promo_banner && (
+          {artwork && (
             <div className="">
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={promo_banner} title={title} />
+                <FeaturedImage image={artwork} title={title} />
               </Link>
             </div>
           )}
@@ -99,8 +104,9 @@ interface LeadPromoProps {
 }
 const LeadPromo = (props: LeadPromoProps) => {
   const { article } = props
-  const { title, issue, section, promo_banner } = article
+  const { title, issue, section, featured_artwork, featured_image } = article
 
+  const artwork = featured_artwork ? featured_artwork : featured_image
   const permalink = getPermalink({
     year: issue.year,
     month: issue.month,
@@ -116,10 +122,10 @@ const LeadPromo = (props: LeadPromoProps) => {
           <Kicker article={article} />
         </div>
         <div className="col-span-4 tablet:col-span-6" itemType="http://schema.org/Article">
-          {promo_banner && (
+          {artwork && (
             <div className="">
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={promo_banner} title={title} />
+                <FeaturedImage image={artwork} title={title} />
               </Link>
             </div>
           )}

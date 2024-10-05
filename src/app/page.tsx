@@ -1,15 +1,7 @@
-import { Homepage, Issues, Sections, Tributes } from "../../lib/types"
-import {
-  getAllIssues,
-  getCurrentIssueData,
-  getHomepageData,
-  getPermalink,
-  getSectionData,
-  getTributes,
-  PageType,
-} from "../../lib/utils"
+import { Homepage } from "../../lib/types"
+import { getPermalink, PageType } from "../../lib/utils"
+import { getHomepageData } from "../../lib/utils/homepage"
 import { notFound } from "next/navigation"
-import { Viewport } from "next"
 import HomePage from "./components/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
