@@ -1,6 +1,6 @@
 /* eslint max-lines: 0 */
 import directus from "./directus"
-import { readItem, readItems, readSingleton } from "@directus/sdk"
+import { readItems, readSingleton } from "@directus/sdk"
 import {
   Ads,
   Articles,
@@ -790,10 +790,10 @@ export const getAds = cache(async () => {
               _in: ["published"],
             },
             // start_date: {
-            //   _lte: newDate,
+            //   _lte: today,
             // },
             // end_date: {
-            //   _gte: newDate,
+            //   _gte: today,
             // },
             ad_url: {
               _nnull: true,
@@ -844,6 +844,7 @@ export enum PageType {
   TributeArticle = "tribute_article",
   Home = "home",
   Contributor = "contributor",
+  Events = "events",
   Page = "page",
   ChildPage = "child_page",
   PreviewArticle = "preview_article",
@@ -867,9 +868,25 @@ interface PermalinkProps {
   articleId?: string
   issueId?: string
   tributeId?: string
+  eventYear?: number
+  eventMonth?: number
+  eventDay?: number
 }
 export function getPermalink(props: PermalinkProps) {
-  const { year, section, slug, issueSlug, type, tributeSlug, articleId, issueId, tributeId } = props
+  const {
+    year,
+    section,
+    slug,
+    issueSlug,
+    type,
+    tributeSlug,
+    articleId,
+    issueId,
+    tributeId,
+    eventYear,
+    eventMonth,
+    eventDay,
+  } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
   const day = props.day && props.day < 10 ? `0${props.day}` : props.day
 
@@ -889,13 +906,15 @@ export function getPermalink(props: PermalinkProps) {
     case PageType.Issue:
       return `${baseURL}/issues/${issueSlug}/`
     case PageType.Event:
-      return `${baseURL}/event/${year}/${month}/${day}/${slug}/`
+      return `${baseURL}/event/${eventYear}/${eventMonth}/${eventDay}/${slug}/`
     case PageType.Tribute:
       return `${baseURL}/tribute/${tributeSlug}/`
     case PageType.TributeArticle:
       return `${baseURL}/tribute/${tributeSlug}/${slug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
+    case PageType.Events:
+      return `${baseURL}/events/`
     case PageType.Page:
       return `${baseURL}/${slug}/`
     case PageType.ChildPage:

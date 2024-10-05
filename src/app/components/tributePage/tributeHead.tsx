@@ -1,7 +1,7 @@
 "use client"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
 import Title, { TitleType } from "../collections/promos/title"
-import FeaturedImage from "../featuredImage"
+import FeaturedImage, { ImageType } from "../featuredImage"
 import Blurb from "../collections/promos/blurb"
 import TributeWritersList from "./writersList"
 import { useArticleState } from "@/app/hooks/useArticleState"
@@ -26,7 +26,7 @@ const TributeHead = (props: TributePageProps) => {
         </div>
         <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-3 row-span-2 tablet-lg:col-start-10">
           <div className="flex flex-col justify-center px-0">
-            {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
+            {featured_image ? <FeaturedImage type={ImageType.Default} image={featured_image} title={title} /> : null}
           </div>
         </div>
         <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-9 desktop-lg:col-span-8">
