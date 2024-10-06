@@ -86,14 +86,9 @@ const CollectionSection = (collection: Collections) => {
 
   switch (section.slug) {
     case Collection.Art:
-      return (
-        <>
-          <CollectionFrame {...collection} />
-          {/* <CollectionArt {...collection} /> */}
-        </>
-      )
+      return <CollectionFrame {...collection} />
     case Collection.ArtSeen:
-      return <CollectionArtSeen {...collection} />
+      return <CollectionFrame {...collection} />
     case Collection.Books:
       console.log("Books")
       break
