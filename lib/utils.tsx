@@ -403,7 +403,9 @@ export const getSectionData = cache(async (props: SectionDataProps) => {
           articles: {
             _filter: { status: { _eq: "published" } },
             _limit: limit ? limit : 20,
-            _sort: "-issue.issue_number",
+            issue: {
+              _sort: "-issue_number",
+            },
           },
         },
       }),

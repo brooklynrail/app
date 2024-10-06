@@ -1,6 +1,6 @@
 import { readItems } from "@directus/sdk"
 import directus from "../../../../lib/directus"
-import { getSectionData, getSectionsByIssueId } from "../../../../lib/utils"
+import { getSectionData } from "../../../../lib/utils"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
