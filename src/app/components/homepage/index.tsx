@@ -38,7 +38,7 @@ const HomePage = (props: HomePageProps) => {
       case CollectionType.Section:
         return <CollectionSection key={`${i}-${thisCollection.id}`} {...thisCollection} />
       case CollectionType.Tribute:
-        return <></>
+        return null
       // return <CollectionTribute {...thisCollection} />
       default:
         return null
