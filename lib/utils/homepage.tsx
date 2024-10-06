@@ -94,6 +94,7 @@ export const getHomepageData = cache(async () => {
               section: {
                 articles: {
                   _limit: 4,
+                  _sort: "-date_updated",
                 },
               },
             },
