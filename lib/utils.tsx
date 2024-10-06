@@ -373,7 +373,6 @@ export const getSectionData = cache(async (props: SectionDataProps) => {
           "id",
           "name",
           "slug",
-          "old_id",
           {
             articles: [
               "slug",

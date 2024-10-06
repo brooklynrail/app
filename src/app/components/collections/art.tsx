@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
-import { Articles, Collections } from "../../../../lib/types"
-import { getPermalink, PageType } from "../../../../lib/utils"
+import { Articles, Collections, Sections } from "../../../../lib/types"
+import { getPermalink, getSectionData, PageType } from "../../../../lib/utils"
 import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
 import { stripHtml } from "string-strip-html"
@@ -9,12 +9,33 @@ import Bylines, { BylineType } from "./promos/bylines"
 import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
 import Excerpt, { ExcerptType } from "./promos/excerpt"
+import { useEffect, useState } from "react"
 
 const CollectionArt = (collection: Collections) => {
-  const { section } = collection
+  const { section, limit } = collection
   if (!section) {
     return null
   }
+
+  const [currentSection, setCurrentSection] = useState<Sections | null>(null)
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!currentSection) {
+        const response = await fetch(`/api/sections?slug=${section.slug}&limit=6`)
+        if (!response.ok) throw new Error("Failed to fetch article")
+        const sectionData = getSectionData({ slug: section.slug, limit: limit })
+        // Fetch all the data in parallel
+        const [fetchedSection] = await Promise.all([sectionData])
+        // Update the state with the fetched data as it becomes available
+        setCurrentSection(fetchedSection)
+      }
+    }
+    // Call the fetchData function and handle any errors
+    fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
+  }, [currentSection])
+
+  console.log("currentSection", currentSection)
+
   const { articles } = section
 
   // get the first article in the section.articles array

@@ -77,7 +77,7 @@ export enum Collection {
 }
 
 const CollectionSection = (collection: Collections) => {
-  const { title, section } = collection
+  const { section } = collection
   if (!section) {
     return null
   }

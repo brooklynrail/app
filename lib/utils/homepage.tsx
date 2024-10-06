@@ -17,6 +17,8 @@ export const getHomepageData = cache(async () => {
                   "id",
                   "type",
                   "title",
+                  "deck",
+                  "limit",
                   {
                     section: [
                       "id",
