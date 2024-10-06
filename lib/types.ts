@@ -82,7 +82,7 @@ export type Collections = {
   deck?: string | null
   homepage: any[] | HomepageCollections[]
   id: string
-  limit: number
+  limit?: number | null
   section?: Sections | null
   sort?: number | null
   status: string

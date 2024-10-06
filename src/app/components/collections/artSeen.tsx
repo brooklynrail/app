@@ -10,10 +10,12 @@ import Title, { TitleType } from "./promos/title"
 import { useEffect, useState } from "react"
 
 const CollectionArtSeen = (collection: Collections) => {
-  const { section, limit } = collection
+  const { section } = collection
   if (!section) {
     return null
   }
+
+  const limit = collection.limit || 4
 
   const [currentSection, setCurrentSection] = useState<Sections | null>(null)
   useEffect(() => {
