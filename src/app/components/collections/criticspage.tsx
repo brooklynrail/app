@@ -33,10 +33,10 @@ const CollectionCriticsPage = (collection: Collections) => {
     <>
       <div key={collection.id}>
         <div>
-          <div className="px-6 pb-16 border-b-2 border-dotted border-black">
+          <div className="px-6 pb-16 border-b rail-border">
             <CollectionHead title={section.name} permalink={sectionPermalink} />
             <div className={`grid grid-cols-4 tablet:grid-cols-12 ${grid_rows}`}>
-              <div className="col-span-4 tablet:col-span-6 tablet:row-span-4 tablet:border-r-2 border-black border-dotted tablet:pr-3">
+              <div className="col-span-4 tablet:col-span-6 tablet:row-span-4 tablet:border-r rail-border tablet:pr-3">
                 <div className="grid grid-cols-4 tablet:grid-cols-6 gap-3">
                   <div className="col-span-4 tablet:col-span-6">
                     <LeadPromo article={leadArticle} />
@@ -44,7 +44,7 @@ const CollectionCriticsPage = (collection: Collections) => {
                 </div>
               </div>
               <div
-                className={`col-span-4 tablet:col-span-6 tablet-lg:col-start-7 row-start-1 tablet:ml-3 divide-y-2 divide-black divide-dotted`}
+                className={`col-span-4 tablet:col-span-6 tablet-lg:col-start-7 row-start-1 tablet:ml-3 divide-y rail-divide`}
                 itemType="http://schema.org/Article"
               >
                 <Promos articles={restOfArticles} />

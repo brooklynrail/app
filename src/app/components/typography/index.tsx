@@ -43,7 +43,7 @@ const TypopgraphyStyles = () => {
             <Header type={HeaderType.Default} />
 
             <section id="main" className="">
-              <div className="border-b-2 border-black dark:border-white border-dotted py-3">
+              <div className="border-b rail-border py-3">
                 <div className="px-9 grid grid-cols-4 tablet:grid-cols-12 gap-3">
                   <div className="col-span-4 tablet:col-span-12 ">
                     <h1 className="font-bold text-3xl">Typography</h1>
@@ -51,7 +51,7 @@ const TypopgraphyStyles = () => {
                   </div>
                 </div>
               </div>
-              <div className="border-b-2 border-black dark:border-white border-dotted py-3">
+              <div className="border-b rail-border py-3">
                 <div className="px-9 grid grid-cols-4 tablet:grid-cols-12 gap-3">
                   <div className="col-span-4 tablet:col-span-6 ">
                     <h2 className="font-bold text-2xl mb-9">Sans-Serif</h2>

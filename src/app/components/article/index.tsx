@@ -48,7 +48,7 @@ const Article = (props: ArticleProps) => {
                 </aside>
 
                 <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-                  <Header type={HeaderType.Article} />
+                  <Header type={HeaderType.Default} />
 
                   <Ad970 currentAds={currentAds} />
 

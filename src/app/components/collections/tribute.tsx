@@ -19,7 +19,7 @@ const CollectionTribute = (collection: Tributes) => {
 
   return (
     <>
-      <div key={collection.id} className="px-6 py-9 border-b-2 border-dotted border-black">
+      <div key={collection.id} className="px-6 py-9 border-b rail-border">
         <div className="grid grid-cols-4 tablet:grid-cols-12 gap-3">
           <div className="col-span-4 tablet:col-span-8">
             <div className="flex flex-col justify-between h-full space-y-4 px-3">
