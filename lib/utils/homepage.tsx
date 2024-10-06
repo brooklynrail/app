@@ -95,6 +95,7 @@ export const getHomepageData = cache(async () => {
             collections_id: {
               section: {
                 articles: {
+                  _filter: { status: { _eq: "published" } },
                   _limit: 4,
                   _sort: "-issue.issue_number",
                 },

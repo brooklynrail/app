@@ -35,8 +35,6 @@ const CollectionArt = (collection: Collections) => {
     fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
   }, [currentSection])
 
-  console.log("currentSection", currentSection)
-
   const { articles } = section
 
   // get the first article in the section.articles array

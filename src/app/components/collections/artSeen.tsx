@@ -7,7 +7,7 @@ import FeaturedImage from "../featuredImage"
 import { stripHtml } from "string-strip-html"
 import Bylines, { BylineType } from "./promos/bylines"
 import Title, { TitleType } from "./promos/title"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const CollectionArtSeen = (collection: Collections) => {
   const { section } = collection
@@ -18,9 +18,38 @@ const CollectionArtSeen = (collection: Collections) => {
   const limit = collection.limit || 4
 
   const [currentSection, setCurrentSection] = useState<Sections | null>(null)
+  const [articles, setArticles] = useState<Articles[]>(section.articles)
+  const [isInView, setIsInView] = useState(false)
+  const sectionRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInView(true)
+            observer.disconnect()
+          }
+        })
+      },
+      { threshold: 0.1 },
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current)
+      }
+    }
+  }, [])
+
   useEffect(() => {
     const fetchData = async () => {
-      if (!currentSection) {
+      if (isInView && !currentSection) {
+        console.log("loading artseen......")
         const response = await fetch(`/api/sections?slug=${section.slug}&limit=6`)
         if (!response.ok) throw new Error("Failed to fetch article")
         const sectionData = getSectionData({ slug: section.slug, limit: limit })
@@ -28,20 +57,21 @@ const CollectionArtSeen = (collection: Collections) => {
         const [fetchedSection] = await Promise.all([sectionData])
         // Update the state with the fetched data as it becomes available
         setCurrentSection(fetchedSection)
+        fetchedSection && setArticles(fetchedSection.articles)
       }
     }
     // Call the fetchData function and handle any errors
     fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
-  }, [currentSection])
+  }, [isInView, currentSection, section.slug, articles, limit])
 
-  console.log("currentSection artseen", currentSection)
-
-  const { articles } = section
+  console.log("artseen inView", isInView)
+  console.log("artseen", currentSection)
+  console.log("artseen articles", articles)
 
   // get the first article in the section.articles array
   const leadArticle = articles[0]
   // get the list of articles in the section.articles array minus the first article
-  const restOfArticles = articles.slice(1, 5)
+  const restOfArticles = articles.slice(1)
 
   const sectionPermalink = getPermalink({
     sectionSlug: section.slug,
@@ -49,7 +79,7 @@ const CollectionArtSeen = (collection: Collections) => {
   })
 
   return (
-    <div key={collection.id}>
+    <div key={collection.id} ref={sectionRef}>
       <div>
         <div className="px-6 pb-16 border-b rail-border">
           <CollectionHead title={section.name} permalink={sectionPermalink} />
