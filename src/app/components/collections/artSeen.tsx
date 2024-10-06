@@ -92,7 +92,7 @@ const CollectionArtSeen = (collection: Collections) => {
               </div>
             </div>
             <div
-              className={`col-span-4 tablet:col-span-6 tablet-lg:col-start-7 row-start-1 tablet:ml-3 divide-y rail-divide`}
+              className={`col-span-4 tablet:col-span-6 tablet-lg:col-start-7 row-start-1 tablet:ml-3 divide-y rail-divide bg-yellow-500`}
               itemType="http://schema.org/Article"
             >
               <Promos articles={restOfArticles} />

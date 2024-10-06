@@ -13,11 +13,11 @@ const Kicker = (props: KickerProps) => {
   }
 
   return (
-    <div className="flex flex-row space-x-4 text-xs uppercase font-medium">
-      <p className="">{article.kicker}</p>
-      <p className=""> | </p>
-      <p className="">{issue.title}</p>
-    </div>
+    <p className="text-nowrap flex flex-row space-x-4 text-xs uppercase font-medium">
+      <span className="">{article.kicker}</span>
+      <span className=""> | </span>
+      <span className="">{issue.title}</span>
+    </p>
   )
 }
 export default Kicker

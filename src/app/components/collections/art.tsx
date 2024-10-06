@@ -50,10 +50,10 @@ const CollectionArt = (collection: Collections) => {
   return (
     <div key={collection.id}>
       <div>
-        <div className="px-6 pb-16 border-b rail-border">
+        <div className="tablet:px-6 pb-16 border-b rail-border">
           <CollectionHead title={section.name} permalink={sectionPermalink} />
-          <div className={`grid grid-cols-4 tablet:grid-cols-12`}>
-            <div className="col-span-4 tablet:col-span-6 tablet:row-span-4 tablet:border-r rail-border tablet:pr-3">
+          <div className="grid grid-cols-4 tablet:grid-cols-12">
+            <div className="col-span-4 tablet:col-span-6 tablet:border-r rail-border tablet:pr-3">
               <div className="grid grid-cols-4 tablet:grid-cols-6 gap-3">
                 <div className="col-span-4 tablet:col-span-6">
                   <LeadPromo article={leadArticle} />
@@ -61,7 +61,7 @@ const CollectionArt = (collection: Collections) => {
               </div>
             </div>
             <div
-              className={`col-span-4 tablet:col-span-6 tablet:col-start-7 tablet:ml-3 divide-y rail-divide`}
+              className="pl-3 tablet:pl-0 col-span-4 tablet:col-span-6 tablet:col-start-7 tablet:ml-3 divide-x tablet:divide-x-0 tablet:divide-y rail-divide flex flex-row tablet:flex-col overflow-x-auto snap-mandatory snap-x scroll-smooth"
               itemType="http://schema.org/Article"
             >
               <Promos articles={restOfArticles} />
@@ -90,20 +90,23 @@ const Promos = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-6">
-        <div className="col-span-4 tablet:col-span-6">
+      <div
+        key={i}
+        className="snap-center flex flex-col space-y-0 tablet:space-y-0 tablet:grid tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-6 flex-none w-[calc(100vw-3.5rem)] tablet:w-auto"
+      >
+        <div className="pt-3 tablet:col-span-6">
           <Kicker article={article} />
         </div>
-        <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
+        <div className="order-first tablet:order-none tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
           {artwork && (
             <div className="">
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={artwork} title={title} />
+                <FeaturedImage image={artwork} title={title} hideCaption={true} />
               </Link>
             </div>
           )}
         </div>
-        <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-3">
+        <div className="tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-3">
           <div className="flex flex-col space-y-2">
             <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
             <Bylines article={article} type={BylineType.Default} />
@@ -137,11 +140,13 @@ const LeadPromo = (props: LeadPromoProps) => {
     <>
       <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 pt-3 pb-6">
         <div className="col-span-4 tablet:col-span-6">
-          <Kicker article={article} />
+          <div className="px-6 tablet:px-0">
+            <Kicker article={article} />
+          </div>
         </div>
         <div className="col-span-4 tablet:col-span-6" itemType="http://schema.org/Article">
           {artwork && (
-            <div className="">
+            <div className="px-6 tablet:px-0">
               <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
                 <FeaturedImage image={artwork} title={title} />
               </Link>
@@ -149,7 +154,7 @@ const LeadPromo = (props: LeadPromoProps) => {
           )}
         </div>
         <div className="col-span-4 tablet:col-span-6">
-          <div className="flex flex-col space-y-3">
+          <div className="px-6 tablet:px-0 flex flex-col space-y-3">
             <Title title={article.title} permalink={permalink} type={TitleType.Lead} />
             <Bylines article={article} type={BylineType.Default} />
             <Excerpt excerpt={article.excerpt} type={ExcerptType.ArtLead} />
