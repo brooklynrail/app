@@ -382,13 +382,13 @@ export const getSectionData = cache(async (props: SectionDataProps) => {
               "date_updated",
               "status",
               {
-                section: ["name", "slug"],
+                section: ["id", "name", "slug"],
               },
               {
-                issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+                issue: ["id", "title", "slug", "year", "month", "issue_number"],
               },
               {
-                contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+                contributors: [{ contributors_id: ["id", "first_name", "last_name"] }],
               },
               {
                 featured_image: ["id", "width", "height", "filename_disk", "caption"],
@@ -403,9 +403,6 @@ export const getSectionData = cache(async (props: SectionDataProps) => {
           articles: {
             _filter: { status: { _eq: "published" } },
             _limit: limit ? limit : 20,
-            issue: {
-              _sort: "-issue_number",
-            },
           },
         },
       }),

@@ -26,6 +26,7 @@ enum CollectionType {
 
 const HomePage = (props: HomePageProps) => {
   const { homepageData } = props
+
   const { theme, setTheme } = useTheme()
 
   const allCollections = homepageData.collections.map((collection: HomepageCollections, i: number) => {

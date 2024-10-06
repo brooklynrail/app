@@ -46,27 +46,27 @@ const CollectionArtSeen = (collection: Collections) => {
     }
   }, [])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (isInView && !currentSection) {
-        console.log("loading artseen......")
-        const response = await fetch(`/api/sections?slug=${section.slug}&limit=6`)
-        if (!response.ok) throw new Error("Failed to fetch article")
-        const sectionData = getSectionData({ slug: section.slug, limit: limit })
-        // Fetch all the data in parallel
-        const [fetchedSection] = await Promise.all([sectionData])
-        // Update the state with the fetched data as it becomes available
-        setCurrentSection(fetchedSection)
-        fetchedSection && setArticles(fetchedSection.articles)
-      }
-    }
-    // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
-  }, [isInView, currentSection, section.slug, articles, limit])
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (isInView && !currentSection) {
+  //       console.log("loading artseen......")
+  //       const response = await fetch(`/api/collections?slug=${section.slug}&limit=${limit}`)
+  //       if (!response.ok) throw new Error("Failed to fetch article")
+  //       const sectionData = getSectionData({ slug: section.slug, limit: limit })
+  //       // Fetch all the data in parallel
+  //       const [fetchedSection] = await Promise.all([sectionData])
+  //       // Update the state with the fetched data as it becomes available
+  //       setCurrentSection(fetchedSection)
+  //       fetchedSection && setArticles(fetchedSection.articles)
+  //     }
+  //   }
+  //   // Call the fetchData function and handle any errors
+  //   fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
+  // }, [isInView, currentSection, section.slug, articles, limit])
 
-  console.log("artseen inView", isInView)
-  console.log("artseen", currentSection)
-  console.log("artseen articles", articles)
+  // console.log("artseen inView", isInView)
+  // console.log("artseen", currentSection)
+  // console.log("artseen articles", articles)
 
   // get the first article in the section.articles array
   const leadArticle = articles[0]

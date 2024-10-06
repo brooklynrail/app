@@ -36,6 +36,7 @@ export interface HomePageProps {
 export default async function HomepagePage() {
   const data = await getData()
 
+  // return null
   return <HomePage {...data} />
 }
 

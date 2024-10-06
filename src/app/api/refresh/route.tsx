@@ -11,7 +11,6 @@ export const dynamic = "force-dynamic" // Mark this API as dynamic
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
-    console.log("searchParams", searchParams)
     const secret = searchParams.get("secret")
     const id = searchParams.get("id")
     const type = searchParams.get("type")
