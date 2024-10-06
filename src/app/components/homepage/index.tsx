@@ -12,6 +12,7 @@ import Paper from "../paper"
 import Footer from "../footer"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
+import CollectionFrame from "../collections/frame"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -85,7 +86,12 @@ const CollectionSection = (collection: Collections) => {
 
   switch (section.slug) {
     case Collection.Art:
-      return <CollectionArt {...collection} />
+      return (
+        <>
+          <CollectionFrame {...collection} />
+          {/* <CollectionArt {...collection} /> */}
+        </>
+      )
     case Collection.ArtSeen:
       return <CollectionArtSeen {...collection} />
     case Collection.Books:
