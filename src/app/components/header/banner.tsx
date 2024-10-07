@@ -3,7 +3,7 @@ import { useTheme } from "@/app/components/theme"
 const Banner = () => {
   const { theme } = useTheme()
   const pathfill = theme === "dark" ? "fill-none tablet:fill-none" : "fill-none tablet:fill-none"
-  const textfill = theme === "dark" ? "fill-slate-100 tablet:fill-indigo-50" : "fill-red-600 tablet:fill-indigo-50"
+  const textfill = theme === "dark" ? "fill-indigo-50" : "fill-indigo-50"
   return (
     <svg className="px-0 tablet:px-0 py-3 w-full" viewBox="0 0 1370 183" fill="none" xmlns="http://www.w3.org/2000/svg">
       <title>The Brooklyn Rail Logo</title>
