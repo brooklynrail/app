@@ -14,6 +14,7 @@ import Link from "next/link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapPin } from "@fortawesome/free-solid-svg-icons"
 import AdsTileStrip from "../../ads/adsTileStrip"
+import Dispatches from "../dispatches"
 
 export interface LayoutProps {
   thisIssueData: Issues
@@ -32,6 +33,14 @@ const IssueLayout = (props: IssuePageProps) => {
   currentArticles.forEach((article: Articles) => {
     if (article.slideshow_image) {
       currentSlides.push(article)
+    }
+  })
+
+  // get an array of articles from the dispatches section
+  const dispatches: Articles[] = []
+  currentArticles.forEach((article: Articles) => {
+    if (article.section && article.section.slug === "dispatches") {
+      dispatches.push(article)
     }
   })
 
@@ -73,6 +82,7 @@ const IssueLayout = (props: IssuePageProps) => {
           <div className="flex flex-col divide-y-[1px] rail-divide">
             {tributesData && tributesData.length > 0 && <InMemoriam tributesData={tributesData} />}
             <FeaturedArticles {...promoProps} />
+            {dispatches && dispatches.length > 0 && <Dispatches articles={dispatches} />}
             <AdsTileStrip />
           </div>
         </div>
