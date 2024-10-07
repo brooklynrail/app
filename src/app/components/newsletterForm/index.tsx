@@ -9,7 +9,7 @@ export default function NewsLetterSignUpForm() {
       return null
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/subscribeUser`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/subscribe`, {
       body: JSON.stringify({
         email: inputRef.current.value,
       }),
