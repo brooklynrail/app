@@ -14,7 +14,7 @@ const DonatePopup = () => {
   const donateURL = `${process.env.NEXT_PUBLIC_BASE_URL}/donate?amt=`
 
   // Handle form submission using AJAX
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const mailchimpUrl = "https://brooklynrail.us1.list-manage.com/subscribe/post-json"
     const userID = "dfcd810ee6ea33002746a0f47"
