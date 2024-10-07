@@ -10,6 +10,7 @@ export enum BylineType {
   ArticleHead = "text-md tablet-lg:text-lg font-sans not-italic",
   SectionPromo = "text-md font-sans not-italic",
   CollectionArtSeen = "text-lg font-sans not-italic",
+  CollectionBooks = "text-xs tablet:text-lg font-sans not-italic",
   TributeArticle = "text-lg tablet-lg:text-lg font-bold font-sans not-italic",
   TributeNextPrev = "text-sm tablet-lg:text-md font-medium font-sans not-italic",
   TributeWritersList = "text-sm not-italic inline",
@@ -74,7 +75,12 @@ const Bylines = (props: BylinesProps) => {
             }
 
             return (
-              <span key={i} className={type === BylineType.CollectionArtSeen ? "font-bold" : ""}>
+              <span
+                key={i}
+                className={
+                  type === BylineType.CollectionArtSeen || type === BylineType.CollectionBooks ? "font-bold" : ""
+                }
+              >
                 {!isFirst && separator}
                 {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
               </span>

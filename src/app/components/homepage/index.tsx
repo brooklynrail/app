@@ -10,6 +10,7 @@ import Footer from "../footer"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
 import CollectionFrame from "../collections/frame"
+import FrameScrollable from "../collections/frameScrollable"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -87,8 +88,7 @@ const CollectionSection = (collection: Collections) => {
     case Collection.ArtSeen:
       return <CollectionFrame {...collection} />
     case Collection.Books:
-      console.log("Books")
-      break
+      return <FrameScrollable {...collection} />
     case Collection.CriticsPage:
       return <CollectionCriticsPage {...collection} />
     case Collection.Dance:

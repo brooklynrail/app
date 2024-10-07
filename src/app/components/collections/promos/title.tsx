@@ -7,6 +7,8 @@ export enum TitleType {
   XSmall = "text-base font-serif font-normal",
   Small = "text-2xl font-normal",
   Medium = "text-3xl tablet:text-4xl font-light",
+  CollectionBooksLead = "text-lg tablet:text-4xl font-normal",
+  CollectionBooksPromo = "text-lg tablet:text-xl font-normal",
   SectionPromo = "text-2xl tablet:text-3xl font-light",
   ArticleHead = "text-5xl tablet:text-6xl font-light",
   ArticleHeadDiptych = "text-5xl tablet:text-6xl font-light text-center",
