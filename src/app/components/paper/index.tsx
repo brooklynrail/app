@@ -2,7 +2,7 @@
 
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
-import { PopupProvider } from "../issueRail/popupProvider"
+import { PopupProvider } from "../popupProvider"
 import { useTheme } from "../theme"
 import ThemeToggle from "../themeToggle"
 

@@ -100,6 +100,12 @@ body {
   @apply rail-tribute-bg;
 }
 
-a {
-  @apply hover:underline underline-offset-2;
+// a {
+//   @apply hover:underline underline-offset-2;
+// }
+
+.rail-header {
+  // @apply bg-red-600;
+  // background: linear-gradient(180deg, #ef4444 0%, #cfcfe0 100%);
+  @apply bg-gradient-to-b from-[#ff0000] to-[#cccccc] dark:from-indigo-700;
 }
