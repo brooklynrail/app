@@ -1,45 +1,36 @@
-import { NextApiRequest, NextApiResponse } from "next"
+import { NextRequest, NextResponse } from "next/server"
+import mailchimp from "@mailchimp/mailchimp_marketing"
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Make sure we only accept POST requests
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: `Method ${req.method} Not Allowed` })
-  }
+// Configure Mailchimp
+mailchimp.setConfig({
+  apiKey: process.env.MAILCHIMP_API_KEY,
+  server: process.env.MAILCHIMP_API_SERVER,
+})
 
-  const { email } = req.body
+const audienceId = process.env.MAILCHIMP_AUDIENCE_ID
 
-  if (!email) {
-    return res.status(400).json({ error: "Email is required" })
+// Handle POST request
+export async function POST(req: NextRequest) {
+  const { email_address, status, merge_fields } = await req.json()
+
+  if (!email_address || !status) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
   }
 
   try {
-    const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID
-    const API_KEY = process.env.MAILCHIMP_API_KEY
-    const DATACENTER = process.env.MAILCHIMP_API_SERVER
-
-    const data = {
-      email_address: email,
-      status: "subscribed",
+    if (!audienceId) {
+      return NextResponse.json({ error: "MAILCHIMP_AUDIENCE_ID is not defined" }, { status: 400 })
     }
 
-    const response = await fetch(`https://${DATACENTER}.api.mailchimp.com/3.0/lists/${AUDIENCE_ID}/members`, {
-      body: JSON.stringify(data),
-      headers: {
-        Authorization: `apikey ${API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
+    // Add subscriber to Mailchimp audience
+    await mailchimp.lists.addListMember(audienceId, {
+      email_address,
+      status,
+      merge_fields,
     })
 
-    if (response.status >= 400) {
-      return res.status(400).json({
-        error: `There was an error subscribing to the newsletter. Please try again later.`,
-      })
-    }
-
-    return res.status(201).json({ message: "Successfully subscribed!" })
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error)
-    return res.status(500).json({ error: errorMessage })
+    return NextResponse.json({ success: true }, { status: 201 })
+  } catch (err) {
+    return NextResponse.json({ error: err || "An error occurred" }, { status: 400 })
   }
 }
