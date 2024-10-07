@@ -16,21 +16,10 @@ const DonatePopup = () => {
   // Handle form submission using AJAX
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const mailchimpUrl = "https://brooklynrail.us1.list-manage.com/subscribe/post-json"
-    const userID = "dfcd810ee6ea33002746a0f47"
-    const audienceID = "a44895fefe"
-
-    // Construct the URL with the email
-    const url = `${mailchimpUrl}?u=${userID}&id=${audienceID}&EMAIL=${encodeURIComponent(email)}&c=?` // Adding `&c=?` for JSONP
-
     try {
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      if (response.ok) {
+      const response = await fetch(`/api/proxy?email=${encodeURIComponent(email)}`)
+      const data = await response.json()
+      if (data.success) {
         setFormStatus("success")
       } else {
         setFormStatus("error")
@@ -99,9 +88,9 @@ const DonatePopup = () => {
               </p>
             </div>
             {/* Add Mailchimp Email Subscription Form */}
-            <div className="">
-              <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4">
-                <label htmlFor="email" className="text-white text-lg">
+            <div className="space-y-1">
+              <form onSubmit={handleSubmit} className="flex flex-row items-center space-y-4">
+                <label htmlFor="email" className="text-white hidden text-lg">
                   Subscribe to Our Newsletter
                 </label>
                 <input
@@ -120,7 +109,7 @@ const DonatePopup = () => {
 
               {/* Show form submission status */}
               {formStatus && (
-                <p className={`pt-4 text-lg ${formStatus === "success" ? "text-green-500" : "text-red-500"}`}>
+                <p className={`text-xs ${formStatus === "success" ? "text-green-500" : "text-red-500"}`}>
                   {formStatus === "success" ? "Thank you for subscribing!" : "Subscription failed. Please try again."}
                 </p>
               )}
