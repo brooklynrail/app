@@ -35,8 +35,8 @@ const DonatePopup = () => {
 
   // Calculate the progress based on fetched data
   const targetAmount = 200000 // Set your fundraising goal
-  const currentAmount = donateAmt || 0
-  const progressPercent = (currentAmount / targetAmount) * 100
+  const currentAmount = donateAmt || null
+  const progressPercent = currentAmount && (currentAmount / targetAmount) * 100
 
   if (!showPopup || popupType !== "donate") {
     return null
@@ -74,7 +74,7 @@ const DonatePopup = () => {
                   ></span>
                 </div>
               )}
-              <span className="pl-6 text-zinc-600">${currentAmount.toLocaleString()}</span>
+              {currentAmount && <span className="pl-6 text-zinc-600">${currentAmount.toLocaleString()}</span>}
             </div>
           </div>
           <p className="uppercase text-center text-sm tablet-lg:text-lg">
