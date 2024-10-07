@@ -22,8 +22,6 @@ export default function NewsLetterSignUpForm() {
         },
       }),
     })
-
-    console.log(res)
   }
 
   return (

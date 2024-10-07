@@ -20,8 +20,7 @@ const DonatePopup = () => {
           throw new Error(`Error: ${response.statusText}`)
         }
         const data = await response.json()
-        console.log("data ====", data.records[0].fields.Net)
-        setDonateAmt(data.records[0].fields.Net)
+        setDonateAmt(data.records[0].fields.Gross)
         setDonateCount(data.records[0].fields.Count)
       } catch (error) {
         console.error("Failed to fetch donation data:", error)
