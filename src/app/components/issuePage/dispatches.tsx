@@ -39,7 +39,7 @@ const Dispatches = (props: DispatchesProps) => {
   })
 
   return (
-    <div className="py-0 pb-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
+    <div className="py-2 pb-3 flex flex-col space-y-1" itemType="http://schema.org/Article">
       <p className="text-sm">
         <Link className="" title="Go to the Dispatches section" href={sectionPermalink}>
           <span className="font-bold">Dispatches</span> <span className="italic">from David Levi Strauss</span>

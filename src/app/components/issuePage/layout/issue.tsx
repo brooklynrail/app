@@ -39,7 +39,7 @@ const IssueLayout = (props: IssuePageProps) => {
   // get an array of articles from the dispatches section
   const dispatches: Articles[] = []
   currentArticles.forEach((article: Articles) => {
-    if (article.section && article.section.slug === "film") {
+    if (article.section && article.section.slug === "dispatches") {
       dispatches.push(article)
     }
   })
