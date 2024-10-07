@@ -43,10 +43,8 @@ const DonatePopup = () => {
             DONATE to insure that the rail remains
             <br /> FREE and accessible to all, forever
           </p>
-          <div className="flex justify-center space-x-3 tablet-lg:space-x-9">
-            <DonateButton amt="25" />
-            <DonateButton amt="100" />
-            <DonateButton amt="250" />
+          <div className="flex justify-center">
+            <DonateButton />
           </div>
 
           <div className="pt-3 flex flex-row justify-center items-center relative">
@@ -66,20 +64,15 @@ const DonatePopup = () => {
   )
 }
 
-interface DonateButtonProps {
-  amt: string
-}
-
-const DonateButton = (props: DonateButtonProps) => {
-  const { amt } = props
+const DonateButton = () => {
   // const donateURL = `${process.env.NEXT_PUBLIC_BASE_URL}/donate?amt=${amt}`
-  const donateURL = `https://brooklynrail.org/donate?amt=${amt}`
+  const donateURL = `https://brooklynrail.org/donate`
   return (
     <button
       className="bg-red-500 text-white px-3 tablet-lg:px-6 py-1.5 tablet-lg:py-3 rounded-sm text-nowrap text-md tablet-lg:text-lg uppercase hover:underline underline-offset-2 font-normal"
       onClick={() => (window.location.href = `${donateURL}`)}
     >
-      {`$${amt}`}
+      {`Donate`}
     </button>
   )
 }
