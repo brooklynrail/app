@@ -1,9 +1,6 @@
-import PromoStandard from "../promo/standard"
-import { PromoProps } from "."
 import { PageType, getPermalink } from "../../../../lib/utils"
-import { Articles, Tributes } from "../../../../lib/types"
+import { Tributes } from "../../../../lib/types"
 import PromoTribute from "../promo/tribute"
-import TributeWritersList from "../tributePage/writersList"
 
 interface InMemoriamProps {
   tributesData: Tributes[]

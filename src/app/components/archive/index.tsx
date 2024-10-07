@@ -4,7 +4,6 @@ import Image from "next/image"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import Footer from "../footer"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 
@@ -79,27 +78,23 @@ const ArchivePage = (props: ArchivePageProps) => {
   })
 
   return (
-    <>
-      <Paper pageClass="paper-archive">
-        <div className="px-3 desktop:w-desktop mx-auto">
+    <Paper pageClass="paper-archive">
+      <div className="px-3 desktop:w-desktop mx-auto">
+        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
+          <div className="col-span-4 tablet-lg:col-span-12">
+            <Header type={HeaderType.Issue} />
+          </div>
+        </div>
+
+        <section id="main" className="">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
             <div className="col-span-4 tablet-lg:col-span-12">
               <Header type={HeaderType.Default} />
             </div>
           </div>
-
-          <section id="main" className="">
-            <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-              <div className="col-span-4 tablet-lg:col-span-12">
-                <h1 className="text-4xl tablet:text-5xl font-light">The Brooklyn Rail Archives</h1>
-                <ul className="flex flex-col space-y-6 divide-y-[1px] rail-divide">{issueList}</ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <Footer />
-      </Paper>
-    </>
+        </section>
+      </div>
+    </Paper>
   )
 }
 
