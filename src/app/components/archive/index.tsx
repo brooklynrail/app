@@ -6,6 +6,7 @@ import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
+import DonatePopup from "../popup"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -95,6 +96,7 @@ const ArchivePage = (props: ArchivePageProps) => {
           </div>
         </section>
       </div>
+      <DonatePopup />
     </Paper>
   )
 }

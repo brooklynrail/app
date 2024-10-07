@@ -8,6 +8,15 @@ const DonatePopup = () => {
   const [email, setEmail] = useState("") // State to capture email
   const [formStatus, setFormStatus] = useState<string | null>(null) // Status for the form submission
 
+  // pull in the donation data from https://brooklynrail.org/.netlify/functions/getDonationData
+  const donateData = fetch("https://brooklynrail.org/.netlify/functions/getDonationData")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+    })
+
+  console.log(donateData)
+
   if (!showPopup || popupType !== "donate") {
     return null
   }
@@ -40,7 +49,7 @@ const DonatePopup = () => {
             </div>
           </div>
           <p className="uppercase text-center text-sm tablet-lg:text-lg">
-            DONATE to insure that the rail remains
+            DONATE to ensure that the rail remains
             <br /> FREE and accessible to all, forever
           </p>
           <div className="flex justify-center">
@@ -50,7 +59,7 @@ const DonatePopup = () => {
           <div className="pt-3 flex flex-row justify-center items-center relative">
             <div className="flex justify-center">
               <p className="text-sm tablet-lg:text-lg text-center font-medium text-blue-700 hover:underline">
-                Get notified when our 🎉new website 🎉 launches later this month »
+                Get notified when our new website launches later this month »
               </p>
             </div>
             {/* Add Mailchimp Email Subscription Form */}
