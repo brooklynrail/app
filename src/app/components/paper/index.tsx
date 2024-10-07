@@ -1,5 +1,11 @@
 "use client"
 
+import Footer from "../footer"
+import CoversPopup from "../issueRail/coversPopup"
+import { PopupProvider } from "../issueRail/popupProvider"
+import { useTheme } from "../theme"
+import ThemeToggle from "../themeToggle"
+
 export interface PaperProps {
   pageClass: string
   children: React.ReactNode
@@ -7,11 +13,17 @@ export interface PaperProps {
 
 const Paper = (props: PaperProps) => {
   const { pageClass, children } = props
+  const { theme, setTheme } = useTheme()
 
   return (
-    <>
-      <div className={`paper ${pageClass}`}>{children}</div>
-    </>
+    <PopupProvider>
+      <div className={`paper ${pageClass}`}>
+        {children}
+        <Footer />
+        <ThemeToggle {...{ theme, setTheme }} />
+        <CoversPopup />
+      </div>
+    </PopupProvider>
   )
 }
 
