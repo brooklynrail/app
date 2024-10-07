@@ -13,9 +13,9 @@ const Kicker = (props: KickerProps) => {
   }
 
   return (
-    <p className="text-nowrap flex flex-row space-x-4 text-xs uppercase font-medium">
+    <p className="text-nowrap flex flex-row space-x-3 text-xs uppercase font-medium">
       <span className="">{article.kicker}</span>
-      <span className=""> | </span>
+      <span aria-hidden={true}>{` | `}</span>
       <span className="">{issue.title}</span>
     </p>
   )

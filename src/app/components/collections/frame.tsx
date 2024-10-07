@@ -37,22 +37,22 @@ const CollectionFrame = (collection: Collections) => {
 
   return (
     <div key={collection.id}>
-      <div className="tablet:px-6 pb-16 border-b rail-border">
+      <div className="tablet:px-6 pb-3 border-b rail-border">
         <CollectionHead title={section.name} permalink={sectionPermalink} />
         <div className="hidden tablet:flex flex-col">
-          <div className="grid grid-cols-4 tablet:grid-cols-12 gap-3">
+          <div className="grid grid-cols-4 tablet:grid-cols-12">
             <div className="col-span-4 tablet:col-span-6 tablet:border-r rail-border">
-              <div className="p-3 pl-0">{leadPromo}</div>
+              <div className="p-3 pr-6 pl-0">{leadPromo}</div>
             </div>
-            <div
-              className="col-span-4 tablet:col-span-6 tablet:col-start-7 tablet:divide-y rail-divide"
-              itemType="http://schema.org/Article"
-            >
-              {promos}
+            <div className="col-span-4 tablet:col-span-6 tablet:col-start-7" itemType="http://schema.org/Article">
+              <div className="pl-3 tablet:divide-y rail-divide">{promos}</div>
             </div>
           </div>
         </div>
-        <div className="tablet:hidden px-3 divide-x rail-divide flex overflow-x-auto snap-mandatory snap-x scroll-smooth">
+        <div
+          className="tablet:hidden px-3 divide-x rail-divide flex overflow-x-auto snap-mandatory snap-x scroll-smooth"
+          aria-hidden={true}
+        >
           {promosMobile}
         </div>
       </div>
@@ -77,13 +77,13 @@ const Promos = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="p-3 tablet:pr-0">
+      <div key={i} className="p-3 tablet:pr-0 snap-center">
         <div className="flex flex-col space-y-3 flex-none w-[calc(100vw-6.5rem)] tablet:w-auto">
           <div className="hidden tablet:block">
             <Kicker article={article} />
           </div>
           <div className="!mt-0 tablet:mt-auto flex flex-col-reverse tablet:flex-row tablet:space-x-6">
-            <div className="pt-3 flex flex-col space-y-3">
+            <div className="pt-3 tablet:pt-0 flex flex-col space-y-3">
               <div className="tablet:hidden">
                 <Kicker article={article} />
               </div>

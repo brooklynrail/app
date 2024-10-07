@@ -28,7 +28,7 @@ export const PromosArtSeen = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="p-3 tablet:pr-0">
+      <div key={i} className="p-3 tablet:pr-0 snap-center">
         <div className="flex flex-col w-[calc(100vw-6.5rem)] tablet:w-auto">
           <div className="flex flex-col space-y-3 tablet:space-y-0 tablet:flex-row tablet:space-x-6">
             {artwork && (
