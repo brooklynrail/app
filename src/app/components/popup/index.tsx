@@ -1,21 +1,42 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Banner from "../header/banner"
 import { usePopup } from "../popupProvider"
 import NewsLetterSignUpForm from "../newsletterForm"
+import Link from "next/link"
 
 const DonatePopup = () => {
   const { showPopup, popupType, setShowPopup } = usePopup()
+  const [donateAmt, setDonateAmt] = useState<number | null>(null) // State to hold fetched donation data
+  const [donateCount, setDonateCount] = useState<number | null>(null) // State to hold fetched donation data
   const [email, setEmail] = useState("") // State to capture email
   const [formStatus, setFormStatus] = useState<string | null>(null) // Status for the form submission
 
-  // pull in the donation data from https://brooklynrail.org/.netlify/functions/getDonationData
-  const donateData = fetch("https://brooklynrail.org/.netlify/functions/getDonationData")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data)
-    })
+  // Use useEffect to fetch donation data when the component is mounted
+  useEffect(() => {
+    const fetchDonateData = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/airtable/`)
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`)
+        }
+        const data = await response.json()
+        console.log("data ====", data.records[0].fields.Net)
+        setDonateAmt(data.records[0].fields.Net)
+        setDonateCount(data.records[0].fields.Count)
+      } catch (error) {
+        console.error("Failed to fetch donation data:", error)
+      }
+    }
 
-  console.log(donateData)
+    if (showPopup && popupType === "donate") {
+      fetchDonateData()
+    }
+  }, [showPopup, popupType]) // Dependencies: re-fetch data if showPopup or popupType changes
+
+  // Calculate the progress based on fetched data
+  const targetAmount = 200000 // Set your fundraising goal
+  const currentAmount = donateAmt || 0
+  const progressPercent = (currentAmount / targetAmount) * 100
 
   if (!showPopup || popupType !== "donate") {
     return null
@@ -26,26 +47,34 @@ const DonatePopup = () => {
       className="fixed z-[1000] top-0 left-0 right-0 bottom-0 bg-black bg-opacity-75 flex justify-center items-center"
       onClick={() => setShowPopup(false)}
     >
-      <div className="rail-header p-6 py-6 w-screen h-mobile-lg bottom-0 absolute" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="rail-header p-6 py-12 tablet:py-6 w-screen h-mobile-lg bottom-0 absolute"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
-          className="absolute top-3 right-3 text-white font-medium text-4xl rounded-full hover:bg-white hover:bg-opacity-30 px-3 py-1"
+          className="absolute top-3 right-3 text-white font-medium text-xl tablet:text-3xl rounded-full hover:bg-white hover:bg-opacity-30 px-3 py-1"
           onClick={() => setShowPopup(false)}
         >
           &#x2715;
         </button>
-        <div className="space-y-6">
-          {/* <Banner /> */}
+        <div className="space-y-3 tablet:space-y-6">
           <h2 className="text-4xl tablet-lg:text-6xl text-center font-light uppercase">Celebrating 24 Years</h2>
           <div className="space-y-3">
             <p className="uppercase text-md tablet-lg:text-2xl text-center">Help us raise $200,000 by December 31</p>
-            <div className="bg-gray-200 h-9 w-auto max-w-screen-tablet-lg mx-auto flex justify-start items-center">
-              <div
-                className="bg-lime-400 h-9 flex justify-end items-center"
-                style={{ width: `${(20000 / 200000) * 100}%` }} // Replace 200000 with the actual amount raised
-              >
-                <span className="hidden tablet-lg:block pr-3">$20,000</span>
-              </div>
-              <span className="tablet-lg:hidden pl-3">$20,000</span>
+            <div className="bg-indigo-100 h-9 w-auto max-w-screen-tablet-lg mx-auto flex justify-start items-center">
+              {currentAmount && (
+                <div className="bg-lime-500 h-9 flex justify-end items-center" style={{ width: `${progressPercent}%` }}>
+                  <span
+                    className="relative -right-[1.145rem] h-0 w-0"
+                    style={{
+                      borderTop: "18px solid transparent",
+                      borderBottom: "18px solid transparent",
+                      borderLeft: "18px solid #84cc16",
+                    }}
+                  ></span>
+                </div>
+              )}
+              <span className="pl-6 text-zinc-600">${currentAmount.toLocaleString()}</span>
             </div>
           </div>
           <p className="uppercase text-center text-sm tablet-lg:text-lg">
@@ -53,16 +82,21 @@ const DonatePopup = () => {
             <br /> FREE and accessible to all, forever
           </p>
           <div className="flex justify-center">
-            <DonateButton />
+            <Link href="https://brooklynrail.org/donate" title="Donate to The Brooklyn Rail">
+              <button className="bg-red-500 text-white px-3 tablet-lg:px-6 py-1.5 tablet-lg:py-3 rounded-sm text-nowrap text-md tablet-lg:text-lg uppercase hover:underline underline-offset-2 font-normal">
+                {`Donate`}
+              </button>
+            </Link>
           </div>
 
           <div className="pt-3 flex flex-row justify-center items-center relative">
             <div className="flex justify-center">
-              <p className="text-sm tablet-lg:text-lg text-center font-medium text-blue-700 hover:underline">
-                Get notified when our new website launches later this month »
+              <p className="text-nowrap text-xs tablet-lg:text-md text-center font-medium text-zinc-700">
+                <Link className="hover:underline" href="https://mailchi.mp/brooklynrail/join/">
+                  Get notified when our new website launches later this month »
+                </Link>
               </p>
             </div>
-            {/* Add Mailchimp Email Subscription Form */}
             <div className="space-y-1 hidden">
               <NewsLetterSignUpForm />
             </div>
@@ -70,19 +104,6 @@ const DonatePopup = () => {
         </div>
       </div>
     </div>
-  )
-}
-
-const DonateButton = () => {
-  // const donateURL = `${process.env.NEXT_PUBLIC_BASE_URL}/donate?amt=${amt}`
-  const donateURL = `https://brooklynrail.org/donate`
-  return (
-    <button
-      className="bg-red-500 text-white px-3 tablet-lg:px-6 py-1.5 tablet-lg:py-3 rounded-sm text-nowrap text-md tablet-lg:text-lg uppercase hover:underline underline-offset-2 font-normal"
-      onClick={() => (window.location.href = `${donateURL}`)}
-    >
-      {`Donate`}
-    </button>
   )
 }
 
