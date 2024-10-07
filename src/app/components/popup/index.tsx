@@ -72,7 +72,8 @@ interface DonateButtonProps {
 
 const DonateButton = (props: DonateButtonProps) => {
   const { amt } = props
-  const donateURL = `${process.env.NEXT_PUBLIC_BASE_URL}/donate?amt=${amt}`
+  // const donateURL = `${process.env.NEXT_PUBLIC_BASE_URL}/donate?amt=${amt}`
+  const donateURL = `https://brooklynrail.org/donate?amt=${amt}`
   return (
     <button
       className="bg-red-500 text-white px-3 tablet-lg:px-6 py-1.5 tablet-lg:py-3 rounded-sm text-nowrap text-md tablet-lg:text-lg uppercase hover:underline underline-offset-2 font-normal"
