@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import Banner from "../header/banner"
 import { usePopup } from "../popupProvider"
+import NewsLetterSignUpForm from "../newsletterForm"
 
 const DonatePopup = () => {
   const { showPopup, popupType, setShowPopup } = usePopup()
@@ -12,23 +13,6 @@ const DonatePopup = () => {
   }
 
   const donateURL = `${process.env.NEXT_PUBLIC_BASE_URL}/donate?amt=`
-
-  // Handle form submission using AJAX
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    try {
-      const response = await fetch(`/api/proxy?email=${encodeURIComponent(email)}`)
-      const data = await response.json()
-      if (data.success) {
-        setFormStatus("success")
-      } else {
-        setFormStatus("error")
-      }
-    } catch (error) {
-      console.error("Failed to subscribe to Mailchimp:", error)
-      setFormStatus("error")
-    }
-  }
 
   return (
     <div
@@ -89,23 +73,7 @@ const DonatePopup = () => {
             </div>
             {/* Add Mailchimp Email Subscription Form */}
             <div className="space-y-1">
-              <form onSubmit={handleSubmit} className="flex flex-row items-center space-y-4">
-                <label htmlFor="email" className="text-white hidden text-lg">
-                  Subscribe to Our Newsletter
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="px-4 py-2 w-80 border border-gray-400 rounded focus:outline-none focus:border-blue-500"
-                  placeholder="Enter your email address"
-                  required
-                />
-                <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-                  Subscribe
-                </button>
-              </form>
+              <NewsLetterSignUpForm />
 
               {/* Show form submission status */}
               {formStatus && (
