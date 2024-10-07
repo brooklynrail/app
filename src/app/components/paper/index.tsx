@@ -2,6 +2,7 @@
 
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
+import DonatePopup from "../popup"
 import { PopupProvider } from "../popupProvider"
 import { useTheme } from "../theme"
 import ThemeToggle from "../themeToggle"
@@ -22,6 +23,7 @@ const Paper = (props: PaperProps) => {
         <Footer />
         <ThemeToggle {...{ theme, setTheme }} />
         <CoversPopup />
+        <DonatePopup />
       </div>
     </PopupProvider>
   )
