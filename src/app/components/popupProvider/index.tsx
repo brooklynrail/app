@@ -34,13 +34,15 @@ export const PopupProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Check if the donate popup has been shown before
-    const hasShownDonatePopup = localStorage.getItem("hasShownDonatePopup")
-    if (!hasShownDonatePopup) {
+    const hasDonatePopup = document.cookie.split("; ").find((row) => row.startsWith("hasDonatePopup="))
+    if (!hasDonatePopup) {
       // Show the donate popup if it's the user's first visit
       setPopupType("donate")
       setShowPopup(true)
-      // Set localStorage to prevent popup from showing again
-      // localStorage.setItem("hasShownDonatePopup", "true")
+      // Set a session cookie to prevent popup from showing again
+      const expires = new Date()
+      expires.setHours(expires.getHours() + 12)
+      document.cookie = `hasDonatePopup=true; expires=${expires.toUTCString()}; path=/`
     }
   }, [])
 
