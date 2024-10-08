@@ -1,12 +1,37 @@
 "use client"
 import Link from "next/link"
-import { Articles } from "../../../../lib/types"
+import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 
 import FeaturedImage from "../featuredImage"
 import { stripHtml } from "string-strip-html"
 import Bylines, { BylineType } from "./promos/bylines"
 import Title, { TitleType } from "./promos/title"
+import CollectionHead from "./head"
+import Kicker from "./promos/kicker"
+
+const CollectionBooks = (collection: Collections) => {
+  const { section } = collection
+  if (!section) {
+    return null
+  }
+
+  const { articles } = section
+
+  const sectionPermalink = getPermalink({
+    sectionSlug: section.slug,
+    type: PageType.SuperSection,
+  })
+
+  return (
+    <div key={collection.id} className="pb-3">
+      <CollectionHead title={section.name} permalink={sectionPermalink} />
+      <div className="pl-6 divide-x rail-divide flex overflow-x-auto snap-mandatory snap-x scroll-smooth">
+        <PromosBooks articles={articles} />
+      </div>
+    </div>
+  )
+}
 
 interface PromoProps {
   articles: Articles[]
@@ -25,8 +50,9 @@ export const PromosBooks = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className={`p-3 pb-3 px-6 first:pl-0 first:tablet:pr-9 snap-center`}>
-        <div className={`flex flex-col w-[calc(100vw-9.5rem)] tablet:w-auto`}>
+      <div key={i} className={`pt-1 pb-3 px-6 first:pl-0 first:tablet:pr-9 snap-center`}>
+        <div className={`flex flex-col w-[calc(100vw-9.5rem)] tablet:w-auto space-y-3`}>
+          <Kicker article={article} />
           <div
             className={`flex space-x-3 ${i === 0 ? "space-y-0 tablet:flex-row" : "tablet:flex-col tablet:space-y-3 tablet:space-x-0"}`}
           >
@@ -53,3 +79,5 @@ export const PromosBooks = (props: PromoProps) => {
 
   return <>{articles}</>
 }
+
+export default CollectionBooks

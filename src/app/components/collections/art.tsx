@@ -32,7 +32,7 @@ const CollectionArt = (collection: Collections) => {
   const restOfArticles = articles.slice(1)
 
   return (
-    <div key={collection.id}>
+    <div key={collection.id} className="pb-3">
       <CollectionHead title={section.name} permalink={sectionPermalink} />
       <div className="hidden tablet-lg:block">
         <Frame

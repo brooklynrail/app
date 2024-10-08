@@ -13,6 +13,7 @@ import CollectionFrame from "../collections/frame"
 import FrameScrollable from "../collections/frameScrollable"
 import CollectionArt from "../collections/art"
 import CollectionArtSeen from "../collections/artSeen"
+import CollectionBooks from "../collections/books"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -58,7 +59,7 @@ const HomePage = (props: HomePageProps) => {
           </div>
         </header>
 
-        <main>{allCollections}</main>
+        <main className="divide-y rail-divide">{allCollections}</main>
         <Footer />
       </Paper>
       <ThemeToggle {...{ theme, setTheme }} />
@@ -90,8 +91,7 @@ const CollectionSection = (collection: Collections) => {
     case Collection.ArtSeen:
       return <CollectionArtSeen {...collection} />
     case Collection.Books:
-      console.log("Dance")
-      break
+      return <CollectionBooks {...collection} />
     case Collection.CriticsPage:
       console.log("Dance")
       break

@@ -1,15 +1,13 @@
 "use client"
 import Link from "next/link"
-import { Articles, Collections, Sections } from "../../../../lib/types"
-import { getPermalink, getSectionData, PageType } from "../../../../lib/utils"
+import { Articles, Collections } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
 import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
 import { stripHtml } from "string-strip-html"
 import Bylines, { BylineType } from "./promos/bylines"
 import Title, { TitleType } from "./promos/title"
-import { useEffect, useRef, useState } from "react"
 import Kicker from "./promos/kicker"
-import Excerpt, { ExcerptType } from "./promos/excerpt"
 import Frame from "../section/frame"
 import FrameScrollable from "../section/frameScrollable"
 
@@ -32,7 +30,7 @@ const CollectionArtSeen = (collection: Collections) => {
   const restOfArticles = articles.slice(1)
 
   return (
-    <div key={collection.id}>
+    <div key={collection.id} className="pb-3">
       <CollectionHead title={section.name} permalink={sectionPermalink} />
       <div className="hidden tablet-lg:block">
         <Frame
