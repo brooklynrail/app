@@ -10,12 +10,84 @@ import Title, { TitleType } from "./promos/title"
 import { useEffect, useRef, useState } from "react"
 import Kicker from "./promos/kicker"
 import Excerpt, { ExcerptType } from "./promos/excerpt"
+import Frame from "../section/frame"
+import FrameScrollable from "../section/frameScrollable"
+
+const CollectionArtSeen = (collection: Collections) => {
+  const { section } = collection
+  if (!section) {
+    return null
+  }
+
+  const { articles } = section
+
+  const sectionPermalink = getPermalink({
+    sectionSlug: section.slug,
+    type: PageType.SuperSection,
+  })
+
+  // get the first article in the section.articles array
+  const leadArticle = articles[0]
+  // get the list of articles in the section.articles array minus the first article
+  const restOfArticles = articles.slice(1)
+
+  return (
+    <div key={collection.id}>
+      <CollectionHead title={section.name} permalink={sectionPermalink} />
+      <div className="hidden tablet-lg:block">
+        <Frame
+          LeadPromo={<LeadPromoArtSeen article={leadArticle} />}
+          Promos={<PromosArtSeen articles={restOfArticles} />}
+          alt={false}
+        />
+      </div>
+      <div className="tablet-lg:hidden">
+        <FrameScrollable Promos={<PromosMobile articles={articles} />} />
+      </div>
+    </div>
+  )
+}
 
 interface PromoProps {
   articles: Articles[]
 }
 
-export const PromosArtSeen = (props: PromoProps) => {
+const PromosMobile = (props: PromoProps) => {
+  const articles = props.articles.map((article, i = 1) => {
+    const { issue, section, title, excerpt, featured_artwork, featured_image, kicker } = article
+    const artwork = featured_artwork ? featured_artwork : featured_image
+    const permalink = getPermalink({
+      year: issue.year,
+      month: issue.month,
+      section: section.slug,
+      slug: article.slug,
+      type: PageType.Article,
+    })
+
+    return (
+      <div key={i} className="px-3 py-1 tablet:pr-0 snap-center">
+        <div className="flex flex-col space-y-3 flex-none w-[calc(100vw-6.5rem)] tablet:w-auto">
+          <Kicker article={article} />
+          {artwork && (
+            <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
+              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+                <FeaturedImage image={artwork} title={title} hideCaption={true} />
+              </Link>
+            </div>
+          )}
+          <div className="flex flex-col space-y-3">
+            <Title title={article.title} permalink={permalink} type={TitleType.Small} />
+            <Bylines article={article} type={BylineType.Default} />
+          </div>
+        </div>
+      </div>
+    )
+  })
+
+  return <>{articles}</>
+}
+
+const PromosArtSeen = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
     const { issue, section, title, excerpt, featured_artwork, featured_image, kicker } = article
     const artwork = featured_artwork ? featured_artwork : featured_image
@@ -54,7 +126,7 @@ export const PromosArtSeen = (props: PromoProps) => {
 interface LeadPromoProps {
   article: Articles
 }
-export const LeadPromoArtSeen = (props: LeadPromoProps) => {
+const LeadPromoArtSeen = (props: LeadPromoProps) => {
   const { article } = props
   const { title, issue, section, featured_artwork, featured_image } = article
 
@@ -73,7 +145,7 @@ export const LeadPromoArtSeen = (props: LeadPromoProps) => {
         {artwork && (
           <div className="px-6 tablet:px-0">
             <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <FeaturedImage image={artwork} title={title} />
+              <FeaturedImage image={artwork} title={title} hideCaption={true} />
             </Link>
           </div>
         )}
@@ -85,3 +157,5 @@ export const LeadPromoArtSeen = (props: LeadPromoProps) => {
     </div>
   )
 }
+
+export default CollectionArtSeen

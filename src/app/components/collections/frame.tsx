@@ -9,7 +9,6 @@ import Bylines, { BylineType } from "./promos/bylines"
 import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
 import Excerpt, { ExcerptType } from "./promos/excerpt"
-import { LeadPromoArtSeen, PromosArtSeen } from "./artSeen"
 
 const CollectionFrame = (collection: Collections) => {
   const { section } = collection
@@ -29,32 +28,22 @@ const CollectionFrame = (collection: Collections) => {
     type: PageType.SuperSection,
   })
 
-  const promos =
-    section.slug === "artseen" ? <PromosArtSeen articles={restOfArticles} /> : <Promos articles={restOfArticles} />
-  const promosMobile =
-    section.slug === "artseen" ? <PromosArtSeen articles={articles} /> : <Promos articles={articles} />
-  const leadPromo = <LeadPromoArtSeen article={leadArticle} />
+  // const promos =
+  // section.slug === "artseen" ? <PromosArtSeen articles={restOfArticles} /> : <Promos articles={restOfArticles} />
+  // const promosMobile =
+  // section.slug === "artseen" ? <PromosArtSeen articles={articles} /> : <Promos articles={articles} />
+  // const leadPromo = <LeadPromoArtSeen article={leadArticle} />
 
   return (
     <div key={collection.id}>
-      <div className="tablet:px-6 pb-3 border-b rail-border">
-        <CollectionHead title={section.name} permalink={sectionPermalink} />
-        <div className="hidden tablet:flex flex-col">
-          <div className="grid grid-cols-4 tablet:grid-cols-12">
-            <div className="col-span-4 tablet:col-span-6 tablet:border-r rail-border">
-              <div className="p-3 pr-6 pl-0">{leadPromo}</div>
-            </div>
-            <div className="col-span-4 tablet:col-span-6 tablet:col-start-7" itemType="http://schema.org/Article">
-              <div className="pl-3 tablet:divide-y rail-divide">{promos}</div>
-            </div>
-          </div>
-        </div>
-        <div
-          className="tablet:hidden px-3 divide-x rail-divide flex overflow-x-auto snap-mandatory snap-x scroll-smooth"
-          aria-hidden={true}
-        >
-          {promosMobile}
-        </div>
+      <CollectionHead title={section.name} permalink={sectionPermalink} />
+      {/* <Frame articles={articles} alt={false} /> */}
+      {/* <FrameScrollable articles={articles} /> */}
+      <div
+        className="px-3 divide-x rail-divide flex overflow-x-auto snap-mandatory snap-x scroll-smooth"
+        aria-hidden={true}
+      >
+        {/* {promosMobile} */}
       </div>
     </div>
   )

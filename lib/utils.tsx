@@ -379,6 +379,7 @@ export const getSectionData = cache(async (props: SectionDataProps) => {
               "title",
               "excerpt",
               "sort",
+              "kicker",
               "date_updated",
               "status",
               {

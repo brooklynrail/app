@@ -11,6 +11,8 @@ import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
 import CollectionFrame from "../collections/frame"
 import FrameScrollable from "../collections/frameScrollable"
+import CollectionArt from "../collections/art"
+import CollectionArtSeen from "../collections/artSeen"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -47,7 +49,7 @@ const HomePage = (props: HomePageProps) => {
 
   return (
     <PopupProvider>
-      <Paper pageClass="paper-search">
+      <Paper pageClass="paper-homepage">
         <header role="banner">
           <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
             <div className="col-span-12">
@@ -84,13 +86,15 @@ const CollectionSection = (collection: Collections) => {
 
   switch (section.slug) {
     case Collection.Art:
-      return <CollectionFrame {...collection} />
+      return <CollectionArt {...collection} />
     case Collection.ArtSeen:
-      return <CollectionFrame {...collection} />
+      return <CollectionArtSeen {...collection} />
     case Collection.Books:
-      return <FrameScrollable {...collection} />
+      console.log("Dance")
+      break
     case Collection.CriticsPage:
-      return <CollectionCriticsPage {...collection} />
+      console.log("Dance")
+      break
     case Collection.Dance:
       console.log("Dance")
       break

@@ -13,13 +13,13 @@ const CollectionHead = (props: CollectionHeadProps) => {
   const { title, permalink } = props
 
   return (
-    <div className="px-6 tablet:px-0 sticky top-0 rail-bg">
+    <div className="px-6 sticky top-0 rail-bg">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">
           <div className="flex justify-between items-center py-3 pt-6 pb-5">
             <h2 className="text-2xl tablet:text-4xl font-bold">{title}</h2>
             <Link
-              className="px-3 py-2 shadow-lg text-lg font-medium bg-white dark:bg-zinc-700"
+              className="px-3 py-1 tablet:py-2 shadow-lg text-sm tablet:text-lg font-medium bg-white dark:bg-zinc-700"
               href={permalink}
               title={`Visit all ${title}`}
             >

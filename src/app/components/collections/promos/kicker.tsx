@@ -8,14 +8,14 @@ const Kicker = (props: KickerProps) => {
   const { article } = props
   const { kicker, issue } = article
 
-  if (!kicker) {
+  if (!kicker && !issue) {
     return <></>
   }
 
   return (
     <p className="text-nowrap flex flex-row space-x-3 text-xs uppercase font-medium">
-      <span className="">{article.kicker}</span>
-      <span aria-hidden={true}>{` | `}</span>
+      {kicker && <span className="">{article.kicker}</span>}
+      {kicker && <span aria-hidden={true}>{` | `}</span>}
       <span className="">{issue.title}</span>
     </p>
   )
