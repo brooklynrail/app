@@ -1,5 +1,4 @@
 "use client"
-import IssueRail from "../issueRail"
 import { Ads } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import { getAds } from "../../../../lib/utils"
@@ -30,20 +29,19 @@ const Article = (props: ArticleProps) => {
     fetchData().catch((error) => console.error("Failed to fetch Ad data on Article page:", error))
   }, [currentAds])
 
-  const issueClass = `issue-${thisIssueData.slug.toLowerCase()}`
-
   return (
     <Paper pageClass="paper-article">
-      <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
-        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3 relative">
-            <IssueRail key={thisIssueData.id} thisIssueData={thisIssueData} />
-          </aside>
-
-          <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
+      <header role="banner">
+        <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
+          <div className="col-span-12">
             <Header type={HeaderType.Default} />
-
-            <Ad970 currentAds={currentAds} />
+          </div>
+        </div>
+      </header>
+      <main className="">
+        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
+          <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2">
+            {/* <Ad970 currentAds={currentAds} /> */}
 
             <ArticleBody
               articles={thisIssueData.articles}

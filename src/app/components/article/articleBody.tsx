@@ -51,8 +51,8 @@ const ArticleBody = (props: ArticleBodyProps) => {
         {thisIssueData && currentSection && permalink && (
           <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
         )}
-        <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
-          <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
+        <div className="grid grid-cols-4 tablet-lg:grid-cols-10 gap-3">
+          <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-2">
             <div
               className={`content ${currentSection && currentSection.slug === "poetry" ? styles.content_poetry : ""}`}
             >
