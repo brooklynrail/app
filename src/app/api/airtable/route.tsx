@@ -9,7 +9,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Missing required environment variables" }, { status: 400 })
   }
 
-  // https://api.airtable.com/v0/appvW1Ad2kMh1S1T1/tbl9k6L9O6PrTtWDc?view=2024
   const url = `https://api.airtable.com/v0/${baseID}/${tableName}?view=2024`
 
   try {
@@ -25,7 +24,11 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await response.json()
-    return NextResponse.json(data, { status: 200 })
+
+    const res = NextResponse.json(data, { status: 200 })
+    // Set `Cache-Control` header to prevent caching
+    res.headers.set("Cache-Control", "no-store, max-age=0")
+    return res
   } catch (error) {
     console.error("Error fetching data:", error)
     return NextResponse.json({ error: error }, { status: 500 })

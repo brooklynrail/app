@@ -41,7 +41,7 @@ export const PopupProvider = ({ children }: { children: ReactNode }) => {
       setShowPopup(true)
       // Set a session cookie to prevent popup from showing again
       const expires = new Date()
-      expires.setHours(expires.getHours() + 12)
+      expires.setHours(expires.getHours() + 1)
       document.cookie = `hasDonatePopup=true; expires=${expires.toUTCString()}; path=/`
     }
   }, [])
