@@ -49,22 +49,17 @@ const HomePage = (props: HomePageProps) => {
   })
 
   return (
-    <PopupProvider>
-      <Paper pageClass="paper-homepage">
-        <header role="banner">
-          <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
-            <div className="col-span-12">
-              <Header type={HeaderType.Default} />
-            </div>
+    <Paper pageClass="paper-homepage">
+      <header role="banner">
+        <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
+          <div className="col-span-12">
+            <Header type={HeaderType.Default} />
           </div>
-        </header>
+        </div>
+      </header>
 
-        <main className="divide-y rail-divide">{allCollections}</main>
-        <Footer />
-      </Paper>
-      <ThemeToggle {...{ theme, setTheme }} />
-      <CoversPopup />
-    </PopupProvider>
+      <main className="divide-y rail-divide">{allCollections}</main>
+    </Paper>
   )
 }
 
