@@ -103,3 +103,20 @@ body {
 a {
   @apply hover:underline underline-offset-2;
 }
+
+.rail-header {
+  @apply bg-gradient-to-b from-[#EF4444] to-[#CFCFE0] dark:from-indigo-700;
+}
+
+// .alt-odd {
+//   @apply bg-rose-300 dark:bg-rose-700;
+// }
+// .alt2-odd {
+//   @apply bg-emerald-300 dark:bg-emerald-700;
+// }
+// .alt-even {
+//   @apply bg-amber-300 dark:bg-amber-700;
+// }
+// .alt2-even {
+//   @apply bg-violet-300 dark:bg-violet-700;
+// }
