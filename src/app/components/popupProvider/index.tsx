@@ -22,34 +22,55 @@ const PopupContext = createContext<PopupContextType>({
 
 export const usePopup = () => useContext(PopupContext)
 
+const getCookie = (name: string) => {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
+  return match ? match[2] : null
+}
+
+const setCookie = (name: string, value: string, hours: number) => {
+  const expires = new Date()
+  expires.setHours(expires.getHours() + hours)
+  document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/`
+}
+
 export const PopupProvider = ({ children }: { children: ReactNode }) => {
   const [showPopup, setShowPopup] = useState(false)
-  const [popupType, setPopupType] = useState<string | null>(null) // Tracks the type of popup
+  const [popupType, setPopupType] = useState<string | null>(null)
+  const [viewCount, setViewCount] = useState<number>(0)
+  const [viewCountUpdated, setViewCountUpdated] = useState(false) // New flag to track updates
   const [images, setImages] = useState<any[]>([])
-
   useEffect(() => {
-    // Prevent body scroll when the popup is active
     document.body.style.overflow = showPopup ? "hidden" : "auto"
   }, [showPopup])
 
   useEffect(() => {
-    // Check if the donate popup has been shown before
-    const hasViewedDonate = document.cookie.split("; ").find((row) => row.startsWith("hasViewedDonate="))
-    if (!hasViewedDonate) {
-      // Show the donate popup if it's the user's first visit
+    // Retrieve view count from cookies
+    const viewedDonateCount = parseInt(getCookie("viewCount") || "0", 10)
+
+    if (isNaN(viewedDonateCount)) {
+      console.error("Invalid cookie value for view count")
+      return
+    }
+
+    // Check if the view count has already been updated during this session
+    if (viewCountUpdated) {
+      return
+    }
+
+    // If view count is less than 4, show the popup and update the cookie
+    if (viewedDonateCount < 6) {
       setPopupType("donate")
       setShowPopup(true)
-      // Set a session cookie to prevent popup from showing again
-      // const expires = new Date()
-      // expires.setHours(expires.getHours() + 1)
-      // document.cookie = `hasViewedDonate=true; expires=${expires.toUTCString()}; path=/`
+      const newCount = viewedDonateCount + 1
+      setViewCount(newCount)
+      setViewCountUpdated(true) // Mark that we've updated the count
+      setCookie("viewCount", newCount.toString(), 1) // Set cookie to expire in 1 hour
     }
-  }, [])
+  }, [viewCountUpdated]) // Only re-run this effect if `viewCountUpdated` changes
 
-  // Function to toggle the donate popup
   const toggleDonatePopup = () => {
-    setPopupType("donate") // Set popup type to "donate"
-    setShowPopup((prev) => !prev) // Toggle popup visibility
+    setPopupType("donate")
+    setShowPopup((prev) => !prev)
   }
 
   const value = {
@@ -59,7 +80,7 @@ export const PopupProvider = ({ children }: { children: ReactNode }) => {
     setPopupType,
     images,
     setImages,
-    toggleDonatePopup, // Add toggleDonatePopup to the context value
+    toggleDonatePopup,
   }
 
   return <PopupContext.Provider value={value}>{children}</PopupContext.Provider>
