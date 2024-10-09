@@ -24,11 +24,14 @@ const EventsPage = (props: EventsProps) => {
       <Paper pageClass="paper-page">
         <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-            <div className="col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-12">
+            <div className="col-span-4 tablet-lg:col-span-12">
               <Header type={HeaderType.Default} />
             </div>
           </div>
-          <div className="divide-y rail-divide">{allEvents}</div>
+          <div className="px-6">
+            <h1 className="font-bold text-4xl">Upcoming Events</h1>
+            <div className="divide-y rail-divide">{allEvents}</div>
+          </div>
         </main>
         <Footer />
       </Paper>
@@ -83,14 +86,16 @@ const EventCard = ({ event }: { event: Events }) => {
             <h2 className="text-2xl font-medium">
               <Link href={permalink}>{title}</Link>
             </h2>
-            {deck && <p className="text-xl font-light">{parse(deck)}</p>}
+            {deck && <p className="text-lg font-light">{parse(deck)}</p>}
           </div>
         </div>
       </div>
       <div className="col-span-4 tablet-lg:col-span-3">
         <div className="flex w-full justify-end">
           <Link href={permalink}>
-            <button className="bg-indigo-600 text-white uppercase text-sm tablet:text-md py-3 px-3">Details</button>
+            <button className="border-2 border-indigo-600 text-indigo-600 rounded-sm uppercase text-sm tablet:text-md py-1 px-3">
+              Details
+            </button>
           </Link>
         </div>
       </div>
