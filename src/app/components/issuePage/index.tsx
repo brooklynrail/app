@@ -56,7 +56,7 @@ const IssuePage = (props: IssuePageProps) => {
           <div className="col-span-4 tablet-lg:col-span-12">
             <div className="px-3">
               <Header type={HeaderType.Default} />
-              <Ad970 currentAds={currentAds} />
+              <Ad970 />
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@ const IssuePage = (props: IssuePageProps) => {
         </div>
         <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-2">
           <div className="pr-3">
-            <AdsTile currentAds={currentAds} />
+            <AdsTile />
           </div>
         </div>
       </div>

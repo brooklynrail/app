@@ -2,13 +2,25 @@ import Link from "next/link"
 import { Ads } from "../../../../lib/types"
 import Image from "next/image"
 import { sendGAEvent } from "@next/third-parties/google"
+import { useEffect, useState } from "react"
+import { getAds } from "../../../../lib/utils"
 
-interface AdsTileProps {
-  currentAds?: Array<Ads>
-}
+const AdsTile = () => {
+  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
 
-const AdsTile = (props: AdsTileProps) => {
-  const { currentAds } = props
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!currentAds) {
+        const ads = getAds()
+        // Fetch all the data in parallel
+        const [fetchedAds] = await Promise.all([ads])
+        // Update the state with the fetched data as it becomes available
+        setCurrentAds(fetchedAds)
+      }
+    }
+    // Call the fetchData function and handle any errors
+    fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
+  }, [currentAds])
 
   if (!currentAds) {
     return <>Loading...</>
