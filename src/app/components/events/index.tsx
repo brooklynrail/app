@@ -97,7 +97,7 @@ const EventCard = ({ event }: { event: Events }) => {
         </div>
       </div>
       <div className="col-span-4 tablet-lg:col-span-3">
-        <div className="flex w-full justify-end">
+        <div className="flex w-full justify-end items-center h-full">
           <Link href={permalink}>
             <button className="border-2 border-indigo-600 text-indigo-600 rounded-sm uppercase text-sm tablet:text-md py-1 px-3">
               Details
