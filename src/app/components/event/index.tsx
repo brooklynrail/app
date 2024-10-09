@@ -59,12 +59,8 @@ const EventPage = (props: EventProps) => {
   return (
     <PopupProvider>
       <Paper pageClass="paper-event">
+        <Header type={HeaderType.Default} />
         <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
-          <div className="grid grid-cols-4 desktop:grid-cols-12 gap-3">
-            <div className="col-span-4 desktop:col-span-12">
-              <Header type={HeaderType.Default} />
-            </div>
-          </div>
           <article className="h-entry py-6 tablet-lg:py-12">
             <div className="grid grid-cols-4 desktop:grid-cols-12 gap-3 gap-y-9">
               <div className="col-span-4 desktop:col-span-6 desktop:col-start-4">

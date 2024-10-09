@@ -22,14 +22,20 @@ const EventsPage = (props: EventsProps) => {
   return (
     <PopupProvider>
       <Paper pageClass="paper-page">
+        <Header type={HeaderType.Default} />
         <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
-          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-            <div className="col-span-4 tablet-lg:col-span-12">
-              <Header type={HeaderType.Default} />
+          <div className="px-6 space-y-9">
+            <div className="pt-9 space-y-6">
+              <h1 className="font-normal text-6xl font-serif text-center">Upcoming Events</h1>
+              <p className="text-center divide-x rail-divide">
+                <Link className="px-3 text-indigo-500 font-medium" href={``}>
+                  Past Events
+                </Link>
+                <Link className="px-3 text-indigo-500 font-medium" href={``}>
+                  Video Archive
+                </Link>
+              </p>
             </div>
-          </div>
-          <div className="px-6">
-            <h1 className="font-bold text-4xl">Upcoming Events</h1>
             <div className="divide-y rail-divide">{allEvents}</div>
           </div>
         </main>
