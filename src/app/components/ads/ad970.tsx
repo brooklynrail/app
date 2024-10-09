@@ -10,6 +10,7 @@ const Ad970 = () => {
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
   const [bgColor, setBgColor] = useState<string | null>(null) // State to track the background color
   const imageRef = useRef(null) // Ref for the image element
+  const [showAd, setShowAd] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,69 +67,77 @@ const Ad970 = () => {
   }
 
   return (
-    <div
-      className="m-0 mt-2 fixed bottom-0 left-0 right-0 z-10 pb-3 tablet-lg:pb-0"
-      style={{ backgroundColor: bgColor || "#FFFFFF" }} // Apply the dominant color to the background
-    >
-      <p className="text-[11px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
-      <div>
-        <Link href={randomAd.ad_url} target="_blank">
-          <Image
-            ref={imageRef} // Attach the ref to the Image component
-            className="hidden tablet:block mx-auto"
-            src={srcDesktop}
-            width={desktopWidth}
-            height={desktopHeight}
-            alt={alt}
-            onLoad={(e) => {
-              handleImageLoad(e.currentTarget) // Use the loaded image to extract color
-              sendGAEvent("event", "impression", {
-                event_category: "ads",
-                event_label: randomAd.slug,
-                event_value: randomAd.ad_url,
-                ad_format: "banner",
-                campaign: randomAd.campaign_title,
-                campaign_id: randomAd.slug,
-                ad_source: "br-studio",
-              })
-            }}
-            onClick={() =>
-              sendGAEvent("event", "click", {
-                event_category: "ads",
-                event_label: randomAd.slug,
-                event_value: randomAd.ad_url,
-                ad_format: "banner",
-                campaign: randomAd.campaign_title,
-                campaign_id: randomAd.slug,
-                ad_source: "br-studio",
-              })
-            }
-          />
-          <Image
-            className="block tablet:hidden"
-            src={srcMobile}
-            width={mobileWidth}
-            height={mobileHeight}
-            alt={alt}
-            onLoad={(e) => {
-              handleImageLoad(e.currentTarget) // Use the loaded image to extract color
-              sendGAEvent("event", "impression", {
-                event_category: "ads",
-                event_label: randomAd.slug,
-                event_value: randomAd.ad_url,
-              })
-            }}
-            onClick={() =>
-              sendGAEvent("event", "click", {
-                event_category: "ads",
-                event_label: randomAd.slug,
-                event_value: randomAd.ad_url,
-              })
-            }
-          />
-        </Link>
+    showAd && (
+      <div
+        className="m-0 mt-2 fixed bottom-0 left-0 right-0 z-10 pb-3 tablet-lg:pb-0"
+        style={{ backgroundColor: bgColor || "#FFFFFF" }} // Apply the dominant color to the background
+      >
+        <button
+          className="absolute top-3 right-3 text-white font-medium text-xl tablet:text-3xl rounded-full hover:bg-white hover:bg-opacity-30 px-3 py-1"
+          onClick={() => setShowAd(false)}
+        >
+          &#x2715;
+        </button>
+        <p className="text-[11px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
+        <div>
+          <Link href={randomAd.ad_url} target="_blank">
+            <Image
+              ref={imageRef} // Attach the ref to the Image component
+              className="hidden tablet:block mx-auto"
+              src={srcDesktop}
+              width={desktopWidth}
+              height={desktopHeight}
+              alt={alt}
+              onLoad={(e) => {
+                handleImageLoad(e.currentTarget) // Use the loaded image to extract color
+                sendGAEvent("event", "impression", {
+                  event_category: "ads",
+                  event_label: randomAd.slug,
+                  event_value: randomAd.ad_url,
+                  ad_format: "banner",
+                  campaign: randomAd.campaign_title,
+                  campaign_id: randomAd.slug,
+                  ad_source: "br-studio",
+                })
+              }}
+              onClick={() =>
+                sendGAEvent("event", "click", {
+                  event_category: "ads",
+                  event_label: randomAd.slug,
+                  event_value: randomAd.ad_url,
+                  ad_format: "banner",
+                  campaign: randomAd.campaign_title,
+                  campaign_id: randomAd.slug,
+                  ad_source: "br-studio",
+                })
+              }
+            />
+            <Image
+              className="block tablet:hidden"
+              src={srcMobile}
+              width={mobileWidth}
+              height={mobileHeight}
+              alt={alt}
+              onLoad={(e) => {
+                handleImageLoad(e.currentTarget) // Use the loaded image to extract color
+                sendGAEvent("event", "impression", {
+                  event_category: "ads",
+                  event_label: randomAd.slug,
+                  event_value: randomAd.ad_url,
+                })
+              }}
+              onClick={() =>
+                sendGAEvent("event", "click", {
+                  event_category: "ads",
+                  event_label: randomAd.slug,
+                  event_value: randomAd.ad_url,
+                })
+              }
+            />
+          </Link>
+        </div>
       </div>
-    </div>
+    )
   )
 }
 
