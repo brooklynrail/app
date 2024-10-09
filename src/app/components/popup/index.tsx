@@ -64,7 +64,7 @@ const DonatePopup = () => {
               {currentAmount && (
                 <div className="bg-lime-500 h-9 flex justify-end items-center" style={{ width: `${progressPercent}%` }}>
                   <span
-                    className="relative -right-[1.145rem] h-0 w-0"
+                    className="relative -right-[1.135rem] h-0 w-0"
                     style={{
                       borderTop: "18px solid transparent",
                       borderBottom: "18px solid transparent",
