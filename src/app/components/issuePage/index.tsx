@@ -1,5 +1,4 @@
 "use client"
-import CoversPopup from "../issueRail/coversPopup"
 import { IssuePageProps, PageLayout } from "@/app/page"
 import AdsTile from "../ads/adsTile"
 import IssueSelect from "./issueSelect"
@@ -13,13 +12,9 @@ import IssueLayout from "./layout/issue"
 import SectionLayout from "./layout/section"
 import { useEffect, useState } from "react"
 import { getAds } from "../../../../lib/utils"
-import { PopupProvider } from "../issueRail/popupProvider"
 import { CoverImage } from "../issueRail/coverImage"
 import PreviewHeader from "../preview/previewHead"
 import TableOfContentsPage from "./layout/tableOfContentsPage"
-import Footer from "../footer"
-import ThemeToggle from "../themeToggle"
-import { useTheme } from "@/app/components/theme"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 
@@ -33,8 +28,6 @@ export interface PromoProps {
 const IssuePage = (props: IssuePageProps) => {
   const { thisIssueData, currentSection, issueSections, previewURL, allIssues, tributesData } = props
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
-
-  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,59 +62,54 @@ const IssuePage = (props: IssuePageProps) => {
   }
 
   return (
-    <PopupProvider>
-      <Paper pageClass={`paper-issue ${issueClass}`}>
-        {previewURL && <PreviewHeader previewURL={previewURL} />}
+    <Paper pageClass={`paper-issue ${issueClass}`}>
+      {previewURL && <PreviewHeader previewURL={previewURL} />}
 
-        <div className="px-0 desktop:w-desktop mx-auto">
-          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-6">
-            <div className="col-span-4 tablet-lg:col-span-12">
-              <div className="px-3">
-                <Header type={HeaderType.Issue} />
-                <Ad970 currentAds={currentAds} />
-              </div>
+      <div className="px-0 desktop:w-desktop mx-auto">
+        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-6">
+          <div className="col-span-4 tablet-lg:col-span-12">
+            <div className="px-3">
+              <Header type={HeaderType.Issue} />
+              <Ad970 currentAds={currentAds} />
             </div>
+          </div>
 
-            <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
-              <div className="flex flex-col space-y-2 pl-3">
-                <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
-                <CoverImage thisIssueData={thisIssueData} />
-                <CurrentSections issueSections={issueSections} thisIssueData={thisIssueData} />
-              </div>
-              <div className="py-4 flex flex-col space-y-2 pl-3">
-                <Link
-                  className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
-                  href="/search"
-                  title="Search All Issues"
-                >
-                  <span>Search</span> <i className="fas fa-search"></i>
-                </Link>
-                <Link
-                  className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
-                  href="/archive"
-                  title="View Archive"
-                >
-                  <span>View Archive</span>
-                </Link>
-                <RailProjects />
-                <RailPartners />
-              </div>
+          <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
+            <div className="flex flex-col space-y-2 pl-3">
+              <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
+              <CoverImage thisIssueData={thisIssueData} />
+              <CurrentSections issueSections={issueSections} thisIssueData={thisIssueData} />
             </div>
-            <div className="col-span-4 tablet-lg:col-span-8">
-              <div className="px-3 tablet-lg:px-0">{layout}</div>
+            <div className="py-4 flex flex-col space-y-2 pl-3">
+              <Link
+                className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
+                href="/search"
+                title="Search All Issues"
+              >
+                <span>Search</span> <i className="fas fa-search"></i>
+              </Link>
+              <Link
+                className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
+                href="/archive"
+                title="View Archive"
+              >
+                <span>View Archive</span>
+              </Link>
+              <RailProjects />
+              <RailPartners />
             </div>
-            <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-2">
-              <div className="pr-3">
-                <AdsTile currentAds={currentAds} />
-              </div>
+          </div>
+          <div className="col-span-4 tablet-lg:col-span-8">
+            <div className="px-3 tablet-lg:px-0">{layout}</div>
+          </div>
+          <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-2">
+            <div className="pr-3">
+              <AdsTile currentAds={currentAds} />
             </div>
           </div>
         </div>
-        <Footer />
-        <ThemeToggle {...{ theme, setTheme }} />
-        <CoversPopup />
-      </Paper>
-    </PopupProvider>
+      </div>
+    </Paper>
   )
 }
 
