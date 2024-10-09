@@ -22,8 +22,12 @@ const Kicker = (props: KickerProps) => {
   })
 
   return (
-    <h6 className={`text-lg space-x-2 ${centered ? "text-center" : "text-left"}`}>
-      <Link className="font-black" href={sectionPermalink} title={`Go to the ${currentSection.name} section`}>
+    <h6 className={`text-sm space-x-2 ${centered ? "text-center" : "text-left"}`}>
+      <Link
+        className="font-medium uppercase"
+        href={sectionPermalink}
+        title={`Go to the ${currentSection.name} section`}
+      >
         {currentSection.name}
       </Link>
 

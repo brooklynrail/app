@@ -14,20 +14,6 @@ import PreviewHeader from "../preview/previewHead"
 const TributePage = (props: TributePageProps) => {
   const { thisTributeData, previewURL } = props
 
-  // State management for ads and articles
-  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
-
-  // Fetch current ads (if not already fetched)
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!currentAds) {
-        const ads = await getAds()
-        setCurrentAds(ads)
-      }
-    }
-    fetchData().catch((error) => console.error("Failed to fetch ads:", error))
-  }, [currentAds])
-
   const { slug } = thisTributeData
   const tributeClass = `tribute-${slug.toLowerCase()}`
 

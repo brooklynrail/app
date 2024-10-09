@@ -49,9 +49,11 @@ const ArticleHead = (props: ArticleHeadProps) => {
               <div className="space-y-16">
                 <div className="space-y-6">
                   <Kicker centered={true} {...kickerProps} />
-                  <div className="space-y-3">
+                  <div className="space-y-6">
                     <Title title={title} type={TitleType.ArticleHeadDiptych} />
-                    {deck && <h2 className="text-center text-4xl font-light">{parse(deck)}</h2>}
+                    {deck && (
+                      <h2 className="text-center text-3xl w-1/2 mx-auto font-serif font-light">{parse(deck)}</h2>
+                    )}
                   </div>
                 </div>
                 <div className="flex flex-col items-center space-y-3">

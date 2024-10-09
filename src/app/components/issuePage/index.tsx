@@ -28,21 +28,6 @@ export interface PromoProps {
 
 const IssuePage = (props: IssuePageProps) => {
   const { thisIssueData, currentSection, issueSections, previewURL, allIssues, tributesData } = props
-  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!currentAds) {
-        const ads = getAds()
-        // Fetch all the data in parallel
-        const [fetchedAds] = await Promise.all([ads])
-        // Update the state with the fetched data as it becomes available
-        setCurrentAds(fetchedAds)
-      }
-    }
-    // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
-  }, [currentAds])
 
   const { slug } = thisIssueData
   const issueClass = `issue-${slug.toLowerCase()}`

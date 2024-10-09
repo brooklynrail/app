@@ -1,5 +1,6 @@
 "use client"
 
+import Ad970 from "../ads/ad970"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
 import DonatePopup from "../popup"
@@ -21,6 +22,7 @@ const Paper = (props: PaperProps) => {
       <div className={`paper ${pageClass}`}>
         {children}
         <Footer />
+        <Ad970 />
         <ThemeToggle {...{ theme, setTheme }} />
         <CoversPopup />
         <DonatePopup />
