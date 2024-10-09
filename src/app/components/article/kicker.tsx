@@ -11,7 +11,7 @@ interface KickerProps {
 const Kicker = (props: KickerProps) => {
   const { kicker, thisIssueData, currentSection, centered } = props
   if (!thisIssueData) {
-    return <></>
+    return null
   }
   const { slug } = thisIssueData
 
