@@ -59,7 +59,7 @@ const Ad970 = () => {
   const handleImageLoad = async (imageElement: HTMLImageElement) => {
     try {
       const fac = new FastAverageColor()
-      const color = await fac.getColorAsync(imageElement)
+      let color = await fac.getColorAsync(imageElement, { algorithm: "dominant", ignoredColor: [255, 255, 255, 255] })
       setBgColor(color.rgba) // Update the background color
     } catch (error) {
       console.error("Error extracting color:", error)
@@ -69,8 +69,8 @@ const Ad970 = () => {
   return (
     showAd && (
       <div
-        className="m-0 mt-2 fixed bottom-0 left-0 right-0 z-10 pb-3 tablet-lg:pb-0"
-        style={{ backgroundColor: bgColor || "#FFFFFF" }} // Apply the dominant color to the background
+        style={{ backgroundColor: bgColor ? `${bgColor}` : "#FFFFFF" }} // Apply the dominant color to the background with 80% opacity
+        className={`m-0 mt-2 fixed bottom-0 left-0 right-0 z-10 pb-3 tablet-lg:pb-0`}
       >
         <button
           className="absolute top-3 right-3 text-white font-medium text-xl tablet:text-3xl rounded-full hover:bg-white hover:bg-opacity-30 px-3 py-1"
