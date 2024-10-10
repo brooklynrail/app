@@ -69,16 +69,17 @@ const Ad970 = () => {
   return (
     showAd && (
       <div
-        style={{ backgroundColor: bgColor ? `${bgColor}` : "#FFFFFF" }} // Apply the dominant color to the background with 80% opacity
-        className={`m-0 mt-2 fixed bottom-0 left-0 right-0 z-10 pb-3 tablet-lg:pb-0`}
+        style={{ backgroundColor: bgColor ? `${bgColor}` : "#FFFFFF" }}
+        className={`m-0 mt-2 bg-slate-300 fixed bottom-0 left-0 right-0 z-10 pt-1.5 tablet-lg:pt-3 pb-3 tablet-lg:pb-6`}
       >
+        <div className="absolute -z-10 top-0 bottom-0 left-0 right-0 bg-white bg-opacity-30"></div>
         <button
-          className="absolute top-3 right-3 text-white font-medium text-xl tablet:text-3xl rounded-full hover:bg-white hover:bg-opacity-30 px-3 py-1"
+          className="w-10 h-10 text-center absolute top-3 right-3 text-white font-medium text-xl tablet:text-3xl rounded-full hover:bg-white hover:bg-opacity-30"
           onClick={() => setShowAd(false)}
         >
           &#x2715;
         </button>
-        <p className="text-[11px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
+        <p className="z-10 text-[11px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
         <div>
           <Link href={randomAd.ad_url} target="_blank">
             <Image
