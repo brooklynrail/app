@@ -23,12 +23,12 @@ const EventsPage = (props: EventsProps) => {
     <PopupProvider>
       <Paper pageClass="paper-page">
         <Header type={HeaderType.Default} />
-        <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
-          <div className="px-6 space-y-9">
-            <div className="pt-9 space-y-6">
-              <h1 className="font-normal text-6xl font-serif text-center">Upcoming Events</h1>
-              <p className="text-center divide-x rail-divide">
-                <Link className="px-3 text-indigo-500 font-medium" href={``}>
+        <main className="px-6 tablet-lg:px-3 pb-12 desktop:max-w-screen-widescreen mx-auto">
+          <div className="tablet-lg:px-6 space-y-9 divide-y rail-divide">
+            <div className="pt-9 space-y-3 tablet-lg:space-y-6">
+              <h1 className="font-bold text-4xl tablet-lg:text-5xl">Upcoming Events</h1>
+              <p className="divide-x rail-divide">
+                <Link className="pr-3 text-indigo-500 font-medium" href={``}>
                   Past Events
                 </Link>
                 <Link className="px-3 text-indigo-500 font-medium" href={``}>
@@ -74,30 +74,30 @@ const EventCard = ({ event }: { event: Events }) => {
   const startTimePT = formatTime(eventDate, "America/Los_Angeles")
 
   return (
-    <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-12 py-6">
+    <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-y-12 py-6">
       <div className="col-span-4 tablet-lg:col-span-3">
         <p className="font-bold">{startDate}</p>
         <p>
           {startTimeET} ET / {startTimePT} PT
         </p>
       </div>
-      <div className="col-span-4 tablet-lg:col-span-6">
+      <div className="order-first tablet-lg:order-none col-span-4 tablet-lg:col-span-6">
         <div className="flex flex-col space-y-1">
-          <p className="flex space-x-3">
+          <p className="flex space-x-3 text-sm">
             {section && <span className="uppercase text-nowrap font-normal">{section.name}</span>}
             {series && <span className="border-l rail-border"></span>}
             {series && <span className="">#{series}</span>}
           </p>
           <div className="flex flex-col">
-            <h2 className="text-2xl font-medium">
+            <h2 className="text-3xl font-medium">
               <Link href={permalink}>{title}</Link>
             </h2>
             {deck && <p className="text-lg font-light">{parse(deck)}</p>}
           </div>
         </div>
       </div>
-      <div className="col-span-4 tablet-lg:col-span-3">
-        <div className="flex w-full justify-end items-center h-full">
+      <div className="order-last tablet-lg:order-none col-span-4 tablet-lg:col-span-3">
+        <div className="flex w-full tablet-lg:justify-end">
           <Link href={permalink}>
             <button className="border-2 border-indigo-600 text-indigo-600 rounded-sm uppercase text-sm tablet:text-md py-1 px-3">
               Details
