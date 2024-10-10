@@ -64,13 +64,36 @@ const IssuePage = (props: IssuePageProps) => {
   return (
     <Paper pageClass={`paper-issue ${issueClass}`}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
-
       <div className="px-0 desktop:w-desktop mx-auto">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-6">
           <div className="col-span-4 tablet-lg:col-span-12">
             <div className="px-3">
               <Header type={HeaderType.Issue} />
               <Ad970 currentAds={currentAds} />
+            </div>
+          </div>
+
+          <div className="col-span-4 tablet-lg:col-span-12">
+            <div className="py-3 mx-3 my-0 px-3 bg-indigo-500 text-white text-sm flex justify-between items-center space-x-3">
+              <p>
+                <Link href="/events">
+                  Daily Conversations on <strong>The New Social Environment</strong>
+                </Link>
+              </p>
+              <div className="flex flex-col-reverse tablet-lg:flex-row tablet-lg:space-x-3">
+                <Link
+                  className="mt-1 tablet-lg:mt-0 border border-white border-dotted text-center py-1 px-3 text-xs uppercase text-nowrap"
+                  href="/events#past"
+                >
+                  Past events
+                </Link>
+                <Link
+                  className="bg-zinc-100 text-indigo-500 font-medium py-1 px-3 text-xs text-center uppercase text-nowrap"
+                  href="/events"
+                >
+                  Join
+                </Link>
+              </div>
             </div>
           </div>
 
