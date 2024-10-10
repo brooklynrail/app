@@ -848,6 +848,7 @@ export enum PageType {
   Page = "page",
   ChildPage = "child_page",
   PreviewArticle = "preview_article",
+  PreviewEvent = "preview_event",
   PreviewIssue = "preview_issue",
   PreviewTribute = "preview_tribute",
   SpecialIssue = "special_issue",
@@ -866,6 +867,7 @@ interface PermalinkProps {
   issueSlug?: string
   tributeSlug?: string
   articleId?: string
+  eventId?: string
   issueId?: string
   tributeId?: string
   eventYear?: number
@@ -881,6 +883,7 @@ export function getPermalink(props: PermalinkProps) {
     type,
     tributeSlug,
     articleId,
+    eventId,
     issueId,
     tributeId,
     eventYear,
@@ -921,6 +924,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/about/${slug}/`
     case PageType.PreviewArticle:
       return `${baseURL}/preview/article/${articleId}/`
+    case PageType.PreviewEvent:
+      return `${baseURL}/preview/event/${eventId}/`
     case PageType.PreviewIssue:
       return `${baseURL}/preview/issue/${issueId}/`
     case PageType.PreviewTribute:

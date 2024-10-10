@@ -192,3 +192,27 @@ export const getEvent = cache(async (slug: string) => {
   )
   return event[0] as Events
 })
+
+export async function getPreviewEvent(id: string) {
+  try {
+    // Search for the event with the matching ID
+    const preview = await directus.request(
+      readItems("events", {
+        version: "draft",
+        fields: [
+          "*",
+          { section: ["id", "name", "slug"] },
+          { people: [{ people_id: ["id", "slug", "bio", "display_name"] }] },
+          { user_updated: ["id", "first_name", "last_name", "avatar"] },
+        ],
+        filter: {
+          id: { _eq: id },
+        },
+      }),
+    )
+    return preview[0] as Events
+  } catch (error) {
+    console.error("error in getPreviewArticle", error)
+    return null
+  }
+}

@@ -462,7 +462,7 @@ export type Events = {
   event_id?: string | null
   event_organizers: EventsOrganizations[]
   event_producers: EventsOrganizations1[]
-  excerpt?: string | null
+  excerpt: string
   id: string
   people: EventsPeople[]
   poets: EventsPeople1[]
@@ -474,6 +474,7 @@ export type Events = {
   start_date: string
   status: string
   title: string
+  title_tag?: string | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
   youtube_id?: string | null
