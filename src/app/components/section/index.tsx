@@ -26,7 +26,6 @@ const Section = (props: SectionProps) => {
 
   // Split articles into groups of 4
   const articleGroups = groupArray(sectionData.articles, 4).map((group, index) => {
-    console.log(group[0])
     const leadArticle = group[0]
     const restOfArticles = group.slice(1)
     return (

@@ -135,7 +135,6 @@ const Excerpt = (article: Articles) => {
   const poetryRegex = /\[poetry\]([\s\S]*?)\[\/poetry\]/
   const poetryMatch = body_text && body_text.match(poetryRegex)
   if (poetryMatch) {
-    console.log("poetryMatch", poetryMatch[1])
     return (
       <div className={`bg-white relative h-[calc(100vh-25rem)] overflow-hidden`}>
         <div className="absolute bg-gradient-to-t from-stone-50 h-full w-full top-0 bottom-0"></div>
@@ -157,7 +156,7 @@ const Bylines = (article: Articles) => {
     type: PageType.Article,
   })
   return (
-    <p className="flex flex-row space-x-3 text-xl">
+    <div className="flex flex-row space-x-3 text-xl">
       <span>By</span>
       {contributors.map((contributor: ArticlesContributors, i: number) => {
         if (!contributor.contributors_id) {
@@ -176,15 +175,15 @@ const Bylines = (article: Articles) => {
         }
 
         return (
-          <address className={`font-bold author not-italic`}>
-            <Link key={i} rel="author" href={permalink} className="url fn n">
+          <address key={i} className={`font-bold author not-italic`}>
+            <Link rel="author" href={permalink} className="url fn n">
               {!isFirst && separator}
               {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
             </Link>
           </address>
         )
       })}
-    </p>
+    </div>
   )
 }
 
