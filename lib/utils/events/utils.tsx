@@ -27,7 +27,7 @@ export const getEvents = cache(async () => {
         _and: [
           {
             start_date: {
-              _gte: today,
+              _gte: "$NOW",
             },
           },
           {
@@ -68,7 +68,7 @@ export const getPastEvents = cache(async () => {
         _and: [
           {
             start_date: {
-              _lte: today,
+              _lte: "$NOW",
             },
           },
           {
