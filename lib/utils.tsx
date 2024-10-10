@@ -844,6 +844,8 @@ export enum PageType {
   TributeArticle = "tribute_article",
   Home = "home",
   Contributor = "contributor",
+  Person = "person",
+  People = "people",
   Events = "events",
   Page = "page",
   ChildPage = "child_page",
@@ -868,6 +870,7 @@ interface PermalinkProps {
   tributeSlug?: string
   articleId?: string
   eventId?: string
+  personSlug?: string
   issueId?: string
   tributeId?: string
   eventYear?: number
@@ -884,6 +887,7 @@ export function getPermalink(props: PermalinkProps) {
     tributeSlug,
     articleId,
     eventId,
+    personSlug,
     issueId,
     tributeId,
     eventYear,
@@ -916,6 +920,10 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/tribute/${tributeSlug}/${slug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
+    case PageType.Person:
+      return `${baseURL}/people/${personSlug}/`
+    case PageType.People:
+      return `${baseURL}/people/`
     case PageType.Events:
       return `${baseURL}/events/`
     case PageType.Page:

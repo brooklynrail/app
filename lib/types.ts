@@ -455,8 +455,8 @@ export type DirectusWebhooks = {
 
 export type Events = {
   body_text?: string | null
-  date_created?: string | null
-  date_updated?: string | null
+  date_created: string
+  date_updated: string
   deck?: string | null
   end_date: string
   event_id?: string | null
