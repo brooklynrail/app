@@ -1,19 +1,19 @@
 "use client"
 
 import Link from "next/link"
-import { getPermalink, PageType } from "../../../../lib/utils"
-import Button, { ButtonType } from "../button"
+import styles from "./collection.module.scss"
 
 interface CollectionHeadProps {
   title: string
   permalink: string
+  classes?: string
 }
 
 const CollectionHead = (props: CollectionHeadProps) => {
-  const { title, permalink } = props
+  const { title, permalink, classes } = props
 
   return (
-    <div className="px-6 sticky top-0 rail-bg">
+    <div className={`head px-6 sticky top-0 ${classes} z-10`}>
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">
           <div className="flex justify-between items-center py-3 pt-6 pb-5">

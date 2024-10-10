@@ -14,6 +14,7 @@ import FrameScrollable from "../collections/frameScrollable"
 import CollectionArt from "../collections/art"
 import CollectionArtSeen from "../collections/artSeen"
 import CollectionBooks from "../collections/books"
+import CollectionPoetry from "../collections/poetry"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -72,6 +73,7 @@ export enum Collection {
   Film = "film",
   Music = "music",
   Theater = "theater",
+  Poetry = "poetry",
 }
 
 const CollectionSection = (collection: Collections) => {
@@ -102,6 +104,8 @@ const CollectionSection = (collection: Collections) => {
     case Collection.Theater:
       console.log("Theater")
       break
+    case Collection.Poetry:
+      return <CollectionPoetry {...collection} />
     default:
       console.log("Default")
       break
