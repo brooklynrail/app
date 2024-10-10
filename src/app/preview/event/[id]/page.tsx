@@ -9,8 +9,6 @@ import EventPreview from "@/app/components/preview/event"
 
 export interface EventPreviewProps {
   eventData: Events
-  thisIssueData: Issues
-  currentSection: Sections
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -24,7 +22,7 @@ export interface EventPreviewProps {
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
   const data = await getData({ params })
 
-  const { title, excerpt, people, title_tag } = data.eventData
+  const { title, excerpt, title_tag } = data.eventData
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
   const ogdescription = `${stripHtml(excerpt).result}`
 

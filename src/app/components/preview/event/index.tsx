@@ -1,11 +1,9 @@
 "use client"
 import { useState, useEffect } from "react"
 import Password from "../password"
-import PreviewInfo from "../previewInfo"
 import PreviewHeader from "../previewHead"
 import Paper from "../../paper"
 import { EventPreviewProps } from "@/app/preview/event/[id]/page"
-import EventPage from "../../event"
 import EventPageBody from "../../event/eventPageBody"
 import Register from "../../event/register"
 
