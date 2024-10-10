@@ -24,9 +24,71 @@ export const getEvents = cache(async () => {
         },
       ],
       filter: {
-        start_date: {
-          _gte: today,
+        _and: [
+          {
+            start_date: {
+              _gte: today,
+            },
+          },
+          {
+            status: {
+              _eq: "published",
+            },
+          },
+        ],
+      },
+    }),
+  )
+  console.log("events ======", events)
+  return events as Events[]
+})
+
+export const getPastEvents = cache(async () => {
+  const today = new Date()
+
+  // start_date: '2024-10-07T18:00:00'
+  // if today is gte start_date, then show the event
+
+  const events = await directus.request(
+    readItems("events", {
+      fields: [
+        "id",
+        "slug",
+        "title",
+        "deck",
+        "series",
+        "start_date",
+        "end_date",
+        "youtube_id",
+        {
+          section: ["id", "name", "slug"],
         },
+      ],
+      filter: {
+        _and: [
+          {
+            start_date: {
+              _lte: today,
+            },
+          },
+          {
+            section: {
+              slug: {
+                _in: ["the-new-social-environment", "common-ground"],
+              },
+            },
+          },
+          {
+            youtube_id: {
+              _nempty: true,
+            },
+          },
+          {
+            status: {
+              _eq: "published",
+            },
+          },
+        ],
       },
     }),
   )

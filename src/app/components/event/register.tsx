@@ -20,7 +20,7 @@ const Register = (props: EventProps) => {
   const startTimePT = formatTime(startDate, "America/Los_Angeles")
 
   return (
-    <aside id="register" className="h-entry py-6 tablet-lg:py-12 bg-neutral-100">
+    <aside id="register" className="h-entry py-6 tablet-lg:py-12 bg-orange-100">
       <div className="px-3 desktop:max-w-screen-widescreen mx-auto">
         <div className="grid grid-cols-4 desktop:grid-cols-12 gap-3 gap-y-9">
           <div className="col-span-4 desktop:col-span-6 desktop:col-start-3">

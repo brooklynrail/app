@@ -1,111 +1,45 @@
 "use client"
-import parse from "html-react-parser"
-import Footer from "../footer"
-import CoversPopup from "../issueRail/coversPopup"
+
 import Header, { HeaderType } from "../header"
-import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
-import { PopupProvider } from "../issueRail/popupProvider"
 import Paper from "../paper"
-import { getPermalink, PageType } from "../../../../lib/utils"
 import { Events } from "../../../../lib/types"
 import Link from "next/link"
 import { EventsProps } from "@/app/events/page"
+import EventCard from "./eventCard"
+import Sponsor from "./sponsor"
 
 const EventsPage = (props: EventsProps) => {
-  const { theme, setTheme } = useTheme()
-
   const allEvents = props.allEvents.map((event: Events, index: number) => {
     return <EventCard key={index} event={event} />
   })
 
   return (
-    <PopupProvider>
-      <Paper pageClass="paper-page">
-        <Header type={HeaderType.Default} />
-        <main className="px-6 tablet-lg:px-3 pb-12 desktop:max-w-screen-widescreen mx-auto">
-          <div className="tablet-lg:px-6 space-y-9 divide-y rail-divide">
-            <div className="pt-9 space-y-3 tablet-lg:space-y-6">
-              <h1 className="font-bold text-4xl tablet-lg:text-5xl">Upcoming Events</h1>
-              <p className="divide-x rail-divide">
-                <Link className="pr-3 text-indigo-500 font-medium" href={``}>
-                  Past Events
-                </Link>
-                <Link className="px-3 text-indigo-500 font-medium" href={``}>
-                  Video Archive
-                </Link>
-              </p>
-            </div>
-            <div className="divide-y rail-divide">{allEvents}</div>
+    <Paper pageClass="paper-events">
+      <Header type={HeaderType.Default} />
+      <main className="px-6 tablet-lg:px-3 pb-12 desktop:max-w-screen-widescreen mx-auto">
+        <div className="tablet-lg:px-6 space-y-9 divide-y rail-divide">
+          <div className="pt-9 space-y-3 tablet-lg:space-y-6">
+            <h1 className="font-bold text-4xl tablet-lg:text-5xl">Upcoming Events</h1>
+            <p className="divide-x rail-divide">
+              <Link className="pr-3 text-indigo-500 font-medium" href={`/events/past`}>
+                Past Events
+              </Link>
+              <Link
+                className="px-3 text-indigo-500 font-medium"
+                href={`https://www.youtube.com/thebrooklynrail?sub_confirmation=1`}
+              >
+                Video Archive
+              </Link>
+            </p>
           </div>
-        </main>
-        <Footer />
-      </Paper>
-      <ThemeToggle {...{ theme, setTheme }} />
-      <CoversPopup />
-    </PopupProvider>
-  )
-}
-
-const EventCard = ({ event }: { event: Events }) => {
-  const { title, slug, deck, start_date, section, series } = event
-
-  const eventDate = new Date(start_date)
-  const eventyear = eventDate.getFullYear()
-  const eventmonth = eventDate.getMonth() + 1
-  const eventday = eventDate.getDate()
-
-  const permalink = getPermalink({
-    type: PageType.Event,
-    eventYear: eventyear,
-    eventMonth: eventmonth,
-    eventDay: eventday,
-    slug: slug,
-  })
-
-  // format the start_date as Monday, October 7
-  const startDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  }).format(eventDate)
-
-  const startTimeET = formatTime(eventDate, "America/New_York")
-  const startTimePT = formatTime(eventDate, "America/Los_Angeles")
-
-  return (
-    <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-y-12 py-6">
-      <div className="col-span-4 tablet-lg:col-span-3">
-        <p className="font-bold">{startDate}</p>
-        <p>
-          {startTimeET} ET / {startTimePT} PT
-        </p>
-      </div>
-      <div className="order-first tablet-lg:order-none col-span-4 tablet-lg:col-span-6">
-        <div className="flex flex-col space-y-1">
-          <p className="flex space-x-3 text-sm">
-            {section && <span className="uppercase text-nowrap font-normal">{section.name}</span>}
-            {series && <span className="border-l rail-border"></span>}
-            {series && <span className="">#{series}</span>}
-          </p>
-          <div className="flex flex-col">
-            <h2 className="text-3xl font-medium">
-              <Link href={permalink}>{title}</Link>
-            </h2>
-            {deck && <p className="text-lg font-light">{parse(deck)}</p>}
+          <div className="divide-y rail-divide">{allEvents}</div>
+          <div>
+            <Sponsor />
           </div>
         </div>
-      </div>
-      <div className="order-last tablet-lg:order-none col-span-4 tablet-lg:col-span-3">
-        <div className="flex w-full tablet-lg:justify-end">
-          <Link href={permalink}>
-            <button className="border-2 border-indigo-600 text-indigo-600 rounded-sm uppercase text-sm tablet:text-md py-1 px-3">
-              Details
-            </button>
-          </Link>
-        </div>
-      </div>
-    </div>
+      </main>
+    </Paper>
   )
 }
 
