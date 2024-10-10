@@ -9,7 +9,16 @@ module.exports = {
   productionBrowserSourceMaps: true,
   trailingSlash: true,
   images: {
-    domains: ["localhost", "studio.brooklynrail.org", "brooklynrail.org", "storage.googleapis.com"],
+    domains: ["localhost", "studio.brooklynrail.org", "brooklynrail.org", "storage.googleapis.com", "i.ytimg.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        port: "",
+        pathname: "/vi/**",
+        search: "",
+      },
+    ],
   },
   // Logging
   logging: {

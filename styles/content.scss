@@ -20,12 +20,24 @@
     @apply text-sm font-thin uppercase font-sans;
   }
 
+  a {
+    @apply underline decoration-blue-600;
+  }
+
   p,
   blockquote,
   li,
   pre {
     max-width: 72ex;
     @apply mb-6 tablet:mb-6;
+  }
+  p:last-child {
+    @apply mb-0;
+  }
+
+  strong,
+  b {
+    @apply font-medium;
   }
 
   div > p:last-child {
@@ -113,6 +125,14 @@
       @apply max-w-[100ex];
     }
   }
+}
+
+.paper-event .content {
+  @apply text-lg tablet-lg:text-xl font-normal font-sans;
+}
+.paper .content-bio {
+  @extend .content;
+  @apply text-md tablet-lg:text-lg font-normal font-sans;
 }
 
 figcaption,

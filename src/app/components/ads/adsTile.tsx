@@ -25,7 +25,11 @@ const AdsTile = (props: AdsTileProps) => {
   const filteredTileAds = tileAds.filter((ad: Ads) => {
     const startDate = new Date(ad.start_date)
     const endDate = new Date(ad.end_date)
-    return startDate <= currentDate && currentDate <= endDate
+    return (
+      (startDate <= currentDate && currentDate <= endDate) ||
+      startDate.toDateString() === currentDate.toDateString() ||
+      endDate.toDateString() === currentDate.toDateString()
+    )
   })
 
   const ramdomizeTileAds = filteredTileAds.sort(() => Math.random() - 0.5)
