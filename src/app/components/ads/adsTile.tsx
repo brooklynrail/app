@@ -25,8 +25,6 @@ const AdsTile = (props: AdsTileProps) => {
   const filteredTileAds = tileAds.filter((ad: Ads) => {
     const startDate = new Date(ad.start_date)
     const endDate = new Date(ad.end_date)
-    console.log("startDate", startDate)
-    console.log("endDate", endDate)
     return (
       (startDate <= currentDate && currentDate <= endDate) ||
       startDate.toDateString() === currentDate.toDateString() ||

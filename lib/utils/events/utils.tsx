@@ -1,4 +1,4 @@
-import { readItem, readItems } from "@directus/sdk"
+import { readItems } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../../directus"
 import { Events } from "../../types"
@@ -9,37 +9,27 @@ export const getEvents = cache(async () => {
   // start_date: '2024-10-07T18:00:00'
   // if today is gte start_date, then show the event
 
-  const events = await directus.request(
-    readItems("events", {
-      fields: [
-        "id",
-        "slug",
-        "title",
-        "deck",
-        "series",
-        "start_date",
-        "end_date",
-        {
-          section: ["id", "name", "slug"],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            start_date: {
-              _gte: "$NOW",
-            },
-          },
-          {
-            status: {
-              _eq: "published",
-            },
-          },
-        ],
-      },
-    }),
-  )
-  console.log("events ======", events)
+  const eventsDataAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+    `?fields[]=id` +
+    `&fields[]=slug` +
+    `&fields[]=title` +
+    `&fields[]=deck` +
+    `&fields[]=series` +
+    `&fields[]=start_date` +
+    `&fields[]=end_date` +
+    `&fields[]=section.id` +
+    `&fields[]=section.slug` +
+    `&fields[]=section.name` +
+    `&filter[start_date][_gte]=$NOW` +
+    `&filter[status][_eq]=published`
+
+  const res = await fetch(eventsDataAPI)
+  if (!res.ok) {
+    throw new Error("Failed to fetch events data")
+  }
+  const data = await res.json()
+  const events = data.data
   return events as Events[]
 })
 
@@ -49,55 +39,34 @@ export const getPastEvents = cache(async () => {
   // start_date: '2024-10-07T18:00:00'
   // if today is gte start_date, then show the event
 
-  const events = await directus.request(
-    readItems("events", {
-      fields: [
-        "id",
-        "slug",
-        "title",
-        "deck",
-        "series",
-        "start_date",
-        "end_date",
-        "youtube_id",
-        {
-          section: ["id", "name", "slug"],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            start_date: {
-              _lte: "$NOW",
-            },
-          },
-          {
-            section: {
-              slug: {
-                _in: ["the-new-social-environment", "common-ground"],
-              },
-            },
-          },
-          {
-            youtube_id: {
-              _nempty: true,
-            },
-          },
-          {
-            status: {
-              _eq: "published",
-            },
-          },
-        ],
-      },
-    }),
-  )
-  console.log("events ======", events)
+  const pastEventsDataAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+    `?fields[]=id` +
+    `&fields[]=slug` +
+    `&fields[]=title` +
+    `&fields[]=deck` +
+    `&fields[]=series` +
+    `&fields[]=start_date` +
+    `&fields[]=end_date` +
+    `&fields[]=youtube_id` +
+    `&fields[]=section.id` +
+    `&fields[]=section.slug` +
+    `&fields[]=section.name` +
+    `&filter[start_date][_lte]=$NOW` +
+    `&filter[section][slug][_in]=the-new-social-environment,common-ground` +
+    `&filter[youtube_id][_nempty]=true` +
+    `&filter[status][_eq]=published`
+
+  const res = await fetch(pastEventsDataAPI)
+  if (!res.ok) {
+    throw new Error("Failed to fetch past events data")
+  }
+  const data = await res.json()
+  const events = data.data
   return events as Events[]
 })
 
 export const getEvent = cache(async (slug: string) => {
-  console.log("slug ======", slug)
   const event = await directus.request(
     readItems("events", {
       fields: [

@@ -66,7 +66,6 @@ interface EventParams {
   id: string
 }
 export default async function EventController({ params }: { params: EventParams }) {
-  console.log("params:", params)
   const data = await getData({ params })
   if (!data.eventData || !data.permalink) {
     return notFound()
