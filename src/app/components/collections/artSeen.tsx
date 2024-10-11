@@ -31,7 +31,7 @@ const CollectionArtSeen = (collection: Collections) => {
 
   return (
     <div key={collection.id} className="pb-3">
-      <CollectionHead title={section.name} permalink={sectionPermalink} />
+      <CollectionHead title={section.name} permalink={section.featured ? sectionPermalink : null} />
       <div className="hidden tablet-lg:block">
         <Frame
           LeadPromo={<LeadPromoArtSeen article={leadArticle} />}

@@ -66,7 +66,13 @@ export const getSectionData = cache(async (props: SectionDataProps) => {
       readItems("sections", {
         fields: ["id", "name", "description", "slug"],
         filter: {
-          slug: { _eq: slug },
+          _and: [
+            {
+              status: { _eq: "published" },
+              slug: { _eq: slug },
+              featured: { _eq: true },
+            },
+          ],
         },
       }),
     )

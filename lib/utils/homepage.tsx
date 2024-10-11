@@ -19,7 +19,7 @@ export const getHomepageData = cache(async () => {
                   "deck",
                   "limit",
                   {
-                    section: ["id", "name", "slug"],
+                    section: ["id", "name", "slug", "featured"],
                   },
                   {
                     tribute: [

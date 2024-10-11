@@ -653,6 +653,7 @@ export type Sections = {
   name: string
   description?: string | null
   old_id: number
+  featured: boolean
   slug: string
   sort?: number | null
   user_created?: string | DirectusUsers | null
