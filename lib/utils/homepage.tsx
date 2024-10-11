@@ -18,6 +18,7 @@ export const getHomepageData = cache(async () => {
                   "title",
                   "deck",
                   "limit",
+                  "banner_type",
                   {
                     section: ["id", "name", "slug", "featured"],
                   },
@@ -61,21 +62,17 @@ export const getHomepageData = cache(async () => {
 
     const homepage = homepageData as Homepage
 
-    if (!homepage.collections || homepage.collections.length === 0) {
-      return null
-    }
     const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
-      if (!collection.collections_id || !collection.collections_id.section) {
-        return null
+      // Get the articles for this collection
+      // Note: the queries are faster if we fetch the articles this way, as opposed to the homepage query
+      if (collection.collections_id && collection.collections_id.section) {
+        const thisSectionArticles = getCollectionArticles({
+          slug: collection.collections_id.section.slug,
+          limit: collection.collections_id.limit,
+        })
+        collection.collections_id.section.articles = (await thisSectionArticles) as Articles[]
+        return collection
       }
-
-      const thisSectionArticles = getCollectionArticles({
-        slug: collection.collections_id.section.slug,
-        limit: collection.collections_id.limit,
-      })
-      // add thisSectionArticles to thisCollection.section.articles
-      collection.collections_id.section.articles = (await thisSectionArticles) as Articles[]
-
       return collection
     })
 
@@ -88,6 +85,43 @@ export const getHomepageData = cache(async () => {
     // return homepageData as Homepage
   } catch (error) {
     console.error("Error fetching Homepage data:", error)
+    return null
+  }
+})
+
+export const getCurrentIssueData = cache(async () => {
+  try {
+    const settings = await directus.request(
+      readSingleton("global_settings", {
+        fields: [
+          {
+            current_issue: [
+              "id",
+              "title",
+              "slug",
+              "special_issue",
+              { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
+              { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
+              { cover_3: ["id", "width", "height", "filename_disk", "caption"] },
+              { cover_4: ["id", "width", "height", "filename_disk", "caption"] },
+              { cover_5: ["id", "width", "height", "filename_disk", "caption"] },
+              { cover_6: ["id", "width", "height", "filename_disk", "caption"] },
+            ],
+          },
+        ],
+      }),
+    )
+
+    const curruentIssueData = settings.current_issue
+    if (!curruentIssueData) {
+      // throw an error if there is no current issue
+      console.error("There is no current issue set", curruentIssueData)
+      return
+    }
+
+    return settings.current_issue as Issues
+  } catch (error) {
+    console.error("Error fetching CurrentIssueData data:", error)
     return null
   }
 })

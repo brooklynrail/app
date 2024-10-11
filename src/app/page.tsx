@@ -1,6 +1,6 @@
-import { Homepage } from "../../lib/types"
+import { Homepage, Issues } from "../../lib/types"
 import { getPermalink, PageType } from "../../lib/utils"
-import { getHomepageData } from "../../lib/utils/homepage"
+import { getCurrentIssueData, getHomepageData } from "../../lib/utils/homepage"
 import { notFound } from "next/navigation"
 import HomePage from "./components/homepage"
 
@@ -28,6 +28,7 @@ export enum PageLayout {
 }
 export interface HomePageProps {
   homepageData: Homepage
+  currentIssue: Issues
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -36,7 +37,6 @@ export interface HomePageProps {
 export default async function HomepagePage() {
   const data = await getData()
 
-  // return null
   return <HomePage {...data} />
 }
 
@@ -46,12 +46,18 @@ async function getData() {
     return notFound()
   }
 
+  const currentIssue = await getCurrentIssueData()
+  if (!currentIssue) {
+    return notFound()
+  }
+
   const permalink = getPermalink({
     type: PageType.Home,
   })
 
   return {
     homepageData,
+    currentIssue,
     permalink,
   }
 }

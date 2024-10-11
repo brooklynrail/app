@@ -6,7 +6,6 @@ interface EventVideoProps {
 }
 const EventVideo = (props: EventVideoProps) => {
   const { youtube_id, title } = props
-  console.log("youtube_id", youtube_id)
   const youtube_url = `https://www.youtube.com/embed/${youtube_id}?autoplay=1`
   return (
     <div className="col-span-4 desktop:col-span-10 desktop:col-start-2">

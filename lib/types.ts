@@ -89,6 +89,7 @@ export type Collections = {
   title: string
   tribute?: string | Tributes | null
   type: string
+  banner_type?: string | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
