@@ -181,7 +181,21 @@ export async function getPreviewEvent(id: string) {
           "*",
           "date_created",
           { section: ["id", "name", "slug"] },
-          { people: [{ people_id: ["id", "slug", "bio", "display_name"] }] },
+          {
+            people: [
+              {
+                people_id: [
+                  "id",
+                  "slug",
+                  "bio",
+                  "display_name",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "caption"],
+                  },
+                ],
+              },
+            ],
+          },
           { user_updated: ["id", "first_name", "last_name", "avatar"] },
         ],
         filter: {

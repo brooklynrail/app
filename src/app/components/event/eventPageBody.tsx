@@ -7,12 +7,26 @@ import { EventsPeople } from "../../../../lib/types"
 import EventVideo from "./eventVideo"
 import Sponsor from "../events/sponsor"
 import { Person, Poets, SoundWaves } from "."
+import { formatTime } from "../events"
 
 const EventPageBody = (props: EventProps) => {
   const { eventData } = props
   const { title, deck, start_date, excerpt, section, series, body_text, youtube_id, event_id } = eventData
 
   const isFutureEvent = new Date(start_date) > new Date()
+
+  // get the start date in this format:
+  // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
+  const startDate = new Date(start_date)
+  const startDateString = startDate.toLocaleString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  })
+
+  const startTimeET = formatTime(startDate, "America/New_York")
+  const startTimePT = formatTime(startDate, "America/Los_Angeles")
+
   const eventsPermalink = getPermalink({
     type: PageType.Events,
   })
@@ -50,7 +64,13 @@ const EventPageBody = (props: EventProps) => {
               <h1 className="text-3xl mobile-lg:text-4xl tablet-lg:text-5xl font-bold text-center p-name">
                 {parse(title)}
               </h1>
-              {deck && <p className="text-center text-xl tablet-lg:text-3xl font-light p-summary">{parse(deck)}</p>}
+              {deck && <p className="text-center text-2xl tablet-lg:text-4xl font-light p-summary">{parse(deck)}</p>}
+              <p className="text-xl text-center font-light space-x-3">
+                <strong>{startDateString}</strong>{" "}
+                <span>
+                  {startTimeET} Eastern / {startTimePT} Pacific
+                </span>
+              </p>
             </div>
             {isFutureEvent && (
               <button
