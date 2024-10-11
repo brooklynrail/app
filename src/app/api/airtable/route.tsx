@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
+      cache: "no-cache",
     })
 
     if (!response.ok) {

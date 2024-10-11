@@ -100,9 +100,16 @@ body {
   @apply rail-tribute-bg;
 }
 
-// a {
-//   @apply hover:underline underline-offset-2;
-// }
+.paper-event,
+.paper-events,
+.paper-events-past {
+  @apply bg-indigo-50 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
+a {
+  @apply hover:underline underline-offset-2;
+}
 
 .rail-header {
   @apply bg-gradient-to-b from-[#EF4444] to-[#CFCFE0] dark:from-indigo-700;

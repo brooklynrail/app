@@ -1,7 +1,7 @@
 import { readItem, readItems } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
-import { Articles, Contributors, Issues, People, Sections } from "../types"
+import { Articles, Contributors, Events, Issues, People, Sections } from "../types"
 import { revalidatePath } from "next/cache"
 import { getPermalink, PageType } from "../utils"
 
@@ -9,6 +9,7 @@ export enum RevalidateType {
   Articles = "articles",
   Sections = "sections",
   Issues = "issues",
+  Events = "events",
   Tributes = "tributes",
   Contributors = "contributors",
 }
@@ -41,6 +42,25 @@ export const revalidateContributor = cache(async (data: Contributors) => {
     slug: data.slug,
     type: PageType.Contributor,
   })
+  const url = new URL(permalink)
+  revalidatePath(url.pathname)
+  return url.pathname
+})
+
+export const revalidateEvent = cache(async (data: Events) => {
+  const eventDate = new Date(data.start_date)
+  const eventyear = eventDate.getFullYear()
+  const eventmonth = eventDate.getMonth() + 1
+  const eventday = eventDate.getDate()
+
+  const permalink = getPermalink({
+    type: PageType.Event,
+    eventYear: eventyear,
+    eventMonth: eventmonth,
+    eventDay: eventday,
+    slug: data.slug,
+  })
+
   const url = new URL(permalink)
   revalidatePath(url.pathname)
   return url.pathname

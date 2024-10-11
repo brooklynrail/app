@@ -1,10 +1,11 @@
 import {
   revalidateArticle,
   revalidateContributor,
+  revalidateEvent,
   revalidateIssue,
   RevalidateType,
 } from "../../../../lib/utils/revalidate"
-import { Articles, Contributors } from "../../../../lib/types"
+import { Articles, Contributors, Events } from "../../../../lib/types"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
@@ -58,6 +59,15 @@ export async function GET(request: Request) {
         if (!response.ok) throw new Error("Failed to fetch article")
         const contributorData: Contributors = await response.json()
         path = await revalidateContributor(contributorData)
+        return new Response(`Revalidation started for paths: ${path}`, {
+          status: 200,
+        })
+      case RevalidateType.Events:
+        // Example path: /event/2024/10/07/event-slug
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/event/id/${id}`)
+        if (!response.ok) throw new Error("Failed to fetch article")
+        const eventData: Events = await response.json()
+        path = await revalidateEvent(eventData)
         return new Response(`Revalidation started for paths: ${path}`, {
           status: 200,
         })

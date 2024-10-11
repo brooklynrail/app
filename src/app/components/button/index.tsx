@@ -1,8 +1,9 @@
 import Link from "next/link"
 
 export enum ButtonType {
-  Donate = "bg-red-600 text-white",
-  Subscribe = "bg-white text-black",
+  Donate = "bg-red-500 text-white text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl",
+  Subscribe = "bg-white text-black text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl",
+  Register = "bg-white text-black text-xs tablet:text-sm",
 }
 
 interface ButtonProps {
