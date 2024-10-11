@@ -43,7 +43,7 @@ const ContributorsPage = (props: ContributorsPageProps) => {
           </aside>
 
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-            <Header type={HeaderType.Default} />
+            <Header type={HeaderType.Alt} />
 
             <div className="pb-12">
               <header className="py-12">

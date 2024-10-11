@@ -23,7 +23,7 @@ const Page = (props: PageProps) => {
           </aside>
 
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-            <Header type={HeaderType.Default} />
+            <Header type={HeaderType.Alt} />
 
             <article className="pb-12">
               <PageHead {...props} />

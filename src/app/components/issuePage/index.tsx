@@ -52,7 +52,7 @@ const IssuePage = (props: IssuePageProps) => {
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-6">
           <div className="col-span-4 tablet-lg:col-span-12">
             <div className="px-3">
-              <Header type={HeaderType.Default} />
+              <Header type={HeaderType.Alt} />
               <Ad970 />
             </div>
           </div>

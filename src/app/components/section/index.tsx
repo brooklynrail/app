@@ -43,7 +43,7 @@ const Section = (props: SectionProps) => {
       <header role="banner">
         <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
           <div className="col-span-12">
-            <Header type={HeaderType.Default} />
+            <Header type={HeaderType.Alt} />
           </div>
         </div>
       </header>

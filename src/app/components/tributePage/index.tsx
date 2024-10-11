@@ -21,7 +21,7 @@ const TributePage = (props: TributePageProps) => {
     <Paper pageClass={`paper-tribute ${tributeClass}`}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
       <div className="">
-        <Header type={HeaderType.Default} />
+        <Header type={HeaderType.Alt} />
         <section id="main" className={styles.main}>
           <TributeHead {...props} />
           <TributeBody {...props} />

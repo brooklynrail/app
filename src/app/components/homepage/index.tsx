@@ -1,16 +1,9 @@
 "use client"
-import CoversPopup from "../issueRail/coversPopup"
 import { HomePageProps } from "@/app/page"
 import Header, { HeaderType } from "../header"
-import { Articles, Collections, HomepageCollections, Sections, Tributes } from "../../../../lib/types"
-import { PopupProvider } from "../issueRail/popupProvider"
-import CollectionCriticsPage from "../collections/criticspage"
+import { Articles, Collections, HomepageCollections } from "../../../../lib/types"
 import Paper from "../paper"
-import Footer from "../footer"
-import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
-import CollectionFrame from "../collections/frame"
-import FrameScrollable from "../collections/frameScrollable"
 import CollectionArt from "../collections/art"
 import CollectionArtSeen from "../collections/artSeen"
 import CollectionBooks from "../collections/books"
@@ -29,8 +22,6 @@ enum CollectionType {
 
 const HomePage = (props: HomePageProps) => {
   const { homepageData } = props
-
-  const { theme, setTheme } = useTheme()
 
   const allCollections = homepageData.collections.map((collection: HomepageCollections, i: number) => {
     const thisCollection = collection.collections_id

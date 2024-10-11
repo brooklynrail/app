@@ -21,14 +21,14 @@ const SearchPage = (props: SearchPageProps) => {
       <div className="px-3 desktop:w-desktop mx-auto">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
           <div className="col-span-4 tablet-lg:col-span-12">
-            <Header type={HeaderType.Default} />
+            <Header type={HeaderType.Alt} />
           </div>
         </div>
 
         <section id="main" className="py-9 h-screen">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
             <div className="col-span-4 tablet-lg:col-span-12">
-              <Header type={HeaderType.Default} />
+              <Header type={HeaderType.Alt} />
               <GoogleCSE />
             </div>
           </div>

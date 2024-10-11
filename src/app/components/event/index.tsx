@@ -20,7 +20,7 @@ const EventPage = (props: EventProps) => {
 
   return (
     <Paper pageClass="paper-event">
-      <Header type={HeaderType.Default} />
+      <Header type={HeaderType.Events} />
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
         <EventPageBody {...props} />
       </main>
