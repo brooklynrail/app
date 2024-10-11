@@ -30,6 +30,19 @@ module.exports = {
   async redirects() {
     return [
       // ===================================
+      // TEMPORARY REDIRECTS
+      // Redirect the event pages to the homepage
+      {
+        source: "/events/",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/event/:year(\\d{4})/:month(\\d{1,2})/:day(\\d{1,2})/:slug",
+        destination: "/",
+        permanent: false,
+      },
+      // ===================================
       // ISSUE REDIRECT
       // Redirect old issue paths to new issue paths
       {
