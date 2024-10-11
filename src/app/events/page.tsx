@@ -32,6 +32,9 @@ async function getData() {
   }
 
   const initialEvents = await getPastEvents({ limit: 4, offset: 0 })
+  if (!initialEvents) {
+    return notFound()
+  }
 
   const permalink = getPermalink({
     type: PageType.Events,

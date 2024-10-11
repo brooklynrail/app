@@ -1,14 +1,12 @@
 "use client"
 
 import Header, { HeaderType } from "../header"
-import { useTheme } from "../theme"
 import Paper from "../paper"
 import { Events } from "../../../../lib/types"
 import Link from "next/link"
 import { EventsProps } from "@/app/events/page"
 import EventCard from "./eventCard"
 import Sponsor from "./sponsor"
-import PastEventsPage from "./past"
 import PastPageBody from "./pastPageBody"
 
 const EventsPage = (props: EventsProps) => {
