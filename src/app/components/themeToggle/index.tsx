@@ -41,7 +41,7 @@ function ThemeToggle(props: ThemeToggleProps) {
   }
 
   return (
-    <div className="flex space-x-3 items-center fixed bottom-4 left-4">
+    <div className="flex space-x-3 items-center fixed bottom-4 left-4 z-50">
       <button className={styles.theme_toggle} onClick={toggleTheme}>
         {theme === "dark" ? "🌙" : "🌞"}
       </button>

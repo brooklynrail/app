@@ -38,7 +38,7 @@ const EventsPage = (props: EventsProps) => {
             <Sponsor />
           </div>
         </div>
-        <div className="mx-6">
+        <aside className="mx-6">
           <div className="pt-9 space-y-3 tablet-lg:space-y-6">
             <h1 className="font-bold text-4xl tablet-lg:text-5xl">Past Events</h1>
             <p className="divide-x rail-divide">
@@ -54,7 +54,7 @@ const EventsPage = (props: EventsProps) => {
             </p>
           </div>
           <PastPageBody {...props} />
-        </div>
+        </aside>
       </main>
     </Paper>
   )

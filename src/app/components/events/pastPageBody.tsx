@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
 import { Events } from "../../../../lib/types"
-import Link from "next/link"
 import PastEventCard from "./pastEventCard"
 import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 
@@ -80,7 +79,7 @@ const PastPageBody = (props: { initialEvents: Events[] }) => {
             onClick={loadMoreEvents}
             className="bg-indigo-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-indigo-600"
           >
-            Load More Events
+            Load more
           </button>
         </div>
       )}

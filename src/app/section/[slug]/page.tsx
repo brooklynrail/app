@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation"
-import { Issues, Sections } from "../../../../lib/types"
-import { getAllIssues, getPermalink, getSectionData, PageType } from "../../../../lib/utils"
-import ArchivePage from "../../components/archive"
-import { Metadata, Viewport } from "next"
-import SearchPage from "../../components/search"
+import { getPermalink, PageType } from "../../../../lib/utils"
+import { getArticlesBySection, getSectionData } from "../../../../lib/utils/sections/utils"
+
 import Section from "@/app/components/section"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
@@ -35,6 +33,10 @@ async function getData({ params }: { params: SectionParams }) {
   if (!sectionData) {
     return notFound()
   }
+  const articlesData = await getArticlesBySection({ slug: slug, limit: 32, offset: 0 })
+  if (!articlesData) {
+    return notFound()
+  }
 
   const permalink = getPermalink({
     sectionSlug: slug,
@@ -43,6 +45,7 @@ async function getData({ params }: { params: SectionParams }) {
 
   return {
     sectionData,
+    articlesData,
     permalink,
   }
 }

@@ -358,64 +358,6 @@ export async function getIssueData(props: IssueDataProps) {
   }
 }
 
-interface SectionDataProps {
-  slug: string
-  limit?: number
-}
-
-export const getSectionData = cache(async (props: SectionDataProps) => {
-  const { slug, limit } = props
-
-  try {
-    const sections = await directus.request(
-      readItems("sections", {
-        fields: [
-          "id",
-          "name",
-          "slug",
-          {
-            articles: [
-              "slug",
-              "title",
-              "excerpt",
-              "sort",
-              "kicker",
-              "date_updated",
-              "status",
-              {
-                section: ["id", "name", "slug"],
-              },
-              {
-                issue: ["id", "title", "slug", "year", "month", "issue_number"],
-              },
-              {
-                contributors: [{ contributors_id: ["id", "first_name", "last_name"] }],
-              },
-              {
-                featured_image: ["id", "width", "height", "filename_disk", "caption"],
-              },
-            ],
-          },
-        ],
-        filter: {
-          slug: { _eq: slug },
-        },
-        deep: {
-          articles: {
-            _filter: { status: { _eq: "published" } },
-            _limit: limit ? limit : 20,
-          },
-        },
-      }),
-    )
-
-    return sections[0] as Sections
-  } catch (error) {
-    console.error("Error fetching section data:", error)
-    return null
-  }
-})
-
 export const getSectionsByIssueId = cache(async (issueId: string, status: string) => {
   try {
     const sections = await directus.request(
