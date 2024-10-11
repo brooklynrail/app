@@ -47,7 +47,7 @@ const DonatePopup = () => {
       onClick={() => setShowPopup(false)}
     >
       <div
-        className="rail-header p-6 py-12 tablet:py-6 w-screen h-mobile-lg bottom-0 absolute"
+        className="rail-header-default p-6 py-12 tablet:py-6 w-screen h-mobile-lg bottom-0 absolute"
         onClick={(e) => e.stopPropagation()}
       >
         <button
