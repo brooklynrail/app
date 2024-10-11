@@ -99,7 +99,7 @@ const SlideShow = (props: SlideshowProps) => {
           </div>
         </div>
         <Link key={i} className="block py-1" href={articlePermalink} title={`Visit ${stripHtml(title).result}`}>
-          {kicker && <span className="text-red-600 dark:text-red-500 uppercase">{kicker}</span>}
+          {kicker && <span className="text-red-500 dark:text-red-500 uppercase">{kicker}</span>}
           <h2 className="font-normal font-sans text-2xl tablet-lg:text-xl">{parse(title)}</h2>
         </Link>
       </div>

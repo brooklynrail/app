@@ -15,27 +15,18 @@ export interface EventsProps {
   errorMessage?: string
 }
 
-export default async function EventsController({ params }: { params: EventsProps }) {
+export default async function EventsController() {
   const data = await getData()
-  if (!data.allEvents || !data.permalink) {
+  if (!data.initialEvents) {
     return notFound()
   }
 
-  return <PastEventsPage {...data} />
+  return <PastEventsPage initialEvents={data.initialEvents} />
 }
 
 async function getData() {
-  const allEvents = await getPastEvents()
-  if (!allEvents) {
-    return notFound()
-  }
+  const initialEvents = await getPastEvents({ limit: 32, offset: 0 })
+  const permalink = getPermalink({ type: PageType.Events })
 
-  const permalink = getPermalink({
-    type: PageType.Events,
-  })
-
-  return {
-    allEvents,
-    permalink,
-  }
+  return { initialEvents, permalink }
 }

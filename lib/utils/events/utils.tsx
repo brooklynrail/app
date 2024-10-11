@@ -1,4 +1,4 @@
-import { readItems } from "@directus/sdk"
+import { aggregate, readItems } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../../directus"
 import { Events } from "../../types"
@@ -33,38 +33,47 @@ export const getEvents = cache(async () => {
   return events as Events[]
 })
 
-export const getPastEvents = cache(async () => {
-  const today = new Date()
+interface PastEventsParams {
+  limit: number
+  offset: number
+}
 
-  // start_date: '2024-10-07T18:00:00'
-  // if today is gte start_date, then show the event
+export async function getPastEvents(props: PastEventsParams) {
+  const { limit, offset } = props
+  try {
+    const allEventsDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+      `?fields[]=id` +
+      `&fields[]=slug` +
+      `&fields[]=title` +
+      `&fields[]=deck` +
+      `&fields[]=series` +
+      `&fields[]=start_date` +
+      `&fields[]=end_date` +
+      `&fields[]=youtube_id` +
+      `&fields[]=section.id` +
+      `&fields[]=section.slug` +
+      `&fields[]=section.name` +
+      `&filter[start_date][_lte]=$NOW` +
+      `&filter[section][slug][_in]=the-new-social-environment,common-ground` +
+      `&filter[youtube_id][_nempty]=true` +
+      `&filter[status][_eq]=published` +
+      `&page=${Math.floor(offset / limit) + 1}` +
+      `&sort[]=-start_date` +
+      `&limit=${limit}`
 
-  const pastEventsDataAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
-    `?fields[]=id` +
-    `&fields[]=slug` +
-    `&fields[]=title` +
-    `&fields[]=deck` +
-    `&fields[]=series` +
-    `&fields[]=start_date` +
-    `&fields[]=end_date` +
-    `&fields[]=youtube_id` +
-    `&fields[]=section.id` +
-    `&fields[]=section.slug` +
-    `&fields[]=section.name` +
-    `&filter[start_date][_lte]=$NOW` +
-    `&filter[section][slug][_in]=the-new-social-environment,common-ground` +
-    `&filter[youtube_id][_nempty]=true` +
-    `&filter[status][_eq]=published`
-
-  const res = await fetch(pastEventsDataAPI)
-  if (!res.ok) {
-    throw new Error("Failed to fetch past events data")
+    const res = await fetch(allEventsDataAPI)
+    if (!res.ok) {
+      console.error(`Failed to fetch All Events data: ${res.statusText}`)
+      return null
+    }
+    const data = await res.json()
+    return data.data as Events[]
+  } catch (error) {
+    console.error("Error fetching All Events data:", error)
+    return null
   }
-  const data = await res.json()
-  const events = data.data
-  return events as Events[]
-})
+}
 
 export const getEvent = cache(async (slug: string) => {
   const event = await directus.request(
@@ -217,4 +226,14 @@ export async function getAllEvents() {
     console.error("Error fetching allEvents:", error)
     return null
   }
+}
+
+export const getTotalEventsCount = async () => {
+  const totalCount = await directus.request(
+    aggregate("events", {
+      aggregate: { count: "*" },
+    }),
+  )
+  const count = Number(totalCount[0].count)
+  return count ? count : 0
 }
