@@ -8,6 +8,8 @@ import Link from "next/link"
 import { EventsProps } from "@/app/events/page"
 import EventCard from "./eventCard"
 import Sponsor from "./sponsor"
+import PastEventsPage from "./past"
+import PastPageBody from "./pastPageBody"
 
 const EventsPage = (props: EventsProps) => {
   const allEvents = props.allEvents.map((event: Events, index: number) => {
@@ -17,7 +19,7 @@ const EventsPage = (props: EventsProps) => {
   return (
     <Paper pageClass="paper-events">
       <Header type={HeaderType.Default} />
-      <main className="px-6 tablet-lg:px-3 pb-12 desktop:max-w-screen-widescreen mx-auto">
+      <main className="px-6 tablet-lg:px-3 pb-12 desktop:max-w-screen-widescreen mx-auto divide-y rail-divide">
         <div className="tablet-lg:px-6 space-y-9 divide-y rail-divide">
           <div className="pt-9 space-y-3 tablet-lg:space-y-6">
             <h1 className="font-bold text-4xl tablet-lg:text-5xl">Upcoming Events</h1>
@@ -37,6 +39,23 @@ const EventsPage = (props: EventsProps) => {
           <div>
             <Sponsor />
           </div>
+        </div>
+        <div className="mx-6">
+          <div className="pt-9 space-y-3 tablet-lg:space-y-6">
+            <h1 className="font-bold text-4xl tablet-lg:text-5xl">Past Events</h1>
+            <p className="divide-x rail-divide">
+              <Link className="pr-3 text-indigo-500 font-medium" href={`/events`}>
+                Upcoming Events
+              </Link>
+              <Link
+                className="px-3 text-indigo-500 font-medium"
+                href={`https://www.youtube.com/thebrooklynrail?sub_confirmation=1`}
+              >
+                Video Archive
+              </Link>
+            </p>
+          </div>
+          <PastPageBody {...props} />
         </div>
       </main>
     </Paper>

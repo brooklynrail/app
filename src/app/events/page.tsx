@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { Events } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
-import { getEvents } from "../../../lib/utils/events/utils"
+import { getEvents, getPastEvents } from "../../../lib/utils/events/utils"
 import EventsPage from "@/app/components/events"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
@@ -10,6 +10,7 @@ export const dynamicParams = true
 
 export interface EventsProps {
   allEvents: Events[]
+  initialEvents: Events[]
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -30,12 +31,15 @@ async function getData() {
     return notFound()
   }
 
+  const initialEvents = await getPastEvents({ limit: 4, offset: 0 })
+
   const permalink = getPermalink({
     type: PageType.Events,
   })
 
   return {
     allEvents,
+    initialEvents,
     permalink,
   }
 }
