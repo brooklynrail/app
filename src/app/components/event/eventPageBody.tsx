@@ -88,7 +88,7 @@ const EventPageBody = (props: EventProps) => {
         <div
           className={`col-span-4 ${isFutureEvent ? `desktop:col-span-8 desktop:col-start-3` : `desktop:col-span-8 desktop:col-start-2`}`}
         >
-          <div className="text-xl tablet-lg:text-3xl p-description">{excerpt}</div>
+          <div className="text-xl tablet-lg:text-3xl p-description">{parse(excerpt)}</div>
         </div>
         <div
           className={`col-span-4 ${isFutureEvent ? `desktop:col-span-8 desktop:col-start-3` : `desktop:col-span-8 desktop:col-start-2`}`}

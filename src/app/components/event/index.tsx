@@ -24,7 +24,7 @@ const EventPage = (props: EventProps) => {
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
         <EventPageBody {...props} />
       </main>
-      {isFutureEvent && <Register {...props} />}
+      {isFutureEvent && eventData.event_id && <Register {...props} />}
     </Paper>
   )
 }
