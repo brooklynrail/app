@@ -3,7 +3,7 @@ import Link from "next/link"
 const OldNav = () => {
   return (
     <nav className="w-full tablet-lg:w-auto !mx-0">
-      <ul className="flex w-full tablet-lg:justify-end items-center text-xs tablet:text-sm uppercase font-medium justify-between tablet:space-x-4 text-red-600 dark:text-slate-100">
+      <ul className="flex w-full tablet-lg:justify-end items-center text-xs tablet:text-sm uppercase font-medium justify-between tablet:space-x-4 text-red-500 dark:text-slate-100">
         <li>
           <Link href="/about" title="About">
             <span>About</span>
@@ -29,7 +29,7 @@ const OldNav = () => {
             <span>Shop</span>
           </Link>
         </li>
-        <li className="bg-red-600 dark:bg-slate-100 px-4 py-2 rounded-sm text-white dark:text-zinc-900">
+        <li className="bg-red-500 dark:bg-slate-100 px-4 py-2 rounded-sm text-white dark:text-zinc-900">
           <Link className="hover:text-white dark:hover:text-zinc-900" href="/donate" title="Donate">
             <span>Donate</span>
           </Link>

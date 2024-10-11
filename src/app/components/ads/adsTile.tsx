@@ -11,13 +11,13 @@ const AdsTile = (props: AdsTileProps) => {
   const { currentAds } = props
 
   if (!currentAds) {
-    return <>Loading...</>
+    return <div>Loading...</div>
   }
 
   // filter the ads that are only ad.ad_type === "tile"
   const tileAds = currentAds.filter((ad: Ads) => ad.ad_type === "tile")
   if (tileAds.length === 0) {
-    return <></>
+    return null
   }
 
   // get only the currentAds where today is equal to or between the start_date and end_date
@@ -25,7 +25,11 @@ const AdsTile = (props: AdsTileProps) => {
   const filteredTileAds = tileAds.filter((ad: Ads) => {
     const startDate = new Date(ad.start_date)
     const endDate = new Date(ad.end_date)
-    return startDate <= currentDate && currentDate <= endDate
+    return (
+      (startDate <= currentDate && currentDate <= endDate) ||
+      startDate.toDateString() === currentDate.toDateString() ||
+      endDate.toDateString() === currentDate.toDateString()
+    )
   })
 
   const ramdomizeTileAds = filteredTileAds.sort(() => Math.random() - 0.5)
