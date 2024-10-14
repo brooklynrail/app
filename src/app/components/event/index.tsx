@@ -7,11 +7,6 @@ import Register from "./register"
 import EventPageBody from "./eventPageBody"
 import Person from "./person"
 
-export enum EventTypes {
-  TheNewSocialEnvironment = "The New Social Environment",
-  CommonGround = "Common Ground",
-}
-
 const EventPage = (props: EventProps) => {
   const { eventData } = props
   const { start_date } = eventData
@@ -21,7 +16,7 @@ const EventPage = (props: EventProps) => {
   return (
     <Paper pageClass="paper-event">
       <Header type={HeaderType.Default} />
-      <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
+      <main className="px-6 desktop:max-w-screen-widescreen mx-auto h-event">
         <EventPageBody {...props} />
       </main>
       {isFutureEvent && eventData.airtable_id && <Register {...props} />}
@@ -61,7 +56,7 @@ export const SoundWaves = () => {
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
-      <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g id="Group-2" transform="translate(1.000000, 1.000000)">
           <path
             d="M0 9C10-1.66666667 20-1.66666667 30 9 40 19.6666667 50 19.6666667 60 9 70-1.66666667 80-1.66666667 90 9c10 10.6666667 20 10.6666667 30 0 10-10.66666667 20-10.66666667 30 0 10 10.6666667 20 10.6666667 30 0 10-10.66666667 20-10.66666667 30 0 10 10.6666667 20 10.6666667 30 0"

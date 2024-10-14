@@ -7,53 +7,40 @@ import Link from "next/link"
 import { EventsProps } from "@/app/events/page"
 import EventCard from "./eventCard"
 import Sponsor from "./sponsor"
-import PastPageBody from "./pastPageBody"
+import PastEventsList from "./pastEventsList"
 
 const EventsPage = (props: EventsProps) => {
   const allEvents = props.allEvents.map((event: Events, index: number) => {
-    return <EventCard key={index} event={event} />
+    return <EventCard key={index} event={event} eventTypes={props.eventTypes} />
   })
 
   return (
     <Paper pageClass="paper-events">
       <Header type={HeaderType.Default} />
-      <main className="px-6 tablet-lg:px-3 pb-12 desktop:max-w-screen-widescreen mx-auto divide-y rail-divide">
+      <main className="px-3 tablet:px-6 pb-12 desktop:max-w-screen-widescreen mx-auto divide-y rail-divide">
         <div className="space-y-9 divide-y rail-divide">
-          <div className="pt-9 space-y-3 tablet-lg:space-y-6">
+          <div className="pt-9 flex flex-col tablet-lg:flex-row tablet-lg:justify-between tablet-lg:items-end space-y-3 tablet-lg:space-y-0">
             <h1 className="font-bold text-4xl tablet-lg:text-5xl">Upcoming Events</h1>
-            <p className="divide-x rail-divide">
-              <Link className="pr-3 text-indigo-500 font-medium" href={`/events/past`}>
+            <p className="">
+              <Link className="text-lg tablet-lg:text-2xl font-normal underline" href={`/events/past`}>
                 Past Events
               </Link>
-              <Link
-                className="px-3 text-indigo-500 font-medium"
-                href={`https://www.youtube.com/thebrooklynrail?sub_confirmation=1`}
-              >
-                Video Archive
-              </Link>
             </p>
           </div>
-          <div className="divide-y rail-divide">{allEvents}</div>
-          <div>
-            <Sponsor />
+          <div className="divide-y rail-divide">
+            {allEvents}
+            <div className="py-12">
+              <div className="max-w-screen-tablet-lg mx-auto">
+                <Sponsor />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="mx-6">
+        <div className="">
           <div className="pt-9 space-y-3 tablet-lg:space-y-6">
             <h1 className="font-bold text-4xl tablet-lg:text-5xl">Past Events</h1>
-            <p className="divide-x rail-divide">
-              <Link className="pr-3 text-indigo-500 font-medium" href={`/events`}>
-                Upcoming Events
-              </Link>
-              <Link
-                className="px-3 text-indigo-500 font-medium"
-                href={`https://www.youtube.com/thebrooklynrail?sub_confirmation=1`}
-              >
-                Video Archive
-              </Link>
-            </p>
           </div>
-          <PastPageBody {...props} />
+          <PastEventsList {...props} />
         </div>
       </main>
     </Paper>

@@ -6,14 +6,18 @@ import parse from "html-react-parser"
 import { EventsPeople } from "../../../../lib/types"
 import EventVideo from "./eventVideo"
 import Sponsor from "../events/sponsor"
-import { EventTypes, Poets, SoundWaves } from "."
+import { Poets, SoundWaves } from "."
 import { formatTime } from "../events"
 import ReactMarkdown from "react-markdown"
 import Person from "./person"
+import { EventTypes, getEventTypeText } from "../../../../lib/utils/events/utils"
 
 const EventPageBody = (props: EventProps) => {
-  const { eventData } = props
+  const { eventData, eventTypes } = props
   const { title, deck, start_date, summary, type, series, body, youtube_id, airtable_id } = eventData
+
+  // Get the readable event type text
+  const eventTypeText = getEventTypeText(type, eventTypes)
 
   const railProduced = type === EventTypes.TheNewSocialEnvironment || type === EventTypes.CommonGround
   const isFutureEvent = new Date(start_date) > new Date()
@@ -52,19 +56,19 @@ const EventPageBody = (props: EventProps) => {
 
   return (
     <article className="h-entry py-6 tablet-lg:py-12">
-      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet:gap-y-20">
-        <div className="col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-4">
+      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
+        <div className="col-span-4 tablet-lg:col-span-12 desktop:col-span-6 desktop:col-start-4">
           <div className="flex flex-col items-center justify-center space-y-3 tablet-lg:space-y-6">
             <p className="flex space-x-3 text-xs tablet-lg:text-sm">
               <span className="uppercase font-normal">
                 <Link href={eventsPermalink}>Events</Link>
               </span>
               <span className="border-l rail-border"></span>
-              {type && <span className="uppercase font-normal text-nowrap text-center">{parse(type)}</span>}
+              {type && <span className="uppercase font-normal text-nowrap text-center">{parse(eventTypeText)}</span>}
               {series && <span className="border-l rail-border"></span>}
               {series && <span className="">#{series}</span>}
             </p>
-            <div className="flex flex-col space-y-6">
+            <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
               <h1 className="text-3xl mobile-lg:text-4xl tablet-lg:text-5xl font-bold text-center p-name">
                 {parse(title)}
               </h1>
@@ -90,9 +94,9 @@ const EventPageBody = (props: EventProps) => {
         {!isFutureEvent && youtube_id && <EventVideo title={title} youtube_id={youtube_id} />}
 
         {railProduced && (
-          <div className={`col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-4`}>
+          <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 desktop:col-span-6 desktop:col-start-4">
             <div className="text-md tablet-lg:text-lg text-center p-description bg-white dark:bg-zinc-700 py-3 tablet:py-6 px-3 tablet:px-6 rounded-xl space-y-1">
-              <p>This event is produced by The Brooklyn Rail.</p>
+              <p>These free events are produced by The Brooklyn Rail.</p>
               <p>
                 Help us raise <span className="font-medium">$200,000</span> by Dec 31.{" "}
                 <Link
@@ -106,7 +110,7 @@ const EventPageBody = (props: EventProps) => {
           </div>
         )}
 
-        <div className={`col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-3 space-y-9`}>
+        <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 desktop:col-span-8 desktop:col-start-3 space-y-9">
           <div className="text-xl tablet-lg:text-3xl p-description">{parse(summary)}</div>
 
           <div className="divide-y rail-divide space-y-12">

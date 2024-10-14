@@ -1,16 +1,20 @@
 "use client"
 import { useEffect, useState } from "react"
 import { Events } from "../../../../lib/types"
-import Link from "next/link"
 import PastEventCard from "./pastEventCard"
 import { useBreakpoints } from "@/app/hooks/useBreakpoints"
+import { PastEventsProps } from "@/app/events/past/page"
+import Link from "next/link"
 
-const limit = 16 * 2
+interface PastEventsListProps {
+  limit?: number
+}
 
-const PastPageBody = (props: { initialEvents: Events[] }) => {
+const PastEventsList = (props: PastEventsProps & PastEventsListProps) => {
+  const { initialEvents, eventTypes } = props
   const currentBreakpoint = useBreakpoints()
   const [groupCount, setGroupCount] = useState(1)
-  const [allEvents, setAllEvents] = useState<Events[]>(props.initialEvents)
+  const [allEvents, setAllEvents] = useState<Events[]>(initialEvents)
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
 
@@ -42,13 +46,16 @@ const PastPageBody = (props: { initialEvents: Events[] }) => {
   // Function to load more events
   const loadMoreEvents = async () => {
     try {
+      const limit = props.limit || 32
+      const offset = currentPage * limit
       const newEventsResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/events/past?limit=${limit}&offset=${currentPage * limit}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/events/past?limit=${limit}&offset=${offset}`,
       )
       const newEvents = await newEventsResponse.json()
       if (!Array.isArray(newEvents)) {
         throw new Error("Fetched data is not an array")
       }
+
       if (newEvents.length < limit) {
         setHasMore(false)
       }
@@ -60,7 +67,7 @@ const PastPageBody = (props: { initialEvents: Events[] }) => {
   }
 
   const eventGroups = groupArray(allEvents, groupCount).map((group, index) => {
-    const row = group.map((event, i) => <PastEventCard key={i} event={event} />)
+    const row = group.map((event, i) => <PastEventCard key={i} event={event} eventTypes={eventTypes} />)
     return (
       <div
         key={index}
@@ -74,18 +81,26 @@ const PastPageBody = (props: { initialEvents: Events[] }) => {
   return (
     <div className="pb-9">
       <div className="divide-y rail-divide">{eventGroups}</div>
-      {hasMore && (
+      {props.limit && hasMore ? (
         <div className="text-center pt-6">
           <button
             onClick={loadMoreEvents}
-            className="bg-indigo-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-indigo-600"
+            className="bg-indigo-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-600 uppercase text-xl"
           >
             Load More Events
           </button>
+        </div>
+      ) : (
+        <div className="text-center pt-6">
+          <Link href="/events/past">
+            <button className="bg-indigo-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-600 uppercase text-xl">
+              Past events
+            </button>
+          </Link>
         </div>
       )}
     </div>
   )
 }
 
-export default PastPageBody
+export default PastEventsList
