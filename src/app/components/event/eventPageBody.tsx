@@ -52,7 +52,7 @@ const EventPageBody = (props: EventProps) => {
 
   return (
     <article className="h-entry py-6 tablet-lg:py-12">
-      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-20">
+      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet:gap-y-20">
         <div className="col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-4">
           <div className="flex flex-col items-center justify-center space-y-3 tablet-lg:space-y-6">
             <p className="flex space-x-3 text-xs tablet-lg:text-sm">
@@ -60,7 +60,7 @@ const EventPageBody = (props: EventProps) => {
                 <Link href={eventsPermalink}>Events</Link>
               </span>
               <span className="border-l rail-border"></span>
-              {type && <span className="uppercase font-normal text-nowrap text-center">{type}</span>}
+              {type && <span className="uppercase font-normal text-nowrap text-center">{parse(type)}</span>}
               {series && <span className="border-l rail-border"></span>}
               {series && <span className="">#{series}</span>}
             </p>
@@ -91,14 +91,16 @@ const EventPageBody = (props: EventProps) => {
 
         {railProduced && (
           <div className={`col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-4`}>
-            <div className="text-lg tablet-lg:text-lg text-center p-description bg-white dark:bg-zinc-700 p-6 rounded-xl space-y-2">
+            <div className="text-md tablet-lg:text-lg text-center p-description bg-white dark:bg-zinc-700 py-3 tablet:py-6 px-3 tablet:px-6 rounded-xl space-y-1">
               <p>This event is produced by The Brooklyn Rail.</p>
               <p>
                 Help us raise <span className="font-medium">$200,000</span> by Dec 31.{" "}
-                <Link className="underline text-violet-600 dark:text-violet-400" href={`/donate`}>
-                  Leave a donation
+                <Link
+                  className="text-violet-600 dark:text-violet-400 block tablet:inline mt-1 tablet:mt-0 hover:no-underline"
+                  href={`/donate`}
+                >
+                  <span className="underline">Leave a donation</span> ✨🌈
                 </Link>
-                ✨🌈
               </p>
             </div>
           </div>
@@ -118,17 +120,18 @@ const EventPageBody = (props: EventProps) => {
             </div>
             {peopleList}
           </div>
+
           {eventData.poets && eventData.poets.length > 0 && (
             <>
-              <div className="flex justify-center">
-                <SoundWaves />
-              </div>
               <Poets poets={eventData.poets} />
             </>
           )}
-        </div>
-        <div className={`col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-4`}>
-          <Sponsor />
+          <div className="space-y-9">
+            <div className="flex justify-center">
+              <SoundWaves />
+            </div>
+            <Sponsor />
+          </div>
         </div>
       </div>
     </article>

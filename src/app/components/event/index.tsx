@@ -8,8 +8,8 @@ import EventPageBody from "./eventPageBody"
 import Person from "./person"
 
 export enum EventTypes {
-  TheNewSocialEnvironment = "the-new-social-environment",
-  CommonGround = "common-ground",
+  TheNewSocialEnvironment = "The New Social Environment",
+  CommonGround = "Common Ground",
 }
 
 const EventPage = (props: EventProps) => {

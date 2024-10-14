@@ -102,7 +102,8 @@ body {
 
 .paper-event,
 .paper-events,
-.paper-events-past {
+.paper-events-past,
+.paper-preview-event {
   @apply bg-indigo-50 dark:bg-zinc-800;
   @apply text-zinc-900 dark:text-indigo-50;
 }

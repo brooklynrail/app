@@ -74,8 +74,8 @@ const EventPreview = (props: EventPreviewProps) => {
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/event/${eventData.id}/`
   return (
-    <Paper pageClass="paper-preview">
-      <main className="">
+    <Paper pageClass="paper-preview paper-preview-event">
+      <main className="px-6">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
           <div className="col-span-4 tablet-lg:col-span-12">
             <PreviewHeader previewURL={previewURL} />

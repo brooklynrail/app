@@ -136,6 +136,8 @@ export const getEvent = cache(async (slug: string) => {
       },
     }),
   )
+
+  console.log("event", event)
   return event[0] as Events
 })
 
