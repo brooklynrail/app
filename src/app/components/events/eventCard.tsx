@@ -6,7 +6,9 @@ import Link from "next/link"
 import { formatTime } from "."
 
 const EventCard = ({ event }: { event: Events }) => {
-  const { title, slug, deck, start_date, section, series } = event
+  const { title, slug, deck, start_date, type, series } = event
+
+  console.log(event.type)
 
   const eventDate = new Date(start_date)
   const eventyear = eventDate.getFullYear()
@@ -42,7 +44,7 @@ const EventCard = ({ event }: { event: Events }) => {
       <div className="order-first tablet-lg:order-none col-span-4 tablet-lg:col-span-6">
         <div className="flex flex-col space-y-1">
           <p className="flex space-x-3 text-sm">
-            {section && <span className="uppercase text-nowrap font-normal">{section.name}</span>}
+            {type && <span className="uppercase text-nowrap font-normal">{parse(type)}</span>}
             {series && <span className="border-l rail-border"></span>}
             {series && <span className="">#{series}</span>}
           </p>

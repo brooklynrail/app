@@ -17,9 +17,9 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     return {}
   }
 
-  const { title, excerpt, date_created, date_updated, people, title_tag, section } = data.eventData
+  const { title, summary, date_created, date_updated, people, title_tag } = data.eventData
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
-  const ogdescription = `${stripHtml(excerpt).result}`
+  const ogdescription = `${stripHtml(summary).result}`
   // const ogimageprops = { ogimage: featured_image, title }
   // const ogimages = getOGImage(ogimageprops)
 
@@ -45,7 +45,6 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       type: `article`,
       publishedTime: date_created,
       modifiedTime: date_updated,
-      section: section.name,
       authors: authors,
     },
     twitter: {

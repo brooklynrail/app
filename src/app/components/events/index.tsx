@@ -18,7 +18,7 @@ const EventsPage = (props: EventsProps) => {
     <Paper pageClass="paper-events">
       <Header type={HeaderType.Events} />
       <main className="px-6 tablet-lg:px-3 pb-12 desktop:max-w-screen-widescreen mx-auto divide-y rail-divide">
-        <div className="tablet-lg:px-6 space-y-9 divide-y rail-divide">
+        <div className="space-y-9 divide-y rail-divide">
           <div className="pt-9 space-y-3 tablet-lg:space-y-6">
             <h1 className="font-bold text-4xl tablet-lg:text-5xl">Upcoming Events</h1>
             <p className="divide-x rail-divide">

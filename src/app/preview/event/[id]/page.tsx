@@ -22,9 +22,9 @@ export interface EventPreviewProps {
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
   const data = await getData({ params })
 
-  const { title, excerpt, title_tag } = data.eventData
+  const { title, summary, title_tag } = data.eventData
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
-  const ogdescription = `${stripHtml(excerpt).result}`
+  const ogdescription = `${stripHtml(summary).result}`
 
   return {
     title: `PREVIEW: ${ogtitle} `,
@@ -84,8 +84,6 @@ async function getData({ params }: { params: PreviewParams }) {
   if (!eventData) {
     return notFound()
   }
-
-  const currentSection = eventData.section
 
   const permalink = getPermalink({
     eventId: eventData.id,

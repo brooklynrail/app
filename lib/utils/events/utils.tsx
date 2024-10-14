@@ -13,14 +13,14 @@ export const getEvents = cache(async () => {
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
     `?fields[]=id` +
     `&fields[]=slug` +
+    `&fields[]=type` +
+    `&fields[]=kicker` +
     `&fields[]=title` +
     `&fields[]=deck` +
     `&fields[]=series` +
     `&fields[]=start_date` +
     `&fields[]=end_date` +
-    `&fields[]=section.id` +
-    `&fields[]=section.slug` +
-    `&fields[]=section.name` +
+    `&sort=start_date` +
     `&filter[start_date][_gte]=$NOW` +
     `&filter[status][_eq]=published`
 
@@ -45,17 +45,16 @@ export async function getPastEvents(props: PastEventsParams) {
       `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
       `?fields[]=id` +
       `&fields[]=slug` +
+      `&fields[]=type` +
+      `&fields[]=kicker` +
       `&fields[]=title` +
       `&fields[]=deck` +
       `&fields[]=series` +
       `&fields[]=start_date` +
       `&fields[]=end_date` +
       `&fields[]=youtube_id` +
-      `&fields[]=section.id` +
-      `&fields[]=section.slug` +
-      `&fields[]=section.name` +
       `&filter[start_date][_lte]=$NOW` +
-      `&filter[section][slug][_in]=the-new-social-environment,common-ground` +
+      `&filter[type][_in]=the-new-social-environment,common-ground` +
       `&filter[youtube_id][_nempty]=true` +
       `&filter[status][_eq]=published` +
       `&page=${Math.floor(offset / limit) + 1}` +
@@ -81,15 +80,20 @@ export const getEvent = cache(async (slug: string) => {
       fields: [
         "id",
         "slug",
+        "type",
+        "kicker",
         "title",
         "deck",
-        "excerpt",
+        "summary",
+        "type",
         "body_text",
+        "body",
         "series",
         "start_date",
         "end_date",
         "youtube_id",
-        "event_id",
+        "airtable_id",
+        "status",
         {
           people: [
             {
@@ -99,6 +103,7 @@ export const getEvent = cache(async (slug: string) => {
                 "bio",
                 "website",
                 "instagram",
+                "related_links",
                 {
                   portrait: ["id", "width", "height", "filename_disk", "caption"],
                 },
@@ -115,50 +120,13 @@ export const getEvent = cache(async (slug: string) => {
                 "bio",
                 "website",
                 "instagram",
+                "related_links",
                 {
                   portrait: ["id", "width", "height", "filename_disk", "caption"],
                 },
               ],
             },
           ],
-        },
-        {
-          section: ["id", "name", "slug"],
-        },
-        {
-          people: [
-            {
-              people_id: [
-                "id",
-                "display_name",
-                "bio",
-                "website",
-                "instagram",
-                {
-                  portrait: ["id", "width", "height", "filename_disk", "caption"],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          poets: [
-            {
-              people_id: [
-                "id",
-                "display_name",
-                "bio",
-                "website",
-                "instagram",
-                {
-                  portrait: ["id", "width", "height", "filename_disk", "caption"],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          section: ["id", "name", "slug"],
         },
       ],
       filter: {
@@ -168,6 +136,8 @@ export const getEvent = cache(async (slug: string) => {
       },
     }),
   )
+
+  console.log("event", event)
   return event[0] as Events
 })
 
@@ -179,8 +149,6 @@ export async function getPreviewEvent(id: string) {
         version: "draft",
         fields: [
           "*",
-          "date_created",
-          { section: ["id", "name", "slug"] },
           {
             people: [
               {

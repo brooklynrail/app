@@ -4,8 +4,8 @@ import Link from "next/link"
 
 const Sponsor = () => {
   return (
-    <div className="py-9 tablet-lg:w-tablet mx-auto space-y-3">
-      <p className="text-center text-xl">
+    <div className="p-6 space-y-3 text-lg text-center p-description bg-white dark:bg-zinc-700 rounded-xl">
+      <p className="text-center">
         ❤️ 🌈 We'd like to thank the{" "}
         <a href="https://www.instagram.com/terraamericanart/">
           <strong>The Terra Foundation for American Art</strong>

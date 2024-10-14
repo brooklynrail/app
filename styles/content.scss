@@ -128,12 +128,19 @@
 }
 
 .paper-event .content {
-  @apply text-lg tablet-lg:text-xl font-normal font-sans;
-}
-.paper .content-bio {
   @extend .content;
-  @apply text-md tablet-lg:text-lg font-normal font-sans;
+  @apply text-lg tablet-lg:text-xl font-normal font-sans;
+  p,
+  blockquote,
+  li,
+  pre {
+    @apply max-w-none;
+  }
 }
+// .paper .content-bio {
+//   @extend .content;
+//   @apply text-md tablet-lg:text-lg font-normal font-sans;
+// }
 
 figcaption,
 figcaption p {
