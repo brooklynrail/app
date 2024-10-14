@@ -1,14 +1,30 @@
-import { aggregate, readItems } from "@directus/sdk"
+import { aggregate, readItems, readField } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../../directus"
-import { Events } from "../../types"
+import { Events, EventsTypes } from "../../types"
+
+export enum EventTypes {
+  TheNewSocialEnvironment = "the-new-social-environment",
+  CommonGround = "common-ground",
+  CommunityListing = "community-listing",
+  RailEvents = "rail-events",
+  SponsoredListing = "sponsored-listing",
+  TheaterOfWar = "theater-of-war",
+  AbolitionistReadingNativePlantEmbroidery = "abolitionist-reading-native-plant-embroidery",
+}
+
+export const getEventTypes = cache(async () => {
+  const data = await directus.request(readField("events", "type"))
+  const types: Array<{ text: string; value: string }> = data.meta.options && data.meta.options.choices
+  return types
+})
+
+export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) => {
+  const type = eventTypes.find((eventType) => eventType.value === typeValue)
+  return type ? type.text : typeValue // Return readable text or fallback to value
+}
 
 export const getEvents = cache(async () => {
-  const today = new Date()
-
-  // start_date: '2024-10-07T18:00:00'
-  // if today is gte start_date, then show the event
-
   const eventsDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
     `?fields[]=id` +
@@ -137,7 +153,6 @@ export const getEvent = cache(async (slug: string) => {
     }),
   )
 
-  console.log("event", event)
   return event[0] as Events
 })
 
