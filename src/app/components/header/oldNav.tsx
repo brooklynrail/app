@@ -10,7 +10,7 @@ const OldNav = () => {
           </Link>
         </li>
         <li>
-          <Link href="https://brooklynrail.org/events" title="Events">
+          <Link href="https://brooklynrail.org/events/?hp" title="Events">
             <span>Events</span>
           </Link>
         </li>

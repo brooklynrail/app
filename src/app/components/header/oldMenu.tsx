@@ -1,12 +1,10 @@
-import { useTheme } from "@/app/components/theme"
 import { useEffect, useState } from "react"
-import { GlobalSettings, GlobalSettingsNavigation, Issues, Sections, Tributes } from "../../../../lib/types"
-import { getCurrentIssueData, getNavigation, getPermalink, PageType } from "../../../../lib/utils"
+import { Issues } from "../../../../lib/types"
+import { getCurrentIssueData } from "../../../../lib/utils"
 
 import IssueRail from "../issueRail"
 
 const OldMenu = ({ closeMenu }: { closeMenu: () => void }) => {
-  const { theme } = useTheme()
   const [issue, setIssue] = useState<Issues | undefined>(undefined)
 
   useEffect(() => {
