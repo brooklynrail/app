@@ -24,7 +24,7 @@ export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) =
   return type ? type.text : typeValue // Return readable text or fallback to value
 }
 
-export const getEvents = cache(async () => {
+export const getUpcomingEvents = cache(async () => {
   const eventsDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
     `?fields[]=id` +
@@ -37,7 +37,7 @@ export const getEvents = cache(async () => {
     `&fields[]=start_date` +
     `&fields[]=end_date` +
     `&sort=start_date` +
-    `&filter[start_date][_gte]=$NOW` +
+    `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
     `&filter[status][_eq]=published`
 
   const res = await fetch(eventsDataAPI)
