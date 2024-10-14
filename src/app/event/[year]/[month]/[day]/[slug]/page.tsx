@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
-import { Events, EventsPeople, People } from "../../../../../../../lib/types"
+import { Events, EventsPeople, EventsTypes } from "../../../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../../../lib/utils"
-import { getEvent } from "../../../../../../../lib/utils/events/utils"
+import { getEvent, getEventTypes } from "../../../../../../../lib/utils/events/utils"
 import EventPage from "@/app/components/event"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
@@ -55,12 +55,16 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 
 export interface EventProps {
   eventData: Events
+  eventTypes: EventsTypes[]
   permalink: string
   errorCode?: number
   errorMessage?: string
 }
 
 interface EventParams {
+  year: string
+  month: string
+  day: string
   slug: string
   id: string
 }
@@ -74,19 +78,46 @@ export default async function EventController({ params }: { params: EventParams 
 }
 
 async function getData({ params }: { params: EventParams }) {
+  const year: string = params.year
+  const month: string = params.month
+  const day: string = params.day
   const slug: string = params.slug.toString()
+
+  // Month & Day —— Both need to have a leading zero if they are less than 10
+  // otherwise it should go to a 404 page
+  if (month.length === 1 || day.length === 1) {
+    return notFound()
+  }
+
+  if (!year || !month || !day || !slug) {
+    return notFound()
+  }
 
   const eventData = await getEvent(slug)
   if (!eventData) {
     return notFound()
   }
 
+  const eventTypes = await getEventTypes()
+  if (!eventTypes) {
+    return notFound()
+  }
+
+  const startDate = new Date(eventData.start_date)
+  const eventYear = startDate.getFullYear()
+  const eventMonth = startDate.getMonth() + 1
+  const eventDay = startDate.getDate()
+
   const permalink = getPermalink({
-    type: PageType.Events,
+    eventYear: eventYear,
+    eventMonth: eventMonth,
+    eventDay: eventDay,
+    type: PageType.Event,
   })
 
   return {
     eventData,
+    eventTypes,
     permalink,
   }
 }
