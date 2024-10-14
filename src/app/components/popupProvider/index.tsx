@@ -58,7 +58,7 @@ export const PopupProvider = ({ children }: { children: ReactNode }) => {
     }
 
     // If view count is less than 4, show the popup and update the cookie
-    if (viewedDonateCount < 6) {
+    if (viewedDonateCount < 2) {
       setPopupType("donate")
       setShowPopup(true)
       const newCount = viewedDonateCount + 1
