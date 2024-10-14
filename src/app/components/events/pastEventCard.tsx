@@ -8,7 +8,7 @@ import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 import { useEffect, useState } from "react"
 
 const PastEventCard = ({ event }: { event: Events }) => {
-  const { title, slug, deck, start_date, section, series, youtube_id } = event
+  const { title, slug, deck, start_date, type, series, youtube_id } = event
 
   const currentBreakpoint = useBreakpoints()
   const [colWidth, setColWidth] = useState("")
@@ -64,7 +64,7 @@ const PastEventCard = ({ event }: { event: Events }) => {
           <Image src={youtube_image} alt={title} width={800} height={800} />
           <div className="flex flex-col space-y-2">
             <p className="flex space-x-3 text-xs">
-              {section && <span className="uppercase tracking-wider text-nowrap font-normal">{section.name}</span>}
+              {type && <span className="uppercase text-nowrap font-normal">{parse(type)}</span>}
               {series && <span className="border-l rail-border"></span>}
               {series && <span className="">#{series}</span>}
             </p>
