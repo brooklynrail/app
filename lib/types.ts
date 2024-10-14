@@ -481,6 +481,11 @@ export type Events = {
   youtube_id?: string | null
 }
 
+export type EventsTypes = {
+  text: string
+  value: string
+}
+
 export type EventsPeople = {
   events_id?: Events | null
   id: number
@@ -676,6 +681,7 @@ export type CustomDirectusTypes = {
   directus_versions: DirectusVersions[]
   directus_webhooks: DirectusWebhooks[]
   events: Events[]
+  events_types: EventsTypes[]
   events_people: EventsPeople[]
   events_people1: EventsPeople1[]
   global_settings: GlobalSettings
