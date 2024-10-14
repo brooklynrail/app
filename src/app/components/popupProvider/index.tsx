@@ -33,14 +33,22 @@ const setCookie = (name: string, value: string, hours: number) => {
   document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/`
 }
 
-export const PopupProvider = ({ children }: { children: ReactNode }) => {
+interface PopupProviderProps {
+  children: ReactNode
+  hidePopup?: boolean
+}
+
+export const PopupProvider = (props: PopupProviderProps) => {
+  const { children, hidePopup } = props
   const [showPopup, setShowPopup] = useState(false)
   const [popupType, setPopupType] = useState<string | null>(null)
   const [viewCount, setViewCount] = useState<number>(0)
   const [viewCountUpdated, setViewCountUpdated] = useState(false) // New flag to track updates
   const [images, setImages] = useState<any[]>([])
   useEffect(() => {
-    document.body.style.overflow = showPopup ? "hidden" : "auto"
+    if (!hidePopup) {
+      document.body.style.overflow = showPopup ? "hidden" : "auto"
+    }
   }, [showPopup])
 
   useEffect(() => {
