@@ -891,11 +891,10 @@ export function getPermalink(props: PermalinkProps) {
     issueId,
     tributeId,
     eventYear,
-    eventMonth,
-    eventDay,
   } = props
   const month = props.month && props.month < 10 ? `0${props.month}` : props.month
-  const day = props.day && props.day < 10 ? `0${props.day}` : props.day
+  const eventMonth = props.eventMonth && props.eventMonth < 10 ? `0${props.eventMonth}` : props.eventMonth
+  const eventDay = props.eventDay && props.eventDay < 10 ? `0${props.eventDay}` : props.eventDay
 
   // Production URL: NEXT_PUBLIC_BASE_URL https://brooklynrail.org
   // Preview URL: NEXT_PUBLIC_BASE_URL https://preview.brooklynrail.org
@@ -914,6 +913,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/issues/${issueSlug}/`
     case PageType.Event:
       return `${baseURL}/event/${eventYear}/${eventMonth}/${eventDay}/${slug}/`
+    case PageType.Events:
+      return `${baseURL}/events/`
     case PageType.Tribute:
       return `${baseURL}/tribute/${tributeSlug}/`
     case PageType.TributeArticle:
@@ -924,8 +925,6 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/people/${personSlug}/`
     case PageType.People:
       return `${baseURL}/people/`
-    case PageType.Events:
-      return `${baseURL}/events/`
     case PageType.Page:
       return `${baseURL}/${slug}/`
     case PageType.ChildPage:
