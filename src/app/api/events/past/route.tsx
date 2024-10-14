@@ -7,9 +7,6 @@ export async function GET(request: Request) {
   const limit = parseInt(searchParams.get("limit") as string, 10) || 16
   const offset = parseInt(searchParams.get("offset") as string, 10) || 0
 
-  console.log("limit", limit)
-  console.log("offset", offset)
-
   try {
     const events = await getPastEvents({ limit, offset })
     return Response.json(events)

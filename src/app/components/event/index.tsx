@@ -2,15 +2,15 @@
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
-import Link from "next/link"
-import parse from "html-react-parser"
-import { EventsPeople, EventsPeople1, People } from "../../../../lib/types"
-import PortraitImage from "../portraitImage"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faInstagram } from "@fortawesome/free-brands-svg-icons"
-import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons"
+import { EventsPeople, EventsPeople1 } from "../../../../lib/types"
 import Register from "./register"
 import EventPageBody from "./eventPageBody"
+import Person from "./person"
+
+export enum EventTypes {
+  TheNewSocialEnvironment = "the-new-social-environment",
+  CommonGround = "common-ground",
+}
 
 const EventPage = (props: EventProps) => {
   const { eventData } = props
@@ -24,44 +24,8 @@ const EventPage = (props: EventProps) => {
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
         <EventPageBody {...props} />
       </main>
-      {isFutureEvent && eventData.event_id && <Register {...props} />}
+      {isFutureEvent && eventData.airtable_id && <Register {...props} />}
     </Paper>
-  )
-}
-
-export const Person = ({ person, index }: { person: People; index: number }) => {
-  const { bio, instagram, portrait, display_name, website } = person
-  const instagram_url = `https://www.instagram.com/${instagram}`
-  return (
-    <div key={index} className="flex flex-col space-y-3 pt-3">
-      <div className="space-y-1">
-        <h3 className="font-bold text-xl p-name">{display_name}</h3>
-        <div className="text-md tablet-lg:text-lg content-bio p-note">
-          {portrait ? (
-            <div className="float-right ml-3">
-              <PortraitImage image={portrait} title={display_name} />
-            </div>
-          ) : null}
-          <p>{parse(bio)}</p>
-        </div>
-        {website && (
-          <p className="text-sm space-x-1 flex items-center !mb-1">
-            <FontAwesomeIcon className="relative top-[1px] no-underline" icon={faGlobeAmericas} />
-            <Link href={website} target="_blank" rel="noopener noreferrer u-url">
-              {person.website}
-            </Link>
-          </p>
-        )}
-        {instagram && (
-          <p className="text-sm space-x-1 flex items-center">
-            <FontAwesomeIcon className="relative top-[1px] no-underline" icon={faInstagram} />
-            <Link href={instagram_url} target="_blank" rel="noopener noreferrer u-url">
-              {instagram}
-            </Link>
-          </p>
-        )}
-      </div>
-    </div>
   )
 }
 

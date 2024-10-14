@@ -5,7 +5,7 @@ import { formatTime } from "../events"
 
 const Register = (props: EventProps) => {
   const { eventData } = props
-  const { title, deck, start_date, event_id } = eventData
+  const { title, deck, start_date, airtable_id } = eventData
 
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
@@ -38,7 +38,7 @@ const Register = (props: EventProps) => {
               <script src="https://static.airtable.com/js/embed/embed_snippet_v1.js"></script>
               <iframe
                 className="airtable-embed airtable-dynamic-height my-12"
-                src={`https://airtable.com/embed/shrZwZHHxdeEANeeT?backgroundColor=orangeLight&prefill_Event+IDs=${event_id}`}
+                src={`https://airtable.com/embed/shrZwZHHxdeEANeeT?backgroundColor=orangeLight&prefill_Event+IDs=${airtable_id}`}
                 frameBorder="0"
                 width="100%"
                 height="1300"

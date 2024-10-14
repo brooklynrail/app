@@ -6,13 +6,16 @@ import parse from "html-react-parser"
 import { EventsPeople } from "../../../../lib/types"
 import EventVideo from "./eventVideo"
 import Sponsor from "../events/sponsor"
-import { Person, Poets, SoundWaves } from "."
+import { EventTypes, Poets, SoundWaves } from "."
 import { formatTime } from "../events"
+import ReactMarkdown from "react-markdown"
+import Person from "./person"
 
 const EventPageBody = (props: EventProps) => {
   const { eventData } = props
-  const { title, deck, start_date, excerpt, section, series, body_text, youtube_id, event_id } = eventData
+  const { title, deck, start_date, summary, type, series, body, youtube_id, airtable_id } = eventData
 
+  const railProduced = type === EventTypes.TheNewSocialEnvironment || type === EventTypes.CommonGround
   const isFutureEvent = new Date(start_date) > new Date()
 
   // get the start date in this format:
@@ -22,6 +25,7 @@ const EventPageBody = (props: EventProps) => {
     weekday: "long",
     month: "long",
     day: "numeric",
+    year: "numeric",
   })
 
   const startTimeET = formatTime(startDate, "America/New_York")
@@ -48,15 +52,15 @@ const EventPageBody = (props: EventProps) => {
 
   return (
     <article className="h-entry py-6 tablet-lg:py-12">
-      <div className="grid grid-cols-4 desktop:grid-cols-12 gap-3 gap-y-9">
-        <div className="col-span-4 desktop:col-span-6 desktop:col-start-4">
+      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-20">
+        <div className="col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-4">
           <div className="flex flex-col items-center justify-center space-y-3 tablet-lg:space-y-6">
             <p className="flex space-x-3 text-xs tablet-lg:text-sm">
               <span className="uppercase font-normal">
                 <Link href={eventsPermalink}>Events</Link>
               </span>
               <span className="border-l rail-border"></span>
-              {section && <span className="uppercase font-normal text-nowrap text-center">{section.name}</span>}
+              {type && <span className="uppercase font-normal text-nowrap text-center">{type}</span>}
               {series && <span className="border-l rail-border"></span>}
               {series && <span className="">#{series}</span>}
             </p>
@@ -85,34 +89,46 @@ const EventPageBody = (props: EventProps) => {
 
         {!isFutureEvent && youtube_id && <EventVideo title={title} youtube_id={youtube_id} />}
 
-        <div
-          className={`col-span-4 ${isFutureEvent ? `desktop:col-span-8 desktop:col-start-3` : `desktop:col-span-8 desktop:col-start-2`}`}
-        >
-          <div className="text-xl tablet-lg:text-3xl p-description">{parse(excerpt)}</div>
-        </div>
-        <div
-          className={`col-span-4 ${isFutureEvent ? `desktop:col-span-8 desktop:col-start-3` : `desktop:col-span-8 desktop:col-start-2`}`}
-        >
-          <div className="flex flex-col space-y-9 tablet-lg:space-y-16">
-            <div className="divide-y rail-divide space-y-6">
-              <div className="space-y-3">
-                <h3 className="text-lg tablet-lg:text-xl uppercase font-bold">In this Talk</h3>
-                {body_text && <div className="text-xl tablet-lg:text-3xl content">{parse(body_text)}</div>}
-              </div>
-              {peopleList}
-            </div>
-            {eventData.poets && eventData.poets.length > 0 && (
-              <>
-                <div className="flex justify-center">
-                  <SoundWaves />
-                </div>
-                <Poets poets={eventData.poets} />
-              </>
-            )}
-            <div className="border-t rail-border">
-              <Sponsor />
+        {railProduced && (
+          <div className={`col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-4`}>
+            <div className="text-lg tablet-lg:text-lg text-center p-description bg-white dark:bg-zinc-700 p-6 rounded-xl space-y-2">
+              <p>This event is produced by The Brooklyn Rail.</p>
+              <p>
+                Help us raise <span className="font-medium">$200,000</span> by Dec 31.{" "}
+                <Link className="underline text-violet-600 dark:text-violet-400" href={`/donate`}>
+                  Leave a donation
+                </Link>
+                ✨🌈
+              </p>
             </div>
           </div>
+        )}
+
+        <div className={`col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-3 space-y-9`}>
+          <div className="text-xl tablet-lg:text-3xl p-description">{parse(summary)}</div>
+
+          <div className="divide-y rail-divide space-y-12">
+            <div className="space-y-3">
+              <h3 className="text-lg tablet-lg:text-xl uppercase font-bold">In this Talk</h3>
+              {body && (
+                <div className="text-xl tablet-lg:text-3xl content">
+                  <ReactMarkdown>{body}</ReactMarkdown>
+                </div>
+              )}
+            </div>
+            {peopleList}
+          </div>
+          {eventData.poets && eventData.poets.length > 0 && (
+            <>
+              <div className="flex justify-center">
+                <SoundWaves />
+              </div>
+              <Poets poets={eventData.poets} />
+            </>
+          )}
+        </div>
+        <div className={`col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-4`}>
+          <Sponsor />
         </div>
       </div>
     </article>
