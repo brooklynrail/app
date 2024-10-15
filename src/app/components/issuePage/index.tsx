@@ -17,6 +17,7 @@ import PreviewHeader from "../preview/previewHead"
 import TableOfContentsPage from "./layout/tableOfContentsPage"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
+import CoversPopup from "../issueRail/coversPopup"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -132,6 +133,7 @@ const IssuePage = (props: IssuePageProps) => {
           </div>
         </div>
       </div>
+      <CoversPopup />
     </Paper>
   )
 }

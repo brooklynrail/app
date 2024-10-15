@@ -9,6 +9,7 @@ import Header, { HeaderType } from "../header"
 import { useTheme } from "../theme"
 import Paper from "../paper"
 import ArticleBody, { BodyTypes } from "./articleBody"
+import CoversPopup from "../issueRail/coversPopup"
 
 const Article = (props: ArticleProps) => {
   const { thisIssueData, articleData, permalink } = props
@@ -56,6 +57,7 @@ const Article = (props: ArticleProps) => {
           </div>
         </div>
       </main>
+      <CoversPopup />
     </Paper>
   )
 }
