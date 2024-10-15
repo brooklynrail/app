@@ -60,7 +60,9 @@ export type Articles = {
 }
 export interface Redirects {
   path: string
+  type: string
   articles: Articles
+  events: Events
 }
 
 export type ArticlesContributors = {
@@ -465,7 +467,7 @@ export type Events = {
   id: string
   images: any[] | ArticlesFiles[]
   people: EventsPeople[]
-  poets: EventsPeople1[]
+  poets: EventsPeoplePoets[]
   series?: string | null
   slug: string
   soldout: boolean
@@ -492,7 +494,7 @@ export type EventsPeople = {
   people_id?: People | null
 }
 
-export type EventsPeople1 = {
+export type EventsPeoplePoets = {
   events_id?: Events | null
   id: number
   people_id?: People | null
@@ -594,6 +596,8 @@ export type People = {
   pronouns?: string | null
   related_links?: RelatedLinks[] | null
   slug: string
+  events: EventsPeople[]
+  poets: EventsPeoplePoets[]
   sort?: number | null
   status?: string | null
   website?: string | null
@@ -683,7 +687,7 @@ export type CustomDirectusTypes = {
   events: Events[]
   events_types: EventsTypes[]
   events_people: EventsPeople[]
-  events_people1: EventsPeople1[]
+  events_people_poets: EventsPeoplePoets[]
   global_settings: GlobalSettings
   global_settings_navigation: GlobalSettingsNavigation
   issues: Issues[]
