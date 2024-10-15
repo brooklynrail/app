@@ -1,7 +1,8 @@
 import { stripHtml } from "string-strip-html"
 import { Issues } from "../../../../lib/types"
 import Image from "next/image"
-import { usePopup } from "./popupProvider"
+import { usePopup } from "../popupProvider"
+import CoversPopup from "./coversPopup"
 
 interface CoverImagesProps {
   thisIssueData: Issues
@@ -10,7 +11,7 @@ interface CoverImagesProps {
 export const CoverImage = (props: CoverImagesProps) => {
   const { thisIssueData } = props
 
-  const { setShowPopup, setImages } = usePopup()
+  const { setImages, togglePopup } = usePopup()
   if (
     !thisIssueData.cover_1 ||
     !thisIssueData.cover_1.width ||
@@ -29,10 +30,9 @@ export const CoverImage = (props: CoverImagesProps) => {
     thisIssueData.cover_6,
   ]
 
-  const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
-    e.preventDefault()
+  const handleClick = () => {
     setImages(covers)
-    setShowPopup(true)
+    togglePopup("covers")
   }
 
   const alt = thisIssueData.cover_1.caption
@@ -54,7 +54,7 @@ export const CoverImage = (props: CoverImagesProps) => {
           }}
           alt={alt}
           sizes="25vw"
-          onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
+          onClick={handleClick}
         />
       </div>
     </div>
