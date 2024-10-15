@@ -2,15 +2,10 @@
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
-import { EventsPeople, EventsPeople1 } from "../../../../lib/types"
+import { EventsPeople, EventsPeoplePoets } from "../../../../lib/types"
 import Register from "./register"
 import EventPageBody from "./eventPageBody"
 import Person from "./person"
-
-export enum EventTypes {
-  TheNewSocialEnvironment = "The New Social Environment",
-  CommonGround = "Common Ground",
-}
 
 const EventPage = (props: EventProps) => {
   const { eventData } = props
@@ -21,15 +16,23 @@ const EventPage = (props: EventProps) => {
   return (
     <Paper pageClass="paper-event">
       <Header type={HeaderType.Events} />
+      <svg width="214" height="100" viewBox="0 0 214 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M170.999 95.5L5.49919 45.5C-25.0008 -26.5 99.9992 -2.50004 179.999 56C243.999 102.8 200.666 101.833 170.999 95.5Z"
+          stroke="black"
+        />
+      </svg>
+
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
         <EventPageBody {...props} />
       </main>
+
       {isFutureEvent && eventData.airtable_id && <Register {...props} />}
     </Paper>
   )
 }
 
-export const Poets = ({ poets }: { poets: EventsPeople1[] }) => {
+export const Poets = ({ poets }: { poets: EventsPeoplePoets[] }) => {
   const poetArray: Array<string> = []
   const allPoets =
     poets &&
@@ -44,11 +47,16 @@ export const Poets = ({ poets }: { poets: EventsPeople1[] }) => {
     })
   const poetNames = poetArray.join(", ")
   return (
-    <div className="divide-y rail-divide space-y-6">
-      <p className="text-xl tablet-lg:text-3xl py-3">
-        {`The Rail has a tradition of ending our conversations with a poetry reading, and we’re fortunate to have ${poetNames} reading.`}
-      </p>
-      <div className="pt-6">{allPoets}</div>
+    <div className="space-y-9">
+      <div className="flex justify-center">
+        <SoundWaves />
+      </div>
+      <div className="divide-y rail-divide space-y-6">
+        <p className="text-xl tablet-lg:text-3xl py-3">
+          {`The Rail has a tradition of ending our conversations with a poetry reading, and we’re fortunate to have ${poetNames} reading.`}
+        </p>
+        <div className="pt-6">{allPoets}</div>
+      </div>
     </div>
   )
 }
@@ -61,7 +69,7 @@ export const SoundWaves = () => {
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
-      <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g id="Group-2" transform="translate(1.000000, 1.000000)">
           <path
             d="M0 9C10-1.66666667 20-1.66666667 30 9 40 19.6666667 50 19.6666667 60 9 70-1.66666667 80-1.66666667 90 9c10 10.6666667 20 10.6666667 30 0 10-10.66666667 20-10.66666667 30 0 10 10.6666667 20 10.6666667 30 0 10-10.66666667 20-10.66666667 30 0 10 10.6666667 20 10.6666667 30 0"

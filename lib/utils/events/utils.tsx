@@ -1,14 +1,42 @@
-import { aggregate, readItems } from "@directus/sdk"
+import { aggregate, readItems, readField } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../../directus"
-import { Events } from "../../types"
+import { Events, EventsTypes } from "../../types"
 
-export const getEvents = cache(async () => {
-  const today = new Date()
+export enum EventTypes {
+  TheNewSocialEnvironment = "the-new-social-environment",
+  CommonGround = "common-ground",
+  CommunityListing = "community-listing",
+  RailEvents = "rail-events",
+  SponsoredListing = "sponsored-listing",
+  TheaterOfWar = "theater-of-war",
+  AbolitionistReadingNativePlantEmbroidery = "abolitionist-reading-native-plant-embroidery",
+}
 
-  // start_date: '2024-10-07T18:00:00'
-  // if today is gte start_date, then show the event
+export const checkYearMonthDay = (start_date: string, year: string, month: string, day: string) => {
+  const startDate = new Date(start_date)
+  const eventYear = startDate.getFullYear().toString()
+  const eventMonth = (startDate.getMonth() + 1).toString().padStart(2, "0")
+  const eventDay = startDate.getDate().toString().padStart(2, "0")
 
+  if (year !== eventYear || month !== eventMonth || day !== eventDay) {
+    return false
+  }
+  return true
+}
+
+export const getEventTypes = cache(async () => {
+  const data = await directus.request(readField("events", "type"))
+  const types: Array<{ text: string; value: string }> = data.meta.options && data.meta.options.choices
+  return types
+})
+
+export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) => {
+  const type = eventTypes.find((eventType) => eventType.value === typeValue)
+  return type ? type.text : typeValue // Return readable text or fallback to value
+}
+
+export const getUpcomingEvents = cache(async () => {
   const eventsDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
     `?fields[]=id` +
@@ -21,7 +49,7 @@ export const getEvents = cache(async () => {
     `&fields[]=start_date` +
     `&fields[]=end_date` +
     `&sort=start_date` +
-    `&filter[start_date][_gte]=$NOW` +
+    `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
     `&filter[status][_eq]=published`
 
   const res = await fetch(eventsDataAPI)
@@ -137,7 +165,6 @@ export const getEvent = cache(async (slug: string) => {
     }),
   )
 
-  console.log("event", event)
   return event[0] as Events
 })
 
@@ -151,6 +178,21 @@ export async function getPreviewEvent(id: string) {
           "*",
           {
             people: [
+              {
+                people_id: [
+                  "id",
+                  "slug",
+                  "bio",
+                  "display_name",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "caption"],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            poets: [
               {
                 people_id: [
                   "id",

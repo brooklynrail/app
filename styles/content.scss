@@ -136,6 +136,9 @@
   pre {
     @apply max-w-none;
   }
+  a {
+    @apply underline text-indigo-700 decoration-sky-500 decoration-dotted underline-offset-4;
+  }
 }
 // .paper .content-bio {
 //   @extend .content;

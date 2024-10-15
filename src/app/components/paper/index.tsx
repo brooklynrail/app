@@ -10,22 +10,23 @@ import ThemeToggle from "../themeToggle"
 
 export interface PaperProps {
   pageClass: string
+  hidePopup?: boolean
   children: React.ReactNode
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children } = props
+  const { pageClass, children, hidePopup } = props
   const { theme, setTheme } = useTheme()
 
   return (
-    <PopupProvider>
+    <PopupProvider hidePopup={hidePopup}>
       <div className={`paper ${pageClass}`}>
         {children}
         <Footer />
         <Ad970 />
         <ThemeToggle {...{ theme, setTheme }} />
         <CoversPopup />
-        <DonatePopup />
+        {!hidePopup && <DonatePopup />}
       </div>
     </PopupProvider>
   )

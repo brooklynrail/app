@@ -1,13 +1,15 @@
 "use client"
 import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import { Events } from "../../../../lib/types"
 import Link from "next/link"
 import Image from "next/image"
 import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 import { useEffect, useState } from "react"
+import { getEventTypeText } from "../../../../lib/utils/events/utils"
+import { EventCardProps } from "./eventCard"
 
-const PastEventCard = ({ event }: { event: Events }) => {
+const PastEventCard = (props: EventCardProps) => {
+  const { event, eventTypes } = props
   const { title, slug, deck, start_date, type, series, youtube_id } = event
 
   const currentBreakpoint = useBreakpoints()
@@ -33,6 +35,9 @@ const PastEventCard = ({ event }: { event: Events }) => {
       setColWidth(newColWidth)
     }
   }, [currentBreakpoint, colWidth])
+
+  // Get the readable event type text
+  const eventTypeText = getEventTypeText(type, eventTypes)
 
   const eventDate = new Date(start_date)
   const eventyear = eventDate.getFullYear()
@@ -64,7 +69,7 @@ const PastEventCard = ({ event }: { event: Events }) => {
           <Image src={youtube_image} alt={title} width={800} height={800} />
           <div className="flex flex-col space-y-2">
             <p className="flex space-x-3 text-xs">
-              {type && <span className="uppercase text-nowrap font-normal">{parse(type)}</span>}
+              {type && <span className="uppercase text-nowrap font-normal">{parse(eventTypeText)}</span>}
               {series && <span className="border-l rail-border"></span>}
               {series && <span className="">#{series}</span>}
             </p>

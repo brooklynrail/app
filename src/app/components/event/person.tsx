@@ -15,7 +15,6 @@ interface PersonProps {
 const Person = (props: PersonProps) => {
   const { person, index } = props
   const { bio, instagram, portrait, display_name, website, related_links } = person
-  console.log(related_links)
 
   // If instagram is present, remove any leading @ and trim any spaces before or after the string
   const cleanedInstagram = instagram ? instagram.replace(/^@/, "").trim() : ""
@@ -26,9 +25,9 @@ const Person = (props: PersonProps) => {
       <div className="space-y-3">
         <div className="space-y-6">
           <h3 className="font-bold text-xl p-name">{display_name}</h3>
-          <div className="text-md tablet-lg:text-lg content-bio p-note flex flex-row-reverse gap-x-9">
+          <div className="text-md tablet-lg:text-lg content-bio p-note tablet-lg:flex tablet-lg:flex-row-reverse gap-x-9">
             {portrait ? (
-              <div className="flex-none">
+              <div className="float-right m-3 mr-0 tablet-lg:m-0 tablet-lg:float-none tablet-lg:flex-none">
                 <PortraitImage image={portrait} title={display_name} />
               </div>
             ) : null}

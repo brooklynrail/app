@@ -1,14 +1,22 @@
 "use client"
 import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import { Events } from "../../../../lib/types"
+import { Events, EventsTypes } from "../../../../lib/types"
 import Link from "next/link"
 import { formatTime } from "."
+import { getEventTypeText } from "../../../../lib/utils/events/utils"
 
-const EventCard = ({ event }: { event: Events }) => {
+export interface EventCardProps {
+  event: Events
+  eventTypes: EventsTypes[]
+}
+
+const EventCard = (props: EventCardProps) => {
+  const { event, eventTypes } = props
   const { title, slug, deck, start_date, type, series } = event
 
-  console.log(event.type)
+  // Get the readable event type text
+  const eventTypeText = getEventTypeText(type, eventTypes)
 
   const eventDate = new Date(start_date)
   const eventyear = eventDate.getFullYear()
@@ -44,15 +52,15 @@ const EventCard = ({ event }: { event: Events }) => {
       <div className="order-first tablet-lg:order-none col-span-4 tablet-lg:col-span-6">
         <div className="flex flex-col space-y-1">
           <p className="flex space-x-3 text-sm">
-            {type && <span className="uppercase text-nowrap font-normal">{parse(type)}</span>}
+            {type && <span className="uppercase text-nowrap font-normal">{parse(eventTypeText)}</span>}
             {series && <span className="border-l rail-border"></span>}
             {series && <span className="">#{series}</span>}
           </p>
           <div className="flex flex-col">
-            <h2 className="text-3xl font-medium">
+            <h2 className="text-3xl font-bold">
               <Link href={permalink}>{title}</Link>
             </h2>
-            {deck && <p className="text-lg font-light">{parse(deck)}</p>}
+            {deck && <p className="text-lg font-normal">{parse(deck)}</p>}
           </div>
         </div>
       </div>

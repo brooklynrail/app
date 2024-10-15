@@ -1,14 +1,15 @@
 import { stripHtml } from "string-strip-html"
 import { PageType, getOGImage, getPermalink, getPreviewPassword } from "../../../../../lib/utils"
-import { Events, Issues, Sections } from "../../../../../lib/types"
+import { Events, EventsTypes, Issues, Sections } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { getPreviewEvent } from "../../../../../lib/utils/events/utils"
+import { getEventTypes, getPreviewEvent } from "../../../../../lib/utils/events/utils"
 import EventPreview from "@/app/components/preview/event"
 
 export interface EventPreviewProps {
   eventData: Events
+  eventTypes: EventsTypes[]
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -57,13 +58,14 @@ export default async function EventPreviewPage({ params }: { params: PreviewPara
 
   const data = await getData({ params })
 
-  const { eventData, permalink, directusUrl, previewPassword } = data
+  const { eventData, permalink, directusUrl, previewPassword, eventTypes } = data
   if (!eventData || !permalink || !previewPassword || !directusUrl) {
     return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
   }
 
   const eventPreviewProps = {
     eventData,
+    eventTypes,
     permalink,
     directusUrl,
     previewPassword,
@@ -85,6 +87,11 @@ async function getData({ params }: { params: PreviewParams }) {
     return notFound()
   }
 
+  const eventTypes = await getEventTypes()
+  if (!eventTypes) {
+    return notFound()
+  }
+
   const permalink = getPermalink({
     eventId: eventData.id,
     type: PageType.PreviewEvent,
@@ -95,6 +102,7 @@ async function getData({ params }: { params: PreviewParams }) {
 
   return {
     eventData,
+    eventTypes,
     permalink,
     previewPassword,
     directusUrl,

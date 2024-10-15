@@ -92,6 +92,14 @@ body {
   @apply bg-red-600 text-black;
 }
 
+// Banner Styles
+.rail-banner-path {
+  @apply fill-none tablet:fill-zinc-900;
+}
+.rail-banner-text {
+  @apply fill-red-600 tablet:fill-none;
+}
+
 .paper {
   @apply rail-bg;
 }
@@ -106,6 +114,9 @@ body {
 .paper-preview-event {
   @apply bg-indigo-50 dark:bg-zinc-800;
   @apply text-zinc-900 dark:text-indigo-50;
+  .rail-banner-text {
+    @apply fill-indigo-950 tablet:fill-none;
+  }
 }
 
 a {
