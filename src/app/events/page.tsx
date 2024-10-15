@@ -3,6 +3,7 @@ import { Events, EventsTypes } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
 import { getEventTypes, getPastEvents, getUpcomingEvents } from "../../../lib/utils/events/utils"
 import EventsPage from "@/app/components/events"
+import { Metadata } from "next"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -15,6 +16,37 @@ export interface EventsProps {
   permalink: string
   errorCode?: number
   errorMessage?: string
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getData()
+
+  if (!data || !data.permalink) {
+    return {}
+  }
+
+  const ogtitle = "Events"
+  const ogdescription = ""
+  // const ogimageprops = { ogimage: featured_image, title }
+  // const ogimages = getOGImage(ogimageprops)
+
+  return {
+    title: `${ogtitle}`,
+    description: ogdescription,
+    alternates: {
+      canonical: `${data.permalink}`,
+    },
+    openGraph: {
+      title: `${ogtitle}`,
+      description: ogdescription,
+      url: data.permalink,
+      // images: ogimages,
+      // type: `article`,
+    },
+    twitter: {
+      // images: ogimages,
+    },
+  }
 }
 
 export default async function EventsController({ params }: { params: EventsProps }) {
