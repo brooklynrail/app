@@ -30,18 +30,18 @@ module.exports = {
   async redirects() {
     return [
       // ===================================
-      // TEMPORARY REDIRECTS
-      // Redirect the event pages to the homepage
-      // {
-      //   source: "/events/",
-      //   destination: "/",
-      //   permanent: false,
-      // },
-      // {
-      //   source: "/event/:year(\\d{4})/:month(\\d{1,2})/:day(\\d{1,2})/:slug",
-      //   destination: "/",
-      //   permanent: false,
-      // },
+      // EVENTS REDIRECTS
+      // redirect old event paths to new event paths
+      {
+        source: "/events/:year/:month/:day/:slug", // Match old event URLs
+        destination: "/event/:year/:month/:day/:slug", // Redirect to new singular "event" path
+        permanent: true, // Use 301 redirect for SEO
+      },
+      {
+        source: "/event", // Match root `/event` path
+        destination: "/events", // Redirect to `/events`
+        permanent: true,
+      },
       // ===================================
       // ISSUE REDIRECT
       // Redirect old issue paths to new issue paths
