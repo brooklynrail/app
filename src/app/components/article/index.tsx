@@ -1,11 +1,7 @@
 "use client"
 
 import parse from "html-react-parser"
-import { Ads } from "../../../../lib/types"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import { getAds } from "../../../../lib/utils"
-import { useEffect, useState } from "react"
-import Ad970 from "../ads/ad970"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 import NextPrev, { NextPrevType } from "../nextPrev"
@@ -14,6 +10,7 @@ import replaceShortcodes from "./shortcodes"
 import BookshopWidget from "./bookshop"
 import ContributorsBox from "../contributorsBox"
 import styles from "./poetry.module.scss"
+import CoversPopup from "../issueRail/coversPopup"
 
 const Article = (props: ArticleProps) => {
   const { thisIssueData, articleData, permalink, currentSection } = props
@@ -67,6 +64,7 @@ const Article = (props: ArticleProps) => {
           </div>
         </div>
       </article>
+      <CoversPopup />
     </Paper>
   )
 }

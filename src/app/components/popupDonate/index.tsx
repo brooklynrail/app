@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
-import Banner from "../header/banner"
 import { usePopup } from "../popupProvider"
 import NewsLetterSignUpForm from "../newsletterForm"
 import Link from "next/link"
 
-const DonatePopup = () => {
+const PopupDonate = () => {
   const { showPopup, popupType, setShowPopup } = usePopup()
+
   const [donateAmt, setDonateAmt] = useState<number | null>(null) // State to hold fetched donation data
   const [donateCount, setDonateCount] = useState<number | null>(null) // State to hold fetched donation data
   const [email, setEmail] = useState("") // State to capture email
@@ -106,4 +106,4 @@ const DonatePopup = () => {
   )
 }
 
-export default DonatePopup
+export default PopupDonate

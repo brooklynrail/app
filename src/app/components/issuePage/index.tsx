@@ -16,6 +16,7 @@ import TableOfContentsPage from "./layout/tableOfContentsPage"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
+import CoversPopup from "../issueRail/coversPopup"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -134,6 +135,7 @@ const IssuePage = (props: IssuePageProps) => {
           <AdsTile />
         </div>
       </div>
+      <CoversPopup />
     </Paper>
   )
 }

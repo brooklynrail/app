@@ -3,8 +3,8 @@
 import Ad970 from "../ads/ad970"
 import Footer from "../footer"
 import CoversPopup from "../issueRail/coversPopup"
-import DonatePopup from "../popup"
-import { PopupProvider } from "../popupProvider"
+import PopupDonate from "../popupDonate"
+import { PopupProvider, usePopup } from "../popupProvider"
 import { useTheme } from "../theme"
 import ThemeToggle from "../themeToggle"
 
@@ -17,6 +17,7 @@ export interface PaperProps {
 const Paper = (props: PaperProps) => {
   const { pageClass, children, hidePopup } = props
   const { theme, setTheme } = useTheme()
+  // const { showPopup, popupType } = usePopup()
 
   return (
     <PopupProvider hidePopup={hidePopup}>
@@ -25,8 +26,7 @@ const Paper = (props: PaperProps) => {
         <Footer />
         <Ad970 />
         <ThemeToggle {...{ theme, setTheme }} />
-        <CoversPopup />
-        {!hidePopup && <DonatePopup />}
+        <PopupDonate />
       </div>
     </PopupProvider>
   )

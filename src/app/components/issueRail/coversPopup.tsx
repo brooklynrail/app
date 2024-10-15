@@ -1,20 +1,20 @@
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
-import { usePopup } from "./popupProvider"
 import Image from "next/image"
+import { usePopup } from "../popupProvider"
 
 const CoversPopup = () => {
-  const { showPopup, images } = usePopup()
+  const { showPopup, popupType, images, setShowPopup } = usePopup()
 
-  const { setShowPopup } = usePopup()
+  const { setImages, togglePopup } = usePopup()
 
-  if (!showPopup) {
-    return null
+  const handleClick = () => {
+    setImages(images)
+    togglePopup("covers")
   }
 
-  const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
-    e.preventDefault()
-    setShowPopup(false)
+  if (!showPopup || popupType !== "covers") {
+    return null
   }
 
   const allCovers = images
@@ -44,8 +44,8 @@ const CoversPopup = () => {
 
   return (
     <div
-      className="z-[1000] fixed w-full h-full top-0 left-0 right-0 bottom-0 bg-black bg-opacity-95 flex flex-col justify-center py-9"
-      onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
+      className="z-[999] fixed w-full h-full top-0 left-0 right-0 bottom-0 bg-black bg-opacity-95 flex flex-col justify-center py-9"
+      onClick={handleClick}
     >
       <div className="flex items-start overflow-x-auto space-x-9 px-20">{allCovers}</div>
     </div>
