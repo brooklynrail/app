@@ -17,7 +17,7 @@ const PortraitImage = (props: PortraitImageProps) => {
     <div className={`media`}>
       <div>
         <Image
-          className="grayscale rounded-full w-28 h-28 tablet:w-32 tablet:h-32 desktop:w-40 desktop:h-40"
+          className="rounded-full w-28 h-28 tablet:w-32 tablet:h-32 desktop:w-40 desktop:h-40"
           src={src}
           sizes="25vw"
           width={width}
