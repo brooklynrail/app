@@ -725,39 +725,6 @@ export const getEvent = cache(async (slug: string) => {
   return events as Events[]
 })
 
-export const getRedirect = cache(async (slug: string) => {
-  try {
-    const redirect = await directus.request(
-      readItems("redirects", {
-        fields: [
-          "path",
-          {
-            articles: [
-              "slug",
-              "title",
-              {
-                issue: ["year", "month", "slug", "special_issue"],
-              },
-              {
-                section: ["slug"],
-              },
-            ],
-          },
-        ],
-        filter: {
-          path: {
-            _contains: slug,
-          },
-        },
-      }),
-    )
-    return redirect[0] as Redirects
-  } catch (error) {
-    console.error("Error in getRedirect", error)
-    return null
-  }
-})
-
 export const getAds = cache(async () => {
   // const today = new Date()
   // newDate Formatted as YYYY-MM-DD
