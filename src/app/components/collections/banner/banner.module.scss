@@ -1,0 +1,9 @@
+.description {
+  @apply text-xs font-medium space-y-3;
+  a {
+    @apply hover:no-underline;
+  }
+  h3 {
+    @apply text-2xl font-normal italic hover:underline;
+  }
+}

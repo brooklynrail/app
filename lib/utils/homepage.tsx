@@ -10,14 +10,33 @@ export const getHomepageData = cache(async () => {
         fields: [
           "id",
           {
+            banners: [
+              {
+                collections_id: [
+                  "id",
+                  "type",
+                  "kicker",
+                  "title",
+                  "deck",
+                  "description",
+                  "links",
+                  "limit",
+                  "banner_type",
+                ],
+              },
+            ],
+          },
+          {
             collections: [
               {
                 collections_id: [
                   "id",
                   "type",
+                  "kicker",
                   "title",
                   "deck",
                   "limit",
+                  "links",
                   "banner_type",
                   {
                     section: ["id", "name", "slug", "featured"],
@@ -80,6 +99,7 @@ export const getHomepageData = cache(async () => {
     homepage.collections = resolvedCollections.filter(
       (collection): collection is HomepageCollections => collection !== null,
     )
+
     return homepageData as Homepage
     // return resolvedCollections as Collections[]
     // return homepageData as Homepage

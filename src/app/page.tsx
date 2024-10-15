@@ -1,8 +1,8 @@
-import { Homepage, Issues } from "../../lib/types"
+import { Collections, Homepage, HomepageBanners, HomepageCollections, Issues } from "../../lib/types"
 import { getPermalink, PageType } from "../../lib/utils"
 import { getCurrentIssueData, getHomepageData } from "../../lib/utils/homepage"
 import { notFound } from "next/navigation"
-import HomePage from "./components/homepage"
+import HomePage, { CollectionType } from "./components/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -29,6 +29,7 @@ export enum PageLayout {
 export interface HomePageProps {
   homepageData: Homepage
   currentIssue: Issues
+  banners: HomepageBanners[]
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -46,6 +47,11 @@ async function getData() {
     return notFound()
   }
 
+  const banners = homepageData.banners
+  if (!banners) {
+    return notFound()
+  }
+
   const currentIssue = await getCurrentIssueData()
   if (!currentIssue) {
     return notFound()
@@ -57,6 +63,7 @@ async function getData() {
 
   return {
     homepageData,
+    banners,
     currentIssue,
     permalink,
   }

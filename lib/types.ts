@@ -89,11 +89,19 @@ export type Collections = {
   sort?: number | null
   status: string
   title: string
+  kicker?: string | null
+  description?: string | null
+  links?: CollectionLinks[] | null
   tribute?: string | Tributes | null
   type: string
   banner_type?: string | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+}
+
+export type CollectionLinks = {
+  text: string
+  url: string
 }
 
 export type Contributors = {
@@ -540,12 +548,20 @@ export type GlobalSettingsNavigation = {
 }
 
 export type Homepage = {
+  banners: HomepageBanners[]
   collections: HomepageCollections[]
   date_created?: string | null
   date_updated?: string | null
   id: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+}
+
+export type HomepageBanners = {
+  collections_id?: Collections | null
+  homepage_id?: Homepage | null
+  id: number
+  sort?: number | null
 }
 
 export type HomepageCollections = {
@@ -727,6 +743,7 @@ export type CustomDirectusTypes = {
   events_people_poets: EventsPeoplePoets[]
   global_settings: GlobalSettings
   homepage: Homepage
+  homepage_banner: HomepageBanners[]
   homepage_collections: HomepageCollections[]
   global_settings_navigation: GlobalSettingsNavigation
   issues: Issues[]
