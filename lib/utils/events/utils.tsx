@@ -13,6 +13,18 @@ export enum EventTypes {
   AbolitionistReadingNativePlantEmbroidery = "abolitionist-reading-native-plant-embroidery",
 }
 
+export const checkYearMonthDay = (start_date: string, year: string, month: string, day: string) => {
+  const startDate = new Date(start_date)
+  const eventYear = startDate.getFullYear().toString()
+  const eventMonth = (startDate.getMonth() + 1).toString().padStart(2, "0")
+  const eventDay = startDate.getDate().toString().padStart(2, "0")
+
+  if (year !== eventYear || month !== eventMonth || day !== eventDay) {
+    return false
+  }
+  return true
+}
+
 export const getEventTypes = cache(async () => {
   const data = await directus.request(readField("events", "type"))
   const types: Array<{ text: string; value: string }> = data.meta.options && data.meta.options.choices
@@ -166,6 +178,21 @@ export async function getPreviewEvent(id: string) {
           "*",
           {
             people: [
+              {
+                people_id: [
+                  "id",
+                  "slug",
+                  "bio",
+                  "display_name",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "caption"],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            poets: [
               {
                 people_id: [
                   "id",

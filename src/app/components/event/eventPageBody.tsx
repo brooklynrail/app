@@ -130,6 +130,7 @@ const EventPageBody = (props: EventProps) => {
               <Poets poets={eventData.poets} />
             </>
           )}
+
           <div className="space-y-9">
             <div className="flex justify-center">
               <SoundWaves />

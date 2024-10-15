@@ -2,7 +2,7 @@
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
-import { EventsPeople, EventsPeople1 } from "../../../../lib/types"
+import { EventsPeople, EventsPeoplePoets } from "../../../../lib/types"
 import Register from "./register"
 import EventPageBody from "./eventPageBody"
 import Person from "./person"
@@ -24,7 +24,7 @@ const EventPage = (props: EventProps) => {
   )
 }
 
-export const Poets = ({ poets }: { poets: EventsPeople1[] }) => {
+export const Poets = ({ poets }: { poets: EventsPeoplePoets[] }) => {
   const poetArray: Array<string> = []
   const allPoets =
     poets &&
@@ -39,11 +39,16 @@ export const Poets = ({ poets }: { poets: EventsPeople1[] }) => {
     })
   const poetNames = poetArray.join(", ")
   return (
-    <div className="divide-y rail-divide space-y-6">
-      <p className="text-xl tablet-lg:text-3xl py-3">
-        {`The Rail has a tradition of ending our conversations with a poetry reading, and we’re fortunate to have ${poetNames} reading.`}
-      </p>
-      <div className="pt-6">{allPoets}</div>
+    <div className="space-y-9">
+      <div className="flex justify-center">
+        <SoundWaves />
+      </div>
+      <div className="divide-y rail-divide space-y-6">
+        <p className="text-xl tablet-lg:text-3xl py-3">
+          {`The Rail has a tradition of ending our conversations with a poetry reading, and we’re fortunate to have ${poetNames} reading.`}
+        </p>
+        <div className="pt-6">{allPoets}</div>
+      </div>
     </div>
   )
 }

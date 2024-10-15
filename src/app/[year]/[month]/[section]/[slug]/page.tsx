@@ -1,11 +1,12 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getArticle, getIssueData, getOGImage, getPermalink, getRedirect } from "../../../../../../lib/utils"
+import { PageType, getArticle, getIssueData, getOGImage, getPermalink } from "../../../../../../lib/utils"
 import { Articles, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
 import { notFound, redirect } from "next/navigation"
 import { AddRedirect } from "@/app/actions/redirect"
 import { revalidatePath } from "next/cache"
+import { getRedirect, RedirectTypes } from "../../../../../../lib/utils/redirects"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -72,9 +73,12 @@ async function getData({ params }: { params: ArticleParams }) {
   const slug: string = params.slug.toString()
 
   const articleData = await getArticle(slug, "published")
+
+  // Redirects
   if (!articleData) {
-    // check if a redirect exists
-    const redirect = await getRedirect(slug)
+    // check if a redirect exists that includes this slug
+    // Note: this does not account for changes to the year/month of the URL
+    const redirect = await getRedirect(RedirectTypes.Article, slug)
     if (redirect) {
       await AddRedirect(redirect)
     }

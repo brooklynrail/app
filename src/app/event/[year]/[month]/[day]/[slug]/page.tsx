@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation"
 import { Events, EventsPeople, EventsTypes } from "../../../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../../../lib/utils"
-import { getEvent, getEventTypes } from "../../../../../../../lib/utils/events/utils"
+import { checkYearMonthDay, getEvent, getEventTypes } from "../../../../../../../lib/utils/events/utils"
+import { getRedirect, RedirectTypes } from "../../../../../../../lib/utils/redirects"
 import EventPage from "@/app/components/event"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
+import { AddRedirect } from "@/app/actions/redirect"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -95,6 +97,25 @@ async function getData({ params }: { params: EventParams }) {
 
   const eventData = await getEvent(slug)
   if (!eventData) {
+    // If the slug is incorrect, but the dates in the URL are correct,
+    // check if a redirect exists that includes this slug
+    // path: /event/2024/10/13/one-becomes-the-other/
+    const redirect = await getRedirect(RedirectTypes.Event, slug)
+    if (redirect) {
+      await AddRedirect(redirect)
+    }
+    return notFound()
+  }
+
+  // This checks to see that the year, month, day in the URL is the same as the start_date for this event
+  // This prevents URLs with the correct slug + wrong date
+  if (!checkYearMonthDay(eventData.start_date, year, month, day)) {
+    // check if a redirect exists that includes this slug
+    // /event/2024/10/13/one-becomes-the-other/
+    const redirect = await getRedirect(RedirectTypes.Event, slug)
+    if (redirect) {
+      await AddRedirect(redirect)
+    }
     return notFound()
   }
 
