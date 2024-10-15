@@ -61,6 +61,34 @@ export const getUpcomingEvents = cache(async () => {
   return events as Events[]
 })
 
+export const getUpcomingEventsBanner = cache(async () => {
+  const eventsDataAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+    `?fields[]=id` +
+    `&fields[]=slug` +
+    `&fields[]=title` +
+    `&fields[]=series` +
+    `&fields[]=people.people_id.portrait.id` +
+    `&fields[]=people.people_id.portrait.caption` +
+    `&fields[]=people.people_id.portrait.filename_disk` +
+    `&fields[]=people.people_id.portrait.width` +
+    `&fields[]=people.people_id.portrait.height` +
+    `&fields[]=people.people_id.portrait.type` +
+    `&fields[]=start_date` +
+    `&sort=start_date` +
+    `&limit=6` +
+    `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
+    `&filter[status][_eq]=published`
+
+  const res = await fetch(eventsDataAPI)
+  if (!res.ok) {
+    throw new Error("Failed to fetch events data")
+  }
+  const data = await res.json()
+  const events = data.data
+  return events as Events[]
+})
+
 interface PastEventsParams {
   limit: number
   offset: number
