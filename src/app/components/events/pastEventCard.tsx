@@ -13,7 +13,7 @@ const PastEventCard = (props: EventCardProps) => {
   const { title, slug, deck, start_date, type, series, youtube_id } = event
 
   const currentBreakpoint = useBreakpoints()
-  const [colWidth, setColWidth] = useState("")
+  const [colWidth, setColWidth] = useState("col-span-3")
 
   useEffect(() => {
     const calculateGroupNumber = () => {
@@ -66,7 +66,9 @@ const PastEventCard = (props: EventCardProps) => {
     <div className={`col-span-4 ${colWidth} p-3 last:pr-0 first:pl-0`}>
       <div className="">
         <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
-          <Image src={youtube_image} alt={title} width={800} height={800} />
+          <Link href={permalink}>
+            <Image src={youtube_image} alt={title} width={800} height={800} />
+          </Link>
           <div className="flex flex-col space-y-2">
             <p className="flex space-x-3 text-xs">
               {type && <span className="uppercase text-nowrap font-normal">{parse(eventTypeText)}</span>}

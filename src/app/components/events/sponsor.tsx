@@ -14,15 +14,12 @@ const Sponsor = () => {
       </p>
       <p className="text-center divide-x rail-divide">
         <Link
-          className="px-3 text-indigo-500 dark:text-indigo-400 text-nowrap"
+          className="text-sm px-3 text-indigo-500 dark:text-indigo-400"
           href="https://www.instagram.com/terraamericanart/"
         >
           <i className="fab fa-instagram"></i> <span>Follow @terraamericanart</span>
         </Link>
-        <Link
-          className="px-3 text-indigo-500 dark:text-indigo-400 text-nowrap"
-          href="https://www.terraamericanart.org/"
-        >
+        <Link className="text-sm px-3 text-indigo-500 dark:text-indigo-400" href="https://www.terraamericanart.org/">
           <span>Learn more »</span>
         </Link>
       </p>

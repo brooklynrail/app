@@ -30,6 +30,19 @@ module.exports = {
   async redirects() {
     return [
       // ===================================
+      // EVENTS REDIRECTS
+      // redirect old event paths to new event paths
+      {
+        source: "/events/:year/:month/:day/:slug", // Match old event URLs
+        destination: "/event/:year/:month/:day/:slug", // Redirect to new singular "event" path
+        permanent: true, // Use 301 redirect for SEO
+      },
+      {
+        source: "/event", // Match root `/event` path
+        destination: "/events", // Redirect to `/events`
+        permanent: true,
+      },
+      // ===================================
       // ISSUE REDIRECT
       // Redirect old issue paths to new issue paths
       {
