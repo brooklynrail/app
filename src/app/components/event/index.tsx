@@ -16,12 +16,6 @@ const EventPage = (props: EventProps) => {
   return (
     <Paper pageClass="paper-event">
       <Header type={HeaderType.Events} />
-      <svg width="214" height="100" viewBox="0 0 214 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M170.999 95.5L5.49919 45.5C-25.0008 -26.5 99.9992 -2.50004 179.999 56C243.999 102.8 200.666 101.833 170.999 95.5Z"
-          stroke="black"
-        />
-      </svg>
 
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
         <EventPageBody {...props} />
