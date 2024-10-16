@@ -276,7 +276,6 @@ export const getTotalEventsCount = async () => {
 }
 
 export const generateYouTubeTags = (eventData: Events) => {
-  const { title, summary, start_date, people, series, slug } = eventData
   const tags = []
 
   // Add people names to tags
@@ -325,7 +324,7 @@ export const generateYouTubeTags = (eventData: Events) => {
 }
 
 export const generateYouTubeCopy = (eventData: Events) => {
-  const { title, summary, start_date, people, series, slug } = eventData
+  const { title, summary, start_date, people, poets, series, slug } = eventData
   const eventDate = new Date(start_date)
 
   const startDate = new Date(eventData.start_date)
@@ -362,7 +361,7 @@ export const generateYouTubeCopy = (eventData: Events) => {
     youtubeCopy += `The New Social Environment #${series}\n`
   }
 
-  youtubeCopy += `Recorded on ${eventDate.toDateString()} at ${easternTime} Eastern / ${pacificTime} Pacific\n`
+  youtubeCopy += `Recorded on ${eventDate.toDateString()} at ${easternTime} Eastern / ${pacificTime} Pacific \n`
   youtubeCopy += `${eventPermalink}\n\n`
 
   youtubeCopy += "〰️〰️〰️〰️\n\nIn this talk:\n\n"
@@ -371,14 +370,14 @@ export const generateYouTubeCopy = (eventData: Events) => {
   people.forEach((personObj: any) => {
     const person = personObj.people_id
     const bio = encodeHtmlEntities(stripHtml(person.bio).result)
-    youtubeCopy += `:triangular_flag_on_post: ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
+    youtubeCopy += `🚩 ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
 
     // Include website, Instagram, etc.
     if (person.website) {
       youtubeCopy += `• ${encodeHtmlEntities(person.website)}\n`
     }
     if (person.instagram) {
-      youtubeCopy += `• https://www.instagram.com/${encodeHtmlEntities(person.instagram)}\n`
+      youtubeCopy += `• https://instagram.com/${encodeHtmlEntities(person.instagram)}\n`
     }
     if (person.related_links && person.related_links.length > 0) {
       person.related_links.forEach((link: any) => {
@@ -387,6 +386,30 @@ export const generateYouTubeCopy = (eventData: Events) => {
     }
     youtubeCopy += "\n"
   })
+
+  if (poets && poets.length > 0) {
+    youtubeCopy += `The Rail has a tradition of ending our conversations with a poem, and on this day we were fortunate to have\n\n`
+    // Poets Info
+    poets.forEach((personObj: any) => {
+      const person = personObj.people_id
+      const bio = encodeHtmlEntities(stripHtml(person.bio).result)
+      youtubeCopy += `🚩 ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
+
+      // Include website, Instagram, etc.
+      if (person.website) {
+        youtubeCopy += `• ${encodeHtmlEntities(person.website)}\n`
+      }
+      if (person.instagram) {
+        youtubeCopy += `• https://instagram.com/${encodeHtmlEntities(person.instagram)}\n`
+      }
+      if (person.related_links && person.related_links.length > 0) {
+        person.related_links.forEach((link: any) => {
+          youtubeCopy += `• ${encodeHtmlEntities(link.url)}\n`
+        })
+      }
+      youtubeCopy += "\n"
+    })
+  }
 
   youtubeCopy += `〰️〰️〰️〰️\n\n`
 

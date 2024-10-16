@@ -2,7 +2,7 @@
 import { ArticlePreviewProps } from "@/app/preview/article/[id]/page"
 import { useState, useEffect } from "react"
 import Password from "../password"
-import PreviewInfo from "../previewInfo"
+import PreviewInfo from "./previewInfo"
 import PreviewHeader from "../previewHead"
 import Title, { TitleType } from "../../collections/promos/title"
 import Bylines, { BylineType } from "../../collections/promos/bylines"

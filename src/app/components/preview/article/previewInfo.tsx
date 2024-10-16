@@ -1,9 +1,9 @@
-import { Articles, DirectusFiles, DirectusUsers } from "../../../../lib/types"
+import { Articles, DirectusFiles, DirectusUsers } from "../../../../../lib/types"
 import Image from "next/image"
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
-import PromoBuilder from "./promoBuilder"
-import { getPermalink, PageType } from "../../../../lib/utils"
+import PromoBuilder from "../promoBuilder"
+import { getPermalink, PageType } from "../../../../../lib/utils"
 import Link from "next/link"
 
 interface PreviewImageProps {
@@ -44,7 +44,7 @@ interface EditorInfoProps {
   status: string
   permalink: string | null
 }
-const EditorInfo = (props: DirectusUsers & EditorInfoProps) => {
+export const EditorInfo = (props: DirectusUsers & EditorInfoProps) => {
   const { first_name, last_name, avatar, date, permalink } = props
   const profileImg = avatar ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${avatar}` : ""
   const status = props.status === "published" ? "text-green-600 uppercase" : "text-red-600 uppercase"
