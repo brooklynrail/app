@@ -41,7 +41,7 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   const [showPopup, setShowPopup] = useState(false)
   const [popupType, setPopupType] = useState<string | null>(null)
   const [images, setImages] = useState<any[]>([])
-  const [viewedDonateCount, setViewedDonateCount] = useState(0)
+  const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
 
   // Read cookie value once on mount
   useEffect(() => {
@@ -51,10 +51,11 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
 
   // Trigger donation popup if conditions are met
   useEffect(() => {
-    if (viewedDonateCount < 2) {
+    if (viewedDonateCount !== null && viewedDonateCount < 2) {
       setPopupType("donate")
       setShowPopup(true)
       const newCount = viewedDonateCount + 1
+      setViewedDonateCount(newCount)
       setCookie("viewDonatePopup", newCount.toString(), 1) // Expires in 1 hour
     }
   }, [viewedDonateCount])
