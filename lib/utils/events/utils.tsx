@@ -266,3 +266,69 @@ export const getTotalEventsCount = async () => {
   const count = Number(totalCount[0].count)
   return count ? count : 0
 }
+
+export const generateYouTubeCopy = (eventData: Events) => {
+  const { title, summary, start_date, people, series, slug } = eventData
+  const eventDate = new Date(start_date)
+
+  const formatTime = (date: Date, timeZone: string) => {
+    return date
+      .toLocaleTimeString("en-US", {
+        timeZone,
+        hour: "numeric",
+        minute: "numeric",
+      })
+      .replace("AM", "a.m.")
+      .replace("PM", "p.m.")
+  }
+
+  const easternTime = formatTime(eventDate, "America/New_York")
+  const pacificTime = formatTime(new Date(eventDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
+
+  let youtubeCopy = `${title}\n${summary}\n\n`
+
+  // Series Info
+  if (series) {
+    youtubeCopy += `The New Social Environment #${series}\n`
+  }
+
+  youtubeCopy += `Recorded on ${eventDate.toDateString()} at ${easternTime} Eastern / ${pacificTime} Pacific\n`
+  youtubeCopy += `https://brooklynrail.org/events/${eventDate.getFullYear()}/${eventDate.getMonth() + 1}/${eventDate.getDate()}/${slug}\n\n`
+
+  youtubeCopy += "〰️〰️〰️〰️\n\nIn this talk:\n\n"
+
+  // People Info
+  people.forEach((personObj: any) => {
+    const person = personObj.people_id
+    const bio = person.bio ? person.bio.replace(/<[^>]+>/g, "") : "" // Remove HTML from bio
+    youtubeCopy += `🚩 ${person.display_name} —— ${bio}\n`
+
+    // Include website, Instagram, etc.
+    if (person.website) {
+      youtubeCopy += `• ${person.website}\n`
+    }
+    if (person.instagram) {
+      youtubeCopy += `• https://www.instagram.com/${person.instagram}\n`
+    }
+    if (person.related_links && person.related_links.length > 0) {
+      person.related_links.forEach((link: any) => {
+        youtubeCopy += `• ${link.url}\n`
+      })
+    }
+    youtubeCopy += "\n"
+  })
+
+  youtubeCopy += `〰️〰️〰️〰️\n\n`
+
+  youtubeCopy += `We'd like to thank the Terra Foundation for American Art for making our daily conversations possible.\n`
+  youtubeCopy += `• Follow @terraamericanart https://www.instagram.com/terraamericanart/\n`
+  youtubeCopy += `• Learn more at https://www.terraamericanart.org/\n\n`
+
+  youtubeCopy += `This conversation was produced by THE BROOKLYN RAIL:\n`
+  youtubeCopy += `• Learn more about our upcoming conversations at: https://brooklynrail.org/events\n`
+  youtubeCopy += `• Subscribe to the Rail: https://brooklynrail.org/subscribe\n`
+  youtubeCopy += `• Sign up for our newsletter: https://brooklynrail.org/newsletter\n`
+  youtubeCopy += `• Follow us on Instagram: https://www.instagram.com/brooklynrail/\n`
+
+  return youtubeCopy
+}
