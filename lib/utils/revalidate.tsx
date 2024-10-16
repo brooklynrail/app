@@ -82,16 +82,24 @@ export const getRevalidateData = cache(async (id: string, type: RevalidateType) 
           ],
         }),
       )
-
       return article as Articles
+
     case RevalidateType.Contributors:
       const contributor = await directus.request(
         readItem(type, id, {
           fields: ["slug"],
         }),
       )
-
       return contributor as Contributors
+
+    case RevalidateType.Events:
+      const event = await directus.request(
+        readItem(type, id, {
+          fields: ["slug", "start_date"],
+        }),
+      )
+
+      return event as Events
     default:
       return null
   }
