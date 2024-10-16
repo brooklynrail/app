@@ -133,7 +133,7 @@ export const getEvent = cache(async (slug: string) => {
                 "instagram",
                 "related_links",
                 {
-                  portrait: ["id", "width", "height", "filename_disk", "caption"],
+                  portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                 },
               ],
             },
@@ -150,7 +150,7 @@ export const getEvent = cache(async (slug: string) => {
                 "instagram",
                 "related_links",
                 {
-                  portrait: ["id", "width", "height", "filename_disk", "caption"],
+                  portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                 },
               ],
             },
@@ -185,7 +185,7 @@ export async function getPreviewEvent(id: string) {
                   "bio",
                   "display_name",
                   {
-                    portrait: ["id", "width", "height", "filename_disk", "caption"],
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                   },
                 ],
               },
@@ -200,7 +200,7 @@ export async function getPreviewEvent(id: string) {
                   "bio",
                   "display_name",
                   {
-                    portrait: ["id", "width", "height", "filename_disk", "caption"],
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                   },
                 ],
               },

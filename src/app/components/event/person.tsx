@@ -26,11 +26,7 @@ const Person = (props: PersonProps) => {
         <div className="space-y-6">
           <h3 className="font-bold text-xl p-name">{display_name}</h3>
           <div className="text-md tablet-lg:text-lg content-bio p-note tablet-lg:flex tablet-lg:flex-row-reverse gap-x-9">
-            {portrait ? (
-              <div className="float-right m-3 mr-0 tablet-lg:m-0 tablet-lg:float-none tablet-lg:flex-none">
-                <PortraitImage image={portrait} title={display_name} />
-              </div>
-            ) : null}
+            {portrait ? <PortraitImage image={portrait} title={display_name} /> : null}
             <p>{parse(bio)}</p>
           </div>
         </div>

@@ -8,23 +8,24 @@ interface PortraitImageProps {
   title: string
 }
 const PortraitImage = (props: PortraitImageProps) => {
-  const { filename_disk, caption, width, height } = props.image
+  const { filename_disk, caption, width, height, alt } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}?key=portrait`
-  const desc = caption ? <figcaption>{parse(caption)}</figcaption> : null
-  const alt = caption ? caption : `A photo of ${stripHtml(props.title).result}`
+  const alt_text = alt ? alt : `A photo of ${stripHtml(props.title).result}`
 
   return (
-    <div className={`media`}>
-      <div>
-        <Image
-          className="rounded-full w-28 h-28 tablet:w-32 tablet:h-32 desktop:w-40 desktop:h-40"
-          src={src}
-          sizes="25vw"
-          width={width}
-          height={height}
-          alt={alt}
-        />
-      </div>
+    <div
+      data-title={stripHtml(props.title).result}
+      className="float-right w-28 tablet:w-32 desktop:w-40 m-3 mr-0 tablet-lg:m-0 tablet-lg:float-none tablet-lg:flex-none space-y-1"
+    >
+      <Image
+        className="rounded-full w-28 h-28 tablet:w-32 tablet:h-32 desktop:w-40 desktop:h-40"
+        src={src}
+        sizes="25vw"
+        width={width}
+        height={height}
+        alt={alt_text}
+      />
+      {caption && <figcaption className="text-center text-xs">{parse(caption)}</figcaption>}
     </div>
   )
 }
