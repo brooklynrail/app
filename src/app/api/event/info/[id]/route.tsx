@@ -1,13 +1,13 @@
-import { generateYouTubeCopy, getEvent } from "../../../../../../lib/utils/events/utils"
+import { generateYouTubeCopy, getPreviewEvent } from "../../../../../../lib/utils/events/utils"
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
-  const slug = params.slug
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const id = params.id
 
-  if (!slug) {
+  if (!id) {
     return new Response("Missing slug", { status: 401 })
   }
 
-  const data = await getEvent(slug)
+  const data = await getPreviewEvent(id)
 
   const youtubeDescription = generateYouTubeCopy(data)
 
