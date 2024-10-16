@@ -365,7 +365,7 @@ export const generateYouTubeCopy = (eventData: Events) => {
   people.forEach((personObj: any) => {
     const person = personObj.people_id
     const bio = stripHtml(person.bio).result
-    youtubeCopy += `🚩 ${person.display_name} —— ${bio}\n`
+    youtubeCopy += `:triangular_flag_on_post: ${person.display_name} —— ${bio}\n`
 
     // Include website, Instagram, etc.
     if (person.website) {
