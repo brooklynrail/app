@@ -349,7 +349,7 @@ export const generateYouTubeCopy = (eventData: Events) => {
   const easternTime = formatTime(eventDate, "America/New_York")
   const pacificTime = formatTime(new Date(eventDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
 
-  let youtubeCopy = `${stripHtml(title).result}\n${stripHtml(summary).result}\n\n`
+  let youtubeCopy = `${encodeHtmlEntities(stripHtml(title).result)}\n${encodeHtmlEntities(stripHtml(summary).result)}\n\n`
 
   // Series Info
   if (series) {
@@ -364,19 +364,19 @@ export const generateYouTubeCopy = (eventData: Events) => {
   // People Info
   people.forEach((personObj: any) => {
     const person = personObj.people_id
-    const bio = stripHtml(person.bio).result
-    youtubeCopy += `:triangular_flag_on_post: ${person.display_name} —— ${bio}\n`
+    const bio = encodeHtmlEntities(stripHtml(person.bio).result)
+    youtubeCopy += `:triangular_flag_on_post: ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
 
     // Include website, Instagram, etc.
     if (person.website) {
-      youtubeCopy += `• ${person.website}\n`
+      youtubeCopy += `• ${encodeHtmlEntities(person.website)}\n`
     }
     if (person.instagram) {
-      youtubeCopy += `• https://www.instagram.com/${person.instagram}\n`
+      youtubeCopy += `• https://www.instagram.com/${encodeHtmlEntities(person.instagram)}\n`
     }
     if (person.related_links && person.related_links.length > 0) {
       person.related_links.forEach((link: any) => {
-        youtubeCopy += `• ${link.url}\n`
+        youtubeCopy += `• ${encodeHtmlEntities(link.url)}\n`
       })
     }
     youtubeCopy += "\n"
@@ -395,4 +395,13 @@ export const generateYouTubeCopy = (eventData: Events) => {
   youtubeCopy += `• Follow us on Instagram: https://www.instagram.com/brooklynrail/\n`
 
   return youtubeCopy
+}
+
+const encodeHtmlEntities = (str: string) => {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
 }
