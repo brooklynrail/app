@@ -158,9 +158,14 @@ export const getEvent = cache(async (slug: string) => {
         },
       ],
       filter: {
-        slug: {
-          _eq: slug,
-        },
+        _and: [
+          {
+            slug: {
+              _eq: slug,
+            },
+          },
+          { status: { _eq: `published` } },
+        ],
       },
     }),
   )
