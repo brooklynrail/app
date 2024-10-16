@@ -331,6 +331,7 @@ export const generateYouTubeCopy = (eventData: Events) => {
     eventYear: eventYear,
     eventMonth: eventMonth,
     eventDay: eventDay,
+    slug: slug,
     type: PageType.Event,
   })
 
