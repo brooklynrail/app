@@ -2,6 +2,8 @@ import { aggregate, readItems, readField } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../../directus"
 import { Events, EventsTypes } from "../../types"
+import { stripHtml } from "string-strip-html"
+import { getPermalink, PageType } from "../../utils"
 
 export enum EventTypes {
   TheNewSocialEnvironment = "the-new-social-environment",
@@ -271,6 +273,18 @@ export const generateYouTubeCopy = (eventData: Events) => {
   const { title, summary, start_date, people, series, slug } = eventData
   const eventDate = new Date(start_date)
 
+  const startDate = new Date(eventData.start_date)
+  const eventYear = startDate.getFullYear()
+  const eventMonth = startDate.getMonth() + 1
+  const eventDay = startDate.getDate()
+
+  const eventPermalink = getPermalink({
+    eventYear: eventYear,
+    eventMonth: eventMonth,
+    eventDay: eventDay,
+    type: PageType.Event,
+  })
+
   const formatTime = (date: Date, timeZone: string) => {
     return date
       .toLocaleTimeString("en-US", {
@@ -285,7 +299,7 @@ export const generateYouTubeCopy = (eventData: Events) => {
   const easternTime = formatTime(eventDate, "America/New_York")
   const pacificTime = formatTime(new Date(eventDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
 
-  let youtubeCopy = `${title}\n${summary}\n\n`
+  let youtubeCopy = `${stripHtml(title).result}\n${stripHtml(summary).result}\n\n`
 
   // Series Info
   if (series) {
@@ -293,14 +307,14 @@ export const generateYouTubeCopy = (eventData: Events) => {
   }
 
   youtubeCopy += `Recorded on ${eventDate.toDateString()} at ${easternTime} Eastern / ${pacificTime} Pacific\n`
-  youtubeCopy += `https://brooklynrail.org/events/${eventDate.getFullYear()}/${eventDate.getMonth() + 1}/${eventDate.getDate()}/${slug}\n\n`
+  youtubeCopy += `${eventPermalink}\n\n`
 
   youtubeCopy += "〰️〰️〰️〰️\n\nIn this talk:\n\n"
 
   // People Info
   people.forEach((personObj: any) => {
     const person = personObj.people_id
-    const bio = person.bio ? person.bio.replace(/<[^>]+>/g, "") : "" // Remove HTML from bio
+    const bio = stripHtml(person.bio).result
     youtubeCopy += `🚩 ${person.display_name} —— ${bio}\n`
 
     // Include website, Instagram, etc.

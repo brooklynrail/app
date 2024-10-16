@@ -8,11 +8,9 @@ import {
   DirectusFiles,
   Events,
   GlobalSettings,
-  GlobalSettingsNavigation,
   Issues,
   Pages,
   People,
-  Redirects,
   Sections,
   Tributes,
 } from "./types"
