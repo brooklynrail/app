@@ -15,8 +15,10 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
   const youtubeDescription = generateYouTubeCopy(data)
   const youtubeTags = generateYouTubeTags(data)
+  const youtubeId = data.youtube_id ? data.youtube_id : ""
+  const title = data.title
 
-  return new Response(JSON.stringify({ youtubeDescription, youtubeTags }), {
+  return new Response(JSON.stringify({ title, youtubeId, youtubeDescription, youtubeTags }), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   })
