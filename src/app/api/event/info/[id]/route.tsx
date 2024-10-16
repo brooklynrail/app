@@ -1,4 +1,4 @@
-import { generateYouTubeCopy, getPreviewEvent } from "../../../../../../lib/utils/events/utils"
+import { generateYouTubeCopy, generateYouTubeTags, getPreviewEvent } from "../../../../../../lib/utils/events/utils"
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   const id = params.id
@@ -14,8 +14,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 
   const youtubeDescription = generateYouTubeCopy(data)
+  const youtubeTags = generateYouTubeTags(data)
 
-  return new Response(JSON.stringify({ youtubeDescription }), {
+  return new Response(JSON.stringify({ youtubeDescription, youtubeTags }), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   })

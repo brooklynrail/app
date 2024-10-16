@@ -269,6 +269,55 @@ export const getTotalEventsCount = async () => {
   return count ? count : 0
 }
 
+export const generateYouTubeTags = (eventData: Events) => {
+  const { title, summary, start_date, people, series, slug } = eventData
+  const tags = []
+
+  // Add people names to tags
+  if (eventData.people && eventData.people.length > 0) {
+    eventData.people.forEach((personData) => {
+      if (personData.people_id) {
+        const personName = personData.people_id.display_name
+        if (personName) {
+          tags.push(personName.trim())
+        }
+      }
+    })
+  }
+
+  // Add poet names to tags (if applicable)
+  if (eventData.poets && eventData.poets.length > 0) {
+    eventData.poets.forEach((poetData) => {
+      if (poetData.people_id) {
+        const poetName = poetData.people_id.display_name
+        if (poetName) {
+          tags.push(poetName.trim())
+        }
+      }
+    })
+  }
+
+  // Append static tags
+  tags.push(
+    "The Brooklyn Rail",
+    "Interview",
+    "live conversation",
+    "artist",
+    "artists",
+    "poetry",
+    "poetry reading",
+    "Brooklyn Rail",
+    "Phong Bui",
+    "The New Social Environment",
+    "Art",
+    "contemporary art",
+    "Terra Foundation for American Art",
+  )
+
+  // Return the tags as a comma-separated string (or return the array itself depending on your use case)
+  return tags.join(", ")
+}
+
 export const generateYouTubeCopy = (eventData: Events) => {
   const { title, summary, start_date, people, series, slug } = eventData
   const eventDate = new Date(start_date)
