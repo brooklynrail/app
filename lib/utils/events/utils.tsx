@@ -191,6 +191,9 @@ export async function getPreviewEvent(id: string) {
                   "slug",
                   "bio",
                   "display_name",
+                  "website",
+                  "instagram",
+                  "related_links",
                   {
                     portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                   },
@@ -206,6 +209,9 @@ export async function getPreviewEvent(id: string) {
                   "slug",
                   "bio",
                   "display_name",
+                  "website",
+                  "instagram",
+                  "related_links",
                   {
                     portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                   },
