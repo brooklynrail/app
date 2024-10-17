@@ -51,8 +51,10 @@ export const getUpcomingEvents = cache(async () => {
     `&fields[]=series` +
     `&fields[]=start_date` +
     `&fields[]=end_date` +
+    `&fields[]=youtube_id` +
     `&sort=start_date` +
     `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
+    `&filter[youtube_id][_empty]=true` +
     `&filter[status][_eq]=published`
 
   const res = await fetch(eventsDataAPI)
@@ -82,6 +84,7 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&sort=start_date` +
     `&limit=6` +
     `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
+    `&filter[youtube_id][_empty]=true` +
     `&filter[status][_eq]=published`
 
   const res = await fetch(eventsDataAPI)
