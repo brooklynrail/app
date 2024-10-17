@@ -47,6 +47,7 @@ export const getUpcomingEvents = cache(async () => {
     `&fields[]=kicker` +
     `&fields[]=title` +
     `&fields[]=deck` +
+    `&fields[]=summary` +
     `&fields[]=series` +
     `&fields[]=start_date` +
     `&fields[]=end_date` +
@@ -433,4 +434,69 @@ const encodeHtmlEntities = (str: string) => {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;")
+}
+
+export const generateNewsletter = (allEvents: Events[]) => {
+  // Helper function to format the event time
+  const formatTime = (date: Date, timeZone: string) => {
+    return date
+      .toLocaleTimeString("en-US", {
+        timeZone,
+        hour: "numeric",
+        minute: "numeric",
+      })
+      .replace("AM", "a.m.")
+      .replace("PM", "p.m.")
+  }
+
+  // Helper function to build HTML for all events
+  const buildEventsHTML = (events: Events[]) => {
+    return events
+      .map((event: Events) => {
+        const startDate = new Date(event.start_date)
+
+        const permalink = getPermalink({
+          eventYear: startDate.getFullYear(),
+          eventMonth: startDate.getMonth() + 1,
+          eventDay: startDate.getDate(),
+          slug: event.slug,
+          type: PageType.Event,
+        })
+
+        const easternTime = formatTime(startDate, "America/New_York")
+        const pacificTime = formatTime(new Date(startDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
+
+        return `  <div class="event">
+        ${event.series ? `<p class="kicker"><span class="series">#${event.series}</span></p>` : ""}
+        <h3><a href="${permalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
+        <p class="summary">${event.summary}</p>
+        <div class="event-details">
+          <p class="date">${startDate.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}</p>
+          <p class="time">${easternTime} Eastern / ${pacificTime} Pacific</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-register" title="Register for ${event.title}" href="${permalink}" target="_blank">
+            <span>Register</span>
+          </a>
+        </div>
+      </div>`
+      })
+      .join()
+  }
+
+  // Build and return the full newsletter HTML
+  const newsletterHTML = `
+<div class="rail-newsletter">
+  <div class="event-listing">
+    <h2>This Week's Events</h2>
+    ${buildEventsHTML(allEvents)}
+  </div>
+</div>
+  `
+  return newsletterHTML
 }

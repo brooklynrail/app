@@ -64,7 +64,7 @@ export const EditorInfo = (props: DirectusUsers & EditorInfoProps) => {
   })
 
   return (
-    <div className="bg-slate-300 p-3 flex space-x-3">
+    <div className="bg-slate-300 p-3 flex space-x-3 w-full">
       <Image
         className="rounded-full flex-none h-10 w-10"
         src={profileImg}

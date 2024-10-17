@@ -1,7 +1,12 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Events } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
-import { generateYouTubeCopy, generateYouTubeTags } from "../../../../../lib/utils/events/utils"
+import {
+  generateNewsletter,
+  generateYouTubeCopy,
+  generateYouTubeTags,
+  getUpcomingEvents,
+} from "../../../../../lib/utils/events/utils"
 import { EditorInfo } from "../article/previewInfo"
 
 interface PreviewInfoProps {
@@ -12,6 +17,7 @@ interface PreviewInfoProps {
 const PreviewInfo = (props: PreviewInfoProps) => {
   const { status, user_updated, date_updated, start_date, slug } = props.eventData
   const youtubeRef = useRef<HTMLPreElement>(null)
+  const [showNewsletterCopy, setShowNewsletterCopy] = useState(false)
   const [showYouTubeCopy, setShowYouTubeCopy] = useState(false)
   const [showYouTubeTags, setShowYouTubeTags] = useState(false)
 
@@ -22,6 +28,19 @@ const PreviewInfo = (props: PreviewInfoProps) => {
   const eventYear = startDate.getFullYear()
   const eventMonth = startDate.getMonth() + 1
   const eventDay = startDate.getDate()
+
+  const [currentEvents, setCurrentEvents] = useState<Events[] | undefined>(undefined)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!currentEvents) {
+        const allEvents = await getUpcomingEvents()
+        const [fetchedEvents] = await Promise.all([allEvents])
+        setCurrentEvents(fetchedEvents)
+      }
+    }
+    fetchData().catch((error) => console.error("Failed to fetch all events data on the preview page:", error))
+  }, [currentEvents])
 
   const permalink =
     status === "published"
@@ -38,12 +57,25 @@ const PreviewInfo = (props: PreviewInfoProps) => {
     <div className="space-y-3">
       <div className="bg-slate-200 flex justify-between items-center">
         {user_updated && typeof user_updated !== "string" && (
-          <EditorInfo {...user_updated} date={date_updated} status={status} permalink={permalink} />
+          <div className="w-1/2">
+            <EditorInfo {...user_updated} date={date_updated} status={status} permalink={permalink} />
+          </div>
         )}
-        <div className="flex flex-col space-y-3 pr-3">
+        <div className="flex space-x-3 pr-3">
           <button
             className="text-xs flex-none bg-white rounded-sm px-1 py-0.5 hover:underline"
             onClick={() => {
+              setShowNewsletterCopy(!showNewsletterCopy)
+              setShowYouTubeCopy(false)
+              setShowYouTubeTags(false)
+            }}
+          >
+            Newsletter
+          </button>
+          <button
+            className="text-xs flex-none bg-white rounded-sm px-1 py-0.5 hover:underline"
+            onClick={() => {
+              setShowNewsletterCopy(false)
               setShowYouTubeCopy(!showYouTubeCopy)
               setShowYouTubeTags(false)
             }}
@@ -53,14 +85,23 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           <button
             className="text-xs flex-none  bg-white rounded-sm px-1 py-0.5 hover:underline"
             onClick={() => {
-              setShowYouTubeTags(!showYouTubeTags)
+              setShowNewsletterCopy(false)
               setShowYouTubeCopy(false)
+              setShowYouTubeTags(!showYouTubeTags)
             }}
           >
             YouTube tags
           </button>
         </div>
       </div>
+      {showNewsletterCopy && currentEvents && (
+        <pre
+          className="bg-white rounded-md outline-dotted outline-indigo-500 p-6 max-h-96 text-xs overflow-auto"
+          ref={youtubeRef}
+        >
+          {generateNewsletter(currentEvents)}
+        </pre>
+      )}
       {showYouTubeCopy && (
         <pre
           className="bg-white rounded-md outline-dotted outline-indigo-500 p-6 max-h-96 text-xs overflow-auto"
