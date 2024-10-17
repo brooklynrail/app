@@ -95,6 +95,7 @@ async function getData({ params }: { params: EventParams }) {
     return notFound()
   }
 
+  // Get the event data based on slug
   const eventData = await getEvent(slug)
   if (!eventData) {
     // If the slug is incorrect, but the dates in the URL are correct,
