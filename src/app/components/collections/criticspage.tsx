@@ -21,7 +21,7 @@ const CollectionCriticsPage = (collection: Collections) => {
   // get the first article in the section.articles array
   const leadArticle = articles[0]
   // get the list of articles in the section.articles array minus the first article
-  const restOfArticles = articles.slice(1, 5)
+  const restOfArticles = articles.slice(1)
 
   const sectionPermalink = getPermalink({
     sectionSlug: section.slug,
