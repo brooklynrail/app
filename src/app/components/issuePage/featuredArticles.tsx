@@ -9,7 +9,7 @@ const FeaturedArticles = (props: PromoProps) => {
   // Filter the currentArticles to get only the articles that are featured
   const featuredArticles: Articles[] = []
   currentArticles.forEach((article: Articles) => {
-    if (article.featured) {
+    if (article.featured && article.section.slug !== "criticspage" && article.section.slug !== "editorsmessage") {
       featuredArticles.push(article)
     }
   })
