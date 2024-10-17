@@ -11,7 +11,8 @@ export async function AddRedirect(props: Redirects) {
     case "article":
       // path: /2024/10/art/robert-longo-with-amanda-gluibizzi/
       // Building the redirect path based on the current article data
-      redirectPath = `/${articles.issue.year}/${articles.issue.month}/${articles.section.slug}/${articles.slug}`
+      const articleMonth = articles.issue.month.toString().padStart(2, "0")
+      redirectPath = `/${articles.issue.year}/${articleMonth}/${articles.section.slug}/${articles.slug}`
       revalidatePath(redirectPath)
       redirect(redirectPath)
     case "event":
