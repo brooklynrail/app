@@ -74,7 +74,7 @@ const Ad970 = () => {
       >
         <div className="absolute -z-10 top-0 bottom-0 left-0 right-0 bg-white bg-opacity-30"></div>
         <button
-          className="w-10 h-10 text-center absolute top-3 right-3 text-white font-medium text-xl tablet:text-3xl rounded-full hover:bg-white hover:bg-opacity-30"
+          className="w-10 h-10 text-center absolute top-3 right-3 text-zinc-700 font-medium text-2xl tablet:text-3xl rounded-full bg-white bg-opacity-40 hover:bg-opacity-60"
           onClick={() => setShowAd(false)}
         >
           &#x2715;

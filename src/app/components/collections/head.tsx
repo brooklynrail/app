@@ -11,7 +11,14 @@ interface CollectionHeadProps {
 
 const CollectionHead = (props: CollectionHeadProps) => {
   const { title, kicker, permalink, classes } = props
-
+  // Note: links only show up if this section is "featured", which means it has a super-section page
+  const heading = permalink ? (
+    <h2 className={`text-2xl tablet:text-4xl font-bold ${styles.heading}`}>
+      <Link href={permalink}>{title}</Link>
+    </h2>
+  ) : (
+    <h2 className={`text-2xl tablet:text-4xl font-bold ${styles.heading}`}>{title}</h2>
+  )
   return (
     <div className={`head px-6 sticky top-0 ${classes ? classes : "rail-bg"} z-10`}>
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
@@ -19,15 +26,17 @@ const CollectionHead = (props: CollectionHeadProps) => {
           <div className="flex justify-between items-center py-3 pt-6 pb-5">
             <div>
               {kicker && <h6 className="uppercase text-xs tablet-lg:hidden">{kicker}</h6>}
-              <h2 className={`text-2xl tablet:text-4xl font-bold ${styles.heading}`}>{title}</h2>
+              {heading}
             </div>
             {permalink && (
               <Link
-                className="px-3 py-1 tablet:py-2 shadow-lg text-sm tablet:text-lg font-medium bg-white dark:bg-zinc-700"
+                className="px-3 py-1 tablet:py-2 rounded-md shadow-lg text-sm tablet:text-lg font-medium bg-white dark:bg-zinc-700"
                 href={permalink}
                 title={`Visit all ${title}`}
               >
-                <button>All {title} →</button>
+                <button>
+                  <span className="hover:underline">All {title}</span> →
+                </button>
               </Link>
             )}
           </div>
