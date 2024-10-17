@@ -9,6 +9,13 @@ import { Articles, Contributors, Events } from "../../../../lib/types"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
+// This is the payload that is returned by the Directus Flow
+// {
+// type: {{$trigger.collection}},
+// id: {{$trigger.keys[0]}},
+// secret: "7giV5gQ6",
+// }
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
@@ -65,7 +72,7 @@ export async function GET(request: Request) {
       case RevalidateType.Events:
         // Example path: /event/2024/10/07/event-slug
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/event/id/${id}`)
-        if (!response.ok) throw new Error("Failed to fetch article")
+        if (!response.ok) throw new Error("Failed to fetch event")
         const eventData: Events = await response.json()
         path = await revalidateEvent(eventData)
         return new Response(`Revalidation started for paths: ${path}`, {

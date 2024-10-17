@@ -6,6 +6,7 @@ import Paper from "../../paper"
 import { EventPreviewProps } from "@/app/preview/event/[id]/page"
 import EventPageBody from "../../event/eventPageBody"
 import Register from "../../event/register"
+import PreviewInfo from "./previewInfo"
 
 const EventPreview = (props: EventPreviewProps) => {
   const { eventData, isEnabled, previewPassword, directusUrl } = props
@@ -79,6 +80,15 @@ const EventPreview = (props: EventPreviewProps) => {
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
           <div className="col-span-4 tablet-lg:col-span-12">
             <PreviewHeader previewURL={previewURL} />
+          </div>
+        </div>
+        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
+          <div className="col-span-4 tablet-lg:col-span-12">
+            {isStudioPreview && (
+              <div className="py-2 flex flex-col space-y-6">
+                <PreviewInfo eventData={eventData} directusUrl={directusUrl} />
+              </div>
+            )}
           </div>
         </div>
         <EventPageBody {...props} />

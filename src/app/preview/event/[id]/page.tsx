@@ -4,7 +4,7 @@ import { Events, EventsTypes, Issues, Sections } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { getEventTypes, getPreviewEvent } from "../../../../../lib/utils/events/utils"
+import { getEventTypes, getPreviewEvent, getUpcomingEvents } from "../../../../../lib/utils/events/utils"
 import EventPreview from "@/app/components/preview/event"
 
 export interface EventPreviewProps {

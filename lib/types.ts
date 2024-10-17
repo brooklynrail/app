@@ -201,6 +201,7 @@ export type DirectusFields = {
 export type DirectusFiles = {
   ads: any[] | Ads[]
   articles: any[] | Articles[]
+  alt?: string | null
   caption?: string | null
   charset?: string | null
   description?: string | null

@@ -2,7 +2,7 @@
 import { ArticlePreviewProps } from "@/app/preview/article/[id]/page"
 import { useState, useEffect } from "react"
 import Password from "../password"
-import PreviewInfo from "../previewInfo"
+import PreviewInfo from "./previewInfo"
 import PreviewHeader from "../previewHead"
 import Title, { TitleType } from "../../collections/promos/title"
 import Bylines, { BylineType } from "../../collections/promos/bylines"
@@ -87,9 +87,9 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
             <PreviewHeader previewURL={previewURL} />
           </div>
         </div>
-        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-">
+        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-3 px-3">
           <div className="col-span-4 tablet-lg:col-span-9">
-            <article className="px-6 py-3">
+            <article className="px-3 py-3">
               {isTribute ? (
                 <div className="py-3 pb-9">
                   {!articleData.hide_title && <Title title={articleData.title} type={TitleType.TributeArticle} />}

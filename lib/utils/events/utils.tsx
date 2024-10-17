@@ -2,6 +2,8 @@ import { aggregate, readItems, readField } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../../directus"
 import { Events, EventsTypes } from "../../types"
+import { stripHtml } from "string-strip-html"
+import { getPermalink, PageType } from "../../utils"
 
 export enum EventTypes {
   TheNewSocialEnvironment = "the-new-social-environment",
@@ -45,6 +47,7 @@ export const getUpcomingEvents = cache(async () => {
     `&fields[]=kicker` +
     `&fields[]=title` +
     `&fields[]=deck` +
+    `&fields[]=summary` +
     `&fields[]=series` +
     `&fields[]=start_date` +
     `&fields[]=end_date` +
@@ -161,7 +164,7 @@ export const getEvent = cache(async (slug: string) => {
                 "instagram",
                 "related_links",
                 {
-                  portrait: ["id", "width", "height", "filename_disk", "caption"],
+                  portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                 },
               ],
             },
@@ -178,7 +181,7 @@ export const getEvent = cache(async (slug: string) => {
                 "instagram",
                 "related_links",
                 {
-                  portrait: ["id", "width", "height", "filename_disk", "caption"],
+                  portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                 },
               ],
             },
@@ -186,9 +189,14 @@ export const getEvent = cache(async (slug: string) => {
         },
       ],
       filter: {
-        slug: {
-          _eq: slug,
-        },
+        _and: [
+          {
+            slug: {
+              _eq: slug,
+            },
+          },
+          { status: { _eq: `published` } },
+        ],
       },
     }),
   )
@@ -212,8 +220,11 @@ export async function getPreviewEvent(id: string) {
                   "slug",
                   "bio",
                   "display_name",
+                  "website",
+                  "instagram",
+                  "related_links",
                   {
-                    portrait: ["id", "width", "height", "filename_disk", "caption"],
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                   },
                 ],
               },
@@ -227,8 +238,11 @@ export async function getPreviewEvent(id: string) {
                   "slug",
                   "bio",
                   "display_name",
+                  "website",
+                  "instagram",
+                  "related_links",
                   {
-                    portrait: ["id", "width", "height", "filename_disk", "caption"],
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
                   },
                 ],
               },
@@ -288,4 +302,229 @@ export const getTotalEventsCount = async () => {
   )
   const count = Number(totalCount[0].count)
   return count ? count : 0
+}
+
+export const generateYouTubeTags = (eventData: Events) => {
+  const tags = []
+
+  // Add people names to tags
+  if (eventData.people && eventData.people.length > 0) {
+    eventData.people.forEach((personData) => {
+      if (personData.people_id) {
+        const personName = personData.people_id.display_name
+        if (personName) {
+          tags.push(personName.trim())
+        }
+      }
+    })
+  }
+
+  // Add poet names to tags (if applicable)
+  if (eventData.poets && eventData.poets.length > 0) {
+    eventData.poets.forEach((poetData) => {
+      if (poetData.people_id) {
+        const poetName = poetData.people_id.display_name
+        if (poetName) {
+          tags.push(poetName.trim())
+        }
+      }
+    })
+  }
+
+  // Append static tags
+  tags.push(
+    "The Brooklyn Rail",
+    "Interview",
+    "live conversation",
+    "artist",
+    "artists",
+    "poetry",
+    "poetry reading",
+    "Brooklyn Rail",
+    "Phong Bui",
+    "The New Social Environment",
+    "Art",
+    "contemporary art",
+    "Terra Foundation for American Art",
+  )
+
+  // Return the tags as a comma-separated string (or return the array itself depending on your use case)
+  return tags.join(", ")
+}
+
+export const generateYouTubeCopy = (eventData: Events) => {
+  const { title, summary, start_date, people, poets, series, slug } = eventData
+  const eventDate = new Date(start_date)
+
+  const startDate = new Date(eventData.start_date)
+  const eventYear = startDate.getFullYear()
+  const eventMonth = startDate.getMonth() + 1
+  const eventDay = startDate.getDate()
+
+  const eventPermalink = getPermalink({
+    eventYear: eventYear,
+    eventMonth: eventMonth,
+    eventDay: eventDay,
+    slug: slug,
+    type: PageType.Event,
+  })
+
+  const formatTime = (date: Date, timeZone: string) => {
+    return date
+      .toLocaleTimeString("en-US", {
+        timeZone,
+        hour: "numeric",
+        minute: "numeric",
+      })
+      .replace("AM", "a.m.")
+      .replace("PM", "p.m.")
+  }
+
+  const easternTime = formatTime(eventDate, "America/New_York")
+  const pacificTime = formatTime(new Date(eventDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
+
+  let youtubeCopy = `${encodeHtmlEntities(stripHtml(title).result)}\n${encodeHtmlEntities(stripHtml(summary).result)}\n\n`
+
+  // Series Info
+  if (series) {
+    youtubeCopy += `The New Social Environment #${series}\n`
+  }
+
+  youtubeCopy += `Recorded on ${eventDate.toDateString()} at ${easternTime} Eastern / ${pacificTime} Pacific \n`
+  youtubeCopy += `${eventPermalink}\n\n`
+
+  youtubeCopy += "〰️〰️〰️〰️\n\nIn this talk:\n\n"
+
+  // People Info
+  people.forEach((personObj: any) => {
+    const person = personObj.people_id
+    const bio = encodeHtmlEntities(stripHtml(person.bio).result)
+    youtubeCopy += `🚩 ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
+
+    // Include website, Instagram, etc.
+    if (person.website) {
+      youtubeCopy += `• ${encodeHtmlEntities(person.website)}\n`
+    }
+    if (person.instagram) {
+      youtubeCopy += `• https://instagram.com/${encodeHtmlEntities(person.instagram)}\n`
+    }
+    if (person.related_links && person.related_links.length > 0) {
+      person.related_links.forEach((link: any) => {
+        youtubeCopy += `• ${encodeHtmlEntities(link.url)}\n`
+      })
+    }
+    youtubeCopy += "\n"
+  })
+
+  if (poets && poets.length > 0) {
+    youtubeCopy += `The Rail has a tradition of ending our conversations with a poem, and on this day we were fortunate to have\n\n`
+    // Poets Info
+    poets.forEach((personObj: any) => {
+      const person = personObj.people_id
+      const bio = encodeHtmlEntities(stripHtml(person.bio).result)
+      youtubeCopy += `🚩 ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
+
+      // Include website, Instagram, etc.
+      if (person.website) {
+        youtubeCopy += `• ${encodeHtmlEntities(person.website)}\n`
+      }
+      if (person.instagram) {
+        youtubeCopy += `• https://instagram.com/${encodeHtmlEntities(person.instagram)}\n`
+      }
+      if (person.related_links && person.related_links.length > 0) {
+        person.related_links.forEach((link: any) => {
+          youtubeCopy += `• ${encodeHtmlEntities(link.url)}\n`
+        })
+      }
+      youtubeCopy += "\n"
+    })
+  }
+
+  youtubeCopy += `〰️〰️〰️〰️\n\n`
+
+  youtubeCopy += `We'd like to thank the Terra Foundation for American Art for making our daily conversations possible.\n`
+  youtubeCopy += `• Follow @terraamericanart https://www.instagram.com/terraamericanart/\n`
+  youtubeCopy += `• Learn more at https://www.terraamericanart.org/\n\n`
+
+  youtubeCopy += `This conversation was produced by THE BROOKLYN RAIL:\n`
+  youtubeCopy += `• Learn more about our upcoming conversations at: https://brooklynrail.org/events\n`
+  youtubeCopy += `• Subscribe to the Rail: https://brooklynrail.org/subscribe\n`
+  youtubeCopy += `• Sign up for our newsletter: https://brooklynrail.org/newsletter\n`
+  youtubeCopy += `• Follow us on Instagram: https://www.instagram.com/brooklynrail/\n`
+
+  return youtubeCopy
+}
+
+const encodeHtmlEntities = (str: string) => {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+}
+
+export const generateNewsletter = (allEvents: Events[]) => {
+  // Helper function to format the event time
+  const formatTime = (date: Date, timeZone: string) => {
+    return date
+      .toLocaleTimeString("en-US", {
+        timeZone,
+        hour: "numeric",
+        minute: "numeric",
+      })
+      .replace("AM", "a.m.")
+      .replace("PM", "p.m.")
+  }
+
+  // Helper function to build HTML for all events
+  const buildEventsHTML = (events: Events[]) => {
+    return events
+      .map((event: Events) => {
+        const startDate = new Date(event.start_date)
+
+        const permalink = getPermalink({
+          eventYear: startDate.getFullYear(),
+          eventMonth: startDate.getMonth() + 1,
+          eventDay: startDate.getDate(),
+          slug: event.slug,
+          type: PageType.Event,
+        })
+
+        const easternTime = formatTime(startDate, "America/New_York")
+        const pacificTime = formatTime(new Date(startDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
+
+        return `  <div class="event">
+        ${event.series ? `<p class="kicker"><span class="series">#${event.series}</span></p>` : ""}
+        <h3><a href="${permalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
+        <p class="summary">${event.summary}</p>
+        <div class="event-details">
+          <p class="date">${startDate.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}</p>
+          <p class="time">${easternTime} Eastern / ${pacificTime} Pacific</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-register" title="Register for ${event.title}" href="${permalink}" target="_blank">
+            <span>Register</span>
+          </a>
+        </div>
+      </div>`
+      })
+      .join()
+  }
+
+  // Build and return the full newsletter HTML
+  const newsletterHTML = `
+<div class="rail-newsletter">
+  <div class="event-listing">
+    <h2>This Week's Events</h2>
+    ${buildEventsHTML(allEvents)}
+  </div>
+</div>
+  `
+  return newsletterHTML
 }
