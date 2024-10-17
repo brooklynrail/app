@@ -1,7 +1,7 @@
 import { readItems, readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
-import { Articles, Collections, Homepage, HomepageCollections, Issues, People, Sections } from "../types"
+import { Articles, Homepage, HomepageCollections, Issues } from "../types"
 
 export const getHomepageData = cache(async (currentIssue: Issues) => {
   try {
@@ -107,6 +107,32 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
     return homepageData as Homepage
   } catch (error) {
     console.error("Error fetching Homepage data:", error)
+    return null
+  }
+})
+
+export const getCurrentIssueSlug = cache(async () => {
+  try {
+    const settings = await directus.request(
+      readSingleton("global_settings", {
+        fields: [
+          {
+            current_issue: ["slug"],
+          },
+        ],
+      }),
+    )
+
+    const curruentIssueData = settings.current_issue
+    if (!curruentIssueData) {
+      // throw an error if there is no current issue
+      console.error("There is no current issue set", curruentIssueData)
+      return
+    }
+
+    return settings.current_issue.slug
+  } catch (error) {
+    console.error("Error fetching CurrentIssueData data:", error)
     return null
   }
 })

@@ -1,4 +1,4 @@
-import { getCollectionArticles } from "../../../../lib/utils/homepage"
+import { getCollectionArticles, getCurrentIssueSlug } from "../../../../lib/utils/homepage"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -9,6 +9,11 @@ export async function GET(request: Request) {
     return new Response("Slug is required", { status: 400 })
   }
 
-  const data = getCollectionArticles({ slug, limit: Number(limit) })
+  const currentIssueSlug = await getCurrentIssueSlug()
+  if (!currentIssueSlug) {
+    return new Response("currentIssueSlug is required", { status: 400 })
+  }
+
+  const data = getCollectionArticles({ slug, limit: Number(limit), currentIssueSlug })
   return Response.json(data)
 }
