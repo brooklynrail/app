@@ -19,7 +19,7 @@ export enum TitleType {
   Tribute = "text-center tablet-lg:text-left font-bold text-3xl tablet-lg:text-5xl",
   CollectionTribute = "text-center tablet-lg:text-left font-bold text-3xl tablet-lg:text-4xl",
   CriticsPage = "text-center font-normal font-serif text-6xl",
-  CollectionCriticsPage = "font-normal font-serif text-6xl",
+  CollectionCriticsPage = "font-normal font-serif text-4xl desktop:text-5xl",
   CollectionCriticsPagePromo = "pl-3 font-medium font-sans text-sm",
 }
 
