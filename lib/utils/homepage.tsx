@@ -3,7 +3,7 @@ import directus from "../directus"
 import { cache } from "react"
 import { Articles, Collections, Homepage, HomepageCollections, Issues, People, Sections } from "../types"
 
-export const getHomepageData = cache(async () => {
+export const getHomepageData = cache(async (currentIssue: Issues) => {
   try {
     const homepageData = await directus.request(
       readSingleton("homepage", {
@@ -87,6 +87,7 @@ export const getHomepageData = cache(async () => {
       // Note: the queries are faster if we fetch the articles this way, as opposed to the homepage query
       if (collection.collections_id && collection.collections_id.section) {
         const thisSectionArticles = getCollectionArticles({
+          currentIssueSlug: currentIssue.slug,
           slug: collection.collections_id.section.slug,
           limit: collection.collections_id.limit,
         })
@@ -149,11 +150,12 @@ export const getCurrentIssueData = cache(async () => {
 
 interface CollectionArticlesProps {
   slug: string
+  currentIssueSlug: string
   limit?: number | null
 }
 
 export const getCollectionArticles = cache(async (props: CollectionArticlesProps) => {
-  const { slug, limit } = props
+  const { slug, limit, currentIssueSlug } = props
 
   try {
     const data = await directus.request(
@@ -166,7 +168,7 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
           "deck",
           "excerpt",
           "kicker",
-          "sort",
+          "featured",
           "status",
           "hide_bylines_downstream",
           {
@@ -190,8 +192,11 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
         filter: {
           status: { _eq: "published" },
           section: { slug: { _eq: slug } },
+          // If no limit, then get the # of articles in this section the current issue
+          issue: { slug: { _eq: !limit ? currentIssueSlug : undefined } },
         },
-        limit: limit ? limit : 4,
+        // If we have a limit, we want to get only the limit number of articles
+        limit: limit ? limit : -1,
         sort: "-date_updated",
       }),
     )
