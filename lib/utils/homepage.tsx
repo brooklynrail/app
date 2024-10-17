@@ -223,7 +223,6 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
         },
         // If we have a limit, we want to get only the limit number of articles
         limit: limit ? limit : -1,
-        sort: "-date_updated",
       }),
     )
 
