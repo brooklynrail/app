@@ -76,6 +76,7 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&fields[]=people.people_id.portrait.filename_disk` +
     `&fields[]=people.people_id.portrait.width` +
     `&fields[]=people.people_id.portrait.height` +
+    `&fields[]=people.people_id.portrait.alt` +
     `&fields[]=people.people_id.portrait.type` +
     `&fields[]=start_date` +
     `&sort=start_date` +

@@ -29,7 +29,7 @@ export const CoverImages = (props: CoverImagesProps) => {
   }, [])
 
   return (
-    <div className="w-full h-full bg-green-400 min-h-28 relative" ref={coversRef}>
+    <div className="w-full h-full bg-zinc-700 bg-opacity-10 min-h-28 relative" ref={coversRef}>
       {containerHeight && containerWidth && (
         <Covers currentIssue={currentIssue} containerHeight={containerHeight} containerWidth={containerWidth} />
       )}
@@ -111,7 +111,7 @@ const Covers = (props: CoversProps) => {
         width={width}
         height={height}
         alt={"alt"}
-        sizes="15vw"
+        sizes="10vw"
         onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
       />
     )

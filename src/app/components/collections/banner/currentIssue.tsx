@@ -43,7 +43,7 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
           </h3>
         </div>
         <div className="col-span-2 row-start-2">
-          <div className="bg-fuchsia-500 w-full h-full">
+          <div className="w-full h-full">
             <CoverImages currentIssue={currentIssue} />
           </div>
         </div>

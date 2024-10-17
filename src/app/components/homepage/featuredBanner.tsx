@@ -46,7 +46,7 @@ const FeaturedBanner = (props: BannerProps) => {
     }
   })
   return (
-    <div className="">
+    <div className="bg-gradient-to-l from-[#EF4444] to-[#CFCFE0] dark:from-indigo-700">
       <div className="grid grid-cols-4 tablet:grid-cols-12">{allBanners}</div>
     </div>
   )

@@ -1,10 +1,12 @@
 "use client"
-
+import style from "./banner.module.scss"
 import Link from "next/link"
 import { CollectionLinks, Collections, Events } from "../../../../../lib/types"
 import parse from "html-react-parser"
 import { useEffect, useState } from "react"
 import { getUpcomingEventsBanner } from "../../../../../lib/utils/events/utils"
+import { getPermalink, PageType } from "../../../../../lib/utils"
+import Image from "next/image"
 
 interface BannerNewSocialEnvironmentProps {
   banner: Collections
@@ -56,7 +58,7 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
           </h3>
         </div>
         <div className="col-span-5 row-start-2">
-          <div className="bg-pink-500 bg-opacity-60 w-full h-full flex divide-x divide-indigo-50 divide-dotted overflow-x-auto">
+          <div className=" h-24 bg-opacity-60 flex divide-x divide-indigo-50 divide-dotted overflow-x-auto">
             {events}
           </div>
         </div>
@@ -75,23 +77,61 @@ interface EventCardProps {
 }
 
 const EventCard = (props: EventCardProps) => {
-  const { title, slug, start_date } = props.event
+  const { title, slug, start_date, people } = props.event
   const startDate = new Date(start_date)
   const fullDay = startDate.toLocaleDateString("en-US", { weekday: "long" })
+  const eventYear = startDate.getFullYear()
+  const eventMonth = startDate.getMonth() + 1
+  const eventDay = startDate.getDate()
+
+  // const firstPerson = people[0] && people[0].people_id ? people[0].people_id.portrait : null
+  // const firstPersonPortrait = firstPerson && firstPerson.filename_disk ? firstPerson.filename_disk : null
+
+  const permalink = getPermalink({
+    eventYear: eventYear,
+    eventMonth: eventMonth,
+    eventDay: eventDay,
+    slug: slug,
+    type: PageType.Event,
+  })
+
   return (
-    <div className="p-3">
-      <div className="bg-white bg-opacity-20 rounded-xl w-32 h-24">
-        <span>{fullDay}</span>
-        {title}
-      </div>
+    <div className="px-3 first:pl-0">
+      <Link
+        href={permalink}
+        className={`block rounded-xl w-32 h-24 ${style.card} hover:no-underline relative overflow-hidden`}
+      >
+        {/* {firstPersonPortrait && (
+          <Image
+            className={`absolute -top-4 left-0 right-0 bottom-0`}
+            priority
+            id={`event-${slug}`}
+            src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${firstPersonPortrait}?key=portrait`}
+            width={150}
+            height={150}
+            alt={"alt"}
+            sizes="20vw"
+          />
+        )} */}
+        <div className={`z-10 relative top-0 bg-white bg-opacity-20 px-3 h-24 ${style.card}`}>
+          <p className="uppercase text-lime-200 font-bold text-xs">{fullDay}</p>
+          <h3 className="text-xs text-white font-bold">{title}</h3>
+        </div>
+      </Link>
     </div>
   )
 }
 
 const AllEventsCard = () => {
   return (
-    <div className="p-3">
-      <div className="bg-black bg-opacity-20 rounded-xl w-32 h-24">All events »</div>
+    <div className="px-3 last:pr-0">
+      <div
+        className={`bg-white bg-opacity-20 rounded-xl w-32 h-24 px-3 ${style.card} flex flex-col justify-center items-center`}
+      >
+        <p className="text-indigo-50 text-xs uppercase">
+          <Link href={`/events`}>All events</Link> »
+        </p>
+      </div>
     </div>
   )
 }
