@@ -25,7 +25,7 @@ export enum TitleType {
 
 interface TitleProps {
   title: string
-  permalink: string | null
+  permalink?: string | null
   type: TitleType
 }
 
