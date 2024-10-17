@@ -42,18 +42,18 @@ export default async function HomepagePage() {
 }
 
 async function getData() {
-  const homepageData = await getHomepageData()
+  const currentIssue = await getCurrentIssueData()
+  if (!currentIssue) {
+    return notFound()
+  }
+
+  const homepageData = await getHomepageData(currentIssue)
   if (!homepageData) {
     return notFound()
   }
 
   const banners = homepageData.banners
   if (!banners) {
-    return notFound()
-  }
-
-  const currentIssue = await getCurrentIssueData()
-  if (!currentIssue) {
     return notFound()
   }
 
