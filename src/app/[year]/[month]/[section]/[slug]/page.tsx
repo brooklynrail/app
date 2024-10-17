@@ -103,8 +103,7 @@ async function getData({ params }: { params: ArticleParams }) {
   // This prevents URLs with the correct slug + wrong date
   if (!checkYearMonthSection(articleData.section, articleData.issue, year, month, section)) {
     // check if a redirect exists that includes this slug
-    // /event/2024/10/13/one-becomes-the-other/
-    const redirect = await getRedirect(RedirectTypes.Event, slug)
+    const redirect = await getRedirect(RedirectTypes.Article, slug)
     if (redirect) {
       await AddRedirect(redirect)
     }
