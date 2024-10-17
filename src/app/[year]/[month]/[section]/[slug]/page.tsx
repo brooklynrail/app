@@ -7,6 +7,7 @@ import { notFound, redirect } from "next/navigation"
 import { AddRedirect } from "@/app/actions/redirect"
 import { revalidatePath } from "next/cache"
 import { getRedirect, RedirectTypes } from "../../../../../../lib/utils/redirects"
+import { checkYearMonthSection } from "../../../../../../lib/utils/articles"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -70,15 +71,40 @@ interface ArticleParams {
 }
 
 async function getData({ params }: { params: ArticleParams }) {
+  const year: string = params.year
+  const month: string = params.month
+  const section: string = params.section
   const slug: string = params.slug.toString()
 
-  const articleData = await getArticle(slug, "published")
+  // Month & Day —— Both need to have a leading zero if they are less than 10
+  // otherwise it should go to a 404 page
+  if (month.length === 1 || section.length === 1) {
+    return notFound()
+  }
 
-  // Redirects
+  if (!year || !month || !section || !slug) {
+    return notFound()
+  }
+
+  // Get the article data based on slug
+  const articleData = await getArticle(slug, "published")
   if (!articleData) {
+    // If the slug is incorrect, but the dates in the URL are correct,
     // check if a redirect exists that includes this slug
     // Note: this does not account for changes to the year/month of the URL
     const redirect = await getRedirect(RedirectTypes.Article, slug)
+    if (redirect) {
+      await AddRedirect(redirect)
+    }
+    return notFound()
+  }
+
+  // This checks to see that the year, month, day in the URL is the same as the start_date for this event
+  // This prevents URLs with the correct slug + wrong date
+  if (!checkYearMonthSection(articleData.section, articleData.issue, year, month, section)) {
+    // check if a redirect exists that includes this slug
+    // /event/2024/10/13/one-becomes-the-other/
+    const redirect = await getRedirect(RedirectTypes.Event, slug)
     if (redirect) {
       await AddRedirect(redirect)
     }
