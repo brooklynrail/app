@@ -24,7 +24,11 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
     banner.links.map((link: CollectionLinks, i: number) => {
       const first = i === 0 ? "border border-dotted border-indigo-50 px-0.5" : ""
       return (
-        <Link href={link.url} className={`py-1 text-center text-indigo-50 uppercase font-medium text-xs ${first}`}>
+        <Link
+          key={i}
+          href={link.url}
+          className={`py-1 text-center text-indigo-50 uppercase font-medium text-xs ${first}`}
+        >
           <button className="uppercase hover:underline">{link.text}</button>
         </Link>
       )

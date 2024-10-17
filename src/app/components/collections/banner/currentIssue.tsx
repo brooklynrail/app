@@ -23,6 +23,7 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
       const first = i === 0 ? "border border-dotted border-zinc-800 dark:border-indigo-50 px-0.5" : ""
       return (
         <Link
+          key={i}
           href={link.url}
           className={`py-1 text-center text-zinc-800 dark:text-indigo-50 uppercase font-medium text-xs ${first}`}
         >

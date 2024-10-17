@@ -15,6 +15,7 @@ export enum BylineType {
   TributeNextPrev = "text-sm tablet-lg:text-md font-medium font-sans not-italic",
   TributeWritersList = "text-sm not-italic inline",
   CriticsPage = "text-2xl font-bold",
+  CollectionCriticsPage = "text-3xl font-normal font-serif",
 }
 
 interface BylinesProps {

@@ -10,6 +10,7 @@ import CollectionPoetry from "../collections/poetry"
 import BannerCurrentIssue from "../collections/banner/currentIssue"
 import BannerExhibitions from "../collections/banner/exhibitions"
 import BannerNewSocialEnvironment from "../collections/banner/newSocialEnvironment"
+import CollectionCriticsPage from "../collections/criticspage"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -70,6 +71,7 @@ export enum Collection {
 
 const CollectionSection = (collection: Collections) => {
   const { section } = collection
+  console.log("CollectionSection", section)
   if (!section) {
     return null
   }
@@ -82,7 +84,7 @@ const CollectionSection = (collection: Collections) => {
     case Collection.Books:
       return <CollectionBooks {...collection} />
     case Collection.CriticsPage:
-      console.log("Dance")
+      return <CollectionCriticsPage {...collection} />
       break
     case Collection.Dance:
       console.log("Dance")

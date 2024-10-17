@@ -8,6 +8,8 @@ import { stripHtml } from "string-strip-html"
 import Bylines, { BylineType } from "./promos/bylines"
 import Title, { TitleType } from "./promos/title"
 import Excerpt, { ExcerptType } from "./promos/excerpt"
+import Frame from "../section/frame"
+import styles from "./collection.module.scss"
 
 const CollectionCriticsPage = (collection: Collections) => {
   const { section } = collection
@@ -26,30 +28,26 @@ const CollectionCriticsPage = (collection: Collections) => {
     type: PageType.SuperSection,
   })
 
-  // const grid_rows = `grid-rows-${restOfArticles.length}`
-  const grid_rows = `grid-rows-1`
+  const guestCritic = leadArticle.contributors[0].contributors_id
+    ? `${leadArticle.contributors[0].contributors_id?.first_name} ${leadArticle.contributors[0].contributors_id?.last_name}`
+    : ""
+
+  const collectionTitle = `Guest Critic: ${guestCritic}`
 
   return (
-    <div key={collection.id}>
-      <div>
-        <div className="px-6 pb-16 border-b rail-border">
-          <CollectionHead title={section.name} permalink={section.featured ? sectionPermalink : null} />
-          <div className={`grid grid-cols-4 tablet:grid-cols-12 ${grid_rows}`}>
-            <div className="col-span-4 tablet:col-span-6 tablet:row-span-4 tablet:border-r rail-border tablet:pr-3">
-              <div className="grid grid-cols-4 tablet:grid-cols-6 gap-3">
-                <div className="col-span-4 tablet:col-span-6">
-                  <LeadPromo article={leadArticle} />
-                </div>
-              </div>
-            </div>
-            <div
-              className={`col-span-4 tablet:col-span-6 tablet-lg:col-start-7 row-start-1 tablet:ml-3 divide-y rail-divide`}
-              itemType="http://schema.org/Article"
-            >
-              <Promos articles={restOfArticles} />
-            </div>
-          </div>
-        </div>
+    <div key={collection.id} className={`rail-criticspage-bg ${styles.criticspage}`}>
+      <CollectionHead
+        title={collectionTitle}
+        kicker={leadArticle.issue.title}
+        permalink={section.featured ? sectionPermalink : null}
+        classes={`rail-criticspage-bg collection-${section.slug}`}
+      />
+      <div className="">
+        <Frame
+          LeadPromo={<LeadPromo article={leadArticle} />}
+          Promos={<Promos articles={restOfArticles} />}
+          alt={false}
+        />
       </div>
     </div>
   )
@@ -74,8 +72,10 @@ const Promos = (props: PromoProps) => {
       <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-3">
         <div className="col-span-4 tablet:col-span-6">
           <div className="flex flex-col space-y-1">
-            <Bylines article={article} asTitle={true} type={BylineType.CriticsPage} />
-            <Title title={article.title} permalink={permalink} type={TitleType.XSmall} />
+            <Link href={permalink}>
+              <Bylines article={article} asTitle={true} type={BylineType.CollectionCriticsPage} />
+            </Link>
+            <Title title={article.title} permalink={permalink} type={TitleType.CollectionCriticsPagePromo} />
           </div>
         </div>
       </div>
@@ -101,19 +101,17 @@ const LeadPromo = (props: LeadPromoProps) => {
   })
 
   return (
-    <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 pt-3 pb-3">
+    <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 pb-3">
       <div className="col-span-4 tablet:col-span-3" itemType="http://schema.org/Article">
         {featured_image && (
-          <div className="">
-            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <FeaturedImage image={featured_image} title={title} />
-            </Link>
+          <div className="pr-3">
+            <FeaturedImage image={featured_image} title={title} permalink={permalink} />
           </div>
         )}
       </div>
       <div className="col-span-4 tablet:col-span-3">
         <div className="flex flex-col space-y-3">
-          <Title title={article.title} permalink={permalink} type={TitleType.CriticsPage} />
+          <Title title={article.title} permalink={permalink} type={TitleType.CollectionCriticsPage} />
           <Bylines article={article} type={BylineType.Default} />
           <Excerpt excerpt={article.excerpt} type={ExcerptType.CriticsPage} />
         </div>

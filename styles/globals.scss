@@ -72,6 +72,11 @@ b {
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
+.rail-criticspage-bg {
+  @apply bg-amber-50 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
 .rail-border {
   @apply border-zinc-600 dark:border-slate-300 border-dotted;
 }
@@ -120,7 +125,14 @@ body {
 }
 
 a {
-  @apply hover:underline underline-offset-2;
+  @apply underline-offset-2;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+a:hover .media figcaption {
+  text-decoration: none !important;
 }
 
 .rail-header-default {

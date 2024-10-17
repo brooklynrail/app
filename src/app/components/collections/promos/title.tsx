@@ -18,6 +18,8 @@ export enum TitleType {
   TributeArticle = "text-2xl tablet-lg:text-3xl font-sans font-light",
   Tribute = "font-bold text-4xl tablet-lg:text-5xl",
   CriticsPage = "text-center font-normal font-serif text-6xl",
+  CollectionCriticsPage = "font-normal font-serif text-6xl",
+  CollectionCriticsPagePromo = "pl-3 font-medium font-sans text-sm",
 }
 
 interface TitleProps {
@@ -44,6 +46,8 @@ const Title = (props: TitleProps) => {
   }
 
   switch (type) {
+    case TitleType.CollectionCriticsPagePromo:
+      return <h3 className={`${type}`}>{title_contents}</h3>
     case TitleType.NextPrev:
       return <h3 className={`${type}`}>{title_contents}</h3>
     default:
