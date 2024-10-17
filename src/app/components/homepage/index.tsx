@@ -1,16 +1,14 @@
 "use client"
 import { HomePageProps } from "@/app/page"
 import Header, { HeaderType } from "../header"
-import { Articles, Collections, HomepageBanners, HomepageCollections, Issues } from "../../../../lib/types"
+import { Articles, Collections, HomepageCollections } from "../../../../lib/types"
 import Paper from "../paper"
 import CollectionArt from "../collections/art"
 import CollectionArtSeen from "../collections/artSeen"
 import CollectionBooks from "../collections/books"
 import CollectionPoetry from "../collections/poetry"
-import BannerCurrentIssue from "../collections/banner/currentIssue"
-import BannerExhibitions from "../collections/banner/exhibitions"
-import BannerNewSocialEnvironment from "../collections/banner/newSocialEnvironment"
 import CollectionCriticsPage from "../collections/criticspage"
+import CollectionTribute from "../collections/tribute"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -34,16 +32,11 @@ const HomePage = (props: HomePageProps) => {
     }
 
     switch (thisCollection.type) {
-      // case CollectionType.Banner:
-      //   return <CollectionBanner key={`${i}-${thisCollection.id}`} {...thisCollection} />
       case CollectionType.Section:
         return <CollectionSection key={`${i}-${thisCollection.id}`} {...thisCollection} />
       case CollectionType.Tribute:
-        console.log("Tribute")
-        return null
-      // return <CollectionTribute {...thisCollection} />
+        return <CollectionTribute key={`${i}-${thisCollection.id}`} {...thisCollection} />
       default:
-        // console.log("Default")
         return null
     }
   })
@@ -71,7 +64,6 @@ export enum Collection {
 
 const CollectionSection = (collection: Collections) => {
   const { section } = collection
-  console.log("CollectionSection", section)
   if (!section) {
     return null
   }

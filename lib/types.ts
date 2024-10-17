@@ -92,7 +92,7 @@ export type Collections = {
   kicker?: string | null
   description?: string | null
   links?: CollectionLinks[] | null
-  tribute?: string | Tributes | null
+  tribute?: Tributes | null
   type: string
   banner_type?: string | null
   user_created?: string | DirectusUsers | null

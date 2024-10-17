@@ -20,11 +20,15 @@ const TributePage = (props: TributePageProps) => {
   return (
     <Paper pageClass={`paper-tribute ${tributeClass}`}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
-      <div className="">
+      <div className="rail-divide divide-y">
         <Header type={HeaderType.Alt} />
-        <section id="main" className={styles.main}>
-          <TributeHead {...props} />
-          <TributeBody {...props} />
+        <section id="main" className={`${styles.main}`}>
+          <div className="rail-divide divide-y">
+            <div className="py-3 px-6">
+              <TributeHead thisTributeData={thisTributeData} articleData={thisTributeData.articles[0]} />
+            </div>
+            <TributeBody {...props} />
+          </div>
         </section>
       </div>
     </Paper>

@@ -1,7 +1,7 @@
 import { readItems, readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
-import { Articles, Homepage, HomepageCollections, Issues, People, Sections } from "../types"
+import { Articles, Collections, Homepage, HomepageCollections, Issues, People, Sections } from "../types"
 
 export const getHomepageData = cache(async () => {
   try {
@@ -55,6 +55,7 @@ export const getHomepageData = cache(async () => {
                       },
                       {
                         articles: [
+                          "id",
                           "slug",
                           "title",
                           "deck",
@@ -95,14 +96,14 @@ export const getHomepageData = cache(async () => {
       return collection
     })
 
-    const resolvedCollections = await Promise.all(allCollections)
-    homepage.collections = resolvedCollections.filter(
-      (collection): collection is HomepageCollections => collection !== null,
-    )
+    homepage.collections = await Promise.all(allCollections)
+    // maybe we dont need this?
+    // const resolvedCollections = await Promise.all(allCollections)
+    // homepage.collections = resolvedCollections.filter(
+    //   (collection): collection is HomepageCollections => collection !== null,
+    // )
 
     return homepageData as Homepage
-    // return resolvedCollections as Collections[]
-    // return homepageData as Homepage
   } catch (error) {
     console.error("Error fetching Homepage data:", error)
     return null

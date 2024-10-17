@@ -16,7 +16,8 @@ export enum TitleType {
   LeadArtSeen = "text-4xl tablet:text-4xl font-normal",
   NextPrev = "text-md font-sans font-light",
   TributeArticle = "text-2xl tablet-lg:text-3xl font-sans font-light",
-  Tribute = "font-bold text-4xl tablet-lg:text-5xl",
+  Tribute = "text-center tablet-lg:text-left font-bold text-3xl tablet-lg:text-5xl",
+  CollectionTribute = "text-center tablet-lg:text-left font-bold text-3xl tablet-lg:text-4xl",
   CriticsPage = "text-center font-normal font-serif text-6xl",
   CollectionCriticsPage = "font-normal font-serif text-6xl",
   CollectionCriticsPagePromo = "pl-3 font-medium font-sans text-sm",
@@ -24,7 +25,7 @@ export enum TitleType {
 
 interface TitleProps {
   title: string
-  permalink?: string
+  permalink: string | null
   type: TitleType
 }
 
