@@ -153,7 +153,7 @@ const LeadPromoMusic = (props: LeadPromoProps) => {
         <Kicker article={article} />
         <Title title={article.title} permalink={permalink} type={TitleType.LeadArtSeen} />
         <Bylines article={article} type={BylineType.CollectionArtSeen} />
-        <Excerpt excerpt={article.excerpt} type={ExcerptType.Default} />
+        <Excerpt excerpt={article.excerpt} type={ExcerptType.Music} />
       </div>
     </div>
   )

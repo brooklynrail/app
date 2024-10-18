@@ -1,19 +1,17 @@
 "use client"
 
-import Link from "next/link"
 import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
-import { stripHtml } from "string-strip-html"
+import Frame633 from "../section/frame633"
+import FrameScrollable from "../section/frameScrollable"
+import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
+import Excerpt, { ExcerptType } from "./promos/excerpt"
 import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
-import Excerpt, { ExcerptType } from "./promos/excerpt"
-import Frame from "../section/frame"
-import FrameScrollable from "../section/frameScrollable"
 
-const CollectionArt = (collection: Collections) => {
+const CollectionDanceFilm = (collection: Collections) => {
   const { section } = collection
   if (!section) {
     return null
@@ -31,13 +29,19 @@ const CollectionArt = (collection: Collections) => {
   // get the list of articles in the section.articles array minus the first article
   const restOfArticles = articles.slice(1)
 
+  // divide the restOfArticles into two arrays: ColB and ColC
+  const midIndex = Math.ceil(restOfArticles.length / 2)
+  const ColB = restOfArticles.slice(0, midIndex)
+  const ColC = restOfArticles.slice(midIndex)
+
   return (
     <div key={collection.id} className="">
       <CollectionHead title={section.name} permalink={section.featured ? sectionPermalink : null} />
       <div className="hidden tablet-lg:block">
-        <Frame
-          LeadPromo={<LeadPromoArt article={leadArticle} />}
-          Promos={<PromosArt articles={restOfArticles} />}
+        <Frame633
+          LeadPromo={<LeadPromo article={leadArticle} />}
+          ColB={<Promos articles={ColB} />}
+          ColC={<Promos articles={ColC} />}
           alt={false}
         />
       </div>
@@ -93,7 +97,7 @@ interface PromoProps {
   articles: Articles[]
 }
 
-export const PromosArt = (props: PromoProps) => {
+const Promos = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
     const { issue, section, title, featured_artwork, featured_image, kicker } = article
     const artwork = featured_artwork ? featured_artwork : featured_image
@@ -106,26 +110,16 @@ export const PromosArt = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-3 pt-3 tablet:px-3 pb-6">
-        <div className="col-span-4 tablet:col-span-6">
-          <Kicker article={article} />
-        </div>
-        <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
-          {artwork && (
-            <div className="">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={artwork} title={title} hideCaption={true} />
-              </Link>
-            </div>
-          )}
-        </div>
-        <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-3">
-          <div className="flex flex-col space-y-3">
-            <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
-            <Bylines article={article} type={BylineType.Default} />
-            <Excerpt excerpt={article.excerpt} type={ExcerptType.Art} />
+      <div key={i} className="py-6 pb-8 flex flex-col space-y-3 bg-emerald-200">
+        {artwork && (
+          <div className="">
+            <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
           </div>
-        </div>
+        )}
+        <Kicker article={article} />
+        <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
+        <Bylines article={article} type={BylineType.Default} />
+        <Excerpt excerpt={article.excerpt} type={ExcerptType.Art} />
       </div>
     )
   })
@@ -136,7 +130,7 @@ export const PromosArt = (props: PromoProps) => {
 interface LeadPromoArtProps {
   article: Articles
 }
-export const LeadPromoArt = (props: LeadPromoArtProps) => {
+export const LeadPromo = (props: LeadPromoArtProps) => {
   const { article } = props
   const { title, issue, section, featured_artwork, featured_image } = article
 
@@ -151,31 +145,23 @@ export const LeadPromoArt = (props: LeadPromoArtProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-3">
-        <div className="col-span-4 tablet:col-span-6">
+      <div className="flex flex-col py-6">
+        {artwork && (
           <div className="">
-            <Kicker article={article} />
+            <FeaturedImage image={artwork} title={title} permalink={permalink} />
           </div>
-        </div>
-        <div className="col-span-4 tablet:col-span-6" itemType="http://schema.org/Article">
-          {artwork && (
-            <div className="">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={artwork} title={title} />
-              </Link>
-            </div>
-          )}
-        </div>
-        <div className="col-span-4 tablet:col-span-6">
-          <div className="flex flex-col space-y-3">
-            <Title title={article.title} permalink={permalink} type={TitleType.Lead} />
-            <Bylines article={article} type={BylineType.Default} />
-            <Excerpt excerpt={article.excerpt} type={ExcerptType.ArtLead} />
-          </div>
+        )}
+      </div>
+      <div className="col-span-4 tablet:col-span-6">
+        <div className="flex flex-col space-y-3">
+          <Kicker article={article} />
+          <Title title={article.title} permalink={permalink} type={TitleType.CollectionDance} />
+          <Excerpt excerpt={article.excerpt} type={ExcerptType.Default} />
+          <Bylines article={article} type={BylineType.CollectionDance} />
         </div>
       </div>
     </>
   )
 }
 
-export default CollectionArt
+export default CollectionDanceFilm

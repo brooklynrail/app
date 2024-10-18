@@ -12,7 +12,7 @@ const FrameScrollable = (props: FrameScrollableProps) => {
   }
 
   return (
-    <div>
+    <>
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">
           <div className="py-3">
@@ -22,7 +22,7 @@ const FrameScrollable = (props: FrameScrollableProps) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

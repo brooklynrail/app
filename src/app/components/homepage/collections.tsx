@@ -4,6 +4,7 @@ import CollectionArt from "../collections/art"
 import CollectionArtSeen from "../collections/artSeen"
 import CollectionBooks from "../collections/books"
 import CollectionCriticsPage from "../collections/criticspage"
+import CollectionDanceFilm from "../collections/danceFilm"
 import CollectionMusic from "../collections/music"
 import CollectionPoetry from "../collections/poetry"
 
@@ -36,11 +37,9 @@ export const CollectionSection = (collection: Collections) => {
       return <CollectionCriticsPage {...collection} />
       break
     case Collection.Dance:
-      console.log("Dance")
-      break
+      return <CollectionDanceFilm {...collection} />
     case Collection.Film:
-      console.log("Film")
-      break
+      return <CollectionDanceFilm {...collection} />
     case Collection.Music:
       return <CollectionMusic {...collection} />
     case Collection.Theater:
