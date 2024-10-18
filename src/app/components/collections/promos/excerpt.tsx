@@ -4,6 +4,7 @@ export enum ExcerptType {
   ArtLead = "text-lg tablet-lg:text-xl desktop-lg:text-2xl font-normal",
   Art = "text-sm tablet-lg:text-md desktop-lg:text-lg font-normal",
   CriticsPage = "text-lg tablet-lg:text-xl desktop-lg:text-xl font-sans font-normal",
+  Default = "text-sm tablet-lg:text-md desktop-lg:text-lg font-normal",
 }
 
 interface ExcerptProps {

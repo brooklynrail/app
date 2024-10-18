@@ -11,6 +11,7 @@ import Kicker from "./promos/kicker"
 import Frame from "../section/frame"
 import FrameScrollable from "../section/frameScrollable"
 import FrameThirds from "../section/frameThirds"
+import Excerpt, { ExcerptType } from "./promos/excerpt"
 
 const CollectionMusic = (collection: Collections) => {
   const { section } = collection
@@ -103,15 +104,17 @@ const PromosMusic = (props: PromoProps) => {
         <div className="flex flex-col w-[calc(100vw-6.5rem)] tablet:w-auto">
           <div className="flex flex-col space-y-3 tablet:space-y-0 tablet:flex-row tablet:space-x-6">
             {artwork && (
-              <div className="flex-none tablet:w-card desktop-lg:w-32">
+              <div className="flex-none tablet:w-60 desktop-lg:w-80">
                 <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
                   <FeaturedImage image={artwork} title={title} hideCaption={true} />
                 </Link>
               </div>
             )}
             <div className="flex flex-col space-y-1">
+              <Kicker article={article} />
               <Title title={article.title} permalink={permalink} type={TitleType.Small} />
               <Bylines article={article} type={BylineType.CollectionArtSeen} />
+              <Excerpt excerpt={article.excerpt} type={ExcerptType.Default} />
             </div>
           </div>
         </div>
@@ -147,8 +150,10 @@ const LeadPromoMusic = (props: LeadPromoProps) => {
         )}
       </div>
       <div className="px-6 tablet:px-0 flex flex-col space-y-3">
+        <Kicker article={article} />
         <Title title={article.title} permalink={permalink} type={TitleType.LeadArtSeen} />
         <Bylines article={article} type={BylineType.CollectionArtSeen} />
+        <Excerpt excerpt={article.excerpt} type={ExcerptType.Default} />
       </div>
     </div>
   )
