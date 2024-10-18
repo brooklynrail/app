@@ -24,7 +24,7 @@ const CollectionBooks = (collection: Collections) => {
   })
 
   return (
-    <div key={collection.id} className="pb-3">
+    <div key={collection.id} className="">
       <CollectionHead title={section.name} permalink={section.featured ? sectionPermalink : null} />
       <div className="pl-6 divide-x rail-divide flex overflow-x-auto snap-mandatory snap-x scroll-smooth">
         <PromosBooks articles={articles} />

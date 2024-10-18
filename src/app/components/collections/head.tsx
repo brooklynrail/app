@@ -13,17 +13,19 @@ const CollectionHead = (props: CollectionHeadProps) => {
   const { title, kicker, permalink, classes } = props
   // Note: links only show up if this section is "featured", which means it has a super-section page
   const heading = permalink ? (
-    <h2 className={`text-2xl tablet:text-4xl font-bold ${styles.heading}`}>
+    <h2 className={`text-3xl tablet:text-4xl font-bold ${styles.heading}`}>
       <Link href={permalink}>{title}</Link>
     </h2>
   ) : (
-    <h2 className={`text-2xl tablet:text-4xl font-bold ${styles.heading}`}>{title}</h2>
+    <h2 className={`text-3xl tablet:text-4xl font-bold ${styles.heading}`}>{title}</h2>
   )
   return (
-    <div className={`head px-6 sticky top-0 ${classes ? classes : "rail-bg"} z-10`}>
+    <div
+      className={`head px-3 tablet-lg:px-6 pt-3 pb-1.5 tablet-lg:pt-6 tablet-lg:pb-3 sticky top-0 ${classes ? classes : "rail-bg"} z-10`}
+    >
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">
-          <div className="flex justify-between items-center py-3 pt-6 pb-5">
+          <div className="flex justify-between items-center">
             <div>
               {kicker && <h6 className="uppercase text-xs tablet-lg:hidden">{kicker}</h6>}
               {heading}
