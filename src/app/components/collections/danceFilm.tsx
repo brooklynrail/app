@@ -110,7 +110,7 @@ const Promos = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="py-6 pb-8 flex flex-col space-y-3 bg-emerald-200">
+      <div key={i} className="py-6 pb-8 flex flex-col space-y-3">
         {artwork && (
           <div className="">
             <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
