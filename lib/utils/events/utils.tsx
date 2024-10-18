@@ -436,7 +436,13 @@ const encodeHtmlEntities = (str: string) => {
     .replace(/'/g, "&#39;")
 }
 
-export const generateNewsletter = (allEvents: Events[]) => {
+interface NewsletterEventProps {
+  eventTypes: EventsTypes[]
+  allEvents: Events[]
+}
+
+export const generateNewsletter = (props: NewsletterEventProps) => {
+  const { eventTypes, allEvents } = props
   // Helper function to format the event time
   const formatTime = (date: Date, timeZone: string) => {
     return date
@@ -466,8 +472,11 @@ export const generateNewsletter = (allEvents: Events[]) => {
         const easternTime = formatTime(startDate, "America/New_York")
         const pacificTime = formatTime(new Date(startDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
 
+        // Get the readable event type text
+        const eventTypeText = getEventTypeText(event.type, eventTypes)
+
         return `  <div class="event">
-        ${event.series ? `<p class="kicker"><span class="series">#${event.series}</span></p>` : ""}
+        ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
         <h3><a href="${permalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
         <p class="summary">${event.summary}</p>
         <div class="event-details">
