@@ -58,9 +58,7 @@ export const PromosBooks = (props: PromoProps) => {
           >
             {featured_image && (
               <div className={`flex-none w-32 tablet:w-card ${i === 0 ? "tablet-lg:w-[276px]" : "tablet-lg:w-44"}`}>
-                <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                  <FeaturedImage image={featured_image} title={title} hideCaption={true} />
-                </Link>
+                <FeaturedImage image={featured_image} title={title} hideCaption={true} permalink={permalink} />
               </div>
             )}
             <div className="flex flex-col space-y-3">

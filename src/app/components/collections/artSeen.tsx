@@ -68,9 +68,7 @@ const PromosMobile = (props: PromoProps) => {
           <Kicker article={article} />
           {artwork && (
             <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={artwork} title={title} hideCaption={true} />
-              </Link>
+              <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
             </div>
           )}
           <div className="flex flex-col space-y-3">
@@ -103,9 +101,7 @@ const PromosArtSeen = (props: PromoProps) => {
           <div className="flex flex-col space-y-3 tablet:space-y-0 tablet:flex-row tablet:space-x-6">
             {artwork && (
               <div className="flex-none tablet:w-card desktop-lg:w-32">
-                <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                  <FeaturedImage image={artwork} title={title} hideCaption={true} />
-                </Link>
+                <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
               </div>
             )}
             <div className="flex flex-col space-y-1">
@@ -142,9 +138,7 @@ const LeadPromoArtSeen = (props: LeadPromoProps) => {
       <div className="" itemType="http://schema.org/Article">
         {artwork && (
           <div className="px-6 tablet:px-0">
-            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <FeaturedImage image={artwork} title={title} hideCaption={true} />
-            </Link>
+            <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
           </div>
         )}
       </div>

@@ -82,9 +82,7 @@ const Promos = (props: PromoProps) => {
             </div>
             {artwork && (
               <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
-                <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                  <FeaturedImage image={artwork} title={title} hideCaption={true} />
-                </Link>
+                <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
               </div>
             )}
           </div>
@@ -120,9 +118,7 @@ const LeadPromo = (props: LeadPromoProps) => {
       <div className="" itemType="http://schema.org/Article">
         {artwork && (
           <div className="px-6 tablet:px-0">
-            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              <FeaturedImage image={artwork} title={title} />
-            </Link>
+            <FeaturedImage image={artwork} title={title} permalink={permalink} />
           </div>
         )}
       </div>

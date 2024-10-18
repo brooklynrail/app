@@ -113,9 +113,7 @@ export const PromosArt = (props: PromoProps) => {
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
           {artwork && (
             <div className="">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={artwork} title={title} hideCaption={true} />
-              </Link>
+              <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
             </div>
           )}
         </div>
@@ -160,9 +158,7 @@ export const LeadPromoArt = (props: LeadPromoArtProps) => {
         <div className="col-span-4 tablet:col-span-6" itemType="http://schema.org/Article">
           {artwork && (
             <div className="">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={artwork} title={title} />
-              </Link>
+              <FeaturedImage image={artwork} title={title} permalink={permalink} />
             </div>
           )}
         </div>

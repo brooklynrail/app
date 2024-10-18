@@ -73,9 +73,7 @@ const PromosMobile = (props: PromoProps) => {
           <Kicker article={article} />
           {artwork && (
             <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
-              <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-                <FeaturedImage image={artwork} title={title} hideCaption={true} />
-              </Link>
+              <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
             </div>
           )}
           <div className="flex flex-col space-y-3">
