@@ -527,8 +527,9 @@ export const eventStartDate = (startDate: Date) => {
 // Function to format the time for a specific time zone using Luxon
 export const formatTime = (start_date: string, timeZone: string) => {
   console.log("start_date", start_date)
-  // Parse the start_date as a Luxon DateTime object
-  const date = DateTime.fromISO(start_date, { zone: "utc" }) // Treat the input date as UTC
+
+  // Parse the start_date assuming it's in America/New_York (Eastern time)
+  const date = DateTime.fromISO(start_date, { zone: "America/New_York" })
 
   // Set the desired time zone and format the time
   const formattedTime = date.setZone(timeZone).toFormat("h:mm a")
