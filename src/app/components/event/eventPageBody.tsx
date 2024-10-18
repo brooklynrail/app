@@ -1,5 +1,4 @@
 "use client"
-import { DateTime } from "luxon"
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
 import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
@@ -23,11 +22,16 @@ const EventPageBody = (props: EventProps) => {
   const railProduced = type === EventTypes.TheNewSocialEnvironment || type === EventTypes.CommonGround
   const isFutureEvent = new Date(start_date) > new Date()
 
-  const startDate = DateTime.fromISO(start_date, { zone: "America/New_York" })
-  // Format the full start date
-  const startDateString = startDate.toFormat("cccc, LLLL d, yyyy")
+  // get the start date in this format:
+  // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
+  const startDate = new Date(start_date)
+  const startDateString = startDate.toLocaleString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  })
 
-  // Format time in Eastern and Pacific time zones
   const startTimeET = formatTime(startDate, "America/New_York")
   const startTimePT = formatTime(startDate, "America/Los_Angeles")
 

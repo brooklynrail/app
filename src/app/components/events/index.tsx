@@ -1,5 +1,5 @@
 "use client"
-import { DateTime } from "luxon"
+
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 import { Events } from "../../../../lib/types"
@@ -48,16 +48,13 @@ const EventsPage = (props: EventsProps) => {
 }
 
 // format the time of start_date as 1 p.m. ET / 10 a.m. PT
-export const formatTime = (date: Date | DateTime, timeZone: string) => {
-  // If it's a Luxon DateTime, convert to native JS Date
-  const jsDate = date instanceof DateTime ? date.toJSDate() : date
-
+export const formatTime = (date: Date, timeZone: string) => {
   const formattedTime = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     minute: "numeric",
     hour12: true,
     timeZone: timeZone,
-  }).format(jsDate)
+  }).format(date)
 
   const [time, period] = formattedTime.split(" ")
   const [hour, minute] = time.split(":")
