@@ -1,25 +1,17 @@
 import parse from "html-react-parser"
 
-export enum ExcerptType {
-  ArtLead = "text-lg tablet-lg:text-xl desktop-lg:text-2xl font-normal",
-  Art = "text-sm tablet-lg:text-md desktop-lg:text-lg font-normal",
-  CriticsPage = "text-lg tablet-lg:text-xl desktop-lg:text-xl font-sans font-normal",
-  Music = "text-sm tablet-lg:text-md desktop-lg:text-lg font-normal",
-  Default = "text-sm tablet-lg:text-xl font-normal",
-}
-
 interface ExcerptProps {
   excerpt: string
-  type: ExcerptType
+  classes?: string
 }
 
 const Excerpt = (props: ExcerptProps) => {
-  const { excerpt, type } = props
+  const { excerpt, classes } = props
 
   if (!excerpt) {
-    return <></>
+    return null
   }
 
-  return <div className={type}>{parse(excerpt)}</div>
+  return <div className={`classes`}>{parse(excerpt)}</div>
 }
 export default Excerpt

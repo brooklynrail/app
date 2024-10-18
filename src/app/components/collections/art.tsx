@@ -9,7 +9,7 @@ import { stripHtml } from "string-strip-html"
 import Bylines, { BylineType } from "./promos/bylines"
 import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
-import Excerpt, { ExcerptType } from "./promos/excerpt"
+import Excerpt from "./promos/excerpt"
 import Frame from "../section/frame"
 import FrameScrollable from "../section/frameScrollable"
 
@@ -73,7 +73,7 @@ const PromosMobile = (props: PromoProps) => {
               </div>
               <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
               <Bylines article={article} type={BylineType.Default} />
-              <Excerpt excerpt={article.excerpt} type={ExcerptType.Art} />
+              <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
             </div>
             {artwork && (
               <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
@@ -121,7 +121,7 @@ export const PromosArt = (props: PromoProps) => {
           <div className="flex flex-col space-y-3">
             <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
             <Bylines article={article} type={BylineType.Default} />
-            <Excerpt excerpt={article.excerpt} type={ExcerptType.Art} />
+            <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
           </div>
         </div>
       </div>
@@ -166,7 +166,7 @@ export const LeadPromoArt = (props: LeadPromoArtProps) => {
           <div className="flex flex-col space-y-3">
             <Title title={article.title} permalink={permalink} type={TitleType.Lead} />
             <Bylines article={article} type={BylineType.Default} />
-            <Excerpt excerpt={article.excerpt} type={ExcerptType.ArtLead} />
+            <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
           </div>
         </div>
       </div>

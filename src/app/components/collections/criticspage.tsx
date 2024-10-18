@@ -1,15 +1,14 @@
 "use client"
 import Link from "next/link"
-import { Articles, Collections, Sections } from "../../../../lib/types"
+import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
-import { stripHtml } from "string-strip-html"
-import Bylines, { BylineType } from "./promos/bylines"
-import Title, { TitleType } from "./promos/title"
-import Excerpt, { ExcerptType } from "./promos/excerpt"
 import Frame from "../section/frame"
 import styles from "./collection.module.scss"
+import CollectionHead from "./head"
+import Bylines, { BylineType } from "./promos/bylines"
+import Excerpt from "./promos/excerpt"
+import Title, { TitleType } from "./promos/title"
 
 const CollectionCriticsPage = (collection: Collections) => {
   const { section } = collection
@@ -113,7 +112,10 @@ const LeadPromo = (props: LeadPromoProps) => {
         <div className="flex flex-col space-y-3">
           <Title title={article.title} permalink={permalink} type={TitleType.CollectionCriticsPage} />
           <Bylines article={article} type={BylineType.Default} />
-          <Excerpt excerpt={article.excerpt} type={ExcerptType.CriticsPage} />
+          <Excerpt
+            excerpt={article.excerpt}
+            classes={`text-lg tablet-lg:text-xl desktop-lg:text-xl font-sans font-normal`}
+          />
         </div>
       </div>
     </div>

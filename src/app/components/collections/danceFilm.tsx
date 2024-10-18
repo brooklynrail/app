@@ -7,7 +7,7 @@ import Frame633 from "../section/frame633"
 import FrameScrollable from "../section/frameScrollable"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
-import Excerpt, { ExcerptType } from "./promos/excerpt"
+import Excerpt from "./promos/excerpt"
 import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
 
@@ -77,7 +77,7 @@ const PromosMobile = (props: PromoProps) => {
               </div>
               <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
               <Bylines article={article} type={BylineType.Default} />
-              <Excerpt excerpt={article.excerpt} type={ExcerptType.Art} />
+              <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
             </div>
             {artwork && (
               <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
@@ -119,7 +119,7 @@ const Promos = (props: PromoProps) => {
         <Kicker article={article} />
         <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
         <Bylines article={article} type={BylineType.Default} />
-        <Excerpt excerpt={article.excerpt} type={ExcerptType.Art} />
+        <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
       </div>
     )
   })
@@ -156,7 +156,7 @@ export const LeadPromo = (props: LeadPromoArtProps) => {
         <div className="flex flex-col space-y-3">
           <Kicker article={article} />
           <Title title={article.title} permalink={permalink} type={TitleType.CollectionDance} />
-          <Excerpt excerpt={article.excerpt} type={ExcerptType.Default} />
+          <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-xl font-normal`} />
           <Bylines article={article} type={BylineType.CollectionDance} />
         </div>
       </div>

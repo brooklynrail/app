@@ -1,17 +1,14 @@
 "use client"
-import Link from "next/link"
 import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
-import { stripHtml } from "string-strip-html"
-import Bylines, { BylineType } from "./promos/bylines"
-import Title, { TitleType } from "./promos/title"
-import Kicker from "./promos/kicker"
-import Frame from "../section/frame"
 import FrameScrollable from "../section/frameScrollable"
 import FrameThirds from "../section/frameThirds"
-import Excerpt, { ExcerptType } from "./promos/excerpt"
+import CollectionHead from "./head"
+import Bylines, { BylineType } from "./promos/bylines"
+import Excerpt from "./promos/excerpt"
+import Kicker from "./promos/kicker"
+import Title, { TitleType } from "./promos/title"
 
 const CollectionMusic = (collection: Collections) => {
   const { section } = collection
@@ -110,7 +107,7 @@ const PromosMusic = (props: PromoProps) => {
               <Kicker article={article} />
               <Title title={article.title} permalink={permalink} type={TitleType.Small} />
               <Bylines article={article} type={BylineType.CollectionArtSeen} />
-              <Excerpt excerpt={article.excerpt} type={ExcerptType.Default} />
+              <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md  font-normal`} />
             </div>
           </div>
         </div>
@@ -149,7 +146,7 @@ const LeadPromoMusic = (props: LeadPromoProps) => {
         <Kicker article={article} />
         <Title title={article.title} permalink={permalink} type={TitleType.LeadArtSeen} />
         <Bylines article={article} type={BylineType.CollectionArtSeen} />
-        <Excerpt excerpt={article.excerpt} type={ExcerptType.Music} />
+        <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md  font-normal`} />
       </div>
     </div>
   )

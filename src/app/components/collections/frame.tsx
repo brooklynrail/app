@@ -1,14 +1,12 @@
 "use client"
-import Link from "next/link"
 import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
-import { stripHtml } from "string-strip-html"
+import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
+import Excerpt from "./promos/excerpt"
 import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
-import Excerpt, { ExcerptType } from "./promos/excerpt"
 
 const CollectionFrame = (collection: Collections) => {
   const { section } = collection
@@ -78,7 +76,7 @@ const Promos = (props: PromoProps) => {
               </div>
               <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
               <Bylines article={article} type={BylineType.Default} />
-              <Excerpt excerpt={article.excerpt} type={ExcerptType.Art} />
+              <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
             </div>
             {artwork && (
               <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
@@ -125,7 +123,7 @@ const LeadPromo = (props: LeadPromoProps) => {
       <div className="px-6 tablet:px-0 flex flex-col space-y-3">
         <Title title={article.title} permalink={permalink} type={TitleType.Lead} />
         <Bylines article={article} type={BylineType.Default} />
-        <Excerpt excerpt={article.excerpt} type={ExcerptType.ArtLead} />
+        <Excerpt excerpt={article.excerpt} classes={`text-lg tablet-lg:text-xl desktop-lg:text-2xl font-normal`} />
       </div>
     </div>
   )
