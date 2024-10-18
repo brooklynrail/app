@@ -7,10 +7,9 @@ import { EventsPeople } from "../../../../lib/types"
 import EventVideo from "./eventVideo"
 import Sponsor from "../events/sponsor"
 import { Poets, SoundWaves } from "."
-import { formatTime } from "../events"
 import ReactMarkdown from "react-markdown"
 import Person from "./person"
-import { EventTypes, getEventTypeText } from "../../../../lib/utils/events/utils"
+import { eventStartDate, EventTypes, formatTime, getEventTypeText } from "../../../../lib/utils/events/utils"
 
 const EventPageBody = (props: EventProps) => {
   const { eventData, eventTypes } = props
@@ -25,13 +24,8 @@ const EventPageBody = (props: EventProps) => {
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
   const startDate = new Date(start_date)
-  const startDateString = startDate.toLocaleString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  })
-
+  const startDateString = eventStartDate(startDate)
+  // Get the time in both Eastern and Pacific time
   const startTimeET = formatTime(startDate, "America/New_York")
   const startTimePT = formatTime(startDate, "America/Los_Angeles")
 

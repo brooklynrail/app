@@ -509,3 +509,34 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
   `
   return newsletterHTML
 }
+
+// ====================================================
+// TIME Functions
+
+export const eventStartDate = (startDate: Date) => {
+  const startDateString = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(startDate)
+  return startDateString
+}
+
+// Function to format the time for a specific time zone
+export const formatTime = (date: Date, timeZone: string) => {
+  const formattedTime = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+    timeZone: timeZone, // Specify the target time zone
+  }).format(date)
+
+  const [time, period] = formattedTime.split(" ")
+  const [hour, minute] = time.split(":")
+
+  const formattedPeriod = period.toLowerCase().replace("am", "a.m.").replace("pm", "p.m.")
+
+  // If the minute is "00", exclude it from the output
+  return minute === "00" ? `${hour} ${formattedPeriod}` : `${hour}:${minute} ${formattedPeriod}`
+}
