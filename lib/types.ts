@@ -48,6 +48,7 @@ export type Articles = {
   promo_banner?: DirectusFiles
   promo_thumb?: DirectusFiles
   section: Sections
+  published?: string | null
   slideshow_image?: DirectusFiles | null
   slug: string
   sort?: number | null
@@ -591,6 +592,7 @@ export type Issues = {
   old_id: number
   status: string
   title: string
+  published?: string | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
   year: number
