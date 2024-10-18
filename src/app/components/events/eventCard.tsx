@@ -35,8 +35,8 @@ const EventCard = (props: EventCardProps) => {
   const startDate = new Date(start_date)
   const startDateString = eventStartDate(startDate)
   // Get the time in both Eastern and Pacific time
-  const startTimeET = formatTime(startDate, "America/New_York")
-  const startTimePT = formatTime(startDate, "America/Los_Angeles")
+  const startTimeET = formatTime(start_date, "America/New_York")
+  const startTimePT = formatTime(start_date, "America/Los_Angeles")
 
   return (
     <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-y-12 py-6">

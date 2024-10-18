@@ -12,8 +12,8 @@ const Register = (props: EventProps) => {
   const startDate = new Date(start_date)
   const startDateString = eventStartDate(startDate)
   // Get the time in both Eastern and Pacific time
-  const startTimeET = formatTime(startDate, "America/New_York")
-  const startTimePT = formatTime(startDate, "America/Los_Angeles")
+  const startTimeET = formatTime(start_date, "America/New_York")
+  const startTimePT = formatTime(start_date, "America/Los_Angeles")
 
   return (
     <aside id="register" className="h-entry py-6 tablet-lg:py-12 bg-orange-100">

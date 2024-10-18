@@ -1,3 +1,4 @@
+import { DateTime } from "luxon"
 import { aggregate, readItems, readField } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../../directus"
@@ -523,20 +524,17 @@ export const eventStartDate = (startDate: Date) => {
   return startDateString
 }
 
-// Function to format the time for a specific time zone
-export const formatTime = (date: Date, timeZone: string) => {
-  const formattedTime = new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-    timeZone: timeZone, // Specify the target time zone
-  }).format(date)
+// Function to format the time for a specific time zone using Luxon
+export const formatTime = (start_date: string, timeZone: string) => {
+  console.log("start_date", start_date)
+  // Parse the start_date as a Luxon DateTime object
+  const date = DateTime.fromISO(start_date, { zone: "utc" }) // Treat the input date as UTC
 
-  const [time, period] = formattedTime.split(" ")
-  const [hour, minute] = time.split(":")
+  // Set the desired time zone and format the time
+  const formattedTime = date.setZone(timeZone).toFormat("h:mm a")
 
-  const formattedPeriod = period.toLowerCase().replace("am", "a.m.").replace("pm", "p.m.")
+  // Format the period (AM/PM) to "a.m." or "p.m."
+  const formattedPeriod = formattedTime.toLowerCase().replace("am", "a.m.").replace("pm", "p.m.")
 
-  // If the minute is "00", exclude it from the output
-  return minute === "00" ? `${hour} ${formattedPeriod}` : `${hour}:${minute} ${formattedPeriod}`
+  return formattedPeriod
 }
