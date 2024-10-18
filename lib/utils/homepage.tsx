@@ -201,7 +201,7 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
             section: ["name", "slug"],
           },
           {
-            issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+            issue: ["id", "title", "slug", "year", "month", "issue_number", "published", "cover_1"],
           },
           {
             contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
@@ -223,6 +223,7 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
         },
         // If we have a limit, we want to get only the limit number of articles
         limit: limit ? limit : -1,
+        sort: ["-date_updated"],
       }),
     )
 
