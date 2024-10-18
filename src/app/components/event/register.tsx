@@ -1,5 +1,5 @@
 "use client"
-
+import { DateTime } from "luxon"
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
 import { formatTime } from "../events"
 
@@ -7,15 +7,11 @@ const Register = (props: EventProps) => {
   const { eventData } = props
   const { title, deck, start_date, airtable_id } = eventData
 
-  // get the start date in this format:
-  // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
-  const startDate = new Date(start_date)
-  const startDateString = startDate.toLocaleString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  })
+  const startDate = DateTime.fromISO(start_date, { zone: "America/New_York" })
+  // Format the full start date
+  const startDateString = startDate.toFormat("cccc, LLLL d, yyyy")
 
+  // Format time in Eastern and Pacific time zones
   const startTimeET = formatTime(startDate, "America/New_York")
   const startTimePT = formatTime(startDate, "America/Los_Angeles")
 

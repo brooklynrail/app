@@ -1,4 +1,5 @@
 "use client"
+import { DateTime } from "luxon"
 import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { Events, EventsTypes } from "../../../../lib/types"
@@ -31,20 +32,18 @@ const EventCard = (props: EventCardProps) => {
     slug: slug,
   })
 
-  // format the start_date as Monday, October 7
-  const startDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  }).format(eventDate)
+  const startDate = DateTime.fromISO(start_date, { zone: "America/New_York" })
+  // Format the full start date
+  const startDateString = startDate.toFormat("cccc, LLLL d, yyyy")
 
-  const startTimeET = formatTime(eventDate, "America/New_York")
-  const startTimePT = formatTime(eventDate, "America/Los_Angeles")
+  // Format time in Eastern and Pacific time zones
+  const startTimeET = formatTime(startDate, "America/New_York")
+  const startTimePT = formatTime(startDate, "America/Los_Angeles")
 
   return (
     <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-y-12 py-6">
       <div className="col-span-4 tablet-lg:col-span-3">
-        <p className="font-bold">{startDate}</p>
+        <p className="font-bold">{startDateString}</p>
         <p>
           {startTimeET} ET / {startTimePT} PT
         </p>
