@@ -7,6 +7,7 @@ import CollectionCriticsPage from "../collections/criticspage"
 import CollectionDanceFilm from "../collections/danceFilm"
 import CollectionMusic from "../collections/music"
 import CollectionPoetry from "../collections/poetry"
+import CollectionTheater from "../collections/theater"
 
 export enum Collection {
   Art = "art",
@@ -35,7 +36,6 @@ export const CollectionSection = (collection: Collections) => {
       return <CollectionBooks {...collection} />
     case Collection.CriticsPage:
       return <CollectionCriticsPage {...collection} />
-      break
     case Collection.Dance:
       return <CollectionDanceFilm {...collection} />
     case Collection.Film:
@@ -43,8 +43,7 @@ export const CollectionSection = (collection: Collections) => {
     case Collection.Music:
       return <CollectionMusic {...collection} />
     case Collection.Theater:
-      console.log("Theater")
-      break
+      return <CollectionTheater {...collection} />
     case Collection.Poetry:
       return <CollectionPoetry {...collection} />
     default:
