@@ -10,7 +10,7 @@ const Frame = (props: FrameProps) => {
   const { LeadPromo, Promos, alt } = props
 
   const colA = <div className="py-3">{LeadPromo}</div>
-  const colB = <div className={`divide-y rail-divide`}>{Promos}</div>
+  const colB = <div className={`divide-y rail-divide ${alt ? `pr-3` : `pl-3`}`}>{Promos}</div>
 
   return (
     <div className="frame px-6">

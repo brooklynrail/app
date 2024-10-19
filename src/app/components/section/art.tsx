@@ -22,12 +22,14 @@ const SectionArt = (props: SectionProps) => {
     const leadArticle = group[0]
     const restOfArticles = group.slice(1)
     return (
-      <Frame
-        key={index}
-        LeadPromo={<LeadPromoArt article={leadArticle} />}
-        Promos={<PromosArt articles={restOfArticles} />}
-        alt={index % 2 !== 0}
-      />
+      <div className="px-3">
+        <Frame
+          key={index}
+          LeadPromo={<LeadPromoArt article={leadArticle} />}
+          Promos={<PromosArt articles={restOfArticles} />}
+          alt={index % 2 !== 0}
+        />
+      </div>
     )
   })
   return articleGroups

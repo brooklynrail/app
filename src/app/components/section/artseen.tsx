@@ -47,8 +47,6 @@ const SectionArtSeen = (props: SectionProps) => {
   // Group articles by their respective issue
   const articlesByIssue = groupByIssue(articlesData)
 
-  console.log("articlesByIssue ======", articlesByIssue)
-
   return (
     <div className="divide-y rail-divide">
       {Object.keys(articlesByIssue).map((issueId, index) => {

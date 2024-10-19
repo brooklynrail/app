@@ -104,7 +104,7 @@ export const PromosArt = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-3 pt-3 tablet:px-3 pb-6">
+      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-3 pt-3 pb-6">
         <div className="col-span-4 tablet:col-span-6">
           <Kicker article={article} />
         </div>
