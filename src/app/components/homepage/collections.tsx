@@ -5,6 +5,7 @@ import CollectionArtSeen from "../collections/artSeen"
 import CollectionBooks from "../collections/books"
 import CollectionCriticsPage from "../collections/criticspage"
 import CollectionDanceFilm from "../collections/danceFilm"
+import CollectionDefault from "../collections/default"
 import CollectionMusic from "../collections/music"
 import CollectionPoetry from "../collections/poetry"
 import CollectionTheater from "../collections/theater"
@@ -47,7 +48,6 @@ export const CollectionSection = (collection: Collections) => {
     case Collection.Poetry:
       return <CollectionPoetry {...collection} />
     default:
-      console.log("Default")
-      break
+      return <CollectionDefault {...collection} />
   }
 }
