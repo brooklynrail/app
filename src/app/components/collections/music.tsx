@@ -71,7 +71,7 @@ const PromosMobile = (props: PromoProps) => {
             </div>
           )}
           <div className="flex flex-col space-y-3">
-            <Title title={article.title} permalink={permalink} type={TitleType.Small} />
+            <Title title={article.title} permalink={permalink} classes="text-2xl font-normal" />
             <Bylines article={article} type={BylineType.Default} />
           </div>
         </div>
@@ -105,9 +105,9 @@ const PromosMusic = (props: PromoProps) => {
             )}
             <div className="flex flex-col space-y-1">
               <Kicker article={article} />
-              <Title title={article.title} permalink={permalink} type={TitleType.Small} />
+              <Title title={article.title} permalink={permalink} classes="text-2xl font-normal" />
               <Bylines article={article} type={BylineType.CollectionArtSeen} />
-              <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md  font-normal`} />
+              <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />
             </div>
           </div>
         </div>
@@ -146,7 +146,7 @@ const LeadPromoMusic = (props: LeadPromoProps) => {
         <Kicker article={article} />
         <Title title={article.title} permalink={permalink} type={TitleType.LeadArtSeen} />
         <Bylines article={article} type={BylineType.CollectionArtSeen} />
-        <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md  font-normal`} />
+        <Excerpt excerpt={article.excerpt} classes={`excerpt-xl`} />
       </div>
     </div>
   )

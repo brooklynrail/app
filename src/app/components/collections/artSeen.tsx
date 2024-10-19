@@ -72,7 +72,7 @@ const PromosMobile = (props: PromoProps) => {
             </div>
           )}
           <div className="flex flex-col space-y-3">
-            <Title title={article.title} permalink={permalink} type={TitleType.Small} />
+            <Title title={article.title} permalink={permalink} classes="text-2xl font-normal" />
             <Bylines article={article} type={BylineType.Default} />
           </div>
         </div>
@@ -105,7 +105,7 @@ const PromosArtSeen = (props: PromoProps) => {
               </div>
             )}
             <div className="flex flex-col space-y-1">
-              <Title title={article.title} permalink={permalink} type={TitleType.Small} />
+              <Title title={article.title} permalink={permalink} classes="text-2xl font-normal" />
               <Bylines article={article} type={BylineType.CollectionArtSeen} />
             </div>
           </div>

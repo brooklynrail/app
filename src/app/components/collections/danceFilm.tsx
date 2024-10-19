@@ -75,9 +75,9 @@ const PromosMobile = (props: PromoProps) => {
               <div className="tablet:hidden">
                 <Kicker article={article} />
               </div>
-              <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
+              <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
               <Bylines article={article} type={BylineType.Default} />
-              <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
+              <Excerpt excerpt={article.excerpt} classes={`excerpt-md`} />
             </div>
             {artwork && (
               <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
@@ -117,9 +117,9 @@ const Promos = (props: PromoProps) => {
           </div>
         )}
         <Kicker article={article} />
-        <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
+        <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
         <Bylines article={article} type={BylineType.Default} />
-        <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
+        <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />
       </div>
     )
   })
@@ -130,7 +130,7 @@ const Promos = (props: PromoProps) => {
 interface LeadPromoArtProps {
   article: Articles
 }
-export const LeadPromo = (props: LeadPromoArtProps) => {
+const LeadPromo = (props: LeadPromoArtProps) => {
   const { article } = props
   const { title, issue, section, featured_artwork, featured_image } = article
 
@@ -156,7 +156,7 @@ export const LeadPromo = (props: LeadPromoArtProps) => {
         <div className="flex flex-col space-y-3">
           <Kicker article={article} />
           <Title title={article.title} permalink={permalink} type={TitleType.CollectionDance} />
-          <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-xl font-normal`} />
+          <Excerpt excerpt={article.excerpt} classes={`excerpt-xl`} />
           <Bylines article={article} type={BylineType.CollectionDance} />
         </div>
       </div>

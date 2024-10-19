@@ -4,8 +4,6 @@ import parse from "html-react-parser"
 import { cleanup } from "../../../../../lib/utils"
 
 export enum TitleType {
-  XSmall = "text-base font-serif font-normal",
-  Small = "text-2xl font-normal",
   Medium = "text-3xl tablet:text-4xl font-light",
   CollectionBooksLead = "text-lg tablet:text-4xl font-normal",
   CollectionBooksPromo = "text-lg tablet:text-2xl font-normal",
@@ -27,11 +25,13 @@ export enum TitleType {
 interface TitleProps {
   title: string
   permalink?: string | null
-  type: TitleType
+  type?: TitleType
+  classes?: string
+  h2?: boolean
 }
 
 const Title = (props: TitleProps) => {
-  const { title, permalink, type } = props
+  const { title, permalink, type, classes, h2 } = props
 
   if (!title) {
     return <></>
@@ -47,13 +47,9 @@ const Title = (props: TitleProps) => {
     )
   }
 
-  switch (type) {
-    case TitleType.CollectionCriticsPagePromo:
-      return <h3 className={`${type}`}>{title_contents}</h3>
-    case TitleType.NextPrev:
-      return <h3 className={`${type}`}>{title_contents}</h3>
-    default:
-      return <h2 className={`${type}`}>{title_contents}</h2>
+  if (h2) {
+    return <h2 className={`${type} ${classes}`}>{title_contents}</h2>
   }
+  return <h3 className={`${type} ${classes}`}>{title_contents}</h3>
 }
 export default Title

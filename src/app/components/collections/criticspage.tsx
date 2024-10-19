@@ -112,10 +112,7 @@ const LeadPromo = (props: LeadPromoProps) => {
         <div className="flex flex-col space-y-3">
           <Title title={article.title} permalink={permalink} type={TitleType.CollectionCriticsPage} />
           <Bylines article={article} type={BylineType.Default} />
-          <Excerpt
-            excerpt={article.excerpt}
-            classes={`text-lg tablet-lg:text-xl desktop-lg:text-xl font-sans font-normal`}
-          />
+          <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />
         </div>
       </div>
     </div>

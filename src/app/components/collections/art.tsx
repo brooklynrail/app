@@ -71,9 +71,9 @@ const PromosMobile = (props: PromoProps) => {
               <div className="tablet:hidden">
                 <Kicker article={article} />
               </div>
-              <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
+              <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
               <Bylines article={article} type={BylineType.Default} />
-              <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
+              <Excerpt excerpt={article.excerpt} classes={`excerpt-sm tablet-lg:excerpt-md desktop-lg:excerpt-lg`} />
             </div>
             {artwork && (
               <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
@@ -119,9 +119,9 @@ export const PromosArt = (props: PromoProps) => {
         </div>
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-3">
           <div className="flex flex-col space-y-3">
-            <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
+            <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
             <Bylines article={article} type={BylineType.Default} />
-            <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
+            <Excerpt excerpt={article.excerpt} />
           </div>
         </div>
       </div>
@@ -164,9 +164,9 @@ export const LeadPromoArt = (props: LeadPromoArtProps) => {
         </div>
         <div className="col-span-4 tablet:col-span-6">
           <div className="flex flex-col space-y-3">
-            <Title title={article.title} permalink={permalink} type={TitleType.Lead} />
+            <Title h2 title={article.title} permalink={permalink} type={TitleType.Lead} />
             <Bylines article={article} type={BylineType.Default} />
-            <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
+            <Excerpt excerpt={article.excerpt} classes="excerpt-2xl" />
           </div>
         </div>
       </div>

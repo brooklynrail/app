@@ -12,6 +12,6 @@ const Excerpt = (props: ExcerptProps) => {
     return null
   }
 
-  return <div className={`classes`}>{parse(excerpt)}</div>
+  return <div className={`excerpt ${classes}`}>{parse(excerpt)}</div>
 }
 export default Excerpt

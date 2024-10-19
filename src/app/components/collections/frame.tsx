@@ -74,7 +74,7 @@ const Promos = (props: PromoProps) => {
               <div className="tablet:hidden">
                 <Kicker article={article} />
               </div>
-              <Title title={article.title} permalink={permalink} type={TitleType.Medium} />
+              <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
               <Bylines article={article} type={BylineType.Default} />
               <Excerpt excerpt={article.excerpt} classes={`text-sm tablet-lg:text-md desktop-lg:text-lg font-normal`} />
             </div>
