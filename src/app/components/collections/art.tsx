@@ -10,8 +10,8 @@ import Bylines, { BylineType } from "./promos/bylines"
 import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
 import Excerpt from "./promos/excerpt"
-import Frame from "../section/frame"
-import FrameScrollable from "../section/frameScrollable"
+import Frame from "../frames/frame"
+import FrameScrollable from "../frames/frameScrollable"
 
 const CollectionArt = (collection: Collections) => {
   const { section } = collection
@@ -50,7 +50,7 @@ const CollectionArt = (collection: Collections) => {
 
 const PromosMobile = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, excerpt, featured_artwork, featured_image, kicker } = article
+    const { issue, section, title, featured_artwork, featured_image, kicker } = article
     const artwork = featured_artwork ? featured_artwork : featured_image
     const permalink = getPermalink({
       year: issue.year,

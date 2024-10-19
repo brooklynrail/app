@@ -8,8 +8,8 @@ import { stripHtml } from "string-strip-html"
 import Bylines, { BylineType } from "./promos/bylines"
 import Title, { TitleType } from "./promos/title"
 import Kicker from "./promos/kicker"
-import Frame from "../section/frame"
-import FrameScrollable from "../section/frameScrollable"
+import Frame from "../frames/frame"
+import FrameScrollable from "../frames/frameScrollable"
 
 const CollectionArtSeen = (collection: Collections) => {
   const { section } = collection

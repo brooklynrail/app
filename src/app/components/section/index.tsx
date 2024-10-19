@@ -5,7 +5,7 @@ import { Articles, Sections } from "../../../../lib/types"
 import { LeadPromoArt, PromosArt } from "../collections/art"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
-import Frame from "./frame"
+import Frame from "../frames/frame"
 import SectionHead from "./head"
 
 export interface SectionProps {

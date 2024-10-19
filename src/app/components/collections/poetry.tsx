@@ -8,8 +8,8 @@ import { stripHtml } from "string-strip-html"
 import Title, { TitleType } from "./promos/title"
 import Kicker from "./promos/kicker"
 import parse from "html-react-parser"
-import Frame from "../section/frame"
-import FrameScrollable from "../section/frameScrollable"
+import Frame from "../frames/frame"
+import FrameScrollable from "../frames/frameScrollable"
 import styles from "./collection.module.scss"
 
 const CollectionPoetry = (collection: Collections) => {
