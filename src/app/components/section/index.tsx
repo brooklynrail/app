@@ -25,21 +25,20 @@ const Section = (props: SectionProps) => {
   const { sectionData, permalink, articlesData } = props
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
-  const [allArticles, setAllArticles] = useState<Articles[]>(articlesData)
+  const [articles, setArticles] = useState<Articles[]>(articlesData)
 
-  const all = (() => {
+  const allArticles = (() => {
     switch (sectionData.slug) {
       case SectionType.Art:
-        return <SectionArt sectionData={sectionData} articlesData={allArticles} permalink={permalink} />
+        return <SectionArt sectionData={sectionData} articlesData={articles} permalink={permalink} />
       case SectionType.ArtSeen:
-        return <SectionArtSeen sectionData={sectionData} articlesData={allArticles} permalink={permalink} />
+        return <SectionArtSeen sectionData={sectionData} articlesData={articles} permalink={permalink} />
       default:
-        return <SectionDefault sectionData={sectionData} articlesData={allArticles} permalink={permalink} />
+        return <SectionDefault sectionData={sectionData} articlesData={articles} permalink={permalink} />
     }
   })()
 
   const limit = 16 * 2
-  // Function to load more events
   const loadMoreArticles = async () => {
     try {
       const newArticlesResponse = await fetch(
@@ -52,7 +51,7 @@ const Section = (props: SectionProps) => {
       if (newArticles.length < limit) {
         setHasMore(false)
       }
-      setAllArticles((prev) => [...prev, ...newArticles])
+      setArticles((prev) => [...prev, ...newArticles])
       setCurrentPage((prev) => prev + 1)
     } catch (error) {
       console.error("Failed to load more events:", error)
@@ -65,7 +64,9 @@ const Section = (props: SectionProps) => {
 
       <main className="divide-y rail-divide">
         <SectionHead title={sectionData.name} permalink={permalink} />
-        <div className="divide-y rail-divide">{all}</div>
+
+        <div className="divide-y rail-divide">{allArticles}</div>
+
         {hasMore && (
           <div className="text-center py-6 pb-12">
             <button
