@@ -39,7 +39,12 @@ export const getArticlesBySection = cache(async (props: ArticlesBySectionProps) 
           },
         ],
         filter: {
-          section: { slug: { _eq: slug } },
+          _and: [
+            {
+              status: { _eq: "published" },
+              section: { slug: { _eq: slug } },
+            },
+          ],
         },
         limit: limit,
         page: Math.floor(offset / limit) + 1,
