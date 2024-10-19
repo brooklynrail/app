@@ -116,7 +116,7 @@ const LeadPromo = (props: LeadPromoProps) => {
       <div className="" itemType="http://schema.org/Article">
         {artwork && (
           <div className="px-6 tablet:px-0">
-            <FeaturedImage image={artwork} title={title} permalink={permalink} />
+            <FeaturedImage image={artwork} hideCaption={true} title={title} permalink={permalink} />
           </div>
         )}
       </div>

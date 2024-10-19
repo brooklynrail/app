@@ -158,7 +158,7 @@ export const LeadPromoArt = (props: LeadPromoArtProps) => {
         <div className="col-span-4 tablet:col-span-6" itemType="http://schema.org/Article">
           {artwork && (
             <div className="">
-              <FeaturedImage image={artwork} title={title} permalink={permalink} />
+              <FeaturedImage image={artwork} hideCaption={true} title={title} permalink={permalink} />
             </div>
           )}
         </div>
