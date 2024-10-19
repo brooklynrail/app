@@ -1,41 +1,13 @@
 "use client"
-import { useEffect, useState } from "react"
+import Link from "next/link"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
-import { Events } from "../../../../lib/types"
-import Link from "next/link"
-import PastEventCard from "./pastEventCard"
-import { useBreakpoints } from "@/app/hooks/useBreakpoints"
-
 import { PastEventsProps } from "@/app/events/past/page"
 import PastEventsList from "./pastEventsList"
 
 const limit = 16 * 2
 
 const PastEventsPage = (props: PastEventsProps) => {
-  const { initialEvents, eventTypes } = props
-  const currentBreakpoint = useBreakpoints()
-  const [groupCount, setGroupCount] = useState(1)
-  const [allEvents, setAllEvents] = useState<Events[]>(initialEvents)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [hasMore, setHasMore] = useState(true)
-
-  useEffect(() => {
-    const calculateGroupNumber = () => {
-      switch (currentBreakpoint) {
-        case "tablet-lg":
-        case "desktop":
-          return 3
-        case "desktop-lg":
-        case "widescreen":
-          return 4
-        default:
-          return 1
-      }
-    }
-    setGroupCount(calculateGroupNumber())
-  }, [currentBreakpoint])
-
   return (
     <Paper pageClass="paper-events-past">
       <Header type={HeaderType.Events} />

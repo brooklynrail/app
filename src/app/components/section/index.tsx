@@ -2,16 +2,23 @@
 
 import { useState } from "react"
 import { Articles, Sections } from "../../../../lib/types"
-import { LeadPromoArt, PromosArt } from "../collections/art"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
-import Frame from "../frames/frame"
+import SectionArt from "./art"
 import SectionHead from "./head"
+import SectionDefault from "./default"
+import SectionArtSeen from "./artseen"
 
 export interface SectionProps {
   sectionData: Sections
   articlesData: Articles[]
   permalink: string
+}
+
+enum SectionType {
+  Art = "art",
+  ArtSeen = "artseen",
+  CriticsPage = "criticspage",
 }
 
 const Section = (props: SectionProps) => {
@@ -20,28 +27,16 @@ const Section = (props: SectionProps) => {
   const [hasMore, setHasMore] = useState(true)
   const [allArticles, setAllArticles] = useState<Articles[]>(articlesData)
 
-  // Utility function to split array into groups
-  const groupArray = (array: Articles[], groupSize: number) => {
-    const groups = []
-    for (let i = 0; i < array.length; i += groupSize) {
-      groups.push(array.slice(i, i + groupSize))
+  const all = (() => {
+    switch (sectionData.slug) {
+      case SectionType.Art:
+        return <SectionArt sectionData={sectionData} articlesData={allArticles} permalink={permalink} />
+      case SectionType.ArtSeen:
+        return <SectionArtSeen sectionData={sectionData} articlesData={allArticles} permalink={permalink} />
+      default:
+        return <SectionDefault sectionData={sectionData} articlesData={allArticles} permalink={permalink} />
     }
-    return groups
-  }
-
-  // Split articles into groups of 4
-  const articleGroups = groupArray(allArticles, 4).map((group, index) => {
-    const leadArticle = group[0]
-    const restOfArticles = group.slice(1)
-    return (
-      <Frame
-        key={index}
-        LeadPromo={<LeadPromoArt article={leadArticle} />}
-        Promos={<PromosArt articles={restOfArticles} />}
-        alt={index % 2 !== 0}
-      />
-    )
-  })
+  })()
 
   const limit = 16 * 2
   // Function to load more events
@@ -50,14 +45,14 @@ const Section = (props: SectionProps) => {
       const newArticlesResponse = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/sections/?slug=${sectionData.slug}&limit=${limit}&offset=${currentPage * limit}`,
       )
-      const newEvents = await newArticlesResponse.json()
-      if (!Array.isArray(newEvents)) {
+      const newArticles = await newArticlesResponse.json()
+      if (!Array.isArray(newArticles)) {
         throw new Error("Fetched data is not an array")
       }
-      if (newEvents.length < limit) {
+      if (newArticles.length < limit) {
         setHasMore(false)
       }
-      setAllArticles((prev) => [...prev, ...newEvents])
+      setAllArticles((prev) => [...prev, ...newArticles])
       setCurrentPage((prev) => prev + 1)
     } catch (error) {
       console.error("Failed to load more events:", error)
@@ -66,17 +61,11 @@ const Section = (props: SectionProps) => {
 
   return (
     <Paper pageClass="paper-section">
-      <header role="banner">
-        <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
-          <div className="col-span-12">
-            <Header type={HeaderType.Alt} />
-          </div>
-        </div>
-      </header>
+      <Header type={HeaderType.Alt} />
 
-      <main className="">
+      <main className="divide-y rail-divide">
         <SectionHead title={sectionData.name} permalink={permalink} />
-        <div className="divide-y rail-divide">{articleGroups}</div>
+        <div className="divide-y rail-divide">{all}</div>
         {hasMore && (
           <div className="text-center py-6 pb-12">
             <button

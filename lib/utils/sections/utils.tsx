@@ -43,7 +43,7 @@ export const getArticlesBySection = cache(async (props: ArticlesBySectionProps) 
         },
         limit: limit,
         page: Math.floor(offset / limit) + 1,
-        sort: ["sort"],
+        sort: ["-date_updated", "sort"],
       }),
     )
 
