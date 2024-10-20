@@ -32,7 +32,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <header id={styles.rail_header} className={`rail-header-${type}`}>
-      <div className="px-6">
+      <div className="px-3 tablet-lg:px-6">
         <div className="hidden">
           <h1>The Brooklyn Rail </h1>
           <h2>Critical Perspectives on Art, Politics and Culture</h2>
@@ -40,20 +40,27 @@ const Header = (props: HeaderProps) => {
         </div>
         <Link href={permalink}>
           <Banner type={type} />
-          <div className="block desktop:hidden w-full ">
-            <Subhead />
-          </div>
         </Link>
       </div>
-      <div className="px-6">
+      <div className="px-3 tablet-lg:px-6 pb-3">
         <div className="flex space-x-3 justify-between">
-          <div className="flex desktop:w-full space-x-6">
-            <div className="hidden desktop:flex flex-col justify-center w-full ">
-              <Subhead />
-            </div>
+          <div className="flex flex-col items-end tablet-lg:flex-row tablet-lg:items-center justify-center w-full space-y-3 tablet-lg:space-y-0 space-x-6 ">
+            <Subhead />
             <div className="flex items-center space-x-3 desktop:space-x-6">
-              <Button link={`/subscribe`} text={"Subscribe"} type={ButtonType.Subscribe}></Button>
-              <Button link={`/donate`} text={"Donate"} type={ButtonType.Donate}></Button>
+              <Link href={"/subscribe"}>
+                <button
+                  className={`bg-white text-zinc-800 font-medium shadow-md shadow-zinc-300 text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
+                >
+                  Subscribe
+                </button>
+              </Link>
+              <Link href={"/donate"}>
+                <button
+                  className={`bg-red-500 text-white font-medium shadow-md shadow-zinc-300 text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
+                >
+                  Donate
+                </button>
+              </Link>
             </div>
           </div>
         </div>
