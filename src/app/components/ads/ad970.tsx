@@ -70,7 +70,7 @@ const Ad970 = () => {
     showAd && (
       <div
         style={{ backgroundColor: bgColor ? `${bgColor}` : "#FFFFFF" }}
-        className={`m-0 mt-2 bg-slate-300 fixed bottom-0 left-0 right-0 z-10 pt-1.5 tablet-lg:pt-3 pb-3 tablet-lg:pb-6`}
+        className={`m-0 mt-2 bg-slate-300 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:pt-3 pb-3 tablet-lg:pb-6`}
       >
         <div className="absolute -z-10 top-0 bottom-0 left-0 right-0 bg-white bg-opacity-30"></div>
         <button
