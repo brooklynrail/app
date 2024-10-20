@@ -3,6 +3,7 @@ import Link from "next/link"
 import { CollectionType } from "."
 import { Homepage, HomepageCollections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
+import MenuButton from "../header/menuButton"
 
 interface NavBarProps {
   homepageData: Homepage
@@ -45,7 +46,7 @@ const NavBar = (props: NavBarProps) => {
 
     return (
       <li>
-        <Link href={permalink} className="py-2 px-3 text-nowrap inline-block">
+        <Link href={permalink} className="py-2 px-3 text-nowrap inline-block text-sm font-bold uppercase">
           {thisCollection.title}
         </Link>
       </li>
@@ -53,8 +54,11 @@ const NavBar = (props: NavBarProps) => {
   })
 
   return (
-    <nav className="rail-bg pl-3">
-      <ul className="text-sm font-bold flex w-full uppercase overflow-x-auto pr-3 no-scrollbar">
+    <nav className="rail-bg pl-3 sticky top-0 z-30 border-b rail-border">
+      <ul className="flex w-full overflow-x-auto pr-3 no-scrollbar">
+        <li className="py-2 px-3 inline-block">
+          <MenuButton />
+        </li>
         {allCollections} {allCollections}
       </ul>
     </nav>

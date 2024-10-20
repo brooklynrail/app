@@ -120,10 +120,11 @@ body {
 
 .paper {
   @apply rail-bg;
+  @apply relative;
 }
 
 .paper-homepage {
-  @apply divide-y rail-divide;
+  // @apply divide-y rail-divide;
 }
 
 .paper-tribute {

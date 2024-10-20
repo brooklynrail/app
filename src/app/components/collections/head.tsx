@@ -21,7 +21,7 @@ const CollectionHead = (props: CollectionHeadProps) => {
   )
   return (
     <div
-      className={`head px-3 tablet-lg:px-6 pt-3 pb-1.5 tablet-lg:pt-6 tablet-lg:pb-3 sticky top-0 ${classes ? classes : "rail-bg"} z-10`}
+      className={`head px-3 tablet-lg:px-6 pt-3 pb-1.5 tablet-lg:pt-6 tablet-lg:pb-3 sticky top-9 ${classes ? classes : "rail-bg"} z-10`}
     >
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">

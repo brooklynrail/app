@@ -47,7 +47,6 @@ const Header = (props: HeaderProps) => {
       </div>
       <div className="px-6">
         <div className="flex space-x-3 justify-between">
-          <MenuButton />
           <div className="flex desktop:w-full space-x-6">
             <div className="hidden desktop:flex flex-col justify-center w-full ">
               <Subhead />

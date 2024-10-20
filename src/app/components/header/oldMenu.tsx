@@ -23,7 +23,7 @@ const OldMenu = ({ closeMenu }: { closeMenu: () => void }) => {
 
   return (
     <>
-      <div className="top-0 left-0 w-mobile rail-bg h-screen fixed z-50 overflow-y-auto !m-0">
+      <div className="top-0 left-0 w-mobile rail-bg h-screen fixed z-[100] overflow-y-auto !m-0">
         <div className="p-6 bg-slate-700 dark:bg-slate-900 text-white relative">
           <p onClick={closeMenu} className="absolute top-3 right-6 text-sm hover:underline">
             close
