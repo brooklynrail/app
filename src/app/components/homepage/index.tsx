@@ -5,6 +5,7 @@ import CollectionTribute from "../collections/tribute"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 import { CollectionSection } from "./collections"
+import NavBar from "./navBar"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -40,7 +41,7 @@ const HomePage = (props: HomePageProps) => {
   return (
     <Paper pageClass="paper-homepage">
       <Header type={HeaderType.Default} banners={banners} currentIssue={currentIssue} />
-
+      <NavBar homepageData={homepageData} />
       <main className="divide-y rail-divide">{allCollections}</main>
     </Paper>
   )
