@@ -11,17 +11,18 @@ const Banner = (props: BannerProps) => {
   let pathfill
   let textfill
   switch (type) {
-    case PaperType.Default:
-      pathfill = theme === "dark" ? "fill-indigo-50" : "fill-zinc-800"
-      textfill = theme === "dark" ? "fill-none" : "fill-none"
-      break
-    case PaperType.Events:
-      pathfill = theme === "dark" ? "fill-indigo-50" : "fill-zinc-800"
-      textfill = theme === "dark" ? "fill-none" : "fill-none"
-      break
-    default:
+    case PaperType.Homepage:
       pathfill = theme === "dark" ? "fill-none tablet:fill-none" : "fill-none tablet:fill-none"
       textfill = theme === "dark" ? "fill-indigo-50" : "fill-indigo-50"
+      break
+    case PaperType.Events:
+      pathfill = theme === "dark" ? "fill-none tablet:fill-indigo-50" : "fill-none tablet:fill-indigo-950"
+      textfill = theme === "dark" ? "fill-indigo-50 tablet:fill-none" : "fill-indigo-950 tablet:fill-none"
+      break
+    default:
+      pathfill = theme === "dark" ? "fill-none tablet:fill-indigo-50" : "fill-none tablet:fill-zinc-800"
+      textfill = theme === "dark" ? "fill-indigo-50 tablet:fill-none" : "fill-red-500 tablet:fill-none"
+
       break
   }
 

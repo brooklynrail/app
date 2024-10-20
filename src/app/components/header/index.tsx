@@ -21,8 +21,6 @@ interface HeaderProps {
 const Header = (props: HeaderProps) => {
   const { title, type, banners, currentIssue, navData } = props
 
-  console.log("banners", banners)
-
   const permalink = getPermalink({
     type: PageType.Home,
   })
