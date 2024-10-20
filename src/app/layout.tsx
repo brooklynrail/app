@@ -64,6 +64,8 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <meta name="theme-color" content="#6580FF" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <body>
         <ThemeProvider>{children}</ThemeProvider>
         <GoogleAnalytics gaId="G-P4BEY1BZ04" />

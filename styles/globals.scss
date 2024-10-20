@@ -95,7 +95,7 @@ html,
 body {
   @apply text-base font-normal;
   @apply font-sans antialiased;
-  @apply bg-red-600 text-black;
+  @apply bg-[#EF4444] text-black;
 }
 
 @layer utilities {
@@ -115,7 +115,7 @@ body {
   @apply fill-none tablet:fill-zinc-900;
 }
 .rail-banner-text {
-  @apply fill-red-600 tablet:fill-none;
+  @apply fill-[#EF4444] tablet:fill-none;
 }
 
 .paper {
