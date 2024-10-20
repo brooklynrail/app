@@ -46,21 +46,4 @@ const EventsPage = (props: EventsProps) => {
   )
 }
 
-// format the time of start_date as 1 p.m. ET / 10 a.m. PT
-export const formatTime = (date: Date, timeZone: string) => {
-  const formattedTime = new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-    timeZone: timeZone,
-  }).format(date)
-
-  const [time, period] = formattedTime.split(" ")
-  const [hour, minute] = time.split(":")
-
-  const formattedPeriod = period.toLowerCase().replace("am", "a.m.").replace("pm", "p.m.")
-
-  return minute === "00" ? `${hour} ${formattedPeriod}` : `${hour}:${minute} ${formattedPeriod}`
-}
-
 export default EventsPage

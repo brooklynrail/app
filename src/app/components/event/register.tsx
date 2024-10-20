@@ -1,7 +1,7 @@
 "use client"
 
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
-import { formatTime } from "../events"
+import { eventStartDate, formatTime } from "../../../../lib/utils/events/utils"
 
 const Register = (props: EventProps) => {
   const { eventData } = props
@@ -10,14 +10,10 @@ const Register = (props: EventProps) => {
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
   const startDate = new Date(start_date)
-  const startDateString = startDate.toLocaleString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  })
-
-  const startTimeET = formatTime(startDate, "America/New_York")
-  const startTimePT = formatTime(startDate, "America/Los_Angeles")
+  const startDateString = eventStartDate(startDate)
+  // Get the time in both Eastern and Pacific time
+  const startTimeET = formatTime(start_date, "America/New_York")
+  const startTimePT = formatTime(start_date, "America/Los_Angeles")
 
   return (
     <aside id="register" className="h-entry py-6 tablet-lg:py-12 bg-orange-100">

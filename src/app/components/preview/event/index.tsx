@@ -86,7 +86,7 @@ const EventPreview = (props: EventPreviewProps) => {
           <div className="col-span-4 tablet-lg:col-span-12">
             {isStudioPreview && (
               <div className="py-2 flex flex-col space-y-6">
-                <PreviewInfo eventData={eventData} directusUrl={directusUrl} />
+                <PreviewInfo eventData={eventData} directusUrl={directusUrl} eventTypes={props.eventTypes} />
               </div>
             )}
           </div>

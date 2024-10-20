@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { Events } from "../../../../../lib/types"
+import { Events, EventsTypes } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import {
   generateNewsletter,
@@ -12,6 +12,7 @@ import { EditorInfo } from "../article/previewInfo"
 interface PreviewInfoProps {
   directusUrl: string
   eventData: Events
+  eventTypes: EventsTypes[]
 }
 
 const PreviewInfo = (props: PreviewInfoProps) => {
@@ -99,7 +100,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           className="bg-white rounded-md outline-dotted outline-indigo-500 p-6 max-h-96 text-xs overflow-auto"
           ref={youtubeRef}
         >
-          {generateNewsletter(currentEvents)}
+          {generateNewsletter({ allEvents: currentEvents, eventTypes: props.eventTypes })}
         </pre>
       )}
       {showYouTubeCopy && (

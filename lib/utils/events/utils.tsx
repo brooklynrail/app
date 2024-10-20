@@ -1,3 +1,4 @@
+import { DateTime } from "luxon"
 import { aggregate, readItems, readField } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../../directus"
@@ -468,7 +469,13 @@ const encodeHtmlEntities = (str: string) => {
     .replace(/'/g, "&#39;")
 }
 
-export const generateNewsletter = (allEvents: Events[]) => {
+interface NewsletterEventProps {
+  eventTypes: EventsTypes[]
+  allEvents: Events[]
+}
+
+export const generateNewsletter = (props: NewsletterEventProps) => {
+  const { eventTypes, allEvents } = props
   // Helper function to format the event time
   const formatTime = (date: Date, timeZone: string) => {
     return date
@@ -498,8 +505,11 @@ export const generateNewsletter = (allEvents: Events[]) => {
         const easternTime = formatTime(startDate, "America/New_York")
         const pacificTime = formatTime(new Date(startDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
 
+        // Get the readable event type text
+        const eventTypeText = getEventTypeText(event.type, eventTypes)
+
         return `  <div class="event">
-        ${event.series ? `<p class="kicker"><span class="series">#${event.series}</span></p>` : ""}
+        ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
         <h3><a href="${permalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
         <p class="summary">${event.summary}</p>
         <div class="event-details">
@@ -531,4 +541,31 @@ export const generateNewsletter = (allEvents: Events[]) => {
 </div>
   `
   return newsletterHTML
+}
+
+// ====================================================
+// TIME Functions
+
+export const eventStartDate = (startDate: Date) => {
+  const startDateString = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(startDate)
+  return startDateString
+}
+
+// Function to format the time for a specific time zone using Luxon
+export const formatTime = (start_date: string, timeZone: string) => {
+  // Parse the start_date assuming it's in America/New_York (Eastern time)
+  const date = DateTime.fromISO(start_date, { zone: "America/New_York" })
+
+  // Set the desired time zone and format the time
+  const formattedTime = date.setZone(timeZone).toFormat("h:mm a")
+
+  // Format the period (AM/PM) to "a.m." or "p.m."
+  const formattedPeriod = formattedTime.toLowerCase().replace("am", "a.m.").replace("pm", "p.m.")
+
+  return formattedPeriod
 }

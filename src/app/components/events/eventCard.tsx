@@ -3,8 +3,7 @@ import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { Events, EventsTypes } from "../../../../lib/types"
 import Link from "next/link"
-import { formatTime } from "."
-import { getEventTypeText } from "../../../../lib/utils/events/utils"
+import { eventStartDate, formatTime, getEventTypeText } from "../../../../lib/utils/events/utils"
 
 export interface EventCardProps {
   event: Events
@@ -31,20 +30,18 @@ const EventCard = (props: EventCardProps) => {
     slug: slug,
   })
 
-  // format the start_date as Monday, October 7
-  const startDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  }).format(eventDate)
-
-  const startTimeET = formatTime(eventDate, "America/New_York")
-  const startTimePT = formatTime(eventDate, "America/Los_Angeles")
+  // get the start date in this format:
+  // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
+  const startDate = new Date(start_date)
+  const startDateString = eventStartDate(startDate)
+  // Get the time in both Eastern and Pacific time
+  const startTimeET = formatTime(start_date, "America/New_York")
+  const startTimePT = formatTime(start_date, "America/Los_Angeles")
 
   return (
     <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-y-12 py-6">
       <div className="col-span-4 tablet-lg:col-span-3">
-        <p className="font-bold">{startDate}</p>
+        <p className="font-bold">{startDateString}</p>
         <p>
           {startTimeET} ET / {startTimePT} PT
         </p>
