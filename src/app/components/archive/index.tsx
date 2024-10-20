@@ -1,11 +1,10 @@
 "use client"
-import { Articles, Issues } from "../../../../lib/types"
 import Image from "next/image"
-import { stripHtml } from "string-strip-html"
 import Link from "next/link"
+import { stripHtml } from "string-strip-html"
+import { Articles, Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
+import Paper, { PaperType } from "../paper"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -14,12 +13,13 @@ export interface PromoProps {
 }
 
 export interface ArchivePageProps {
+  navData: Homepage
   issues: Issues[]
   permalink: string
 }
 
 const ArchivePage = (props: ArchivePageProps) => {
-  const { issues } = props
+  const { issues, navData } = props
 
   // list all Issues
   const issueList = issues.map((issue: Issues) => {
@@ -78,22 +78,12 @@ const ArchivePage = (props: ArchivePageProps) => {
   })
 
   return (
-    <Paper pageClass="paper-archive">
-      <div className="px-3 desktop:w-desktop mx-auto">
+    <Paper pageClass="paper-archive" type={PaperType.Default} navData={navData}>
+      <main id="main" className="">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-          <div className="col-span-4 tablet-lg:col-span-12">
-            <Header type={HeaderType.Alt} />
-          </div>
+          <div className="col-span-4 tablet-lg:col-span-12"></div>
         </div>
-
-        <section id="main" className="">
-          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-            <div className="col-span-4 tablet-lg:col-span-12">
-              <Header type={HeaderType.Alt} />
-            </div>
-          </div>
-        </section>
-      </div>
+      </main>
     </Paper>
   )
 }

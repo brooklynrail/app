@@ -1,10 +1,10 @@
 import IssuePage from "@/app/components/issuePage"
-import { PageLayout } from "@/app/page"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
-import { Issues, Sections, Tributes } from "../../../../lib/types"
+import { Homepage, Issues, Sections, Tributes } from "../../../../lib/types"
 import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../lib/utils"
+import { getNavData } from "../../../../lib/utils/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -15,6 +15,7 @@ export const dynamicParams = true
 export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 3600 : 0
 
 export interface IssuePageProps {
+  navData: Homepage
   thisIssueData: Issues
   tributesData: Tributes[]
   allIssues: Issues[]
@@ -24,7 +25,6 @@ export interface IssuePageProps {
   permalink: string
   errorCode?: number
   errorMessage?: string
-  layout: PageLayout
 }
 
 export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: { params: IssueParams }): Pro
 export default async function Issue({ params }: { params: IssueParams }) {
   const data = await getData({ params })
 
-  return <IssuePage {...data} layout={data.thisIssueData.special_issue ? PageLayout.SpecialIssue : PageLayout.Issue} />
+  return <IssuePage {...data} />
 }
 
 interface IssueParams {
@@ -64,6 +64,11 @@ interface IssueParams {
 
 async function getData({ params }: { params: IssueParams }) {
   const issueSlug = params.issueSlug
+
+  const navData = await getNavData()
+  if (!navData) {
+    return notFound()
+  }
 
   const thisIssueData = await getIssueData({ slug: issueSlug })
   if (!thisIssueData) {
@@ -88,6 +93,7 @@ async function getData({ params }: { params: IssueParams }) {
   })
 
   return {
+    navData,
     thisIssueData,
     issueSections,
     tributesData,

@@ -1,27 +1,21 @@
 "use client"
-import { useEffect, useState } from "react"
-import { Ads } from "../../../../lib/types"
-import { getAds } from "../../../../lib/utils"
-import Paper from "../paper"
-import Header, { HeaderType } from "../header"
-import styles from "./tribute.module.scss"
-import { useTheme } from "../theme"
-import TributeHead from "./tributeHead"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
-import TributeBody from "./tributeBody"
+import Paper, { PaperType } from "../paper"
 import PreviewHeader from "../preview/previewHead"
+import styles from "./tribute.module.scss"
+import TributeBody from "./tributeBody"
+import TributeHead from "./tributeHead"
 
 const TributePage = (props: TributePageProps) => {
-  const { thisTributeData, previewURL } = props
+  const { thisTributeData, previewURL, navData } = props
 
   const { slug } = thisTributeData
   const tributeClass = `tribute-${slug.toLowerCase()}`
 
   return (
-    <Paper pageClass={`paper-tribute ${tributeClass}`}>
+    <Paper pageClass={`paper-tribute ${tributeClass}`} type={PaperType.Default} navData={navData}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
       <div className="rail-divide divide-y">
-        <Header type={HeaderType.Alt} />
         <section id="main" className={`${styles.main}`}>
           <div className="rail-divide divide-y">
             <div className="py-3 px-6">

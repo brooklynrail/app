@@ -7,13 +7,15 @@ import {
   getPreviewPassword,
   getTributes,
 } from "../../../../../lib/utils"
-import { Issues, Sections, Tributes } from "../../../../../lib/types"
+import { Homepage, Issues, Sections, Tributes } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import IssuePreview from "@/app/components/preview/issue"
 import { notFound } from "next/navigation"
+import { getNavData } from "../../../../../lib/utils/homepage"
 
 export interface IssuePreviewProps {
+  navData: Homepage
   thisIssueData: Issues
   issueSections: Sections[]
   allIssues: Issues[]
@@ -66,12 +68,14 @@ export default async function IssuePreviewPage({ params }: { params: PreviewPara
 
   const data = await getData({ params })
 
-  const { thisIssueData, tributesData, issueSections, permalink, directusUrl, previewPassword, allIssues } = data
+  const { thisIssueData, tributesData, issueSections, permalink, directusUrl, previewPassword, allIssues, navData } =
+    data
   if (!thisIssueData || !issueSections || !permalink || !previewPassword || !directusUrl) {
     return notFound()
   }
 
   const issuePreviewProps = {
+    navData,
     thisIssueData,
     issueSections,
     allIssues,
@@ -91,6 +95,11 @@ interface PreviewParams {
 
 async function getData({ params }: { params: PreviewParams }) {
   const id = params.id
+
+  const navData = await getNavData()
+  if (!navData) {
+    return notFound()
+  }
 
   const thisIssueData = await getPreviewIssue(id)
   if (!thisIssueData) {
@@ -122,6 +131,7 @@ async function getData({ params }: { params: PreviewParams }) {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
 
   return {
+    navData,
     thisIssueData,
     issueSections,
     tributesData,

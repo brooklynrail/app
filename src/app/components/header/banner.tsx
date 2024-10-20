@@ -1,7 +1,8 @@
 import { useTheme } from "@/app/components/theme"
+import { PaperType } from "../paper"
 
 interface BannerProps {
-  type: string
+  type: PaperType
 }
 const Banner = (props: BannerProps) => {
   const { type } = props
@@ -10,11 +11,11 @@ const Banner = (props: BannerProps) => {
   let pathfill
   let textfill
   switch (type) {
-    case "alt":
+    case PaperType.Default:
       pathfill = theme === "dark" ? "fill-indigo-50" : "fill-zinc-800"
       textfill = theme === "dark" ? "fill-none" : "fill-none"
       break
-    case "events":
+    case PaperType.Events:
       pathfill = theme === "dark" ? "fill-indigo-50" : "fill-zinc-800"
       textfill = theme === "dark" ? "fill-none" : "fill-none"
       break

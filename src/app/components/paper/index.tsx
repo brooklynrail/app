@@ -8,22 +8,35 @@ import PopupDonate from "../popupDonate"
 import { PopupProvider, usePopup } from "../popupProvider"
 import { useTheme } from "../theme"
 import ThemeToggle from "../themeToggle"
+import Header from "../header"
+import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 
 export interface PaperProps {
   pageClass: string
   hidePopup?: boolean
+  navData: Homepage
+  currentIssue?: Issues
+  banners?: HomepageBanners[]
   children: React.ReactNode
+  type: PaperType
+}
+
+export enum PaperType {
+  Default = "default",
+  Homepage = "homepage",
+  Events = "events",
+  Preview = "preview",
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, hidePopup } = props
+  const { pageClass, children, hidePopup, navData, type, banners, currentIssue } = props
   const { theme, setTheme } = useTheme()
-  // const { showPopup, popupType } = usePopup()
 
   return (
     <PopupProvider hidePopup={hidePopup}>
       <div className={`paper ${pageClass}`}>
         <PreviewBar />
+        <Header type={type} navData={navData} banners={banners} currentIssue={currentIssue} />
         {children}
         <Footer />
         <Ad970 />

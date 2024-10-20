@@ -1,6 +1,6 @@
 import { Collections, Homepage, HomepageBanners, HomepageCollections, Issues } from "../../lib/types"
 import { getPermalink, PageType } from "../../lib/utils"
-import { getCurrentIssueData, getHomepageData } from "../../lib/utils/homepage"
+import { getCurrentIssueData, getHomepageData, getNavData } from "../../lib/utils/homepage"
 import { notFound } from "next/navigation"
 import HomePage, { CollectionType } from "./components/homepage"
 
@@ -18,15 +18,8 @@ export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 
 //   initialScale: 0.405,
 // }
 
-export enum PageLayout {
-  Issue = "issue",
-  Section = "section",
-  SpecialIssue = "special-issue",
-  SpecialSection = "special-section",
-  Contributor = "contributor",
-  TableOfContents = "table-of-contents",
-}
 export interface HomePageProps {
+  navData: Homepage
   homepageData: Homepage
   currentIssue: Issues
   banners: HomepageBanners[]
@@ -47,6 +40,11 @@ async function getData() {
     return notFound()
   }
 
+  const navData = await getNavData()
+  if (!navData) {
+    return notFound()
+  }
+
   const homepageData = await getHomepageData(currentIssue)
   if (!homepageData) {
     return notFound()
@@ -62,6 +60,7 @@ async function getData() {
   })
 
   return {
+    navData,
     homepageData,
     banners,
     currentIssue,

@@ -8,23 +8,16 @@ import MapEmbed from "./map"
 import { Pages } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import parse from "html-react-parser"
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
+import Paper, { PaperType } from "../paper"
 
 const Page = (props: PageProps) => {
-  const { thisIssueData, pagesData } = props
+  const { navData, pagesData } = props
 
   return (
-    <Paper pageClass="paper-page">
+    <Paper pageClass="paper-page" type={PaperType.Default} navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3">
-            <IssueRail thisIssueData={thisIssueData} />
-          </aside>
-
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-            <Header type={HeaderType.Alt} />
-
             <article className="pb-12">
               <PageHead {...props} />
               <PageNav pages={pagesData} />

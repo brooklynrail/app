@@ -1,19 +1,20 @@
 "use client"
 import IssueRail from "../issueRail"
-import Header, { HeaderType } from "../header"
+import Header from "../header"
 import { useTheme } from "../theme"
-import { Contributors, Issues } from "../../../../lib/types"
+import { Contributors, Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import Paper from "../paper"
+import Paper, { PaperType } from "../paper"
 import Link from "next/link"
 
 interface ContributorsPageProps {
   thisIssueData: Issues
   allContributors: Contributors[]
+  navData: Homepage
 }
 
 const ContributorsPage = (props: ContributorsPageProps) => {
-  const { thisIssueData, allContributors } = props
+  const { thisIssueData, allContributors, navData } = props
 
   const all = (
     <>
@@ -35,16 +36,10 @@ const ContributorsPage = (props: ContributorsPageProps) => {
   )
 
   return (
-    <Paper pageClass="paper-contributor">
+    <Paper pageClass="paper-contributor" type={PaperType.Default} navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3">
-            <IssueRail thisIssueData={thisIssueData} />
-          </aside>
-
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-            <Header type={HeaderType.Alt} />
-
             <div className="pb-12">
               <header className="py-12">
                 <h1 className="font-light text-5xl">Contributors</h1>

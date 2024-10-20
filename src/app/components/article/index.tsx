@@ -2,8 +2,7 @@
 
 import parse from "html-react-parser"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
+import Paper, { PaperType } from "../paper"
 import NextPrev, { NextPrevType } from "../nextPrev"
 import ArticleHead from "./articleHead"
 import replaceShortcodes from "./shortcodes"
@@ -13,19 +12,11 @@ import styles from "./poetry.module.scss"
 import CoversPopup from "../issueRail/coversPopup"
 
 const Article = (props: ArticleProps) => {
-  const { thisIssueData, articleData, permalink, currentSection } = props
+  const { thisIssueData, articleData, permalink, currentSection, navData } = props
   const { body_text, images, endnote, contributors } = articleData
 
   return (
-    <Paper pageClass="paper-article">
-      <header role="banner">
-        <div className="grid grid-cols-4 tablet:grid-cols-12 gap-4 desktop:gap-3 gap-y-4">
-          <div className="col-span-12">
-            <Header type={HeaderType.Alt} />
-          </div>
-        </div>
-      </header>
-
+    <Paper pageClass="paper-article" type={PaperType.Default} navData={navData}>
       <article className="">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
           <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2">

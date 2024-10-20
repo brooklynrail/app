@@ -2,10 +2,8 @@
 import { HomePageProps } from "@/app/page"
 import { Articles, HomepageCollections } from "../../../../lib/types"
 import CollectionTribute from "../collections/tribute"
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
+import Paper, { PaperType } from "../paper"
 import { CollectionSection } from "./collections"
-import NavBar from "../header/navBar"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -20,7 +18,7 @@ export enum CollectionType {
 }
 
 const HomePage = (props: HomePageProps) => {
-  const { homepageData, currentIssue, banners } = props
+  const { homepageData, currentIssue, banners, navData } = props
 
   const allCollections = homepageData.collections.map((collection: HomepageCollections, i: number) => {
     const thisCollection = collection.collections_id
@@ -39,9 +37,13 @@ const HomePage = (props: HomePageProps) => {
   })
 
   return (
-    <Paper pageClass="paper-homepage">
-      <Header type={HeaderType.Default} banners={banners} currentIssue={currentIssue} />
-      <NavBar homepageData={homepageData} />
+    <Paper
+      pageClass="paper-homepage"
+      type={PaperType.Homepage}
+      navData={navData}
+      banners={banners}
+      currentIssue={currentIssue}
+    >
       <main className="divide-y rail-divide">{allCollections}</main>
     </Paper>
   )

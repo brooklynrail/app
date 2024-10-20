@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { Events, EventsPeople, EventsTypes } from "../../../../../../../lib/types"
+import { Events, EventsPeople, EventsTypes, Homepage } from "../../../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../../../lib/utils"
 import { checkYearMonthDay, getEvent, getEventTypes } from "../../../../../../../lib/utils/events/utils"
 import { getRedirect, RedirectTypes } from "../../../../../../../lib/utils/redirects"
@@ -7,6 +7,7 @@ import EventPage from "@/app/components/event"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 import { AddRedirect } from "@/app/actions/redirect"
+import { getNavData } from "../../../../../../../lib/utils/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -56,6 +57,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 }
 
 export interface EventProps {
+  navData: Homepage
   eventData: Events
   eventTypes: EventsTypes[]
   permalink: string
@@ -70,13 +72,20 @@ interface EventParams {
   slug: string
   id: string
 }
-export default async function EventController({ params }: { params: EventParams }) {
+export default async function EventPageController({ params }: { params: EventParams }) {
   const data = await getData({ params })
   if (!data.eventData || !data.permalink) {
     return notFound()
   }
 
-  return <EventPage {...data} />
+  return (
+    <EventPage
+      navData={data.navData}
+      eventData={data.eventData}
+      eventTypes={data.eventTypes}
+      permalink={data.permalink}
+    />
+  )
 }
 
 async function getData({ params }: { params: EventParams }) {
@@ -92,6 +101,11 @@ async function getData({ params }: { params: EventParams }) {
   }
 
   if (!year || !month || !day || !slug) {
+    return notFound()
+  }
+
+  const navData = await getNavData()
+  if (!navData) {
     return notFound()
   }
 
@@ -138,6 +152,7 @@ async function getData({ params }: { params: EventParams }) {
   })
 
   return {
+    navData,
     eventData,
     eventTypes,
     permalink,

@@ -1,21 +1,20 @@
 "use client"
-import IssueRail from "../issueRail"
-import Header, { HeaderType } from "../header"
-import { useTheme } from "../theme"
-import { ArticlesContributors, Contributors, Issues } from "../../../../lib/types"
-import { getPermalink, PageType } from "../../../../lib/utils"
-import PromoSection from "../promo/section"
 import parse from "html-react-parser"
-import Paper from "../paper"
+import { ArticlesContributors, Contributors, Homepage, Issues } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
+import IssueRail from "../issueRail"
+import Paper, { PaperType } from "../paper"
+import PromoSection from "../promo/section"
 
 interface ContributorPageProps {
+  navData: Homepage
   thisIssueData: Issues
   currentArticles: ArticlesContributors[]
   contributorData: Contributors
 }
 
 const ContributorPage = (props: ContributorPageProps) => {
-  const { thisIssueData, currentArticles, contributorData } = props
+  const { thisIssueData, currentArticles, contributorData, navData } = props
 
   const allArticles = (
     <section className="flex flex-col space-y-6 divide-y-[1px] rail-divide border-t rail-border">
@@ -56,16 +55,10 @@ const ContributorPage = (props: ContributorPageProps) => {
   const last_name = contributorData.last_name ? parse(contributorData.last_name) : null
 
   return (
-    <Paper pageClass="paper-contributor">
+    <Paper pageClass="paper-contributor" type={PaperType.Default} navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3">
-            <IssueRail thisIssueData={thisIssueData} />
-          </aside>
-
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-            <Header type={HeaderType.Alt} />
-
             <div className="pb-12">
               <header className="py-12">
                 <h1 className="font-light text-5xl">

@@ -6,17 +6,18 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import MenuButton from "./menuButton"
 
 interface NavBarProps {
-  homepageData: Homepage
+  navData: Homepage
 }
 
 const NavBar = (props: NavBarProps) => {
-  const { homepageData } = props
+  const { navData } = props
 
-  const allCollections = homepageData.collections.map((collection: HomepageCollections, i: number) => {
+  const allCollections = navData.collections.map((collection: HomepageCollections, i: number) => {
     const thisCollection = collection.collections_id
     if (!thisCollection) {
       return null
     }
+
     const permalink = (() => {
       switch (thisCollection.type) {
         case CollectionType.Section:

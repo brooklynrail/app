@@ -3,6 +3,62 @@ import directus from "../directus"
 import { cache } from "react"
 import { Articles, Homepage, HomepageCollections, Issues } from "../types"
 
+export const getNavData = cache(async () => {
+  try {
+    const navData = await directus.request(
+      readSingleton("homepage", {
+        fields: [
+          "id",
+          {
+            banners: [
+              {
+                collections_id: [
+                  "id",
+                  "type",
+                  "kicker",
+                  "title",
+                  "deck",
+                  "description",
+                  "links",
+                  "limit",
+                  "banner_type",
+                ],
+              },
+            ],
+          },
+          {
+            collections: [
+              {
+                collections_id: [
+                  "id",
+                  "type",
+                  "kicker",
+                  "title",
+                  "deck",
+                  "limit",
+                  "links",
+                  "banner_type",
+                  {
+                    section: ["slug", "featured"],
+                  },
+                  {
+                    tribute: ["slug"],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      }),
+    )
+
+    return navData as Homepage
+  } catch (error) {
+    console.error("Error fetching Nav data:", error)
+    return null
+  }
+})
+
 export const getHomepageData = cache(async (currentIssue: Issues) => {
   try {
     const homepageData = await directus.request(
@@ -39,7 +95,7 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
                   "links",
                   "banner_type",
                   {
-                    section: ["id", "name", "slug", "featured"],
+                    section: ["slug", "featured"],
                   },
                   {
                     tribute: [
@@ -98,13 +154,8 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
     })
 
     homepage.collections = await Promise.all(allCollections)
-    // maybe we dont need this?
-    // const resolvedCollections = await Promise.all(allCollections)
-    // homepage.collections = resolvedCollections.filter(
-    //   (collection): collection is HomepageCollections => collection !== null,
-    // )
 
-    return homepageData as Homepage
+    return homepage as Homepage
   } catch (error) {
     console.error("Error fetching Homepage data:", error)
     return null

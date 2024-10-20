@@ -2,8 +2,7 @@
 import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
 import { Articles, Issues } from "../../../../lib/types"
 import { CoverImages } from "../collections/banner/coverImages"
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
+import Paper, { PaperType } from "../paper"
 import PreviewHeader from "../preview/previewHead"
 import SectionHead from "../section/head"
 import TableOfContents from "./tableOfContents"
@@ -18,7 +17,7 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { thisIssueData, issueSections, previewURL, permalink } = props
+  const { thisIssueData, issueSections, previewURL, permalink, navData } = props
 
   const { slug } = thisIssueData
   const issueClass = `issue-${slug.toLowerCase()}`
@@ -30,9 +29,8 @@ const IssuePage = (props: IssuePageProps) => {
   const credits = thisIssueData.credits
 
   return (
-    <Paper pageClass={`paper-issue ${issueClass}`}>
+    <Paper pageClass={`paper-issue ${issueClass}`} type={PaperType.Default} navData={navData}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
-      <Header type={HeaderType.Alt} />
       <main className="divide-y rail-divide">
         <SectionHead title={thisIssueData.title} permalink={permalink} />
 

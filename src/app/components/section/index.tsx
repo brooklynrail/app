@@ -1,14 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Articles, Sections } from "../../../../lib/types"
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
+import { Articles, Homepage, Sections } from "../../../../lib/types"
+import Paper, { PaperType } from "../paper"
 import SectionArt from "./art"
 import SectionHead from "./head"
 import SectionDefault from "./default"
 import SectionArtSeen from "./artseen"
 
+interface NavProps {
+  navData: Homepage
+}
 export interface SectionProps {
   sectionData: Sections
   articlesData: Articles[]
@@ -21,8 +23,8 @@ enum SectionType {
   CriticsPage = "criticspage",
 }
 
-const Section = (props: SectionProps) => {
-  const { sectionData, permalink, articlesData } = props
+const Section = (props: SectionProps & NavProps) => {
+  const { sectionData, permalink, articlesData, navData } = props
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [articles, setArticles] = useState<Articles[]>(articlesData)
@@ -59,9 +61,7 @@ const Section = (props: SectionProps) => {
   }
 
   return (
-    <Paper pageClass="paper-section">
-      <Header type={HeaderType.Alt} />
-
+    <Paper pageClass="paper-section" type={PaperType.Default} navData={navData}>
       <main className="divide-y rail-divide">
         <SectionHead title={sectionData.name} permalink={permalink} />
 
