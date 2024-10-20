@@ -1,12 +1,10 @@
 import Link from "next/link"
+import { HomepageBanners, Issues } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
+import FeaturedBanner from "../homepage/featuredBanner"
 import Banner from "./banner"
 import styles from "./header.module.scss"
-import Button, { ButtonType } from "../button"
-import MenuButton from "./menuButton"
 import Subhead from "./subhead"
-import { getPermalink, PageType } from "../../../../lib/utils"
-import { HomepageBanners, Issues } from "../../../../lib/types"
-import FeaturedBanner from "../homepage/featuredBanner"
 
 interface HeaderProps {
   special_issue?: boolean | null

@@ -2,8 +2,8 @@ import { useState } from "react"
 import OldMenu from "./oldMenu"
 
 const MenuButton = () => {
-  const pathfill = "fill-zinc-900"
-  const strokefill = "stroke-zinc-900"
+  const pathfill = "fill-zinc-900 dark:fill-slate-100"
+  const strokefill = "stroke-zinc-900 dark:stroke-slate-100"
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -21,8 +21,7 @@ const MenuButton = () => {
     <>
       <svg
         onClick={openMenu}
-        // className=" flex-none w-[40px] h-[41px] tablet:w-[50px] tablet:h-[51px] tablet-lg:w-[66px] tablet-lg:h-[67px] relative -left-1"
-        className="hover:bg-slate-100"
+        className="hover:cursor-pointer"
         width="28"
         height="20"
         viewBox="0 0 28 20"

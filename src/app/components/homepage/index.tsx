@@ -5,7 +5,7 @@ import CollectionTribute from "../collections/tribute"
 import Header, { HeaderType } from "../header"
 import Paper from "../paper"
 import { CollectionSection } from "./collections"
-import NavBar from "./navBar"
+import NavBar from "../header/navBar"
 
 export interface PromoProps {
   currentArticles: Articles[]

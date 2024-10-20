@@ -38,7 +38,7 @@ const PreviewBar = () => {
   const copy = "Welcome to our PREVIEW site. "
 
   return (
-    <div className="bg-amber-400">
+    <div className="bg-amber-400 dark:bg-indigo-800">
       <p className="text-center py-1">
         ★ {copy}
         <Link

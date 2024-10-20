@@ -1,9 +1,9 @@
 "use client"
 import Link from "next/link"
-import { CollectionType } from "."
+import { CollectionType } from "../homepage"
 import { Homepage, HomepageCollections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import MenuButton from "../header/menuButton"
+import MenuButton from "./menuButton"
 
 interface NavBarProps {
   homepageData: Homepage
