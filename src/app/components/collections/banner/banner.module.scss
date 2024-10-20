@@ -4,7 +4,7 @@
     @apply hover:no-underline;
   }
   h3 {
-    @apply text-2xl font-normal italic hover:underline;
+    @apply text-lg tablet-lg:text-2xl font-normal italic hover:underline;
   }
 }
 

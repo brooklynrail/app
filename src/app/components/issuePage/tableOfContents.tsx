@@ -45,14 +45,14 @@ const IssueSection = (props: IssueSectionProps) => {
   }
 
   return (
-    <div className="py-1 pb-3 border-t-[1px] rail-border">
-      <h3 className="font-bold text-sm px-1 pb-2">
-        <Link prefetch={false} href={sectionPermalink} title={`Go to ${sectionName}`}>
+    <div className="tablet-lg:px-6 py-6 space-y-3">
+      <h3 className="font-medium text-lg uppercase">
+        <Link href={sectionPermalink} title={`Go to ${sectionName}`}>
           {sectionName}
         </Link>
       </h3>
 
-      <ul>
+      <ul className="space-y-3 tablet-lg:space-y-1">
         {articles.map((article: Articles, i: number) => {
           let permalink = getPermalink({
             year: year,
@@ -68,7 +68,7 @@ const IssueSection = (props: IssueSectionProps) => {
               type: PageType.Tribute,
             })
             return (
-              <li key={`toc-article-${i}`} className={`py-1 px-1 text-xs`} itemType="http://schema.org/Article">
+              <li key={`toc-article-${i}`} className={`text-xs`} itemType="http://schema.org/Article">
                 <h4 className="font-medium inline">
                   <Link href={permalink} itemProp="name" title={`Visit ${stripHtml(article.tribute.title).result}`}>
                     {parse(article.tribute.title)}
@@ -92,9 +92,8 @@ const TableOfContents = (props: TableOfContentsProps) => {
   const currentArticles = thisIssueData.articles
 
   return (
-    <div className="pt-12 pb-20">
-      <h2 className="font-bold text-xl py-4">Table of Contents</h2>
-      <div className="">
+    <div className="border-t rail-border tablet-lg:border-t-0">
+      <div className="divide-y rail-divide">
         {currentSections
           ? currentSections.map((section, i) => {
               // Filter the currentArticles to get only the articles in the current section

@@ -1,7 +1,5 @@
 "use client"
 
-import Link from "next/link"
-
 interface SectionHeadProps {
   title: string
   permalink: string
@@ -11,7 +9,7 @@ const SectionHead = (props: SectionHeadProps) => {
   const { title } = props
 
   return (
-    <div className="px-9 sticky top-0 rail-bg">
+    <div className="px-6 sticky top-0 z-10 rail-bg">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">
           <div className="flex justify-between items-center py-3 pt-6 pb-5">

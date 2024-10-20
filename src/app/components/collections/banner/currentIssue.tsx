@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { CollectionLinks, Collections, Issues } from "../../../../../lib/types"
+import { getPermalink, PageType } from "../../../../../lib/utils"
 import { CoverImages } from "./coverImages"
 
 interface BannerCurrentIssueProps {
@@ -32,6 +33,11 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
       )
     })
 
+  const issuePermalink = getPermalink({
+    issueSlug: currentIssue.slug,
+    type: PageType.Issue,
+  })
+
   return (
     <div
       key={banner.id}
@@ -39,13 +45,15 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
     >
       <div className="grid grid-cols-3 gap-3 gap-x-6">
         <div className="col-span-3 row-start-1">
-          <h3 className="text-md font-medium">
-            <span className="uppercase">{banner.title}:</span> {currentIssue.title} Issue
+          <h3 className="text-sm tablet-lg:text-md font-medium">
+            <Link href={issuePermalink}>
+              <span className="uppercase">{banner.title}:</span> {currentIssue.title} Issue
+            </Link>
           </h3>
         </div>
         <div className="col-span-2 row-start-2">
           <div className="w-full h-full">
-            <CoverImages currentIssue={currentIssue} />
+            <CoverImages currentIssue={currentIssue} clickToIssue={true} />
           </div>
         </div>
         {links && (

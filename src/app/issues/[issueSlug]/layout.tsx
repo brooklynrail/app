@@ -1,10 +1,7 @@
-import "../../../../styles/globals.scss"
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
+import "../../../../styles/globals.scss"
 config.autoAddCss = false
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/react"
-import { GoogleAnalytics } from "@next/third-parties/google"
 
 export const metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL

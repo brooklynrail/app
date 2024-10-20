@@ -1,15 +1,17 @@
-import { stripHtml } from "string-strip-html"
-import { Issues } from "../../../../../lib/types"
 import Image from "next/image"
-import { usePopup } from "../../popupProvider"
+import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
+import { Issues } from "../../../../../lib/types"
+import { getPermalink, PageType } from "../../../../../lib/utils"
+import { usePopup } from "../../popupProvider"
 
 interface CoverImagesProps {
   currentIssue: Issues
+  clickToIssue: boolean
 }
 
 export const CoverImages = (props: CoverImagesProps) => {
-  const { currentIssue } = props
+  const { currentIssue, clickToIssue } = props
   const coversRef = useRef<HTMLDivElement | null>(null)
   const [containerHeight, setContainerHeight] = useState<number | null>(null)
   const [containerWidth, setContainerWidth] = useState<number | null>(null)
@@ -28,10 +30,36 @@ export const CoverImages = (props: CoverImagesProps) => {
     return () => window.removeEventListener("resize", updateDimensions)
   }, [])
 
+  const issuePermalink = getPermalink({
+    issueSlug: currentIssue.slug,
+    type: PageType.Issue,
+  })
+
+  if (clickToIssue) {
+    return (
+      <div className="w-full h-full bg-zinc-700 bg-opacity-10 min-h-28 relative" ref={coversRef}>
+        {containerHeight && containerWidth && (
+          <Link href={issuePermalink}>
+            <Covers
+              currentIssue={currentIssue}
+              containerHeight={containerHeight}
+              containerWidth={containerWidth}
+              clickToIssue={clickToIssue}
+            />
+          </Link>
+        )}
+      </div>
+    )
+  }
   return (
     <div className="w-full h-full bg-zinc-700 bg-opacity-10 min-h-28 relative" ref={coversRef}>
       {containerHeight && containerWidth && (
-        <Covers currentIssue={currentIssue} containerHeight={containerHeight} containerWidth={containerWidth} />
+        <Covers
+          clickToIssue={clickToIssue}
+          currentIssue={currentIssue}
+          containerHeight={containerHeight}
+          containerWidth={containerWidth}
+        />
       )}
     </div>
   )
@@ -41,16 +69,12 @@ interface CoversProps {
   currentIssue: Issues
   containerHeight: number
   containerWidth: number
+  clickToIssue: boolean
 }
 const Covers = (props: CoversProps) => {
-  const { currentIssue, containerHeight, containerWidth } = props
-  const { setShowPopup, setImages } = usePopup()
+  const { currentIssue, containerHeight, containerWidth, clickToIssue } = props
+  const { setImages, togglePopup } = usePopup()
 
-  const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
-    e.preventDefault()
-    setImages(covers)
-    setShowPopup(true)
-  }
   const covers = [
     currentIssue.cover_1,
     currentIssue.cover_2,
@@ -60,20 +84,13 @@ const Covers = (props: CoversProps) => {
     currentIssue.cover_6,
   ]
 
-  // get the average widths of all the covers
-  const averageWidth = covers.reduce((acc, cover) => {
-    if (!cover) {
-      return acc
+  const handleClick = async (e: React.MouseEvent<Element, MouseEvent>) => {
+    if (!clickToIssue) {
+      e.preventDefault()
+      setImages(covers)
+      togglePopup("covers")
     }
-    return acc + cover.width
-  }, 0)
-
-  const averageHeight = covers.reduce((acc, cover) => {
-    if (!cover) {
-      return acc
-    }
-    return acc + cover.height
-  }, 0)
+  }
 
   const validCovers = covers.filter((cover) => cover !== null && cover !== undefined)
   const numCovers = validCovers.length
@@ -82,7 +99,7 @@ const Covers = (props: CoversProps) => {
     if (!cover) {
       return null
     }
-    const zindex = covers.length * 10 - index * 10
+    const zindex = covers.length * 1 - index * 1
 
     const height = containerHeight
     const width = (containerHeight * cover.width) / cover.height
@@ -112,7 +129,7 @@ const Covers = (props: CoversProps) => {
         height={height}
         alt={"alt"}
         sizes="10vw"
-        onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleClick(e)}
+        onClick={handleClick}
       />
     )
   })

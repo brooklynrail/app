@@ -6,6 +6,7 @@ export enum BylineType {
   Option = "option",
   None = "not-italic",
   Default = "text-sm not-italic",
+  TOC = "text-sm not-italic inline",
   ArticleHeadDiptych = "text-md tablet-lg:text-lg font-sans not-italic",
   ArticleHead = "text-md tablet-lg:text-lg font-sans not-italic",
   SectionPromo = "text-md font-sans not-italic",
@@ -83,7 +84,8 @@ const Bylines = (props: BylinesProps) => {
                 className={
                   type === BylineType.CollectionArtSeen ||
                   type === BylineType.CollectionBooks ||
-                  type === BylineType.CollectionDance
+                  type === BylineType.CollectionDance ||
+                  type === BylineType.TOC
                     ? "font-bold"
                     : ""
                 }

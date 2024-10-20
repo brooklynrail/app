@@ -1,10 +1,10 @@
 import IssuePage from "@/app/components/issuePage"
 import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../lib/utils"
-import { stripHtml } from "string-strip-html"
-import { Metadata, Viewport } from "next"
+import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { stripHtml } from "string-strip-html"
 import { Issues, Sections, Tributes } from "../../../../lib/types"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../lib/utils"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -12,13 +12,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
-export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
-
-// Set the Viewport to show the full page of the Rail on mobile devices
-// export const viewport: Viewport = {
-//   width: "device-width",
-//   initialScale: 0.405,
-// }
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 3600 : 0
 
 export interface IssuePageProps {
   thisIssueData: Issues

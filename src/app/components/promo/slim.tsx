@@ -2,7 +2,7 @@ import parse from "html-react-parser"
 import { Articles } from "../../../../lib/types"
 import { stripHtml } from "string-strip-html"
 import Link from "next/link"
-import Bylines from "../issueRail/bylines"
+import Bylines, { BylineType } from "../collections/promos/bylines"
 
 interface PromoSlimProps {
   article: Articles
@@ -18,8 +18,8 @@ const PromoSlim = (props: PromoSlimProps) => {
   const altClass = i % 2 === 0 ? "" : "bg-zinc-200 dark:bg-zinc-700"
 
   return (
-    <li className={`py-1 px-1 text-sm ${altClass}`} itemType="http://schema.org/Article">
-      <h4 className="font-medium inline">
+    <li className={`text-xl ${altClass}`} itemType="http://schema.org/Article">
+      <h4 className="inline">
         <Link
           prefetch={prefetch === false ? false : true}
           href={permalink}
@@ -30,9 +30,9 @@ const PromoSlim = (props: PromoSlimProps) => {
         </Link>
       </h4>
       {!hide_bylines_downstream && contributors && contributors.length != 0 && (
-        <cite className="not-italic inline">
-          {` –`} <Bylines byline_override={byline_override} contributors={contributors} />
-        </cite>
+        <p className="block tablet-lg:inline">
+          {` –`} <Bylines article={article} type={BylineType.TOC} />
+        </p>
       )}
     </li>
   )

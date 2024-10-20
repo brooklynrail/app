@@ -236,6 +236,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=year` +
     `&fields[]=month` +
     `&fields[]=status` +
+    `&fields[]=published` +
     `&fields[]=issue_number` +
     `&fields[]=special_issue` +
     `&fields[]=old_id` +

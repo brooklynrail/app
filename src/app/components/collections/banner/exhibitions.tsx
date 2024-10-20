@@ -41,7 +41,7 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
     >
       <div className="grid grid-cols-3 gap-3 gap-x-6">
         <div className="col-span-3 row-start-1">
-          <h3 className="text-md font-medium text-indigo-50">
+          <h3 className="text-sm tablet-lg:text-md font-medium text-indigo-50">
             {primary_link ? (
               <Link href={primary_link.url}>
                 <span className="">{parse(title)}</span>
