@@ -36,7 +36,7 @@ const CollectionDanceFilm = (collection: Collections) => {
 
   return (
     <div key={collection.id} className="">
-      <CollectionHead title={section.name} permalink={section.featured ? sectionPermalink : null} />
+      <CollectionHead title={collection.title} permalink={section.featured ? sectionPermalink : null} />
       <div className="hidden tablet-lg:block">
         <Frame633
           LeadPromo={<LeadPromo article={leadArticle} />}

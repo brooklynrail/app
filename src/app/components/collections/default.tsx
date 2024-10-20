@@ -23,7 +23,7 @@ const CollectionDefault = (collection: Collections) => {
 
   return (
     <div key={collection.id} className="">
-      <CollectionHead title={section.name} permalink={section.featured ? sectionPermalink : null} />
+      <CollectionHead title={collection.title} permalink={section.featured ? sectionPermalink : null} />
       <div className="pl-6 py-3 divide-x rail-divide flex overflow-x-auto snap-mandatory snap-x scroll-smooth w-screen">
         <Promos articles={articles} />
       </div>
