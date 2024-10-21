@@ -19,6 +19,16 @@ export type Ads = {
   user_updated?: string | DirectusUsers | null
 }
 
+export type OGArticle = {
+  slug: string
+  title: string
+  deck?: string | null
+  excerpt: string
+  image?: string | null
+  section: string
+  issue: string
+}
+
 export type Articles = {
   id: string
   body: string

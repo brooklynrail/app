@@ -1,8 +1,6 @@
 import { ImageResponse } from "next/og"
-import { getEvent } from "../../../../lib/utils/events/utils"
-import { getArticle } from "../../../../lib/utils"
-// App router includes @vercel/og.
-// No need to install it.
+import parse from "html-react-parser"
+import { getArticleOGData } from "../../../../lib/utils/articles"
 
 enum PageType {
   Contributor = "contributor",
@@ -23,34 +21,40 @@ export async function GET(request: Request) {
   const fetchData = async (type: string, slug: string) => {
     switch (type) {
       case PageType.Article:
-        return await getArticle(slug)
-      case PageType.Event:
-        return await getEvent(slug)
+        return await getArticleOGData(slug, "published")
       default:
+        console.log("Invalid type")
         return null
     }
   }
 
   const data = await fetchData(type, slug)
 
-  console.log("data:", data)
+  if (!data) {
+    return null
+  }
+
+  const ogExcerpt = data.deck ? parse(data.deck) : data.excerpt
 
   return new ImageResponse(
     (
       <div
         style={{
-          fontSize: 40,
-          color: "black",
-          background: "white",
-          width: "100%",
           height: "100%",
-          padding: "50px 200px",
-          textAlign: "center",
-          justifyContent: "center",
-          alignItems: "center",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          backgroundColor: "#fff",
+          fontSize: 32,
+          fontWeight: 600,
         }}
       >
-        👋 Hello Drithi!
+        <div style={{ marginTop: 10 }}>{data.issue}</div>
+        <div style={{ marginTop: 10 }}>{data.section}</div>
+        <div style={{ marginTop: 10 }}>{data.title}</div>
+        <div style={{ marginTop: 10 }}>{ogExcerpt}</div>
       </div>
     ),
     {
