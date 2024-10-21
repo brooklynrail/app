@@ -53,7 +53,7 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
   return (
     <div
       key={banner.id}
-      className={`col-span-4 tablet:col-span-6 py-3 pb-6 px-6 bg-zinc-700 bg-opacity-70 ${first} ${last}`}
+      className={`col-span-4 tablet:col-span-6 py-3 pb-6 px-6 bg-zinc-700 bg-opacity-80 ${first} ${last}`}
     >
       <div className="grid grid-cols-6 gap-3 gap-x-6">
         <div className="col-span-6 row-start-1">

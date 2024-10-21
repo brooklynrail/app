@@ -21,12 +21,12 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
   const links =
     banner.links &&
     banner.links.map((link: CollectionLinks, i: number) => {
-      const first = i === 0 ? "border border-dotted border-zinc-800 dark:border-indigo-50 px-0.5" : ""
+      const first = i === 0 ? "border border-dotted border-indigo-50 dark:border-indigo-50 px-0.5" : ""
       return (
         <Link
           key={i}
           href={link.url}
-          className={`py-1 text-center text-zinc-800 dark:text-indigo-50 uppercase font-medium text-xs ${first}`}
+          className={`py-1 text-center text-indigo-50 dark:text-indigo-50 uppercase font-medium text-xs ${first}`}
         >
           <button className="uppercase hover:underline">{link.text}</button>
         </Link>
@@ -41,11 +41,11 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
   return (
     <div
       key={banner.id}
-      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-6 bg-indigo-50 bg-opacity-20 ${first} ${last}`}
+      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-6 bg-zinc-700 bg-opacity-60 ${first} ${last}`}
     >
       <div className="grid grid-cols-3 gap-3 gap-x-6">
         <div className="col-span-3 row-start-1">
-          <h3 className="text-sm tablet-lg:text-md font-medium">
+          <h3 className="text-sm tablet-lg:text-md font-medium text-indigo-50">
             <Link href={issuePermalink}>
               <span className="uppercase">{banner.title}:</span> {currentIssue.title} Issue
             </Link>

@@ -27,7 +27,7 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
         <Link
           key={i}
           href={link.url}
-          className={`py-1 text-center text-indigo-50 uppercase font-medium text-xs ${first}`}
+          className={`py-1 text-center uppercase font-medium text-indigo-50 text-xs ${first}`}
         >
           <button className="uppercase hover:underline">{link.text}</button>
         </Link>
@@ -37,11 +37,11 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
   return (
     <div
       key={banner.id}
-      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-6 bg-zinc-700 bg-opacity-50 ${first} ${last}`}
+      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-6 bg-zinc-700 bg-opacity-70 ${first} ${last}`}
     >
       <div className="grid grid-cols-3 gap-3 gap-x-6">
         <div className="col-span-3 row-start-1">
-          <h3 className="text-sm tablet-lg:text-md font-medium text-indigo-50">
+          <h3 className="text-sm tablet-lg:text-md text-indigo-50 font-medium">
             {primary_link ? (
               <Link href={primary_link.url}>
                 <span className="">{parse(title)}</span>
@@ -53,7 +53,7 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
         </div>
         {description && (
           <div className="col-span-2 row-start-2">
-            <div className={`w-full h-full text-indigo-50 ${style.description}`}>
+            <div className={`w-full h-full ${style.description} text-indigo-50`}>
               {primary_link ? <Link href={primary_link.url}>{parse(description)}</Link> : parse(description)}
             </div>
           </div>
