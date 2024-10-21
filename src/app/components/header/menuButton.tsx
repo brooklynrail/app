@@ -1,7 +1,12 @@
 import { useState } from "react"
 import OldMenu from "./oldMenu"
 
-const MenuButton = () => {
+interface MenuButtonProps {
+  classes: string
+}
+
+const MenuButton = (props: MenuButtonProps) => {
+  const { classes } = props
   const pathfill = "fill-zinc-900 dark:fill-slate-100"
   const strokefill = "stroke-zinc-900 dark:stroke-slate-100"
 
@@ -18,26 +23,22 @@ const MenuButton = () => {
   }
 
   return (
-    <>
-      <svg
-        onClick={openMenu}
-        className="hover:cursor-pointer"
-        width="28"
-        height="20"
-        viewBox="0 0 28 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+    <div className="">
+      <div
+        className={`${classes} max-w-10 max-h-10 rounded-sm p-1 bg-white dark:bg-black hover:cursor-pointer shadow-sm`}
       >
-        <path d="M1 4.00098H10" className={strokefill} strokeWidth="2" strokeLinecap="round" />
-        <path d="M1 11H10" className={strokefill} strokeWidth="2" strokeLinecap="round" />
-        <path d="M1 19H17" className={strokefill} strokeWidth="2" strokeLinecap="round" />
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M14.2191 6.40223C13.43 8.51714 14.5048 10.8713 16.6197 11.6604C18.7347 12.4494 21.0888 11.3746 21.8779 9.25969C22.6669 7.14477 21.5921 4.79063 19.4772 4.00156C17.3623 3.21249 15.0081 4.28731 14.2191 6.40223ZM12.3452 5.70311C11.1701 8.85291 12.7708 12.359 15.9206 13.5342C17.4311 14.0977 19.0234 14.0229 20.4014 13.4451L21.5621 15.9872C21.7915 16.4896 22.3847 16.711 22.8871 16.4816C23.3895 16.2522 23.6108 15.659 23.3814 15.1566L22.1084 12.3682C22.8213 11.7313 23.3943 10.9167 23.7517 9.9588C24.9269 6.809 23.3261 3.30291 20.1763 2.12773C17.0265 0.952553 13.5204 2.5533 12.3452 5.70311Z"
-          className={pathfill}
-        />
-      </svg>
+        <svg onClick={openMenu} className="" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 8H12" className={strokefill} strokeLinecap="round" />
+          <path d="M4 14H12" className={strokefill} strokeLinecap="round" />
+          <path d="M4 21H18" className={strokefill} strokeLinecap="round" />
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M15.056 10.1863C14.2524 12.3401 15.347 14.7375 17.5008 15.5411C19.6545 16.3446 22.0519 15.2501 22.8555 13.0963C23.659 10.9425 22.5645 8.54513 20.4107 7.74157C18.2569 6.93801 15.8596 8.03257 15.056 10.1863ZM14.1191 9.83678C13.1225 12.508 14.48 15.4814 17.1512 16.478C18.5496 16.9997 20.0308 16.8763 21.2678 16.2569L22.2525 18.4136C22.3672 18.6648 22.6638 18.7755 22.915 18.6608C23.1662 18.5461 23.2769 18.2495 23.1622 17.9983L22.1218 15.7197C22.8551 15.1515 23.4443 14.3788 23.7924 13.4459C24.789 10.7746 23.4315 7.80128 20.7603 6.80466C18.0891 5.80804 15.1157 7.16557 14.1191 9.83678Z"
+            className={pathfill}
+          />
+        </svg>
+      </div>
 
       {isMenuOpen && (
         <>
@@ -48,7 +49,7 @@ const MenuButton = () => {
           <OldMenu closeMenu={closeMenu} />
         </>
       )}
-    </>
+    </div>
   )
 }
 

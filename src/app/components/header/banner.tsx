@@ -27,7 +27,7 @@ const Banner = (props: BannerProps) => {
   }
 
   return (
-    <svg className="px-0 tablet:px-0 py-3 w-full" viewBox="0 0 1370 183" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className="w-full" viewBox="0 0 1370 183" fill="none" xmlns="http://www.w3.org/2000/svg">
       <title>The Brooklyn Rail Logo</title>
       <path
         className={textfill}

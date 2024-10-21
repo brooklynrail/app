@@ -121,6 +121,7 @@ body {
 .paper {
   @apply rail-bg;
   @apply relative;
+  @apply divide-y rail-divide;
 }
 
 .paper-homepage {
