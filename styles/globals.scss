@@ -121,11 +121,14 @@ body {
 .paper {
   @apply rail-bg;
   @apply relative;
-  @apply divide-y rail-divide;
 }
 
 .paper-homepage {
   // @apply divide-y rail-divide;
+}
+
+.paper-article {
+  @apply divide-y rail-divide;
 }
 
 .paper-issue {
