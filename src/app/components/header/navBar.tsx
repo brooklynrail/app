@@ -47,7 +47,7 @@ const NavBar = (props: NavBarProps) => {
 
     return (
       <li>
-        <Link href={permalink} className="py-2 px-3 text-nowrap inline-block text-sm font-bold uppercase">
+        <Link href={permalink} className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase">
           {thisCollection.title}
         </Link>
       </li>
@@ -57,7 +57,7 @@ const NavBar = (props: NavBarProps) => {
   return (
     <nav className="rail-bg pl-3 sticky top-0 z-[11] border-b rail-border">
       <ul className="flex items-center w-full overflow-x-auto pr-3 no-scrollbar">
-        <li className="py-2 px-3 inline-block">
+        <li className="py-1 px-3 inline-block">
           <MenuButton classes={`w-[7vw] h-[7vw]`} />
         </li>
         {allCollections}

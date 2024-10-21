@@ -71,14 +71,14 @@ const HeaderHomepage = (props: HeaderProps) => {
             <div className="hidden tablet:flex justify-center items-center space-x-3 desktop:space-x-6">
               <Link href={"/subscribe"}>
                 <button
-                  className={`bg-white text-zinc-800 font-medium shadow-md shadow-zinc-300 text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
+                  className={`bg-white text-zinc-800 font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
                 >
                   Subscribe
                 </button>
               </Link>
               <Link href={"/donate"}>
                 <button
-                  className={`bg-red-500 text-white font-medium shadow-md shadow-zinc-300 text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
+                  className={`bg-red-500 text-white font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
                 >
                   Donate
                 </button>
@@ -127,14 +127,14 @@ const HeaderDefault = (props: HeaderProps) => {
               <div className="flex items-center space-x-3 desktop:space-x-6">
                 <Link href={"/subscribe"}>
                   <button
-                    className={`bg-white text-zinc-800 font-medium shadow-md text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
+                    className={`bg-white text-zinc-800 font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
                   >
                     Subscribe
                   </button>
                 </Link>
                 <Link href={"/donate"}>
                   <button
-                    className={`bg-red-500 text-white font-medium shadow-md text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
+                    className={`bg-red-500 text-white font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
                   >
                     Donate
                   </button>
