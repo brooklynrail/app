@@ -17,9 +17,9 @@ const Article = (props: ArticleProps) => {
 
   return (
     <Paper pageClass="paper-article" type={PaperType.Default} navData={navData}>
-      <article className="">
+      <article className="px-3 tablet-lg:px-6">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2">
+          <div className="col-span-4 tablet-lg:col-span-12 border-b rail-border">
             <NextPrev
               parentCollection={thisIssueData}
               articles={thisIssueData.articles}
@@ -31,7 +31,7 @@ const Article = (props: ArticleProps) => {
           <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 ">
             <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
           </div>
-          <div className="col-span-4 tablet-lg:col-span-10 desktop:col-span-8 tablet-lg:col-start-2 desktop:col-start-3">
+          <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2">
             {body_text && (
               <div className={`${styles.content_poetry} content`}>
                 {replaceShortcodes({ html: body_text, images: images })}
