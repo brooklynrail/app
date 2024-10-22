@@ -136,6 +136,7 @@ const HeaderDefault = (props: HeaderProps) => {
           </div>
         </div>
       </header>
+      <NavBar navData={navData} />
     </>
   )
 }

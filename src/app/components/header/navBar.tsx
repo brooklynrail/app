@@ -55,7 +55,7 @@ const NavBar = (props: NavBarProps) => {
   })
 
   return (
-    <nav className="rail-bg pl-3 sticky top-0 z-[11] border-b rail-border">
+    <nav className="navbar pl-3 sticky top-0 z-[11] border-b rail-border">
       <ul className="flex items-center w-full overflow-x-auto pr-3 no-scrollbar">
         <li className="py-1 px-3 inline-block">
           <MenuButton collections={navData.collections} classes={`w-[7vw] h-[7vw]`} />
