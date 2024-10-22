@@ -95,7 +95,7 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
                   "links",
                   "banner_type",
                   {
-                    section: ["slug", "featured"],
+                    section: ["slug", "featured", "description"],
                   },
                   {
                     tribute: [

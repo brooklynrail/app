@@ -4,7 +4,6 @@ import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import FeaturedImage from "../featuredImage"
 import Frame from "../frames/frame"
-import styles from "./collection.module.scss"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
 import Excerpt from "./promos/excerpt"
@@ -31,17 +30,20 @@ const CollectionCriticsPage = (collection: Collections) => {
     ? `${leadArticle.contributors[0].contributors_id?.first_name} ${leadArticle.contributors[0].contributors_id?.last_name}`
     : ""
 
-  const collectionTitle = `Guest Critic: ${guestCritic}`
+  const guestCriticHead = `Guest Critic: ${guestCritic}`
 
   return (
-    <div key={collection.id} className={`rail-criticspage-bg ${styles.criticspage}`}>
+    <div key={collection.id} className={`collection collection-${section.slug}`}>
       <CollectionHead
-        title={collectionTitle}
+        title={collection.title}
+        description={section.description}
         kicker={leadArticle.issue.title}
         permalink={section.featured ? sectionPermalink : null}
-        classes={`rail-criticspage-bg collection-${section.slug}`}
       />
       <div className="">
+        <div className="px-6 pt-6 font-serif font-medium text-4xl">
+          <h3>{guestCriticHead}</h3>
+        </div>
         <Frame
           LeadPromo={<LeadPromo article={leadArticle} />}
           Promos={<Promos articles={restOfArticles} />}
