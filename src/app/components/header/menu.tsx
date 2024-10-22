@@ -78,7 +78,10 @@ const Menu = (props: MenuProps) => {
             close
           </p>
           <Link href="/">Home</Link>
-          <div>SEARCH is coming soon</div>
+
+          <div className="mt-4">
+            <input type="text" placeholder="Search..." className="w-full p-2 border border-gray-300 rounded-md" />
+          </div>
         </div>
         <div>
           <ul className="divide-y rail-divide">{allCollections}</ul>

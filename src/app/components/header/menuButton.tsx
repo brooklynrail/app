@@ -12,7 +12,7 @@ const MenuButton = (props: MenuButtonProps) => {
   const pathfill = "fill-zinc-900 dark:fill-slate-100"
   const strokefill = "stroke-zinc-900 dark:stroke-slate-100"
 
-  const [isMenuOpen, setIsMenuOpen] = useState(true)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   // Function to open the menu
   const openMenu = () => {
