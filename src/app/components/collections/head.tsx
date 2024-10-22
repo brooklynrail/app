@@ -27,7 +27,7 @@ const CollectionHead = (props: CollectionHeadProps) => {
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">
           <div className="flex justify-between items-center">
-            <div className="space-y-1 w-1/2">
+            <div className="space-y-1 tablet:w-2/3 desktop:w-1/2">
               {kicker && <h6 className="uppercase text-xs tablet-lg:hidden">{kicker}</h6>}
               {heading}
               {description && <p className="text-sm">{parse(description)}</p>}
