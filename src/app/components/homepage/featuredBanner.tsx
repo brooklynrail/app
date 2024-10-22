@@ -39,7 +39,7 @@ const FeaturedBanner = (props: BannerProps) => {
     }
   })
   return (
-    <div className="">
+    <div className="bg-white">
       <div className="grid grid-cols-4 tablet:grid-cols-12">{allBanners}</div>
     </div>
   )

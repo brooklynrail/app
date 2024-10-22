@@ -42,45 +42,25 @@ const HeaderHomepage = (props: HeaderProps) => {
 
   return (
     <>
-      <header className={`pt-20 tablet:pt-0 relative rail-header-${type}`}>
-        <VideoBG />
-        <div className="z-10 relative">
-          <div className="hidden">
-            <h1>The Brooklyn Rail </h1>
-            <h2>Critical Perspectives on Art, Politics and Culture</h2>
-            {title && <h3>{title}</h3>}
-          </div>
-          <div className="px-3 py-3 tablet-lg:px-6">
-            <div className="flex w-full items-center space-x-4">
-              <Link href={permalink} className="w-full">
+      <header className={`tablet:pt-0 relative rail-header-${type}`}>
+        <div className="hidden">
+          <h1>The Brooklyn Rail </h1>
+          <h2>Critical Perspectives on Art, Politics and Culture</h2>
+          {title && <h3>{title}</h3>}
+        </div>
+
+        <div className="h-[calc(100vh-21rem)] tablet:h-[calc(100vh-7.5rem)] relative">
+          <VideoBG />
+          <div className="sticky top-0">
+            <div className="p-3 tablet:px-6">
+              <Link href={permalink} className="w-full space-y-3">
                 <HomeBanner type={type} />
+                <Subhead />
               </Link>
             </div>
           </div>
-          <div className="px-3 pb-3 tablet-lg:px-6 flex justify-between items-center w-full space-x-9 tablet:space-x-9">
-            <div className="w-full">
-              <div className="hidden tablet:block ">
-                <Subhead />
-              </div>
-              <div className="tablet:hidden">
-                <p className="uppercase text-zinc-800 text-sm tracking-wider">
-                  Critical Perspectives on Arts, <span className="">Politics, and Culture</span>
-                </p>
-              </div>
-            </div>
-            <div className="">
-              <div className="hidden tablet:flex justify-center items-center space-x-3 desktop:space-x-6">
-                <SubscribeButton />
-                <DonateButton />
-              </div>
-              <div className="tablet:hidden w-full">
-                <MenuButton classes={`w-[9vw] h-[9vw]`} collections={navData.collections} />
-              </div>
-            </div>
-          </div>
-
-          {banners && currentIssue && <FeaturedBanner banners={banners} currentIssue={currentIssue} />}
         </div>
+        {banners && currentIssue && <FeaturedBanner banners={banners} currentIssue={currentIssue} />}
       </header>
       <NavBar navData={navData} />
     </>
