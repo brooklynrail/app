@@ -37,7 +37,7 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
   return (
     <div
       key={banner.id}
-      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-6 bg-zinc-700 bg-opacity-80 ${first} ${last}`}
+      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-6 bg-zinc-700 bg-opacity-90 ${first} ${last}`}
     >
       <div className="grid grid-cols-3 gap-3 gap-x-6">
         <div className="col-span-3 row-start-1">

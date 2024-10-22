@@ -33,8 +33,6 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
   const first = props.first ? "pl-6" : ""
   const last = props.last ? "pr-6" : ""
 
-  console.log("currentEvents", currentEvents)
-
   const links =
     banner.links &&
     banner.links.map((link: CollectionLinks, i: number) => {
@@ -55,7 +53,7 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
   return (
     <div
       key={banner.id}
-      className={`col-span-4 tablet:col-span-6 py-3 pb-6 px-6 bg-zinc-700 bg-opacity-90 ${first} ${last}`}
+      className={`col-span-4 tablet:col-span-6 py-3 pb-6 px-6 bg-zinc-700 bg-opacity-95 ${first} ${last}`}
     >
       <div className="grid grid-cols-6 gap-3 gap-x-6">
         <div className="col-span-6 row-start-1">

@@ -9,6 +9,7 @@ import MenuButton from "./menuButton"
 import Subhead from "./subhead"
 import HomeBanner from "./homeBanner"
 import styles from "./header.module.scss"
+import VideoBG from "./videobg"
 
 interface HeaderProps {
   special_issue?: boolean | null
@@ -39,23 +40,10 @@ const HeaderHomepage = (props: HeaderProps) => {
     type: PageType.Home,
   })
 
-  const video = (
-    <video
-      autoPlay
-      muted
-      loop
-      playsInline
-      className="absolute top-0 left-0 w-full h-full object-cover transform"
-      poster="/video/bosphorus.mp4"
-    >
-      <source src="/video/transition.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-  )
   return (
     <>
-      <header className={`relative rail-header-${type}`}>
-        {video}
+      <header className={`pt-20 tablet:pt-0 relative rail-header-${type}`}>
+        <VideoBG />
         <div className="z-10 relative">
           <div className="hidden">
             <h1>The Brooklyn Rail </h1>
