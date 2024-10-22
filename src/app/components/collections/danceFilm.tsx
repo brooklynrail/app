@@ -141,7 +141,7 @@ const LeadPromo = (props: LeadPromoArtProps) => {
       <div className="flex flex-col py-6">
         {artwork && (
           <div className="">
-            <FeaturedImage image={artwork} title={title} permalink={permalink} />
+            <FeaturedImage image={artwork} hideCaption={true} title={title} permalink={permalink} />
           </div>
         )}
       </div>
