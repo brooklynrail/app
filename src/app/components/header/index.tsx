@@ -56,7 +56,7 @@ const HeaderHomepage = (props: HeaderProps) => {
     <>
       <header id={styles.rail_header} className={`relative rail-header-${type}`}>
         {video}
-        <div className="z-50 relative">
+        <div className="z-10 relative">
           <div className="hidden">
             <h1>The Brooklyn Rail </h1>
             <h2>Critical Perspectives on Art, Politics and Culture</h2>
