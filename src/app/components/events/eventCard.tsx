@@ -3,7 +3,7 @@ import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { Events, EventsTypes } from "../../../../lib/types"
 import Link from "next/link"
-import { eventStartDate, formatTime, getEventTypeText } from "../../../../lib/utils/events/utils"
+import { formatEventDate, formatTime, getEventTypeText } from "../../../../lib/utils/events/utils"
 
 export interface EventCardProps {
   event: Events
@@ -12,7 +12,7 @@ export interface EventCardProps {
 
 const EventCard = (props: EventCardProps) => {
   const { event, eventTypes } = props
-  const { title, slug, deck, start_date, type, series } = event
+  const { title, slug, deck, start_date, end_date, type, series } = event
 
   // Get the readable event type text
   const eventTypeText = getEventTypeText(type, eventTypes)
@@ -33,7 +33,9 @@ const EventCard = (props: EventCardProps) => {
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
   const startDate = new Date(start_date)
-  const startDateString = eventStartDate(startDate)
+  const endDate = new Date(end_date)
+  const startDateString = formatEventDate(startDate, endDate)
+  const isSameDay = startDate.toDateString() === endDate.toDateString()
   // Get the time in both Eastern and Pacific time
   const startTimeET = formatTime(start_date, "America/New_York")
   const startTimePT = formatTime(start_date, "America/Los_Angeles")
@@ -41,10 +43,12 @@ const EventCard = (props: EventCardProps) => {
   return (
     <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-y-12 py-6">
       <div className="col-span-4 tablet-lg:col-span-3">
-        <p className="font-bold">{startDateString}</p>
-        <p>
-          {startTimeET} ET / {startTimePT} PT
-        </p>
+        <p className="font-bold pr-12">{startDateString}</p>
+        {isSameDay && (
+          <p>
+            {startTimeET} ET / {startTimePT} PT
+          </p>
+        )}
       </div>
       <div className="order-first tablet-lg:order-none col-span-4 tablet-lg:col-span-6">
         <div className="flex flex-col space-y-1">

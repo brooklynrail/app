@@ -1,16 +1,17 @@
 "use client"
 
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
-import { eventStartDate, formatTime } from "../../../../lib/utils/events/utils"
+import { formatEventDate, formatTime } from "../../../../lib/utils/events/utils"
 
 const Register = (props: EventProps) => {
   const { eventData } = props
-  const { title, deck, start_date, airtable_id } = eventData
+  const { title, deck, start_date, end_date, airtable_id } = eventData
 
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
   const startDate = new Date(start_date)
-  const startDateString = eventStartDate(startDate)
+  const endDate = new Date(end_date)
+  const startDateString = formatEventDate(startDate, endDate)
   // Get the time in both Eastern and Pacific time
   const startTimeET = formatTime(start_date, "America/New_York")
   const startTimePT = formatTime(start_date, "America/Los_Angeles")
