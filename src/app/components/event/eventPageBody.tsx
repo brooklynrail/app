@@ -9,11 +9,11 @@ import Sponsor from "../events/sponsor"
 import { Poets, SoundWaves } from "."
 import ReactMarkdown from "react-markdown"
 import Person from "./person"
-import { eventStartDate, EventTypes, formatTime, getEventTypeText } from "../../../../lib/utils/events/utils"
+import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "../../../../lib/utils/events/utils"
 
 const EventPageBody = (props: EventProps) => {
   const { eventData, eventTypes } = props
-  const { title, deck, start_date, summary, type, series, body, youtube_id, airtable_id } = eventData
+  const { title, deck, start_date, end_date, summary, type, series, body, youtube_id, airtable_id } = eventData
 
   // Get the readable event type text
   const eventTypeText = getEventTypeText(type, eventTypes)
@@ -24,7 +24,10 @@ const EventPageBody = (props: EventProps) => {
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
   const startDate = new Date(start_date + "Z")
-  const startDateString = eventStartDate(startDate)
+  const endDate = new Date(end_date + "Z")
+  const dateString = formatEventDate(startDate, endDate)
+  const isSameDay = startDate.toDateString() === endDate.toDateString()
+
   // Get the time in both Eastern and Pacific time
   const startTimeET = formatTime(start_date, "America/New_York")
   const startTimePT = formatTime(start_date, "America/Los_Angeles")
@@ -68,10 +71,12 @@ const EventPageBody = (props: EventProps) => {
               </h1>
               {deck && <p className="text-center text-2xl tablet-lg:text-4xl font-light p-summary">{parse(deck)}</p>}
               <p className="text-xl text-center font-light space-x-3">
-                <strong>{startDateString}</strong>{" "}
-                <span>
-                  {startTimeET} Eastern / {startTimePT} Pacific
-                </span>
+                <strong>{dateString}</strong>{" "}
+                {isSameDay && (
+                  <span>
+                    {startTimeET} Eastern / {startTimePT} Pacific
+                  </span>
+                )}
               </p>
             </div>
             {isFutureEvent && (

@@ -514,14 +514,31 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
 // ====================================================
 // TIME Functions
 
-export const eventStartDate = (startDate: Date) => {
-  const startDateString = new Intl.DateTimeFormat("en-US", {
+export const formatEventDate = (startDate: Date, endDate: Date) => {
+  const isSameDay = startDate.toDateString() === endDate.toDateString()
+
+  const startDateYearString = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
   }).format(startDate)
-  return startDateString
+  const startDateString = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  }).format(startDate)
+  const endDateString = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(endDate)
+
+  if (isSameDay) {
+    return startDateYearString
+  }
+  return `${startDateString}–${endDateString}`
 }
 
 // Function to format the time for a specific time zone using Luxon
