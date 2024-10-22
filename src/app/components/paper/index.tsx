@@ -36,7 +36,6 @@ const Paper = (props: PaperProps) => {
   return (
     <PopupProvider hidePopup={hidePopup}>
       <div className={`paper ${pageClass}`}>
-        <PreviewBar />
         <Header type={type} navData={navData} banners={banners} currentIssue={currentIssue} />
         {children}
         <Footer />
@@ -45,26 +44,6 @@ const Paper = (props: PaperProps) => {
         <PopupDonate />
       </div>
     </PopupProvider>
-  )
-}
-
-const PreviewBar = () => {
-  const copy = "Welcome to our PREVIEW site. "
-
-  return (
-    <div className="bg-amber-400 dark:bg-indigo-800">
-      <p className="text-center py-1">
-        ★ {copy}
-        <Link
-          href="https://docs.google.com/document/d/1LNd2CRu8yKE68PGxdI8sfrNjuGXuDrAno9Y0GB4i0Y4/edit"
-          target="_new"
-          className="underline "
-        >
-          Please leave us feedback
-        </Link>{" "}
-        »
-      </p>
-    </div>
   )
 }
 
