@@ -121,7 +121,7 @@ const HeaderDefault = (props: HeaderProps) => {
           </div>
           <div className="hidden tablet:block px-3 tablet-lg:px-6 pb-3">
             <div className="flex space-x-3 justify-between">
-              <div className="flex flex-col items-end tablet:flex-row tablet:items-center justify-center w-full space-y-3 tablet:space-y-0 tablet:space-x-6 desktop:space-x-9">
+              <div className="flex flex-col items-end tablet:flex-row tablet:items-center justify-center w-full space-y-3 tablet:space-y-0 tablet:space-x-6 desktop:space-x-6">
                 <Subhead />
                 <div className="flex items-center space-x-3 desktop:space-x-6">
                   <Link href={"/subscribe"}>
