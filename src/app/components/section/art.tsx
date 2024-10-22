@@ -1,5 +1,4 @@
 "use client"
-
 import { SectionProps } from "."
 import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
@@ -27,7 +26,7 @@ const SectionArt = (props: SectionProps) => {
     const leadArticle = group[0]
     const restOfArticles = group.slice(1)
     return (
-      <div className="px-3">
+      <div className="">
         <Frame
           key={index}
           LeadPromo={<LeadPromoArt article={leadArticle} />}
@@ -58,9 +57,6 @@ const PromosArt = (props: PromoProps) => {
 
     return (
       <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-3 pt-3 pb-6">
-        <div className="col-span-4 tablet:col-span-6">
-          <Kicker article={article} />
-        </div>
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
           {artwork && (
             <div className="">
@@ -70,7 +66,10 @@ const PromosArt = (props: PromoProps) => {
         </div>
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-3">
           <div className="flex flex-col space-y-3">
-            <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
+            <div className="space-y-1">
+              <Kicker article={article} />
+              <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
+            </div>
             <Bylines article={article} type={BylineType.Default} />
             <Excerpt excerpt={article.excerpt} />
           </div>
@@ -101,11 +100,6 @@ const LeadPromoArt = (props: LeadPromoArtProps) => {
   return (
     <>
       <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-3">
-        <div className="col-span-4 tablet:col-span-6">
-          <div className="">
-            <Kicker article={article} />
-          </div>
-        </div>
         <div className="col-span-4 tablet:col-span-6" itemType="http://schema.org/Article">
           {artwork && (
             <div className="">
@@ -115,7 +109,10 @@ const LeadPromoArt = (props: LeadPromoArtProps) => {
         </div>
         <div className="col-span-4 tablet:col-span-6">
           <div className="flex flex-col space-y-3">
-            <Title h2 title={article.title} permalink={permalink} type={TitleType.Lead} />
+            <div className="space-y-1">
+              <Kicker article={article} />
+              <Title h2 title={article.title} permalink={permalink} type={TitleType.Lead} />
+            </div>
             <Bylines article={article} type={BylineType.Default} />
             <Excerpt excerpt={article.excerpt} classes="excerpt-2xl" />
           </div>
