@@ -3,12 +3,12 @@ import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import FeaturedBanner from "../homepage/featuredBanner"
 import Banner from "./banner"
-import styles from "./header.module.scss"
 import NavBar from "./navBar"
 import { PaperType } from "../paper"
 import MenuButton from "./menuButton"
 import Subhead from "./subhead"
 import HomeBanner from "./homeBanner"
+import styles from "./header.module.scss"
 
 interface HeaderProps {
   special_issue?: boolean | null
@@ -54,7 +54,7 @@ const HeaderHomepage = (props: HeaderProps) => {
   )
   return (
     <>
-      <header id={styles.rail_header} className={`relative rail-header-${type}`}>
+      <header className={`relative rail-header-${type}`}>
         {video}
         <div className="z-10 relative">
           <div className="hidden">
@@ -82,20 +82,8 @@ const HeaderHomepage = (props: HeaderProps) => {
             </div>
             <div className="">
               <div className="hidden tablet:flex justify-center items-center space-x-3 desktop:space-x-6">
-                <Link href={"/subscribe"}>
-                  <button
-                    className={`bg-white text-zinc-800 font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
-                  >
-                    Subscribe
-                  </button>
-                </Link>
-                <Link href={"/donate"}>
-                  <button
-                    className={`bg-red-500 text-white font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
-                  >
-                    Donate
-                  </button>
-                </Link>
+                <SubscribeButton />
+                <DonateButton />
               </div>
               <div className="tablet:hidden w-full">
                 <MenuButton classes={`w-[9vw] h-[9vw]`} collections={navData.collections} />
@@ -140,20 +128,8 @@ const HeaderDefault = (props: HeaderProps) => {
               <div className="flex flex-col items-end tablet:flex-row tablet:items-center justify-center w-full space-y-3 tablet:space-y-0 tablet:space-x-6 desktop:space-x-6">
                 <Subhead />
                 <div className="flex items-center space-x-3 desktop:space-x-6">
-                  <Link href={"/subscribe"}>
-                    <button
-                      className={`bg-white text-zinc-800 font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
-                    >
-                      Subscribe
-                    </button>
-                  </Link>
-                  <Link href={"/donate"}>
-                    <button
-                      className={`bg-red-500 text-white font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
-                    >
-                      Donate
-                    </button>
-                  </Link>
+                  <SubscribeButton />
+                  <DonateButton />
                 </div>
               </div>
             </div>
@@ -161,6 +137,30 @@ const HeaderDefault = (props: HeaderProps) => {
         </div>
       </header>
     </>
+  )
+}
+
+const SubscribeButton = () => {
+  return (
+    <Link href={"/subscribe"}>
+      <button
+        className={`shadow-lg bg-white text-zinc-800 font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
+      >
+        Subscribe
+      </button>
+    </Link>
+  )
+}
+
+const DonateButton = () => {
+  return (
+    <Link href={"/donate"}>
+      <button
+        className={`shadow-lg bg-red-500 text-white font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
+      >
+        Donate
+      </button>
+    </Link>
   )
 }
 
