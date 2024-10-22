@@ -7,7 +7,7 @@ import { notFound, redirect } from "next/navigation"
 import { AddRedirect } from "@/app/actions/redirect"
 import { revalidatePath } from "next/cache"
 import { getRedirect, RedirectTypes } from "../../../../../../lib/utils/redirects"
-import { checkYearMonthSection } from "../../../../../../lib/utils/articles"
+import { checkYearMonthSection, extractPeopleFromArticle } from "../../../../../../lib/utils/articles"
 import { getNavData } from "../../../../../../lib/utils/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
@@ -123,6 +123,11 @@ async function getData({ params }: { params: ArticleParams }) {
     revalidatePath(path) // Update cached special issue
     redirect(path) // Navigate to the new article page
   }
+
+  // const references = articleData.body_text && extractPeopleFromArticle(articleData.body_text)
+
+  // console.log("==============================")
+  // console.log("references", references)
 
   const thisIssueData = await getIssueData({ slug: articleData.issue.slug })
   if (!thisIssueData) {
