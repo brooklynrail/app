@@ -60,8 +60,10 @@ const Section = (props: SectionProps & NavProps) => {
     }
   }
 
+  const type = sectionData.slug === "criticspage" ? PaperType.CriticsPage : PaperType.Default
+
   return (
-    <Paper pageClass="paper-section" type={PaperType.Default} navData={navData}>
+    <Paper pageClass={`paper-section paper-section-${sectionData.slug}`} type={type} navData={navData}>
       <main className="divide-y rail-divide">
         <SectionHead title={sectionData.name} permalink={permalink} />
 

@@ -26,6 +26,7 @@ export enum PaperType {
   Homepage = "homepage",
   Events = "events",
   Preview = "preview",
+  CriticsPage = "criticspage",
 }
 
 const Paper = (props: PaperProps) => {

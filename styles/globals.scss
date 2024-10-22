@@ -150,6 +150,17 @@ body {
   }
 }
 
+.paper-section .section-head {
+  @apply rail-bg;
+}
+
+.paper-article-criticspage,
+.paper-section-criticspage,
+.paper-section-criticspage .section-head {
+  @apply bg-amber-50 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
 a {
   @apply underline-offset-2;
   text-decoration: none;
