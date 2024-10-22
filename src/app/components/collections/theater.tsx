@@ -4,7 +4,6 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import FeaturedImage from "../featuredImage"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
-import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
 
 const CollectionTheater = (collection: Collections) => {
@@ -55,7 +54,6 @@ const Promos = (props: PromoProps) => {
             </div>
           )}
           <div className="flex flex-col space-y-3">
-            <Kicker article={article} />
             <Title
               title={article.title}
               permalink={permalink}

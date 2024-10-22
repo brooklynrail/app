@@ -1,16 +1,12 @@
 "use client"
+import parse from "html-react-parser"
 import Link from "next/link"
 import { Articles, ArticlesContributors, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
-import { stripHtml } from "string-strip-html"
-import Title, { TitleType } from "./promos/title"
-import Kicker from "./promos/kicker"
-import parse from "html-react-parser"
 import Frame from "../frames/frame"
 import FrameScrollable from "../frames/frameScrollable"
-import styles from "./collection.module.scss"
+import CollectionHead from "./head"
 
 const CollectionPoetry = (collection: Collections) => {
   const { section } = collection
@@ -70,7 +66,6 @@ const PromosMobile = (props: PromoProps) => {
     return (
       <div key={i} className="px-3 py-1 tablet:pr-0 snap-center">
         <div className="flex flex-col space-y-3 flex-none w-[calc(100vw-6.5rem)] tablet:w-auto">
-          <Kicker article={article} />
           {artwork && (
             <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
               <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />

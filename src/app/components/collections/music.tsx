@@ -7,7 +7,6 @@ import FrameThirds from "../frames/frameThirds"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
 import Excerpt from "./promos/excerpt"
-import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
 
 const CollectionMusic = (collection: Collections) => {
@@ -64,7 +63,6 @@ const PromosMobile = (props: PromoProps) => {
     return (
       <div key={i} className="px-3 py-1 tablet:pr-0 snap-center">
         <div className="flex flex-col space-y-3 flex-none w-[calc(100vw-6.5rem)] tablet:w-auto">
-          <Kicker article={article} />
           {artwork && (
             <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
               <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
@@ -104,7 +102,6 @@ const PromosMusic = (props: PromoProps) => {
               </div>
             )}
             <div className="flex flex-col space-y-1">
-              <Kicker article={article} />
               <Title title={article.title} permalink={permalink} classes="text-2xl font-normal" />
               <Bylines article={article} type={BylineType.CollectionArtSeen} />
               <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />
@@ -143,7 +140,6 @@ const LeadPromoMusic = (props: LeadPromoProps) => {
         )}
       </div>
       <div className="px-6 tablet:px-0 flex flex-col space-y-3">
-        <Kicker article={article} />
         <Title title={article.title} permalink={permalink} type={TitleType.LeadArtSeen} />
         <Bylines article={article} type={BylineType.CollectionArtSeen} />
         <Excerpt excerpt={article.excerpt} classes={`excerpt-xl`} />

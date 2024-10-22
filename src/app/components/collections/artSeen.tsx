@@ -1,15 +1,13 @@
 "use client"
-import Link from "next/link"
 import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import CollectionHead from "./head"
 import FeaturedImage from "../featuredImage"
-import { stripHtml } from "string-strip-html"
-import Bylines, { BylineType } from "./promos/bylines"
-import Title, { TitleType } from "./promos/title"
-import Kicker from "./promos/kicker"
 import Frame from "../frames/frame"
 import FrameScrollable from "../frames/frameScrollable"
+import CollectionHead from "./head"
+import Bylines, { BylineType } from "./promos/bylines"
+import Kicker from "./promos/kicker"
+import Title, { TitleType } from "./promos/title"
 
 const CollectionArtSeen = (collection: Collections) => {
   const { section } = collection

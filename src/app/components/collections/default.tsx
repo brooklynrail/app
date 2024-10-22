@@ -58,7 +58,6 @@ const Promos = (props: PromoProps) => {
           </div>
         )}
         <div className="flex flex-col space-y-3">
-          <Kicker article={article} />
           <Title title={article.title} permalink={permalink} classes="text-lg tablet:text-2xl font-normal" />
           <Bylines article={article} type={BylineType.CollectionDefault} />
           <Excerpt excerpt={article.excerpt} classes={`excerpt-md`} />
