@@ -59,8 +59,8 @@ export async function GET(request: Request) {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: "500px",
-          width: "400px",
+          height: "100%",
+          width: "100%",
           padding: "10px 20px",
           justifyContent: "center",
           fontFamily: "Times New Roman",
@@ -106,8 +106,8 @@ export async function GET(request: Request) {
       </div>
     ),
     {
-      width: 1200,
-      height: 630,
+      width: 800,
+      height: 1000,
     },
   )
 }
