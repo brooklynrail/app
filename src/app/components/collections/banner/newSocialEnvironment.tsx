@@ -33,6 +33,8 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
   const first = props.first ? "pl-6" : ""
   const last = props.last ? "pr-6" : ""
 
+  console.log("currentEvents", currentEvents)
+
   const links =
     banner.links &&
     banner.links.map((link: CollectionLinks, i: number) => {
