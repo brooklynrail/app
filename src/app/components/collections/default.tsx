@@ -5,8 +5,7 @@ import FeaturedImage from "../featuredImage"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
 import Excerpt from "./promos/excerpt"
-import Kicker from "./promos/kicker"
-import Title, { TitleType } from "./promos/title"
+import Title from "./promos/title"
 
 const CollectionDefault = (collection: Collections) => {
   const { section } = collection
@@ -22,7 +21,7 @@ const CollectionDefault = (collection: Collections) => {
   })
 
   return (
-    <div key={collection.id} className="">
+    <div key={collection.id} className={`collection collection-${section.slug}`}>
       <CollectionHead title={collection.title} permalink={section.featured ? sectionPermalink : null} />
       <div className="pl-6 py-3 divide-x rail-divide flex overflow-x-auto snap-mandatory snap-x scroll-smooth w-screen">
         <Promos articles={articles} />

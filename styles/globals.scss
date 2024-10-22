@@ -161,6 +161,33 @@ body {
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
+.collection-fiction,
+.collection-fiction .head,
+.paper-article-fiction,
+.paper-section-fiction,
+.paper-section-fiction .section-head {
+  @apply bg-stone-100 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
+.collection-fieldnotes,
+.collection-fieldnotes .head,
+.paper-article-fieldnotes,
+.paper-section-fieldnotes,
+.paper-section-fieldnotes .section-head {
+  @apply bg-stone-100 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
+.collection-poetry,
+.collection-poetry .head,
+.paper-article-poetry,
+.paper-section-poetry,
+.paper-section-poetry .section-head {
+  @apply bg-stone-100 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
 a {
   @apply underline-offset-2;
   text-decoration: none;
