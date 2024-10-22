@@ -53,7 +53,7 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
         </div>
         <div className="col-span-2 row-start-2">
           <div className="w-full h-full">
-            <CoverImages currentIssue={currentIssue} clickToIssue={true} />
+            <CoverImages currentIssue={currentIssue} clickToIssue={true} priority={true} />
           </div>
         </div>
         {links && (

@@ -1,10 +1,15 @@
 "use client"
-import Image from "next/image"
+import parse from "html-react-parser"
 import Link from "next/link"
 import { stripHtml } from "string-strip-html"
 import { Articles, Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper, { PaperType } from "../paper"
+import IssueHead from "../issuePage/head"
+import { CoverImages } from "../collections/banner/coverImages"
+import { useEffect, useState } from "react"
+import { useBreakpoints } from "@/app/hooks/useBreakpoints"
+import style from "./archive.module.scss"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -20,71 +25,95 @@ export interface ArchivePageProps {
 
 const ArchivePage = (props: ArchivePageProps) => {
   const { issues, navData } = props
+  const currentBreakpoint = useBreakpoints()
+  const [groupCount, setGroupCount] = useState(1)
 
-  // list all Issues
-  const issueList = issues.map((issue: Issues) => {
-    const { id, issue_number, special_issue, title, cover_1 } = issue
-    if (!cover_1 || !cover_1.filename_disk) {
-      return null
-    }
-
-    const permalink = getPermalink({
-      issueSlug: issue.slug,
-      type: PageType.Issue,
-    })
-
-    const allCovers = [issue.cover_1, issue.cover_2, issue.cover_3, issue.cover_4, issue.cover_5, issue.cover_6]
-    // render all covers if the cover exists
-    const coversList = allCovers.map((cover, index) => {
-      if (!cover || !cover.filename_disk) {
-        return null
+  useEffect(() => {
+    const calculateGroupNumber = () => {
+      switch (currentBreakpoint) {
+        case "tablet":
+          return 2
+        case "tablet-lg":
+          return 3
+        case "desktop":
+        case "desktop-lg":
+        case "widescreen":
+          return 4
+        default:
+          return 1
       }
-
-      const alt = cover.caption ? stripHtml(cover.caption).result : `${title} — The Brooklyn Rail`
-
-      return (
-        <li key={index} className="flex-none">
-          <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-            <Image
-              priority
-              id={`cover-${index + 1}`}
-              src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`}
-              width={150}
-              height={150}
-              sizes="12vw"
-              style={{
-                height: "auto",
-              }}
-              alt={alt}
-            />
-          </Link>
-        </li>
-      )
-    })
-
-    return (
-      <li key={id} className="pt-3">
-        <div className="issueDetails">
-          <h4 className="text-xs uppercase">Issue #{issue_number}</h4>
-          <h3 className="text-md font-bold uppercase">
-            <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
-              {title}
-            </Link>
-          </h3>
-        </div>
-        <ul className="py-3 flex space-x-3 overflow-x-auto">{coversList}</ul>
-      </li>
-    )
-  })
+    }
+    setGroupCount(calculateGroupNumber())
+  }, [currentBreakpoint])
 
   return (
     <Paper pageClass="paper-archive" type={PaperType.Default} navData={navData}>
       <main id="main" className="">
-        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-          <div className="col-span-4 tablet-lg:col-span-12"></div>
+        <IssueHead title={`All Issues`} allIssues={issues} />
+        <div className="divide-y rail-divide">
+          {Object.keys(issues).map((issue, index) => {
+            // Utility function to split array into groups for grid layout
+            const groupArray = (array: Issues[], groupSize: number) => {
+              const groups = []
+              for (let i = 0; i < array.length; i += groupSize) {
+                groups.push(array.slice(i, i + groupSize))
+              }
+              return groups
+            }
+
+            const articleGroups = groupArray(issues, groupCount).map((group, i) => (
+              <div key={i} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide px-6">
+                <Promos issues={group} />
+              </div>
+            ))
+
+            return (
+              <div key={index} className="divide-y rail-divide">
+                {articleGroups}
+              </div>
+            )
+          })}
         </div>
       </main>
     </Paper>
+  )
+}
+
+const Promos = ({ issues }: { issues: Issues[] }) => {
+  return (
+    <>
+      {issues.map((issue: Issues) => {
+        const { id, issue_number, special_issue, title, cover_1, summary } = issue
+        if (!cover_1 || !cover_1.filename_disk) {
+          return null
+        }
+
+        const permalink = getPermalink({
+          issueSlug: issue.slug,
+          type: PageType.Issue,
+        })
+
+        return (
+          <div key={id} className="col-span-4 tablet-lg:col-span-3">
+            <div className="p-3 py-6 space-y-6">
+              <div className="space-y-3">
+                <div className="">
+                  <h3 className="text-lg font-bold uppercase">
+                    <Link href={permalink} title={`Visit ${stripHtml(title).result}`}>
+                      {title}
+                    </Link>
+                  </h3>
+                </div>
+                <div className="h-[300px]">
+                  <CoverImages currentIssue={issue} clickToIssue={true} priority={false} />
+                </div>
+              </div>
+              {summary && <div className={`${style.summary} text-xl`}>{parse(summary)}</div>}
+            </div>
+          </div>
+        )
+      })}
+    </>
   )
 }
 

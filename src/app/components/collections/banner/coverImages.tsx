@@ -8,10 +8,11 @@ import { usePopup } from "../../popupProvider"
 interface CoverImagesProps {
   currentIssue: Issues
   clickToIssue: boolean
+  priority: boolean
 }
 
 export const CoverImages = (props: CoverImagesProps) => {
-  const { currentIssue, clickToIssue } = props
+  const { currentIssue, clickToIssue, priority } = props
   const coversRef = useRef<HTMLDivElement | null>(null)
   const [containerHeight, setContainerHeight] = useState<number | null>(null)
   const [containerWidth, setContainerWidth] = useState<number | null>(null)
@@ -45,6 +46,7 @@ export const CoverImages = (props: CoverImagesProps) => {
               containerHeight={containerHeight}
               containerWidth={containerWidth}
               clickToIssue={clickToIssue}
+              priority={priority}
             />
           </Link>
         )}
@@ -59,6 +61,7 @@ export const CoverImages = (props: CoverImagesProps) => {
           currentIssue={currentIssue}
           containerHeight={containerHeight}
           containerWidth={containerWidth}
+          priority={priority}
         />
       )}
     </div>
@@ -70,9 +73,10 @@ interface CoversProps {
   containerHeight: number
   containerWidth: number
   clickToIssue: boolean
+  priority: boolean
 }
 const Covers = (props: CoversProps) => {
-  const { currentIssue, containerHeight, containerWidth, clickToIssue } = props
+  const { currentIssue, containerHeight, containerWidth, clickToIssue, priority } = props
   const { setImages, togglePopup } = usePopup()
 
   const covers = [
@@ -115,7 +119,7 @@ const Covers = (props: CoversProps) => {
       <Image
         key={index}
         className={`absolute top-0 right-0 bottom-0`}
-        priority
+        priority={priority}
         style={{
           left: shiftleft,
           zIndex: zindex,

@@ -36,6 +36,8 @@ export async function getAllIssues() {
         `&fields[]=special_issue` +
         `&fields[]=issue_number` +
         `&fields[]=date_updated` +
+        `&fields[]=summary` +
+        `&fields[]=credits` +
         `&fields[]=status` +
         `&fields[]=cover_1.caption` +
         `&fields[]=cover_1.filename_disk` +

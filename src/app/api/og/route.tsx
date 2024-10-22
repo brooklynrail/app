@@ -29,7 +29,6 @@ export async function GET(request: Request) {
   }
 
   const data = await fetchData(type, slug)
-  console.log("API data ===========", data)
 
   if (!data) {
     return null

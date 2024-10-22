@@ -2,7 +2,7 @@ import { Issues } from "../../../../lib/types"
 import { useState } from "react"
 
 interface IssueSelectProps {
-  currentIssueSlug: string
+  currentIssueSlug?: string
   allIssues: Issues[]
 }
 

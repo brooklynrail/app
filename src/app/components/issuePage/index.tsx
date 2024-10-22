@@ -53,7 +53,7 @@ const IssuePage = (props: IssuePageProps) => {
             <div className="col-span-4 tablet-lg:col-span-4 desktop:col-span-3">
               <div className="space-y-6">
                 <div className="h-[300px] py-3 pr-3">
-                  <CoverImages currentIssue={thisIssueData} clickToIssue={false} />
+                  <CoverImages currentIssue={thisIssueData} clickToIssue={false} priority={true} />
                 </div>
                 {summary && <div className="text-lg">{parse(summary)}</div>}
                 {credits && <div className="text-sm">{parse(credits)}</div>}

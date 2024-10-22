@@ -6,7 +6,7 @@ import IssueSelect from "./issueSelect"
 interface IssueHeadProps {
   title: string
   allIssues: Issues[]
-  currentIssueSlug: string
+  currentIssueSlug?: string
 }
 
 const IssueHead = (props: IssueHeadProps) => {
