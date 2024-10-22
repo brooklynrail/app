@@ -88,8 +88,8 @@ const EventCard = (props: EventCardProps) => {
   const eventMonth = startDate.getMonth() + 1
   const eventDay = startDate.getDate()
 
-  // const firstPerson = people[0] && people[0].people_id ? people[0].people_id.portrait : null
-  // const firstPersonPortrait = firstPerson && firstPerson.filename_disk ? firstPerson.filename_disk : null
+  const firstPerson = people[0] && people[0].people_id ? people[0].people_id.portrait : null
+  const firstPersonPortrait = firstPerson && firstPerson.filename_disk ? firstPerson.filename_disk : null
 
   const permalink = getPermalink({
     eventYear: eventYear,
@@ -105,21 +105,23 @@ const EventCard = (props: EventCardProps) => {
         href={permalink}
         className={`block rounded-xl w-32 h-24 ${style.card} hover:no-underline relative overflow-hidden`}
       >
-        {/* {firstPersonPortrait && (
+        {firstPersonPortrait && (
           <Image
-            className={`absolute -top-4 left-0 right-0 bottom-0`}
+            className={`absolute -top-0 left-0 right-0 bottom-0`}
             priority
             id={`event-${slug}`}
-            src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${firstPersonPortrait}?key=portrait`}
-            width={150}
-            height={150}
+            src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${firstPersonPortrait}?key=nse-promo`}
+            width={128}
+            height={96}
             alt={"alt"}
             sizes="20vw"
           />
-        )} */}
-        <div className={`z-10 relative top-0 bg-white bg-opacity-20 px-3 h-24 ${style.card}`}>
-          <p className="uppercase text-lime-200 font-bold text-xs">{fullDay}</p>
-          <h3 className="text-xs text-white font-bold">{title}</h3>
+        )}
+        <div
+          className={`z-10 relative top-0 flex flex-col justify-between bg-zinc-800 bg-opacity-60 px-1.5 py-1 h-24 ${style.card}`}
+        >
+          <p className="uppercase text-lime-200 font-normal text-xs">{fullDay}</p>
+          <h3 className="text-xs text-white font-bold leading-[14px]">{title}</h3>
         </div>
       </Link>
     </div>

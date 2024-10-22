@@ -10,10 +10,6 @@
 }
 
 .card {
-  background:
-    linear-gradient(0deg, rgba(45, 49, 53, 0.7) 0%, rgba(45, 49, 53, 0.7) 100%),
-    lightgray -73.831px -17.391px / 208.062% 131.563% no-repeat;
-
   box-shadow: 0px 0px 12px 0px var(--Indigo-100, #e0e7ff) inset;
   &:hover {
     box-shadow: 0px 0px 18px 0px var(--Indigo-100, #e0e7ff) inset;
