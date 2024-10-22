@@ -59,8 +59,8 @@ export async function GET(request: Request) {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: "100%",
-          width: "100%",
+          height: "500px",
+          width: "400px",
           padding: "10px 20px",
           justifyContent: "center",
           fontFamily: "Times New Roman",
@@ -68,12 +68,16 @@ export async function GET(request: Request) {
           backgroundColor: "#FEF9C3",
         }}
       >
-        <Label>{data.issue}</Label>
+        <Label>October 2024</Label>
         <Label>ISSUE #248</Label>
 
-        <div style={{ marginTop: 10 }}>{data.title}</div>
+        <div style={{ marginTop: 10 }}>Ron Gorchov: Exploring the Near/Far Painterly Horizons of Modern Space</div>
 
-        <div style={{ marginTop: 30, color: "gray", fontSize: "20px" }}>{data.excerpt}</div>
+        <div style={{ marginTop: 30, color: "gray", fontSize: "20px" }}>
+          Vito Schnabel's Ron Gorchov retrospective, curated by Robert Storr, Exploring the Near/Far Painterly Horizons
+          of Modern Space, excavates works from the late artist's studio, punctuating them with some of Gorchov's most
+          important saddle-shaped canvases.
+        </div>
 
         <div
           style={{
