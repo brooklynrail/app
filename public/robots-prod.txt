@@ -1,0 +1,236 @@
+# To avoid the possibility of social media providers not being able to fetch your image, it is recommended to add your OG image API route(s) 
+Allow: /api/og/*
+
+# Allow Googlebot and Bingbot to crawl the site
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Allow all other bots to crawl the site except those specified below
+User-agent: *
+Allow: /
+
+# ===================================
+# Block the specified bots
+User-agent: Rogerbot
+Disallow: /
+
+User-agent: Exabot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: Dotbot
+Disallow: /
+
+User-agent: Gigabot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: BlackWidow
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: SemrushBot/1.1~bl
+Disallow: /
+
+User-agent: LinkpadBot
+Disallow: /
+
+User-agent: AhrefsBot/5.1
+Disallow: /
+
+User-agent: ChinaClaw
+Disallow: /
+
+User-agent: Custo
+Disallow: /
+
+User-agent: DISCo
+Disallow: /
+
+User-agent: eCatch
+Disallow: /
+
+User-agent: EirGrabber
+Disallow: /
+
+User-agent: EmailSiphon
+Disallow: /
+
+User-agent: EmailWolf
+Disallow: /
+
+User-agent: ExtractorPro
+Disallow: /
+
+User-agent: EyeNetIE
+Disallow: /
+
+User-agent: FlashGet
+Disallow: /
+
+User-agent: GetRight
+Disallow: /
+
+User-agent: GetWeb!
+Disallow: /
+
+User-agent: Go!Zilla
+Disallow: /
+
+User-agent: Go-Ahead-Got-It
+Disallow: /
+
+User-agent: GrabNet
+Disallow: /
+
+User-agent: Grafula
+Disallow: /
+
+User-agent: HMView
+Disallow: /
+
+User-agent: HTTrack
+Disallow: /
+
+User-agent: InterGET
+Disallow: /
+
+User-agent: JetCar
+Disallow: /
+
+User-agent: larbin
+Disallow: /
+
+User-agent: LeechFTP
+Disallow: /
+
+User-agent: Navroad
+Disallow: /
+
+User-agent: NearSite
+Disallow: /
+
+User-agent: NetAnts
+Disallow: /
+
+User-agent: NetSpider
+Disallow: /
+
+User-agent: NetZIP
+Disallow: /
+
+User-agent: Octopus
+Disallow: /
+
+User-agent: PageGrabber
+Disallow: /
+
+User-agent: pavuk
+Disallow: /
+
+User-agent: pcBrowser
+Disallow: /
+
+User-agent: RealDownload
+Disallow: /
+
+User-agent: ReGet
+Disallow: /
+
+User-agent: SiteSnagger
+Disallow: /
+
+User-agent: SmartDownload
+Disallow: /
+
+User-agent: SuperBot
+Disallow: /
+
+User-agent: SuperHTTP
+Disallow: /
+
+User-agent: Surfbot
+Disallow: /
+
+User-agent: tAkeOut
+Disallow: /
+
+User-agent: VoidEYE
+Disallow: /
+
+User-agent: WebAuto
+Disallow: /
+
+User-agent: WebCopier
+Disallow: /
+
+User-agent: WebFetch
+Disallow: /
+
+User-agent: WebLeacher
+Disallow: /
+
+User-agent: WebReaper
+Disallow: /
+
+User-agent: WebSauger
+Disallow: /
+
+User-agent: WebStripper
+Disallow: /
+
+User-agent: WebWhacker
+Disallow: /
+
+User-agent: WebZIP
+Disallow: /
+
+User-agent: Wget
+Disallow: /
+
+User-agent: Widow
+Disallow: /
+
+User-agent: WWWOFFLE
+Disallow: /
+
+User-agent: Zeus
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: Omgili
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+Sitemap: https://brooklynrail.org/sitemap.xml
+Sitemap: https://brooklynrail.org/issues/sitemap.xml
+Sitemap: https://brooklynrail.org/contributors/sitemap.xml
+
