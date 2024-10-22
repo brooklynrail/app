@@ -8,6 +8,7 @@ import NavBar from "./navBar"
 import { PaperType } from "../paper"
 import MenuButton from "./menuButton"
 import Subhead from "./subhead"
+import HomeBanner from "./homeBanner"
 
 interface HeaderProps {
   special_issue?: boolean | null
@@ -64,7 +65,7 @@ const HeaderHomepage = (props: HeaderProps) => {
           <div className="px-3 py-3 tablet-lg:px-6">
             <div className="flex w-full items-center space-x-4">
               <Link href={permalink} className="w-full">
-                <Banner type={type} />
+                <HomeBanner type={type} />
               </Link>
             </div>
           </div>
