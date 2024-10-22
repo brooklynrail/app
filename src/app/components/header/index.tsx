@@ -82,7 +82,7 @@ const HeaderHomepage = (props: HeaderProps) => {
                 </Link>
               </div>
               <div className="tablet:hidden w-full">
-                <MenuButton classes={`w-[9vw] h-[9vw]`} />
+                <MenuButton classes={`w-[9vw] h-[9vw]`} collections={navData.collections} />
               </div>
             </div>
           </div>
@@ -96,7 +96,7 @@ const HeaderHomepage = (props: HeaderProps) => {
 }
 
 const HeaderDefault = (props: HeaderProps) => {
-  const { title, type } = props
+  const { title, type, navData } = props
   const permalink = getPermalink({
     type: PageType.Home,
   })
@@ -115,7 +115,7 @@ const HeaderDefault = (props: HeaderProps) => {
                 <Banner type={type} />
               </Link>
               <div className="tablet:hidden">
-                <MenuButton classes={`w-[7vw] h-[7vw]`} />
+                <MenuButton classes={`w-[7vw] h-[7vw]`} collections={navData.collections} />
               </div>
             </div>
           </div>

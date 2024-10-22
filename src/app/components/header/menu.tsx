@@ -1,115 +1,135 @@
-import { useTheme } from "@/app/components/theme"
-import Link from "next/link"
 import { useEffect, useState } from "react"
-import { GlobalSettings, GlobalSettingsNavigation, Sections, Tributes } from "../../../../lib/types"
-import { getNavigation, getPermalink, PageType } from "../../../../lib/utils"
-import { glob } from "fs"
-import { get } from "http"
+import { HomepageCollections, Issues } from "../../../../lib/types"
+import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
 
-interface MenuProps {}
+import Link from "next/link"
+import { CollectionType } from "../homepage"
 
-const Menu = () => {
-  const { theme } = useTheme()
+interface MenuProps {
+  closeMenu: () => void
+  collections: HomepageCollections[]
+}
 
-  const [globalSettings, setGlobalSettings] = useState<GlobalSettings | undefined>(undefined)
+const Menu = (props: MenuProps) => {
+  const { closeMenu, collections } = props
+  const [issue, setIssue] = useState<Issues | undefined>(undefined)
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!globalSettings) {
-        const global_settings = await getNavigation()
+      if (!issue) {
+        const issueData = await getCurrentIssueData()
         // Fetch all the data in parallel
-        const [fetchedNav] = await Promise.all([global_settings])
+        const [fetchedIssue] = await Promise.all([issueData])
         // Update the state with the fetched data as it becomes available
-        setGlobalSettings(fetchedNav)
+        fetchedIssue && setIssue(fetchedIssue)
       }
     }
     // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch globalNav data:", error))
-  }, [globalSettings])
+    fetchData().catch((error) => console.error("Failed to fetch issue data:", error))
+  }, [issue])
 
-  if (!globalSettings) {
-    return <>loading....</>
-  }
-
-  const current_issue = globalSettings.current_issue
-  const items = globalSettings.navigation.map((nav: GlobalSettingsNavigation) => {
-    if (nav.collection === "sections") {
-      const sectionPermalink = getPermalink({
-        issueSlug: current_issue.slug,
-        section: nav.item.slug,
-        type: PageType.Section,
-      })
-      return (
-        <li key={nav.id} className="px-6 py-3 font-bold text-center">
-          <Link href={sectionPermalink}>{nav.item.name}</Link>
-        </li>
-      )
+  const allCollections = collections.map((collection: HomepageCollections, i: number) => {
+    const thisCollection = collection.collections_id
+    if (!thisCollection) {
+      return null
     }
 
-    if (nav.collection === "tributes") {
-      return (
-        <li key={nav.id} className="px-6 py-3 font-bold text-center">
-          {nav.item.title}
-        </li>
-      )
+    const permalink = (() => {
+      switch (thisCollection.type) {
+        case CollectionType.Section:
+          if (!thisCollection.section) {
+            return null
+          }
+          return getPermalink({
+            sectionSlug: thisCollection.section.slug,
+            type: PageType.SuperSection,
+          })
+        case CollectionType.Tribute:
+          if (!thisCollection.tribute) {
+            return null
+          }
+          return getPermalink({
+            tributeSlug: thisCollection.tribute.slug,
+            type: PageType.Tribute,
+          })
+        default:
+          return null
+      }
+    })()
+
+    if (!permalink) {
+      return null
     }
 
-    if (nav.collection === "pages") {
-      return (
-        <li key={nav.id} className="px-6 py-3 font-bold text-center">
-          {nav.item.title}
-        </li>
-      )
-    }
-
-    return <></>
+    return (
+      <li key={i} className="text-center">
+        <Link href={permalink} className="py-3 block text-sm font-bold uppercase text-center">
+          {thisCollection.title}
+        </Link>
+      </li>
+    )
   })
 
-  const searchIcon = (
-    <button className="bg-white pr-2 py-2 flex-none border-[1px] border-l-0 border-zinc-800 rounded-e-md">
-      <svg className="" width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M24.8152 23.0416L20.0058 18.2322C21.0994 16.6086 21.639 14.58 21.3502 12.4184C20.8576 8.74162 17.8442 5.74952 14.1638 5.28357C8.6919 4.59117 4.09065 9.19242 4.78309 14.6643C5.24916 18.3463 8.24166 21.3621 11.9188 21.8523C14.0804 22.1411 16.1094 21.6017 17.7326 20.5079L22.542 25.3173C23.1696 25.9449 24.1873 25.9449 24.8149 25.3173C25.4419 24.6889 25.4419 23.6684 24.8152 23.0416ZM7.89195 13.5715C7.89195 10.7357 10.199 8.42863 13.0348 8.42863C15.8706 8.42863 18.1777 10.7357 18.1777 13.5715C18.1777 16.4073 15.8706 18.7143 13.0348 18.7143C10.199 18.7143 7.89195 16.4081 7.89195 13.5715Z"
-          fill="#3F3F46"
-        />
-      </svg>
-    </button>
-  )
-
   return (
-    <div className="rail-bg z-50 h-screen w-mobile fixed left-0 top-0 bottom-0 overflow-auto">
-      <div className="flex flex-col p-6 space-y-6">
-        <div className="flex justify-between">
-          <Link className="text-lg font-bold" href="/">
-            Home
-          </Link>{" "}
-          <Link className="text-lg font-bold" href="/">
-            Close
-          </Link>
+    <>
+      <div className="top-0 left-0 w-mobile rail-bg h-screen fixed z-[100] overflow-y-auto !m-0">
+        <div className="p-6 rail-bg relative">
+          <p onClick={closeMenu} className="absolute top-3 right-6 text-sm hover:underline">
+            close
+          </p>
+          <Link href="/">Home</Link>
+          <div>SEARCH is coming soon</div>
         </div>
-
-        {/* enter a search form */}
-        <form action="" className="flex space-x-0">
-          <input
-            className="w-full border-[1px] border-r-0 border-zinc-800 rounded-s-md text-md px-2 py-2"
-            type="text"
-            placeholder="Search"
-          />
-          {searchIcon}
-        </form>
+        <div>
+          <ul className="divide-y rail-divide">{allCollections}</ul>
+          <div className="py-3 bg-slate-100 ">
+            <ul className="py-3 block text-sm font-bold px-9 space-y-3">
+              <li className="">
+                <Link className="flex space-x-2 w-full" href={`/about/distributors`}>
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M9 16.5C8.825 16.5 8.675 16.45 8.55 16.35C8.425 16.25 8.33125 16.1187 8.26875 15.9562C8.03125 15.2562 7.73125 14.6 7.36875 13.9875C7.01875 13.375 6.525 12.6562 5.8875 11.8312C5.25 11.0062 4.73125 10.2188 4.33125 9.46875C3.94375 8.71875 3.75 7.8125 3.75 6.75C3.75 5.2875 4.25625 4.05 5.26875 3.0375C6.29375 2.0125 7.5375 1.5 9 1.5C10.4625 1.5 11.7 2.0125 12.7125 3.0375C13.7375 4.05 14.25 5.2875 14.25 6.75C14.25 7.8875 14.0312 8.8375 13.5938 9.6C13.1687 10.35 12.675 11.0938 12.1125 11.8312C11.4375 12.7312 10.925 13.4812 10.575 14.0812C10.2375 14.6687 9.95625 15.2937 9.73125 15.9562C9.66875 16.1312 9.56875 16.2688 9.43125 16.3688C9.30625 16.4563 9.1625 16.5 9 16.5ZM9 13.8187C9.2125 13.3937 9.45 12.975 9.7125 12.5625C9.9875 12.15 10.3875 11.6 10.9125 10.9125C11.45 10.2125 11.8875 9.56875 12.225 8.98125C12.575 8.38125 12.75 7.6375 12.75 6.75C12.75 5.7125 12.3813 4.83125 11.6438 4.10625C10.9188 3.36875 10.0375 3 9 3C7.9625 3 7.075 3.36875 6.3375 4.10625C5.6125 4.83125 5.25 5.7125 5.25 6.75C5.25 7.6375 5.41875 8.38125 5.75625 8.98125C6.10625 9.56875 6.55 10.2125 7.0875 10.9125C7.6125 11.6 8.00625 12.15 8.26875 12.5625C8.54375 12.975 8.7875 13.3937 9 13.8187ZM9 8.625C9.525 8.625 9.96875 8.44375 10.3312 8.08125C10.6937 7.71875 10.875 7.275 10.875 6.75C10.875 6.225 10.6937 5.78125 10.3312 5.41875C9.96875 5.05625 9.525 4.875 9 4.875C8.475 4.875 8.03125 5.05625 7.66875 5.41875C7.30625 5.78125 7.125 6.225 7.125 6.75C7.125 7.275 7.30625 7.71875 7.66875 8.08125C8.03125 8.44375 8.475 8.625 9 8.625Z"
+                      fill="#18181B"
+                    />
+                  </svg>
+                  <span>Find the Rail in print</span>
+                </Link>
+              </li>
+              <li className="">
+                <Link className="flex space-x-2 w-full" href={`/subscribe`}>
+                  <span>Sign up for our newsletter</span>
+                </Link>
+              </li>
+              <li className="">
+                <Link className="flex space-x-2 w-full" href={`/instagram`}>
+                  <span>Follow us on Instagram</span>
+                </Link>
+              </li>
+              <li className="">
+                <Link className="flex space-x-2 w-full" href={`/store`}>
+                  <span>Visit our store</span>
+                </Link>
+              </li>
+              <li className="">
+                <Link className="flex space-x-2 w-full" href={`/subscribe`}>
+                  <span>Subscribe</span>
+                </Link>
+              </li>
+              <li className="">
+                <Link className="flex space-x-2 w-full" href={`/about/contact`}>
+                  <span>Contact us</span>
+                </Link>
+              </li>
+              <li className="">
+                <Link className="flex space-x-2 w-full" href={`/about`}>
+                  <span>About The Rail</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div className="divide-y-[1px] divide-dotted">
-        <div className="flex bg-zinc-800 text-white divide-x-[1px] divide-dotted w-full justify-between">
-          <div className="p-6 w-1/2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-          <div className="p-6 w-1/2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-        </div>
-        <div className="flex bg-zinc-800 text-white divide-x-[1px] divide-dotted w-full justify-between">
-          <div className="p-6 w-1/2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-          <div className="p-6 w-1/2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-        </div>
-      </div>
-      <ul className="flex flex-col divide-y-[1px] rail-divide">{items}</ul>
-    </div>
+    </>
   )
 }
 

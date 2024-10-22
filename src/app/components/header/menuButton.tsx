@@ -1,16 +1,18 @@
 import { useState } from "react"
-import OldMenu from "./oldMenu"
+import { HomepageCollections } from "../../../../lib/types"
+import Menu from "./menu"
 
 interface MenuButtonProps {
   classes: string
+  collections: HomepageCollections[]
 }
 
 const MenuButton = (props: MenuButtonProps) => {
-  const { classes } = props
+  const { classes, collections } = props
   const pathfill = "fill-zinc-900 dark:fill-slate-100"
   const strokefill = "stroke-zinc-900 dark:stroke-slate-100"
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(true)
 
   // Function to open the menu
   const openMenu = () => {
@@ -46,7 +48,7 @@ const MenuButton = (props: MenuButtonProps) => {
             onClick={closeMenu}
             className="bg-zinc-800 opacity-80 cursor-pointer fixed z-50 w-screen h-screen top-0 bottom-0 right-0 left-0"
           ></div>
-          <OldMenu closeMenu={closeMenu} />
+          <Menu closeMenu={closeMenu} collections={collections} />
         </>
       )}
     </div>
