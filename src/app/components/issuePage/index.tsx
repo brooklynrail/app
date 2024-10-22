@@ -17,13 +17,27 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { thisIssueData, issueSections, previewURL, permalink, navData, allIssues } = props
+  const { thisIssueData, issueSections, previewURL, permalink, navData, allIssues, currentSection } = props
 
   const { slug } = thisIssueData
   const issueClass = `issue-${slug.toLowerCase()}`
   const currentSections = issueSections
   const { year, month } = thisIssueData
-  const tocProps = { thisIssueData, currentSections, permalink, year, month }
+
+  // if currentSection, filter articles to only show articles from that section
+  const allArticles = thisIssueData.articles || []
+  const articles = currentSection
+    ? allArticles.filter((article) => article.section.slug === currentSection.slug)
+    : allArticles
+
+  const tocProps = {
+    articles: articles,
+    issueSlug: thisIssueData.slug,
+    currentSections,
+    permalink,
+    year,
+    month,
+  }
 
   const summary = thisIssueData.summary
   const credits = thisIssueData.credits
@@ -47,7 +61,7 @@ const IssuePage = (props: IssuePageProps) => {
               </div>
             </div>
             <div className="col-span-4 tablet-lg:col-span-8 desktop:col-span-9">
-              <TableOfContents {...tocProps} />
+              {currentSection ? <TableOfContents {...tocProps} /> : <TableOfContents {...tocProps} />}
             </div>
           </div>
         </div>
@@ -71,7 +85,7 @@ const PublishInfo = (props: PublishInfoProps) => {
     })
 
   return (
-    <div className="text-sm space-y-2 text-zinc-700 dark:text-slate-100">
+    <div className="pb-20 text-sm space-y-2 text-zinc-700 dark:text-slate-100">
       <p>
         The “{thisIssueData.title}” Issue of the Brooklyn Rail was published on {publishedOn}.
       </p>

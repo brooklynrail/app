@@ -30,9 +30,9 @@ const PromoSlim = (props: PromoSlimProps) => {
         </Link>
       </h4>
       {!hide_bylines_downstream && contributors && contributors.length != 0 && (
-        <p className="block tablet-lg:inline">
+        <div className="block tablet-lg:inline">
           {` –`} <Bylines article={article} type={BylineType.TOC} />
-        </p>
+        </div>
       )}
     </li>
   )
