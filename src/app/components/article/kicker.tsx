@@ -15,10 +15,21 @@ const Kicker = (props: KickerProps) => {
   }
   const { slug } = thisIssueData
 
-  const sectionPermalink = getPermalink({
+  let sectionPermalink = getPermalink({
     issueSlug: slug,
     section: currentSection.slug,
     type: PageType.Section,
+  })
+  if (currentSection.featured) {
+    sectionPermalink = getPermalink({
+      sectionSlug: currentSection.slug,
+      type: PageType.SuperSection,
+    })
+  }
+
+  const issuePermalink = getPermalink({
+    issueSlug: slug,
+    type: PageType.Issue,
   })
 
   return (
@@ -34,9 +45,13 @@ const Kicker = (props: KickerProps) => {
       {kicker && (
         <>
           <span className="border-r rail-border !border-solid h-4 inline-block relative top-0.5"></span>
-          <span>{kicker}</span>
+          <span className="uppercase">{kicker}</span>
         </>
       )}
+      <span className="border-r rail-border !border-solid h-4 inline-block relative top-0.5"></span>
+      <span className="uppercase">
+        <Link href={issuePermalink}>{thisIssueData.title}</Link>
+      </span>
     </h6>
   )
 }

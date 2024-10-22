@@ -623,6 +623,7 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=issue.month` +
     `&fields[]=section.slug` +
     `&fields[]=section.name` +
+    `&fields[]=section.featured` +
     `&fields[]=images.sort` +
     `&fields[]=images.directus_files_id.id` +
     `&fields[]=images.directus_files_id.caption` +
