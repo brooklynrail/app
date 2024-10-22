@@ -83,7 +83,14 @@ interface EventCardProps {
 const EventCard = (props: EventCardProps) => {
   const { title, slug, start_date, people } = props.event
   const startDate = new Date(start_date)
-  const fullDay = startDate.toLocaleDateString("en-US", { weekday: "long" })
+
+  // If the startDate is today...
+  const today = new Date()
+  const fullDay =
+    startDate.toDateString() === today.toDateString()
+      ? "Today"
+      : new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(startDate)
+
   const eventYear = startDate.getFullYear()
   const eventMonth = startDate.getMonth() + 1
   const eventDay = startDate.getDate()
