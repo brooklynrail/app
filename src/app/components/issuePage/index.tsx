@@ -4,10 +4,10 @@ import { Articles, Issues } from "../../../../lib/types"
 import { CoverImages } from "../collections/banner/coverImages"
 import Paper, { PaperType } from "../paper"
 import PreviewHeader from "../preview/previewHead"
-import SectionHead from "../section/head"
 import TableOfContents from "./tableOfContents"
 import CoversPopup from "../issueRail/coversPopup"
 import parse from "html-react-parser"
+import IssueHead from "./head"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -17,7 +17,7 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { thisIssueData, issueSections, previewURL, permalink, navData } = props
+  const { thisIssueData, issueSections, previewURL, permalink, navData, allIssues } = props
 
   const { slug } = thisIssueData
   const issueClass = `issue-${slug.toLowerCase()}`
@@ -32,7 +32,7 @@ const IssuePage = (props: IssuePageProps) => {
     <Paper pageClass={`paper-issue ${issueClass}`} type={PaperType.Default} navData={navData}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
       <main className="divide-y rail-divide">
-        <SectionHead title={thisIssueData.title} permalink={permalink} />
+        <IssueHead title={thisIssueData.title} allIssues={allIssues} currentIssueSlug={thisIssueData.slug} />
 
         <div className="px-6">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:divide-x tablet-lg:rail-divide">

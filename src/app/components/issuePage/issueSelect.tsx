@@ -27,7 +27,7 @@ const IssueSelect = (props: IssueSelectProps) => {
         id=""
         value={selectedIssueSlug}
         onChange={handleIssueChange}
-        className="leading-4 border-[1px] rail-border-solid rail-bg rounded-sm uppercase font-medium text-[14px] p-0.5"
+        className="border rail-border rounded-sm uppercase font-medium text-md p-1"
       >
         {allIssues.map((issue: Issues) => {
           if (!issue.slug) {
