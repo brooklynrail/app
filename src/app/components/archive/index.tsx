@@ -2,7 +2,7 @@
 import parse from "html-react-parser"
 import Link from "next/link"
 import { stripHtml } from "string-strip-html"
-import { Articles, Homepage, Issues } from "../../../../lib/types"
+import { Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper, { PaperType } from "../paper"
 import IssueHead from "../issuePage/head"
@@ -10,12 +10,6 @@ import { CoverImages } from "../collections/banner/coverImages"
 import { useEffect, useState } from "react"
 import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 import style from "./archive.module.scss"
-
-export interface PromoProps {
-  currentArticles: Articles[]
-  year: number
-  month: number
-}
 
 export interface ArchivePageProps {
   navData: Homepage
@@ -46,40 +40,32 @@ const ArchivePage = (props: ArchivePageProps) => {
     setGroupCount(calculateGroupNumber())
   }, [currentBreakpoint])
 
+  // Utility function to split array into groups for grid layout
+  const groupArray = (array: Issues[], groupSize: number) => {
+    const groups = []
+    for (let i = 0; i < array.length; i += groupSize) {
+      groups.push(array.slice(i, i + groupSize))
+    }
+    return groups
+  }
+
+  const articleGroups = groupArray(issues, groupCount).map((group, i) => (
+    <div key={i} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide px-6">
+      <IssueBoxes issues={group} />
+    </div>
+  ))
+
   return (
     <Paper pageClass="paper-archive" type={PaperType.Default} navData={navData}>
       <main id="main" className="">
         <IssueHead title={`All Issues`} allIssues={issues} />
-        <div className="divide-y rail-divide">
-          {Object.keys(issues).map((issue, index) => {
-            // Utility function to split array into groups for grid layout
-            const groupArray = (array: Issues[], groupSize: number) => {
-              const groups = []
-              for (let i = 0; i < array.length; i += groupSize) {
-                groups.push(array.slice(i, i + groupSize))
-              }
-              return groups
-            }
-
-            const articleGroups = groupArray(issues, groupCount).map((group, i) => (
-              <div key={i} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide px-6">
-                <Promos issues={group} />
-              </div>
-            ))
-
-            return (
-              <div key={index} className="divide-y rail-divide">
-                {articleGroups}
-              </div>
-            )
-          })}
-        </div>
+        <div className="divide-y rail-divide">{articleGroups}</div>
       </main>
     </Paper>
   )
 }
 
-const Promos = ({ issues }: { issues: Issues[] }) => {
+const IssueBoxes = ({ issues }: { issues: Issues[] }) => {
   return (
     <>
       {issues.map((issue: Issues) => {
