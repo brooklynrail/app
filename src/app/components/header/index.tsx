@@ -75,7 +75,7 @@ const HeaderHomepage = (props: HeaderProps) => {
                 <Subhead />
               </div>
               <div className="tablet:hidden">
-                <p className="uppercase text-white text-sm tracking-wider">
+                <p className="uppercase text-zinc-800 text-sm tracking-wider">
                   Critical Perspectives on Arts, <span className="">Politics, and Culture</span>
                 </p>
               </div>
