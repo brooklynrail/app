@@ -21,7 +21,7 @@ const NavBar = (props: NavBarProps) => {
     const permalink = (() => {
       switch (thisCollection.type) {
         case CollectionType.Section:
-          if (!thisCollection.section) {
+          if (!thisCollection.section || !thisCollection.section.featured) {
             return null
           }
           return getPermalink({
