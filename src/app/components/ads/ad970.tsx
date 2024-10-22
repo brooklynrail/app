@@ -7,7 +7,6 @@ import { getAds } from "../../../../lib/utils"
 import { FastAverageColor } from "fast-average-color"
 
 const Ad970 = () => {
-  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
   const [randomAd, setRandomAd] = useState<Ads | undefined>(undefined) // Store the randomly selected ad
   const [bgColor, setBgColor] = useState<string | null>(null)
   const imageRef = useRef(null)
@@ -21,7 +20,6 @@ const Ad970 = () => {
 
         if (filteredAds.length > 0) {
           const randomAd = filteredAds[Math.floor(Math.random() * filteredAds.length)]
-          setCurrentAds(filteredAds)
           setRandomAd(randomAd) // Set the random ad here
         }
       } catch (error) {
@@ -72,7 +70,7 @@ const Ad970 = () => {
     showAd && (
       <div
         style={{ backgroundColor: bgColor || "#FFFFFF" }}
-        className="m-0 mt-2 bg-slate-300 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:pt-3 pb-3 tablet-lg:pb-6"
+        className="m-0 mt-2 bg-slate-300 bg-opacity-20 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3"
       >
         <div className="absolute -z-10 top-0 bottom-0 left-0 right-0 bg-white bg-opacity-30"></div>
         <button

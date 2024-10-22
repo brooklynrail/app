@@ -214,7 +214,8 @@ a:hover .media figcaption {
 }
 
 .rail-header-homepage {
-  @apply bg-gradient-to-b from-[#EF4444] to-[#CFCFE0] dark:from-indigo-700;
+  @apply bg-black;
+  // @apply bg-gradient-to-b from-[#EF4444] to-[#CFCFE0] dark:from-indigo-700;
 }
 .rail-donate-popup {
   @apply bg-gradient-to-b from-[#EF4444] to-[#CFCFE0] dark:from-indigo-700;

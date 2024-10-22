@@ -30,7 +30,7 @@ const CollectionHead = (props: CollectionHeadProps) => {
             <div className="space-y-1 tablet:w-2/3 desktop:w-1/2">
               {kicker && <h6 className="uppercase text-xs tablet-lg:hidden">{kicker}</h6>}
               {heading}
-              {description && <p className="text-sm">{parse(description)}</p>}
+              {description && <div className="text-sm">{parse(description)}</div>}
             </div>
             {permalink && (
               <Link
