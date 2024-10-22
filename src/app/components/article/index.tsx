@@ -33,7 +33,7 @@ const Article = (props: ArticleProps) => {
           <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 ">
             <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
           </div>
-          <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2">
+          <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 space-y-12">
             {body_text && (
               <div className={`${styles.content_poetry} content`}>
                 {replaceShortcodes({ html: body_text, images: images })}
@@ -48,6 +48,8 @@ const Article = (props: ArticleProps) => {
             )}
 
             {contributors && <ContributorsBox contributors={contributors} />}
+          </div>
+          <div className="col-span-4 tablet-lg:col-span-12 border-t rail-border">
             <NextPrev
               parentCollection={thisIssueData}
               articles={thisIssueData.articles}
