@@ -37,10 +37,25 @@ const HeaderHomepage = (props: HeaderProps) => {
   const permalink = getPermalink({
     type: PageType.Home,
   })
+
+  const video = (
+    <video
+      autoPlay
+      muted
+      loop
+      playsInline
+      className="absolute top-0 left-0 w-full h-full object-cover transform"
+      poster="/video/bosphorus.mp4"
+    >
+      <source src="/video/transition.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  )
   return (
     <>
       <header id={styles.rail_header} className={`relative rail-header-${type}`}>
-        <div>
+        {video}
+        <div className="z-50 relative">
           <div className="hidden">
             <h1>The Brooklyn Rail </h1>
             <h2>Critical Perspectives on Art, Politics and Culture</h2>
