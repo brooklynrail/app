@@ -2,7 +2,6 @@
 import directus from "./directus"
 import { readItems, readSingleton } from "@directus/sdk"
 import {
-  Ads,
   Articles,
   Contributors,
   DirectusFiles,
@@ -675,54 +674,6 @@ export const getEvent = cache(async (slug: string) => {
     }),
   )
   return events as Events[]
-})
-
-export const getAds = cache(async () => {
-  // const today = new Date()
-  // newDate Formatted as YYYY-MM-DD
-
-  const ads = await directus.request(
-    readItems("ads", {
-      fields: [
-        "ad_type",
-        "ad_url",
-        "start_date",
-        "end_date",
-        "status",
-        "sort",
-        "campaign_title",
-        "slug",
-        {
-          tile_image: ["filename_disk", "width", "height"],
-        },
-        {
-          banner_image: ["filename_disk", "width", "height"],
-        },
-        {
-          banner_image_mobile: ["filename_disk", "width", "height"],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            status: {
-              _in: ["published"],
-            },
-            // start_date: {
-            //   _lte: today,
-            // },
-            // end_date: {
-            //   _gte: today,
-            // },
-            ad_url: {
-              _nnull: true,
-            },
-          },
-        ],
-      },
-    }),
-  )
-  return ads as Ads[]
 })
 
 interface OGImageProps {

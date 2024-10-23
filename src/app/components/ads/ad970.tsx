@@ -3,7 +3,7 @@ import { Ads } from "../../../../lib/types"
 import Image from "next/image"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useEffect, useRef, useState } from "react"
-import { getAds } from "../../../../lib/utils"
+import { AdTypes, getAds } from "../../../../lib/utils/ads"
 import { FastAverageColor } from "fast-average-color"
 
 const Ad970 = () => {
@@ -15,8 +15,9 @@ const Ad970 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ads = await getAds()
-        const filteredAds = ads.filter((ad) => ad.ad_type === "banner")
+        const ads = await getAds({ adType: AdTypes.Banner })
+        const [fetchedAds] = await Promise.all([ads])
+        const filteredAds = fetchedAds.filter((ad) => ad.ad_type === "banner")
 
         if (filteredAds.length > 0) {
           const randomAd = filteredAds[Math.floor(Math.random() * filteredAds.length)]

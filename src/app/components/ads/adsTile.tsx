@@ -3,7 +3,7 @@ import { Ads } from "../../../../lib/types"
 import Image from "next/image"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useEffect, useState } from "react"
-import { getAds } from "../../../../lib/utils"
+import { AdTypes, getAds } from "../../../../lib/utils/ads"
 
 const AdsTile = () => {
   const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
@@ -11,7 +11,7 @@ const AdsTile = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (!currentAds) {
-        const ads = getAds()
+        const ads = getAds({ adType: AdTypes.Tile })
         // Fetch all the data in parallel
         const [fetchedAds] = await Promise.all([ads])
         // Update the state with the fetched data as it becomes available

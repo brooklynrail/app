@@ -3,7 +3,7 @@ import { Ads } from "../../../../lib/types"
 import Image from "next/image"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useEffect, useState } from "react"
-import { getAds } from "../../../../lib/utils"
+import { AdTypes, getAds } from "../../../../lib/utils/ads"
 
 const AdsTileStrip = () => {
   const [randomAds, setRandomAds] = useState<Ads[] | undefined>(undefined) // Store the randomly selected ad
@@ -11,7 +11,7 @@ const AdsTileStrip = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ads = await getAds()
+        const ads = await getAds({ adType: AdTypes.Tile })
         const filteredAds = ads.filter((ad) => ad.ad_type === "tile")
 
         if (filteredAds.length > 0) {
