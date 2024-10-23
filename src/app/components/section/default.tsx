@@ -46,7 +46,7 @@ const SectionDefault = (props: SectionProps) => {
   // Split articles into groups of 4
   const articleGroups = groupArray(articlesData, groupCount).map((group, i) => {
     return (
-      <div key={i} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide py-3 px-6">
+      <div key={i} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide px-0 tablet-lg:px-3">
         <Promos articles={group} />
       </div>
     )
@@ -80,9 +80,11 @@ const Promos = (props: PromoProps) => {
         <div className="p-3 flex flex-col space-y-6">
           {artwork && <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />}
           <div className="flex flex-col space-y-3">
-            <Kicker article={article} />
-            <Title title={article.title} permalink={permalink} classes="text-md tablet:text-xl font-light" />
-            <Bylines article={article} type={BylineType.Default} />
+            <div className="space-y-1">
+              <Kicker article={article} />
+              <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-3xl font-light" />
+            </div>
+            <Bylines article={article} type={BylineType.CollectionDefault} />
             <Excerpt excerpt={article.excerpt} classes={`excerpt-md`} />
           </div>
         </div>
