@@ -17,7 +17,7 @@ const PeopleHead = (props: PeopleHeadProps) => {
             <h1 className="font-light text-5xl text-center">
               {first_name} {last_name}
             </h1>
-            {bio && <div className="text-md tablet-lg:text-lg">{parse(bio)}</div>}
+            {bio && <div className="w-fit mx-auto text-md tablet-lg:text-lg">{parse(bio)}</div>}
           </div>
         </div>
       </div>

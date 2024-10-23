@@ -1,10 +1,9 @@
 "use client"
-import parse from "html-react-parser"
 import { ArticlesContributors, Contributors, Homepage } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper, { PaperType } from "../paper"
-import PromoSection from "../promo/section"
 import PeopleHead from "./head"
+import Promo from "./promo"
 
 interface ContributorPageProps {
   navData: Homepage
@@ -39,7 +38,7 @@ const ContributorPage = (props: ContributorPageProps) => {
               type: PageType.Section,
             })
             return (
-              <PromoSection
+              <Promo
                 key={`article-${i}`}
                 article={article}
                 permalink={permalink}
