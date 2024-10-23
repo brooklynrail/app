@@ -158,6 +158,12 @@ body {
   @apply rail-bg;
 }
 
+.paper-people,
+.paper-people .navbar {
+  @apply bg-green-100 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
 .collection-criticspage,
 .collection-criticspage .head,
 .paper-article-criticspage,

@@ -51,14 +51,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
     return <></>
   }
 
-  return (
-    <ContributorPage
-      contributorData={contributorData}
-      thisIssueData={data.thisIssueData}
-      currentArticles={currentArticles}
-      navData={data.navData}
-    />
-  )
+  return <ContributorPage contributorData={contributorData} currentArticles={currentArticles} navData={data.navData} />
 }
 
 interface ContributorsParams {
@@ -73,16 +66,11 @@ async function getData({ params }: { params: ContributorsParams }) {
     return notFound()
   }
 
-  const thisIssueData = await getCurrentIssueData()
-  if (!thisIssueData) {
-    return notFound()
-  }
-
   // Get all contributors
   // NOTE: There are multiple contributors with the same slug
   // This returns all contributors with the same slug, but their specific name and bio information may be different
   const allContributors = await getContributor(slug)
-  if (!allContributors || allContributors.length == 0 || !thisIssueData) {
+  if (!allContributors || allContributors.length == 0) {
     return notFound()
   }
 
@@ -102,7 +90,6 @@ async function getData({ params }: { params: ContributorsParams }) {
 
   return {
     navData,
-    thisIssueData,
     contributorData,
     articles: allArticles,
     permalink,

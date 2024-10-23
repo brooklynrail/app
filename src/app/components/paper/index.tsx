@@ -26,6 +26,7 @@ export enum PaperType {
   Homepage = "homepage",
   Events = "events",
   Preview = "preview",
+  People = "people",
   CriticsPage = "criticspage",
 }
 

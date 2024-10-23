@@ -43,13 +43,6 @@ module.exports = {
         permanent: true,
       },
       // ===================================
-      // CONTRIBUTORS REDIRECT
-      {
-        source: "/contributors",
-        destination: "/",
-        permanent: false,
-      },
-      // ===================================
       // ISSUE REDIRECT
       // Redirect old issue paths to new issue paths
       {
