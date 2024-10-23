@@ -68,10 +68,7 @@ const Ad970 = () => {
 
   return (
     showAd && (
-      <div
-        style={{ backgroundColor: bgColor || "#FFFFFF" }}
-        className="m-0 mt-2 bg-slate-300 bg-opacity-20 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3"
-      >
+      <div className="m-0 mt-2 bg-slate-300 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3">
         <div className="absolute -z-10 top-0 bottom-0 left-0 right-0 bg-white bg-opacity-30"></div>
         <button
           className="w-10 h-10 text-center absolute top-3 right-3 text-zinc-700 font-medium text-2xl tablet:text-3xl rounded-full bg-white bg-opacity-40 hover:bg-opacity-60"

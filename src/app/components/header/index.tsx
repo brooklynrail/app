@@ -1,3 +1,4 @@
+import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
@@ -10,6 +11,25 @@ import Subhead from "./subhead"
 import HomeBanner from "./homeBanner"
 import styles from "./header.module.scss"
 import VideoBG from "./videobg"
+
+// Utility to set a cookie
+const setCookie = (name: string, value: string, days: number) => {
+  const expires = new Date()
+  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000) // Expire in x days
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`
+}
+
+// Utility to get a cookie
+const getCookie = (name: string): string | null => {
+  const nameEQ = name + "="
+  const cookies = document.cookie.split(";")
+  for (let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i]
+    while (cookie.charAt(0) === " ") cookie = cookie.substring(1, cookie.length)
+    if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length, cookie.length)
+  }
+  return null
+}
 
 interface HeaderProps {
   special_issue?: boolean | null
@@ -36,6 +56,49 @@ const Header = (props: HeaderProps) => {
 
 const HeaderHomepage = (props: HeaderProps) => {
   const { title, type, banners, currentIssue, navData } = props
+  const currentIssueRef = useRef<HTMLDivElement>(null)
+  const [currentIssueHeight, setCurrentIssueHeight] = useState(0)
+  const [hasSeenHeader, setHasSeenHeader] = useState(false)
+
+  useEffect(() => {
+    // Check if the user has already seen the full-height header
+    // const seenHeader = getCookie("seenHeader")
+    // setHasSeenHeader(!!seenHeader)
+
+    // Function to update the header height
+    const updateHeight = () => {
+      if (currentIssueRef.current) {
+        setCurrentIssueHeight(currentIssueRef.current.offsetHeight)
+      }
+    }
+
+    updateHeight()
+    window.addEventListener("resize", updateHeight)
+
+    // Clean up event listener
+    return () => {
+      window.removeEventListener("resize", updateHeight)
+    }
+  }, [])
+
+  // Set cookie when user has seen the full header
+  // useEffect(() => {
+  //   if (!hasSeenHeader) {
+  //     const handleScroll = () => {
+  //       if (window.scrollY > currentIssueHeight) {
+  //         setCookie("seenHeader", "true", 1) // Cookie expires in 1 day
+  //         setHasSeenHeader(true)
+  //       }
+  //     }
+
+  //     window.addEventListener("scroll", handleScroll)
+
+  //     return () => {
+  //       window.removeEventListener("scroll", handleScroll)
+  //     }
+  //   }
+  // }, [currentIssueHeight, hasSeenHeader])
+
   const permalink = getPermalink({
     type: PageType.Home,
   })
@@ -49,7 +112,7 @@ const HeaderHomepage = (props: HeaderProps) => {
           {title && <h3>{title}</h3>}
         </div>
 
-        <div className="h-[calc(100vh-21rem)] tablet:h-[calc(100vh-7.5rem)] relative">
+        <div className="relative" style={{ height: hasSeenHeader ? "auto" : `calc(100vh - ${currentIssueHeight}px)` }}>
           <VideoBG />
           <div className="sticky top-0">
             <div className="p-3 tablet:px-6">
@@ -60,7 +123,10 @@ const HeaderHomepage = (props: HeaderProps) => {
             </div>
           </div>
         </div>
-        {banners && currentIssue && <FeaturedBanner banners={banners} currentIssue={currentIssue} />}
+
+        {banners && currentIssue && (
+          <FeaturedBanner currentIssueRef={currentIssueRef} banners={banners} currentIssue={currentIssue} />
+        )}
       </header>
       <NavBar navData={navData} />
     </>
