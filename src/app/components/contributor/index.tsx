@@ -18,7 +18,7 @@ const ContributorPage = (props: ContributorPageProps) => {
   const allArticles = (
     <section className="">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-        <div className="col-span-4 tablet-lg:col-span-12 divide-y rail-divide">
+        <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-3 divide-y rail-divide">
           {currentArticles.map((articleContributor: ArticlesContributors, i: number) => {
             const article = articleContributor.articles_contributors_id
             if (!article) {
