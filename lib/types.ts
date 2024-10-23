@@ -646,6 +646,24 @@ export type Pages = {
   images: any[] | ArticlesFiles[]
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+  board?: PagesBoard[] | null
+  staff?: PagesStaff[] | null
+  quotes?: PagesQuotes[] | null
+}
+
+export type PagesBoard = {
+  name: string
+  group: string
+}
+
+export type PagesStaff = {
+  title: string
+  name: string
+}
+
+export type PagesQuotes = {
+  quote: string
+  name: string
 }
 
 export type People = {

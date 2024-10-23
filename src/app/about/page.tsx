@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation"
-import { Homepage, Issues, Pages } from "../../../lib/types"
-import { getAllPages, getCurrentIssueData, getPageData, getPermalink, PageType } from "../../../lib/utils"
-import Page from "../components/page"
+import { Issues } from "../../../lib/types"
+import { getPermalink, PageType } from "../../../lib/utils"
 import { getNavData } from "../../../lib/utils/homepage"
+import { getAllPages, getPageData } from "../../../lib/utils/pages"
+import Page from "../components/page"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -41,8 +42,8 @@ async function getData() {
     return notFound()
   }
 
-  const pagesData = await getAllPages()
-  if (!pagesData) {
+  const allPagesData = await getAllPages()
+  if (!allPagesData) {
     return notFound()
   }
 
@@ -54,7 +55,7 @@ async function getData() {
   return {
     navData,
     pageData,
-    pagesData,
+    allPagesData,
     permalink,
   }
 }
