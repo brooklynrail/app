@@ -2,14 +2,11 @@ import Link from "next/link"
 import { Ads } from "../../../../lib/types"
 import Image from "next/image"
 import { sendGAEvent } from "@next/third-parties/google"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { AdTypes, getAds } from "../../../../lib/utils/ads"
-import { FastAverageColor } from "fast-average-color"
 
 const Ad970 = () => {
   const [randomAd, setRandomAd] = useState<Ads | undefined>(undefined) // Store the randomly selected ad
-  const [bgColor, setBgColor] = useState<string | null>(null)
-  const imageRef = useRef(null)
   const [showAd, setShowAd] = useState(true)
 
   useEffect(() => {
@@ -17,10 +14,9 @@ const Ad970 = () => {
       try {
         const ads = await getAds({ adType: AdTypes.Banner })
         const [fetchedAds] = await Promise.all([ads])
-        const filteredAds = fetchedAds.filter((ad) => ad.ad_type === "banner")
 
-        if (filteredAds.length > 0) {
-          const randomAd = filteredAds[Math.floor(Math.random() * filteredAds.length)]
+        if (fetchedAds.length > 0) {
+          const randomAd = fetchedAds[Math.floor(Math.random() * fetchedAds.length)]
           setRandomAd(randomAd) // Set the random ad here
         }
       } catch (error) {
@@ -57,16 +53,6 @@ const Ad970 = () => {
   const mobileWidth = mwidth > mobileSize ? mobileSize : mwidth
   const mobileHeight = mwidth > mobileSize ? (mobileSize * mheight) / mwidth : (mheight * mobileWidth) / mwidth
 
-  const handleImageLoad = async (imageElement: HTMLImageElement) => {
-    try {
-      const fac = new FastAverageColor()
-      const color = await fac.getColorAsync(imageElement, { algorithm: "dominant", ignoredColor: [255, 255, 255, 255] })
-      setBgColor(color.rgba)
-    } catch (error) {
-      console.error("Error extracting color:", error)
-    }
-  }
-
   return (
     showAd && (
       <div className="m-0 mt-2 bg-slate-300 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3">
@@ -81,19 +67,17 @@ const Ad970 = () => {
         <div>
           <Link href={ad_url} target="_blank">
             <Image
-              ref={imageRef}
               className="hidden tablet:block mx-auto"
               src={srcDesktop}
               width={desktopWidth}
               height={desktopHeight}
               alt={alt}
               onLoad={(e) => {
-                handleImageLoad(e.currentTarget)
                 sendGAEvent("event", "impression", {
                   event_category: "ads",
                   event_label: slug,
                   event_value: ad_url,
-                  ad_format: "banner",
+                  ad_format: AdTypes.Banner,
                   campaign: campaign_title,
                   campaign_id: slug,
                   ad_source: "br-studio",
@@ -104,7 +88,7 @@ const Ad970 = () => {
                   event_category: "ads",
                   event_label: slug,
                   event_value: ad_url,
-                  ad_format: "banner",
+                  ad_format: AdTypes.Banner,
                   campaign: campaign_title,
                   campaign_id: slug,
                   ad_source: "br-studio",
@@ -118,7 +102,6 @@ const Ad970 = () => {
               height={mobileHeight}
               alt={alt}
               onLoad={(e) => {
-                handleImageLoad(e.currentTarget)
                 sendGAEvent("event", "impression", {
                   event_category: "ads",
                   event_label: slug,
