@@ -104,7 +104,7 @@ const HeaderHomepage = (props: HeaderProps) => {
         <div className="relative h-[calc(100vh-11.5rem)]">
           <VideoBG videoRef={videoRef} />
           <div className="sticky top-0">
-            <div className="p-3 tablet:px-6">
+            <div className="p-3 pb-9 tablet:px-6">
               <Link href={permalink} className="w-full space-y-3">
                 <HomeBanner type={type} />
                 <Subhead />
