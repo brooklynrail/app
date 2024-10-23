@@ -15,8 +15,8 @@ interface BannerCurrentIssueProps {
 const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
   const { banner, currentIssue } = props
 
-  const first = props.first ? "pl-6" : ""
-  const last = props.last ? "pr-6" : ""
+  const first = props.first ? "pl-3 tablet:pl-6" : ""
+  const last = props.last ? "pr-3 tablet:pr-6" : ""
 
   const links =
     banner.links &&
@@ -42,9 +42,9 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
     <div
       id="current-issue"
       key={banner.id}
-      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-6 bg-zinc-800 bg-opacity-70 ${first} ${last}`}
+      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-3 tablet:px-6 bg-zinc-800 bg-opacity-70 ${first} ${last}`}
     >
-      <div className="grid grid-cols-3 gap-3 gap-x-6">
+      <div className="grid grid-cols-3 gap-3 tablet:gap-x-6">
         <div className="col-span-3 row-start-1">
           <h3 className="text-sm tablet-lg:text-md font-medium text-indigo-50">
             <Link href={issuePermalink}>

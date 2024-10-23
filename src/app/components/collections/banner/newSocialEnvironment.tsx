@@ -30,8 +30,8 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
     fetchData().catch((error) => console.error("Failed to fetch Event data on the Homepage:", error))
   }, [currentEvents])
 
-  const first = props.first ? "pl-6" : ""
-  const last = props.last ? "pr-6" : ""
+  const first = props.first ? "pl-3 tablet:pl-6" : ""
+  const last = props.last ? "pr-3 tablet:pr-6" : ""
 
   const links =
     banner.links &&
@@ -53,15 +53,15 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
   return (
     <div
       key={banner.id}
-      className={`col-span-4 tablet:col-span-6 py-3 pb-6 px-6 bg-zinc-800 bg-opacity-90 ${first} ${last}`}
+      className={`col-span-4 tablet:col-span-6 py-3 pb-6 px-3 tablet:px-6 bg-zinc-800 bg-opacity-90 ${first} ${last}`}
     >
-      <div className="grid grid-cols-6 gap-3 gap-x-6">
-        <div className="col-span-6 row-start-1">
+      <div className="grid grid-cols-3 tablet:grid-cols-6 gap-3 tablet:gap-x-6">
+        <div className="col-span-3 tablet:col-span-6 row-start-1">
           <h3 className="text-sm tablet-lg:text-md font-medium text-indigo-50">
             <span className="">{parse(banner.title)}</span>
           </h3>
         </div>
-        <div className="col-span-5 row-start-2">
+        <div className="col-span-2 tablet:col-span-5 row-start-2">
           <div className=" h-24 bg-opacity-60 flex divide-x divide-indigo-50 divide-dotted overflow-x-auto">
             {events}
           </div>

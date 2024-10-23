@@ -14,8 +14,8 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
   const { banner } = props
   const { title, description } = banner
 
-  const first = props.first ? "pl-6" : ""
-  const last = props.last ? "pr-6" : ""
+  const first = props.first ? "pl-3 tablet:pl-6" : ""
+  const last = props.last ? "pr-3 tablet:pr-6" : ""
 
   const primary_link = banner.links && banner.links[0]
 
@@ -37,9 +37,9 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
   return (
     <div
       key={banner.id}
-      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-6 bg-zinc-800 bg-opacity-80 ${first} ${last}`}
+      className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-3 tablet:px-6 bg-zinc-800 bg-opacity-80 ${first} ${last}`}
     >
-      <div className="grid grid-cols-3 gap-3 gap-x-6">
+      <div className="grid grid-cols-3 gap-3 tablet:gap-x-6">
         <div className="col-span-3 row-start-1">
           <h3 className="text-sm tablet-lg:text-md text-indigo-50 font-medium">
             {primary_link ? (
