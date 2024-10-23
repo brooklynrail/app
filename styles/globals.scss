@@ -164,6 +164,12 @@ body {
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
+.paper-page,
+.paper-page .navbar {
+  @apply bg-cyan-50 dark:bg-zinc-800;
+  @apply text-zinc-900 dark:text-indigo-50;
+}
+
 .collection-criticspage,
 .collection-criticspage .head,
 .paper-article-criticspage,

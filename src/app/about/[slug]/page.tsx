@@ -15,7 +15,6 @@ export interface PageProps {
   navData: Homepage
   pageData: Pages
   pagesData: Pages[]
-  thisIssueData: Issues
   permalink: string
   errorCode?: number
   errorMessage?: string
