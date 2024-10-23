@@ -275,11 +275,9 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
       `&fields[]=featured_artwork.caption` +
       `&filter[status][_eq]=published` +
       `&filter[section][slug][_eq]=${slug}` +
-      `&filter[issue][published][_nnull]=true` +
       `${limitByIssue}` +
       `&limit=${limit ? limit : -1}` +
       `&sort[]=-issue.published` +
-      `&sort[]=-published` +
       `&sort[]=sort`
 
     const response = await fetch(articlesAPI)
