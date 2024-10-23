@@ -42,7 +42,7 @@ const HomePage = (props: HomePageProps) => {
       return (
         <>
           {collectionComponent}
-          <AdsTileStrip key="ads-tile-strip" />
+          <AdsTileStrip key={`${i}-ads-${thisCollection.id}`} />
         </>
       )
     }
