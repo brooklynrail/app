@@ -4,6 +4,7 @@ import { Articles, HomepageCollections } from "../../../../lib/types"
 import CollectionTribute from "../collections/tribute"
 import Paper, { PaperType } from "../paper"
 import { CollectionSection } from "./collections"
+import AdsTileStrip from "../ads/adsTileStrip"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -26,14 +27,27 @@ const HomePage = (props: HomePageProps) => {
       return null
     }
 
-    switch (thisCollection.type) {
-      case CollectionType.Section:
-        return <CollectionSection key={`${i}-${thisCollection.id}`} {...thisCollection} />
-      case CollectionType.Tribute:
-        return <CollectionTribute key={`${i}-${thisCollection.id}`} {...thisCollection} />
-      default:
-        return null
+    const collectionComponent = (() => {
+      switch (thisCollection.type) {
+        case CollectionType.Section:
+          return <CollectionSection key={`${i}-${thisCollection.id}`} {...thisCollection} />
+        case CollectionType.Tribute:
+          return <CollectionTribute key={`${i}-${thisCollection.id}`} {...thisCollection} />
+        default:
+          return null
+      }
+    })()
+
+    if (i === 1) {
+      return (
+        <>
+          {collectionComponent}
+          <AdsTileStrip key="ads-tile-strip" />
+        </>
+      )
     }
+
+    return collectionComponent
   })
 
   return (

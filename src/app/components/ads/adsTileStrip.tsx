@@ -6,33 +6,38 @@ import { useEffect, useState } from "react"
 import { getAds } from "../../../../lib/utils"
 
 const AdsTileStrip = () => {
-  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
+  const [randomAds, setRandomAds] = useState<Ads[] | undefined>(undefined) // Store the randomly selected ad
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!currentAds) {
-        const ads = getAds()
-        const [fetchedAds] = await Promise.all([ads])
-        setCurrentAds(fetchedAds)
+      try {
+        const ads = await getAds()
+        const filteredAds = ads.filter((ad) => ad.ad_type === "tile")
+
+        if (filteredAds.length > 0) {
+          const shuffledAds = filteredAds.sort(() => 0.5 - Math.random())
+          setRandomAds(shuffledAds) // Set the shuffled ads array here
+        }
+      } catch (error) {
+        console.error("Failed to fetch Ad data on Article page:", error)
       }
     }
-    fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
-  }, [currentAds])
 
-  if (!currentAds) {
-    return <p>Loading...</p>
+    fetchData()
+  }, [])
+
+  if (!randomAds) {
+    return (
+      <div className="flex flex-col py-3 pb-6 bg-zinc-700">
+        <p className="pb-0.5 text-slate-100 text-[11px] text-center leading-4 uppercase dark:text-slate-400">
+          Advertisements
+        </p>
+        <p className="text-center text-slate-100 text-sm">Loading...</p>
+      </div>
+    )
   }
 
-  // Filter the ads to only display tiles
-  const tileAds = currentAds.filter((ad: Ads) => ad.ad_type === "tile")
-  if (tileAds.length === 0) {
-    return null
-  }
-
-  // Randomize the ads and duplicate them for infinite scrolling effect
-  const randomizedTileAds = tileAds.sort(() => Math.random() - 0.5)
-
-  const tiles = randomizedTileAds.map((ad: Ads, i: number) => {
+  const tiles = randomAds.map((ad: Ads, i: number) => {
     if (!ad.tile_image || !ad.ad_url) {
       return null
     }
@@ -83,9 +88,11 @@ const AdsTileStrip = () => {
   })
 
   return (
-    <div className="flex flex-col tablet-lg:hidden py-6 !border-b-[1px] rail-border">
-      <p className="pb-0.5 text-[11px] leading-4 uppercase text-zinc-700 dark:text-slate-400">Advertisements</p>
-      <ul className={`flex items-center space-x-4 overflow-x-auto scroll-smooth`}>{tiles}</ul>
+    <div className="flex flex-col py-3 pb-6 bg-zinc-700">
+      <p className="pb-0.5 text-slate-100 text-[11px] text-center leading-4 uppercase dark:text-slate-400">
+        Advertisements
+      </p>
+      <ul className={`flex w-full justify-center items-center space-x-4 overflow-x-auto scroll-smooth`}>{tiles}</ul>
     </div>
   )
 }
