@@ -279,7 +279,6 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
       `${limitByIssue}` +
       `&limit=${limit ? limit : -1}` +
       `&sort[]=-issue.published` +
-      `&sort[]=-published` +
       `&sort[]=sort`
 
     const response = await fetch(articlesAPI)
