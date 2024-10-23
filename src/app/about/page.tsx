@@ -42,6 +42,8 @@ async function getData() {
     return notFound()
   }
 
+  const quotes = pageData.quotes
+
   const allPagesData = await getAllPages()
   if (!allPagesData) {
     return notFound()
@@ -54,6 +56,7 @@ async function getData() {
 
   return {
     navData,
+    quotes,
     pageData,
     allPagesData,
     permalink,

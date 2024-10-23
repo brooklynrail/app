@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { Homepage, Issues, Pages } from "../../../../lib/types"
+import { Homepage, Issues, Pages, PagesQuotes } from "../../../../lib/types"
 import Page from "../../components/page"
 import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
 import { getNavData } from "../../../../lib/utils/homepage"
@@ -15,6 +15,7 @@ export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 
 export interface PageProps {
   navData: Homepage
   pageData: Pages
+  quotes?: PagesQuotes[] | null
   allPagesData: Pages[]
   permalink: string
   errorCode?: number
@@ -53,6 +54,13 @@ async function getData({ params }: { params: PageParams }) {
     return notFound()
   }
 
+  const aboutPageData = await getPageData("about")
+  if (!aboutPageData) {
+    return notFound()
+  }
+
+  const quotes = aboutPageData.quotes
+
   const allPagesData = await getAllPages()
   if (!allPagesData) {
     return notFound()
@@ -71,6 +79,7 @@ async function getData({ params }: { params: PageParams }) {
   return {
     navData,
     pageData,
+    quotes,
     allPagesData,
     thisIssueData,
     permalink,
