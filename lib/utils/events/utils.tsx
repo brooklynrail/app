@@ -584,5 +584,9 @@ export const formatTime = (start_date: string, timeZone: string) => {
   // Format the period (AM/PM) to "a.m." or "p.m."
   const formattedPeriod = formattedTime.toLowerCase().replace("am", "a.m.").replace("pm", "p.m.")
 
-  return formattedPeriod
+  // If the minute is "00", exclude it from the output
+  const railtime = formattedPeriod.replace(":00", "")
+
+  return railtime
+  // return formattedPeriod
 }
