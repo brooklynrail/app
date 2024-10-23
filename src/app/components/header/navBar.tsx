@@ -35,6 +35,10 @@ const NavBar = (props: NavBarProps) => {
           if (!thisCollection.section || !thisCollection.section.featured) {
             return null
           }
+          // skip if it's the publisher's message
+          if (thisCollection.section.slug === "publishersmessage") {
+            return null
+          }
           return getPermalink({
             sectionSlug: thisCollection.section.slug,
             type: PageType.SuperSection,

@@ -20,6 +20,7 @@ export enum Collection {
   Music = "music",
   Theater = "theater",
   Poetry = "poetry",
+  PublishersMessage = "publishersmessage",
 }
 
 export const CollectionSection = (collection: Collections) => {
@@ -47,6 +48,8 @@ export const CollectionSection = (collection: Collections) => {
       return <CollectionTheater {...collection} />
     case Collection.Poetry:
       return <CollectionPoetry {...collection} />
+    case Collection.PublishersMessage:
+      return null
     default:
       return <CollectionDefault {...collection} />
   }
