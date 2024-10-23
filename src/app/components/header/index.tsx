@@ -8,25 +8,7 @@ import HomeBanner from "./homeBanner"
 import NavBar from "./navBar"
 import Subhead from "./subhead"
 import VideoBG from "./videobg"
-
-// Utility to set a cookie
-const setCookie = (name: string, value: string, days: number) => {
-  const expires = new Date()
-  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000) // Expire in x days
-  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`
-}
-
-// Utility to get a cookie
-const getCookie = (name: string): string | null => {
-  const nameEQ = name + "="
-  const cookies = document.cookie.split(";")
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i]
-    while (cookie.charAt(0) === " ") cookie = cookie.substring(1, cookie.length)
-    if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length, cookie.length)
-  }
-  return null
-}
+import { useRef, useState, useEffect } from "react"
 
 export interface HeaderProps {
   special_issue?: boolean | null
@@ -51,8 +33,47 @@ const Header = (props: HeaderProps) => {
   }
 }
 
+const getCookie = (name: string): string | null => {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
+  return match ? match[2] : null
+}
+
+const setCookie = (name: string, value: string, hours: number) => {
+  const expires = new Date()
+  expires.setHours(expires.getHours() + hours)
+  document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/`
+}
+
+const deleteCookie = (name: string) => {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+}
+
 const HeaderHomepage = (props: HeaderProps) => {
   const { title, type, banners, currentIssue, navData } = props
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isPaused, setIsPaused] = useState(false)
+
+  useEffect(() => {
+    // Check if the cookie is already set for video pause
+    const isVideoPaused = getCookie("videoBGPaused")
+    if (isVideoPaused === "true" && videoRef.current) {
+      videoRef.current.pause()
+      setIsPaused(true)
+    }
+  }, [])
+
+  const handleVideoToggle = () => {
+    if (videoRef.current) {
+      if (isPaused) {
+        videoRef.current.play()
+        deleteCookie("videoBGPaused")
+      } else {
+        videoRef.current.pause()
+        setCookie("videoBGPaused", "true", 24) // Set cookie for 1 day
+      }
+      setIsPaused(!isPaused)
+    }
+  }
 
   const permalink = getPermalink({
     type: PageType.Home,
@@ -68,7 +89,7 @@ const HeaderHomepage = (props: HeaderProps) => {
         </div>
 
         <div className="relative h-[calc(100vh-11.5rem)]">
-          <VideoBG />
+          <VideoBG videoRef={videoRef} />
           <div className="sticky top-0">
             <div className="p-3 tablet:px-6">
               <Link href={permalink} className="w-full space-y-3">
@@ -77,6 +98,12 @@ const HeaderHomepage = (props: HeaderProps) => {
               </Link>
             </div>
           </div>
+          <button
+            onClick={handleVideoToggle}
+            className="absolute font-sm bottom-3 right-3 bg-zinc-700 w-7 h-7 text-center rounded-full text-white z-10"
+          >
+            {isPaused ? "►" : "❚❚"}
+          </button>
         </div>
 
         {banners && currentIssue && <FeaturedBanner banners={banners} currentIssue={currentIssue} />}
