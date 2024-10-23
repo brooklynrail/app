@@ -234,54 +234,58 @@ interface CollectionArticlesProps {
 export const getCollectionArticles = cache(async (props: CollectionArticlesProps) => {
   const { slug, limit, currentIssueSlug } = props
 
-  try {
-    const data = await directus.request(
-      readItems("articles", {
-        fields: [
-          "*",
-          "id",
-          "slug",
-          "title",
-          "deck",
-          "excerpt",
-          "kicker",
-          "featured",
-          "status",
-          "hide_bylines_downstream",
-          {
-            section: ["name", "slug"],
-          },
-          {
-            issue: ["id", "title", "slug", "year", "month", "issue_number", "published", "cover_1"],
-          },
-          {
-            contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-          },
-          {
-            featured_image: ["id", "width", "height", "filename_disk", "caption"],
-          },
-          {
-            featured_artwork: ["id", "width", "height", "filename_disk", "caption"],
-          },
-          "sort",
-          "status",
-        ],
-        filter: {
-          status: { _eq: "published" },
-          section: { slug: { _eq: slug } },
-          // If no limit, then get the # of articles in this section the current issue
-          issue: { slug: { _eq: !limit ? currentIssueSlug : undefined } },
-        },
-        // If we have a limit, we want to get only the limit number of articles
-        limit: limit ? limit : -1,
-        // sort: ["issue.published"], // <- this is throwing errors
-        // sort: ["issue.year", "issue.month"], // <- this is throwing errors
-        // sort: ["issue.issue_number"], // <- this is throwing errors
-        sort: ["-date_updated"],
-      }),
-    )
+  // if no limit, filter by the currentIssueSlug
+  const limitByIssue = !limit ? `&filter[issue][slug][_eq]=${currentIssueSlug}` : ``
 
-    return data as Articles[]
+  try {
+    const articlesAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
+      `?fields[]=id` +
+      `&fields[]=slug` +
+      `&fields[]=title` +
+      `&fields[]=deck` +
+      `&fields[]=excerpt` +
+      `&fields[]=kicker` +
+      `&fields[]=featured` +
+      `&fields[]=status` +
+      `&fields[]=hide_bylines_downstream` +
+      `&fields[]=section.name` +
+      `&fields[]=section.slug` +
+      `&fields[]=issue.id` +
+      `&fields[]=issue.title` +
+      `&fields[]=issue.slug` +
+      `&fields[]=issue.year` +
+      `&fields[]=issue.month` +
+      `&fields[]=issue.issue_number` +
+      `&fields[]=issue.published` +
+      `&fields[]=issue.cover_1` +
+      `&fields[]=contributors.contributors_id.id` +
+      `&fields[]=contributors.contributors_id.bio` +
+      `&fields[]=contributors.contributors_id.first_name` +
+      `&fields[]=contributors.contributors_id.last_name` +
+      `&fields[]=featured_image.id` +
+      `&fields[]=featured_image.width` +
+      `&fields[]=featured_image.height` +
+      `&fields[]=featured_image.filename_disk` +
+      `&fields[]=featured_image.caption` +
+      `&fields[]=featured_artwork.id` +
+      `&fields[]=featured_artwork.width` +
+      `&fields[]=featured_artwork.height` +
+      `&fields[]=featured_artwork.filename_disk` +
+      `&fields[]=featured_artwork.caption` +
+      `&filter[status][_eq]=published` +
+      `&filter[section][slug][_eq]=${slug}` +
+      `&filter[issue][published][_nnull]=true` +
+      `${limitByIssue}` +
+      `&limit=${limit ? limit : -1}` +
+      `&sort[]=-issue.published` +
+      `&sort[]=-published` +
+      `&sort[]=sort`
+
+    const response = await fetch(articlesAPI)
+    const articlesData = await response.json()
+
+    return articlesData.data as Articles[]
   } catch (error) {
     console.error("Error fetching the articles data:", error)
     return null
