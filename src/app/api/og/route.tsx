@@ -36,7 +36,7 @@ export async function GET(request: Request) {
 
   const ogExcerpt = data.deck ? parse(data.deck) : data.excerpt
 
-  function Label({ children }: { children: React.ReactNode }) {
+  function Label({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
     return (
       <label
         style={{
@@ -46,6 +46,7 @@ export async function GET(request: Request) {
           letterSpacing: 1,
           margin: "0px 0 10px",
           color: "gray",
+          ...style,
         }}
       >
         {children}
@@ -61,19 +62,52 @@ export async function GET(request: Request) {
           flexDirection: "column",
           height: "100%",
           width: "100%",
-          padding: "10px 20px",
+          padding: "20px 40px",
           justifyContent: "center",
-          fontFamily: "Times New Roman",
-          fontSize: 28,
+          fontFamily: '"Times New Roman", Times, serif',
+          fontSize: 50,
           backgroundColor: "#FEF9C3",
+          textAlign: "center",
         }}
       >
-        <Label>October 2024</Label>
-        <Label>ISSUE #248</Label>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            padding: "10px 00px",
+            justifyContent: "space-between",
+            fontFamily: '"Times New Roman", Times, serif',
+            fontSize: 50,
+            backgroundColor: "#FEF9C3",
+          }}
+        >
+          <Label style={{ display: "flex" }}>October 2024</Label>
+          <Label style={{ display: "flex" }}>ArtSeen</Label>
+        </div>
 
-        <div style={{ marginTop: 10 }}>Ron Gorchov: Exploring the Near/Far Painterly Horizons of Modern Space</div>
+        <div style={{ display: "flex", textAlign: "center", justifyContent: "center", marginTop: 0 }}>
+          <img
+            width="100%"
+            height="400"
+            src="https://studio.brooklynrail.org/assets/d616ba7e-6b66-4ead-92a0-ac560afebd9e"
+            style={{
+              objectFit: "cover",
+              maxWidth: "100%",
+              height: "400px",
+            }}
+          />
+        </div>
 
-        <div style={{ marginTop: 30, color: "gray", fontSize: "20px" }}>
+        <div style={{ marginTop: 20, marginBottom: 0 }}>
+          Ron Gorchov: Exploring the Near/Far Painterly Horizons of Modern Space
+        </div>
+
+        <div style={{ display: "flex", textAlign: "center", justifyContent: "center", marginTop: 20 }}>
+          <Label>By Ekin Erkan</Label>
+        </div>
+
+        <div style={{ marginTop: 0, color: "gray", fontSize: "20px" }}>
           Vito Schnabel's Ron Gorchov retrospective, curated by Robert Storr, Exploring the Near/Far Painterly Horizons
           of Modern Space, excavates works from the late artist's studio, punctuating them with some of Gorchov's most
           important saddle-shaped canvases.
@@ -81,13 +115,12 @@ export async function GET(request: Request) {
 
         <div
           style={{
-            height: "10%",
-            width: "10%",
+            width: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "#FEF9C3",
-            marginTop: "14px",
+            marginTop: "30px",
           }}
         >
           <svg width="50" height="50" transform="scale(1)">
