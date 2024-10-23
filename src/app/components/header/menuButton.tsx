@@ -27,7 +27,7 @@ const MenuButton = (props: MenuButtonProps) => {
   return (
     <div className="">
       <div
-        className={`${classes} shadow-lg max-w-8 max-h-8 rounded-sm p-1 bg-white dark:bg-zinc-700 hover:cursor-pointer`}
+        className={`${classes} shadow-lg max-w-10 max-h-10 rounded-sm p-1 bg-white dark:bg-zinc-700 hover:cursor-pointer`}
       >
         <svg onClick={openMenu} className="" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4 8H12" className={strokefill} strokeLinecap="round" />

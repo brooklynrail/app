@@ -62,7 +62,7 @@ const NavBar = (props: NavBarProps) => {
 
     return (
       <li key={i}>
-        <Link href={permalink} className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase">
+        <Link href={permalink} className="py-2 px-2 tablet:px-3 text-nowrap inline-block text-xs font-bold uppercase">
           {thisCollection.title}
         </Link>
       </li>
@@ -71,11 +71,11 @@ const NavBar = (props: NavBarProps) => {
 
   return (
     <nav className="navbar sticky top-0 z-[11] border-b rail-border">
-      <div className="flex justify-center items-center w-full px-3 tablet:px-6">
-        <div className="py-1">
-          <MenuButton collections={navData.collections} classes={`w-[7vw] h-[7vw]`} />
+      <div className="flex justify-center items-center w-full pl-3 tablet:px-6">
+        <div className="py-1.5">
+          <MenuButton collections={navData.collections} classes={`w-[8vw] h-[8vw]`} />
         </div>
-        <ul className="px-3 flex items-center w-full overflow-x-auto no-scrollbar">
+        <ul className="pr-3 pl-1 flex items-center w-full overflow-x-auto no-scrollbar">
           {!isHomepage && home}
           {allCollections}
         </ul>
