@@ -55,15 +55,42 @@ const NavBar = (props: NavBarProps) => {
   })
 
   return (
-    <nav className="navbar pl-3 sticky top-0 z-[11] border-b rail-border">
-      <ul className="flex items-center w-full overflow-x-auto pr-3 no-scrollbar">
-        <li className="py-1 px-3 inline-block">
+    <nav className="navbar sticky top-0 z-[11] border-b rail-border">
+      <div className="flex justify-center items-center w-full px-3 tablet:px-6">
+        <div className="py-1">
           <MenuButton collections={navData.collections} classes={`w-[7vw] h-[7vw]`} />
-        </li>
-        {allCollections}
-      </ul>
+        </div>
+        <ul className="px-3 flex items-center w-full overflow-x-auto no-scrollbar">{allCollections}</ul>
+        <div className="flex space-x-2">
+          <SubscribeButton />
+          <DonateButton />
+        </div>
+      </div>
     </nav>
   )
 }
 
+const SubscribeButton = () => {
+  return (
+    <Link href={"/subscribe"}>
+      <button
+        className={`shadow-lg bg-white text-zinc-800 font-medium text-xs tablet:text-sm px-2.5 py-1.5 tablet:px-2.5 tablet:py-1 rounded-sm uppercase hover:underline underline-offset-2`}
+      >
+        Subscribe
+      </button>
+    </Link>
+  )
+}
+
+const DonateButton = () => {
+  return (
+    <Link href={"/donate"}>
+      <button
+        className={`shadow-lg bg-red-500 text-white font-medium text-xs tablet:text-sm px-2.5 py-1.5 tablet:px-2.5 tablet:py-1 rounded-sm uppercase hover:underline underline-offset-2`}
+      >
+        Donate
+      </button>
+    </Link>
+  )
+}
 export default NavBar

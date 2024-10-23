@@ -34,28 +34,4 @@ const HeaderDefault = (props: HeaderProps) => {
   )
 }
 
-const SubscribeButton = () => {
-  return (
-    <Link href={"/subscribe"}>
-      <button
-        className={`shadow-lg bg-white text-zinc-800 font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
-      >
-        Subscribe
-      </button>
-    </Link>
-  )
-}
-
-const DonateButton = () => {
-  return (
-    <Link href={"/donate"}>
-      <button
-        className={`shadow-lg bg-red-500 text-white font-medium text-xs tablet:text-sm tablet-lg:text-md desktop:text-lg desktop-lg:text-xl px-2.5 py-1.5 tablet:px-3.5 tablet:py-2 desktop:px-6 desktop:py-3 rounded uppercase hover:underline underline-offset-4`}
-      >
-        Donate
-      </button>
-    </Link>
-  )
-}
-
 export default HeaderDefault
