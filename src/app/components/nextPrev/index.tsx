@@ -74,7 +74,7 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle
       return (
         <div className="text-xs w-1/2">
           <Link href={getParentPermalink()}>
-            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memorium"}</span>
+            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memoriam"}</span>
             {getParentCollectionTitle()}
           </Link>
         </div>
@@ -88,7 +88,7 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle
       return (
         <div className="text-xs w-1/2 text-right">
           <Link href={getParentPermalink()}>
-            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memorium"}</span>
+            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memoriam"}</span>
             {getParentCollectionTitle()}
           </Link>
         </div>
