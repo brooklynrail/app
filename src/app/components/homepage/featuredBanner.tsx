@@ -13,11 +13,10 @@ enum BannerType {
 interface BannerProps {
   banners: HomepageBanners[]
   currentIssue: Issues
-  currentIssueRef: React.RefObject<HTMLDivElement>
 }
 
 const FeaturedBanner = (props: BannerProps) => {
-  const { banners, currentIssue, currentIssueRef } = props
+  const { banners, currentIssue } = props
 
   const allBanners = banners.map((item: HomepageBanners, index: number) => {
     const banner = item.collections_id
@@ -30,16 +29,7 @@ const FeaturedBanner = (props: BannerProps) => {
 
     switch (banner.banner_type) {
       case BannerType.CurrentIssue:
-        return (
-          <BannerCurrentIssue
-            currentIssueRef={currentIssueRef}
-            key={index}
-            banner={banner}
-            currentIssue={currentIssue}
-            first={first}
-            last={last}
-          />
-        )
+        return <BannerCurrentIssue key={index} banner={banner} currentIssue={currentIssue} first={first} last={last} />
       case BannerType.Exhibitions:
         return <BannerExhibitions key={index} banner={banner} first={first} last={last} />
       case BannerType.TheNewSocialEnvironment:

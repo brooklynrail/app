@@ -10,11 +10,10 @@ interface BannerCurrentIssueProps {
   currentIssue: Issues
   first: boolean
   last: boolean
-  currentIssueRef: React.RefObject<HTMLDivElement>
 }
 
 const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
-  const { banner, currentIssue, currentIssueRef } = props
+  const { banner, currentIssue } = props
 
   const first = props.first ? "pl-6" : ""
   const last = props.last ? "pr-6" : ""
@@ -42,7 +41,6 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
   return (
     <div
       id="current-issue"
-      ref={currentIssueRef}
       key={banner.id}
       className={`col-span-4 tablet:col-span-3 py-3 pb-6 px-6 bg-zinc-800 bg-opacity-70 ${first} ${last}`}
     >
