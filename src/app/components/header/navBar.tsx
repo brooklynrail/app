@@ -1,8 +1,9 @@
 "use client"
 import Link from "next/link"
-import { CollectionType } from "../homepage"
+import { usePathname } from "next/navigation"
 import { Homepage, HomepageCollections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
+import { CollectionType } from "../homepage"
 import MenuButton from "./menuButton"
 
 interface NavBarProps {
@@ -11,6 +12,16 @@ interface NavBarProps {
 
 const NavBar = (props: NavBarProps) => {
   const { navData } = props
+  const pathname = usePathname()
+  const isHomepage = pathname === "/"
+
+  const home = (
+    <li>
+      <Link href={`/`} className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase">
+        Home
+      </Link>
+    </li>
+  )
 
   const allCollections = navData.collections.map((collection: HomepageCollections, i: number) => {
     const thisCollection = collection.collections_id
@@ -60,7 +71,10 @@ const NavBar = (props: NavBarProps) => {
         <div className="py-1">
           <MenuButton collections={navData.collections} classes={`w-[7vw] h-[7vw]`} />
         </div>
-        <ul className="px-3 flex items-center w-full overflow-x-auto no-scrollbar">{allCollections}</ul>
+        <ul className="px-3 flex items-center w-full overflow-x-auto no-scrollbar">
+          {!isHomepage && home}
+          {allCollections}
+        </ul>
         <div className="hidden tablet:flex space-x-2">
           <SubscribeButton />
           <DonateButton />
