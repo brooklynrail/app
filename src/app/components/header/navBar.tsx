@@ -61,7 +61,7 @@ const NavBar = (props: NavBarProps) => {
           <MenuButton collections={navData.collections} classes={`w-[7vw] h-[7vw]`} />
         </div>
         <ul className="px-3 flex items-center w-full overflow-x-auto no-scrollbar">{allCollections}</ul>
-        <div className="flex space-x-2">
+        <div className="hidden tablet:flex space-x-2">
           <SubscribeButton />
           <DonateButton />
         </div>
