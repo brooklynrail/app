@@ -53,7 +53,7 @@ const Promos = (props: PromoProps) => {
     return (
       <div
         key={i}
-        className={`pt-1 pb-3 px-3 first:pl-0 first:tablet:pr-6 snap-center w-60 desktop:w-1/4 flex-none space-y-3`}
+        className={`pt-1 pb-3 px-3 tablet-lg:px-6 first:pl-0 first:tablet:pr-6 snap-center w-60 desktop:w-1/4 flex-none space-y-3`}
       >
         {featured_image && (
           <div className={`flex-none w-full`}>
