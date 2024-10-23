@@ -79,6 +79,19 @@ const HeaderHomepage = (props: HeaderProps) => {
     type: PageType.Home,
   })
 
+  const play = (
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+    </svg>
+  )
+
+  const pause = (
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 5H9V19H6V5Z" fill="currentColor" />
+      <path d="M15 5H18V19H15V5Z" fill="currentColor" />
+    </svg>
+  )
+
   return (
     <>
       <header className={`tablet:pt-0 relative rail-header-${type}`}>
@@ -100,9 +113,9 @@ const HeaderHomepage = (props: HeaderProps) => {
           </div>
           <button
             onClick={handleVideoToggle}
-            className="absolute font-sm bottom-3 right-3 bg-zinc-700 w-7 h-7 text-center rounded-full text-white z-10"
+            className="absolute font-sm bottom-3 right-3 bg-zinc-700 w-6 h-6 text-center rounded-full text-white z-10 flex justify-center items-center"
           >
-            {isPaused ? "►" : "❚❚"}
+            {isPaused ? play : pause}
           </button>
         </div>
 
