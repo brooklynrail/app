@@ -1,36 +1,81 @@
 import { PageBodyProps } from "./pageBody"
 
-enum StaffTypes {
-  BoardOfDirectors = "Board of Directors",
-  AdvisoryBoard = "Advisory Board",
+enum SupportersGroup {
+  SectionSponsors = "Section Sponsors",
+  Benefactors = "Benefactors",
+  SpecialThanks = "Special Thanks",
+  FriendsInSolidarity = "Friends in Solidarity",
 }
 
 const Supporters = (props: PageBodyProps) => {
   const { pageData } = props
 
-  if (!pageData.staff) {
+  if (!pageData.supporters) {
     return <></>
   }
 
-  const groupedStaff = pageData.staff.reduce((acc: { [key: string]: string[] }, member) => {
-    if (!acc[member.title]) {
-      acc[member.title] = []
+  const friendsInSolidarity = pageData.supporters.map((member, i) => {
+    if (member.group !== SupportersGroup.FriendsInSolidarity) {
+      return null
     }
-    acc[member.title].push(member.name)
-    return acc
-  }, {})
-
-  const fullList = Object.entries(groupedStaff).map(([title, names], i) => {
     return (
       <li key={i}>
-        <span className="">{title}</span>: <span className="font-bold">{names.join(", ")}</span>
+        <span>{member.name}</span>
+      </li>
+    )
+  })
+
+  const specialThanks = pageData.supporters.map((member, i) => {
+    if (member.group !== SupportersGroup.SpecialThanks) {
+      return null
+    }
+    return (
+      <li key={i}>
+        <span>{member.name}</span>
+      </li>
+    )
+  })
+
+  const benefactors = pageData.supporters.map((member, i) => {
+    if (member.group !== SupportersGroup.Benefactors) {
+      return null
+    }
+    return (
+      <li key={i}>
+        <span>{member.name}</span>
+      </li>
+    )
+  })
+
+  const sectionSponsors = pageData.supporters.map((member, i) => {
+    if (member.group !== SupportersGroup.SectionSponsors) {
+      return null
+    }
+    return (
+      <li key={i}>
+        <span>{member.name}</span>
       </li>
     )
   })
 
   return (
     <div className="py-12 space-y-12">
-      <ul className="text-lg space-y-2">{fullList}</ul>
+      <div className="space-y-3">
+        <h3 className="font-bold text-sm uppercase">{SupportersGroup.SectionSponsors}</h3>
+        <ul className="text-lg space-y-2">{sectionSponsors}</ul>
+      </div>
+      <div className="space-y-3">
+        <h3 className="font-bold text-sm uppercase">{SupportersGroup.Benefactors}</h3>
+        <ul className="text-lg space-y-2">{benefactors}</ul>
+      </div>
+      <div className="space-y-3">
+        <h3 className="font-bold text-sm uppercase">{SupportersGroup.SpecialThanks}</h3>
+        <ul className="text-lg space-y-2">{specialThanks}</ul>
+      </div>
+      <div className="space-y-3">
+        <h3 className="font-bold text-sm uppercase">{SupportersGroup.FriendsInSolidarity}</h3>
+        <ul className="text-lg space-y-2">{friendsInSolidarity}</ul>
+      </div>
     </div>
   )
 }

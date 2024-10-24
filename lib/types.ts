@@ -648,6 +648,7 @@ export type Pages = {
   user_updated?: string | DirectusUsers | null
   board?: PagesBoard[] | null
   staff?: PagesStaff[] | null
+  supporters?: PagesSupporters[] | null
   quotes?: PagesQuotes[] | null
 }
 
@@ -659,6 +660,11 @@ export type PagesBoard = {
 export type PagesStaff = {
   title: string
   name: string
+}
+
+export type PagesSupporters = {
+  name: string
+  group: string
 }
 
 export type PagesQuotes = {

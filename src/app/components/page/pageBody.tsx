@@ -18,7 +18,7 @@ const PageBody = (props: PageBodyProps) => {
       )}
       <Board pageData={pageData} />
       <Staff pageData={pageData} />
-      {/* <Supporters pageData={pageData} /> */}
+      <Supporters pageData={pageData} />
     </div>
   )
 }
