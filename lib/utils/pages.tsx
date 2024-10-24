@@ -16,6 +16,8 @@ export const getPageData = cache(async (slug: string) => {
           "board",
           "staff",
           "quotes",
+          "supporters",
+          "footnotes",
           {
             images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
           },
@@ -44,6 +46,8 @@ export const getAllPages = cache(async () => {
           "board",
           "staff",
           "quotes",
+          "supporters",
+          "footnotes",
           {
             images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
           },
