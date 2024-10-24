@@ -23,7 +23,4 @@ const PageBody = (props: PageBodyProps) => {
   )
 }
 
-  return <div className={`content`}>{replaceShortcodes({ html: pageData.body_text, images: pageData.images })}</div>
-}
-
 export default PageBody
