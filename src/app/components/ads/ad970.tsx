@@ -55,8 +55,8 @@ const Ad970 = () => {
 
   return (
     showAd && (
-      <div className="m-0 mt-2 bg-slate-100 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3">
-        {/* <div className="absolute -z-10 top-0 bottom-0 left-0 right-0 bg-white bg-opacity-30"></div> */}
+      <div className="m-0 mt-2 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3 overflow-hidden bg-white bg-opacity-80 backdrop-blur-md">
+        {/* <div className="absolute -z-10 top-0 bottom-0 left-0 right-0 bg-white backdrop-blur-md"></div> */}
         <button
           className="py-0 px-3 border border-zinc-200 text-zinc-500 text-center absolute -top-7 right-2 font-medium text-xs tablet:text-sm rounded-full bg-white flex items-center justify-center space-x-1 uppercase"
           onClick={() => setShowAd(false)}
