@@ -1,9 +1,9 @@
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../../lib/utils"
+import IssuePage from "@/app/components/issuePage"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
-import IssuePage from "@/app/components/issuePage"
-import { Metadata, Viewport } from "next"
-import { notFound } from "next/navigation"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../../lib/utils"
 import { getNavData } from "../../../../../lib/utils/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
