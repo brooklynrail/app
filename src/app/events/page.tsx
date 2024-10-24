@@ -27,31 +27,28 @@ export async function generateMetadata(): Promise<Metadata> {
     return {}
   }
 
-  const ogtitle = "Events"
-  const ogdescription = ""
-  // const ogimageprops = { ogimage: featured_image, title }
-  // const ogimages = getOGImage(ogimageprops)
+  const share_card = `${process.env.NEXT_PUBLIC_SITE_URL}/images/share-cards/brooklynrail-card.png`
+
+  const ogtitle = "The New Social Environment - The Brooklyn Rail"
 
   return {
     title: `${ogtitle}`,
-    description: ogdescription,
     alternates: {
       canonical: `${data.permalink}`,
     },
     openGraph: {
       title: `${ogtitle}`,
-      description: ogdescription,
       url: data.permalink,
-      // images: ogimages,
+      images: share_card,
       // type: `article`,
     },
     twitter: {
-      // images: ogimages,
+      images: share_card,
     },
   }
 }
 
-export default async function EventsController({ params }: { params: EventsProps }) {
+export default async function EventsController() {
   const data = await getData()
   if (!data.allEvents || !data.permalink) {
     return notFound()
