@@ -32,7 +32,7 @@ const AdsTileStrip = () => {
         <p className="pb-0.5 text-slate-100 text-[11px] text-center leading-4 uppercase dark:text-slate-400">
           Advertisements
         </p>
-        <p className="text-center text-slate-100 text-sm">Loading...</p>
+        <p className="min-h-[147px] text-center text-slate-100 text-sm">Loading...</p>
       </div>
     )
   }
@@ -92,7 +92,9 @@ const AdsTileStrip = () => {
       <p className="pb-0.5 text-slate-100 text-[11px] text-center leading-4 uppercase dark:text-slate-400">
         Advertisements
       </p>
-      <ul className={`flex w-full justify-center items-center space-x-4 overflow-x-auto scroll-smooth`}>{tiles}</ul>
+      <ul className={`flex w-full justify-center items-center space-x-4 overflow-x-auto scroll-smooth min-h-[147px]`}>
+        {tiles}
+      </ul>
     </div>
   )
 }
