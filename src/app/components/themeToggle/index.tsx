@@ -9,7 +9,8 @@ interface ThemeToggleProps {
 function ThemeToggle(props: ThemeToggleProps) {
   const { theme, setTheme } = props
 
-  const isDev = process.env.NEXT_PUBLIC_VERCEL_ENV != "production" && process.env.NEXT_PUBLIC_VERCEL_ENV != "preview"
+  const isDevOrPreview =
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "development" || process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
 
   useEffect(() => {
     // Get the stored theme preference from localStorage
@@ -47,7 +48,7 @@ function ThemeToggle(props: ThemeToggleProps) {
       <button className={styles.theme_toggle} onClick={toggleTheme}>
         {theme === "dark" ? "🌙" : "🌞"}
       </button>
-      {isDev && (
+      {isDevOrPreview && (
         <p className="text-xs">
           <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden widescreen:block`}>
             widescreen
