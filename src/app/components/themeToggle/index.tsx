@@ -1,5 +1,7 @@
 import { useEffect } from "react"
 import styles from "./themeToggle.module.scss"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons"
 
 interface ThemeToggleProps {
   theme: string | null
@@ -45,8 +47,16 @@ function ThemeToggle(props: ThemeToggleProps) {
 
   return (
     <div className="flex space-x-3 items-center fixed bottom-4 left-4 z-50">
-      <button className={styles.theme_toggle} onClick={toggleTheme}>
-        {theme === "dark" ? "🌙" : "🌞"}
+      <button className={`${styles.theme_toggle}`} onClick={toggleTheme}>
+        {theme === "dark" ? (
+          <span className="text-sky-200">
+            <FontAwesomeIcon icon={faMoon} />
+          </span>
+        ) : (
+          <span className="text-amber-200">
+            <FontAwesomeIcon icon={faSun} />
+          </span>
+        )}
       </button>
       {isDevOrPreview && (
         <p className="text-xs">
