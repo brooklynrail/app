@@ -27,6 +27,16 @@ export const revalidateArticle = cache(async (data: Articles) => {
   return url.pathname
 })
 
+export const revalidateSuperSection = cache(async (data: Sections) => {
+  const permalink = getPermalink({
+    sectionSlug: data.slug,
+    type: PageType.Section,
+  })
+  const url = new URL(permalink)
+  revalidatePath(url.pathname)
+  return url.pathname
+})
+
 export const revalidateIssue = cache(async (data: Issues) => {
   const permalink = getPermalink({
     issueSlug: data.slug,

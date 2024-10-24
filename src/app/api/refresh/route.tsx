@@ -3,6 +3,7 @@ import {
   revalidateContributor,
   revalidateEvent,
   revalidateIssue,
+  revalidateSuperSection,
   RevalidateType,
 } from "../../../../lib/utils/revalidate"
 import { Articles, Contributors, Events } from "../../../../lib/types"
@@ -50,6 +51,7 @@ export async function GET(request: Request) {
 
     let response: Response
     let path: string
+    let section: string
     switch (type) {
       case RevalidateType.Articles:
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
@@ -57,8 +59,9 @@ export async function GET(request: Request) {
         if (!response.ok) throw new Error("Failed to fetch article")
         const articleData: Articles = await response.json()
         path = await revalidateArticle(articleData)
+        section = await revalidateSuperSection(articleData.section)
         const issuePath = await revalidateIssue(articleData.issue)
-        return new Response(`Revalidation started for paths: ${path} and ${issuePath}`, { status: 200 })
+        return new Response(`Revalidation started for paths: ${path}, ${section}, and ${issuePath}`, { status: 200 })
 
       case RevalidateType.Contributors:
         // Example path: /contributor/louis-block/
