@@ -29,7 +29,7 @@ const CollectionPoetry = (collection: Collections) => {
   return (
     <div key={collection.id} className={`pb-3 bg-stone-100 dark:bg-stone-700`}>
       <CollectionHead
-        title={section.name}
+        title={collection.title}
         permalink={section.featured ? sectionPermalink : null}
         classes="bg-stone-100 dark:bg-stone-700"
       />
