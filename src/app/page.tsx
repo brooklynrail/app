@@ -12,12 +12,6 @@ export const dynamicParams = true
 // request comes in, at most once every 60 seconds.
 export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 86400 : 0
 
-// Set the Viewport to show the full page of the Rail on mobile devices
-// export const viewport: Viewport = {
-//   width: "device-width",
-//   initialScale: 0.405,
-// }
-
 export interface HomePageProps {
   navData: Homepage
   homepageData: Homepage
