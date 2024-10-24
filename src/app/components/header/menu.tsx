@@ -1,116 +1,242 @@
-import { useTheme } from "@/app/components/theme"
-import Link from "next/link"
 import { useEffect, useState } from "react"
-import { GlobalSettings, GlobalSettingsNavigation, Sections, Tributes } from "../../../../lib/types"
-import { getNavigation, getPermalink, PageType } from "../../../../lib/utils"
-import { glob } from "fs"
-import { get } from "http"
+import { Events, HomepageCollections, Issues, Pages } from "../../../../lib/types"
+import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
+import Link from "next/link"
+import parse from "html-react-parser"
+import { CollectionType } from "../homepage"
+import { formatTime, getUpcomingEventsBanner } from "../../../../lib/utils/events/utils"
+import { getAllPages, getPageData } from "../../../../lib/utils/pages"
 
-interface MenuProps {}
+interface MenuProps {
+  closeMenu: () => void
+  collections: HomepageCollections[]
+}
 
-const Menu = () => {
-  const { theme } = useTheme()
-
-  const [globalSettings, setGlobalSettings] = useState<GlobalSettings | undefined>(undefined)
+const Menu = (props: MenuProps) => {
+  const { closeMenu, collections } = props
+  const [issue, setIssue] = useState<Issues | undefined>(undefined)
+  const [currentEvents, setCurrentEvents] = useState<Events[] | undefined>(undefined)
+  const [currentPages, setCurrentPages] = useState<Pages[] | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!globalSettings) {
-        const global_settings = await getNavigation()
+      if (!currentEvents) {
+        const events = await getUpcomingEventsBanner()
+        const [fetchedEvents] = await Promise.all([events])
+        setCurrentEvents(fetchedEvents)
+      }
+    }
+
+    fetchData().catch((error) => console.error("Failed to fetch Event data on the Homepage:", error))
+  }, [currentEvents])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!currentPages) {
+        const pages = await getAllPages()
+        const [fetchedPages] = await Promise.all([pages])
+        setCurrentPages(fetchedPages)
+      }
+    }
+
+    fetchData().catch((error) => console.error("Failed to fetch Event data on the Homepage:", error))
+  }, [currentEvents])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!issue) {
+        const issueData = await getCurrentIssueData()
         // Fetch all the data in parallel
-        const [fetchedNav] = await Promise.all([global_settings])
+        const [fetchedIssue] = await Promise.all([issueData])
         // Update the state with the fetched data as it becomes available
-        setGlobalSettings(fetchedNav)
+        fetchedIssue && setIssue(fetchedIssue)
       }
     }
     // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch globalNav data:", error))
-  }, [globalSettings])
+    fetchData().catch((error) => console.error("Failed to fetch issue data:", error))
+  }, [issue])
 
-  if (!globalSettings) {
-    return <>loading....</>
-  }
-
-  const current_issue = globalSettings.current_issue
-  const items = globalSettings.navigation.map((nav: GlobalSettingsNavigation) => {
-    if (nav.collection === "sections") {
-      const sectionPermalink = getPermalink({
-        issueSlug: current_issue.slug,
-        section: nav.item.slug,
-        type: PageType.Section,
-      })
-      return (
-        <li key={nav.id} className="px-6 py-3 font-bold text-center">
-          <Link href={sectionPermalink}>{nav.item.name}</Link>
-        </li>
-      )
+  const allCollections = collections.map((collection: HomepageCollections, i: number) => {
+    const thisCollection = collection.collections_id
+    if (!thisCollection) {
+      return null
     }
 
-    if (nav.collection === "tributes") {
-      return (
-        <li key={nav.id} className="px-6 py-3 font-bold text-center">
-          {nav.item.title}
-        </li>
-      )
+    const permalink = (() => {
+      switch (thisCollection.type) {
+        case CollectionType.Section:
+          if (!thisCollection.section || !thisCollection.section.featured) {
+            return null
+          }
+          return getPermalink({
+            sectionSlug: thisCollection.section.slug,
+            type: PageType.SuperSection,
+          })
+        case CollectionType.Tribute:
+          if (!thisCollection.tribute) {
+            return null
+          }
+          return getPermalink({
+            tributeSlug: thisCollection.tribute.slug,
+            type: PageType.Tribute,
+          })
+        default:
+          return null
+      }
+    })()
+
+    if (!permalink) {
+      return null
     }
 
-    if (nav.collection === "pages") {
-      return (
-        <li key={nav.id} className="px-6 py-3 font-bold text-center">
-          {nav.item.title}
-        </li>
-      )
-    }
-
-    return <></>
+    return (
+      <li key={i} className="text-center">
+        <Link href={permalink} className="py-3 block text-sm font-bold uppercase text-center">
+          {parse(thisCollection.title)}
+        </Link>
+      </li>
+    )
   })
 
-  const searchIcon = (
-    <button className="bg-white pr-2 py-2 flex-none border-[1px] border-l-0 border-zinc-800 rounded-e-md">
-      <svg className="" width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M24.8152 23.0416L20.0058 18.2322C21.0994 16.6086 21.639 14.58 21.3502 12.4184C20.8576 8.74162 17.8442 5.74952 14.1638 5.28357C8.6919 4.59117 4.09065 9.19242 4.78309 14.6643C5.24916 18.3463 8.24166 21.3621 11.9188 21.8523C14.0804 22.1411 16.1094 21.6017 17.7326 20.5079L22.542 25.3173C23.1696 25.9449 24.1873 25.9449 24.8149 25.3173C25.4419 24.6889 25.4419 23.6684 24.8152 23.0416ZM7.89195 13.5715C7.89195 10.7357 10.199 8.42863 13.0348 8.42863C15.8706 8.42863 18.1777 10.7357 18.1777 13.5715C18.1777 16.4073 15.8706 18.7143 13.0348 18.7143C10.199 18.7143 7.89195 16.4081 7.89195 13.5715Z"
-          fill="#3F3F46"
-        />
-      </svg>
-    </button>
+  const arrow = (
+    <svg width="13" height="20" viewBox="0 0 13 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0.646447 9.64645C0.451184 9.84171 0.451184 10.1583 0.646447 10.3536L3.82843 13.5355C4.02369 13.7308 4.34027 13.7308 4.53553 13.5355C4.7308 13.3403 4.7308 13.0237 4.53553 12.8284L1.70711 10L4.53553 7.17157C4.7308 6.97631 4.7308 6.65973 4.53553 6.46447C4.34027 6.2692 4.02369 6.2692 3.82843 6.46447L0.646447 9.64645ZM1 10.5H13V9.5H1V10.5Z"
+        fill="#18181B"
+      />
+    </svg>
   )
+
+  const allPages = currentPages?.map((page: Pages, i: number) => {
+    const pageURL = getPermalink({
+      slug: page.slug,
+      type: PageType.Page,
+    })
+    const childPageURL = getPermalink({
+      slug: page.slug,
+      type: PageType.ChildPage,
+    })
+    return (
+      <li key={i} className="">
+        <Link href={page.slug === "about" ? pageURL : childPageURL} className="block text-sm font-bold">
+          {parse(page.title)}
+        </Link>
+      </li>
+    )
+  })
 
   return (
-    <div className="rail-bg z-50 h-screen w-mobile fixed left-0 top-0 bottom-0 overflow-auto">
-      <div className="flex flex-col p-6 space-y-6">
-        <div className="flex justify-between">
-          <Link className="text-lg font-bold" href="/">
-            Home
-          </Link>{" "}
-          <Link className="text-lg font-bold" href="/">
-            Close
-          </Link>
+    <div className="top-0 left-0 w-[calc(100vw-6rem)] max-w-screen-mobile-lg rail-bg h-screen fixed z-[100] overflow-y-auto !m-0 bg-slate-50 dark:bg-zinc-700">
+      <div className="grid grid-cols-3 gap-x-3">
+        <div className="col-span-3">
+          <div className="p-6">
+            <div className="relative flex flex-row-reverse justify-between w-full ">
+              <p
+                onClick={closeMenu}
+                className="hover:underline font-bold text-xs uppercase flex items-center space-x-1"
+              >
+                {arrow} <span>Close</span>
+              </p>
+              <p>
+                <Link className="font-bold text-sm uppercase" href="/">
+                  Home
+                </Link>
+              </p>
+            </div>
+            <div className="mt-4 hidden">
+              <input type="text" placeholder="Search..." className="w-full p-2 border border-gray-300 rounded-md" />
+            </div>
+          </div>
         </div>
-
-        {/* enter a search form */}
-        <form action="" className="flex space-x-0">
-          <input
-            className="w-full border-[1px] border-r-0 border-zinc-800 rounded-s-md text-md px-2 py-2"
-            type="text"
-            placeholder="Search"
-          />
-          {searchIcon}
-        </form>
+        {currentEvents && <EventCard event={currentEvents[0]} />}
+        <div className="col-span-3">
+          <div className="divide-y rail-divide">
+            <ul className="divide-y rail-divide">{allCollections}</ul>
+            <div className="py-3 bg-slate-100 dark:bg-zinc-700 pb-48">
+              <ul className="py-3 block text-sm font-bold px-9 space-y-3">
+                {allPages}
+                <li className="">
+                  <Link className="flex space-x-2 w-full" href={`/subscribe`}>
+                    <span>Sign up for our newsletter</span>
+                  </Link>
+                </li>
+                <li className="">
+                  <Link className="flex space-x-2 w-full" href={`/instagram`}>
+                    <span>Follow us on Instagram</span>
+                  </Link>
+                </li>
+                <li className="">
+                  <Link className="flex space-x-2 w-full" href={`/store`}>
+                    <span>Visit our store</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="divide-y-[1px] divide-dotted">
-        <div className="flex bg-zinc-800 text-white divide-x-[1px] divide-dotted w-full justify-between">
-          <div className="p-6 w-1/2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-          <div className="p-6 w-1/2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-        </div>
-        <div className="flex bg-zinc-800 text-white divide-x-[1px] divide-dotted w-full justify-between">
-          <div className="p-6 w-1/2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-          <div className="p-6 w-1/2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-        </div>
-      </div>
-      <ul className="flex flex-col divide-y-[1px] rail-divide">{items}</ul>
     </div>
   )
+}
+interface EventCardProps {
+  event: Events
+}
+const EventCard = (props: EventCardProps) => {
+  const { title, slug, start_date, end_date } = props.event
+
+  // get the start date in this format:
+  // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
+  const startDate = new Date(start_date + "Z")
+  const endDate = new Date(end_date + "Z")
+
+  const isSameDay = startDate.toDateString() === endDate.toDateString()
+
+  // // Get the time in both Eastern and Pacific time
+  const startTimeET = formatTime(start_date, "America/New_York")
+  const startTimePT = formatTime(start_date, "America/Los_Angeles")
+
+  const eventYear = startDate.getFullYear()
+  const eventMonth = startDate.getMonth() + 1
+  const eventDay = startDate.getDate()
+
+  const permalink = getPermalink({
+    eventYear: eventYear,
+    eventMonth: eventMonth,
+    eventDay: eventDay,
+    slug: slug,
+    type: PageType.Event,
+  })
+
+  const eventCard = (
+    <div className="col-span-3 bg-zinc-800 text-slate-100 py-3">
+      <div className="grid grid-cols-3 divide-x divide-white divide-dotted">
+        <div className="col-span-2">
+          <div className="px-3">
+            <h4 className="font-bold text-sm">Today</h4>
+            <p className="text-sm">
+              <Link href={permalink}>
+                <span className="block">
+                  {startTimeET} ET / {startTimePT} PT
+                </span>{" "}
+                <strong>{title}</strong>
+              </Link>
+            </p>
+          </div>
+        </div>
+        <div className="col-span-1">
+          <div className="px-3 flex flex-col text-sm divide-y divide-white divide-dotted">
+            <Link className="py-1.5 font-medium" href="/events">
+              Upcoming events
+            </Link>
+            <Link className="py-1.5 font-medium" href="/events/past">
+              Past events
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+  return eventCard
 }
 
 export default Menu

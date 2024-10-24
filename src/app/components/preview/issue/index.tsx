@@ -2,11 +2,10 @@
 import { useState, useEffect } from "react"
 import Password from "../password"
 import IssuePage from "../../issuePage"
-import { PageLayout } from "@/app/page"
 import { IssuePreviewProps } from "@/app/preview/issue/[id]/page"
 
 const IssuePreview = (props: IssuePreviewProps) => {
-  const { thisIssueData, isEnabled, previewPassword } = props
+  const { thisIssueData, isEnabled, previewPassword, navData } = props
   const cookieSlug = `rail_preview_${thisIssueData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
@@ -67,7 +66,7 @@ const IssuePreview = (props: IssuePreviewProps) => {
   }
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${thisIssueData.id}`
-  return <IssuePage {...props} layout={PageLayout.Issue} previewURL={previewURL} />
+  return <IssuePage {...props} navData={navData} />
 }
 
 export default IssuePreview

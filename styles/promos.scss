@@ -1,0 +1,23 @@
+.excerpt {
+  @apply font-normal;
+  @apply text-sm;
+}
+
+.excerpt-sm {
+  @extend .excerpt;
+}
+
+.excerpt-lg {
+  @extend .excerpt;
+  @apply text-lg;
+}
+
+.excerpt-xl {
+  @extend .excerpt;
+  @apply text-xl;
+}
+
+.excerpt-2xl {
+  @extend .excerpt;
+  @apply text-2xl;
+}

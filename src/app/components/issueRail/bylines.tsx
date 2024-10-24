@@ -15,7 +15,7 @@ const Bylines = (props: BylinesProps) => {
   }
   const by = guestCritic ? <strong>Guest Critic:</strong> : "By"
   return (
-    <cite>
+    <cite className="not-italic">
       {byline_override ? (
         <span>{byline_override}</span>
       ) : (

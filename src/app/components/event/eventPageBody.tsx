@@ -1,5 +1,4 @@
 "use client"
-import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
 import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import parse from "html-react-parser"
@@ -9,6 +8,7 @@ import Sponsor from "../events/sponsor"
 import { Poets, SoundWaves } from "."
 import ReactMarkdown from "react-markdown"
 import Person from "./person"
+import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
 import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "../../../../lib/utils/events/utils"
 
 const EventPageBody = (props: EventProps) => {

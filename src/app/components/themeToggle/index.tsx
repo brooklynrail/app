@@ -1,5 +1,7 @@
 import { useEffect } from "react"
 import styles from "./themeToggle.module.scss"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons"
 
 interface ThemeToggleProps {
   theme: string | null
@@ -9,31 +11,28 @@ interface ThemeToggleProps {
 function ThemeToggle(props: ThemeToggleProps) {
   const { theme, setTheme } = props
 
+  const isDevOrPreview =
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "development" || process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
+
   useEffect(() => {
     // Get the stored theme preference from localStorage
     const savedTheme = localStorage.getItem("theme")
-    const forcedTheme = "light"
 
     // If a theme is saved in localStorage, use it. Otherwise, use the system preference
     if (savedTheme) {
       setTheme(savedTheme)
 
-      document.documentElement.setAttribute("data-mode", forcedTheme)
-      document.documentElement.classList.add(forcedTheme)
+      document.documentElement.setAttribute("data-mode", savedTheme)
+      document.documentElement.classList.add(savedTheme)
       // add className to the HTML element
     } else {
       // Default to system setting
       const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-      // setTheme(systemPrefersDark ? "dark" : "light")
-      setTheme(systemPrefersDark ? forcedTheme : "light")
-      document.documentElement.classList.add(systemPrefersDark ? forcedTheme : "light")
-      document.documentElement.setAttribute("data-mode", systemPrefersDark ? forcedTheme : "light")
+      setTheme(systemPrefersDark ? "dark" : "light")
+      document.documentElement.classList.add(systemPrefersDark ? "dark" : "light")
+      document.documentElement.setAttribute("data-mode", systemPrefersDark ? "dark" : "light")
     }
   }, [])
-
-  if (process.env.NODE_ENV === "production") {
-    return <></>
-  }
 
   // Toggle between dark and light themes
   const toggleTheme = () => {
@@ -47,45 +46,55 @@ function ThemeToggle(props: ThemeToggleProps) {
   }
 
   return (
-    <div className="flex space-x-3 items-center fixed bottom-4 left-4">
-      <button className={styles.theme_toggle} onClick={toggleTheme}>
-        {theme === "dark" ? "🌙" : "🌞"}
+    <div className="flex space-x-3 items-center fixed bottom-4 left-4 z-50">
+      <button className={`${styles.theme_toggle}`} onClick={toggleTheme}>
+        {theme === "dark" ? (
+          <span className="text-sky-200">
+            <FontAwesomeIcon icon={faMoon} />
+          </span>
+        ) : (
+          <span className="text-amber-200">
+            <FontAwesomeIcon icon={faSun} />
+          </span>
+        )}
       </button>
-      <p className="text-xs">
-        <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden widescreen:block`}>
-          widescreen
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop-lg:max-widescreen:block`}
-        >
-          desktop-lg
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop:max-desktop-lg:block`}
-        >
-          desktop
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet-lg:max-desktop:block`}
-        >
-          tablet-lg
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet:max-tablet-lg:block`}
-        >
-          tablet
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile-lg:max-tablet:block`}
-        >
-          mobile-lg
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile:max-mobile-lg:block`}
-        >
-          mobile
-        </span>
-      </p>
+      {isDevOrPreview && (
+        <p className="text-xs">
+          <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden widescreen:block`}>
+            widescreen
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop-lg:max-widescreen:block`}
+          >
+            desktop-lg
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop:max-desktop-lg:block`}
+          >
+            desktop
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet-lg:max-desktop:block`}
+          >
+            tablet-lg
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet:max-tablet-lg:block`}
+          >
+            tablet
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile-lg:max-tablet:block`}
+          >
+            mobile-lg
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile:max-mobile-lg:block`}
+          >
+            mobile
+          </span>
+        </p>
+      )}
     </div>
   )
 }

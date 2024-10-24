@@ -6,7 +6,7 @@ import PreviewInfo from "./previewInfo"
 import PreviewHeader from "../previewHead"
 import Title, { TitleType } from "../../collections/promos/title"
 import Bylines, { BylineType } from "../../collections/promos/bylines"
-import Paper from "../../paper"
+import Paper, { PaperType } from "../../paper"
 import parse from "html-react-parser"
 import BookshopWidget from "../../article/bookshop"
 import styles from "../../article/poetry.module.scss"
@@ -15,7 +15,7 @@ import ContributorsBox from "../../contributorsBox"
 import ArticleHead from "../../article/articleHead"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
-  const { articleData, isEnabled, previewPassword, directusUrl } = props
+  const { articleData, isEnabled, previewPassword, directusUrl, navData } = props
 
   // cookieSlug is the cookie that gets set after you enter the password
   const cookieSlug = `rail_preview_${articleData.slug}`
@@ -80,7 +80,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   const isTribute = articleData.tribute
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.id}/`
   return (
-    <Paper pageClass="paper-preview" hidePopup={true}>
+    <Paper pageClass="paper-preview" hidePopup={true} type={PaperType.Preview} navData={navData}>
       <main className="">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
           <div className="col-span-4 tablet-lg:col-span-12">

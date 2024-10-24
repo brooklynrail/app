@@ -22,11 +22,51 @@ const config: Config = {
       widescreen: "1400px",
     },
     fontFamily: {
-      sans: ["var(--font-family-sans)", "Georgia", "ui-sans-serif", "system-ui"],
-      serif: ["var(--font-family-serif)", "Georgia", "ui-serif"],
-      mono: ["var(--font-family-mono)", "SFMono-Regular"],
-      display: ["var(--font-family-display)", "Georgia", "ui-sans-serif", "system-ui"],
-      body: ["var(--font-family-body)", "Georgia", "ui-sans-serif", "system-ui"],
+      sans: [
+        "var(--font-family-sans)", // Untitled Sans (custom)
+        "Helvetica Neue", // Popular sans-serif, widely available on Mac and iOS
+        "Arial", // Default fallback sans-serif on Windows
+        "Segoe UI", // Common on Windows and Microsoft platforms
+        "Roboto", // Popular on Android and Google platforms
+        "system-ui", // Uses the system's default sans-serif
+        "-apple-system", // macOS and iOS system font
+        "BlinkMacSystemFont", // Fallback for WebKit-based browsers
+        "sans-serif", // Generic fallback
+      ],
+      serif: [
+        "var(--font-family-serif)", // Untitled Serif (custom)
+        "Georgia", // Well-regarded serif font, common across platforms
+        "Cambria", // A default serif on Windows
+        "Times New Roman", // Traditional web-safe serif
+        "ui-serif", // Uses the system's default serif
+        "serif", // Generic serif fallback
+      ],
+      mono: [
+        "var(--font-family-mono)", // Custom monospace font if available
+        "SFMono-Regular", // macOS default monospace font
+        "Consolas", // Popular on Windows
+        "Liberation Mono", // Common on Linux
+        "Courier New", // Traditional monospace fallback
+        "monospace", // Generic fallback
+      ],
+      display: [
+        "var(--font-family-display)", // Custom display font
+        "Helvetica Neue", // Suitable for large text and UI elements
+        "Arial",
+        "Segoe UI",
+        "system-ui",
+        "-apple-system",
+        "sans-serif",
+      ],
+      body: [
+        "var(--font-family-body)", // Custom body font (Untitled Sans or Serif)
+        "Georgia", // Clean and widely supported for body text
+        "Arial",
+        "Roboto",
+        "system-ui",
+        "-apple-system",
+        "sans-serif",
+      ],
     },
     letterSpacing: {
       serif: "0.5px",

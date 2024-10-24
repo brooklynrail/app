@@ -72,9 +72,9 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle
   const prevLink = () => {
     if (currentArticleIndex <= 0) {
       return (
-        <div className="text-xs">
+        <div className="text-xs w-1/2">
           <Link href={getParentPermalink()}>
-            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memorium"}</span>
+            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memoriam"}</span>
             {getParentCollectionTitle()}
           </Link>
         </div>
@@ -86,9 +86,9 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle
   const nextLink = () => {
     if (currentArticleIndex >= articlesListCount - 1) {
       return (
-        <div className="text-xs text-right">
+        <div className="text-xs w-1/2 text-right">
           <Link href={getParentPermalink()}>
-            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memorium"}</span>
+            <span className="uppercase">{type === NextPrevType.Issues ? "Issue" : "In Memoriam"}</span>
             {getParentCollectionTitle()}
           </Link>
         </div>
@@ -98,7 +98,7 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle
   }
 
   return (
-    <nav className={`flex justify-between ${type === NextPrevType.Tributes ? "pt-0 pb-6" : "py-6"}`}>
+    <nav className={`flex justify-between ${type === NextPrevType.Tributes ? "pt-0 pb-6" : "py-3 tablet:py-6"}`}>
       {prevLink()}
       {nextLink()}
     </nav>
@@ -146,7 +146,7 @@ const ArticleLink = ({
   switchArticle?: (slug: string) => void
 }) => {
   return (
-    <div className={`text-xs ${text === "Next" && "text-right"}`}>
+    <div className={`text-xs w-1/2 ${text === "Next" && "text-right"}`}>
       <Link
         href={permalink}
         onClick={(e) => {

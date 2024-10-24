@@ -2,7 +2,6 @@
 import directus from "./directus"
 import { readItems, readSingleton } from "@directus/sdk"
 import {
-  Ads,
   Articles,
   Contributors,
   DirectusFiles,
@@ -36,6 +35,8 @@ export async function getAllIssues() {
         `&fields[]=special_issue` +
         `&fields[]=issue_number` +
         `&fields[]=date_updated` +
+        `&fields[]=summary` +
+        `&fields[]=credits` +
         `&fields[]=status` +
         `&fields[]=cover_1.caption` +
         `&fields[]=cover_1.filename_disk` +
@@ -158,56 +159,6 @@ export const getCurrentIssueData = cache(async () => {
   }
 })
 
-export const getPageData = cache(async (slug: string) => {
-  try {
-    const pageData = await directus.request(
-      readItems("pages", {
-        fields: [
-          "*",
-          "title",
-          "slug",
-          "status",
-          "body_text",
-          {
-            images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
-          },
-        ],
-        filter: { status: { _eq: "published" }, slug: { _eq: slug } },
-      }),
-    )
-
-    return pageData[0] as Pages
-  } catch (error) {
-    console.error("Error fetching page data:", error)
-    return null
-  }
-})
-
-export const getAllPages = cache(async () => {
-  try {
-    const pagesData = await directus.request(
-      readItems("pages", {
-        fields: [
-          "*",
-          "title",
-          "slug",
-          "status",
-          "body_text",
-          {
-            images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
-          },
-        ],
-        filter: { status: { _eq: "published" } },
-      }),
-    )
-
-    return pagesData as Pages[]
-  } catch (error) {
-    console.error("Error fetching all pages data:", error)
-    return null
-  }
-})
-
 export const getGlobalSettings = cache(async () => {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
   const res = await fetch(globalSettingsAPI)
@@ -236,6 +187,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=year` +
     `&fields[]=month` +
     `&fields[]=status` +
+    `&fields[]=published` +
     `&fields[]=issue_number` +
     `&fields[]=special_issue` +
     `&fields[]=old_id` +
@@ -354,56 +306,6 @@ export async function getIssueData(props: IssueDataProps) {
     return null
   }
 }
-
-interface SectionDataProps {
-  slug: string
-}
-
-export const getSectionData = cache(async (props: SectionDataProps) => {
-  const { slug } = props
-
-  try {
-    const sections = await directus.request(
-      readItems("sections", {
-        fields: [
-          "id",
-          "name",
-          "slug",
-          "old_id",
-          {
-            articles: [
-              "slug",
-              "title",
-              "excerpt",
-              "sort",
-              "status",
-              {
-                section: ["name", "slug"],
-              },
-              {
-                issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
-              },
-              {
-                contributors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-              },
-              {
-                featured_image: ["id", "width", "height", "filename_disk", "caption"],
-              },
-            ],
-          },
-        ],
-        filter: {
-          slug: { _eq: slug },
-        },
-      }),
-    )
-
-    return sections[0] as Sections
-  } catch (error) {
-    console.error("Error fetching section data:", error)
-    return null
-  }
-})
 
 export const getSectionsByIssueId = cache(async (issueId: string, status: string) => {
   try {
@@ -670,6 +572,7 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=issue.month` +
     `&fields[]=section.slug` +
     `&fields[]=section.name` +
+    `&fields[]=section.featured` +
     `&fields[]=images.sort` +
     `&fields[]=images.directus_files_id.id` +
     `&fields[]=images.directus_files_id.caption` +
@@ -723,54 +626,6 @@ export const getEvent = cache(async (slug: string) => {
   return events as Events[]
 })
 
-export const getAds = cache(async () => {
-  // const today = new Date()
-  // newDate Formatted as YYYY-MM-DD
-
-  const ads = await directus.request(
-    readItems("ads", {
-      fields: [
-        "ad_type",
-        "ad_url",
-        "start_date",
-        "end_date",
-        "status",
-        "sort",
-        "campaign_title",
-        "slug",
-        {
-          tile_image: ["filename_disk", "width", "height"],
-        },
-        {
-          banner_image: ["filename_disk", "width", "height"],
-        },
-        {
-          banner_image_mobile: ["filename_disk", "width", "height"],
-        },
-      ],
-      filter: {
-        _and: [
-          {
-            status: {
-              _in: ["published"],
-            },
-            // start_date: {
-            //   _lte: today,
-            // },
-            // end_date: {
-            //   _gte: today,
-            // },
-            ad_url: {
-              _nnull: true,
-            },
-          },
-        ],
-      },
-    }),
-  )
-  return ads as Ads[]
-})
-
 interface OGImageProps {
   ogimage?: DirectusFiles
   title: string
@@ -803,6 +658,7 @@ export function getOGImage(props: OGImageProps) {
 export enum PageType {
   Article = "article",
   Section = "section",
+  SuperSection = "super_section",
   Issue = "issue",
   Event = "event",
   Tribute = "tribute",
@@ -838,10 +694,12 @@ interface PermalinkProps {
   personSlug?: string
   issueId?: string
   tributeId?: string
+  sectionSlug?: string
   eventYear?: number
   eventMonth?: number
   eventDay?: number
 }
+
 export function getPermalink(props: PermalinkProps) {
   const {
     year,
@@ -850,6 +708,7 @@ export function getPermalink(props: PermalinkProps) {
     issueSlug,
     type,
     tributeSlug,
+    sectionSlug,
     articleId,
     eventId,
     personSlug,
@@ -872,6 +731,8 @@ export function getPermalink(props: PermalinkProps) {
   switch (type) {
     case PageType.Article:
       return `${baseURL}/${year}/${month}/${section}/${slug}/`
+    case PageType.SuperSection:
+      return `${baseURL}/section/${sectionSlug}/`
     case PageType.Section:
       return `${baseURL}/issues/${issueSlug}/${section}/`
     case PageType.Issue:

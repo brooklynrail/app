@@ -1,3 +1,6 @@
+# To avoid the possibility of social media providers not being able to fetch your image, it is recommended to add your OG image API route(s) 
+Allow: /api/og/*
+
 # Allow Googlebot and Bingbot to crawl the site
 User-agent: Googlebot
 Allow: /

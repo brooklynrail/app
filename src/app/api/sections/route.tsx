@@ -1,21 +1,20 @@
-import { readItems } from "@directus/sdk"
-import directus from "../../../../lib/directus"
-import { getSectionsByIssueId } from "../../../../lib/utils"
+import { getArticlesBySection } from "../../../../lib/utils/sections/utils"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  const issueId = searchParams.get("issueId")
+  const slug = searchParams.get("slug")
+  const limit = parseInt(searchParams.get("limit") as string, 10)
+  const offset = parseInt(searchParams.get("offset") as string, 10)
 
-  if (issueId) {
-    // Get the current list of Sections used in this Issue (draft or published)
-    const data = await getSectionsByIssueId(issueId, "published")
+  if (!slug || !limit || !offset) {
+    return Response.json({ error: "Missing slug" }, { status: 400 })
+  }
+
+  try {
+    const data = await getArticlesBySection({ slug: slug, limit, offset })
     return Response.json(data)
-  } else {
-    const data = await directus.request(
-      readItems("sections", {
-        fields: ["id", "name", "slug"],
-      }),
-    )
-    return Response.json(data)
+  } catch (error) {
+    console.error("Error fetching events:", error)
+    return Response.json({ error: error }, { status: 500 })
   }
 }

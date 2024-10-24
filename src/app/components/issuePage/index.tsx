@@ -1,23 +1,13 @@
 "use client"
-import { IssuePageProps, PageLayout } from "@/app/page"
-import AdsTile from "../ads/adsTile"
-import IssueSelect from "./issueSelect"
-import CurrentSections from "./currentSections"
-import RailPartners from "./railPartners"
-import RailProjects from "./railProjects"
-import Ad970 from "../ads/ad970"
-import { Ads, Articles, Issues } from "../../../../lib/types"
-import Link from "next/link"
-import IssueLayout from "./layout/issue"
-import SectionLayout from "./layout/section"
-import { useEffect, useState } from "react"
-import { getAds } from "../../../../lib/utils"
-import { CoverImage } from "../issueRail/coverImage"
+import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
+import { Articles, Issues } from "../../../../lib/types"
+import { CoverImages } from "../collections/banner/coverImages"
+import Paper, { PaperType } from "../paper"
 import PreviewHeader from "../preview/previewHead"
-import TableOfContentsPage from "./layout/tableOfContentsPage"
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
+import TableOfContents from "./tableOfContents"
 import CoversPopup from "../issueRail/coversPopup"
+import parse from "html-react-parser"
+import IssueHead from "./head"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -27,114 +17,79 @@ export interface PromoProps {
 }
 
 const IssuePage = (props: IssuePageProps) => {
-  const { thisIssueData, currentSection, issueSections, previewURL, allIssues, tributesData } = props
-  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!currentAds) {
-        const ads = getAds()
-        // Fetch all the data in parallel
-        const [fetchedAds] = await Promise.all([ads])
-        // Update the state with the fetched data as it becomes available
-        setCurrentAds(fetchedAds)
-      }
-    }
-    // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch data on Issue Page:", error))
-  }, [currentAds])
+  const { thisIssueData, issueSections, previewURL, permalink, navData, allIssues, currentSection } = props
 
   const { slug } = thisIssueData
   const issueClass = `issue-${slug.toLowerCase()}`
+  const currentSections = issueSections
+  const { year, month } = thisIssueData
 
-  let layout
-  switch (props.layout) {
-    case PageLayout.Section:
-      layout = (
-        <SectionLayout thisIssueData={thisIssueData} currentSection={currentSection} tributesData={tributesData} />
-      )
-      break
-    case PageLayout.TableOfContents:
-      layout = <TableOfContentsPage {...props} />
-      break
-    default:
-      layout = <IssueLayout {...props} />
-      break
+  // if currentSection, filter articles to only show articles from that section
+  const allArticles = thisIssueData.articles || []
+  const articles = currentSection
+    ? allArticles.filter((article) => article.section.slug === currentSection.slug)
+    : allArticles
+
+  const tocProps = {
+    articles: articles,
+    issueSlug: thisIssueData.slug,
+    currentSections,
+    permalink,
+    year,
+    month,
   }
 
-  return (
-    <Paper pageClass={`paper-issue ${issueClass}`}>
-      {previewURL && <PreviewHeader previewURL={previewURL} />}
-      <div className="px-0 desktop:w-desktop mx-auto">
-        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-6">
-          <div className="col-span-4 tablet-lg:col-span-12">
-            <div className="px-3">
-              <Header type={HeaderType.Issue} />
-              <Ad970 currentAds={currentAds} />
-            </div>
-          </div>
+  const summary = thisIssueData.summary
+  const credits = thisIssueData.credits
 
-          <div className="col-span-4 tablet-lg:col-span-12">
-            <div className="py-3 mx-3 my-0 px-3 bg-indigo-500 text-white text-sm flex justify-between items-center space-x-3">
-              <p>
-                <Link href="/events/?hp">
-                  Daily Conversations on <strong>The New Social Environment</strong>
-                </Link>
-              </p>
-              <div className="flex flex-col-reverse tablet-lg:flex-row tablet-lg:space-x-3">
-                <Link
-                  className="mt-1 tablet-lg:mt-0 border border-white border-dotted text-center py-1 px-3 text-xs uppercase text-nowrap"
-                  href="/events#past?hp"
-                >
-                  Past events
-                </Link>
-                <Link
-                  className="bg-zinc-100 text-indigo-500 font-medium py-1 px-3 text-xs text-center uppercase text-nowrap"
-                  href="/events/?hp"
-                >
-                  Join
-                </Link>
+  return (
+    <Paper pageClass={`paper-issue ${issueClass}`} type={PaperType.Default} navData={navData}>
+      {previewURL && <PreviewHeader previewURL={previewURL} />}
+      <main className="divide-y rail-divide">
+        <IssueHead title={thisIssueData.title} allIssues={allIssues} currentIssueSlug={thisIssueData.slug} />
+
+        <div className="px-6">
+          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:divide-x tablet-lg:rail-divide">
+            <div className="col-span-4 tablet-lg:col-span-4 desktop:col-span-3">
+              <div className="space-y-6">
+                <div className="h-[300px] py-3 pr-3">
+                  <CoverImages currentIssue={thisIssueData} clickToIssue={false} priority={true} />
+                </div>
+                {summary && <div className="text-lg">{parse(summary)}</div>}
+                {credits && <div className="text-sm">{parse(credits)}</div>}
+                <PublishInfo thisIssueData={thisIssueData} />
               </div>
             </div>
-          </div>
-
-          <div className="col-span-4 hidden tablet-lg:block tablet-lg:col-span-2">
-            <div className="flex flex-col space-y-2 pl-3">
-              <IssueSelect currentIssueSlug={slug} allIssues={allIssues} />
-              <CoverImage thisIssueData={thisIssueData} />
-              <CurrentSections issueSections={issueSections} thisIssueData={thisIssueData} />
-            </div>
-            <div className="py-4 flex flex-col space-y-2 pl-3">
-              <Link
-                className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
-                href="/search"
-                title="Search All Issues"
-              >
-                <span>Search</span> <i className="fas fa-search"></i>
-              </Link>
-              <Link
-                className="font-medium text-sm py-1 text-center inline-block border-[1px] rail-border-solid rounded-sm"
-                href="/archive"
-                title="View Archive"
-              >
-                <span>View Archive</span>
-              </Link>
-              <RailProjects />
-              <RailPartners />
-            </div>
-          </div>
-          <div className="col-span-4 tablet-lg:col-span-8">
-            <div className="px-3 tablet-lg:px-0">{layout}</div>
-          </div>
-          <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-2">
-            <div className="pr-3">
-              <AdsTile currentAds={currentAds} />
+            <div className="col-span-4 tablet-lg:col-span-8 desktop:col-span-9">
+              {currentSection ? <TableOfContents {...tocProps} /> : <TableOfContents {...tocProps} />}
             </div>
           </div>
         </div>
-      </div>
+      </main>
       <CoversPopup />
     </Paper>
+  )
+}
+
+interface PublishInfoProps {
+  thisIssueData: Issues
+}
+const PublishInfo = (props: PublishInfoProps) => {
+  const { thisIssueData } = props
+  const publishedOn =
+    thisIssueData?.published &&
+    new Date(thisIssueData.published).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+
+  return (
+    <div className="pb-20 text-sm space-y-2 text-zinc-700 dark:text-slate-100">
+      <p>
+        The “{thisIssueData.title}” Issue of the Brooklyn Rail was published on {publishedOn}.
+      </p>
+    </div>
   )
 }
 

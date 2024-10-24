@@ -1,23 +1,22 @@
 "use client"
 
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
-import { Events } from "../../../../lib/types"
-import Link from "next/link"
 import { EventsProps } from "@/app/events/page"
+import Link from "next/link"
+import { Events } from "../../../../lib/types"
+import Paper, { PaperType } from "../paper"
 import EventCard from "./eventCard"
-import Sponsor from "./sponsor"
 import PastEventsList from "./pastEventsList"
+import Sponsor from "./sponsor"
 
 const EventsPage = (props: EventsProps) => {
+  const { navData } = props
   const allEvents = props.allEvents.map((event: Events, index: number) => {
     return <EventCard key={index} event={event} eventTypes={props.eventTypes} />
   })
 
   return (
-    <Paper pageClass="paper-events">
-      <Header type={HeaderType.Default} />
-      <main className="px-3 tablet:px-6 pb-12 desktop:max-w-screen-widescreen mx-auto divide-y rail-divide">
+    <Paper pageClass="paper-events" type={PaperType.Default} navData={navData}>
+      <main className="px-6 tablet-lg:px-3 pb-12 desktop:max-w-screen-widescreen mx-auto divide-y rail-divide">
         <div className="space-y-9 divide-y rail-divide">
           <div className="pt-9 flex flex-col tablet-lg:flex-row tablet-lg:justify-between tablet-lg:items-end space-y-3 tablet-lg:space-y-0">
             <h1 className="font-bold text-4xl tablet-lg:text-5xl">Upcoming Events</h1>

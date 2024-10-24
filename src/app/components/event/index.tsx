@@ -1,6 +1,5 @@
 "use client"
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
+import Paper, { PaperType } from "../paper"
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
 import { EventsPeople, EventsPeoplePoets } from "../../../../lib/types"
 import Register from "./register"
@@ -8,17 +7,17 @@ import EventPageBody from "./eventPageBody"
 import Person from "./person"
 
 const EventPage = (props: EventProps) => {
-  const { eventData } = props
+  const { eventData, navData } = props
   const { start_date } = eventData
 
   const isFutureEvent = new Date(start_date) > new Date()
 
   return (
-    <Paper pageClass="paper-event">
-      <Header type={HeaderType.Default} />
-      <main className="px-6 desktop:max-w-screen-widescreen mx-auto h-event">
+    <Paper pageClass="paper-event" type={PaperType.Events} navData={navData}>
+      <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
         <EventPageBody {...props} />
       </main>
+
       {isFutureEvent && eventData.airtable_id && <Register {...props} />}
     </Paper>
   )

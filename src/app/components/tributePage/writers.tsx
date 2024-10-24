@@ -70,7 +70,6 @@ const TributeWriters = (props: TributeWritersProps) => {
 
   return (
     <>
-      {/* Mobile view: Render the select dropdown */}
       <div className="space-y-3 py-3 block tablet-lg:hidden">
         {/* Writers list (hidden on tablet-lg and above) */}
         <TributeWritersList articles={articles} tributeSlug={tributeSlug} switchArticle={switchArticle} />

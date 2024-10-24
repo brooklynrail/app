@@ -9,12 +9,7 @@ const BookshopWidget = (props: Articles) => {
 
   return (
     <div id="bookshop-widget">
-      <iframe
-        scrolling="no"
-        src={`https://bookshop.org/widgets/book/book/24114/${isbn}`}
-        width="450"
-        height="268"
-      ></iframe>
+      <iframe src={`https://bookshop.org/widgets/book/book/24114/${isbn}`} width="100%" height="268"></iframe>
     </div>
   )
 }

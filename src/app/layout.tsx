@@ -7,12 +7,14 @@ import { Analytics } from "@vercel/analytics/react"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "./components/theme"
 
+const share_card = `${process.env.NEXT_PUBLIC_SITE_URL}/images/share-cards/brooklynrail-card.png`
+
 export const metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL
     ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
     : new URL("https://brooklynrail.org"),
   title: {
-    template: "%s | The Brooklyn Rail",
+    template: "%s - The Brooklyn Rail",
     default: "The Brooklyn Rail", // a default is required when creating a template
   },
   description:
@@ -49,7 +51,7 @@ export const metadata = {
       "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
     url: "https://brooklynrail.org",
     type: "website",
-    image: "https://brooklynrail.org/material/img/brooklynrail-card-3.png",
+    image: share_card,
   },
   twitter: {
     card: "summary_large_image",
@@ -57,13 +59,15 @@ export const metadata = {
     description:
       "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
     creator: "@thebrooklynrail",
-    images: ["https://brooklynrail.org/material/img/brooklynrail-card-3.png"],
+    images: [share_card],
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <meta name="theme-color" content="#EF4444" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <body>
         <ThemeProvider>{children}</ThemeProvider>
         <GoogleAnalytics gaId="G-P4BEY1BZ04" />

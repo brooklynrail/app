@@ -6,13 +6,19 @@ export enum BylineType {
   Option = "option",
   None = "not-italic",
   Default = "text-sm not-italic",
+  TOC = "text-sm not-italic inline",
   ArticleHeadDiptych = "text-md tablet-lg:text-lg font-sans not-italic",
   ArticleHead = "text-md tablet-lg:text-lg font-sans not-italic",
   SectionPromo = "text-md font-sans not-italic",
+  CollectionArtSeen = "text-lg font-sans not-italic",
+  CollectionBooks = "text-xs tablet:text-lg font-sans not-italic",
+  CollectionDefault = "text-sm tablet:text-md font-sans",
+  CollectionDance = "text-xs tablet:text-xl not-italic font-sans",
   TributeArticle = "text-lg tablet-lg:text-lg font-bold font-sans not-italic",
   TributeNextPrev = "text-sm tablet-lg:text-md font-medium font-sans not-italic",
   TributeWritersList = "text-sm not-italic inline",
   CriticsPage = "text-2xl font-bold",
+  CollectionCriticsPage = "text-3xl font-normal font-serif",
 }
 
 interface BylinesProps {
@@ -73,7 +79,18 @@ const Bylines = (props: BylinesProps) => {
             }
 
             return (
-              <span key={i} className="">
+              <span
+                key={i}
+                className={
+                  type === BylineType.CollectionArtSeen ||
+                  type === BylineType.CollectionBooks ||
+                  type === BylineType.CollectionDance ||
+                  type === BylineType.CollectionDefault ||
+                  type === BylineType.TOC
+                    ? "font-bold"
+                    : ""
+                }
+              >
                 {!isFirst && separator}
                 {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
               </span>
@@ -96,6 +113,6 @@ const Bylines = (props: BylinesProps) => {
     )
   }
 
-  return <address className={`author ${type}`}>{byline_contents}</address>
+  return <address className={`author not-italic ${type}`}>{byline_contents}</address>
 }
 export default Bylines

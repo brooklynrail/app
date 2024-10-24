@@ -1,12 +1,14 @@
 import { stripHtml } from "string-strip-html"
 import { PageType, getOGImage, getPermalink, getPreviewArticle, getPreviewPassword } from "../../../../../lib/utils"
-import { Articles, Issues, Sections } from "../../../../../lib/types"
+import { Articles, Homepage, Issues, Sections } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import ArticlePreview from "@/app/components/preview/article"
 import { notFound } from "next/navigation"
+import { getNavData } from "../../../../../lib/utils/homepage"
 
 export interface ArticlePreviewProps {
+  navData: Homepage
   articleData: Articles
   thisIssueData: Issues
   currentSection: Sections
@@ -70,12 +72,13 @@ export default async function ArticlePreviewPage({ params }: { params: PreviewPa
 
   const data = await getData({ params })
 
-  const { articleData, thisIssueData, permalink, currentSection, directusUrl, previewPassword } = data
+  const { articleData, thisIssueData, permalink, currentSection, directusUrl, previewPassword, navData } = data
   if (!articleData || !permalink || !previewPassword || !directusUrl) {
     return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
   }
 
   const articlePreviewProps = {
+    navData,
     articleData,
     thisIssueData,
     permalink,
@@ -95,6 +98,11 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const id = String(params.id)
 
+  const navData = await getNavData()
+  if (!navData) {
+    return notFound()
+  }
+
   const articleData = await getPreviewArticle(id)
   if (!articleData) {
     return notFound()
@@ -112,6 +120,7 @@ async function getData({ params }: { params: PreviewParams }) {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
 
   return {
+    navData,
     articleData,
     currentSection,
     thisIssueData,
