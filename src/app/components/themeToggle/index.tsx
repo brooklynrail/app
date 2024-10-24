@@ -9,6 +9,8 @@ interface ThemeToggleProps {
 function ThemeToggle(props: ThemeToggleProps) {
   const { theme, setTheme } = props
 
+  const isDev = process.env.NEXT_PUBLIC_VERCEL_ENV != "production"
+
   useEffect(() => {
     // Get the stored theme preference from localStorage
     const savedTheme = localStorage.getItem("theme")
@@ -45,41 +47,43 @@ function ThemeToggle(props: ThemeToggleProps) {
       <button className={styles.theme_toggle} onClick={toggleTheme}>
         {theme === "dark" ? "🌙" : "🌞"}
       </button>
-      <p className="text-xs">
-        <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden widescreen:block`}>
-          widescreen
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop-lg:max-widescreen:block`}
-        >
-          desktop-lg
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop:max-desktop-lg:block`}
-        >
-          desktop
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet-lg:max-desktop:block`}
-        >
-          tablet-lg
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet:max-tablet-lg:block`}
-        >
-          tablet
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile-lg:max-tablet:block`}
-        >
-          mobile-lg
-        </span>
-        <span
-          className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile:max-mobile-lg:block`}
-        >
-          mobile
-        </span>
-      </p>
+      {isDev && (
+        <p className="text-xs">
+          <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden widescreen:block`}>
+            widescreen
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop-lg:max-widescreen:block`}
+          >
+            desktop-lg
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop:max-desktop-lg:block`}
+          >
+            desktop
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet-lg:max-desktop:block`}
+          >
+            tablet-lg
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet:max-tablet-lg:block`}
+          >
+            tablet
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile-lg:max-tablet:block`}
+          >
+            mobile-lg
+          </span>
+          <span
+            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile:max-mobile-lg:block`}
+          >
+            mobile
+          </span>
+        </p>
+      )}
     </div>
   )
 }
