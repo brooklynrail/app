@@ -9,7 +9,7 @@ interface ThemeToggleProps {
 function ThemeToggle(props: ThemeToggleProps) {
   const { theme, setTheme } = props
 
-  const isDev = process.env.NEXT_PUBLIC_VERCEL_ENV != "production"
+  const isDev = process.env.NEXT_PUBLIC_VERCEL_ENV != "production" && process.env.NEXT_PUBLIC_VERCEL_ENV != "preview"
 
   useEffect(() => {
     // Get the stored theme preference from localStorage
