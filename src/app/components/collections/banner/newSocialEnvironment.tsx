@@ -128,9 +128,7 @@ const EventCard = (props: EventCardProps) => {
           className={`z-10 relative top-0 flex flex-col justify-between bg-zinc-800 bg-opacity-60 px-1.5 py-1 h-24 ${style.card}`}
         >
           <p className="uppercase text-lime-200 font-normal text-xs">{fullDay}</p>
-          <h3 className="text-xs text-white font-bold leading-[14px]">
-            <Link href="/events">{title}</Link>
-          </h3>
+          <h3 className="text-xs text-white font-bold leading-[14px]">{title}</h3>
         </div>
       </Link>
     </div>
