@@ -22,7 +22,7 @@ const PageNav = (props: PageNavProps) => {
       type: PageType.ChildPage,
     })
 
-    const current = page.slug === currentSlug ? "bg-white" : ""
+    const current = page.slug === currentSlug ? "bg-white dark:bg-zinc-700" : ""
 
     return (
       <li key={page.slug} className="font-bold">

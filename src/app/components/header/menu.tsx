@@ -122,7 +122,7 @@ const Menu = (props: MenuProps) => {
   })
 
   return (
-    <div className="top-0 left-0 w-[calc(100vw-6rem)] max-w-screen-mobile-lg rail-bg h-screen fixed z-[100] overflow-y-auto !m-0">
+    <div className="top-0 left-0 w-[calc(100vw-6rem)] max-w-screen-mobile-lg rail-bg h-screen fixed z-[100] overflow-y-auto !m-0 bg-slate-50 dark:bg-zinc-700">
       <div className="grid grid-cols-3 gap-x-3">
         <div className="col-span-3">
           <div className="p-6">
@@ -148,7 +148,7 @@ const Menu = (props: MenuProps) => {
         <div className="col-span-3">
           <div className="divide-y rail-divide">
             <ul className="divide-y rail-divide">{allCollections}</ul>
-            <div className="py-3 bg-slate-100 pb-48">
+            <div className="py-3 bg-slate-100 dark:bg-zinc-700 pb-48">
               <ul className="py-3 block text-sm font-bold px-9 space-y-3">
                 {allPages}
                 <li className="">
