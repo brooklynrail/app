@@ -108,13 +108,17 @@ const Menu = (props: MenuProps) => {
   )
 
   const allPages = currentPages?.map((page: Pages, i: number) => {
-    const permalink = getPermalink({
+    const pageURL = getPermalink({
       slug: page.slug,
       type: PageType.Page,
     })
+    const childPageURL = getPermalink({
+      slug: page.slug,
+      type: PageType.ChildPage,
+    })
     return (
       <li key={i} className="">
-        <Link href={permalink} className="block text-sm font-bold">
+        <Link href={page.slug === "about" ? pageURL : childPageURL} className="block text-sm font-bold">
           {parse(page.title)}
         </Link>
       </li>
