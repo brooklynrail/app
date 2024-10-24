@@ -1,6 +1,5 @@
 "use client"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { Homepage, HomepageCollections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { CollectionType } from "../homepage"
@@ -8,12 +7,11 @@ import MenuButton from "../header/menuButton"
 
 interface NavBarProps {
   navData: Homepage
+  isHomepage: boolean
 }
 
 const NavBar = (props: NavBarProps) => {
-  const { navData } = props
-  const pathname = usePathname()
-  const isHomepage = pathname === "/"
+  const { navData, isHomepage } = props
 
   const home = (
     <li>

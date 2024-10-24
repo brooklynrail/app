@@ -8,6 +8,7 @@ import ThemeToggle from "../themeToggle"
 import Header from "../header"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import NavBar from "../navBar"
+import { usePathname } from "next/navigation"
 
 export interface PaperProps {
   pageClass: string
@@ -32,17 +33,19 @@ export enum PaperType {
 const Paper = (props: PaperProps) => {
   const { pageClass, children, hidePopup, navData, type, banners, currentIssue } = props
   const { theme, setTheme } = useTheme()
+  const pathname = usePathname()
+  const isHomepage = pathname === "/"
 
   return (
     <PopupProvider hidePopup={hidePopup}>
       <div className={`paper ${pageClass}`}>
         <Header type={type} banners={banners} currentIssue={currentIssue} />
-        <NavBar navData={navData} />
+        <NavBar navData={navData} isHomepage={isHomepage} />
         {children}
         <Footer />
         <Ad970 />
         <ThemeToggle {...{ theme, setTheme }} />
-        <PopupDonate />
+        {!isHomepage && <PopupDonate />}
       </div>
     </PopupProvider>
   )
