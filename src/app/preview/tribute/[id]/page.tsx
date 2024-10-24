@@ -1,12 +1,14 @@
 import { stripHtml } from "string-strip-html"
 import { PageType, getPermalink, getPreviewPassword, getPreviewTribute } from "../../../../../lib/utils"
-import { Articles, Issues, Sections, Tributes } from "../../../../../lib/types"
+import { Articles, Homepage, Issues, Sections, Tributes } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import TributePreview from "@/app/components/preview/tribute"
+import { getNavData } from "../../../../../lib/utils/homepage"
 
 export interface TributePreviewProps {
+  navData: Homepage
   tributeData: Tributes
   articleData: Articles
   permalink: string
@@ -57,12 +59,13 @@ export default async function TributePreviewPage({ params }: { params: PreviewPa
 
   const data = await getData({ params })
 
-  const { tributeData, articleData, permalink, directusUrl, previewPassword } = data
+  const { tributeData, articleData, permalink, directusUrl, previewPassword, navData } = data
   if (!permalink || !previewPassword || !directusUrl) {
     return notFound()
   }
 
   const tributePreviewProps = {
+    navData,
     tributeData,
     articleData,
     permalink,
@@ -81,6 +84,11 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const id = params.id
 
+  const navData = await getNavData()
+  if (!navData) {
+    return notFound()
+  }
+
   const tributeData = await getPreviewTribute(id)
   if (!tributeData) {
     return notFound()
@@ -97,6 +105,7 @@ async function getData({ params }: { params: PreviewParams }) {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
 
   return {
+    navData,
     tributeData,
     articleData,
     permalink,

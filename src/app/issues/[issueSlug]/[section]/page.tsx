@@ -1,10 +1,10 @@
-import { PageLayout } from "@/app/page"
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../../lib/utils"
+import IssuePage from "@/app/components/issuePage"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
-import IssuePage from "@/app/components/issuePage"
-import { Metadata, Viewport } from "next"
-import { notFound } from "next/navigation"
+import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../../lib/utils"
+import { getNavData } from "../../../../../lib/utils/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -12,13 +12,7 @@ export const dynamicParams = true
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
-export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 600 : 0
-
-// Set the Viewport to show the full page of the Rail on mobile devices
-// export const viewport: Viewport = {
-//   width: "device-width",
-//   initialScale: 0.405,
-// }
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 42600 : 0
 
 export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -57,12 +51,7 @@ export default async function SectionPage({ params }: { params: SectionParams })
     return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
   }
 
-  return (
-    <IssuePage
-      {...data.props}
-      layout={data.props.thisIssueData.special_issue ? PageLayout.SpecialSection : PageLayout.Section}
-    />
-  )
+  return <IssuePage {...data.props} />
 }
 
 interface SectionParams {
@@ -74,6 +63,11 @@ async function getData({ params }: { params: SectionParams }) {
   const issueSlug = params.issueSlug
   const section = params.section.toString()
 
+  const navData = await getNavData()
+  if (!navData) {
+    return notFound()
+  }
+
   const thisIssueData = await getIssueData({
     slug: issueSlug,
   })
@@ -81,12 +75,12 @@ async function getData({ params }: { params: SectionParams }) {
     return notFound()
   }
 
+  const tributesData = await getTributes({ thisIssueData: thisIssueData })
+
   const allIssues = await getAllIssues()
   if (!allIssues) {
     return notFound()
   }
-
-  const tributesData = await getTributes({ thisIssueData: thisIssueData })
 
   // make an array of all the sections used in thisIssueData.articles and remove any duplicates
   const issueSections = thisIssueData.articles
@@ -108,10 +102,11 @@ async function getData({ params }: { params: SectionParams }) {
 
   return {
     props: {
+      navData,
       thisIssueData,
       issueSections,
-      currentSection,
       tributesData,
+      currentSection,
       allIssues,
       permalink,
     },

@@ -11,28 +11,47 @@ interface KickerProps {
 const Kicker = (props: KickerProps) => {
   const { kicker, thisIssueData, currentSection, centered } = props
   if (!thisIssueData) {
-    return <></>
+    return null
   }
   const { slug } = thisIssueData
 
-  const sectionPermalink = getPermalink({
+  let sectionPermalink = getPermalink({
     issueSlug: slug,
     section: currentSection.slug,
     type: PageType.Section,
   })
+  if (currentSection.featured) {
+    sectionPermalink = getPermalink({
+      sectionSlug: currentSection.slug,
+      type: PageType.SuperSection,
+    })
+  }
+
+  const issuePermalink = getPermalink({
+    issueSlug: slug,
+    type: PageType.Issue,
+  })
 
   return (
-    <h6 className={`text-lg space-x-2 ${centered ? "text-center" : "text-left"}`}>
-      <Link className="font-black" href={sectionPermalink} title={`Go to the ${currentSection.name} section`}>
+    <h6 className={`text-sm space-x-2 ${centered ? "text-center" : "text-left"}`}>
+      <Link
+        className="font-medium uppercase"
+        href={sectionPermalink}
+        title={`Go to the ${currentSection.name} section`}
+      >
         {currentSection.name}
       </Link>
 
       {kicker && (
         <>
           <span className="border-r rail-border !border-solid h-4 inline-block relative top-0.5"></span>
-          <span>{kicker}</span>
+          <span className="uppercase">{kicker}</span>
         </>
       )}
+      <span className="border-r rail-border !border-solid h-4 inline-block relative top-0.5"></span>
+      <span className="uppercase">
+        <Link href={issuePermalink}>{thisIssueData.title}</Link>
+      </span>
     </h6>
   )
 }

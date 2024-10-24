@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 import { notFound } from "next/navigation"
 import ContributorPage from "@/app/components/contributor"
+import { getNavData } from "../../../../lib/utils/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -50,13 +51,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
     return <></>
   }
 
-  return (
-    <ContributorPage
-      contributorData={contributorData}
-      thisIssueData={data.thisIssueData}
-      currentArticles={currentArticles}
-    />
-  )
+  return <ContributorPage contributorData={contributorData} currentArticles={currentArticles} navData={data.navData} />
 }
 
 interface ContributorsParams {
@@ -65,14 +60,17 @@ interface ContributorsParams {
 
 async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
-  const thisIssueData = await getCurrentIssueData()
+
+  const navData = await getNavData()
+  if (!navData) {
+    return notFound()
+  }
 
   // Get all contributors
   // NOTE: There are multiple contributors with the same slug
   // This returns all contributors with the same slug, but their specific name and bio information may be different
   const allContributors = await getContributor(slug)
-
-  if (!allContributors || allContributors.length == 0 || !thisIssueData) {
+  if (!allContributors || allContributors.length == 0) {
     return notFound()
   }
 
@@ -91,7 +89,7 @@ async function getData({ params }: { params: ContributorsParams }) {
   })
 
   return {
-    thisIssueData,
+    navData,
     contributorData,
     articles: allArticles,
     permalink,

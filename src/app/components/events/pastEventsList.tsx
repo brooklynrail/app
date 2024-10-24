@@ -87,7 +87,7 @@ const PastEventsList = (props: PastEventsProps & PastEventsListProps) => {
             onClick={loadMoreEvents}
             className="bg-indigo-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-600 uppercase text-xl"
           >
-            Load More Events
+            Load more
           </button>
         </div>
       ) : (

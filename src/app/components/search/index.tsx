@@ -1,8 +1,7 @@
 "use client"
-import { Articles, Issues } from "../../../../lib/types"
+import { Articles, Homepage, Issues } from "../../../../lib/types"
 import GoogleCSE from "../googleCSE"
-import Header, { HeaderType } from "../header"
-import Paper from "../paper"
+import Paper, { PaperType } from "../paper"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -11,24 +10,19 @@ export interface PromoProps {
 }
 
 export interface SearchPageProps {
+  navData: Homepage
   issues: Issues[]
   permalink: string
 }
 
 const SearchPage = (props: SearchPageProps) => {
+  const { navData } = props
   return (
-    <Paper pageClass="paper-search">
+    <Paper pageClass="paper-search" type={PaperType.Default} navData={navData}>
       <div className="px-3 desktop:w-desktop mx-auto">
-        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-          <div className="col-span-4 tablet-lg:col-span-12">
-            <Header type={HeaderType.Issue} />
-          </div>
-        </div>
-
         <section id="main" className="py-9 h-screen">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
             <div className="col-span-4 tablet-lg:col-span-12">
-              <h1 className="text-4xl tablet:text-5xl font-light">Search</h1>
               <GoogleCSE />
             </div>
           </div>

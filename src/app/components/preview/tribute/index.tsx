@@ -6,7 +6,7 @@ import { TributePreviewProps } from "@/app/preview/tribute/[id]/page"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 
 const TributePreview = (props: TributePreviewProps) => {
-  const { tributeData, isEnabled, previewPassword, articleData } = props
+  const { tributeData, isEnabled, previewPassword, articleData, navData } = props
   const cookieSlug = `rail_preview_${tributeData.slug}`
   const [password, setPassword] = useState("")
   const [isViewable, setIsViewable] = useState(false)
@@ -74,6 +74,7 @@ const TributePreview = (props: TributePreviewProps) => {
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/tribute/${tributeData.id}`
   return (
     <TributePage
+      navData={navData}
       thisTributeData={tributeData}
       articleData={articleData}
       previewURL={previewURL}

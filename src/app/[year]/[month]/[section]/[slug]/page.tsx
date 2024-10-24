@@ -1,13 +1,14 @@
 import { stripHtml } from "string-strip-html"
 import { PageType, getArticle, getIssueData, getOGImage, getPermalink } from "../../../../../../lib/utils"
-import { Articles, Issues, Sections } from "../../../../../../lib/types"
+import { Articles, Homepage, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
 import { notFound, redirect } from "next/navigation"
 import { AddRedirect } from "@/app/actions/redirect"
 import { revalidatePath } from "next/cache"
 import { getRedirect, RedirectTypes } from "../../../../../../lib/utils/redirects"
-import { checkYearMonthSection } from "../../../../../../lib/utils/articles"
+import { checkYearMonthSection, extractPeopleFromArticle } from "../../../../../../lib/utils/articles"
+import { getNavData } from "../../../../../../lib/utils/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -55,6 +56,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   }
 }
 export interface ArticleProps {
+  navData: Homepage
   articleData: Articles
   thisIssueData: Issues
   currentSection: Sections
@@ -83,6 +85,11 @@ async function getData({ params }: { params: ArticleParams }) {
   }
 
   if (!year || !month || !section || !slug) {
+    return notFound()
+  }
+
+  const navData = await getNavData()
+  if (!navData) {
     return notFound()
   }
 
@@ -117,6 +124,11 @@ async function getData({ params }: { params: ArticleParams }) {
     redirect(path) // Navigate to the new article page
   }
 
+  // const references = articleData.body_text && extractPeopleFromArticle(articleData.body_text)
+
+  // console.log("==============================")
+  // console.log("references", references)
+
   const thisIssueData = await getIssueData({ slug: articleData.issue.slug })
   if (!thisIssueData) {
     return notFound()
@@ -134,6 +146,7 @@ async function getData({ params }: { params: ArticleParams }) {
 
   return {
     props: {
+      navData,
       articleData,
       thisIssueData,
       currentSection,

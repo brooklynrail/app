@@ -19,6 +19,16 @@ export type Ads = {
   user_updated?: string | DirectusUsers | null
 }
 
+export type OGArticle = {
+  slug: string
+  title: string
+  deck?: string | null
+  excerpt: string
+  image?: string | null
+  section: string
+  issue: string
+}
+
 export type Articles = {
   id: string
   body: string
@@ -34,6 +44,7 @@ export type Articles = {
   excerpt: string
   featured: boolean
   featured_image?: DirectusFiles
+  featured_artwork?: DirectusFiles
   header_type?: string | null
   images: any[] | ArticlesFiles[]
   in_print?: boolean | null
@@ -47,6 +58,7 @@ export type Articles = {
   promo_banner?: DirectusFiles
   promo_thumb?: DirectusFiles
   section: Sections
+  published?: string | null
   slideshow_image?: DirectusFiles | null
   slug: string
   sort?: number | null
@@ -75,6 +87,32 @@ export type ArticlesFiles = {
   articles_files_id?: string | Articles | null
   directus_files_id?: DirectusFiles
   id: number
+}
+
+export type Collections = {
+  date_created?: string | null
+  date_updated?: string | null
+  deck?: string | null
+  homepage: any[] | HomepageCollections[]
+  id: string
+  limit?: number | null
+  section?: Sections | null
+  sort?: number | null
+  status: string
+  title: string
+  kicker?: string | null
+  description?: string | null
+  links?: CollectionLinks[] | null
+  tribute?: Tributes | null
+  type: string
+  banner_type?: string | null
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+}
+
+export type CollectionLinks = {
+  text: string
+  url: string
 }
 
 export type Contributors = {
@@ -521,6 +559,30 @@ export type GlobalSettingsNavigation = {
   sort?: number | null
 }
 
+export type Homepage = {
+  banners: HomepageBanners[]
+  collections: HomepageCollections[]
+  date_created?: string | null
+  date_updated?: string | null
+  id: string
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+}
+
+export type HomepageBanners = {
+  collections_id?: Collections | null
+  homepage_id?: Homepage | null
+  id: number
+  sort?: number | null
+}
+
+export type HomepageCollections = {
+  collections_id?: Collections | null
+  homepage_id?: Homepage | null
+  id: number
+  sort?: number | null
+}
+
 export type Issues = {
   articles: Articles[]
   cover_1?: DirectusFiles
@@ -540,6 +602,7 @@ export type Issues = {
   old_id: number
   status: string
   title: string
+  published?: string | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
   year: number
@@ -583,6 +646,24 @@ export type Pages = {
   images: any[] | ArticlesFiles[]
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+  board?: PagesBoard[] | null
+  staff?: PagesStaff[] | null
+  quotes?: PagesQuotes[] | null
+}
+
+export type PagesBoard = {
+  name: string
+  group: string
+}
+
+export type PagesStaff = {
+  title: string
+  name: string
+}
+
+export type PagesQuotes = {
+  quote: string
+  name: string
 }
 
 export type People = {
@@ -623,6 +704,7 @@ export type Sections = {
   name: string
   description?: string | null
   old_id: number
+  featured: boolean
   slug: string
   sort?: number | null
   user_created?: string | DirectusUsers | null
@@ -660,6 +742,7 @@ export type CustomDirectusTypes = {
   articles: Articles[]
   articles_contributors: ArticlesContributors[]
   articles_files: ArticlesFiles[]
+  collections: Collections[]
   contributors: Contributors[]
   directus_activity: DirectusActivity[]
   directus_collections: DirectusCollections[]
@@ -690,6 +773,9 @@ export type CustomDirectusTypes = {
   events_people: EventsPeople[]
   events_people_poets: EventsPeoplePoets[]
   global_settings: GlobalSettings
+  homepage: Homepage
+  homepage_banner: HomepageBanners[]
+  homepage_collections: HomepageCollections[]
   global_settings_navigation: GlobalSettingsNavigation
   issues: Issues[]
   pages: Pages[]

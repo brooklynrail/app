@@ -2,7 +2,7 @@ import { Issues } from "../../../../lib/types"
 import { useState } from "react"
 
 interface IssueSelectProps {
-  currentIssueSlug: string
+  currentIssueSlug?: string
   allIssues: Issues[]
 }
 
@@ -27,7 +27,7 @@ const IssueSelect = (props: IssueSelectProps) => {
         id=""
         value={selectedIssueSlug}
         onChange={handleIssueChange}
-        className="leading-4 border-[1px] rail-border-solid rail-bg rounded-sm uppercase font-medium text-[14px] p-0.5"
+        className="rounded uppercase text-right text-xl py-3 px-3 font-normal shadow-md bg-white"
       >
         {allIssues.map((issue: Issues) => {
           if (!issue.slug) {

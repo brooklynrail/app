@@ -1,0 +1,17 @@
+.description {
+  @apply text-xs font-medium space-y-3;
+  a {
+    @apply hover:no-underline space-y-2;
+  }
+  h3 {
+    @apply text-lg tablet-lg:text-2xl font-normal italic hover:underline;
+    line-height: 28px;
+  }
+}
+
+.card {
+  box-shadow: 0px 0px 12px 0px var(--Indigo-100, #e0e7ff) inset;
+  &:hover {
+    box-shadow: 0px 0px 18px 0px var(--Indigo-100, #e0e7ff) inset;
+  }
+}

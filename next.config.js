@@ -43,6 +43,14 @@ module.exports = {
         permanent: true,
       },
       // ===================================
+      // TRIBUTES REDIRECT
+      // Redirect the root Tributes page to the homepage for now
+      {
+        source: "/tribute",
+        destination: "/",
+        permanent: false,
+      },
+      // ===================================
       // ISSUE REDIRECT
       // Redirect old issue paths to new issue paths
       {

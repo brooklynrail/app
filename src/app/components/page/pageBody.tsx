@@ -4,7 +4,7 @@ import Board from "./board"
 import Staff from "./staff"
 import Supporters from "./supporters"
 
-interface PageBodyProps {
+export interface PageBodyProps {
   pageData: Pages
 }
 
@@ -25,4 +25,5 @@ const PageBody = (props: PageBodyProps) => {
 
   return <div className={`content`}>{replaceShortcodes({ html: pageData.body_text, images: pageData.images })}</div>
 }
+
 export default PageBody

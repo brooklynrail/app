@@ -1,15 +1,17 @@
 import { notFound } from "next/navigation"
-import { Events, EventsTypes } from "../../../lib/types"
+import { Events, EventsTypes, Homepage } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
 import { getEventTypes, getPastEvents, getUpcomingEvents } from "../../../lib/utils/events/utils"
 import EventsPage from "@/app/components/events"
 import { Metadata } from "next"
+import { getNavData } from "../../../lib/utils/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
 export const dynamicParams = true
 
 export interface EventsProps {
+  navData: Homepage
   allEvents: Events[]
   initialEvents: Events[]
   eventTypes: EventsTypes[]
@@ -25,31 +27,28 @@ export async function generateMetadata(): Promise<Metadata> {
     return {}
   }
 
-  const ogtitle = "Events"
-  const ogdescription = ""
-  // const ogimageprops = { ogimage: featured_image, title }
-  // const ogimages = getOGImage(ogimageprops)
+  const share_card = `${process.env.NEXT_PUBLIC_SITE_URL}/images/share-cards/brooklynrail-card.png`
+
+  const ogtitle = "The New Social Environment - The Brooklyn Rail"
 
   return {
     title: `${ogtitle}`,
-    description: ogdescription,
     alternates: {
       canonical: `${data.permalink}`,
     },
     openGraph: {
       title: `${ogtitle}`,
-      description: ogdescription,
       url: data.permalink,
-      // images: ogimages,
+      images: share_card,
       // type: `article`,
     },
     twitter: {
-      // images: ogimages,
+      images: share_card,
     },
   }
 }
 
-export default async function EventsController({ params }: { params: EventsProps }) {
+export default async function EventsController() {
   const data = await getData()
   if (!data.allEvents || !data.permalink) {
     return notFound()
@@ -59,6 +58,11 @@ export default async function EventsController({ params }: { params: EventsProps
 }
 
 async function getData() {
+  const navData = await getNavData()
+  if (!navData) {
+    return notFound()
+  }
+
   const allEvents = await getUpcomingEvents()
   if (!allEvents) {
     return notFound()
@@ -79,6 +83,7 @@ async function getData() {
   })
 
   return {
+    navData,
     allEvents,
     initialEvents,
     eventTypes,

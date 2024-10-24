@@ -28,6 +28,21 @@ export async function GET(request: Request) {
       return new Response("Unauthorized", { status: 401 })
     }
 
+    // https://brooklynrail.org/api/refresh/?secret=7giV5gQ6&path={{$trigger.data.$trigger.data.articlePath}}
+    // https://brooklynrail.org/api/refresh/?secret=7giV5gQ6&id={{$trigger.data.$trigger.data.id}}&type={{$trigger.data.$trigger.data.type}}&slug={{$trigger.data.$trigger.data.slug}}
+
+    // {
+    //   type: {{$trigger.data.$trigger.data.type}},
+    //   id: {{$trigger.data.$trigger.data.id}},
+    //   secret: "7giV5gQ6",
+    //   title: {{$trigger.data.$trigger.data.title}},
+    //   slug: {{$trigger.data.$trigger.data.slug}},
+    //   url: {{$trigger.data.$trigger.data.url}},
+    //   articlePath: {{$trigger.data.$trigger.data.articlePath}},
+    //   sectionPath: {{$trigger.data.$trigger.data.sectionPath}},
+    //   issuePath: {{$trigger.data.$trigger.data.issuePath}},
+    // }
+
     // Check if the path is provided
     if (!id || !type) {
       return new Response("id and type are required", { status: 400 })

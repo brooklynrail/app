@@ -1,5 +1,5 @@
 .content {
-  @apply text-2xl tablet-lg:text-xl font-normal font-serif;
+  @apply text-2xl tablet-lg:text-2xl font-normal font-serif;
 
   h1 {
     @apply hidden;
@@ -28,7 +28,7 @@
   blockquote,
   li,
   pre {
-    max-width: 72ex;
+    max-width: 86ex;
     @apply mb-6 tablet:mb-6;
   }
   p:last-child {
@@ -147,6 +147,7 @@
 
 figcaption,
 figcaption p {
+  @apply no-underline hover:no-underline;
   @apply max-w-[100ex];
   @apply w-full;
   @apply pt-1.5 px-0.5 text-xs tablet-lg:text-sm font-sans font-normal text-zinc-500 dark:text-zinc-300;

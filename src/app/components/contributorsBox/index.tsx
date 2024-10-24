@@ -38,12 +38,7 @@ const ContributorsBox = (props: ContributorsProps) => {
     )
   })
 
-  return (
-    <section className="border-t-[1px] rail-border pt-3 pb-6 font-sans space-y-6">
-      <h2 className="text-sm font-medium uppercase">Contributors</h2>
-      {authors}
-    </section>
-  )
+  return <section className="border-t-[1px] rail-border py-6 font-sans space-y-6">{authors}</section>
 }
 
 interface AuthorLinkProps {

@@ -1,62 +1,64 @@
 "use client"
-import IssueRail from "../issueRail"
-import { Ads } from "../../../../lib/types"
+
+import parse from "html-react-parser"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import { getAds } from "../../../../lib/utils"
-import { useEffect, useState } from "react"
-import Ad970 from "../ads/ad970"
-import Header, { HeaderType } from "../header"
-import { useTheme } from "../theme"
-import Paper from "../paper"
-import ArticleBody, { BodyTypes } from "./articleBody"
+import Paper, { PaperType } from "../paper"
+import NextPrev, { NextPrevType } from "../nextPrev"
+import ArticleHead from "./articleHead"
+import replaceShortcodes from "./shortcodes"
+import BookshopWidget from "./bookshop"
+import ContributorsBox from "../contributorsBox"
+import styles from "./poetry.module.scss"
 import CoversPopup from "../issueRail/coversPopup"
 
 const Article = (props: ArticleProps) => {
-  const { thisIssueData, articleData, permalink } = props
-  const { theme, setTheme } = useTheme()
-  const [currentAds, setCurrentAds] = useState<Ads[] | undefined>(undefined)
+  const { thisIssueData, articleData, permalink, currentSection, navData } = props
+  const { body_text, images, endnote, contributors } = articleData
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!currentAds) {
-        const ads = getAds()
-        // Fetch all the data in parallel
-        const [fetchedAds] = await Promise.all([ads])
-        // Update the state with the fetched data as it becomes available
-        setCurrentAds(fetchedAds)
-      }
-    }
-
-    // Call the fetchData function and handle any errors
-    fetchData().catch((error) => console.error("Failed to fetch Ad data on Article page:", error))
-  }, [currentAds])
-
-  const issueClass = `issue-${thisIssueData.slug.toLowerCase()}`
+  const type = currentSection.slug === "criticspage" ? PaperType.CriticsPage : PaperType.Default
 
   return (
-    <Paper pageClass="paper-article">
-      <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
+    <Paper pageClass={`paper-article paper-article-${currentSection.slug}`} type={type} navData={navData}>
+      <article className="px-3 tablet-lg:px-6">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <aside className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-4 desktop-lg:col-span-3 relative">
-            <IssueRail key={thisIssueData.id} thisIssueData={thisIssueData} />
-          </aside>
-
-          <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-            <Header type={HeaderType.Article} />
-
-            <Ad970 currentAds={currentAds} />
-
-            <ArticleBody
+          <div className="col-span-4 tablet-lg:col-span-12 border-b rail-border">
+            <NextPrev
+              parentCollection={thisIssueData}
               articles={thisIssueData.articles}
-              currentSection={articleData.section}
-              thisIssueData={thisIssueData}
-              type={BodyTypes.Article}
-              articleData={articleData}
-              permalink={permalink}
+              currentSlug={articleData.slug}
+              type={NextPrevType.Issues}
+            />
+          </div>
+
+          <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 ">
+            <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
+          </div>
+          <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 space-y-12">
+            {body_text && (
+              <div className={`${styles.content_poetry} content`}>
+                {replaceShortcodes({ html: body_text, images: images })}
+                {endnote && (
+                  <div className="endnote">
+                    <span className="line"></span>
+                    {parse(articleData.endnote)}
+                  </div>
+                )}
+                <BookshopWidget {...articleData} />
+              </div>
+            )}
+
+            {contributors && <ContributorsBox contributors={contributors} />}
+          </div>
+          <div className="col-span-4 tablet-lg:col-span-12 border-t rail-border">
+            <NextPrev
+              parentCollection={thisIssueData}
+              articles={thisIssueData.articles}
+              currentSlug={articleData.slug}
+              type={NextPrevType.Issues}
             />
           </div>
         </div>
-      </main>
+      </article>
       <CoversPopup />
     </Paper>
   )
