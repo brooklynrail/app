@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation"
 import { Homepage, HomepageCollections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { CollectionType } from "../homepage"
-import MenuButton from "./menuButton"
+import MenuButton from "../header/menuButton"
 
 interface NavBarProps {
   navData: Homepage

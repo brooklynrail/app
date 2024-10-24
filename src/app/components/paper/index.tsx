@@ -1,15 +1,13 @@
 "use client"
-
-import Link from "next/link"
 import Ad970 from "../ads/ad970"
 import Footer from "../footer"
-import CoversPopup from "../issueRail/coversPopup"
 import PopupDonate from "../popupDonate"
-import { PopupProvider, usePopup } from "../popupProvider"
+import { PopupProvider } from "../popupProvider"
 import { useTheme } from "../theme"
 import ThemeToggle from "../themeToggle"
 import Header from "../header"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
+import NavBar from "../navBar"
 
 export interface PaperProps {
   pageClass: string
@@ -38,7 +36,8 @@ const Paper = (props: PaperProps) => {
   return (
     <PopupProvider hidePopup={hidePopup}>
       <div className={`paper ${pageClass}`}>
-        <Header type={type} navData={navData} banners={banners} currentIssue={currentIssue} />
+        <Header type={type} banners={banners} currentIssue={currentIssue} />
+        <NavBar navData={navData} />
         {children}
         <Footer />
         <Ad970 />
