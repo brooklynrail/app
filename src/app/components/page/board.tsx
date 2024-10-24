@@ -45,13 +45,15 @@ const Board = (props: PageBodyProps) => {
         <h3 className="font-bold text-sm uppercase">{BoardGroup.BoardOfDirectors}</h3>
         <ul className="text-lg space-y-2">{boardOfDirectors}</ul>
       </div>
-      <div className="space-y-3">
-        <h3 className="font-bold text-sm uppercase">{BoardGroup.AdvisoryBoard}</h3>
-        <div className="flex gap-3">
-          <ul className="text-lg space-y-2 w-mobile">{advisory1}</ul>
-          <ul className="text-lg space-y-2 w-mobile">{advisory2}</ul>
+      {advisoryBoard && (
+        <div className="space-y-3">
+          <h3 className="font-bold text-sm uppercase">{BoardGroup.AdvisoryBoard}</h3>
+          <div className="flex gap-3">
+            <ul className="text-lg space-y-2 w-mobile">{advisory1}</ul>
+            <ul className="text-lg space-y-2 w-mobile">{advisory2}</ul>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
