@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Events, HomepageCollections, Issues, Pages } from "../../../../lib/types"
 import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
 import Link from "next/link"
+import parse from "html-react-parser"
 import { CollectionType } from "../homepage"
 import { formatTime, getUpcomingEventsBanner } from "../../../../lib/utils/events/utils"
 import { getAllPages, getPageData } from "../../../../lib/utils/pages"
@@ -91,7 +92,7 @@ const Menu = (props: MenuProps) => {
     return (
       <li key={i} className="text-center">
         <Link href={permalink} className="py-3 block text-sm font-bold uppercase text-center">
-          {thisCollection.title}
+          {parse(thisCollection.title)}
         </Link>
       </li>
     )
@@ -114,7 +115,7 @@ const Menu = (props: MenuProps) => {
     return (
       <li key={i} className="">
         <Link href={permalink} className="block text-sm font-bold">
-          {page.title}
+          {parse(page.title)}
         </Link>
       </li>
     )
