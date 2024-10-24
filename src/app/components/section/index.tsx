@@ -65,7 +65,7 @@ const Section = (props: SectionProps & NavProps) => {
   return (
     <Paper pageClass={`paper-section paper-section-${sectionData.slug}`} type={type} navData={navData}>
       <main className="divide-y rail-divide">
-        <SectionHead title={sectionData.name} permalink={permalink} />
+        <SectionHead title={sectionData.name} description={sectionData.description} permalink={permalink} />
 
         <div className="divide-y rail-divide">{allArticles}</div>
 
