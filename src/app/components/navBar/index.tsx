@@ -92,7 +92,7 @@ const SubscribeButton = () => {
   return (
     <Link href={"/subscribe"}>
       <button
-        className={`shadow-lg bg-white text-zinc-800 font-medium text-xs tablet:text-sm px-2.5 py-1.5 tablet:px-2.5 tablet:py-1 rounded-sm uppercase hover:underline underline-offset-2`}
+        className={`shadow-lg bg-white text-zinc-800 font-medium text-xs tablet:text-sm px-2.5 py-2 tablet:px-2.5 tablet:py-1 rounded-sm uppercase hover:underline underline-offset-2`}
       >
         Subscribe
       </button>
@@ -104,7 +104,7 @@ const DonateButton = () => {
   return (
     <Link href={"/donate"}>
       <button
-        className={`shadow-lg bg-red-500 text-white font-medium text-xs tablet:text-sm px-2.5 py-1.5 tablet:px-2.5 tablet:py-1 rounded-sm uppercase hover:underline underline-offset-2`}
+        className={`shadow-lg bg-red-500 text-white font-medium text-xs tablet:text-sm px-2.5 py-2 tablet:px-2.5 tablet:py-1 rounded-sm uppercase hover:underline underline-offset-2`}
       >
         Donate
       </button>
