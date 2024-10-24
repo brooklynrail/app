@@ -111,7 +111,7 @@ const Menu = (props: MenuProps) => {
                   </Link>
                 </p>
               </div>
-              <div className="mt-4">
+              <div className="mt-4 hidden">
                 <input type="text" placeholder="Search..." className="w-full p-2 border border-gray-300 rounded-md" />
               </div>
             </div>
