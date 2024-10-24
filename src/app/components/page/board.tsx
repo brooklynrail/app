@@ -45,7 +45,7 @@ const Board = (props: PageBodyProps) => {
         <h3 className="font-bold text-sm uppercase">{BoardGroup.BoardOfDirectors}</h3>
         <ul className="text-lg space-y-2">{boardOfDirectors}</ul>
       </div>
-      {advisoryBoard && (
+      {pageData.board && pageData.board.length > 0 && (
         <div className="space-y-3">
           <h3 className="font-bold text-sm uppercase">{BoardGroup.AdvisoryBoard}</h3>
           <div className="flex gap-3">
