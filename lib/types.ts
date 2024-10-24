@@ -661,6 +661,7 @@ export type PagesBoard = {
 export type PagesStaff = {
   title: string
   name: string
+  group: string
 }
 
 export type PagesSupporters = {
