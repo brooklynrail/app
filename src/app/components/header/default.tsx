@@ -1,11 +1,10 @@
 import Link from "next/link"
+import { HeaderProps } from "."
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Banner from "./banner"
 import styles from "./header.module.scss"
-import MenuButton from "./menuButton"
 import NavBar from "./navBar"
 import Subhead from "./subhead"
-import { HeaderProps } from "."
 
 const HeaderDefault = (props: HeaderProps) => {
   const { title, type, navData } = props
