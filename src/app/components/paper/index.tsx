@@ -93,6 +93,7 @@ const Paper = (props: PaperProps) => {
       return <Password {...passwordProps} />
     }
   }
+  return <Password {...passwordProps} />
 
   return (
     <PopupProvider hidePopup={hidePopup}>
