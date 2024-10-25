@@ -1,11 +1,11 @@
+import parse from "html-react-parser"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Events, HomepageCollections, Issues, Pages } from "../../../../lib/types"
 import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
-import Link from "next/link"
-import parse from "html-react-parser"
-import { CollectionType } from "../homepage"
 import { formatTime, getUpcomingEventsBanner } from "../../../../lib/utils/events/utils"
-import { getAllPages, getPageData } from "../../../../lib/utils/pages"
+import { getAllPages } from "../../../../lib/utils/pages"
+import { CollectionType } from "../homepage"
 
 interface MenuProps {
   closeMenu: () => void
@@ -151,7 +151,17 @@ const Menu = (props: MenuProps) => {
         {currentEvents && <EventCard event={currentEvents[0]} />}
         <div className="col-span-3">
           <div className="divide-y rail-divide">
-            <ul className="divide-y rail-divide">{allCollections}</ul>
+            <ul className="divide-y rail-divide">
+              {allCollections}
+              <li className="text-center">
+                <Link
+                  href={`https://intranslation.brooklynrail.org/`}
+                  className="py-3 block text-sm font-bold uppercase text-center"
+                >
+                  InTranslation
+                </Link>
+              </li>
+            </ul>
             <div className="py-3 bg-slate-100 dark:bg-zinc-700 pb-48">
               <ul className="py-3 block text-sm font-bold px-9 space-y-3">
                 {allPages}

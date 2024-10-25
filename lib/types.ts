@@ -642,12 +642,14 @@ export type Pages = {
   status: string
   title: string
   body_text?: string | null
+  footnotes?: string | null
   map_key?: string | null
   images: any[] | ArticlesFiles[]
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
   board?: PagesBoard[] | null
   staff?: PagesStaff[] | null
+  supporters?: PagesSupporters[] | null
   quotes?: PagesQuotes[] | null
 }
 
@@ -659,6 +661,12 @@ export type PagesBoard = {
 export type PagesStaff = {
   title: string
   name: string
+  group: string
+}
+
+export type PagesSupporters = {
+  name: string
+  group: string
 }
 
 export type PagesQuotes = {

@@ -63,14 +63,14 @@ const SectionArtSeen = (props: SectionProps) => {
         }
 
         const articleGroups = groupArray(issueArticles, groupCount).map((group, i) => (
-          <div key={i} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide py-3 px-6">
+          <div key={i} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide py-3 px-3">
             <Promos articles={group} />
           </div>
         ))
 
         return (
           <div key={index} className="divide-y rail-divide">
-            <div className="px-9 py-3">
+            <div className="px-6 py-3">
               <h2 className="text-2xl font-bold uppercase">{issueTitle}</h2>
             </div>
             {articleGroups}

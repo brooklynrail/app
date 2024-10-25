@@ -58,7 +58,9 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
       <div className="grid grid-cols-3 tablet:grid-cols-6 gap-3 tablet:gap-x-6">
         <div className="col-span-3 tablet:col-span-6 row-start-1">
           <h3 className="text-sm tablet-lg:text-md font-medium text-white">
-            <span className="">{parse(banner.title)}</span>
+            <Link href="/events">
+              <span className="">{parse(banner.title)}</span>
+            </Link>
           </h3>
         </div>
         <div className="col-span-2 tablet:col-span-5 row-start-2">

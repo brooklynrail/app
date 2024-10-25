@@ -53,7 +53,6 @@ export const getAds = cache(async (props: GetAdsProps): Promise<Ads[]> => {
       return []
     }
 
-    console.log("result.data", result.data)
     return result.data as Ads[]
   } catch (error) {
     console.error("Error fetching ads:", error)

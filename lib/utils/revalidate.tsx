@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache"
 import { getPermalink, PageType } from "../utils"
 
 export enum RevalidateType {
+  Homepage = "homepage",
   Articles = "articles",
   Sections = "sections",
   Issues = "issues",
@@ -24,6 +25,11 @@ export const revalidateArticle = cache(async (data: Articles) => {
   })
   const url = new URL(permalink)
   revalidatePath(url.pathname)
+  revalidatePath(`/section/${data.section.slug}`)
+  revalidatePath(`/issue/${data.issue.year}-${data.issue.month}/`)
+  revalidatePath(`/${data.issue.year}/${data.issue.month}/${data.section.slug}`)
+  revalidatePath(`/`)
+  revalidatePath(`/sitemap.xml`)
   return url.pathname
 })
 
@@ -34,6 +40,9 @@ export const revalidateIssue = cache(async (data: Issues) => {
   })
   const url = new URL(permalink)
   revalidatePath(url.pathname)
+  revalidatePath(`/issues/sitemap.xml`)
+  revalidatePath(`/archive`)
+  revalidatePath(`/`)
   return url.pathname
 })
 
@@ -44,6 +53,8 @@ export const revalidateContributor = cache(async (data: Contributors) => {
   })
   const url = new URL(permalink)
   revalidatePath(url.pathname)
+  revalidatePath("/contributors")
+  revalidatePath("/contributors/sitemap.xml")
   return url.pathname
 })
 
@@ -63,6 +74,9 @@ export const revalidateEvent = cache(async (data: Events) => {
 
   const url = new URL(permalink)
   revalidatePath(url.pathname)
+  revalidatePath("/events")
+  revalidatePath("/events/past")
+  revalidatePath(`/`)
   return url.pathname
 })
 

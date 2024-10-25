@@ -15,8 +15,8 @@ const EventsPage = (props: EventsProps) => {
   })
 
   return (
-    <Paper pageClass="paper-events" type={PaperType.Default} navData={navData}>
-      <main className="px-6 tablet-lg:px-3 pb-12 desktop:max-w-screen-widescreen mx-auto divide-y rail-divide">
+    <Paper pageClass="paper-events" type={PaperType.Events} navData={navData}>
+      <main className="px-3 tablet-lg:px-6 pb-12 desktop:max-w-screen-widescreen mx-auto divide-y rail-divide">
         <div className="space-y-9 divide-y rail-divide">
           <div className="pt-9 flex flex-col tablet-lg:flex-row tablet-lg:justify-between tablet-lg:items-end space-y-3 tablet-lg:space-y-0">
             <h1 className="font-bold text-4xl tablet-lg:text-5xl">Upcoming Events</h1>
