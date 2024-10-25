@@ -52,6 +52,16 @@ const Paper = (props: PaperProps) => {
     // get the URL of the current page
     const currentUrl = window.location.href
 
+    // Read the cookie
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim())
+    const previewCookie = cookies.find((cookie) => cookie.includes(cookieSlug))
+
+    // If the Preview Password has been previously entered, the preview cookie should be set
+    // then the article should be viewable
+    if (previewCookie) {
+      setIsViewable(true)
+    }
+
     // If the Preview Password has been previously entered, the preview cookie should be set
     if (isViewable) {
       setIsViewable(true)
