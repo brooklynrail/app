@@ -76,10 +76,12 @@ const Paper = (props: PaperProps) => {
   const passwordProps = { password, passwordError, setPassword, handlePasswordSubmit }
 
   const isPreviewSite = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
-  console.log("isPreviewSite", isPreviewSite)
 
-  if (!isViewable || isPreviewSite) {
-    return <Password {...passwordProps} />
+  // only show the password form if the site is a preview site
+  if (isPreviewSite) {
+    if (!isViewable) {
+      return <Password {...passwordProps} />
+    }
   }
 
   return (
