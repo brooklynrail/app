@@ -5,7 +5,7 @@ import { CoverImages } from "../collections/banner/coverImages"
 import Paper, { PaperType } from "../paper"
 import PreviewHeader from "../preview/previewHead"
 import TableOfContents from "./tableOfContents"
-import CoversPopup from "../issueRail/coversPopup"
+import CoversPopup from "./coversPopup"
 import parse from "html-react-parser"
 import IssueHead from "./head"
 

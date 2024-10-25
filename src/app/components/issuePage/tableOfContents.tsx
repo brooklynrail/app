@@ -3,7 +3,7 @@ import parse from "html-react-parser"
 import Link from "next/link"
 import { Articles, Issues, Sections } from "../../../../lib/types"
 import { PageType, getPermalink } from "../../../../lib/utils"
-import PromoSlim from "../promo/slim"
+import PromoSlim from "./slim"
 
 interface TableOfContentsProps {
   articles: Articles[]

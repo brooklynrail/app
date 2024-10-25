@@ -1,11 +1,8 @@
 "use client"
-import IssueRail from "../issueRail"
-import Header from "../header"
-import { useTheme } from "../theme"
+import Link from "next/link"
 import { Contributors, Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper, { PaperType } from "../paper"
-import Link from "next/link"
 
 interface ContributorsPageProps {
   thisIssueData: Issues

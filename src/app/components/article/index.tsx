@@ -9,7 +9,7 @@ import replaceShortcodes from "./shortcodes"
 import BookshopWidget from "./bookshop"
 import ContributorsBox from "../contributorsBox"
 import styles from "./poetry.module.scss"
-import CoversPopup from "../issueRail/coversPopup"
+import CoversPopup from "../issuePage/coversPopup"
 
 const Article = (props: ArticleProps) => {
   const { thisIssueData, articleData, permalink, currentSection, navData } = props
