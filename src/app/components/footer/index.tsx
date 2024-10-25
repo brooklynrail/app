@@ -33,28 +33,44 @@ const Footer = () => {
           <h4 className="text-md font-bold">The RAIL</h4>
           <ul>
             <li>
-              <Link href="/about/?f">About the Rail</Link>
+              <Link href="/about/?f" prefetch={false}>
+                About the Rail
+              </Link>
             </li>
             <li>
-              <Link href="/staff/?f">Staff</Link>
+              <Link href="/staff/?f" prefetch={false}>
+                Staff
+              </Link>
             </li>
             <li>
-              <Link href="/our-supporters/?f">Our Supporters</Link>
+              <Link href="/our-supporters/?f" prefetch={false}>
+                Our Supporters
+              </Link>
             </li>
             <li>
-              <Link href="/contributors/?f">Contributors</Link>
+              <Link href="/contributors/?f" prefetch={false}>
+                Contributors
+              </Link>
             </li>
             <li>
-              <Link href="https://shop.brooklynrail.org?f">Store</Link>
+              <Link href="https://shop.brooklynrail.org?f" prefetch={false}>
+                Store
+              </Link>
             </li>
             <li>
-              <Link href="/history/?f">History</Link>
+              <Link href="/history/?f" prefetch={false}>
+                History
+              </Link>
             </li>
             <li>
-              <Link href="/archives/?f">Archives</Link>
+              <Link href="/archives/?f" prefetch={false}>
+                Archives
+              </Link>
             </li>
             <li>
-              <Link href="/contact/?f">Contact Us</Link>
+              <Link href="/contact/?f" prefetch={false}>
+                Contact Us
+              </Link>
             </li>
           </ul>
         </div>
@@ -62,19 +78,29 @@ const Footer = () => {
           <h4 className="text-md font-bold">Get Involved</h4>
           <ul>
             <li>
-              <Link href="https://mailchi.mp/brooklynrail/join/?f">Sign up for our newsletter</Link>
+              <Link href="https://mailchi.mp/brooklynrail/join/?f" prefetch={false}>
+                Sign up for our newsletter
+              </Link>
             </li>
             <li>
-              <Link href="/subscribe/?f">Subscribe</Link>
+              <Link href="/subscribe/?f" prefetch={false}>
+                Subscribe
+              </Link>
             </li>
             <li>
-              <Link href="https://brooklynrail.org/donate?f">Donate</Link>
+              <Link href="https://brooklynrail.org/donate?f" prefetch={false}>
+                Donate
+              </Link>
             </li>
             <li>
-              <Link href="/advertise/?f">Advertise</Link>
+              <Link href="/advertise/?f" prefetch={false}>
+                Advertise
+              </Link>
             </li>
             <li>
-              <Link href="/submissions/?f">Submissions</Link>
+              <Link href="/submissions/?f" prefetch={false}>
+                Submissions
+              </Link>
             </li>
           </ul>
         </div>
@@ -82,22 +108,34 @@ const Footer = () => {
           <h4 className="text-md font-bold">Follow</h4>
           <ul>
             <li>
-              <Link href="https://www.instagram.com/brooklynrail/" title="Follow @brooklynrail on Instagram">
+              <Link
+                href="https://www.instagram.com/brooklynrail/"
+                title="Follow @brooklynrail on Instagram"
+                prefetch={false}
+              >
                 <i className="fab fa-instagram"></i> Instagram
               </Link>
             </li>
             <li>
-              <Link href="https://twitter.com/thebrooklynrail" title="Follow @thebrooklynrail on Twitter">
+              <Link
+                href="https://twitter.com/thebrooklynrail"
+                title="Follow @thebrooklynrail on Twitter"
+                prefetch={false}
+              >
                 <i className="fab fa-twitter-square"></i> Twitter
               </Link>
             </li>
             <li>
-              <Link href="https://www.facebook.com/thebrooklynrail" title="Like The Brooklyn Rail on Facebook">
+              <Link
+                href="https://www.facebook.com/thebrooklynrail"
+                title="Like The Brooklyn Rail on Facebook"
+                prefetch={false}
+              >
                 <i className="fab fa-facebook-f"></i> Facebook
               </Link>
             </li>
             <li>
-              <Link href="/rss" title="The Brooklyn Rail RSS feed">
+              <Link href="/rss" title="The Brooklyn Rail RSS feed" prefetch={false}>
                 <i className="fas fa-rss"></i> RSS
               </Link>
             </li>
