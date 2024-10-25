@@ -38,8 +38,7 @@ const Password = (props: PasswordProps) => {
                 </button>
               </div>
               <p>{passwordError}</p>
-              <div className="pt-3 text-center space-y-3">
-                <p>“Oh, you should never, never, doubt what nobody is sure about.”</p>
+              <div className="pt-3 text-center space-y-9 w-mobile-lg">
                 <p>
                   <span className="font-medium">This is the PREVIEW site for the Brooklyn Rail.</span>
                   <br /> Go to{" "}
@@ -47,6 +46,7 @@ const Password = (props: PasswordProps) => {
                     https://brooklynrail.org
                   </Link>
                 </p>
+                <p>“Oh, you should never, never, doubt what nobody is sure about.” – Willy Wonka</p>
               </div>
             </div>
           </form>
