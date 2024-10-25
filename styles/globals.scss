@@ -74,7 +74,7 @@ b {
 }
 
 .rail-criticspage-bg {
-  @apply bg-amber-50 dark:bg-zinc-800;
+  @apply bg-amber-50 dark:bg-stone-800;
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
@@ -144,8 +144,11 @@ body {
 }
 
 .paper-event,
+.paper-event .navbar,
 .paper-events,
+.paper-events .navbar,
 .paper-events-past,
+.paper-events-past .navbar,
 .paper-preview-event {
   @apply bg-indigo-50 dark:bg-zinc-800;
   @apply text-zinc-900 dark:text-indigo-50;
@@ -177,7 +180,7 @@ body {
 .paper-section-criticspage,
 .paper-section-criticspage .navbar,
 .paper-section-criticspage .section-head {
-  @apply bg-amber-50 dark:bg-zinc-800;
+  @apply bg-amber-50 dark:bg-stone-800;
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
@@ -188,18 +191,18 @@ body {
 .paper-section-fiction,
 .paper-section-fiction .navbar,
 .paper-section-fiction .section-head {
-  @apply bg-stone-100 dark:bg-zinc-800;
+  @apply bg-stone-100 dark:bg-zinc-900;
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
-.collection-fieldnotes,
-.collection-fieldnotes .head,
-.paper-article-fieldnotes,
-.paper-article-fieldnotes .navbar,
-.paper-section-fieldnotes,
-.paper-section-fieldnotes .navbar,
-.paper-section-fieldnotes .section-head {
-  @apply bg-stone-100 dark:bg-zinc-800;
+.collection-field-notes,
+.collection-field-notes .head,
+.paper-article-field-notes,
+.paper-article-field-notes .navbar,
+.paper-section-field-notes,
+.paper-section-field-notes .navbar,
+.paper-section-field-notes .section-head {
+  @apply bg-stone-100 dark:bg-zinc-900;
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
@@ -210,7 +213,7 @@ body {
 .paper-section-poetry,
 .paper-section-poetry .navbar,
 .paper-section-poetry .section-head {
-  @apply bg-stone-100 dark:bg-zinc-800;
+  @apply bg-stone-100 dark:bg-zinc-900;
   @apply text-zinc-900 dark:text-indigo-50;
 }
 
