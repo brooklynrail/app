@@ -6,6 +6,7 @@ import {
   RevalidateType,
 } from "../../../../lib/utils/revalidate"
 import { Articles, Contributors, Events } from "../../../../lib/types"
+import { revalidatePath } from "next/cache"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
@@ -51,6 +52,9 @@ export async function GET(request: Request) {
     let response: Response
     let path: string
     switch (type) {
+      case RevalidateType.Homepage:
+        revalidatePath(`/`)
+        return new Response(`Revalidation started for the homepage: `, { status: 200 })
       case RevalidateType.Articles:
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)

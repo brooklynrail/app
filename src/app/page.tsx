@@ -8,10 +8,6 @@ import HomePage, { CollectionType } from "./components/homepage"
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
 export const dynamicParams = true
 
-// Next.js will invalidate the cache when a
-// request comes in, at most once every 60 seconds.
-export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 86400 : 0
-
 export interface HomePageProps {
   navData: Homepage
   homepageData: Homepage

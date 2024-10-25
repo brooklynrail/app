@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache"
 import { getPermalink, PageType } from "../utils"
 
 export enum RevalidateType {
+  Homepage = "homepage",
   Articles = "articles",
   Sections = "sections",
   Issues = "issues",
@@ -41,6 +42,7 @@ export const revalidateIssue = cache(async (data: Issues) => {
   revalidatePath(url.pathname)
   revalidatePath(`/issues/sitemap.xml`)
   revalidatePath(`/archive`)
+  revalidatePath(`/`)
   return url.pathname
 })
 
