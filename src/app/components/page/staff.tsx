@@ -2,7 +2,7 @@ import { PageBodyProps } from "./pageBody"
 
 enum StaffTypes {
   Staff = "Staff",
-  SectionEditors = "Sections Editors",
+  SectionEditors = "Section Editors",
   ConsultingEditors = "Consulting Editors",
   EditorsAtLarge = "Editors-at-Large",
 }
