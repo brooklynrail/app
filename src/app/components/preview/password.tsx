@@ -38,7 +38,7 @@ const Password = (props: PasswordProps) => {
                 </button>
               </div>
               <p>{passwordError}</p>
-              <div className="pt-3 text-center space-y-9 w-mobile-lg">
+              <div className="pt-3 text-center space-y-9 max-w-screen-mobile-lg">
                 <p>
                   <span className="font-medium">This is the PREVIEW site for the Brooklyn Rail.</span>
                   <br /> Go to{" "}
