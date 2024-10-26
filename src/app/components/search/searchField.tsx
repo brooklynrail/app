@@ -15,14 +15,14 @@ const SearchField = () => {
   }
 
   return (
-    <div className="mt-4">
-      <form onSubmit={handleSearch} className="mt-4 relative">
+    <div className="w-full">
+      <form onSubmit={handleSearch} className="relative">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search..."
-          className="w-full p-3 border border-gray-300 rounded"
+          className="w-full py-2.5 px-3 rounded-sm shadow-lg text-sm focus:border-indigo-700 focus:ring-indigo-700 focus:ring-1"
         />
         <button type="submit">
           <SubmitIcon />

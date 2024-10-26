@@ -131,7 +131,7 @@ const Menu = (props: MenuProps) => {
     <div className="top-0 left-0 w-[calc(100vw-6rem)] max-w-screen-mobile-lg rail-bg h-screen fixed z-[100] overflow-y-auto !m-0 bg-slate-50 dark:bg-zinc-700">
       <div className="grid grid-cols-3 gap-x-3">
         <div className="col-span-3">
-          <div className="p-6">
+          <div className="p-6 space-y-6">
             <div className="relative flex flex-row-reverse justify-between w-full ">
               <p
                 onClick={closeMenu}
