@@ -41,9 +41,13 @@ const SearchField = () => {
             root: "shadow-sm px-3 tablet-lg:px-0",
             form: "relative flex items-center",
             input:
-              "block w-full text-lg px-3 py-3 bg-white dark:bg-zinc-700 text-zinc-800 dark:text-slate-100 border-2 border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md focus:ring-1",
+              "block w-full text-lg px-3 py-3 bg-white dark:bg-zinc-700 text-zinc-800 dark:text-slate-100 border-2 border-slate-300 placeholder-slate-400 focus:outline-none focus:border-indigo-700 focus:ring-indigo-700 rounded-md focus:ring-1",
           }}
-          submitIconComponent={() => <SubmitIcon />}
+          submitIconComponent={() => (
+            <div className="top-1.5 right-1.5 absolute">
+              <SubmitIcon />
+            </div>
+          )}
           resetIconComponent={() => <ResetIcon />}
           loadingIconComponent={() => <Loading />}
         />
@@ -71,11 +75,11 @@ const SearchField = () => {
 
 export const SubmitIcon = () => {
   return (
-    <div className="p-2.5 absolute right-0.5 top-0.5">
+    <div className="p-1.5 absolute right-0 top-0">
       <svg width="28" height="28" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M24.8161 22.5416L20.0068 17.7322C21.1004 16.1086 21.64 14.08 21.3511 11.9184C20.8585 8.24162 17.8452 5.24952 14.1648 4.78357C8.69288 4.09117 4.09163 8.69242 4.78407 14.1643C5.25014 17.8463 8.24264 20.8621 11.9198 21.3523C14.0814 21.6411 16.1104 21.1017 17.7336 20.0079L22.543 24.8173C23.1706 25.4449 24.1883 25.4449 24.8159 24.8173C25.4429 24.1889 25.4429 23.1684 24.8161 22.5416ZM7.89292 13.0715C7.89292 10.2357 10.2 7.92863 13.0358 7.92863C15.8716 7.92863 18.1786 10.2357 18.1786 13.0715C18.1786 15.9073 15.8716 18.2143 13.0358 18.2143C10.2 18.2143 7.89292 15.9081 7.89292 13.0715Z"
-          className="fill-zinc-600 dark:fill-slate-100"
+          className="fill-zinc-800 dark:fill-slate-100"
         />
       </svg>
     </div>
