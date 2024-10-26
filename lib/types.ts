@@ -704,6 +704,23 @@ export type RelatedLinks = {
   url: string
 }
 
+export type SearchHit = {
+  objectID: string | null
+  kicker: string | null
+  title: string
+  title_display: string
+  description: string
+  description_display: string
+  image: string | null
+  image_caption: string | null
+  body: string | null
+  published: string | null
+  date: string | null
+  people: string | null
+  content_type: string
+  permalink: string
+}
+
 export type Sections = {
   articles: Articles[]
   date_created?: string | null

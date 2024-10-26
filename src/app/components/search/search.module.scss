@@ -1,0 +1,18 @@
+// see https://github.com/algolia/instantsearch/tree/master/packages/instantsearch.css
+
+.hit {
+  a:hover {
+    @apply no-underline;
+    h3 {
+      @apply underline;
+    }
+  }
+}
+
+.type_event {
+  @apply bg-indigo-50;
+}
+
+.type_contributor {
+  @apply bg-green-100;
+}
