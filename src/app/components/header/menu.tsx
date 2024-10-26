@@ -6,6 +6,8 @@ import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/uti
 import { formatTime, getUpcomingEventsBanner } from "../../../../lib/utils/events/utils"
 import { getAllPages } from "../../../../lib/utils/pages"
 import { CollectionType } from "../homepage"
+import { useRouter } from "next/router"
+import SearchField from "../search/searchField"
 
 interface MenuProps {
   closeMenu: () => void
@@ -143,9 +145,7 @@ const Menu = (props: MenuProps) => {
                 </Link>
               </p>
             </div>
-            <div className="mt-4 hidden">
-              <input type="text" placeholder="Search..." className="w-full p-2 border border-gray-300 rounded-md" />
-            </div>
+            <SearchField />
           </div>
         </div>
         {currentEvents && <EventCard event={currentEvents[0]} />}

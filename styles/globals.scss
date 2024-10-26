@@ -58,6 +58,15 @@ html {
   --font-weight-black: 900;
 }
 
+// disable WebKit’s proprietary pseudo elements for search input
+// See: https://stackoverflow.com/questions/18856246/input-type-search-hide-the-icons
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
 strong,
 b {
   @apply font-bold;

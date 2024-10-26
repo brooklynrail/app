@@ -1,7 +1,7 @@
 "use client"
 import { Articles, Homepage, Issues } from "../../../../lib/types"
-import GoogleCSE from "../googleCSE"
 import Paper, { PaperType } from "../paper"
+import SearchField from "./searchBox"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -19,11 +19,11 @@ const SearchPage = (props: SearchPageProps) => {
   const { navData } = props
   return (
     <Paper pageClass="paper-search" type={PaperType.Default} navData={navData}>
-      <div className="px-3 desktop:w-desktop mx-auto">
-        <section id="main" className="py-9 h-screen">
+      <div className="">
+        <section id="main" className="tablet-lg:py-9">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-            <div className="col-span-4 tablet-lg:col-span-12">
-              <GoogleCSE />
+            <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 desktop-lg:col-span-6 desktop-lg:col-start-4">
+              <SearchField />
             </div>
           </div>
         </section>
