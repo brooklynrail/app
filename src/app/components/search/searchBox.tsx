@@ -8,8 +8,8 @@ import { InstantSearchNext } from "react-instantsearch-nextjs"
 import { SearchHit } from "../../../../lib/types"
 import styles from "./search.module.scss"
 
-const appId = process.env.ALGOLIA_APP_ID!
-const apiKey = process.env.ALGOLIA_API_KEY!
+const appId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!
+const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!
 
 const searchClient = algoliasearch(appId, apiKey)
 
