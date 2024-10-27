@@ -144,9 +144,9 @@ const Promos = (props: PromoProps) => {
     return (
       <div key={i} className={`col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop:col-span-3`}>
         <div className="p-3 flex flex-col space-y-6">
-          <div className="flex flex-col space-y-3">
+          <div className="flex flex-col space-y-1">
             <Bylines article={article} type={BylineType.CriticsPagePromos} hideBy={true} />
-            <Title title={article.title} permalink={permalink} classes="text-md tablet:text-lg font-medium pl-3" />
+            <Title title={article.title} permalink={permalink} classes="text-sm font-medium pl-3" />
           </div>
         </div>
       </div>
