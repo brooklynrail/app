@@ -34,7 +34,7 @@ const CollectionHead = (props: CollectionHeadProps) => {
             </div>
             {permalink && (
               <Link
-                className="hidden tablet-lg:block px-3 py-1 tablet:py-2 rounded-md shadow-lg text-sm tablet:text-lg font-medium bg-white dark:bg-zinc-700"
+                className="hidden tablet-lg:block px-3 py-1 tablet:py-2 rounded-sm shadow-lg text-sm tablet:text-lg font-medium bg-white dark:bg-zinc-700"
                 href={permalink}
                 title={`Visit all ${title}`}
               >

@@ -73,7 +73,7 @@ const Section = (props: SectionProps & NavProps) => {
           <div className="text-center py-6 pb-12">
             <button
               onClick={loadMoreArticles}
-              className="bg-indigo-500 text-white text-xl uppercase px-4 py-2 rounded-md shadow-md hover:bg-indigo-600 hover:underline hover:underline-offset-2"
+              className="bg-indigo-500 text-white text-xl uppercase px-4 py-2 rounded-sm shadow-lg hover:bg-indigo-600 hover:underline hover:underline-offset-2"
             >
               Load more
             </button>
