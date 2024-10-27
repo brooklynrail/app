@@ -1,5 +1,4 @@
 "use client"
-import parse from "html-react-parser"
 import { useEffect, useState } from "react"
 import { SectionProps } from "."
 import { Articles } from "../../../../lib/types"
@@ -9,7 +8,6 @@ import Title, { TitleType } from "../collections/promos/title"
 import FeaturedImage from "../featuredImage"
 import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 import Excerpt from "../collections/promos/excerpt"
-import Kicker from "../collections/promos/kicker"
 import Frame from "../frames/frame"
 
 // Group articles by issue
