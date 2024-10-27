@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Homepage, HomepageCollections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { CollectionType } from "../homepage"
-import MenuButton from "../header/menuButton"
+import MenuButton from "../menu/menuButton"
 
 interface NavBarProps {
   navData: Homepage
