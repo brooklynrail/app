@@ -80,7 +80,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   const isTribute = articleData.tribute
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.id}/`
   return (
-    <Paper pageClass="paper-preview" hidePopup={true} type={PaperType.Preview} navData={navData}>
+    <Paper pageClass={`theme-${articleData.section.slug}`} hidePopup={true} type={PaperType.Preview} navData={navData}>
       <main className="">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
           <div className="col-span-4 tablet-lg:col-span-12">

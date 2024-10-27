@@ -43,7 +43,7 @@ const IssuePage = (props: IssuePageProps) => {
   const credits = thisIssueData.credits
 
   return (
-    <Paper pageClass={`paper-issue ${issueClass}`} type={PaperType.Default} navData={navData}>
+    <Paper pageClass={``} type={PaperType.Default} navData={navData}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
       <main className="divide-y rail-divide">
         <IssueHead title={thisIssueData.title} allIssues={allIssues} currentIssueSlug={thisIssueData.slug} />

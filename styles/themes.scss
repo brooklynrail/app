@@ -1,0 +1,158 @@
+html,
+body {
+  @apply text-base font-normal;
+  @apply font-sans antialiased;
+  @apply bg-[#EF4444] text-black;
+}
+
+//=========================================
+// Paper Styles
+//=========================================
+
+// Default theme
+:root {
+  --background-color: #f8fafc; /* slate-50 */
+  --text-color: #18181b; /* zinc-900 */
+  --navbar-background-color: #f8fafc; /* slate-50 */
+  --navbar-text-color: #18181b; /* zinc-900 */
+  --collection-background-color: #f8fafc; /* slate-50 */
+  --collection-text-color: #18181b; /* zinc-900 */
+}
+.dark {
+  --background-color: #27272a; /* zinc-800 */
+  --text-color: #eef2ff; /* indigo-50 */
+  --navbar-background-color: #27272a; /* zinc-800 */
+  --navbar-text-color: #eef2ff; /* indigo-50 */
+  --collection-background-color: #27272a; /* zinc-800 */
+  --collection-text-color: #eef2ff; /* indigo-50 */
+}
+
+// EVENTS ==========================================
+.theme-events {
+  --background-color: #eef2ff; /* indigo-50 */
+  --text-color: #18181b; /* zinc-900 */
+  --navbar-background-color: #eef2ff; /* indigo-50 */
+  --navbar-text-color: #18181b; /* zinc-900 */
+  --collection-background-color: #eef2ff; /* indigo-50 */
+  --collection-text-color: #18181b; /* zinc-900 */
+}
+.dark .theme-events {
+  --background-color: #27272a; /* zinc-800 */
+  --text-color: #eef2ff; /* indigo-50 */
+  --navbar-background-color: #27272a; /* zinc-800 */
+  --navbar-text-color: #eef2ff; /* indigo-50 */
+  --collection-background-color: #27272a; /* zinc-800 */
+  --collection-text-color: #eef2ff; /* indigo-50 */
+}
+
+// CRITICS PAGE ==========================================
+.theme-criticspage {
+  --background-color: #fffbeb; /* amber-50 */
+  --text-color: #18181b; /* zinc-900 */
+  --navbar-background-color: #fffbeb; /* amber-50 */
+  --navbar-text-color: #18181b; /* zinc-900 */
+  --collection-background-color: #fffbeb; /* amber-50 */
+  --collection-text-color: #18181b; /* zinc-900 */
+}
+.dark .theme-criticspage {
+  --background-color: #2d2d2f; /* stone-800 */
+  --text-color: #eef2ff; /* indigo-50 */
+  --navbar-background-color: #2d2d2f; /* stone-800 */
+  --navbar-text-color: #eef2ff; /* indigo-50 */
+  --collection-background-color: #2d2d2f; /* stone-800 */
+  --collection-text-color: #eef2ff; /* indigo-50 */
+}
+
+// TRIUBTES ==========================================
+.theme-tributes {
+  --background-color: #f1f5f9; /* slate-100 */
+  --text-color: #18181b; /* zinc-900 */
+  --navbar-background-color: #f1f5f9; /* slate-100 */
+  --navbar-text-color: #18181b; /* zinc-900 */
+  --collection-background-color: #f1f5f9; /* slate-100 */
+  --collection-text-color: #18181b; /* zinc-900 */
+}
+.dark .theme-tributes {
+  --background-color: #18181b; /* zinc-900 */
+  --text-color: #eef2ff; /* indigo-50 */
+  --navbar-background-color: #18181b; /* zinc-900 */
+  --navbar-text-color: #eef2ff; /* indigo-50 */
+  --collection-background-color: #18181b; /* zinc-900 */
+  --collection-text-color: #eef2ff; /* indigo-50 */
+}
+
+// POETRY, FICTION, FIELD NOTES ==========================================
+.theme-poetry,
+.theme-fiction,
+.theme-field-notes {
+  --background-color: #f5f5f4; /* stone-100 */
+  --text-color: #18181b; /* zinc-900 */
+  --navbar-background-color: #f5f5f4; /* stone-100 */
+  --navbar-text-color: #18181b; /* zinc-900 */
+  --collection-background-color: #f5f5f4; /* stone-100 */
+  --collection-text-color: #18181b; /* zinc-900 */
+}
+.dark .theme-poetry .dark .theme-fiction,
+.dark .theme-field-notes {
+  --background-color: #18181b; /* zinc-900 */
+  --text-color: #eef2ff; /* indigo-50 */
+  --navbar-background-color: #18181b; /* zinc-900 */
+  --navbar-text-color: #eef2ff; /* indigo-50 */
+  --collection-background-color: #18181b; /* zinc-900 */
+  --collection-text-color: #eef2ff; /* indigo-50 */
+}
+
+// PEOPLE ==========================================
+.theme-people {
+  --background-color: #d1fae5; /* green-100 */
+  --text-color: #18181b; /* zinc-900 */
+  --navbar-background-color: #d1fae5; /* green-100 */
+  --navbar-text-color: #18181b; /* zinc-900 */
+  --collection-background-color: #d1fae5; /* green-100 */
+  --collection-text-color: #18181b; /* zinc-900 */
+}
+.dark .theme-people {
+  --background-color: #18181b; /* zinc-900 */
+  --text-color: #eef2ff; /* indigo-50 */
+  --navbar-background-color: #18181b; /* zinc-900 */
+  --navbar-text-color: #eef2ff; /* indigo-50 */
+  --collection-background-color: #18181b; /* zinc-900 */
+  --collection-text-color: #eef2ff; /* indigo-50 */
+}
+
+// PAGE ==========================================
+.theme-page {
+  --background-color: #e0f7fa; /* cyan-50 */
+  --text-color: #18181b; /* zinc-900 */
+  --navbar-background-color: #e0f7fa; /* cyan-50 */
+  --navbar-text-color: #18181b; /* zinc-900 */
+  --collection-background-color: #e0f7fa; /* cyan-50 */
+  --collection-text-color: #18181b; /* zinc-900 */
+}
+.dark .theme-page {
+  --background-color: #27272a; /* zinc-800 */
+  --text-color: #eef2ff; /* indigo-50 */
+  --navbar-background-color: #27272a; /* zinc-800 */
+  --navbar-text-color: #eef2ff; /* indigo-50 */
+  --collection-background-color: #27272a; /* zinc-800 */
+  --collection-text-color: #eef2ff; /* indigo-50 */
+}
+
+.theme {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.navbar {
+  background-color: var(--navbar-background-color);
+  color: var(--navbar-text-color);
+}
+
+.navbar-fade {
+  --tw-gradient-to: var(--navbar-background-color) var(--tw-gradient-to-position);
+}
+
+.collection {
+  background-color: var(--collection-background-color);
+  color: var(--collection-text-color);
+}

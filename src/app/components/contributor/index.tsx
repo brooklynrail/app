@@ -54,7 +54,7 @@ const ContributorPage = (props: ContributorPageProps) => {
   )
 
   return (
-    <Paper pageClass="paper-people" type={PaperType.Default} navData={navData}>
+    <Paper pageClass="theme-people" type={PaperType.Default} navData={navData}>
       <main className="divide-y rail-divide">
         <PeopleHead contributorData={contributorData} />
         <div className="bg-indigo-50 dark:bg-zinc-700 px-3 py-6">{allArticles}</div>
