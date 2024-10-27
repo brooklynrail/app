@@ -11,7 +11,7 @@ interface ContributorsPageProps {
 }
 
 const ContributorsPage = (props: ContributorsPageProps) => {
-  const { thisIssueData, allContributors, navData } = props
+  const { allContributors, navData } = props
 
   const all = (
     <>
@@ -33,7 +33,7 @@ const ContributorsPage = (props: ContributorsPageProps) => {
   )
 
   return (
-    <Paper pageClass="paper-contributor" type={PaperType.Default} navData={navData}>
+    <Paper pageClass="theme-people" type={PaperType.Default} navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">

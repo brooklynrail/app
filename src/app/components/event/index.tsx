@@ -13,7 +13,7 @@ const EventPage = (props: EventProps) => {
   const isFutureEvent = new Date(start_date) > new Date()
 
   return (
-    <Paper pageClass="paper-event" type={PaperType.Events} navData={navData}>
+    <Paper pageClass="theme-events" type={PaperType.Events} navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
         <EventPageBody {...props} />
       </main>

@@ -28,7 +28,7 @@ const CollectionMusic = (collection: Collections) => {
   const restOfArticles = articles.slice(1)
 
   return (
-    <div key={collection.id} className="">
+    <div key={collection.id} className="collection theme">
       <CollectionHead title={collection.title} permalink={section.featured ? sectionPermalink : null} />
       <div className="hidden tablet-lg:block">
         <FrameThirds

@@ -20,7 +20,7 @@ const Article = (props: ArticleProps) => {
   const type = currentSection.slug === "criticspage" ? PaperType.CriticsPage : PaperType.Default
 
   return (
-    <Paper pageClass={`paper-article paper-article-${currentSection.slug}`} type={type} navData={navData}>
+    <Paper pageClass={`theme-${currentSection.slug}`} type={type} navData={navData}>
       <article className="px-3 tablet-lg:px-6">
         {articleData.section.slug === "criticspage" ? <ArticleCriticsPage {...props} /> : <ArticleBody {...props} />}
       </article>

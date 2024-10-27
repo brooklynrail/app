@@ -33,12 +33,13 @@ const CollectionCriticsPage = (collection: Collections) => {
   const guestCriticHead = `Guest Critic: ${guestCritic}`
 
   return (
-    <div key={collection.id} className={`collection collection-${section.slug}`}>
+    <div key={collection.id} className={`collection theme-${section.slug}`}>
       <CollectionHead
         title={collection.title}
         description={section.description}
         kicker={leadArticle.issue.title}
         permalink={section.featured ? sectionPermalink : null}
+        theme={`theme-${section.slug}`}
       />
       <div className="">
         <div className="px-6 pt-6 font-serif font-medium text-4xl">
