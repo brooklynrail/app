@@ -18,7 +18,7 @@ const Article = (props: ArticleProps) => {
   const type = currentSection.slug === "criticspage" ? PaperType.CriticsPage : PaperType.Default
 
   return (
-    <Paper pageClass={`paper-article paper-article-${currentSection.slug}`} type={type} navData={navData}>
+    <Paper pageClass={`theme-${currentSection.slug}`} type={type} navData={navData}>
       <article className="px-3 tablet-lg:px-6">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
           <div className="col-span-4 tablet-lg:col-span-12 border-b rail-border">

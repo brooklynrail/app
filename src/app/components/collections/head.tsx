@@ -6,12 +6,12 @@ interface CollectionHeadProps {
   title: string
   kicker?: string
   permalink: string | null
-  classes?: string
+  theme?: string
   description?: string | null
 }
 
 const CollectionHead = (props: CollectionHeadProps) => {
-  const { title, kicker, permalink, classes, description } = props
+  const { title, kicker, permalink, theme, description } = props
   // Note: links only show up if this section is "featured", which means it has a super-section page
   const heading = permalink ? (
     <h2 className={`text-3xl tablet:text-4xl font-bold`}>
@@ -22,7 +22,7 @@ const CollectionHead = (props: CollectionHeadProps) => {
   )
   return (
     <div
-      className={`head px-3 tablet-lg:px-6 pt-3 pb-1.5 tablet-lg:pt-6 tablet-lg:pb-3 sticky top-11 tablet-lg:top-12 ${classes ? classes : "rail-bg"} z-10`}
+      className={`head px-3 tablet-lg:px-6 pt-3 pb-1.5 tablet-lg:pt-6 tablet-lg:pb-3 sticky top-11 tablet-lg:top-12 theme ${theme} z-10`}
     >
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">

@@ -21,7 +21,7 @@ const CollectionDefault = (collection: Collections) => {
   })
 
   return (
-    <div key={collection.id} className={`collection collection-${section.slug}`}>
+    <div key={collection.id} className={`collection theme theme-${section.slug}`}>
       <CollectionHead
         title={collection.title}
         permalink={section.featured ? sectionPermalink : null}

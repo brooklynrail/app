@@ -18,7 +18,7 @@ export interface SearchPageProps {
 const SearchPage = (props: SearchPageProps) => {
   const { navData } = props
   return (
-    <Paper pageClass="paper-search" type={PaperType.Default} navData={navData}>
+    <Paper pageClass="" type={PaperType.Default} navData={navData}>
       <div className="">
         <section id="main" className="tablet-lg:py-9">
           <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">

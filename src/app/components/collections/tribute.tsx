@@ -21,7 +21,7 @@ const CollectionTribute = (collection: Collections) => {
 
   return (
     <>
-      <div key={collection.id} className="rail-tribute-bg py-9">
+      <div key={collection.id} className="collection theme theme-tribute">
         <div className="px-6">
           <div className="grid grid-cols-4 tablet:grid-cols-12 gap-3 gap-y-6">
             <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-9">

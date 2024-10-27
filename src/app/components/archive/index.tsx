@@ -56,7 +56,7 @@ const ArchivePage = (props: ArchivePageProps) => {
   ))
 
   return (
-    <Paper pageClass="paper-archive" type={PaperType.Default} navData={navData}>
+    <Paper pageClass="" type={PaperType.Default} navData={navData}>
       <main id="main" className="">
         <IssueHead title={`All Issues`} allIssues={issues} />
         <div className="divide-y rail-divide">{articleGroups}</div>

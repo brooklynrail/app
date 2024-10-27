@@ -8,7 +8,6 @@ import FrameScrollable from "../frames/frameScrollable"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
 import Excerpt from "./promos/excerpt"
-import Kicker from "./promos/kicker"
 import Title, { TitleType } from "./promos/title"
 
 const CollectionDanceFilm = (collection: Collections) => {
@@ -35,7 +34,7 @@ const CollectionDanceFilm = (collection: Collections) => {
   const ColC = restOfArticles.slice(midIndex)
 
   return (
-    <div key={collection.id} className="">
+    <div key={collection.id} className="collection theme">
       <CollectionHead title={collection.title} permalink={section.featured ? sectionPermalink : null} />
       <div className="hidden tablet-lg:block">
         <Frame633

@@ -13,7 +13,7 @@ const TributePage = (props: TributePageProps) => {
   const tributeClass = `tribute-${slug.toLowerCase()}`
 
   return (
-    <Paper pageClass={`paper-tribute ${tributeClass}`} type={PaperType.Default} navData={navData}>
+    <Paper pageClass={`theme-tribute ${tributeClass}`} type={PaperType.Default} navData={navData}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
       <div className="rail-divide divide-y">
         <section id="main" className={`${styles.main}`}>

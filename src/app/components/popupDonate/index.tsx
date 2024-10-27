@@ -47,7 +47,7 @@ const PopupDonate = () => {
       onClick={() => setShowPopup(false)}
     >
       <div
-        className="rail-donate-popup p-6 py-12 tablet:py-6 w-screen h-mobile-lg bottom-0 absolute"
+        className="bg-gradient-to-b from-[#EF4444] to-[#CFCFE0] dark:from-indigo-700 p-6 py-12 tablet:py-6 w-screen h-mobile-lg bottom-0 absolute"
         onClick={(e) => e.stopPropagation()}
       >
         <button
