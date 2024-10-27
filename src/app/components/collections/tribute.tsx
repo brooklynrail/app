@@ -22,7 +22,7 @@ const CollectionTribute = (collection: Collections) => {
   return (
     <>
       <div key={collection.id} className="collection theme theme-tribute">
-        <div className="px-6">
+        <div className="px-6 py-9">
           <div className="grid grid-cols-4 tablet:grid-cols-12 gap-3 gap-y-6">
             <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-9">
               <div className="flex flex-col space-y-1 px-0 py-0 tablet-lg:py-0 tablet-lg:px-0">
