@@ -662,6 +662,7 @@ export type PagesStaff = {
   title: string
   name: string
   group: string
+  link?: string | null
 }
 
 export type PagesSupporters = {
