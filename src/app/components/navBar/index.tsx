@@ -73,14 +73,15 @@ const NavBar = (props: NavBarProps) => {
         <div className="py-1.5">
           <MenuButton collections={navData.collections} classes={`w-[8vw] h-[8vw]`} />
         </div>
-        <ul className="pr-3 pl-1 flex items-center w-full overflow-x-auto no-scrollbar">
+        <ul className="pr-3 pl-1 flex items-center w-full overflow-x-auto no-scrollbar z-0">
           {!isHomepage && home}
           {allCollections}
         </ul>
-        <div className="hidden tablet:flex space-x-3">
+        <div className="hidden tablet:flex space-x-3 z-[2]">
           <SubscribeButton />
           <DonateButton />
         </div>
+        <div className="hidden tablet:block pl-3 absolute right-0 -z-1 w-[18rem] h-full bg-gradient-to-r from-transparent from-1% to-white to-15%"></div>
       </div>
     </nav>
   )
