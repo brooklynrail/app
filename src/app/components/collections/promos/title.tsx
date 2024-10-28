@@ -19,7 +19,6 @@ export enum TitleType {
   CollectionTribute = "text-center tablet-lg:text-left font-bold text-3xl tablet-lg:text-4xl",
   CriticsPage = "text-center font-normal font-serif text-6xl",
   CriticsPageLead = "font-normal font-serif text-6xl",
-  CollectionCriticsPage = "font-normal font-serif text-4xl desktop:text-5xl",
 }
 
 interface TitleProps {
