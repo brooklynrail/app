@@ -379,19 +379,21 @@ export const generateYouTubeCopy = (eventData: Events) => {
     type: PageType.Event,
   })
 
-  const formatTime = (date: Date, timeZone: string) => {
-    return date
-      .toLocaleTimeString("en-US", {
-        timeZone,
-        hour: "numeric",
-        minute: "numeric",
-      })
-      .replace("AM", "a.m.")
-      .replace("PM", "p.m.")
-  }
+  // get the start date in this format:
+  // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
+  const endDate = new Date(eventData.end_date)
+  const isSameDay = startDate.toDateString() === endDate.toDateString()
+  const dateString = formatEventDate(startDate, endDate, isSameDay)
 
-  const easternTime = formatTime(eventDate, "America/New_York")
-  const pacificTime = formatTime(new Date(eventDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
+  // Get the time in both Eastern and Pacific time
+  const startTimeET = formatTime(eventData.start_date, "America/New_York")
+  const startTimePT = formatTime(eventData.start_date, "America/Los_Angeles")
+
+  const timeString = isSameDay && !eventData.all_day && (
+    <span>
+      {startTimeET} Eastern / {startTimePT} Pacific
+    </span>
+  )
 
   let youtubeCopy = `${encodeHtmlEntities(stripHtml(title).result)}\n${encodeHtmlEntities(stripHtml(summary).result)}\n\n`
 
@@ -400,7 +402,7 @@ export const generateYouTubeCopy = (eventData: Events) => {
     youtubeCopy += `The New Social Environment #${series}\n`
   }
 
-  youtubeCopy += `Recorded on ${eventDate.toDateString()} at ${easternTime} Eastern / ${pacificTime} Pacific \n`
+  youtubeCopy += `Recorded on ${dateString} at ${startTimeET} Eastern / ${startTimePT} Pacific \n`
   youtubeCopy += `${eventPermalink}\n\n`
 
   youtubeCopy += "〰️〰️〰️〰️\n\nIn this talk:\n\n"
@@ -481,17 +483,6 @@ interface NewsletterEventProps {
 
 export const generateNewsletter = (props: NewsletterEventProps) => {
   const { eventTypes, allEvents } = props
-  // Helper function to format the event time
-  const formatTime = (date: Date, timeZone: string) => {
-    return date
-      .toLocaleTimeString("en-US", {
-        timeZone,
-        hour: "numeric",
-        minute: "numeric",
-      })
-      .replace("AM", "a.m.")
-      .replace("PM", "p.m.")
-  }
 
   // Helper function to build HTML for all events
   const buildEventsHTML = (events: Events[]) => {
@@ -507,33 +498,40 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
           type: PageType.Event,
         })
 
-        const easternTime = formatTime(startDate, "America/New_York")
-        const pacificTime = formatTime(new Date(startDate.getTime() - 3 * 60 * 60 * 1000), "America/Los_Angeles")
+        // get the start date in this format:
+        // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
+        const endDate = new Date(event.end_date)
+        const isSameDay = startDate.toDateString() === endDate.toDateString()
+        const dateString = formatEventDate(startDate, endDate, isSameDay)
+
+        // Get the time in both Eastern and Pacific time
+        const startTimeET = formatTime(event.start_date, "America/New_York")
+        const startTimePT = formatTime(event.start_date, "America/Los_Angeles")
+
+        const timeString = isSameDay && !event.all_day ? `${startTimeET} Eastern / ${startTimePT} Pacific` : null
 
         // Get the readable event type text
         const eventTypeText = getEventTypeText(event.type, eventTypes)
 
-        return `  <div class="event">
+        return `
+      <div class="event">
         ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
         <h3><a href="${permalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
         <p class="summary">${event.summary}</p>
         <div class="event-details">
-          <p class="date">${startDate.toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}</p>
-          <p class="time">${easternTime} Eastern / ${pacificTime} Pacific</p>
+          <p className="text-xl text-center font-light space-x-3">
+            <strong>${dateString}</strong> ${timeString ? `<span>${timeString}</span>` : ""}
+          </p>
         </div>
         <div class="actions">
           <a class="btn btn-register" title="Register for ${event.title}" href="${permalink}" target="_blank">
             <span>Register</span>
           </a>
         </div>
-      </div>`
+      </div>
+      `
       })
-      .join()
+      .join("")
   }
 
   // Build and return the full newsletter HTML
