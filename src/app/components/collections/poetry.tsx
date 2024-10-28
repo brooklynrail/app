@@ -30,14 +30,14 @@ const CollectionPoetry = (collection: Collections) => {
   return (
     <div key={collection.id} className={`collection theme`}>
       <CollectionHead title={collection.title} permalink={section.featured ? sectionPermalink : null} />
-      <div className="hidden tablet-lg:block">
+      {/* <div className="hidden tablet-lg:block">
         <Frame
           LeadPromo={<LeadPromo article={leadArticle} />}
           Promos={<PromosPoetry articles={restOfArticles} />}
           alt={false}
         />
-      </div>
-      <div className="tablet-lg:hidden">
+      </div> */}
+      <div className="">
         <FrameScrollable Promos={<PromosMobile articles={articles} />} />
       </div>
     </div>
@@ -61,14 +61,16 @@ const PromosMobile = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="px-3 py-1 tablet:pr-0 snap-center">
-        <div className="flex flex-col space-y-3 flex-none w-[calc(100vw-6.5rem)] tablet:w-auto">
+      <div key={i} className="px-6 tablet-lg:first:pl-0 tablet-lg:last:pr-0 snap-center">
+        <div className="flex flex-col space-y-3 flex-none w-[calc(65vw)] tablet-lg:w-[calc(33vw)]">
           <div className="flex flex-col space-y-3">
             <div className="pb-3 flex flex-col space-y-3">
               <Title permalink={permalink} title={article.title} classes="font-bold text-xl" />
               <Bylines article={article} type={BylineType.Default} />
             </div>
-            <PoetryCard {...article} />
+            <Link href={permalink}>
+              <PoetryCard {...article} />
+            </Link>
           </div>
         </div>
       </div>
