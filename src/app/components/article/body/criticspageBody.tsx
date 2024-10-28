@@ -1,12 +1,11 @@
 "use client"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import parse from "html-react-parser"
-import ContributorsBox from "../contributorsBox"
-import NextPrev, { NextPrevType } from "../nextPrev"
-import ArticleHead from "./articleHead"
-import BookshopWidget from "./bookshop"
+import ContributorsBox from "../../contributorsBox"
+import ArticleHead from "../articleHead"
+import BookshopWidget from "../bookshop"
 import styles from "./poetry.module.scss"
-import replaceShortcodes from "./shortcodes"
+import replaceShortcodes from "../shortcodes"
 
 const ArticleBody = (props: ArticleProps) => {
   const { thisIssueData, articleData, permalink, currentSection } = props
@@ -14,16 +13,7 @@ const ArticleBody = (props: ArticleProps) => {
 
   return (
     <>
-      <div className="col-span-4 tablet-lg:col-span-12 border-b rail-border">
-        <NextPrev
-          parentCollection={thisIssueData}
-          articles={thisIssueData.articles}
-          currentSlug={articleData.slug}
-          type={NextPrevType.Issues}
-        />
-      </div>
-
-      <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 ">
+      <div className="col-span-4 tablet-lg:col-span-12 desktop:col-span-10 desktop:col-start-2">
         <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
       </div>
       <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 space-y-12">
@@ -41,14 +31,6 @@ const ArticleBody = (props: ArticleProps) => {
         )}
 
         {contributors && <ContributorsBox contributors={contributors} />}
-      </div>
-      <div className="col-span-4 tablet-lg:col-span-12 border-t rail-border">
-        <NextPrev
-          parentCollection={thisIssueData}
-          articles={thisIssueData.articles}
-          currentSlug={articleData.slug}
-          type={NextPrevType.Issues}
-        />
       </div>
     </>
   )

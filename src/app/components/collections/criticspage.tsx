@@ -77,7 +77,7 @@ const Promos = (props: PromoProps) => {
             <Link href={permalink}>
               <Bylines article={article} asTitle={true} type={BylineType.CollectionCriticsPage} hideBy={true} />
             </Link>
-            <Title title={article.title} permalink={permalink} type={TitleType.CollectionCriticsPagePromo} />
+            <Title title={article.title} permalink={permalink} classes="pl-3 font-medium font-sans text-sm" />
           </div>
         </div>
       </div>
@@ -113,7 +113,11 @@ const LeadPromo = (props: LeadPromoProps) => {
       </div>
       <div className="col-span-4 tablet:col-span-3">
         <div className="flex flex-col space-y-3">
-          <Title title={article.title} permalink={permalink} type={TitleType.CollectionCriticsPage} />
+          <Title
+            title={article.title}
+            permalink={permalink}
+            classes="font-normal font-serif text-4xl desktop:text-5xl"
+          />
           <Bylines article={article} type={BylineType.Default} />
           <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />
         </div>

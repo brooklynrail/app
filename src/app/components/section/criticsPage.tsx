@@ -1,13 +1,11 @@
 "use client"
-import { useEffect, useState } from "react"
 import { SectionProps } from "."
 import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
-import Title, { TitleType } from "../collections/promos/title"
-import FeaturedImage from "../featuredImage"
-import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 import Excerpt from "../collections/promos/excerpt"
+import Title from "../collections/promos/title"
+import FeaturedImage from "../featuredImage"
 import Frame from "../frames/frame"
 
 // Group articles by issue
@@ -24,26 +22,6 @@ const groupByIssue = (articles: Articles[]) => {
 
 const SectionCriticsPage = (props: SectionProps) => {
   const { articlesData } = props
-  const currentBreakpoint = useBreakpoints()
-  const [groupCount, setGroupCount] = useState(1)
-
-  useEffect(() => {
-    const calculateGroupNumber = () => {
-      switch (currentBreakpoint) {
-        case "tablet":
-          return 2
-        case "tablet-lg":
-          return 3
-        case "desktop":
-        case "desktop-lg":
-        case "widescreen":
-          return 4
-        default:
-          return 1
-      }
-    }
-    setGroupCount(calculateGroupNumber())
-  }, [currentBreakpoint])
 
   // Group articles by their respective issue
   const articlesByIssue = groupByIssue(articlesData)
@@ -52,7 +30,6 @@ const SectionCriticsPage = (props: SectionProps) => {
     <div className="divide-y rail-divide">
       {Object.keys(articlesByIssue).map((issueId, index) => {
         const issueArticles = articlesByIssue[issueId]
-        const issueTitle = issueArticles[0]?.issue.title || "Untitled Issue" // Assuming issue title is the same for all articles in the issue
 
         // get the first article where featured is true, if none, get the first article in the array
         const featuredArticle = issueArticles.find((article) => article.featured === true) || issueArticles[0]
@@ -63,7 +40,6 @@ const SectionCriticsPage = (props: SectionProps) => {
 
         return (
           <div key={index} className="py-6">
-            {/* <CollectionHead title={collection.title} permalink={section.featured ? sectionPermalink : null} /> */}
             <div className="px-6 py-3">
               <h2 className="font-serif font-medium text-4xl">{`Guest Critic: ${guestCritic}`}</h2>
             </div>
@@ -74,9 +50,6 @@ const SectionCriticsPage = (props: SectionProps) => {
                 alt={false}
               />
             </div>
-            {/* <div className="tablet-lg:hidden">
-              <FrameScrollable Promos={<PromosMobile articles={articles} />} />
-            </div> */}
           </div>
         )
       })}
@@ -103,17 +76,22 @@ const LeadPromo = (props: LeadPromoProps) => {
   return (
     <>
       <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-6 gap-y-3">
-        <div className="col-span-4 tablet:col-span-3" itemType="http://schema.org/Article">
+        <div className="col-span-4 tablet:col-span-2" itemType="http://schema.org/Article">
           {artwork && (
             <div className="">
               <FeaturedImage image={artwork} hideCaption={true} title={title} permalink={permalink} />
             </div>
           )}
         </div>
-        <div className="col-span-4 tablet:col-span-3">
+        <div className="col-span-4 ">
           <div className="flex flex-col space-y-3">
             <div className="space-y-1">
-              <Title h2 title={article.title} permalink={permalink} type={TitleType.CriticsPageLead} />
+              <Title
+                h2
+                title={article.title}
+                permalink={permalink}
+                classes="font-normal font-serif text-4xl desktop:text-5xl"
+              />
             </div>
             <Excerpt excerpt={article.excerpt} classes="excerpt-lg" />
           </div>

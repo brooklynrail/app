@@ -35,8 +35,8 @@ const TributeBodyBlock = (props: TributePageProps) => {
     <div className="py-3 px-6 tablet:px-9" ref={articleContentRef}>
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-3 tablet-lg:border-r-[1px] rail-border">
-          <div className="sticky top-0 tablet-lg:overflow-y-auto tablet-lg:h-screen">
-            <div className="divide-y-[1px] rail-divide tablet-lg:mr-3 pb-0 tablet-lg:pb-12 flex flex-col">
+          <div className="sticky top-12 tablet-lg:overflow-y-auto tablet-lg:h-screen">
+            <div className="divide-y-[1px] rail-divide tablet-lg:mr-3 pb-0 tablet-lg:pb-60 flex flex-col">
               <aside className="text-sm tablet-lg:pl-3 pb-3 tablet-lg:py-3">{summary && parse(summary)}</aside>
 
               <TributeWriters
