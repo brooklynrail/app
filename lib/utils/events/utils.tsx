@@ -52,6 +52,7 @@ export const getUpcomingEvents = cache(async () => {
     `&fields[]=series` +
     `&fields[]=start_date` +
     `&fields[]=end_date` +
+    `&fields[]=all_day` +
     `&fields[]=youtube_id` +
     `&sort=start_date` +
     `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
@@ -82,6 +83,7 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&fields[]=people.people_id.portrait.alt` +
     `&fields[]=people.people_id.portrait.type` +
     `&fields[]=start_date` +
+    `&fields[]=all_day` +
     `&sort=start_date` +
     `&limit=6` +
     `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
@@ -278,6 +280,7 @@ export async function getAllEvents() {
         `?fields[]=id` +
         `&fields[]=slug` +
         `&fields[]=start_date` +
+        `&fields[]=all_day` +
         `&filter[status][_eq]=published` +
         `&page=${page}` +
         `&limit=100` +
@@ -546,9 +549,7 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
 // ====================================================
 // TIME Functions
 
-export const formatEventDate = (startDate: Date, endDate: Date) => {
-  const isSameDay = startDate.toDateString() === endDate.toDateString()
-
+export const formatEventDate = (startDate: Date, endDate: Date, isSameDay: boolean) => {
   const startDateYearString = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "long",
@@ -560,16 +561,17 @@ export const formatEventDate = (startDate: Date, endDate: Date) => {
     month: "long",
     day: "numeric",
   }).format(startDate)
+
+  if (isSameDay) {
+    return `${startDateYearString}`
+  }
+
   const endDateString = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
   }).format(endDate)
-
-  if (isSameDay) {
-    return startDateYearString
-  }
   return `${startDateString}–${endDateString}`
 }
 
