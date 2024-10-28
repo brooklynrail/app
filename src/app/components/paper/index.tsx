@@ -9,6 +9,7 @@ import Header from "../header"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import NavBar from "../navBar"
 import { usePathname } from "next/navigation"
+import PreviewHeader from "../preview/previewHead"
 
 export interface PaperProps {
   pageClass: string
@@ -18,6 +19,7 @@ export interface PaperProps {
   banners?: HomepageBanners[]
   children: React.ReactNode
   type: PaperType
+  previewURL?: string
 }
 
 export enum PaperType {
@@ -31,7 +33,7 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, hidePopup, navData, type, banners, currentIssue } = props
+  const { pageClass, children, hidePopup, navData, type, banners, currentIssue, previewURL } = props
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
   const isHomepage = pathname === "/"
@@ -39,8 +41,15 @@ const Paper = (props: PaperProps) => {
   return (
     <PopupProvider hidePopup={hidePopup}>
       <div className={`theme ${pageClass}`}>
-        <Header type={type} banners={banners} currentIssue={currentIssue} />
-        <NavBar navData={navData} isHomepage={isHomepage} />
+        {previewURL ? (
+          <PreviewHeader previewURL={previewURL} />
+        ) : (
+          <>
+            <Header type={type} banners={banners} currentIssue={currentIssue} />
+            <NavBar navData={navData} isHomepage={isHomepage} />
+          </>
+        )}
+
         {children}
         <Footer />
         <Ad970 />
