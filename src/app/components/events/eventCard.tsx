@@ -12,7 +12,7 @@ export interface EventCardProps {
 
 const EventCard = (props: EventCardProps) => {
   const { event, eventTypes } = props
-  const { title, slug, deck, start_date, end_date, type, series } = event
+  const { title, slug, deck, start_date, end_date, all_day, type, series } = event
 
   // Get the readable event type text
   const eventTypeText = getEventTypeText(type, eventTypes)
@@ -34,8 +34,8 @@ const EventCard = (props: EventCardProps) => {
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
   const startDate = new Date(start_date)
   const endDate = new Date(end_date)
-  const startDateString = formatEventDate(startDate, endDate)
   const isSameDay = startDate.toDateString() === endDate.toDateString()
+  const startDateString = formatEventDate(startDate, endDate, isSameDay)
   // Get the time in both Eastern and Pacific time
   const startTimeET = formatTime(start_date, "America/New_York")
   const startTimePT = formatTime(start_date, "America/Los_Angeles")
@@ -44,7 +44,7 @@ const EventCard = (props: EventCardProps) => {
     <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-y-12 py-6">
       <div className="col-span-4 tablet-lg:col-span-3">
         <p className="font-bold pr-12">{startDateString}</p>
-        {isSameDay && (
+        {isSameDay && !all_day && (
           <p>
             {startTimeET} ET / {startTimePT} PT
           </p>

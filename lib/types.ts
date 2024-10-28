@@ -510,6 +510,7 @@ export type Events = {
   series?: string | null
   slug: string
   soldout: boolean
+  all_day?: boolean | null
   sort?: number | null
   start_date: string
   status: string
