@@ -63,7 +63,7 @@ const Section = (props: SectionProps & NavProps) => {
   const type = sectionData.slug === "criticspage" ? PaperType.CriticsPage : PaperType.Default
 
   return (
-    <Paper pageClass={`paper-section paper-section-${sectionData.slug}`} type={type} navData={navData}>
+    <Paper pageClass={`theme-${sectionData.slug}`} type={type} navData={navData}>
       <main className="divide-y rail-divide">
         <SectionHead title={sectionData.name} description={sectionData.description} permalink={permalink} />
 
@@ -73,7 +73,7 @@ const Section = (props: SectionProps & NavProps) => {
           <div className="text-center py-6 pb-12">
             <button
               onClick={loadMoreArticles}
-              className="bg-indigo-500 text-white text-xl uppercase px-4 py-2 rounded-md shadow-md hover:bg-indigo-600 hover:underline hover:underline-offset-2"
+              className="bg-indigo-500 text-white text-xl uppercase px-4 py-2 rounded-sm shadow-lg hover:bg-indigo-600 hover:underline hover:underline-offset-2"
             >
               Load more
             </button>

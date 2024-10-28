@@ -662,6 +662,7 @@ export type PagesStaff = {
   title: string
   name: string
   group: string
+  link?: string | null
 }
 
 export type PagesSupporters = {
@@ -702,6 +703,23 @@ export type People = {
 export type RelatedLinks = {
   text: string
   url: string
+}
+
+export type SearchHit = {
+  objectID: string | null
+  kicker: string | null
+  title: string
+  title_display: string
+  description: string
+  description_display: string
+  image: string | null
+  image_caption: string | null
+  body: string | null
+  published: string | null
+  date: string | null
+  people: string | null
+  content_type: string
+  permalink: string
 }
 
 export type Sections = {

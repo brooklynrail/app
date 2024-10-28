@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Homepage, HomepageCollections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { CollectionType } from "../homepage"
-import MenuButton from "../header/menuButton"
+import MenuButton from "../menu/menuButton"
 
 interface NavBarProps {
   navData: Homepage
@@ -73,14 +73,15 @@ const NavBar = (props: NavBarProps) => {
         <div className="py-1.5">
           <MenuButton collections={navData.collections} classes={`w-[8vw] h-[8vw]`} />
         </div>
-        <ul className="pr-3 pl-1 flex items-center w-full overflow-x-auto no-scrollbar">
+        <ul className="pr-3 pl-1 flex items-center w-full overflow-x-auto no-scrollbar z-0">
           {!isHomepage && home}
           {allCollections}
         </ul>
-        <div className="hidden tablet:flex space-x-2">
+        <div className="hidden tablet:flex space-x-3 z-[2]">
           <SubscribeButton />
           <DonateButton />
         </div>
+        <div className="navbar-fade hidden tablet:block pl-3 absolute right-0 -z-1 w-[18rem] h-full bg-gradient-to-r from-transparent from-1% to-white dark:to-zinc-800 to-15%"></div>
       </div>
     </nav>
   )
@@ -90,7 +91,7 @@ const SubscribeButton = () => {
   return (
     <Link href={"/subscribe"}>
       <button
-        className={`shadow-lg bg-white text-zinc-800 font-medium text-xs tablet:text-sm px-2.5 py-2 tablet:px-2.5 tablet:py-1 rounded-sm uppercase hover:underline underline-offset-2`}
+        className={`shadow-lg bg-white text-zinc-800 font-medium text-xs tablet:text-sm px-2.5 py-2 tablet:px-3 tablet:py-2.5 rounded-sm uppercase hover:underline underline-offset-2`}
       >
         Subscribe
       </button>
@@ -102,7 +103,7 @@ const DonateButton = () => {
   return (
     <Link href={"/donate"}>
       <button
-        className={`shadow-lg bg-red-500 text-white font-medium text-xs tablet:text-sm px-2.5 py-2 tablet:px-2.5 tablet:py-1 rounded-sm uppercase hover:underline underline-offset-2`}
+        className={`shadow-lg bg-red-500 text-white font-medium text-xs tablet:text-sm px-2.5 py-2 tablet:px-3 tablet:py-2.5 rounded-sm uppercase hover:underline underline-offset-2`}
       >
         Donate
       </button>

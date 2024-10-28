@@ -5,7 +5,7 @@ import { CoverImages } from "../collections/banner/coverImages"
 import Paper, { PaperType } from "../paper"
 import PreviewHeader from "../preview/previewHead"
 import TableOfContents from "./tableOfContents"
-import CoversPopup from "../issueRail/coversPopup"
+import CoversPopup from "./coversPopup"
 import parse from "html-react-parser"
 import IssueHead from "./head"
 
@@ -43,7 +43,7 @@ const IssuePage = (props: IssuePageProps) => {
   const credits = thisIssueData.credits
 
   return (
-    <Paper pageClass={`paper-issue ${issueClass}`} type={PaperType.Default} navData={navData}>
+    <Paper pageClass={``} type={PaperType.Default} navData={navData}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
       <main className="divide-y rail-divide">
         <IssueHead title={thisIssueData.title} allIssues={allIssues} currentIssueSlug={thisIssueData.slug} />

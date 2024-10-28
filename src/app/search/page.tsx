@@ -7,6 +7,8 @@ import { getNavData } from "../../../lib/utils/homepage"
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
 export const dynamicParams = true
 
+export const dynamic = "force-dynamic"
+
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
 export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 42600 : 0

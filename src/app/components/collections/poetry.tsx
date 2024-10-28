@@ -27,11 +27,11 @@ const CollectionPoetry = (collection: Collections) => {
   const restOfArticles = articles.slice(1)
 
   return (
-    <div key={collection.id} className={`pb-3 bg-stone-100 dark:bg-stone-700`}>
+    <div key={collection.id} className={`collection theme`}>
       <CollectionHead
         title={collection.title}
         permalink={section.featured ? sectionPermalink : null}
-        classes="bg-stone-100 dark:bg-stone-700"
+        theme="theme-poetry"
       />
       <div className="hidden tablet-lg:block">
         <Frame

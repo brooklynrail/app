@@ -1,11 +1,6 @@
-import parse from "html-react-parser"
 import Image from "next/image"
-import { Articles, DirectusFiles } from "../../../../../lib/types"
 import { stripHtml } from "string-strip-html"
-import Link from "next/link"
-import { getPermalink, PageType } from "../../../../../lib/utils"
-import { PromoImage } from "../../promo/section"
-import styles from "./promos.module.scss"
+import { DirectusFiles } from "../../../../../lib/types"
 
 interface FeaturedImageProps {
   image: DirectusFiles

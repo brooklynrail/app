@@ -82,7 +82,7 @@ const EventPageBody = (props: EventProps) => {
             {isFutureEvent && (
               <button
                 onClick={handleRegister}
-                className="py-3 px-6 rounded-md text-lg uppercase bg-violet-800 text-white hover:underline underline-offset-4"
+                className="py-3 px-6 rounded-sm shadow-lg text-lg uppercase bg-violet-800 text-white hover:underline underline-offset-4"
               >
                 Register
               </button>

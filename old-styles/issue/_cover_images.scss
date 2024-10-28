@@ -1,7 +1,0 @@
-#cover_images{
-  @include u-margin-y(1);
-  @include u-border('base-lightest', '1px', 'solid');
-  img{
-    @include u-display('block');
-  }
-}

@@ -97,7 +97,7 @@ const Paper = (props: PaperProps) => {
 
   return (
     <PopupProvider hidePopup={hidePopup}>
-      <div className={`paper ${pageClass}`}>
+      <div className={`theme ${pageClass}`}>
         <Header type={type} banners={banners} currentIssue={currentIssue} />
         <NavBar navData={navData} isHomepage={isHomepage} />
         {children}

@@ -258,7 +258,7 @@ const PromoBuilder = () => {
         {promoForm(type)}
       </div>
       <div className="">
-        <pre className="bg-white p-4 mt-2 mb-2 font-sans text-xs text-red-600 rounded-md">
+        <pre className="bg-white p-4 mt-2 mb-2 font-sans text-xs text-red-600 rounded-sm shadow-lg">
           <code className="whitespace-pre-wrap">{generatePromoCode(type)}</code>
         </pre>
       </div>

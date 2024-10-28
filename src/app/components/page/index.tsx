@@ -11,7 +11,7 @@ const Page = (props: PageProps) => {
   const { navData, allPagesData, pageData, quotes } = props
 
   return (
-    <Paper pageClass="paper-page" type={PaperType.Page} navData={navData}>
+    <Paper pageClass="theme-page" type={PaperType.Page} navData={navData}>
       <main className="py-9 px-3 tablet-lg:px-6">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:divide-x rail-divide">
           <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-3">
