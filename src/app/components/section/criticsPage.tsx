@@ -1,12 +1,10 @@
 "use client"
-import { useBreakpoints } from "@/app/hooks/useBreakpoints"
-import { useEffect, useState } from "react"
 import { SectionProps } from "."
 import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Excerpt from "../collections/promos/excerpt"
-import Title, { TitleType } from "../collections/promos/title"
+import Title from "../collections/promos/title"
 import FeaturedImage from "../featuredImage"
 import Frame from "../frames/frame"
 

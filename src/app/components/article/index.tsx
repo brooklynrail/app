@@ -2,8 +2,8 @@
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import CoversPopup from "../issuePage/coversPopup"
 import Paper, { PaperType } from "../paper"
-import ArticlePage from "./type/article"
-import ArticleCriticsPage from "./type/criticsPage"
+import ArticlePage from "./page/article"
+import ArticleCriticsPage from "./page/criticsPage"
 
 const Article = (props: ArticleProps) => {
   const { articleData, currentSection, navData } = props

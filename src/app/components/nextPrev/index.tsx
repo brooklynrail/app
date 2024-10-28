@@ -98,7 +98,7 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle
   }
 
   return (
-    <nav className={`flex justify-between ${type === NextPrevType.Tributes ? "pt-0 pb-6" : "py-3 tablet:py-6"}`}>
+    <nav className={`py-3 flex justify-between ${type === NextPrevType.Tributes ? "pt-0 pb-6" : "pb-3 tablet:pb-3"}`}>
       {prevLink()}
       {nextLink()}
     </nav>

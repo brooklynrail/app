@@ -7,15 +7,15 @@ import { Articles } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import { getCurrentIssueSection } from "../../../../../lib/utils/articles"
 import Bylines, { BylineType } from "../../collections/promos/bylines"
-import Title, { TitleType } from "../../collections/promos/title"
-import { PaperType } from "../../paper"
-import ArticleBody from "../articleBody"
+import Title from "../../collections/promos/title"
+import NextPrev, { NextPrevType } from "../../nextPrev"
+import ArticleBody from "../body/articleBody"
+import ArticleHead from "../articleHead"
 
 const ArticleCriticsPage = (props: ArticleProps) => {
-  const { articleData, permalink, currentSection, navData } = props
-  const { body_text, images, endnote, contributors, issue } = articleData
+  const { articleData, currentSection, thisIssueData, permalink } = props
+  const { issue } = articleData
   const [thisSection, setThisSection] = useState<Articles[] | undefined>(undefined)
-  const type = currentSection.slug === "criticspage" ? PaperType.CriticsPage : PaperType.Default
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +32,7 @@ const ArticleCriticsPage = (props: ArticleProps) => {
   }, [thisSection])
 
   return (
-    <div className="py-3">
+    <div className="">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 tablet-lg:divide-x tablet-lg:rail-divide">
         <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-3 tablet-lg:pr-3">
           <div className="py-3 divide-y rail-divide sticky top-10 overflow-x-auto h-screen">
@@ -43,7 +43,30 @@ const ArticleCriticsPage = (props: ArticleProps) => {
           </div>
         </div>
         <div className="col-span-4 tablet-lg:col-span-9 tablet-lg:pl-3">
-          <ArticleBody {...props} />
+          <div className="divide-y rail-divide pb-6">
+            <NextPrev
+              parentCollection={thisIssueData}
+              articles={thisIssueData.articles}
+              currentSlug={articleData.slug}
+              type={NextPrevType.Issues}
+            />
+
+            <div className="grid grid-cols-4 tablet-lg:grid-cols-9">
+              <div className="col-span-4 tablet-lg:col-span-9">
+                <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
+              </div>
+              <div className="col-span-4 tablet-lg:col-span-9">
+                <ArticleBody {...props} />
+              </div>
+            </div>
+
+            <NextPrev
+              parentCollection={thisIssueData}
+              articles={thisIssueData.articles}
+              currentSlug={articleData.slug}
+              type={NextPrevType.Issues}
+            />
+          </div>
         </div>
       </div>
     </div>
