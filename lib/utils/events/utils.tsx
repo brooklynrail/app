@@ -117,6 +117,7 @@ export async function getPastEvents(props: PastEventsParams) {
       `&fields[]=deck` +
       `&fields[]=series` +
       `&fields[]=start_date` +
+      `&fields[]=all_day` +
       `&fields[]=end_date` +
       `&fields[]=youtube_id` +
       `&filter[start_date][_lte]=$NOW` +
@@ -156,6 +157,7 @@ export const getEvent = cache(async (slug: string) => {
         "body",
         "series",
         "start_date",
+        "all_day",
         "end_date",
         "youtube_id",
         "airtable_id",
