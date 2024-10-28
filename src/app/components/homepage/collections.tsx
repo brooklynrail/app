@@ -46,8 +46,8 @@ export const CollectionSection = (collection: Collections) => {
       return <CollectionMusic {...collection} />
     case Collection.Theater:
       return <CollectionTheater {...collection} />
-    // case Collection.Poetry:
-    //   return <CollectionPoetry {...collection} />
+    case Collection.Poetry:
+      return <CollectionPoetry {...collection} />
     case Collection.PublishersMessage:
       return null
     default:
