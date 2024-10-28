@@ -239,24 +239,6 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=articles.featured_image.width` +
     `&fields[]=articles.featured_image.height` +
     `&fields[]=articles.featured_image.type` +
-    `&fields[]=articles.slideshow_image.id` +
-    `&fields[]=articles.slideshow_image.caption` +
-    `&fields[]=articles.slideshow_image.filename_disk` +
-    `&fields[]=articles.slideshow_image.width` +
-    `&fields[]=articles.slideshow_image.height` +
-    `&fields[]=articles.slideshow_image.type` +
-    `&fields[]=articles.promo_banner.id` +
-    `&fields[]=articles.promo_banner.caption` +
-    `&fields[]=articles.promo_banner.filename_disk` +
-    `&fields[]=articles.promo_banner.width` +
-    `&fields[]=articles.promo_banner.height` +
-    `&fields[]=articles.promo_banner.type` +
-    `&fields[]=articles.promo_thumb.id` +
-    `&fields[]=articles.promo_thumb.caption` +
-    `&fields[]=articles.promo_thumb.filename_disk` +
-    `&fields[]=articles.promo_thumb.width` +
-    `&fields[]=articles.promo_thumb.height` +
-    `&fields[]=articles.promo_thumb.type` +
     `&fields[]=articles.contributors.contributors_id.id` +
     `&fields[]=articles.contributors.contributors_id.first_name` +
     `&fields[]=articles.contributors.contributors_id.last_name` +
@@ -387,9 +369,6 @@ export async function getPreviewArticle(id: string) {
           { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
           { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
-          { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
-          { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
-          { promo_thumb: ["id", "width", "height", "filename_disk", "caption"] },
           { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
           { user_updated: ["id", "first_name", "last_name", "avatar"] },
         ],
@@ -423,9 +402,6 @@ export async function getPreviewIssue(id: string) {
               { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
               { section: ["slug", "name"] },
               { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
-              { promo_banner: ["id", "width", "height", "filename_disk", "caption"] },
-              { promo_thumb: ["id", "width", "height", "filename_disk", "caption"] },
-              { slideshow_image: ["id", "width", "height", "filename_disk", "caption"] },
             ],
           },
           { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
@@ -544,24 +520,6 @@ export async function getArticle(slug: string, status?: string) {
     `&fields[]=featured_image.width` +
     `&fields[]=featured_image.height` +
     `&fields[]=featured_image.type` +
-    `&fields[]=slideshow_image.id` +
-    `&fields[]=slideshow_image.caption` +
-    `&fields[]=slideshow_image.filename_disk` +
-    `&fields[]=slideshow_image.width` +
-    `&fields[]=slideshow_image.height` +
-    `&fields[]=slideshow_image.type` +
-    `&fields[]=promo_banner.id` +
-    `&fields[]=promo_banner.caption` +
-    `&fields[]=promo_banner.filename_disk` +
-    `&fields[]=promo_banner.width` +
-    `&fields[]=promo_banner.height` +
-    `&fields[]=promo_banner.type` +
-    `&fields[]=promo_thumb.id` +
-    `&fields[]=promo_thumb.caption` +
-    `&fields[]=promo_thumb.filename_disk` +
-    `&fields[]=promo_thumb.width` +
-    `&fields[]=promo_thumb.height` +
-    `&fields[]=promo_thumb.type` +
     `&fields[]=contributors.contributors_id.first_name` +
     `&fields[]=contributors.contributors_id.last_name` +
     `&fields[]=contributors.contributors_id.slug` +

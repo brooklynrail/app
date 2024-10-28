@@ -1,86 +1,57 @@
-import { Articles, Issues, Sections } from "../../../../lib/types"
+"use client"
+import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import parse from "html-react-parser"
-import replaceShortcodes from "./shortcodes"
-import BookshopWidget from "./bookshop"
-import ArticleHead from "./articleHead"
 import ContributorsBox from "../contributorsBox"
-import styles from "./poetry.module.scss"
 import NextPrev, { NextPrevType } from "../nextPrev"
+import ArticleHead from "./articleHead"
+import BookshopWidget from "./bookshop"
+import styles from "./poetry.module.scss"
+import replaceShortcodes from "./shortcodes"
 
-export enum BodyTypes {
-  Article = "article",
-  Tribute = "tribute",
-}
-
-interface ArticleBodyProps {
-  preview?: boolean
-  articleData: Articles
-  currentArticle?: Articles
-  thisIssueData: Issues
-  currentSection?: Sections
-  permalink?: string
-  articles: Articles[]
-  type: BodyTypes
-  switchArticle?: (slug: string) => void
-}
-
-const ArticleBody = (props: ArticleBodyProps) => {
-  const { articleData, preview, thisIssueData, currentSection, permalink, articles, type, switchArticle } = props
-
-  const { body_text, images } = articleData
-  if (!body_text) {
-    return <></>
-  }
-
-  const articleStyles =
-    type === BodyTypes.Tribute ? "divide-y rail-divide" : "border-t rail-border divide-y rail-divide my-6"
+const ArticleBody = (props: ArticleProps) => {
+  const { thisIssueData, articleData, permalink, currentSection } = props
+  const { body_text, images, endnote, contributors } = articleData
 
   return (
-    <article className={articleStyles}>
-      {thisIssueData && type === BodyTypes.Article && (
+    <>
+      <div className="col-span-4 tablet-lg:col-span-12 border-b rail-border">
         <NextPrev
           parentCollection={thisIssueData}
-          articles={articles}
+          articles={thisIssueData.articles}
           currentSlug={articleData.slug}
           type={NextPrevType.Issues}
-          switchArticle={switchArticle}
         />
-      )}
-
-      <div className="">
-        {thisIssueData && currentSection && permalink && (
-          <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
-        )}
-        <div className="grid grid-cols-4 tablet-lg:grid-cols-10 gap-3">
-          <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-2">
-            <div
-              className={`content ${currentSection && currentSection.slug === "poetry" ? styles.content_poetry : ""}`}
-            >
-              {replaceShortcodes({ html: body_text, images: images, preview: preview })}
-
-              {articleData.endnote && (
-                <div className="endnote">
-                  <span className="line"></span>
-                  {parse(articleData.endnote)}
-                </div>
-              )}
-              <BookshopWidget {...articleData} />
-            </div>
-            {articleData.contributors && <ContributorsBox contributors={articleData.contributors} />}
-          </div>
-        </div>
       </div>
 
-      {thisIssueData && type === BodyTypes.Article && (
+      <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 ">
+        <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
+      </div>
+      <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 space-y-12">
+        {body_text && (
+          <div className={`${styles.content_poetry} content`}>
+            {replaceShortcodes({ html: body_text, images: images })}
+            {endnote && (
+              <div className="endnote">
+                <span className="line"></span>
+                {parse(articleData.endnote)}
+              </div>
+            )}
+            <BookshopWidget {...articleData} />
+          </div>
+        )}
+
+        {contributors && <ContributorsBox contributors={contributors} />}
+      </div>
+      <div className="col-span-4 tablet-lg:col-span-12 border-t rail-border">
         <NextPrev
           parentCollection={thisIssueData}
-          articles={articles}
+          articles={thisIssueData.articles}
           currentSlug={articleData.slug}
           type={NextPrevType.Issues}
-          switchArticle={switchArticle}
         />
-      )}
-    </article>
+      </div>
+    </>
   )
 }
+
 export default ArticleBody

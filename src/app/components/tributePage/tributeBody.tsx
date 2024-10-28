@@ -1,14 +1,14 @@
 "use client"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
 import parse from "html-react-parser"
-import ArticleBody, { BodyTypes } from "../article/articleBody"
+import TributeBody, { BodyTypes } from "../article/tributeBody"
 import TributeWriters from "./writers"
 import { useEffect, useRef } from "react"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { useArticleState } from "@/app/hooks/useArticleState"
 import NextPrev, { NextPrevType } from "../nextPrev"
 
-const TributeBody = (props: TributePageProps) => {
+const TributeBodyBlock = (props: TributePageProps) => {
   const { thisTributeData, articleData, currentArticleSlug } = props
   const { summary } = thisTributeData
   const { currentArticle, switchArticle } = useArticleState(articleData, thisTributeData.articles)
@@ -61,7 +61,7 @@ const TributeBody = (props: TributePageProps) => {
             type={NextPrevType.Tributes}
             switchArticle={switchArticle}
           />
-          <ArticleBody
+          <TributeBody
             articles={thisTributeData.articles}
             articleData={currentArticle}
             thisIssueData={currentArticle.issue}
@@ -153,4 +153,4 @@ const PublishInfo = (props: PublishInfoProps) => {
   )
 }
 
-export default TributeBody
+export default TributeBodyBlock
