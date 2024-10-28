@@ -33,14 +33,16 @@ const ArticleCriticsPage = (props: ArticleProps) => {
 
   return (
     <div className="py-3">
-      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 divide-x rail-divide">
-        <div className="col-span-4 tablet-lg:col-span-3 pr-3">
-          <div className="py-3 divide-y rail-divide sticky top-10 h-screen">
-            <GuestCriticPrompt thisSection={thisSection} currentSlug={articleData.slug} />
-            <CriticsPageList thisSection={thisSection} currentSlug={articleData.slug} />
+      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 tablet-lg:divide-x tablet-lg:rail-divide">
+        <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-3 tablet-lg:pr-3">
+          <div className="py-3 divide-y rail-divide sticky top-10 overflow-x-auto h-screen">
+            <div className="pb-60">
+              <GuestCriticPrompt thisSection={thisSection} currentSlug={articleData.slug} />
+              <CriticsPageList thisSection={thisSection} currentSlug={articleData.slug} />
+            </div>
           </div>
         </div>
-        <div className="col-span-4 tablet-lg:col-span-9 pl-3">
+        <div className="col-span-4 tablet-lg:col-span-9 tablet-lg:pl-3">
           <ArticleBody {...props} />
         </div>
       </div>
@@ -61,7 +63,7 @@ const GuestCriticPrompt = (props: GuestCriticProps) => {
 
   // get the first article where featured is true, if none, get the first article in the array
   const featuredArticle = thisSection.find((article) => article.featured === true) || thisSection[0]
-  return <div className="p-3 pr-0 text-sm sticky top-0">{parse(featuredArticle.excerpt)}</div>
+  return <div className="p-3 pr-0 text-sm">{parse(featuredArticle.excerpt)}</div>
 }
 
 const CriticsPageList = (props: GuestCriticProps) => {
@@ -71,33 +73,26 @@ const CriticsPageList = (props: GuestCriticProps) => {
   }
 
   return (
-    <div className="overflow-y-auto h-full pb-60">
-      <div className="">
-        <ul className="divide-y rail-divide">
-          {thisSection.map((article, index) => {
-            const permalink = getPermalink({
-              year: article.issue.year,
-              month: article.issue.month,
-              section: article.section.slug,
-              slug: article.slug,
-              type: PageType.Article,
-            })
-            console.log("article", article)
-            console.log("permalink", permalink)
-
-            const isCurrent = currentSlug === article.slug ? "bg-white dark:bg-zinc-700" : ""
-            return (
-              <li key={`item-${index}`} className={`${isCurrent} pl-3 py-1 desktop:py-2 space-y-3`}>
-                <Link href={permalink} className="flex flex-col space-y-1">
-                  <Bylines asTitle={true} hideBy={true} article={article} type={BylineType.CriticsPageList} />
-                  <Title title={article.title} classes="pl-3 font-medium font-sans text-sm" />
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-    </div>
+    <ul className="divide-y rail-divide">
+      {thisSection.map((article, index) => {
+        const permalink = getPermalink({
+          year: article.issue.year,
+          month: article.issue.month,
+          section: article.section.slug,
+          slug: article.slug,
+          type: PageType.Article,
+        })
+        const isCurrent = currentSlug === article.slug ? "bg-white dark:bg-zinc-700" : ""
+        return (
+          <li key={`item-${index}`} className={`${isCurrent} pl-3 py-1 desktop:py-2 space-y-3`}>
+            <Link href={permalink} className="flex flex-col space-y-1">
+              <Bylines asTitle={true} hideBy={true} article={article} type={BylineType.CriticsPageList} />
+              <Title title={article.title} classes="pl-3 font-medium font-sans text-sm" />
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
 
