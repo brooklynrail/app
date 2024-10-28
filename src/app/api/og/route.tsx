@@ -10,6 +10,12 @@ enum PageType {
 }
 
 export async function GET(request: Request) {
+  const font = await fetch("https://brooklynrail.org/fonts/untitled-sans/UntitledSansWeb-RegularItalic.ttf")
+  if (!font.ok) {
+    throw new Error("Failed to fetch the font file")
+  }
+  const fontData = await font.arrayBuffer()
+
   const { searchParams } = new URL(request.url)
   const slug = searchParams.get("slug")
   const type = searchParams.get("type")
@@ -63,7 +69,7 @@ export async function GET(request: Request) {
           width: "100%",
           padding: "20px 40px",
           justifyContent: "center",
-          fontFamily: '"Times New Roman", Times, serif',
+          fontFamily: '"Untitled Sans"',
           fontSize: 50,
           backgroundColor: "#FEF9C3",
         }}
@@ -75,7 +81,6 @@ export async function GET(request: Request) {
             width: "100%",
             padding: "20px 00px",
             justifyContent: "space-between",
-            fontFamily: '"Times New Roman", Times, serif',
             fontSize: 50,
             backgroundColor: "#FEF9C3",
           }}
@@ -105,12 +110,13 @@ export async function GET(request: Request) {
             justifyContent: "center",
             textAlign: "center",
             lineHeight: "1.1",
+            fontFamily: '"Untitled Sans"',
           }}
         >
           Ron Gorchov: Exploring the Near/Far Painterly Horizons of Modern Space
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", textAlign: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", textAlign: "center", fontFamily: '"Untitled Sans"' }}>
           <Label>By Ekin Erkan</Label>
         </div>
 
@@ -122,6 +128,7 @@ export async function GET(request: Request) {
             display: "flex",
             justifyContent: "center",
             textAlign: "center",
+            fontFamily: '"Untitled Serif"',
           }}
         >
           Vito Schnabel's Ron Gorchov retrospective, curated by Robert Storr, Exploring the Near/Far Painterly Horizons
@@ -157,6 +164,13 @@ export async function GET(request: Request) {
     {
       width: 800,
       height: 1000,
+      fonts: [
+        {
+          name: "Untitled Sans",
+          data: fontData,
+          style: "normal",
+        },
+      ],
     },
   )
 }
