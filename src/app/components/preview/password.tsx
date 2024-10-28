@@ -12,6 +12,7 @@ const Password = (props: PasswordProps) => {
 
   // A handler for the password input field that checks on keyup
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Password change event:", event.target.value)
     setPassword(event.target.value)
   }
 
@@ -46,7 +47,6 @@ const Password = (props: PasswordProps) => {
                     https://brooklynrail.org
                   </Link>
                 </p>
-                <p>“Oh, you should never, never, doubt what nobody is sure about.” – Willy Wonka</p>
               </div>
             </div>
           </form>
