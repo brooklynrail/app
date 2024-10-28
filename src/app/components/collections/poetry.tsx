@@ -7,6 +7,7 @@ import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
 import PoetryCard from "./promos/poetryCard"
 import Title from "./promos/title"
+import { Arrow } from "../section/poetry"
 
 const CollectionPoetry = (collection: Collections) => {
   const { section } = collection
@@ -51,13 +52,16 @@ const Promos = (props: PromoProps) => {
       <div key={i} className="px-3 tablet-lg:px-6 tablet-lg:first:pl-0 tablet-lg:last:pr-0 snap-center">
         <div className="flex flex-col space-y-3 flex-none w-[calc(65vw)] tablet-lg:w-[calc(33vw)]">
           <div className="flex flex-col space-y-3">
-            <div className="pb-3 flex flex-col space-y-3">
-              <Title permalink={permalink} title={article.title} classes="font-bold text-xl" />
+            <div className="flex flex-col space-y-3">
+              <Link href={permalink}>
+                <div className="flex justify-between items-start">
+                  <Title title={article.title} classes="text-3xl tablet:text-4xl font-light font-serif" />
+                  <Arrow />
+                </div>
+              </Link>
               <Bylines article={article} type={BylineType.Default} />
             </div>
-            <Link href={permalink}>
-              <PoetryCard {...article} />
-            </Link>
+            <PoetryCard {...article} />
           </div>
         </div>
       </div>
