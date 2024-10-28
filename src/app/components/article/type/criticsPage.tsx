@@ -88,9 +88,9 @@ const CriticsPageList = (props: GuestCriticProps) => {
             const isCurrent = currentSlug === article.slug ? "bg-white dark:bg-zinc-700" : ""
             return (
               <li key={`item-${index}`} className={`${isCurrent} pl-3 py-1 desktop:py-2 space-y-3`}>
-                <Link href={permalink} className="block space-y-3">
-                  <Title title={article.title} type={TitleType.CriticsPageListTitle} />
+                <Link href={permalink} className="flex flex-col space-y-1">
                   <Bylines asTitle={true} hideBy={true} article={article} type={BylineType.CriticsPageList} />
+                  <Title title={article.title} classes="pl-3 font-medium font-sans text-sm" />
                 </Link>
               </li>
             )

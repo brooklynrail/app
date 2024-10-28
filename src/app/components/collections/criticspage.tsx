@@ -77,7 +77,7 @@ const Promos = (props: PromoProps) => {
             <Link href={permalink}>
               <Bylines article={article} asTitle={true} type={BylineType.CollectionCriticsPage} hideBy={true} />
             </Link>
-            <Title title={article.title} permalink={permalink} type={TitleType.CollectionCriticsPagePromo} />
+            <Title title={article.title} permalink={permalink} classes="pl-3 font-medium font-sans text-sm" />
           </div>
         </div>
       </div>
