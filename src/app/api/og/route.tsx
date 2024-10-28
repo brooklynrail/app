@@ -40,7 +40,9 @@ export async function GET(request: Request) {
     return null
   }
 
-  const ogExcerpt = data.deck ? parse(data.deck) : data.excerpt
+  const ogtitle = parse(data.title)
+  const ogSummary = data.deck ? parse(data.deck) : parse(data.excerpt)
+  const ogAuthors = `By ${data.contributors}`
 
   function Label({ children }: { children: React.ReactNode; style?: React.CSSProperties }) {
     return (
@@ -85,22 +87,24 @@ export async function GET(request: Request) {
             backgroundColor: "#FEF9C3",
           }}
         >
-          <Label style={{ display: "flex" }}>October 2024</Label>
-          <Label style={{ display: "flex" }}>ArtSeen</Label>
+          <Label style={{ display: "flex" }}>{data.issue}</Label>
+          <Label style={{ display: "flex" }}>{data.section}</Label>
         </div>
 
-        <div style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
-          <img
-            width="100%"
-            height="400"
-            src="https://studio.brooklynrail.org/assets/d616ba7e-6b66-4ead-92a0-ac560afebd9e"
-            style={{
-              objectFit: "cover",
-              maxWidth: "100%",
-              height: "400px",
-            }}
-          />
-        </div>
+        {data.image && (
+          <div style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
+            <img
+              width="100%"
+              height="400"
+              src={data.image}
+              style={{
+                objectFit: "cover",
+                maxWidth: "100%",
+                height: "400px",
+              }}
+            />
+          </div>
+        )}
 
         <div
           style={{
@@ -113,11 +117,11 @@ export async function GET(request: Request) {
             fontFamily: '"Untitled Sans"',
           }}
         >
-          Ron Gorchov: Exploring the Near/Far Painterly Horizons of Modern Space
+          {ogtitle}
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", textAlign: "center", fontFamily: '"Untitled Sans"' }}>
-          <Label>By Ekin Erkan</Label>
+          <Label>{ogAuthors}</Label>
         </div>
 
         <div
@@ -131,9 +135,7 @@ export async function GET(request: Request) {
             fontFamily: '"Untitled Serif"',
           }}
         >
-          Vito Schnabel's Ron Gorchov retrospective, curated by Robert Storr, Exploring the Near/Far Painterly Horizons
-          of Modern Space, excavates works from the late artist's studio, punctuating them with some of Gorchov's most
-          important saddle-shaped canvases.
+          {ogSummary}
         </div>
 
         <div

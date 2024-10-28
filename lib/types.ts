@@ -27,6 +27,7 @@ export type OGArticle = {
   image?: string | null
   section: string
   issue: string
+  contributors?: string | null
 }
 
 export type Articles = {

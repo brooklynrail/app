@@ -1,5 +1,5 @@
 import directus from "../directus"
-import { readItems, readSingleton } from "@directus/sdk"
+import { readItems } from "@directus/sdk"
 import { Articles, Issues, OGArticle, Sections } from "../types"
 import nlp from "compromise"
 import { cache } from "react"
@@ -39,6 +39,9 @@ export async function getArticleOGData(slug: string, status?: string) {
     `&fields[]=featured_image.filename_disk` +
     `&fields[]=issue.title` +
     `&fields[]=section.name` +
+    `&fields[]=contributors.contributors_id.id` +
+    `&fields[]=contributors.contributors_id.first_name` +
+    `&fields[]=contributors.contributors_id.last_name` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=${status}`
 
@@ -68,6 +71,16 @@ const transformArticle = (data: Articles) => {
   article.deck = data.deck ? data.deck : null
   article.issue = data.issue.title
   article.section = data.section.name
+
+  article.contributors = data.contributors
+    ? data.contributors
+        .filter((contributor) => contributor.contributors_id)
+        .map(
+          (contributor) =>
+            `${contributor.contributors_id?.first_name ?? ""} ${contributor.contributors_id?.last_name ?? ""}`,
+        )
+        .join(", ")
+    : null
   article.image = data.featured_image
     ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${data.featured_image.filename_disk}`
     : null
