@@ -1,12 +1,12 @@
 "use client"
-import parse from "html-react-parser"
+import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 import { useEffect, useState } from "react"
 import { SectionProps } from "."
 import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
+import PoetryCard from "../collections/promos/poetryCard"
 import Title from "../collections/promos/title"
-import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 
 const SectionPoetry = (props: SectionProps) => {
   const { articlesData } = props
@@ -55,8 +55,7 @@ interface PromoProps {
 
 const Promos = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, featured_artwork, featured_image } = article
-    const artwork = featured_artwork ? featured_artwork : featured_image
+    const { issue, section } = article
     const permalink = getPermalink({
       year: issue.year,
       month: issue.month,
@@ -83,25 +82,6 @@ const Promos = (props: PromoProps) => {
   })
 
   return <>{articles}</>
-}
-
-const PoetryCard = (article: Articles) => {
-  const { body_text, excerpt } = article
-
-  // find all of the text between the first instance of [poetry] and the second [/poetry] tags
-  const poetryRegex = /\[poetry\]([\s\S]*?)\[\/poetry\]/
-  const poetryMatch = body_text && body_text.match(poetryRegex)
-
-  if (poetryMatch) {
-    return (
-      <div className={`bg-white relative h-[calc(100vh-45rem)] overflow-hidden shadow-lg`}>
-        <div className="absolute bg-gradient-to-t from-stone-50 h-full w-full top-0 bottom-0"></div>
-        <div className="p-3 text-zinc-800">{parse(poetryMatch[1])}</div>
-      </div>
-    )
-  }
-
-  return <div className="">{excerpt && parse(excerpt)}</div>
 }
 
 export default SectionPoetry
