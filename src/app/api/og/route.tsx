@@ -9,6 +9,71 @@ enum PageType {
   Event = "event",
 }
 
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    display: "flex",
+    flexDirection: "column" as "column", // Correct type cast for flexDirection
+    height: "100%",
+    width: "100%",
+    padding: "20px 40px",
+    justifyContent: "center",
+    fontFamily: '"Untitled Sans"',
+    fontSize: 50,
+    backgroundColor: "#FEF9C3",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row" as "row", // Correct type cast for flexDirection
+    width: "100%",
+    padding: "20px 0", // Fixed padding typo
+    justifyContent: "space-between",
+    fontSize: 50,
+    backgroundColor: "#FEF9C3",
+  },
+  imageContainer: {
+    display: "flex",
+    textAlign: "center",
+    justifyContent: "center",
+  },
+  image: {
+    objectFit: "cover" as "cover", // Correct type cast
+    maxWidth: "100%",
+    height: "400px",
+  },
+  title: {
+    marginTop: 30,
+    marginBottom: 40,
+    display: "flex",
+    justifyContent: "center",
+    textAlign: "center",
+    lineHeight: "1.1",
+    fontFamily: '"Untitled Sans"',
+  },
+  authors: {
+    display: "flex",
+    justifyContent: "center",
+    textAlign: "center",
+    fontFamily: '"Untitled Sans"',
+  },
+  summary: {
+    marginTop: 10,
+    color: "gray",
+    fontSize: "20px",
+    display: "flex",
+    justifyContent: "center",
+    textAlign: "center",
+    fontFamily: '"Untitled Serif"',
+  },
+  footer: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#FEF9C3",
+    marginTop: "40px",
+    justifyContent: "center",
+  },
+}
+
 export async function GET(request: Request) {
   const font = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/fonts/untitled-sans/UntitledSansWeb-RegularItalic.ttf`)
   if (!font.ok) {
@@ -63,91 +128,27 @@ export async function GET(request: Request) {
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          width: "100%",
-          padding: "20px 40px",
-          justifyContent: "center",
-          fontFamily: '"Untitled Sans"',
-          fontSize: 50,
-          backgroundColor: "#FEF9C3",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            padding: "20px 00px",
-            justifyContent: "space-between",
-            fontSize: 50,
-            backgroundColor: "#FEF9C3",
-          }}
-        >
+      <div style={styles.container}>
+        <div style={styles.header}>
           <Label style={{ display: "flex" }}>{data.issue}</Label>
           <Label style={{ display: "flex" }}>{data.section}</Label>
         </div>
 
         {data.image && (
-          <div style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
-            <img
-              width="100%"
-              height="400"
-              src={data.image}
-              style={{
-                objectFit: "cover",
-                maxWidth: "100%",
-                height: "400px",
-              }}
-            />
+          <div style={styles.imageContainer}>
+            <img width="100%" height="400" src={data.image} style={styles.image} />
           </div>
         )}
 
-        <div
-          style={{
-            marginTop: 30,
-            marginBottom: 40,
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center",
-            lineHeight: "1.1",
-            fontFamily: '"Untitled Sans"',
-          }}
-        >
-          {ogtitle}
-        </div>
+        <div style={styles.title}>{ogtitle}</div>
 
-        <div style={{ display: "flex", justifyContent: "center", textAlign: "center", fontFamily: '"Untitled Sans"' }}>
+        <div style={styles.authors}>
           <Label>{ogAuthors}</Label>
         </div>
 
-        <div
-          style={{
-            marginTop: 10,
-            color: "gray",
-            fontSize: "20px",
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center",
-            fontFamily: '"Untitled Serif"',
-          }}
-        >
-          {ogSummary}
-        </div>
+        <div style={styles.summary}>{ogSummary}</div>
 
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: "#FEF9C3",
-            marginTop: "40px",
-            justifyContent: "center",
-          }}
-        >
+        <div style={styles.footer}>
           <svg width="60" height="60" transform="scale(1)">
             <path
               d="M0 0 C164.15789474 0 164.15789474 0 185 20 C198.75658407 36.11179691 201.14829997 55.55836512 201.203125 75.9453125 C201.20736607 77.01686899 201.20736607 77.01686899 201.21169281 78.11007309 C201.22661681 81.89337269 201.23588816 85.67663486 201.24023438 89.45996094 C201.24569841 93.32596698 201.269702 97.1916172 201.29820633 101.05751228 C201.31702406 104.0673618 201.32204842 107.077129 201.32357025 110.08703232 C201.32655614 111.5100994 201.33444302 112.93316652 201.34775543 114.35617447 C201.49400191 131.19500357 198.81069242 149.13329273 187 162 C181.22884621 167.84314323 175.08828432 172.1747677 167 174 C167.75023437 174.40089844 168.50046875 174.80179688 169.2734375 175.21484375 C185.27653282 184.10321281 195.17190805 195.55857776 201 213 C203.84511718 223.78773599 205.14618964 234.3771808 205.16113281 245.50439453 C205.16609772 246.40820358 205.17106262 247.31201263 205.17617798 248.24320984 C205.19067338 251.20641874 205.19758089 254.1695741 205.203125 257.1328125 C205.20736607 258.66448877 205.20736607 258.66448877 205.21169281 260.227108 C205.22663524 265.63252771 205.23589555 271.03792108 205.24023438 276.44335938 C205.2457073 281.98733202 205.26972489 287.53105764 205.29820633 293.07495308 C205.3169572 297.37330805 205.32204492 301.67160502 205.32357025 305.96999741 C205.32656999 308.01185326 205.3345062 310.05370876 205.34775543 312.09552383 C205.46758102 331.98294679 204.1534218 351.59247753 190 367 C189.45085937 367.60328125 188.90171875 368.2065625 188.3359375 368.828125 C146.97416792 409.27884239 14.99666428 388 0 388 C0 259.96 0 131.92 0 0 Z M72 63 C72 90.06 72 117.12 72 145 C105.06944868 147.2902425 105.06944868 147.2902425 119 141 C123.21790819 136.78209181 124.1206859 133.37186717 124.16113281 127.53808594 C124.17074036 126.41972351 124.1803479 125.30136108 124.19024658 124.14910889 C124.1966214 122.33506561 124.1966214 122.33506561 124.203125 120.484375 C124.20882507 119.240047 124.21452515 117.99571899 124.22039795 116.71368408 C124.22985234 114.07747746 124.23674669 111.44138478 124.24023438 108.80517578 C124.24462053 106.10874914 124.25851683 103.41264221 124.28125 100.71630859 C124.31174789 96.82639866 124.32228706 92.93689125 124.328125 89.046875 C124.3404718 87.84560974 124.3528186 86.64434448 124.36553955 85.40667725 C124.34579659 77.96649476 124.19323749 72.19323749 118.6875 66.6875 C104.97157798 58.07517687 87.08704194 63 72 63 Z M72 209 C72 247.61 72 286.22 72 326 C102.31857154 328.2250205 102.31857154 328.2250205 128 317 C135.1837428 308.711066 134.30062303 297.62848787 134.265625 287.2890625 C134.26697582 285.87096083 134.26891982 284.45285962 134.27142334 283.03475952 C134.27435691 280.07456009 134.2701356 277.11448209 134.26074219 274.15429688 C134.24936966 270.39009191 134.25590436 266.62617295 134.26788712 262.86197853 C134.27517172 259.93630891 134.27278743 257.01070521 134.26763153 254.08503342 C134.26631211 252.69858134 134.26788171 251.31212296 134.27259064 249.92567825 C134.50626167 232.82405354 134.50626167 232.82405354 127 218 C112.08031492 204.18775547 91.1009014 209 72 209 Z "
