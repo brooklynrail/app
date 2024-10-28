@@ -10,7 +10,7 @@ enum PageType {
 }
 
 export async function GET(request: Request) {
-  const font = await fetch("https://brooklynrail.org/fonts/untitled-sans/UntitledSansWeb-RegularItalic.ttf")
+  const font = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/fonts/untitled-sans/UntitledSansWeb-RegularItalic.ttf`)
   if (!font.ok) {
     throw new Error("Failed to fetch the font file")
   }
