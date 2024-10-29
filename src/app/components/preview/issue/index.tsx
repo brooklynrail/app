@@ -66,7 +66,7 @@ const IssuePreview = (props: IssuePreviewProps) => {
   }
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${thisIssueData.id}`
-  return <IssuePage {...props} navData={navData} />
+  return <IssuePage {...props} navData={navData} previewURL={previewURL} />
 }
 
 export default IssuePreview

@@ -19,8 +19,6 @@ export interface PromoProps {
 const IssuePage = (props: IssuePageProps) => {
   const { thisIssueData, issueSections, previewURL, permalink, navData, allIssues, currentSection } = props
 
-  const { slug } = thisIssueData
-  const issueClass = `issue-${slug.toLowerCase()}`
   const currentSections = issueSections
   const { year, month } = thisIssueData
 
@@ -43,8 +41,7 @@ const IssuePage = (props: IssuePageProps) => {
   const credits = thisIssueData.credits
 
   return (
-    <Paper pageClass={``} type={PaperType.Default} navData={navData}>
-      {previewURL && <PreviewHeader previewURL={previewURL} />}
+    <Paper pageClass={``} type={PaperType.Default} navData={navData} previewURL={previewURL}>
       <main className="divide-y rail-divide">
         <IssueHead title={thisIssueData.title} allIssues={allIssues} currentIssueSlug={thisIssueData.slug} />
 
