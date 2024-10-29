@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
-import { useVideo, VideoProvider } from "@/app/context/videoProvider"
 import { Covers } from "../../../../lib/types"
 import CoverStage from "./coverStage"
+import { useVideo } from "@/app/context/VideoProvider"
 
 interface CoverArtProps {
   covers?: Covers[] | null
@@ -19,8 +19,8 @@ const CoverArt = (props: CoverArtProps) => {
   let videoPath = ""
 
   // Use first cover and media if available
-  if (covers && covers.length > 0 && covers[0].media[0]?.directus_files_id) {
-    videoPath = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${covers[0].media[0].directus_files_id.filename_disk}`
+  if (covers && covers.length > 0 && covers[0].videos[0]?.directus_files_id) {
+    videoPath = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${covers[0].videos[0].directus_files_id.filename_disk}`
   }
 
   useEffect(() => {

@@ -24,10 +24,10 @@ export const getCoversData = cache(async () => {
       readItems("covers", {
         fields: [
           "id",
-          "logo_color",
-          "logo_color_mobile",
-          "subhead_color",
-          "subhead_color_mobile",
+          "primary_color",
+          "primary_color_mobile",
+          "secondary_color",
+          "secondary_color_mobile",
           "summary",
           {
             artists: [
@@ -37,7 +37,7 @@ export const getCoversData = cache(async () => {
             ],
           },
           {
-            media: [
+            videos: [
               {
                 directus_files_id: [
                   "id",
@@ -59,7 +59,6 @@ export const getCoversData = cache(async () => {
         },
       }),
     )
-
     return coversData as Covers[]
   } catch (error) {
     console.error("Error fetching Covers data:", error)

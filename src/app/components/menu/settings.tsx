@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import ThemeToggle from "../themeToggle"
 import { useTheme } from "../theme"
 import { getCookie } from "../../../../lib/utils/homepage"
-import { useVideo } from "@/app/context/videoProvider"
+import { useVideo } from "@/app/context/VideoProvider"
 
 const Settings = () => {
   const videoRef = useRef<HTMLVideoElement>(null)

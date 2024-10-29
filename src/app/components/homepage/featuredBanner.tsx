@@ -13,10 +13,11 @@ enum BannerType {
 interface BannerProps {
   banners: HomepageBanners[]
   currentIssue: Issues
+  bannerRef: React.RefObject<HTMLDivElement>
 }
 
 const FeaturedBanner = (props: BannerProps) => {
-  const { banners, currentIssue } = props
+  const { banners, currentIssue, bannerRef } = props
 
   const allBanners = banners.map((item: HomepageBanners, index: number) => {
     const banner = item.collections_id
@@ -39,7 +40,7 @@ const FeaturedBanner = (props: BannerProps) => {
     }
   })
   return (
-    <div className="bg-white">
+    <div className="bg-white" ref={bannerRef}>
       <div className="grid grid-cols-4 tablet:grid-cols-12">{allBanners}</div>
     </div>
   )

@@ -7,7 +7,9 @@ import HeaderDefault from "./default"
 import HomeBanner from "./homeBanner"
 import Subhead from "./subhead"
 import CoverArt from "./coverArt"
-import { VideoProvider } from "@/app/context/videoProvider"
+import { useRef } from "react"
+import { VideoProvider } from "@/app/context/VideoProvider"
+import { useTheme } from "../theme"
 
 export interface HeaderProps {
   special_issue?: boolean | null
@@ -32,10 +34,23 @@ const Header = (props: HeaderProps) => {
 
 const HeaderHomepage = (props: HeaderProps) => {
   const { title, type, banners, currentIssue, covers } = props
+  const { theme } = useTheme()
+  const bannerRef = useRef<HTMLDivElement>(null)
+
+  console.log("covers ========", covers)
 
   const permalink = getPermalink({
     type: PageType.Home,
   })
+
+  const defaultColor = `#27272a`
+  const primaryColor = covers ? covers[0].primary_color : defaultColor
+  const secondaryColor = covers ? covers[0].secondary_color : defaultColor
+
+  // let pathfill = theme === "dark" ? "fill-none" : "fill-none"
+  // let textfill = theme ===
+  const headFill = theme === "dark" ? primaryColor : primaryColor
+  const subheadFill = theme === "dark" ? secondaryColor : secondaryColor
 
   return (
     <VideoProvider>
@@ -51,14 +66,16 @@ const HeaderHomepage = (props: HeaderProps) => {
           <div className="sticky top-0">
             <div className="p-3 pb-9 tablet:px-6">
               <Link href={permalink} className="w-full space-y-3">
-                <HomeBanner type={type} covers={covers} />
-                <Subhead />
+                <HomeBanner fill={headFill} />
+                <Subhead fill={subheadFill} />
               </Link>
             </div>
           </div>
         </div>
 
-        {banners && currentIssue && <FeaturedBanner banners={banners} currentIssue={currentIssue} />}
+        {banners && currentIssue && (
+          <FeaturedBanner bannerRef={bannerRef} banners={banners} currentIssue={currentIssue} />
+        )}
       </header>
     </VideoProvider>
   )

@@ -135,13 +135,13 @@ export type Covers = {
   date_created: string
   date_updated: string
   id: string
-  media: CoversFiles[]
+  videos: CoversFiles[]
   sort?: number | null
   status: string
-  logo_color: string
-  logo_color_mobile: string
-  subhead_color: string
-  subhead_color_mobile: string
+  primary_color: string
+  primary_color_mobile: string
+  secondary_color: string
+  secondary_color_mobile: string
   artists: CoversPeople[]
   summary?: string | null
   user_created?: string | DirectusUsers | null

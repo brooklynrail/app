@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react"
-import { useVideo } from "@/app/context/videoProvider"
+import { useEffect, useRef, useState } from "react"
 import { Covers } from "../../../../lib/types"
 import parse from "html-react-parser"
+import { useVideo } from "@/app/context/VideoProvider"
 
 interface CoverArtProps {
   covers: Covers[] | null
@@ -9,18 +9,13 @@ interface CoverArtProps {
 
 const CoverStage = (props: CoverArtProps) => {
   const { covers } = props
-  // Video player reference
-  const videoRef = useRef<HTMLVideoElement>(null)
   const { isVideoPaused, toggleVideoState, isVideoVisible, toggleVideoVisibility } = useVideo()
 
-  // Default fallback video path
-  // let videoPath = "/video/transition-jeremyzilar2024-web.mp4"
-  let videoPath = ""
+  // Video player reference
+  const videoRef = useRef<HTMLVideoElement>(null)
 
-  // Use first cover and media if available
-  if (covers && covers.length > 0 && covers[0].media[0]?.directus_files_id) {
-    videoPath = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${covers[0].media[0].directus_files_id.filename_disk}`
-  }
+  // State to track the current video index
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0)
 
   useEffect(() => {
     if (videoRef.current) {
@@ -32,41 +27,45 @@ const CoverStage = (props: CoverArtProps) => {
     }
   }, [isVideoPaused])
 
-  // Handle play/pause from external control
-  const handleVideoPlayer = () => {
-    toggleVideoState() // Toggle video state using context
+  // Handle navigating to the next media in the array
+  const handleNextVideo = () => {
+    if (covers && covers[0].videos && currentMediaIndex < covers[0].videos.length - 1) {
+      setCurrentMediaIndex(currentMediaIndex + 1)
+    }
   }
 
-  const handleVideoVisibility = () => {
-    console.log("Toggling video visibility") // Add this log
-    toggleVideoVisibility() // Ensure this is being called properly
+  // Handle navigating to the previous media in the array
+  const handlePreviousVideo = () => {
+    if (covers && covers[0].videos && currentMediaIndex > 0) {
+      setCurrentMediaIndex(currentMediaIndex - 1)
+    }
   }
 
-  // Get the first cover data (artists, summary)
+  // Get the current media file path with safety checks
   const currentCover = covers && covers[0]
-  if (!currentCover) {
-    return null
+  let videoPath = ""
+  if (currentCover && currentCover.videos && currentCover.videos[currentMediaIndex]?.directus_files_id) {
+    videoPath = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${currentCover.videos[currentMediaIndex].directus_files_id.filename_disk}`
   }
 
-  console.log("currentCover", currentCover)
-  const artists = currentCover.artists.map((artist) => artist.people_id.display_name)
+  const artists = currentCover?.artists.map((artist) => artist.people_id.display_name)
 
   let formattedArtists
-  if (artists.length === 1) {
+  if (artists?.length === 1) {
     formattedArtists = artists[0]
-  } else if (artists.length === 2) {
+  } else if (artists?.length === 2) {
     formattedArtists = artists.join(" and ")
   } else {
-    formattedArtists = `${artists.slice(0, -1).join(", ")}, and ${artists[artists.length - 1]}`
+    formattedArtists = `${artists?.slice(0, -1).join(", ")}, and ${artists?.[artists.length - 1]}`
   }
 
-  const summary = currentCover.summary || "No summary available"
+  const summary = currentCover?.summary || "No summary available"
 
   return (
     <>
       <div
         className={`fixed top-0 left-0 w-full h-full z-[100] bg-black bg-opacity-85 p-6`}
-        onClick={handleVideoVisibility}
+        onClick={toggleVideoVisibility}
       >
         <div className={`absolute top-0 bottom-0 left-0 w-full h-full p-6`}>
           <video
@@ -87,9 +86,32 @@ const CoverStage = (props: CoverArtProps) => {
           <p className={`font-medium`}>{formattedArtists}</p>
           <p className={``}>{parse(summary)}</p>
         </div>
+
+        {/* Navigation Controls */}
+        {currentCover?.videos && currentCover.videos.length > 1 && (
+          <div className="absolute top-10 left-10 flex space-x-4 z-100 bg-pink-300">
+            <button
+              onClick={handlePreviousVideo}
+              className={`bg-white p-2 rounded-full ${currentMediaIndex === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={currentMediaIndex === 0}
+            >
+              Previous
+            </button>
+
+            <button
+              onClick={handleNextVideo}
+              className={`bg-white p-2 rounded-full ${
+                currentMediaIndex === currentCover.videos.length - 1 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={currentMediaIndex === currentCover.videos.length - 1}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
 
-      <button onClick={handleVideoVisibility} className="absolute top-5 right-5 bg-white p-2 z-[9999] rounded-full">
+      <button onClick={toggleVideoVisibility} className="absolute top-5 right-5 bg-white p-2 z-[9999] rounded-full">
         Close Video
       </button>
     </>
