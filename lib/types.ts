@@ -55,11 +55,8 @@ export type Articles = {
   hide_title?: boolean | null
   isbn?: number
   old_id?: number | null
-  promo_banner?: DirectusFiles
-  promo_thumb?: DirectusFiles
   section: Sections
   published?: string | null
-  slideshow_image?: DirectusFiles | null
   slug: string
   sort?: number | null
   status: string

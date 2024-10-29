@@ -94,22 +94,8 @@ interface PreviewInfoProps {
 }
 
 const PreviewInfo = (props: PreviewInfoProps) => {
-  const {
-    status,
-    excerpt,
-    images,
-    title,
-    section,
-    title_tag,
-    user_updated,
-    date_updated,
-    featured_image,
-    slideshow_image,
-    promo_thumb,
-    promo_banner,
-    issue,
-    slug,
-  } = props.articleData
+  const { status, excerpt, title, section, title_tag, user_updated, date_updated, featured_image, issue, slug } =
+    props.articleData
 
   const permalink =
     status === "published"
@@ -183,37 +169,6 @@ const PreviewInfo = (props: PreviewInfoProps) => {
             </div>
           </div>
         </div>
-
-        {slideshow_image && (
-          <div className="block slideshow-image">
-            <h4 className="text-xs uppercase">Slideshow Image</h4>
-            <PreviewImage
-              order={1}
-              image={slideshow_image}
-              fullWidth={true}
-              directusUrl={props.directusUrl}
-              showShortcode={false}
-            />
-          </div>
-        )}
-        {promo_banner && (
-          <div className="block slideshow-image">
-            <h4 className="text-xs uppercase">Promo Banner Image</h4>
-            <PreviewImage
-              order={1}
-              image={promo_banner}
-              fullWidth={true}
-              directusUrl={props.directusUrl}
-              showShortcode={false}
-            />
-          </div>
-        )}
-        {promo_thumb && (
-          <div className="">
-            <h4 className="text-xs uppercase">Promo Thumb Image</h4>
-            <PreviewImage order={1} image={promo_thumb} directusUrl={props.directusUrl} showShortcode={false} />
-          </div>
-        )}
 
         <PromoBuilder />
       </div>

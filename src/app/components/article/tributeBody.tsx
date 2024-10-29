@@ -24,7 +24,7 @@ interface ArticleBodyProps {
   switchArticle?: (slug: string) => void
 }
 
-const ArticleBody = (props: ArticleBodyProps) => {
+const TributeBody = (props: ArticleBodyProps) => {
   const { articleData, preview, thisIssueData, currentSection, permalink, articles, type, switchArticle } = props
 
   const { body_text, images } = articleData
@@ -83,4 +83,4 @@ const ArticleBody = (props: ArticleBodyProps) => {
     </article>
   )
 }
-export default ArticleBody
+export default TributeBody

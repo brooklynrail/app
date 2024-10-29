@@ -1,14 +1,14 @@
 "use client"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
 import parse from "html-react-parser"
-import ArticleBody, { BodyTypes } from "../article/articleBody"
+import TributeBody, { BodyTypes } from "../article/tributeBody"
 import TributeWriters from "./writers"
 import { useEffect, useRef } from "react"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { useArticleState } from "@/app/hooks/useArticleState"
 import NextPrev, { NextPrevType } from "../nextPrev"
 
-const TributeBody = (props: TributePageProps) => {
+const TributeBodyBlock = (props: TributePageProps) => {
   const { thisTributeData, articleData, currentArticleSlug } = props
   const { summary } = thisTributeData
   const { currentArticle, switchArticle } = useArticleState(articleData, thisTributeData.articles)
@@ -35,8 +35,8 @@ const TributeBody = (props: TributePageProps) => {
     <div className="py-3 px-6 tablet:px-9" ref={articleContentRef}>
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-3 tablet-lg:border-r-[1px] rail-border">
-          <div className="sticky top-0 tablet-lg:overflow-y-auto tablet-lg:h-screen">
-            <div className="divide-y-[1px] rail-divide tablet-lg:mr-3 pb-0 tablet-lg:pb-12 flex flex-col">
+          <div className="sticky top-12 tablet-lg:overflow-y-auto tablet-lg:h-screen">
+            <div className="divide-y-[1px] rail-divide tablet-lg:mr-3 pb-0 tablet-lg:pb-60 flex flex-col">
               <aside className="text-sm tablet-lg:pl-3 pb-3 tablet-lg:py-3">{summary && parse(summary)}</aside>
 
               <TributeWriters
@@ -61,7 +61,7 @@ const TributeBody = (props: TributePageProps) => {
             type={NextPrevType.Tributes}
             switchArticle={switchArticle}
           />
-          <ArticleBody
+          <TributeBody
             articles={thisTributeData.articles}
             articleData={currentArticle}
             thisIssueData={currentArticle.issue}
@@ -153,4 +153,4 @@ const PublishInfo = (props: PublishInfoProps) => {
   )
 }
 
-export default TributeBody
+export default TributeBodyBlock

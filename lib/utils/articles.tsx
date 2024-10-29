@@ -1,3 +1,5 @@
+import directus from "../directus"
+import { readItems, readSingleton } from "@directus/sdk"
 import { Articles, Issues, OGArticle, Sections } from "../types"
 import nlp from "compromise"
 import { cache } from "react"
@@ -72,3 +74,48 @@ const transformArticle = (data: Articles) => {
 
   return article
 }
+
+// =================================================================================================
+interface CurrentIssueSectionProps {
+  issueSlug: string
+  sectionSlug: string
+}
+export const getCurrentIssueSection = cache(async (props: CurrentIssueSectionProps) => {
+  const { issueSlug, sectionSlug } = props
+  try {
+    const articles = await directus.request(
+      readItems("articles", {
+        fields: [
+          "title",
+          "featured",
+          "excerpt",
+          "slug",
+          "hide_title",
+          { section: ["id", "name", "slug"] },
+          { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
+          { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
+          { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
+          { user_updated: ["id", "first_name", "last_name", "avatar"] },
+        ],
+        filter: {
+          _and: [
+            {
+              issue: {
+                slug: { _eq: issueSlug },
+              },
+              section: {
+                slug: { _eq: sectionSlug },
+              },
+              status: { _eq: `published` },
+            },
+          ],
+        },
+      }),
+    )
+    console.log("articles ==========", articles)
+    return articles as Articles[]
+  } catch (error) {
+    console.error("Error fetching CurrentIssueData data:", error)
+    return null
+  }
+})

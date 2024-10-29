@@ -3,8 +3,8 @@ import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
 import Paper, { PaperType } from "../paper"
 import PreviewHeader from "../preview/previewHead"
 import styles from "./tribute.module.scss"
-import TributeBody from "./tributeBody"
 import TributeHead from "./tributeHead"
+import TributeBodyBlock from "./tributeBody"
 
 const TributePage = (props: TributePageProps) => {
   const { thisTributeData, previewURL, navData } = props
@@ -21,7 +21,7 @@ const TributePage = (props: TributePageProps) => {
             <div className="py-3 px-6">
               <TributeHead thisTributeData={thisTributeData} articleData={thisTributeData.articles[0]} />
             </div>
-            <TributeBody {...props} />
+            <TributeBodyBlock {...props} />
           </div>
         </section>
       </div>
