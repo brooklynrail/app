@@ -12,7 +12,9 @@ function ThemeToggle(props: ThemeToggleProps) {
   const { theme, setTheme } = props
 
   const isDevOrPreview =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === "development" || process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "development" ||
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
+    process.env.NEXT_PUBLIC_VERCEL_ENV === undefined
 
   useEffect(() => {
     // Get the stored theme preference from localStorage
