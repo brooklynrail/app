@@ -26,7 +26,7 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
         <Link
           key={i}
           href={link.url}
-          className={`py-1 text-center text-indigo-50 dark:text-indigo-50 uppercase font-medium text-xs ${first}`}
+          className={`py-1 text-center text-indigo-50 dark:text-indigo-50 uppercase font-medium text-xs ${first} flex justify-center w-full`}
         >
           <button className="uppercase hover:underline">{link.text}</button>
         </Link>
@@ -59,7 +59,7 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
         </div>
         {links && (
           <div className="col-span-1 row-start-2">
-            <div className="flex flex-col space-y-1">{links}</div>
+            <div className="flex flex-col items-center space-y-1">{links}</div>
           </div>
         )}
       </div>
