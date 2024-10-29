@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react"
-import { deleteCookie, getCookie, setCookie } from "../../../../lib/utils/homepage"
+import { useEffect, useRef } from "react"
 import { useVideo } from "@/app/context/videoProvider"
 import { Covers } from "../../../../lib/types"
+import parse from "html-react-parser"
 
 interface CoverArtProps {
   covers: Covers[] | null
@@ -47,7 +47,19 @@ const CoverStage = (props: CoverArtProps) => {
   if (!currentCover) {
     return null
   }
-  const artists = currentCover.artists.map((artist) => artist.people_id.first_name).join(" ")
+
+  console.log("currentCover", currentCover)
+  const artists = currentCover.artists.map((artist) => artist.people_id.display_name)
+
+  let formattedArtists
+  if (artists.length === 1) {
+    formattedArtists = artists[0]
+  } else if (artists.length === 2) {
+    formattedArtists = artists.join(" and ")
+  } else {
+    formattedArtists = `${artists.slice(0, -1).join(", ")}, and ${artists[artists.length - 1]}`
+  }
+
   const summary = currentCover.summary || "No summary available"
 
   return (
@@ -71,7 +83,10 @@ const CoverStage = (props: CoverArtProps) => {
             Your browser does not support the video tag.
           </video>
         </div>
-        <p className={`text-slate-100 absolute bottom-3 right-6 text-xs w-card-lg`}>{summary}</p>
+        <div className="absolute bottom-3 right-6 w-card-lg text-slate-100 text-xs">
+          <p className={`font-medium`}>{formattedArtists}</p>
+          <p className={``}>{parse(summary)}</p>
+        </div>
       </div>
 
       <button onClick={handleVideoVisibility} className="absolute top-5 right-5 bg-white p-2 z-[9999] rounded-full">
