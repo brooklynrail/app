@@ -5,6 +5,11 @@ body {
   @apply bg-[#EF4444] text-black;
 }
 
+// Apply a subtile transition to all elements when switching themes
+body * {
+  @apply transition-colors duration-[50ms];
+}
+
 //=========================================
 // Paper Styles
 //=========================================
