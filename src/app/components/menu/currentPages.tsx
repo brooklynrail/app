@@ -43,7 +43,7 @@ const CurrentPages = () => {
   })
 
   return (
-    <div className="py-3 bg-slate-100 dark:bg-zinc-700 pb-48">
+    <div className="py-3 bg-slate-100 dark:bg-zinc-700">
       <ul className="py-3 block text-sm font-bold px-9 space-y-3">
         {allPages}
         <li className="">
