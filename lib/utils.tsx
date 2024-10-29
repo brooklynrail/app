@@ -400,7 +400,7 @@ export async function getPreviewIssue(id: string) {
               "sort",
               "featured",
               { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
-              { section: ["slug", "name"] },
+              { section: ["id", "slug", "name"] },
               { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
             ],
           },
@@ -415,8 +415,14 @@ export async function getPreviewIssue(id: string) {
         filter: {
           id: { _eq: id },
         },
+        deep: {
+          articles: {
+            _limit: -1,
+          },
+        },
       }),
     )
+
     return preview[0] as Issues
   } catch (error) {
     console.error("error in getPreviewIssue", error)

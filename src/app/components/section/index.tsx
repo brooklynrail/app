@@ -8,6 +8,7 @@ import SectionHead from "./head"
 import SectionDefault from "./default"
 import SectionArtSeen from "./artseen"
 import SectionCriticsPage from "./criticsPage"
+import SectionPoetry from "./poetry"
 
 interface NavProps {
   navData: Homepage
@@ -22,6 +23,7 @@ enum SectionType {
   Art = "art",
   ArtSeen = "artseen",
   CriticsPage = "criticspage",
+  Poetry = "poetry",
 }
 
 const Section = (props: SectionProps & NavProps) => {
@@ -38,6 +40,8 @@ const Section = (props: SectionProps & NavProps) => {
         return <SectionArtSeen sectionData={sectionData} articlesData={articles} permalink={permalink} />
       case SectionType.CriticsPage:
         return <SectionCriticsPage sectionData={sectionData} articlesData={articles} permalink={permalink} />
+      case SectionType.Poetry:
+        return <SectionPoetry sectionData={sectionData} articlesData={articles} permalink={permalink} />
       default:
         return <SectionDefault sectionData={sectionData} articlesData={articles} permalink={permalink} />
     }

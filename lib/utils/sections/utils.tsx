@@ -20,6 +20,7 @@ export const getArticlesBySection = cache(async (props: ArticlesBySectionProps) 
       `&fields[]=title` +
       `&fields[]=excerpt` +
       `&fields[]=kicker` +
+      `&fields[]=body_text` +
       `&fields[]=featured` +
       `&fields[]=status` +
       `&fields[]=hide_bylines_downstream` +
