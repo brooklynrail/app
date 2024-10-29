@@ -72,7 +72,6 @@ const Promos = (props: PromoProps) => {
             <Link href={permalink}>
               <div className="flex justify-between items-start">
                 <Title title={article.title} classes="text-3xl tablet:text-4xl font-light font-serif" />
-                <Arrow />
               </div>
             </Link>
             <Bylines article={article} type={BylineType.Default} />
@@ -84,24 +83,6 @@ const Promos = (props: PromoProps) => {
   })
 
   return <>{articles}</>
-}
-
-export const Arrow = () => {
-  return (
-    <svg
-      className="mt-1 flex-none"
-      width="64"
-      height="36"
-      viewBox="0 0 64 36"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M49.7071 18.7071C50.0976 18.3166 50.0976 17.6834 49.7071 17.2929L43.3431 10.9289C42.9526 10.5384 42.3195 10.5384 41.9289 10.9289C41.5384 11.3195 41.5384 11.9526 41.9289 12.3431L47.5858 18L41.9289 23.6569C41.5384 24.0474 41.5384 24.6805 41.9289 25.0711C42.3195 25.4616 42.9526 25.4616 43.3431 25.0711L49.7071 18.7071ZM15 19H49V17H15V19Z"
-        fill="#18181B"
-      />
-    </svg>
-  )
 }
 
 export default SectionPoetry
