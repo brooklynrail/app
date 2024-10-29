@@ -103,20 +103,20 @@ const LeadPromo = (props: LeadPromoProps) => {
   })
 
   return (
-    <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 pb-3">
-      <div className="col-span-4 tablet:col-span-3" itemType="http://schema.org/Article">
+    <div className="grid grid-cols-4 tablet-lg:grid-cols-6 gap-x-3 gap-y-2 pb-3">
+      <div className="col-span-4 tablet-lg:col-span-3" itemType="http://schema.org/Article">
         {featured_image && (
           <div className="pr-3">
             <FeaturedImage image={featured_image} hideCaption={true} title={title} permalink={permalink} />
           </div>
         )}
       </div>
-      <div className="col-span-4 tablet:col-span-3">
+      <div className="col-span-4 tablet-lg:col-span-3">
         <div className="flex flex-col space-y-3">
           <Title
             title={article.title}
             permalink={permalink}
-            classes="font-normal font-serif text-4xl desktop:text-5xl"
+            classes="font-normal font-serif text-4xl desktop-lg:text-5xl"
           />
           <Bylines article={article} type={BylineType.Default} />
           <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />
