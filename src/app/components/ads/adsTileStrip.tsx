@@ -56,6 +56,7 @@ const AdsTileStrip = () => {
             src={src}
             width={scaledWidth}
             height={scaledHeight}
+            sizes="20vw"
             alt={ad.campaign_title}
             onLoad={() =>
               sendGAEvent("event", "impression", {

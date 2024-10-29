@@ -4,6 +4,7 @@ import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Excerpt from "../collections/promos/excerpt"
+import Kicker from "../collections/promos/kicker"
 import Title from "../collections/promos/title"
 import FeaturedImage from "../featuredImage"
 import Frame from "../frames/frame"
@@ -40,10 +41,11 @@ const SectionCriticsPage = (props: SectionProps) => {
 
         return (
           <div key={index} className="py-6">
-            <div className="px-6 py-3">
-              <h2 className="font-serif font-medium text-4xl">{`Guest Critic: ${guestCritic}`}</h2>
+            <div className="px-3 tablet-lg:px-6 py-3">
+              <Kicker article={featuredArticle} />
+              <h2 className="font-serif font-medium text-3xl tablet-lg:text-4xl">{`Guest Critic: ${guestCritic}`}</h2>
             </div>
-            <div className="hidden tablet-lg:block">
+            <div className="block">
               <Frame
                 LeadPromo={<LeadPromo article={featuredArticle} />}
                 Promos={<Promos articles={issueArticles} />}

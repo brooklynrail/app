@@ -11,7 +11,7 @@ const PreviewHeader = (props: PreviewHeaderProps) => {
   return (
     <div className="">
       <header className="border-b rail-border py-6">
-        <nav className="flex space-x-6">
+        <nav className="px-6 flex space-x-6">
           <svg
             className="br-logo w-16 flex-none"
             width="71"
