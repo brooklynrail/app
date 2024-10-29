@@ -13,7 +13,9 @@ interface PromoSlimProps {
 
 const PromoSlim = (props: PromoSlimProps) => {
   const { article, i = 0, permalink, prefetch } = props
-  const { title, contributors, byline_override, hide_bylines_downstream } = article
+  const { title, contributors, hide_bylines_downstream } = article
+
+  const isDraft = article.status === "draft" && <span className="absolute w-2 h-2 bg-slate-500 rounded-full"></span>
 
   const altClass = i % 2 === 0 ? "" : "bg-zinc-200 dark:bg-zinc-700"
 
@@ -27,6 +29,7 @@ const PromoSlim = (props: PromoSlimProps) => {
           title={`Visit ${stripHtml(title).result}`}
         >
           {parse(title)}
+          {isDraft}
         </Link>
       </h4>
       {!hide_bylines_downstream && contributors && contributors.length != 0 && (

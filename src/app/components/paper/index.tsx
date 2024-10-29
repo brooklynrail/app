@@ -4,10 +4,10 @@ import Footer from "../footer"
 import PopupDonate from "../popupDonate"
 import { PopupProvider } from "../popupProvider"
 import Header from "../header"
-import { Covers, Homepage, HomepageBanners, Issues } from "../../../../lib/types"
+import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import NavBar from "../navBar"
 import { usePathname } from "next/navigation"
-import { VideoProvider } from "@/app/context/videoProvider"
+import PreviewHeader from "../preview/previewHead"
 
 export interface PaperProps {
   pageClass: string
@@ -17,7 +17,7 @@ export interface PaperProps {
   banners?: HomepageBanners[]
   children: React.ReactNode
   type: PaperType
-  covers?: Covers[]
+  previewURL?: string
 }
 
 export enum PaperType {
@@ -31,15 +31,22 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, hidePopup, navData, type, banners, currentIssue, covers } = props
+  const { pageClass, children, hidePopup, navData, type, banners, currentIssue, previewURL } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
   return (
     <PopupProvider hidePopup={hidePopup}>
       <div className={`theme ${pageClass}`}>
-        <Header type={type} banners={banners} currentIssue={currentIssue} covers={covers} />
-        <NavBar navData={navData} isHomepage={isHomepage} />
+        {previewURL ? (
+          <PreviewHeader previewURL={previewURL} />
+        ) : (
+          <>
+            <Header type={type} banners={banners} currentIssue={currentIssue} />
+            <NavBar navData={navData} isHomepage={isHomepage} />
+          </>
+        )}
+
         {children}
         <Footer />
         <Ad970 />

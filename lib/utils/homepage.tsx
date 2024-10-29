@@ -312,6 +312,7 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
       `&fields[]=kicker` +
       `&fields[]=featured` +
       `&fields[]=status` +
+      `&fields[]=body_text` +
       `&fields[]=hide_bylines_downstream` +
       `&fields[]=section.name` +
       `&fields[]=section.slug` +
