@@ -1,7 +1,71 @@
 import { readItems, readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
-import { Articles, Homepage, HomepageCollections, Issues } from "../types"
+import { Articles, Covers, Homepage, HomepageCollections, Issues } from "../types"
+
+export const getCookie = (name: string): string | null => {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
+  return match ? match[2] : null
+}
+
+export const setCookie = (name: string, value: string, hours: number) => {
+  const expires = new Date()
+  expires.setHours(expires.getHours() + hours)
+  document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/`
+}
+
+export const deleteCookie = (name: string) => {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+}
+
+export const getCoversData = cache(async () => {
+  try {
+    const coversData = await directus.request(
+      readItems("covers", {
+        fields: [
+          "id",
+          "logo_color",
+          "logo_color_mobile",
+          "subhead_color",
+          "subhead_color_mobile",
+          "summary",
+          {
+            artists: [
+              {
+                people_id: ["id", "display_name"],
+              },
+            ],
+          },
+          {
+            media: [
+              {
+                directus_files_id: [
+                  "id",
+                  "title",
+                  "description",
+                  "width",
+                  "height",
+                  "filename_disk",
+                  "shortcode_key",
+                  "caption",
+                  "alt",
+                ],
+              },
+            ],
+          },
+        ],
+        filter: {
+          status: { _eq: "published" },
+        },
+      }),
+    )
+
+    return coversData as Covers[]
+  } catch (error) {
+    console.error("Error fetching Covers data:", error)
+    return null
+  }
+})
 
 export const getNavData = cache(async () => {
   try {
