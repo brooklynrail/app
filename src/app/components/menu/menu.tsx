@@ -4,6 +4,7 @@ import SearchField from "../search/searchField"
 import CurrentCollections from "./currentCollections"
 import CurrentEvents from "./currentEvents"
 import CurrentPages from "./currentPages"
+import Settings from "./settings"
 
 interface MenuProps {
   closeMenu: () => void
@@ -23,10 +24,10 @@ const Menu = (props: MenuProps) => {
   )
 
   return (
-    <div className="top-0 left-0 w-[calc(100vw-6rem)] max-w-screen-mobile-lg h-screen fixed z-[100] overflow-y-auto !m-0 bg-slate-50 dark:bg-zinc-700">
-      <div className="grid grid-cols-3 gap-x-3">
+    <div className="py-6 top-0 left-0 w-[calc(100vw-6rem)] max-w-screen-mobile-lg h-screen fixed z-[100] overflow-y-auto !m-0 bg-slate-50 dark:bg-zinc-700">
+      <div className="grid grid-cols-3 gap-3 gap-y-6">
         <div className="col-span-3">
-          <div className="p-6 space-y-6">
+          <div className="px-6 space-y-6">
             <div className="relative flex flex-row-reverse justify-between w-full ">
               <p
                 onClick={closeMenu}
@@ -50,6 +51,7 @@ const Menu = (props: MenuProps) => {
             <CurrentPages />
           </div>
         </div>
+        <Settings />
       </div>
     </div>
   )

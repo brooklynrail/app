@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import styles from "./themeToggle.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons"
@@ -10,6 +10,7 @@ interface ThemeToggleProps {
 
 function ThemeToggle(props: ThemeToggleProps) {
   const { theme, setTheme } = props
+  const [darkmode, setDarkMode] = useState(theme === "dark")
 
   const isDevOrPreview =
     process.env.NEXT_PUBLIC_VERCEL_ENV === "development" || process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
@@ -38,6 +39,7 @@ function ThemeToggle(props: ThemeToggleProps) {
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark"
     setTheme(newTheme)
+    setDarkMode(newTheme === "dark")
     document.documentElement.setAttribute("data-mode", newTheme)
     document.documentElement.classList.remove("dark")
     document.documentElement.classList.remove("light")
@@ -46,55 +48,21 @@ function ThemeToggle(props: ThemeToggleProps) {
   }
 
   return (
-    <div className="flex space-x-3 items-center fixed bottom-4 left-4 z-50">
-      <button className={`${styles.theme_toggle}`} onClick={toggleTheme}>
-        {theme === "dark" ? (
-          <span className="text-sky-200">
-            <FontAwesomeIcon icon={faMoon} />
-          </span>
-        ) : (
-          <span className="text-amber-200">
-            <FontAwesomeIcon icon={faSun} />
-          </span>
-        )}
-      </button>
-      {isDevOrPreview && (
-        <p className="text-xs">
-          <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden widescreen:block`}>
-            widescreen
-          </span>
-          <span
-            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop-lg:max-widescreen:block`}
-          >
-            desktop-lg
-          </span>
-          <span
-            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop:max-desktop-lg:block`}
-          >
-            desktop
-          </span>
-          <span
-            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet-lg:max-desktop:block`}
-          >
-            tablet-lg
-          </span>
-          <span
-            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet:max-tablet-lg:block`}
-          >
-            tablet
-          </span>
-          <span
-            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile-lg:max-tablet:block`}
-          >
-            mobile-lg
-          </span>
-          <span
-            className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile:max-mobile-lg:block`}
-          >
-            mobile
-          </span>
-        </p>
-      )}
+    <div className="flex justify-between items-center space-x-1">
+      <label className="block text-sm">Dark mode: On</label>
+      <div onClick={toggleTheme} className="relative w-12 h-6 cursor-pointer">
+        <input type="checkbox" className="opacity-0 w-0 h-0" checked={theme === "dark"} readOnly />
+        <span
+          className={`absolute block top-0 left-0 right-0 bottom-0 rounded-full transition-colors duration-300 ${
+            darkmode ? "bg-slate-500" : "bg-slate-700"
+          }`}
+        ></span>
+        <span
+          className={`absolute block top-0 left-0 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
+            darkmode ? "translate-x-6" : ""
+          }`}
+        ></span>
+      </div>
     </div>
   )
 }
