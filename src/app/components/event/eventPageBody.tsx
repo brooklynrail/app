@@ -13,7 +13,7 @@ import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "../..
 
 const EventPageBody = (props: EventProps) => {
   const { eventData, eventTypes } = props
-  const { title, deck, start_date, end_date, summary, type, series, body, youtube_id, airtable_id } = eventData
+  const { title, deck, start_date, end_date, all_day, summary, type, series, body, youtube_id, airtable_id } = eventData
 
   // Get the readable event type text
   const eventTypeText = getEventTypeText(type, eventTypes)
@@ -23,15 +23,16 @@ const EventPageBody = (props: EventProps) => {
 
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
-  const startDate = new Date(start_date + "Z")
-  const endDate = new Date(end_date + "Z")
-  const dateString = formatEventDate(startDate, endDate)
+  const startDate = new Date(start_date)
+  const endDate = new Date(end_date)
   const isSameDay = startDate.toDateString() === endDate.toDateString()
+  const dateString = formatEventDate(startDate, endDate, isSameDay)
 
   // Get the time in both Eastern and Pacific time
   const startTimeET = formatTime(start_date, "America/New_York")
   const startTimePT = formatTime(start_date, "America/Los_Angeles")
 
+  // console.log("dateString ================", dateString)
   const eventsPermalink = getPermalink({
     type: PageType.Events,
   })
@@ -72,7 +73,7 @@ const EventPageBody = (props: EventProps) => {
               {deck && <p className="text-center text-2xl tablet-lg:text-4xl font-light p-summary">{parse(deck)}</p>}
               <p className="text-xl text-center font-light space-x-3">
                 <strong>{dateString}</strong>{" "}
-                {isSameDay && (
+                {isSameDay && !all_day && (
                   <span>
                     {startTimeET} Eastern / {startTimePT} Pacific
                   </span>
