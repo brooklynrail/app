@@ -21,7 +21,7 @@ const HeaderDefault = (props: HeaderProps) => {
         <div className="p-3 tablet:px-6">
           <Link href={permalink} className="w-full space-y-3">
             <Banner type={type} />
-            <Subhead />
+            <Subhead fill={`#27272a`} />
           </Link>
         </div>
       </div>
