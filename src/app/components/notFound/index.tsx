@@ -24,22 +24,22 @@ const NotFound = (props: NotFoundProps) => {
               </Link>
             </li>
             <li>
-              <Link className={`px-3 underline text-blue-600`} href="/">
+              <Link className={`px-3 underline text-blue-600`} href="/archives">
                 All Issues
               </Link>
             </li>
             <li>
-              <Link className={`px-3 underline text-blue-600`} href="/">
+              <Link className={`px-3 underline text-blue-600`} href="/events">
                 Events
               </Link>
             </li>
             <li>
-              <Link className={`px-3 underline text-blue-600`} href="/">
+              <Link className={`px-3 underline text-blue-600`} href="/contributors">
                 Contributors
               </Link>
             </li>
             <li>
-              <Link className={`px-3 underline text-blue-600`} href="/">
+              <Link className={`px-3 underline text-blue-600`} href="/about">
                 About the <em>Rail</em>
               </Link>
             </li>
