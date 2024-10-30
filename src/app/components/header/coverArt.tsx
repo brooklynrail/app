@@ -60,7 +60,7 @@ const CoverArt = (props: CoverArtProps) => {
   }
 
   const artists = currentCover.artists.map((artist) => artist.people_id.first_name).join(" ")
-  const summary = currentCover.summary || "No summary available"
+  const summary = currentCover.summary
 
   return (
     <>
@@ -101,7 +101,7 @@ const CoverArt = (props: CoverArtProps) => {
           {/* Summary shown when video is visible */}
           {isVideoVisible && (
             <div className="w-full flex justify-end py-3 flex-none">
-              <p className={`text-slate-100 text-xs w-mobile`}>{parse(summary)}</p>
+              {summary && <p className={`text-slate-100 text-xs w-mobile`}>{parse(summary)}</p>}
             </div>
           )}
         </div>
