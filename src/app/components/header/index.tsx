@@ -8,7 +8,6 @@ import HomeBanner from "./homeBanner"
 import Subhead from "./subhead"
 import CoverArt from "./coverArt"
 import { useRef } from "react"
-import { VideoProvider } from "@/app/context/VideoProvider"
 import { useTheme } from "../theme"
 
 export interface HeaderProps {
@@ -51,31 +50,29 @@ const HeaderHomepage = (props: HeaderProps) => {
   const subheadFill = theme === "dark" ? secondaryColor : secondaryColor
 
   return (
-    <VideoProvider>
-      <header className={`tablet:pt-0 relative rail-header-${type}`}>
-        <div className="hidden">
-          <h1>The Brooklyn Rail </h1>
-          <h2>Critical Perspectives on Art, Politics and Culture</h2>
-          {title && <h3>{title}</h3>}
-        </div>
+    <header className={`tablet:pt-0 relative rail-header-${type}`}>
+      <div className="hidden">
+        <h1>The Brooklyn Rail </h1>
+        <h2>Critical Perspectives on Art, Politics and Culture</h2>
+        {title && <h3>{title}</h3>}
+      </div>
 
-        <div className="relative h-[calc(100vh)]">
-          <CoverArt covers={covers} />
-          <div className="sticky top-0">
-            <div className="p-3 pb-9 tablet:px-6">
-              <Link href={permalink} className="w-full space-y-3">
-                <HomeBanner fill={headFill} />
-                <Subhead fill={subheadFill} />
-              </Link>
-            </div>
+      <div className="relative h-[calc(100vh)]">
+        <CoverArt covers={covers} />
+        <div className="sticky top-0">
+          <div className="p-3 pb-9 tablet:px-6">
+            <Link href={permalink} className="w-full space-y-3">
+              <HomeBanner fill={headFill} />
+              <Subhead fill={subheadFill} />
+            </Link>
           </div>
         </div>
+      </div>
 
-        {banners && currentIssue && (
-          <FeaturedBanner bannerRef={bannerRef} banners={banners} currentIssue={currentIssue} />
-        )}
-      </header>
-    </VideoProvider>
+      {banners && currentIssue && (
+        <FeaturedBanner bannerRef={bannerRef} banners={banners} currentIssue={currentIssue} />
+      )}
+    </header>
   )
 }
 
