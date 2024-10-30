@@ -32,13 +32,13 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   const ogimageprops = { ogimage: ogimage, title }
   const ogimages = getOGImage(ogimageprops)
 
-  const authors = people.map((person: EventsPeople) => {
-    if (!person || !person.people_id) {
-      return ""
-    }
-    const personPermalink = getPermalink({ type: PageType.Person, personSlug: person.people_id.slug })
-    return personPermalink
-  })
+  // const authors = people.map((person: EventsPeople) => {
+  //   if (!person || !person.people_id) {
+  //     return ""
+  //   }
+  //   const personPermalink = getPermalink({ type: PageType.Person, personSlug: person.people_id.slug })
+  //   return personPermalink
+  // })
 
   return {
     title: `${ogtitle}`,
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       type: `article`,
       publishedTime: date_created,
       modifiedTime: date_updated,
-      authors: authors,
+      // authors: authors,
     },
     twitter: {
       // images: ogimages,
