@@ -19,7 +19,7 @@ export enum CollectionType {
 }
 
 const HomePage = (props: HomePageProps) => {
-  const { homepageData, currentIssue, banners, navData } = props
+  const { homepageData, currentIssue, banners, navData, covers } = props
 
   const allCollections = homepageData.collections.map((collection: HomepageCollections, i: number) => {
     const thisCollection = collection.collections_id
@@ -57,6 +57,7 @@ const HomePage = (props: HomePageProps) => {
       navData={navData}
       banners={banners}
       currentIssue={currentIssue}
+      covers={covers}
     >
       <main className="divide-y rail-divide">{allCollections}</main>
     </Paper>

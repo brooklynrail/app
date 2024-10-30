@@ -132,6 +132,36 @@ export type Contributors = {
   user_updated?: string | DirectusUsers | null
 }
 
+export type Covers = {
+  date_created: string
+  date_updated: string
+  id: string
+  videos: CoversFiles[]
+  sort?: number | null
+  status: string
+  primary_color: string
+  primary_color_mobile: string
+  secondary_color: string
+  secondary_color_mobile: string
+  artists: CoversPeople[]
+  summary?: string | null
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+}
+
+export type CoversPeople = {
+  covers_id: Covers
+  id: number
+  people_id: People
+}
+
+export type CoversFiles = {
+  covers_id?: string | Covers | null
+  directus_files_id: DirectusFiles
+  id: number
+  sort?: number | null
+}
+
 export type DirectusActivity = {
   action: string
   collection: string
@@ -769,6 +799,8 @@ export type CustomDirectusTypes = {
   articles_files: ArticlesFiles[]
   collections: Collections[]
   contributors: Contributors[]
+  covers: Covers[]
+  covers_files: CoversFiles[]
   directus_activity: DirectusActivity[]
   directus_collections: DirectusCollections[]
   directus_dashboards: DirectusDashboards[]

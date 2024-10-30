@@ -1,6 +1,6 @@
-import { Collections, Homepage, HomepageBanners, HomepageCollections, Issues } from "../../lib/types"
+import { Collections, Covers, Homepage, HomepageBanners, HomepageCollections, Issues } from "../../lib/types"
 import { getPermalink, PageType } from "../../lib/utils"
-import { getCurrentIssueData, getHomepageData, getNavData } from "../../lib/utils/homepage"
+import { getCoversData, getCurrentIssueData, getHomepageData, getNavData } from "../../lib/utils/homepage"
 import { notFound } from "next/navigation"
 import HomePage, { CollectionType } from "./components/homepage"
 
@@ -10,6 +10,7 @@ export const dynamicParams = true
 
 export interface HomePageProps {
   navData: Homepage
+  covers: Covers[]
   homepageData: Homepage
   currentIssue: Issues
   banners: HomepageBanners[]
@@ -45,12 +46,18 @@ async function getData() {
     return notFound()
   }
 
+  const covers = await getCoversData()
+  if (!covers) {
+    return notFound()
+  }
+
   const permalink = getPermalink({
     type: PageType.Home,
   })
 
   return {
     navData,
+    covers,
     homepageData,
     banners,
     currentIssue,
