@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import Password from "../preview/password"
 import PreviewHeader from "../preview/previewHead"
+import { VideoProvider } from "@/app/context/VideoProvider"
 
 export interface PaperProps {
   pageClass: string
@@ -99,21 +100,23 @@ const Paper = (props: PaperProps) => {
 
   return (
     <PopupProvider hidePopup={hidePopup}>
-      <div className={`theme ${pageClass}`}>
-        {previewURL ? (
-          <PreviewHeader previewURL={previewURL} />
-        ) : (
-          <>
-            <Header type={type} banners={banners} currentIssue={currentIssue} covers={covers} />
-            <NavBar navData={navData} isHomepage={isHomepage} />
-          </>
-        )}
+      <VideoProvider>
+        <div className={`theme ${pageClass}`}>
+          {previewURL ? (
+            <PreviewHeader previewURL={previewURL} />
+          ) : (
+            <>
+              <Header type={type} banners={banners} currentIssue={currentIssue} covers={covers} />
+              <NavBar navData={navData} isHomepage={isHomepage} />
+            </>
+          )}
 
-        {children}
-        <Footer />
-        <Ad970 />
-        {!isHomepage && <PopupDonate />}
-      </div>
+          {children}
+          <Footer />
+          <Ad970 />
+          {!isHomepage && <PopupDonate />}
+        </div>
+      </VideoProvider>
     </PopupProvider>
   )
 }
