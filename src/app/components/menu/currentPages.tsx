@@ -34,7 +34,7 @@ const CurrentPages = () => {
       type: PageType.ChildPage,
     })
     return (
-      <li key={i} className="">
+      <li key={`menu-${page.slug}`} className="">
         <Link href={page.slug === "about" ? pageURL : childPageURL} className="block text-sm font-bold">
           {parse(page.title)}
         </Link>

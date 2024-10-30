@@ -67,7 +67,7 @@ const PastEventsList = (props: PastEventsProps & PastEventsListProps) => {
   }
 
   const eventGroups = groupArray(allEvents, groupCount).map((group, index) => {
-    const row = group.map((event, i) => <PastEventCard key={i} event={event} eventTypes={eventTypes} />)
+    const row = group.map((event, i) => <PastEventCard key={event.id} event={event} eventTypes={eventTypes} />)
     return (
       <div
         key={index}

@@ -39,7 +39,7 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
       const first = i === 0 ? "border border-dotted border-indigo-50 px-0.5" : ""
       return (
         <Link
-          key={i}
+          key={`event-link-${i}`}
           href={link.url}
           className={`py-1 text-center text-indigo-50 uppercase font-medium text-xs ${first} flex justify-center w-full`}
         >
@@ -47,7 +47,8 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
         </Link>
       )
     })
-  const events = currentEvents && currentEvents.map((event: Events, i: number) => <EventCard key={i} event={event} />)
+  const events =
+    currentEvents && currentEvents.map((event: Events, i: number) => <EventCard key={event.id} event={event} />)
   events?.push(<AllEventsCard key="all-events" />)
 
   return (

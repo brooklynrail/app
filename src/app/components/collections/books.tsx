@@ -46,7 +46,7 @@ export const PromosBooks = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className={`pt-1 pb-3 px-6 first:pl-0 first:tablet:pr-9 snap-center`}>
+      <div key={article.id} className={`pt-1 pb-3 px-6 first:pl-0 first:tablet:pr-9 snap-center`}>
         <div className={`flex flex-col w-[calc(100vw-9.5rem)] tablet:w-auto space-y-3`}>
           <div
             className={`flex space-x-3 ${i === 0 ? "space-y-0 tablet:flex-row" : "tablet:flex-col tablet:space-y-3 tablet:space-x-0"}`}

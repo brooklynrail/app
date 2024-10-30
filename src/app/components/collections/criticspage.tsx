@@ -71,7 +71,7 @@ const Promos = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-3">
+      <div key={article.id} className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-2 p-3 pb-3">
         <div className="col-span-4 tablet:col-span-6">
           <div className="flex flex-col space-y-1">
             <Link href={permalink}>

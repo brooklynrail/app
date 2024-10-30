@@ -61,7 +61,7 @@ const PromosMobile = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="px-3 py-1 tablet:pr-0 snap-center">
+      <div key={article.id} className="px-3 py-1 tablet:pr-0 snap-center">
         <div className="flex flex-col space-y-3 flex-none w-[calc(100vw-6.5rem)] tablet:w-auto">
           <Kicker article={article} />
           {artwork && (
@@ -94,7 +94,7 @@ const PromosArtSeen = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="p-3 tablet:pr-0 snap-center">
+      <div key={article.id} className="p-3 tablet:pr-0 snap-center">
         <div className="flex flex-col w-[calc(100vw-6.5rem)] tablet:w-auto">
           <div className="flex flex-col space-y-3 tablet:space-y-0 tablet:flex-row tablet:space-x-6">
             {artwork && (

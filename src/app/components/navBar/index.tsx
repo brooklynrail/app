@@ -59,7 +59,7 @@ const NavBar = (props: NavBarProps) => {
     }
 
     return (
-      <li key={i}>
+      <li key={`nav-${thisCollection.id}`}>
         <Link href={permalink} className="py-2 px-2 tablet:px-3 text-nowrap inline-block text-xs font-bold uppercase">
           {thisCollection.title}
         </Link>

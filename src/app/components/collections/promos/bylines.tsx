@@ -70,7 +70,7 @@ const Bylines = (props: BylinesProps) => {
               })
 
               return (
-                <Link key={i} rel="author" href={permalink} className="url fn n">
+                <Link key={contributor.contributors_id.id} rel="author" href={permalink} className="url fn n">
                   {!isFirst && separator}
                   {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
                 </Link>
@@ -83,7 +83,7 @@ const Bylines = (props: BylinesProps) => {
 
             return (
               <span
-                key={i}
+                key={contributor.contributors_id.id}
                 className={
                   type === BylineType.CollectionArtSeen ||
                   type === BylineType.CollectionBooks ||
