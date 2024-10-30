@@ -8,6 +8,7 @@ import HomeBanner from "./homeBanner"
 import Subhead from "./subhead"
 import VideoBG from "./videobg"
 import { useRef, useState, useEffect } from "react"
+import { useTheme } from "../theme"
 
 export interface HeaderProps {
   special_issue?: boolean | null
@@ -48,6 +49,8 @@ const HeaderHomepage = (props: HeaderProps) => {
   const { title, type, banners, currentIssue } = props
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const { theme } = useTheme()
+  const subheadFill = theme === "dark" ? "fill-white" : "fill-white"
 
   useEffect(() => {
     // Check if the cookie is already set for video pause
@@ -96,13 +99,13 @@ const HeaderHomepage = (props: HeaderProps) => {
         {title && <h3>{title}</h3>}
       </div>
 
-      <div className="relative h-[calc(100vh-25rem)] tablet-lg:h-[calc(100vh-18.5rem)]">
+      <div className="relative h-[calc(100vh-25rem)] tablet-lg:h-[calc(100vh-20.5rem)]">
         <VideoBG videoRef={videoRef} />
         <div className="sticky top-0">
           <div className="p-3 pb-9 tablet:px-6">
             <Link href={permalink} className="w-full space-y-3">
-              <HomeBanner type={type} />
-              <Subhead />
+              <HomeBanner />
+              <Subhead fill={subheadFill} />
             </Link>
           </div>
         </div>

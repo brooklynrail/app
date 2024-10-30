@@ -1,20 +1,15 @@
 import { useTheme } from "@/app/components/theme"
-import { PaperType } from "../paper"
-import VideoBG from "./videobg"
 
-interface BannerProps {
-  type: PaperType
-}
-const HomeBanner = (props: BannerProps) => {
+const HomeBanner = () => {
   const { theme } = useTheme()
 
   let pathfill = theme === "dark" ? "fill-none" : "fill-none"
-  let textfill = theme === "dark" ? "fill-black" : "fill-zinc-800"
+  let textfill = theme === "dark" ? "fill-white" : "fill-white"
 
   return (
     <div className="relative w-full">
       <svg className="w-full" viewBox="0 0 1370 183" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <title>The Brooklyn Rail Logo</title>
+        <title>The Brooklyn Rail</title>
 
         <path
           className={textfill}

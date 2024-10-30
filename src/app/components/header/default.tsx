@@ -4,12 +4,16 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import Banner from "./banner"
 import styles from "./header.module.scss"
 import Subhead from "./subhead"
+import { useTheme } from "../theme"
 
 const HeaderDefault = (props: HeaderProps) => {
   const { title, type } = props
+  const { theme } = useTheme()
   const permalink = getPermalink({
     type: PageType.Home,
   })
+  const subheadFill = theme === "dark" ? "fill-zinc-800" : "fill-zinc-800"
+
   return (
     <header id={styles.rail_header} className={`border-b rail-border rail-header-${type}`}>
       <div className="hidden">
@@ -21,7 +25,7 @@ const HeaderDefault = (props: HeaderProps) => {
         <div className="p-3 tablet:px-6">
           <Link href={permalink} className="w-full space-y-3">
             <Banner type={type} />
-            <Subhead />
+            <Subhead fill={subheadFill} />
           </Link>
         </div>
       </div>
