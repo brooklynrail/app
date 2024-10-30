@@ -62,7 +62,7 @@ const CurrentCollections = (props: CurrentCollectionsProps) => {
     }
 
     return (
-      <li key={`menu-${collection.id}`} className="text-center">
+      <li key={`menu-${thisCollection.id}`} className="text-center">
         <Link href={permalink} className="py-3 block text-sm font-bold uppercase text-center">
           {parse(thisCollection.title)}
         </Link>

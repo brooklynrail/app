@@ -1,16 +1,19 @@
+import { useTheme } from "@/app/components/theme"
+
 interface BannerProps {
   fill: string
 }
 const HomeBanner = (props: BannerProps) => {
   const { fill } = props
+  const { theme } = useTheme()
 
-  let pathfill = fill
-  let textfill = fill
+  let pathfill = theme === "dark" ? "fill-none" : "fill-none"
+  let textfill = theme === "dark" ? "fill-white" : "fill-white"
 
   return (
     <div className="relative w-full">
       <svg className="w-full" viewBox="0 0 1370 183" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <title>The Brooklyn Rail Logo</title>
+        <title>The Brooklyn Rail</title>
 
         <path
           className={textfill}
