@@ -125,7 +125,6 @@ export const getCurrentIssueSection = cache(async (props: CurrentIssueSectionPro
         },
       }),
     )
-    console.log("articles ==========", articles)
     return articles as Articles[]
   } catch (error) {
     console.error("Error fetching CurrentIssueData data:", error)

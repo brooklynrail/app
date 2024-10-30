@@ -18,7 +18,7 @@ const Quotes = (props: QuotesProps) => {
 
   const allQuotes = selectedQuotes.map((quote, i: number) => {
     return (
-      <div key={i} className="px-3 tablet-lg:px-6">
+      <div key={`quote-${i}`} className="px-3 tablet-lg:px-6">
         <blockquote className="font-serif text-xl -indent-2">
           {parse(quote.quote)}
           <cite className="pt-2 pl-2 block">– {parse(quote.name)}</cite>

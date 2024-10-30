@@ -22,7 +22,7 @@ const ContributorsPage = (props: ContributorsPageProps) => {
         })
 
         return (
-          <h3 key={i}>
+          <h3 key={contributor.id}>
             <Link href={permalink} title={`${contributor.first_name} ${contributor.last_name}`}>
               {contributor.first_name} {contributor.last_name}
             </Link>

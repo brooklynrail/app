@@ -58,7 +58,7 @@ const AdsTile = () => {
     const scaledHeight = width > size ? (size * height) / width : (height * scaledWidth) / width
 
     return (
-      <div key={`adtile-${i}`} className="">
+      <div key={`adtile-${ad.id}`} className="">
         <Link href={ad.ad_url} target="_blank">
           <Image
             src={src}

@@ -46,7 +46,10 @@ const SectionDefault = (props: SectionProps) => {
   // Split articles into groups of 4
   const articleGroups = groupArray(articlesData, groupCount).map((group, i) => {
     return (
-      <div key={i} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide px-0 tablet-lg:px-3">
+      <div
+        key={`group-${group[0].id}`}
+        className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide px-0 tablet-lg:px-3"
+      >
         <Promos articles={group} />
       </div>
     )
@@ -76,7 +79,7 @@ const Promos = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className={`col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop:col-span-3`}>
+      <div key={article.id} className={`col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop:col-span-3`}>
         <div className="p-3 flex flex-col space-y-6">
           {artwork && <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />}
           <div className="flex flex-col space-y-3">

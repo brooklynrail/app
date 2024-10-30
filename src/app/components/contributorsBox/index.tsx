@@ -26,7 +26,7 @@ const ContributorsBox = (props: ContributorsProps) => {
     const hasAuthorName = bio && bio.includes(authorName)
 
     return (
-      <div rel="author" className={`text-lg max-w-[72ex] ${style.author}`} key={i}>
+      <div rel="author" className={`text-lg max-w-[72ex] ${style.author}`} key={contributor.contributors_id.id}>
         {(!hasAuthorName || !bio) && <h4 className="text-lg">{authorLink}</h4>}
         {bio &&
           addAuthorLinkToBio({

@@ -25,7 +25,7 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
       const first = i === 0 ? "border border-dotted border-indigo-50 px-0.5" : ""
       return (
         <Link
-          key={i}
+          key={`ex-link-${i}`}
           href={link.url}
           className={`py-1 text-center uppercase font-medium text-white text-xs ${first} flex justify-center w-full`}
         >

@@ -48,7 +48,7 @@ const Promos = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="px-3 tablet-lg:px-6 tablet-lg:first:pl-0 tablet-lg:last:pr-0 snap-center">
+      <div key={article.id} className="px-3 tablet-lg:px-6 tablet-lg:first:pl-0 tablet-lg:last:pr-0 snap-center">
         <div className="flex flex-col space-y-3 flex-none w-[calc(65vw)] tablet-lg:w-[calc(33vw)]">
           <div className="flex flex-col space-y-3">
             <div className="flex flex-col space-y-3">

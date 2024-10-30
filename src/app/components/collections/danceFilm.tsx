@@ -64,7 +64,7 @@ const PromosMobile = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="p-3 tablet:pr-0 snap-center">
+      <div key={article.id} className="p-3 tablet:pr-0 snap-center">
         <div className="flex flex-col space-y-3 flex-none w-[calc(100vw-6.5rem)] tablet:w-auto">
           <div className="!mt-0 tablet:mt-auto flex flex-col-reverse tablet:flex-row tablet:space-x-6">
             <div className="pt-3 tablet:pt-0 flex flex-col space-y-3">
@@ -103,15 +103,15 @@ const Promos = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="py-6 pb-8 flex flex-col space-y-3">
+      <div key={article.id} className="py-6 pb-8 flex flex-col space-y-3">
         {artwork && (
           <div className="">
             <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
           </div>
         )}
-        <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
-        <Bylines article={article} type={BylineType.Default} />
-        <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />
+        <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-3xl font-light" />
+        <Bylines article={article} type={BylineType.DancePromo} />
+        <Excerpt excerpt={article.excerpt} classes={`excerpt`} />
       </div>
     )
   })
@@ -146,7 +146,11 @@ const LeadPromo = (props: LeadPromoArtProps) => {
       </div>
       <div className="col-span-4 tablet:col-span-6">
         <div className="flex flex-col space-y-3">
-          <Title title={article.title} permalink={permalink} type={TitleType.CollectionDance} />
+          <Title
+            title={article.title}
+            permalink={permalink}
+            classes="text-center tablet-lg:text-left font-normal text-3xl tablet-lg:text-4xl"
+          />
           <Excerpt excerpt={article.excerpt} classes={`excerpt-xl`} />
           <Bylines article={article} type={BylineType.CollectionDance} />
         </div>

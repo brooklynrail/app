@@ -5,13 +5,32 @@ import Image from "next/image"
 import Link from "next/link"
 import { InfiniteHits, SearchBox } from "react-instantsearch"
 import { InstantSearchNext } from "react-instantsearch-nextjs"
+
 import { SearchHit } from "../../../../lib/types"
 import styles from "./search.module.scss"
 
 const appId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!
 const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!
 
-const searchClient = algoliasearch(appId, apiKey)
+const searchClient = {
+  ...algoliasearch(appId, apiKey),
+  search(requests: any) {
+    const query = requests[0].params.query
+
+    // Only allow searching if query length is 3 or more characters
+    if (!query || query.length < 3) {
+      return Promise.resolve({
+        results: requests.map(() => ({
+          hits: [],
+          nbHits: 0,
+        })),
+      })
+    }
+
+    // Otherwise, perform the search
+    return algoliasearch(appId, apiKey).search(requests)
+  },
+}
 
 const index = "archive"
 
@@ -20,6 +39,9 @@ const SearchField = () => {
     <div className="py-6 space-y-3">
       <h1 className="font-bold text-2xl px-3">Search</h1>
       <InstantSearchNext
+        future={{
+          preserveSharedStateOnUnmount: true,
+        }}
         routing={{
           router: {
             cleanUrlOnDispose: false,
@@ -52,13 +74,6 @@ const SearchField = () => {
           loadingIconComponent={() => <Loading />}
         />
         <div className={styles.allhits}>
-          {/* <Hits
-            hitComponent={Card}
-            classNames={{
-              root: `hits`,
-              list: "divide-y rail-divide",
-            }}
-          /> */}
           <InfiniteHits
             hitComponent={Card}
             showPrevious={false}

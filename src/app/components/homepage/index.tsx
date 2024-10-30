@@ -40,10 +40,10 @@ const HomePage = (props: HomePageProps) => {
 
     if (i === 1) {
       return (
-        <>
+        <div key={`${i}-ads-${thisCollection.id}`}>
           {collectionComponent}
-          <AdsTileStrip key={`${i}-ads-${thisCollection.id}`} />
-        </>
+          <AdsTileStrip />
+        </div>
       )
     }
 

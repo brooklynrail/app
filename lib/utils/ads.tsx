@@ -21,6 +21,7 @@ export const getAds = cache(async (props: GetAdsProps): Promise<Ads[]> => {
     `&fields[]=start_date` +
     `&fields[]=end_date` +
     `&fields[]=status` +
+    `&fields[]=id` +
     `&fields[]=sort` +
     `&fields[]=campaign_title` +
     `&fields[]=slug` +

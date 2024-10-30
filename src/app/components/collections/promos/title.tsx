@@ -15,7 +15,6 @@ export enum TitleType {
   NextPrev = "text-md font-sans font-light",
   TributeArticle = "text-2xl tablet-lg:text-3xl font-sans font-light",
   Tribute = "text-center tablet-lg:text-left font-bold text-3xl tablet-lg:text-5xl",
-  CollectionDance = "text-center tablet-lg:text-left font-normal text-3xl tablet-lg:text-4xl",
   CollectionTribute = "text-center tablet-lg:text-left font-bold text-3xl tablet-lg:text-4xl",
   CriticsPage = "text-center font-normal font-serif text-6xl",
   CriticsPageLead = "font-normal font-serif text-6xl",

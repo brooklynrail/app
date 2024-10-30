@@ -50,7 +50,7 @@ const AdsTileStrip = () => {
     const scaledHeight = width > size ? (size * height) / width : (height * scaledWidth) / width
 
     return (
-      <li key={`adtile-${i}`} className="flex-none">
+      <li key={`adtile-${ad.id}`} className="flex-none">
         <Link href={ad.ad_url} target="_blank">
           <Image
             src={src}

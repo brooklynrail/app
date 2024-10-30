@@ -56,7 +56,7 @@ const PromosArt = (props: PromoProps) => {
     })
 
     return (
-      <div key={i} className="grid grid-cols-4 tablet:grid-cols-6 gap-3 pt-3 pb-6 px-3">
+      <div key={article.id} className="grid grid-cols-4 tablet:grid-cols-6 gap-3 pt-3 pb-6 px-3">
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
           {artwork && (
             <div className="">

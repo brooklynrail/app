@@ -50,7 +50,7 @@ const ArchivePage = (props: ArchivePageProps) => {
   }
 
   const articleGroups = groupArray(issues, groupCount).map((group, i) => (
-    <div key={i} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide px-6">
+    <div key={`archive-group-${i}`} className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide px-6">
       <IssueBoxes issues={group} />
     </div>
   ))
