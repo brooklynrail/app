@@ -102,9 +102,9 @@ const EventCard = (props: EventCardProps) => {
 
   const firstPersonPortrait = firstPerson && firstPerson.filename_disk ? firstPerson.filename_disk : null
   const main_image = featured_image
-    ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${featured_image.filename_disk}?key=nse-promo`
+    ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${featured_image.filename_disk}?fit=cover&width=256&height=192&quality=85&modified_on=${featured_image.modified_on}`
     : firstPersonPortrait
-      ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${firstPersonPortrait}?key=nse-promo`
+      ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${firstPersonPortrait}?fit=cover&width=256&height=192&quality=85${firstPerson && `&modified_on=${firstPerson.modified_on}`}`
       : null
 
   const permalink = getPermalink({
