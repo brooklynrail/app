@@ -6,9 +6,10 @@ import { PaperType } from "../paper"
 import HeaderDefault from "./default"
 import HomeBanner from "./homeBanner"
 import Subhead from "./subhead"
-import CoverArt from "./coverArt"
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useTheme } from "../theme"
+import VideoBG from "./videobg"
+import { deleteCookie, getCookie, setCookie } from "../../../../lib/utils/homepage"
 
 export interface HeaderProps {
   special_issue?: boolean | null
@@ -32,22 +33,37 @@ const Header = (props: HeaderProps) => {
 }
 
 const HeaderHomepage = (props: HeaderProps) => {
-  const { title, type, banners, currentIssue, covers } = props
   const { theme } = useTheme()
   const bannerRef = useRef<HTMLDivElement>(null)
+  const { title, type, banners, currentIssue } = props
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isPaused, setIsPaused] = useState(false)
+
+  useEffect(() => {
+    // Check if the cookie is already set for video pause
+    const isVideoPaused = getCookie("videoBGPaused")
+    if (isVideoPaused === "true" && videoRef.current) {
+      videoRef.current.pause()
+      setIsPaused(true)
+    }
+  }, [])
+
+  const handleVideoToggle = () => {
+    if (videoRef.current) {
+      if (isPaused) {
+        videoRef.current.play()
+        deleteCookie("videoBGPaused")
+      } else {
+        videoRef.current.pause()
+        setCookie("videoBGPaused", "true", 24) // Set cookie for 1 day
+      }
+      setIsPaused(!isPaused)
+    }
+  }
 
   const permalink = getPermalink({
     type: PageType.Home,
   })
-
-  const defaultColor = `#27272a`
-  const primaryColor = covers ? covers[0].primary_color : defaultColor
-  const secondaryColor = covers ? covers[0].secondary_color : defaultColor
-
-  // let pathfill = theme === "dark" ? "fill-none" : "fill-none"
-  // let textfill = theme ===
-  const headFill = theme === "dark" ? primaryColor : primaryColor
-  const subheadFill = theme === "dark" ? secondaryColor : secondaryColor
 
   return (
     <header className={`tablet:pt-0 relative rail-header-${type}`}>
@@ -58,12 +74,13 @@ const HeaderHomepage = (props: HeaderProps) => {
       </div>
 
       <div className="relative h-[calc(100vh)]">
-        <CoverArt covers={covers} />
+        <VideoBG videoRef={videoRef} />
         <div className="sticky top-0">
           <div className="p-3 pb-9 tablet:px-6">
             <Link href={permalink} className="w-full space-y-3">
-              <HomeBanner fill={headFill} />
-              <Subhead fill={subheadFill} />
+              <HomeBanner fill={`#ffffff`} />
+
+              <Subhead fill={`#ffffff`} />
             </Link>
           </div>
         </div>

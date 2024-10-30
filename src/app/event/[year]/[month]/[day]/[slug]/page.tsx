@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { Events, EventsPeople, EventsTypes, Homepage } from "../../../../../../../lib/types"
-import { getPermalink, PageType } from "../../../../../../../lib/utils"
+import { getOGImage, getPermalink, PageType, share_card } from "../../../../../../../lib/utils"
 import { checkYearMonthDay, getEvent, getEventTypes } from "../../../../../../../lib/utils/events/utils"
 import { getRedirect, RedirectTypes } from "../../../../../../../lib/utils/redirects"
 import EventPage from "@/app/components/event"
@@ -8,6 +8,8 @@ import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 import { AddRedirect } from "@/app/actions/redirect"
 import { getNavData } from "../../../../../../../lib/utils/homepage"
+import { Event, WithContext } from "schema-dts"
+import Script from "next/script"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -20,19 +22,23 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     return {}
   }
 
-  const { title, summary, date_created, date_updated, people, title_tag } = data.eventData
+  const { title, summary, date_created, date_updated, people, title_tag, featured_image } = data.eventData
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
   const ogdescription = `${stripHtml(summary).result}`
-  // const ogimageprops = { ogimage: featured_image, title }
-  // const ogimages = getOGImage(ogimageprops)
 
-  const authors = people.map((person: EventsPeople) => {
-    if (!person || !person.people_id) {
-      return ""
-    }
-    const personPermalink = getPermalink({ type: PageType.Person, personSlug: person.people_id.slug })
-    return personPermalink
-  })
+  const firstPerson = people[0] && people[0].people_id ? people[0].people_id.portrait : undefined
+
+  const ogimage = featured_image ? featured_image : firstPerson
+  const ogimageprops = { ogimage: ogimage, title }
+  const ogimages = getOGImage(ogimageprops)
+
+  // const authors = people.map((person: EventsPeople) => {
+  //   if (!person || !person.people_id) {
+  //     return ""
+  //   }
+  //   const personPermalink = getPermalink({ type: PageType.Person, personSlug: person.people_id.slug })
+  //   return personPermalink
+  // })
 
   return {
     title: `${ogtitle}`,
@@ -44,11 +50,11 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       title: `${ogtitle}`,
       description: ogdescription,
       url: data.permalink,
-      // images: ogimages,
+      images: ogimages,
       type: `article`,
       publishedTime: date_created,
       modifiedTime: date_updated,
-      authors: authors,
+      // authors: authors,
     },
     twitter: {
       // images: ogimages,
@@ -78,13 +84,48 @@ export default async function EventPageController({ params }: { params: EventPar
     return notFound()
   }
 
+  const event = data.eventData
+  const firstPerson = event.people[0] && event.people[0].people_id ? event.people[0].people_id.portrait : undefined
+  const image = event.featured_image
+    ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${event.featured_image.filename_disk}`
+    : firstPerson
+      ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${firstPerson.filename_disk}`
+      : share_card
+
+  const jsonLd: WithContext<Event> = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: data.eventData.title,
+    startDate: data.eventData.start_date,
+    endDate: data.eventData.end_date,
+    location: {
+      "@type": "VirtualLocation",
+      name: "Zoom",
+    },
+    image: image,
+    description: stripHtml(data.eventData.summary).result,
+    organizer: {
+      "@type": "Organization",
+      name: "The Brooklyn Rail",
+      url: "https://brooklynrail.org",
+    },
+  }
+
   return (
-    <EventPage
-      navData={data.navData}
-      eventData={data.eventData}
-      eventTypes={data.eventTypes}
-      permalink={data.permalink}
-    />
+    <>
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
+      <EventPage
+        navData={data.navData}
+        eventData={data.eventData}
+        eventTypes={data.eventTypes}
+        permalink={data.permalink}
+      />
+    </>
   )
 }
 
@@ -148,6 +189,7 @@ async function getData({ params }: { params: EventParams }) {
     eventYear: eventYear,
     eventMonth: eventMonth,
     eventDay: eventDay,
+    slug: eventData.slug,
     type: PageType.Event,
   })
 

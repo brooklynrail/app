@@ -1,4 +1,5 @@
 "use client"
+import Link from "next/link"
 import { SectionProps } from "."
 import { Articles } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
@@ -123,7 +124,9 @@ const Promos = (props: PromoProps) => {
       <div key={article.id} className={`col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop:col-span-3`}>
         <div className="p-3 flex flex-col space-y-6">
           <div className="flex flex-col space-y-1">
-            <Bylines article={article} type={BylineType.CriticsPagePromos} hideBy={true} />
+            <Link href={permalink}>
+              <Bylines article={article} type={BylineType.CriticsPagePromos} hideBy={true} />
+            </Link>
             <Title title={article.title} permalink={permalink} classes="text-sm font-medium pl-3" />
           </div>
         </div>

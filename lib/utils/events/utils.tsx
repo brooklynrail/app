@@ -75,6 +75,12 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&fields[]=slug` +
     `&fields[]=title` +
     `&fields[]=series` +
+    `&fields[]=featured_image.id` +
+    `&fields[]=featured_image.caption` +
+    `&fields[]=featured_image.alt` +
+    `&fields[]=featured_image.filename_disk` +
+    `&fields[]=featured_image.type` +
+    `&fields[]=featured_image.modified_on` +
     `&fields[]=people.people_id.portrait.id` +
     `&fields[]=people.people_id.portrait.caption` +
     `&fields[]=people.people_id.portrait.filename_disk` +
@@ -82,6 +88,7 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&fields[]=people.people_id.portrait.height` +
     `&fields[]=people.people_id.portrait.alt` +
     `&fields[]=people.people_id.portrait.type` +
+    `&fields[]=people.people_id.portrait.modified_on` +
     `&fields[]=start_date` +
     `&fields[]=all_day` +
     `&sort=start_date` +
@@ -163,6 +170,9 @@ export const getEvent = cache(async (slug: string) => {
         "airtable_id",
         "status",
         {
+          featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
+        },
+        {
           people: [
             {
               people_id: [
@@ -173,7 +183,7 @@ export const getEvent = cache(async (slug: string) => {
                 "instagram",
                 "related_links",
                 {
-                  portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
+                  portrait: ["id", "width", "height", "filename_disk", "alt", "caption", "modified_on"],
                 },
               ],
             },

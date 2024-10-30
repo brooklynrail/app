@@ -4,6 +4,7 @@ interface SubheadProps {
 
 const Subhead = (props: SubheadProps) => {
   const { fill } = props
+
   return (
     <>
       <svg className="tablet-lg:hidden" viewBox="0 0 365 11" fill="none" xmlns="http://www.w3.org/2000/svg">

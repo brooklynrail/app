@@ -531,6 +531,7 @@ export type Events = {
   deck?: string | null
   end_date: string
   airtable_id?: string | null
+  featured_image?: DirectusFiles
   summary: string
   id: string
   images: any[] | ArticlesFiles[]

@@ -7,11 +7,11 @@ import { Analytics } from "@vercel/analytics/react"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "./components/theme"
 
-const share_card = `${process.env.NEXT_PUBLIC_SITE_URL}/images/share-cards/brooklynrail-card.png`
+const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
 export const metadata = {
-  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
-    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+  metadataBase: process.env.NEXT_PUBLIC_BASE_URL
+    ? new URL(process.env.NEXT_PUBLIC_BASE_URL)
     : new URL("https://brooklynrail.org"),
   title: {
     template: "%s - The Brooklyn Rail",

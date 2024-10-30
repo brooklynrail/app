@@ -11,7 +11,7 @@ export enum BylineType {
   ArticleHeadDiptych = "text-md tablet-lg:text-lg font-sans not-italic",
   ArticleHead = "text-md tablet-lg:text-lg font-sans not-italic",
   SectionPromo = "text-md font-sans not-italic",
-  CollectionArtSeen = "text-lg font-sans not-italic",
+  CollectionArtSeen = "tablet:text-sm desktop:text-md font-sans not-italic",
   CollectionBooks = "text-xs tablet:text-lg font-sans not-italic",
   CollectionDefault = "text-sm tablet:text-md font-sans",
   CollectionDance = "text-xs tablet:text-xl not-italic font-sans",

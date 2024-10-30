@@ -211,6 +211,9 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
           slug: collection.collections_id.section.slug,
           limit: collection.collections_id.limit,
         })
+        if (collection.collections_id.section.slug === "art") {
+          console.log("thisSectionArticles", await thisSectionArticles)
+        }
         collection.collections_id.section.articles = (await thisSectionArticles) as Articles[]
         return collection
       }

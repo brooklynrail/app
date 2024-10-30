@@ -84,7 +84,7 @@ interface EventCardProps {
 }
 
 const EventCard = (props: EventCardProps) => {
-  const { title, slug, start_date, people } = props.event
+  const { title, slug, start_date, people, featured_image } = props.event
   const startDate = new Date(start_date)
 
   // If the startDate is today...
@@ -99,7 +99,13 @@ const EventCard = (props: EventCardProps) => {
   const eventDay = startDate.getDate()
 
   const firstPerson = people[0] && people[0].people_id ? people[0].people_id.portrait : null
+
   const firstPersonPortrait = firstPerson && firstPerson.filename_disk ? firstPerson.filename_disk : null
+  const main_image = featured_image
+    ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${featured_image.filename_disk}?fit=cover&width=256&height=192&quality=85&modified_on=${featured_image.modified_on}`
+    : firstPersonPortrait
+      ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${firstPersonPortrait}?fit=cover&width=256&height=192&quality=85${firstPerson && `&modified_on=${firstPerson.modified_on}`}`
+      : null
 
   const permalink = getPermalink({
     eventYear: eventYear,
@@ -115,12 +121,12 @@ const EventCard = (props: EventCardProps) => {
         href={permalink}
         className={`block rounded-xl w-32 h-24 ${style.card} hover:no-underline relative overflow-hidden`}
       >
-        {firstPersonPortrait && (
+        {main_image && (
           <Image
             className={`absolute -top-0 left-0 right-0 bottom-0`}
             priority
             id={`event-${slug}`}
-            src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${firstPersonPortrait}?key=nse-promo`}
+            src={main_image}
             width={128}
             height={96}
             alt={"alt"}

@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
     return {}
   }
 
-  const share_card = `${process.env.NEXT_PUBLIC_SITE_URL}/images/share-cards/brooklynrail-card.png`
+  const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
   const ogtitle = "The New Social Environment - The Brooklyn Rail"
 
