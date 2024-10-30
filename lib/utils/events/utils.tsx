@@ -75,6 +75,11 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&fields[]=slug` +
     `&fields[]=title` +
     `&fields[]=series` +
+    `&fields[]=featured_image.id` +
+    `&fields[]=featured_image.caption` +
+    `&fields[]=featured_image.alt` +
+    `&fields[]=featured_image.filename_disk` +
+    `&fields[]=featured_image.type` +
     `&fields[]=people.people_id.portrait.id` +
     `&fields[]=people.people_id.portrait.caption` +
     `&fields[]=people.people_id.portrait.filename_disk` +
@@ -162,6 +167,9 @@ export const getEvent = cache(async (slug: string) => {
         "youtube_id",
         "airtable_id",
         "status",
+        {
+          featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
+        },
         {
           people: [
             {

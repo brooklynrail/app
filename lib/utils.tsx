@@ -597,6 +597,8 @@ interface OGImageProps {
   title: string
 }
 
+export const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
+
 export function getOGImage(props: OGImageProps) {
   const { ogimage, title } = props
   if (ogimage && ogimage.width && ogimage.height) {
@@ -610,9 +612,10 @@ export function getOGImage(props: OGImageProps) {
       },
     ]
   }
+
   return [
     {
-      url: "https://brooklynrail.org/material/img/brooklynrail-card-3.png",
+      url: share_card,
       width: 2000,
       height: 1200,
       alt: "The Brooklyn Rail",
