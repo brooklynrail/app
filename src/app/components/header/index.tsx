@@ -37,8 +37,6 @@ const HeaderHomepage = (props: HeaderProps) => {
   const { theme } = useTheme()
   const bannerRef = useRef<HTMLDivElement>(null)
 
-  console.log("covers ========", covers)
-
   const permalink = getPermalink({
     type: PageType.Home,
   })

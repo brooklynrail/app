@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import { Covers } from "../../../../lib/types"
-import CoverStage from "./coverStage"
+import parse from "html-react-parser"
 import { useVideo } from "@/app/context/VideoProvider"
 
 interface CoverArtProps {
@@ -62,40 +62,50 @@ const CoverArt = (props: CoverArtProps) => {
   const artists = currentCover.artists.map((artist) => artist.people_id.first_name).join(" ")
   const summary = currentCover.summary || "No summary available"
 
-  // If the video is currently visible, render the CoverStage
-  if (isVideoVisible) {
-    return <CoverStage covers={covers} />
-  }
-
   return (
     <>
       {/* Video container */}
-      <div className={`absolute top-0 w-full h-full -z-1`} onClick={handleVideoVisibility}>
-        <div className={`absolute top-0 bottom-0 left-0 w-full h-full`}>
+      <div
+        className={
+          !isVideoVisible
+            ? `absolute top-0 w-full h-full -z-1`
+            : `fixed top-0 left-0 w-full h-full z-[100] bg-black bg-opacity-85 p-6`
+        }
+      >
+        <div
+          // className={`absolute top-0 bottom-0 left-0 w-full h-full ${isVideoVisible && `p-6`} bg-amber-400 bg-opacity-30`}
+          className={`w-full h-full flex flex-col justify-between`}
+          onClick={isVideoVisible ? undefined : handleVideoVisibility}
+        >
+          {/* Close button for video */}
+          {isVideoVisible && (
+            <div className="w-full flex justify-end">
+              <button onClick={handleVideoVisibility} className="text-xs bg-white p-2 rounded-full z-50">
+                Close Video
+              </button>
+            </div>
+          )}
           <video
             ref={videoRef}
             autoPlay
             muted
             loop
+            {...(isVideoVisible && { controls: true })}
             playsInline
-            className={`w-full h-full transform object-cover`}
+            className={`w-full ${!isVideoVisible ? `h-full transform object-cover` : `z-50`}`}
             poster="/video/transition.jpeg"
           >
             <source src={`${videoPath}.mp4`} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          {/* Summary shown when video is visible */}
+          {isVideoVisible && (
+            <div className="w-full flex justify-end py-3 flex-none">
+              <p className={`text-slate-100 text-xs w-mobile`}>{parse(summary)}</p>
+            </div>
+          )}
         </div>
-
-        {/* Summary shown when video is visible */}
-        {isVideoVisible && <p className={`text-slate-100 absolute bottom-3 right-6 text-xs w-card-lg`}>{summary}</p>}
       </div>
-
-      {/* Close button for video */}
-      {isVideoVisible && (
-        <button onClick={toggleVideoVisibility} className="absolute top-5 right-5 bg-white p-2 z-[9999] rounded-full">
-          Close Video
-        </button>
-      )}
 
       {/* Bottom control panel */}
       <div className="absolute bottom-0 w-full z-10">
