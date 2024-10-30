@@ -393,6 +393,8 @@ export async function getPreviewIssue(id: string) {
           "title",
           {
             articles: [
+              "id",
+              "status",
               "slug",
               "title",
               "excerpt",

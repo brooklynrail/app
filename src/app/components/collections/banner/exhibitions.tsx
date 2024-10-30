@@ -24,7 +24,11 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
     banner.links.map((link: CollectionLinks, i: number) => {
       const first = i === 0 ? "border border-dotted border-indigo-50 px-0.5" : ""
       return (
-        <Link key={i} href={link.url} className={`py-1 text-center uppercase font-medium text-white text-xs ${first}`}>
+        <Link
+          key={i}
+          href={link.url}
+          className={`py-1 text-center uppercase font-medium text-white text-xs ${first} flex justify-center w-full`}
+        >
           <button className="uppercase hover:underline">{link.text}</button>
         </Link>
       )
@@ -56,7 +60,7 @@ const BannerExhibitions = (props: BannerExhibitionsProps) => {
         )}
         {links && (
           <div className="col-span-1 row-start-2">
-            <div className="flex flex-col space-y-1">{links}</div>
+            <div className="flex flex-col items-center justify-center space-y-1">{links}</div>
           </div>
         )}
       </div>

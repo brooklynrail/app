@@ -38,10 +38,10 @@ const Section = (props: SectionProps & NavProps) => {
         return <SectionArt sectionData={sectionData} articlesData={articles} permalink={permalink} />
       case SectionType.ArtSeen:
         return <SectionArtSeen sectionData={sectionData} articlesData={articles} permalink={permalink} />
-      case SectionType.Poetry:
-        return <SectionPoetry sectionData={sectionData} articlesData={articles} permalink={permalink} />
       case SectionType.CriticsPage:
         return <SectionCriticsPage sectionData={sectionData} articlesData={articles} permalink={permalink} />
+      case SectionType.Poetry:
+        return <SectionPoetry sectionData={sectionData} articlesData={articles} permalink={permalink} />
       default:
         return <SectionDefault sectionData={sectionData} articlesData={articles} permalink={permalink} />
     }

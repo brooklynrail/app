@@ -63,6 +63,13 @@ const IssueSection = (props: IssueSectionProps) => {
             type: PageType.Article,
           })
 
+          if (article.status === "draft") {
+            permalink = getPermalink({
+              articleId: article.id,
+              type: PageType.PreviewArticle,
+            })
+          }
+
           if (article.tribute && section.slug === "in-memoriam") {
             permalink = getPermalink({
               tributeSlug: article.tribute.slug,
