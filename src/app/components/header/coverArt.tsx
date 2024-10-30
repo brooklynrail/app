@@ -59,8 +59,18 @@ const CoverArt = (props: CoverArtProps) => {
     return null
   }
 
-  const artists = currentCover.artists.map((artist) => artist.people_id.first_name).join(" ")
-  const summary = currentCover.summary || "No summary available"
+  const artists = currentCover?.artists.map((artist) => artist.people_id.display_name)
+
+  let formattedArtists
+  if (artists?.length === 1) {
+    formattedArtists = artists[0]
+  } else if (artists?.length === 2) {
+    formattedArtists = artists.join(" and ")
+  } else {
+    formattedArtists = `${artists?.slice(0, -1).join(", ")}, and ${artists?.[artists.length - 1]}`
+  }
+
+  const summary = currentCover.summary
 
   return (
     <>
@@ -101,7 +111,7 @@ const CoverArt = (props: CoverArtProps) => {
           {/* Summary shown when video is visible */}
           {isVideoVisible && (
             <div className="w-full flex justify-end py-3 flex-none">
-              <p className={`text-slate-100 text-xs w-mobile`}>{parse(summary)}</p>
+              {summary && <p className={`text-slate-100 text-xs w-mobile`}>{parse(summary)}</p>}
             </div>
           )}
         </div>
@@ -111,7 +121,7 @@ const CoverArt = (props: CoverArtProps) => {
       <div className="absolute bottom-0 w-full z-10">
         <div className="flex justify-end">
           <div className="bg-black backdrop-blur-lg bg-opacity-30 flex items-center space-x-3 px-3 rounded-tl-xl">
-            <p className="text-xs text-white">"{artists}", Jeremy Zilar, 2024</p>
+            <p className="text-xs text-white">{`“${currentCover.title}”, by ${formattedArtists}`}</p>
 
             {/* Play/pause button */}
             <button

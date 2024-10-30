@@ -144,6 +144,7 @@ export type Covers = {
   secondary_color: string
   secondary_color_mobile: string
   artists: CoversPeople[]
+  title: string
   summary?: string | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
