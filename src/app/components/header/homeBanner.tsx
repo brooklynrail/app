@@ -1,10 +1,6 @@
 import { useTheme } from "@/app/components/theme"
-import { PaperType } from "../paper"
 
-interface BannerProps {
-  type: PaperType
-}
-const HomeBanner = (props: BannerProps) => {
+const HomeBanner = () => {
   const { theme } = useTheme()
 
   let pathfill = theme === "dark" ? "fill-none" : "fill-none"
