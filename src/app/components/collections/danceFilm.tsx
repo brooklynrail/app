@@ -109,9 +109,9 @@ const Promos = (props: PromoProps) => {
             <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
           </div>
         )}
-        <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
-        <Bylines article={article} type={BylineType.Default} />
-        <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />
+        <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-3xl font-light" />
+        <Bylines article={article} type={BylineType.DancePromo} />
+        <Excerpt excerpt={article.excerpt} classes={`excerpt`} />
       </div>
     )
   })
@@ -146,7 +146,11 @@ const LeadPromo = (props: LeadPromoArtProps) => {
       </div>
       <div className="col-span-4 tablet:col-span-6">
         <div className="flex flex-col space-y-3">
-          <Title title={article.title} permalink={permalink} type={TitleType.CollectionDance} />
+          <Title
+            title={article.title}
+            permalink={permalink}
+            classes="text-center tablet-lg:text-left font-normal text-3xl tablet-lg:text-4xl"
+          />
           <Excerpt excerpt={article.excerpt} classes={`excerpt-xl`} />
           <Bylines article={article} type={BylineType.CollectionDance} />
         </div>
