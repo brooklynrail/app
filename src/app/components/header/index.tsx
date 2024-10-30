@@ -99,7 +99,7 @@ const HeaderHomepage = (props: HeaderProps) => {
         {title && <h3>{title}</h3>}
       </div>
 
-      <div className="relative h-[calc(100vh-25rem)] tablet-lg:h-[calc(100vh-20.5rem)]">
+      <div className="relative h-[calc(100vh-26.5rem)] tablet-lg:h-[calc(100vh-20.5rem)]">
         <VideoBG videoRef={videoRef} />
         <div className="sticky top-0">
           <div className="p-3 pb-9 tablet:px-6">
