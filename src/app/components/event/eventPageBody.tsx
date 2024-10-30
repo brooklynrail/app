@@ -32,7 +32,6 @@ const EventPageBody = (props: EventProps) => {
   const startTimeET = formatTime(start_date, "America/New_York")
   const startTimePT = formatTime(start_date, "America/Los_Angeles")
 
-  // console.log("dateString ================", dateString)
   const eventsPermalink = getPermalink({
     type: PageType.Events,
   })
