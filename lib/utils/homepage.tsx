@@ -29,6 +29,7 @@ export const getCoversData = cache(async () => {
           "secondary_color",
           "secondary_color_mobile",
           "summary",
+          "title",
           {
             artists: [
               {
