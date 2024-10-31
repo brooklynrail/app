@@ -12,7 +12,7 @@ export enum BylineType {
   ArticleHead = "text-md tablet-lg:text-lg font-sans not-italic",
   SectionPromo = "text-md font-sans not-italic",
   CollectionArtSeen = "tablet:text-sm desktop:text-sm font-sans not-italic",
-  CollectionBooks = "text-xs tablet:text-lg font-sans not-italic",
+  CollectionBooks = "text-xs tablet:text-sm font-sans not-italic",
   CollectionDefault = "text-sm tablet:text-md font-sans",
   CollectionDance = "text-xs tablet:text-xl not-italic font-sans",
   TributeArticle = "text-lg tablet-lg:text-lg font-bold font-sans not-italic",
