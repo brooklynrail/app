@@ -105,11 +105,7 @@ const PromosArtSeen = (props: PromoProps) => {
               </div>
             )}
             <div className="flex flex-col space-y-1">
-              <Title
-                title={article.title}
-                permalink={permalink}
-                classes="desktop:text-lg desktop-lg:text-xl font-normal"
-              />
+              <Title title={article.title} permalink={permalink} classes="text-lg font-normal" />
               <Bylines article={article} type={BylineType.CollectionArtSeen} />
             </div>
           </div>
