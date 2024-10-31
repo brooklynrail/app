@@ -52,15 +52,15 @@ export const PromosBooks = (props: PromoProps) => {
             className={`flex space-x-3 ${i === 0 ? "space-y-0 tablet:flex-row" : "tablet:flex-col tablet:space-y-3 tablet:space-x-0"}`}
           >
             {featured_image && (
-              <div className={`flex-none w-32 tablet:w-card ${i === 0 ? "tablet-lg:w-[276px]" : "tablet-lg:w-44"}`}>
+              <div className={`flex-none w-28 tablet:w-card ${i === 0 ? "tablet-lg:w-[276px]" : "tablet-lg:w-44"}`}>
                 <FeaturedImage image={featured_image} title={title} hideCaption={true} permalink={permalink} />
               </div>
             )}
-            <div className="flex flex-col space-y-3">
+            <div className={i === 0 ? `flex flex-col space-y-3` : `flex flex-col space-y-1.5`}>
               <Title
                 title={article.title}
                 permalink={permalink}
-                type={i === 0 ? TitleType.CollectionBooksLead : TitleType.CollectionBooksPromo}
+                classes={i === 0 ? `text-lg tablet:text-3xl font-normal` : `text-lg tablet:text-xl font-normal`}
               />
               <Bylines article={article} type={BylineType.CollectionBooks} />
             </div>

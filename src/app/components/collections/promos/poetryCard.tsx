@@ -19,12 +19,30 @@ const PoetryCard = (article: Articles) => {
   const poetryRegex = /\[poetry\]([\s\S]*?)\[\/poetry\]/
   const poetryMatch = body_text && body_text.match(poetryRegex)
 
-  if (poetryMatch) {
+  if (poetryMatch && poetryMatch[1]) {
+    // Clean up any unwanted <p> or </p> tags at the start and end
+    let poetryContent = poetryMatch[1]
+
+    // Remove starting </p> if it exists
+    if (poetryContent.startsWith("</p>")) {
+      poetryContent = poetryContent.replace(/^<\/p>/, "")
+    }
+
+    // Remove starting <br/> if it exists
+    if (poetryContent.startsWith("<br />")) {
+      poetryContent = poetryContent.replace(/^<br \/>/, "")
+    }
+
+    // Remove ending <p> if it exists
+    if (poetryContent.endsWith("<p>")) {
+      poetryContent = poetryContent.replace(/<p>$/, "")
+    }
+
     return (
       <div className={`bg-white relative h-[350px] overflow-hidden shadow-lg ${styles.poetrycard}`}>
         <Link href={permalink}>
           <div className="absolute bg-gradient-to-t from-stone-50 h-full w-full top-0 bottom-0"></div>
-          <div className="p-3 text-zinc-800">{parse(poetryMatch[1])}</div>
+          <div className="p-3 text-zinc-800">{parse(poetryContent)}</div>
         </Link>
       </div>
     )
