@@ -1,36 +1,33 @@
 import { useEffect, useState, useRef } from "react"
 
-const useMasonry = () => {
+export enum LayoutMode {
+  Block = "block",
+  Grid = "grid",
+  List = "list",
+}
+
+const useMasonry = (layoutMode: LayoutMode) => {
   const masonryContainer = useRef<HTMLDivElement | null>(null)
   const [items, setItems] = useState<ChildNode[]>([])
 
   useEffect(() => {
-    const observer = new MutationObserver(() => {
-      if (masonryContainer.current) {
-        const masonryItems = Array.from(masonryContainer.current.children)
-        setItems(masonryItems)
-      }
-    })
-
     if (masonryContainer.current) {
-      observer.observe(masonryContainer.current, {
-        childList: true, // Observe changes to child nodes
-      })
-
-      // Initial setup of items
-      const masonryItems = Array.from(masonryContainer.current.children)
-      setItems(masonryItems)
-    }
-
-    return () => {
-      observer.disconnect() // Clean up the observer when unmounting
+      const masonryItem = Array.from(masonryContainer.current.children)
+      setItems(masonryItem)
     }
   }, [])
 
   useEffect(() => {
     const handleMasonry = () => {
-      if (!items || items.length < 1) return
-      console.log("items", items)
+      if (!items || items.length < 1 || layoutMode !== "block") {
+        // Reset custom positioning if masonry is off or layout is "list"
+        items.forEach((el) => {
+          if (el instanceof HTMLElement) {
+            el.style.marginTop = "0" // Reset positioning for grid or list mode
+          }
+        })
+        return
+      }
 
       let gapSize = 0
       if (masonryContainer.current) {
@@ -53,13 +50,13 @@ const useMasonry = () => {
       })
     }
 
-    handleMasonry() // Initial call to handle masonry
+    handleMasonry() // Run when layout mode changes
     window.addEventListener("resize", handleMasonry)
 
     return () => {
       window.removeEventListener("resize", handleMasonry)
     }
-  }, [items])
+  }, [items, layoutMode]) // Add layoutMode as a dependency
 
   const elementLeft = (el: HTMLElement) => {
     return el.getBoundingClientRect().left

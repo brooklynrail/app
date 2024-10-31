@@ -9,6 +9,7 @@ import SectionDefault from "./default"
 import SectionArtSeen from "./artseen"
 import SectionCriticsPage from "./criticsPage"
 import SectionPoetry from "./poetry"
+import { LayoutMode } from "@/app/hooks/useMasonry"
 
 interface NavProps {
   navData: Homepage
@@ -30,6 +31,8 @@ const Section = (props: SectionProps & NavProps) => {
   const { sectionData, permalink, articlesData, navData } = props
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>(LayoutMode.Block)
+
   const [articles, setArticles] = useState<Articles[]>(articlesData)
 
   const allArticles = (() => {
@@ -43,7 +46,14 @@ const Section = (props: SectionProps & NavProps) => {
       case SectionType.Poetry:
         return <SectionPoetry sectionData={sectionData} articlesData={articles} permalink={permalink} />
       default:
-        return <SectionDefault sectionData={sectionData} articlesData={articles} permalink={permalink} />
+        return (
+          <SectionDefault
+            sectionData={sectionData}
+            articlesData={articles}
+            permalink={permalink}
+            layoutMode={layoutMode}
+          />
+        )
     }
   })()
 
@@ -72,7 +82,13 @@ const Section = (props: SectionProps & NavProps) => {
   return (
     <Paper pageClass={`theme-${sectionData.slug}`} type={type} navData={navData}>
       <main className="divide-y rail-divide">
-        <SectionHead title={sectionData.name} description={sectionData.description} permalink={permalink} />
+        <SectionHead
+          title={sectionData.name}
+          description={sectionData.description}
+          permalink={permalink}
+          setLayoutMode={setLayoutMode}
+          layoutMode={layoutMode}
+        />
 
         <div className="divide-y rail-divide">{allArticles}</div>
 
