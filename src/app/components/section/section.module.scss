@@ -1,0 +1,10 @@
+.card:nth-child(-n + 4) > div {
+  //   @apply bg-red-100;
+  @apply border-t-0;
+  border-top: 0;
+}
+
+/* Default card styling */
+.card {
+  //   @apply bg-blue-400;
+}

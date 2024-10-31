@@ -10,8 +10,12 @@ import FeaturedImage from "../featuredImage"
 import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 import Excerpt from "../collections/promos/excerpt"
 import Kicker from "../collections/promos/kicker"
+import useMasonry from "@/app/hooks/useMasonry"
+import styles from "./section.module.scss"
 
 const SectionDefault = (props: SectionProps) => {
+  const masonryContainer = useMasonry()
+  console.log("masonryContainer", masonryContainer)
   const { articlesData } = props
   const currentBreakpoint = useBreakpoints()
   const [groupCount, setGroupCount] = useState(1)
@@ -55,9 +59,39 @@ const SectionDefault = (props: SectionProps) => {
     )
   })
 
+  // Split articles into groups of 4
+  const allArticles = articlesData.map((article, i) => {
+    const { issue, section, title, featured_artwork, featured_image } = article
+    const artwork = featured_artwork ? featured_artwork : featured_image
+    const permalink = getPermalink({
+      year: issue.year,
+      month: issue.month,
+      section: section.slug,
+      slug: article.slug,
+      type: PageType.Article,
+    })
+    return (
+      <div key={article.id} className={`flex flex-col px-3 pb-3 border-l rail-border ${styles.card}`}>
+        <div className="p-3 flex flex-col space-y-6 border-t rail-border">
+          {artwork && <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />}
+          <div className="flex flex-col space-y-3">
+            <div className="space-y-1">
+              <Kicker article={article} />
+              <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-3xl font-light" />
+            </div>
+            <Bylines article={article} type={BylineType.CollectionDefault} />
+            <Excerpt excerpt={article.excerpt} classes={`excerpt-md`} />
+          </div>
+        </div>
+      </div>
+    )
+  })
+
   return (
-    <div className="divide-y rail-divide">
-      <div className="divide-y rail-divide">{articleGroups}</div>
+    <div className="py-6">
+      <div ref={masonryContainer} className="grid items-start gap-0 grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4">
+        {allArticles}
+      </div>
     </div>
   )
 }
