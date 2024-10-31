@@ -34,7 +34,6 @@ export enum PaperType {
 
 const Paper = (props: PaperProps) => {
   const { pageClass, children, hidePopup, navData, type, banners, currentIssue, previewURL } = props
-  const { theme, setTheme } = useTheme()
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
@@ -53,7 +52,6 @@ const Paper = (props: PaperProps) => {
         {children}
         <Footer />
         <Ad970 />
-        <ThemeToggle {...{ theme, setTheme }} />
         {!isHomepage && <PopupDonate />}
       </div>
     </PopupProvider>
