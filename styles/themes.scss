@@ -4,6 +4,12 @@ body {
   @apply font-sans antialiased;
   @apply bg-[#EF4444] text-black;
 }
+//=========================================
+// Theme Switcher
+// Apply a subtile transition to all elements when switching themes
+body * {
+  @apply transition-colors duration-[50ms];
+}
 
 //=========================================
 // Paper Styles

@@ -1,7 +1,6 @@
 "use client"
 import { createContext, useContext, useEffect, useState, ReactNode } from "react"
 
-// Define the shape of your context
 interface ThemeContextProps {
   theme: string | null
   setTheme: (theme: string | null) => void
