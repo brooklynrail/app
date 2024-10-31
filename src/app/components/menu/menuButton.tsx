@@ -1,35 +1,22 @@
-import { useState } from "react"
-import { HomepageCollections } from "../../../../lib/types"
-import Menu from "./menu"
+import { useMenu } from "@/app/hooks/useMenu"
 
 interface MenuButtonProps {
   classes: string
-  collections: HomepageCollections[]
 }
 
 const MenuButton = (props: MenuButtonProps) => {
-  const { classes, collections } = props
+  const { classes } = props
+  const { toggleMenu } = useMenu()
+
   const pathfill = "fill-zinc-900 dark:fill-slate-100"
   const strokefill = "stroke-zinc-900 dark:stroke-slate-100"
-
-  const [isMenuOpen, setIsMenuOpen] = useState(true)
-
-  // Function to open the menu
-  const openMenu = () => {
-    setIsMenuOpen(true)
-  }
-
-  // Function to close the menu (either by clicking the overlay or menu close button)
-  const closeMenu = () => {
-    setIsMenuOpen(false)
-  }
 
   return (
     <div className="">
       <div
         className={`${classes} shadow-lg max-w-10 max-h-10 rounded-sm p-1 bg-white dark:bg-zinc-700 hover:cursor-pointer`}
       >
-        <svg onClick={openMenu} className="" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg onClick={toggleMenu} className="" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4 8H12" className={strokefill} strokeLinecap="round" />
           <path d="M4 14H12" className={strokefill} strokeLinecap="round" />
           <path d="M4 21H18" className={strokefill} strokeLinecap="round" />
@@ -41,16 +28,6 @@ const MenuButton = (props: MenuButtonProps) => {
           />
         </svg>
       </div>
-
-      {isMenuOpen && (
-        <>
-          <div
-            onClick={closeMenu}
-            className="bg-zinc-800 opacity-80 cursor-pointer fixed z-50 w-screen h-screen top-0 bottom-0 right-0 left-0"
-          ></div>
-          <Menu closeMenu={closeMenu} collections={collections} />
-        </>
-      )}
     </div>
   )
 }

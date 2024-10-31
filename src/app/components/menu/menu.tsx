@@ -5,14 +5,15 @@ import CurrentCollections from "./currentCollections"
 import CurrentEvents from "./currentEvents"
 import CurrentPages from "./currentPages"
 import Settings from "./settings"
+import { useMenu } from "@/app/hooks/useMenu"
 
 interface MenuProps {
-  closeMenu: () => void
   collections: HomepageCollections[]
 }
 
 const Menu = (props: MenuProps) => {
-  const { closeMenu, collections } = props
+  const { collections } = props
+  const { isMenuOpen, toggleMenu } = useMenu()
 
   const arrow = (
     <svg width="13" height="20" viewBox="0 0 13 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,36 +25,49 @@ const Menu = (props: MenuProps) => {
   )
 
   return (
-    <div className="top-0 left-0 w-[calc(100vw-6rem)] max-w-screen-mobile-lg h-screen fixed z-[999] overflow-y-auto !m-0 bg-slate-50 dark:bg-zinc-700">
-      <div className="grid grid-cols-3 gap-x-3">
-        <div className="col-span-3">
-          <div className="p-6 space-y-6">
-            <div className="relative flex flex-row-reverse justify-between w-full ">
-              <p
-                onClick={closeMenu}
-                className="hover:underline font-bold text-xs uppercase flex items-center space-x-1"
-              >
-                {arrow} <span>Close</span>
-              </p>
-              <p>
-                <Link className="font-bold text-sm uppercase" href="/">
-                  Home
-                </Link>
-              </p>
+    <>
+      {isMenuOpen && (
+        <div
+          onClick={toggleMenu}
+          className="bg-zinc-800 opacity-80 cursor-pointer fixed z-50 w-screen h-screen top-0 bottom-0 right-0 left-0 transition-opacity duration-300"
+        ></div>
+      )}
+
+      <div
+        className={`fixed top-0 left-0 h-screen z-[999] w-[calc(100vw-6rem)] max-w-screen-mobile-lg overflow-y-auto bg-slate-50 dark:bg-zinc-700 transform transition-transform duration-300 ${
+          isMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="grid grid-cols-3 gap-x-3">
+          <div className="col-span-3">
+            <div className="p-6 space-y-6">
+              <div className="relative flex flex-row-reverse justify-between w-full">
+                <p
+                  onClick={toggleMenu}
+                  className="hover:underline font-bold text-xs uppercase flex items-center space-x-1"
+                >
+                  {arrow} <span>Close</span>
+                </p>
+                <p>
+                  <Link className="font-bold text-sm uppercase" href="/">
+                    Home
+                  </Link>
+                </p>
+              </div>
+              <SearchField />
             </div>
-            <SearchField />
+          </div>
+          <CurrentEvents />
+          <div className="col-span-3">
+            <div className="divide-y rail-divide">
+              <CurrentCollections collections={collections} />
+              <CurrentPages />
+            </div>
           </div>
         </div>
-        <CurrentEvents />
-        <div className="col-span-3">
-          <div className="divide-y rail-divide">
-            <CurrentCollections collections={collections} />
-            <CurrentPages />
-          </div>
-        </div>
+        <Settings />
       </div>
-      <Settings />
-    </div>
+    </>
   )
 }
 

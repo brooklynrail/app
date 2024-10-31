@@ -85,7 +85,7 @@ const ThemeToggle = (props: ThemeToggleProps) => {
 
   return (
     <div className="flex justify-between items-center space-x-1">
-      <label className="block text-sm">Dark mode: {darkmode ? `On` : `Off`}</label>
+      <label className="block text-sm font-medium">Dark mode: {darkmode ? `On` : `Off`}</label>
       <div onClick={toggleTheme} className="relative w-14 h-8 cursor-pointer">
         <input type="checkbox" className="opacity-0 w-0 h-0" checked={theme === "dark"} readOnly />
         <span

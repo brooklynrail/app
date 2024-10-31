@@ -71,7 +71,7 @@ const NavBar = (props: NavBarProps) => {
     <nav className="navbar sticky top-0 z-[11] border-b rail-border">
       <div className="flex justify-center items-center w-full pl-3 tablet:px-6">
         <div className="py-1.5">
-          <MenuButton collections={navData.collections} classes={`w-[8vw] h-[8vw]`} />
+          <MenuButton classes={`w-[8vw] h-[8vw]`} />
         </div>
         <ul className="pr-3 pl-1 flex items-center w-full overflow-x-auto no-scrollbar z-0">
           {!isHomepage && home}

@@ -10,6 +10,8 @@ import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import NavBar from "../navBar"
 import { usePathname } from "next/navigation"
 import PreviewHeader from "../preview/previewHead"
+import { MenuProvider, useMenu } from "@/app/hooks/useMenu"
+import Menu from "../menu/menu"
 
 export interface PaperProps {
   pageClass: string
@@ -39,21 +41,24 @@ const Paper = (props: PaperProps) => {
 
   return (
     <PopupProvider hidePopup={hidePopup}>
-      <div className={`theme ${pageClass}`}>
-        {previewURL ? (
-          <PreviewHeader previewURL={previewURL} />
-        ) : (
-          <>
-            <Header type={type} banners={banners} currentIssue={currentIssue} />
-            <NavBar navData={navData} isHomepage={isHomepage} />
-          </>
-        )}
+      <MenuProvider>
+        <div className={`theme ${pageClass}`}>
+          {previewURL ? (
+            <PreviewHeader previewURL={previewURL} />
+          ) : (
+            <>
+              <Header type={type} banners={banners} currentIssue={currentIssue} />
+              <NavBar navData={navData} isHomepage={isHomepage} />
+            </>
+          )}
 
-        {children}
-        <Footer />
-        <Ad970 />
-        {!isHomepage && <PopupDonate />}
-      </div>
+          {children}
+          <Footer />
+          <Ad970 />
+          <Menu collections={navData.collections} />
+          {!isHomepage && <PopupDonate />}
+        </div>
+      </MenuProvider>
     </PopupProvider>
   )
 }
