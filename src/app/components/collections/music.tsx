@@ -101,9 +101,11 @@ const PromosMusic = (props: PromoProps) => {
                 <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
               </div>
             )}
-            <div className="flex flex-col space-y-1">
-              <Title title={article.title} permalink={permalink} classes="text-2xl font-normal" />
-              <Bylines article={article} type={BylineType.CollectionArtSeen} />
+            <div className="flex flex-col space-y-6">
+              <div className="space-y-1.5">
+                <Title title={article.title} permalink={permalink} classes="text-2xl font-normal" />
+                <Bylines article={article} type={BylineType.CollectionArtSeen} />
+              </div>
               <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />
             </div>
           </div>

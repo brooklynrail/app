@@ -56,7 +56,7 @@ export const PromosBooks = (props: PromoProps) => {
                 <FeaturedImage image={featured_image} title={title} hideCaption={true} permalink={permalink} />
               </div>
             )}
-            <div className="flex flex-col space-y-3">
+            <div className={i === 0 ? `flex flex-col space-y-3` : `flex flex-col space-y-1.5`}>
               <Title
                 title={article.title}
                 permalink={permalink}

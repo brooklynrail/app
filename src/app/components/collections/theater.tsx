@@ -53,11 +53,11 @@ const Promos = (props: PromoProps) => {
               <FeaturedImage image={featured_image} title={title} hideCaption={true} permalink={permalink} />
             </div>
           )}
-          <div className="flex flex-col space-y-3">
+          <div className="flex flex-col space-y-1.5">
             <Title
               title={article.title}
               permalink={permalink}
-              type={i === 0 ? TitleType.CollectionBooksLead : TitleType.CollectionBooksPromo}
+              classes={i === 0 ? "text-lg tablet:text-3xl font-light" : "text-xl font-normal"}
             />
             <Bylines article={article} type={BylineType.CollectionBooks} />
           </div>
