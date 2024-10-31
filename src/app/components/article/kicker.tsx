@@ -44,11 +44,11 @@ const Kicker = (props: KickerProps) => {
 
       {kicker && (
         <>
-          <span className="border-r rail-border !border-solid h-4 inline-block relative top-0.5"></span>
+          <span className="border-r rail-border !border-solid h-3.5 inline-block relative top-0.5"></span>
           <span className="uppercase">{kicker}</span>
         </>
       )}
-      <span className="border-r rail-border !border-solid h-4 inline-block relative top-0.5"></span>
+      <span className="border-r rail-border !border-solid h-3.5 inline-block relative top-0.5"></span>
       <span className="uppercase">
         <Link href={issuePermalink}>{thisIssueData.title}</Link>
       </span>

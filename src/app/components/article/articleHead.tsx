@@ -43,14 +43,14 @@ const ArticleHead = (props: ArticleHeadProps) => {
     case "diptych":
       return (
         <header className="py-6">
-          <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
-            <div className="col-span-4 tablet-lg:col-span-5 desktop-lg:col-span-5">
-              <div className="space-y-16 h-full flex flex-col justify-center">
-                <div className="space-y-6">
+          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 desktop:grid-cols-10 gap-3 gap-y-6 tablet-lg:gap-0">
+            <div className="col-span-4 tablet-lg:col-span-7 desktop:col-span-6">
+              <div className="space-y-9 h-full flex flex-col justify-center">
+                <div className="space-y-6 px-6">
                   <Kicker centered={true} {...kickerProps} />
                   <div className="space-y-6">
-                    <Title title={title} type={TitleType.ArticleHeadDiptych} />
-                    {deck && <h2 className="text-center text-3xl px-6 font-serif font-light">{parse(deck)}</h2>}
+                    <Title title={title} classes="text-5xl tablet:text-6xl font-light text-center" />
+                    {deck && <h2 className="text-center text-2xl font-serif font-light">{parse(deck)}</h2>}
                   </div>
                 </div>
                 <div className="flex flex-col items-center space-y-3">
@@ -59,7 +59,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
               </div>
             </div>
 
-            <div className="col-span-4 tablet-lg:col-span-3 desktop-lg:col-span-4">
+            <div className="col-span-4 tablet-lg:col-span-5 desktop:col-span-4">
               {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
             </div>
           </div>

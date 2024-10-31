@@ -34,7 +34,7 @@ const Menu = (props: MenuProps) => {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-screen z-[999] w-[calc(100vw-6rem)] max-w-screen-mobile-lg overflow-y-auto bg-slate-50 dark:bg-zinc-700 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-screen z-[999] w-[calc(100vw-6rem)] max-w-[400px] overflow-y-auto bg-slate-50 dark:bg-zinc-700 transform transition-transform duration-300 ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
