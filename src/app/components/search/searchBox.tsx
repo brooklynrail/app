@@ -63,7 +63,7 @@ const SearchField = () => {
             root: "shadow-sm px-3 tablet-lg:px-0",
             form: "relative flex items-center",
             input:
-              "block w-full text-lg px-3 py-3 bg-white dark:bg-zinc-700 text-zinc-800 dark:text-slate-100 border-2 border-slate-300 placeholder-slate-400 focus:outline-none focus:border-indigo-700 focus:ring-indigo-700 rounded-md focus:ring-1",
+              "block w-full text-lg px-3 py-3 bg-white dark:bg-slate-100 text-zinc-800 border-2 border-slate-300 placeholder-slate-400 focus:outline-none focus:border-indigo-700 focus:ring-indigo-700 rounded-md focus:ring-1",
           }}
           submitIconComponent={() => (
             <div className="top-1.5 right-1.5 absolute">
@@ -154,7 +154,7 @@ const Card = (props: CardProps) => {
       <Link className={`p-3 block space-y-1.5`} href={`${permalink}?search`}>
         <div className="grid grid-cols-4 tablet-lg:grid-cols-6 gap-3">
           <div className={`col-span-3 ${isPastEvent ? `tablet-lg:col-span-4` : `tablet-lg:col-span-5`} space-y-3`}>
-            <div className="space-y-1 pr-6">
+            <div className="space-y-1 pr-6 text-zinc-800">
               <h3 className="font-medium text-lg">{parse(title_display)}</h3>
               {description && <div className="line-clamp-4 text-sm">{parse(description)}</div>}
             </div>

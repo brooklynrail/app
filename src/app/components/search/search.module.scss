@@ -10,9 +10,9 @@
 }
 
 .type_event {
-  @apply bg-indigo-50;
+  @apply bg-indigo-50 dark:bg-indigo-50;
 }
 
 .type_contributor {
-  @apply bg-green-100;
+  @apply bg-green-100 dark:bg-green-100;
 }
