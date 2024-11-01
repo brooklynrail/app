@@ -63,6 +63,8 @@ const Bylines = (props: BylinesProps) => {
               separator = ""
             }
 
+            const key = `${i}-${contributor.contributors_id.id}`
+
             if (linked) {
               const permalink = getPermalink({
                 slug: contributor.contributors_id.slug,
@@ -70,7 +72,7 @@ const Bylines = (props: BylinesProps) => {
               })
 
               return (
-                <Link key={contributor.contributors_id.id} rel="author" href={permalink} className="url fn n">
+                <Link key={key} rel="author" href={permalink} className="url fn n">
                   {!isFirst && separator}
                   {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
                 </Link>
@@ -83,7 +85,7 @@ const Bylines = (props: BylinesProps) => {
 
             return (
               <span
-                key={contributor.contributors_id.id}
+                key={key}
                 className={
                   type === BylineType.CollectionArtSeen ||
                   type === BylineType.CollectionBooks ||

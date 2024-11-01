@@ -47,17 +47,17 @@ const CurrentPages = () => {
       <ul className="py-3 block text-sm font-bold px-9 space-y-3">
         {allPages}
         <li className="">
-          <Link className="flex space-x-2 w-full" href={`/subscribe`}>
+          <Link className="flex space-x-2 w-full" href={`/subscribe`} prefetch={false}>
             <span>Sign up for our newsletter</span>
           </Link>
         </li>
         <li className="">
-          <Link className="flex space-x-2 w-full" href={`/instagram`}>
+          <Link className="flex space-x-2 w-full" href={`/instagram`} prefetch={false}>
             <span>Follow us on Instagram</span>
           </Link>
         </li>
         <li className="">
-          <Link className="flex space-x-2 w-full" href={`/store`}>
+          <Link className="flex space-x-2 w-full" href={`/store`} prefetch={false}>
             <span>Visit our store</span>
           </Link>
         </li>

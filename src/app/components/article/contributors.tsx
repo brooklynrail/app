@@ -14,8 +14,10 @@ const ContributorsBox = (props: ContributorsProps) => {
     if (!contributor.contributors_id) {
       return <></>
     }
+    const key = `${i}-${contributor.contributors_id.id}`
+
     return (
-      <div className="contributor" key={contributor.contributors_id.id}>
+      <div className="contributor" key={key}>
         <h4>
           <Link href={`/contributor/${contributor.contributors_id.slug}`}>
             {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}

@@ -9,7 +9,6 @@ export enum TitleType {
   CollectionBooksPromo = "text-lg tablet:text-2xl font-normal",
   SectionPromo = "text-2xl tablet:text-3xl font-light",
   ArticleHead = "text-5xl tablet:text-6xl font-light",
-  ArticleHeadDiptych = "text-5xl tablet:text-6xl font-light text-center",
   Lead = "text-4xl tablet:text-5xl desktop:text-6xl font-light",
   LeadArtSeen = "text-4xl tablet:text-4xl font-normal",
   NextPrev = "text-md font-sans font-light",
