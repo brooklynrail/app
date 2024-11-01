@@ -11,15 +11,18 @@ const useMasonry = (layoutMode: LayoutMode) => {
   const [items, setItems] = useState<ChildNode[]>([])
 
   useEffect(() => {
-    if (masonryContainer.current) {
-      const masonryItem = Array.from(masonryContainer.current.children)
-      setItems(masonryItem)
+    // Set items whenever layoutMode is changed to ensure reinitialization
+    if (masonryContainer.current && layoutMode === LayoutMode.Block) {
+      const masonryItems = Array.from(masonryContainer.current.children)
+      setItems(masonryItems)
+    } else {
+      setItems([]) // Clear items if layout is not "block"
     }
-  }, [])
+  }, [layoutMode]) // Trigger on layoutMode change
 
   useEffect(() => {
     const handleMasonry = () => {
-      if (!items || items.length < 1 || layoutMode !== "block") {
+      if (!items || items.length < 1 || layoutMode !== LayoutMode.Block) {
         // Reset custom positioning if masonry is off or layout is "list"
         items.forEach((el) => {
           if (el instanceof HTMLElement) {
