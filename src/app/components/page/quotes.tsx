@@ -33,7 +33,7 @@ const Quotes = (props: QuotesProps) => {
     )
   })
 
-  return <div className="py-6 space-y-9">{allQuotes}</div>
+  return <div className="mt-6 pt-10 space-y-9 border-t tablet-lg:border-0 rail-border">{allQuotes}</div>
 }
 
 export default Quotes
