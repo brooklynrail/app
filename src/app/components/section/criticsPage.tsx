@@ -9,23 +9,13 @@ import Kicker from "../collections/promos/kicker"
 import Title from "../collections/promos/title"
 import FeaturedImage from "../featuredImage"
 import Frame from "../frames/frame"
-
-// Group articles by issue
-const groupByIssue = (articles: Articles[]) => {
-  return articles.reduce((acc: Record<string, Articles[]>, article) => {
-    const issueId = article.issue.id // or any unique identifier for the issue
-    if (!acc[issueId]) {
-      acc[issueId] = []
-    }
-    acc[issueId].push(article)
-    return acc
-  }, {})
-}
+import { groupByIssue } from "../../../../lib/utils/sections/utils"
 
 const SectionCriticsPage = (props: SectionProps) => {
   const { articlesData } = props
 
-  // Group articles by their respective issue
+  // Take all of the articles,
+  // and group articles by their respective issue
   const articlesByIssue = groupByIssue(articlesData)
 
   return (

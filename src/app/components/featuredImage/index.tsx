@@ -10,11 +10,16 @@ interface FeaturedImageProps {
   title: string
   hideCaption?: boolean
   permalink?: string
+  containerWidth?: number
 }
+
 const FeaturedImage = (props: FeaturedImageProps) => {
+  const { containerWidth } = props
   const { filename_disk, caption, width, height } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const alt = caption ? caption : `${stripHtml(props.title).result}`
+
+  const isPortrait = containerWidth && height > width
 
   const image = (
     <>
@@ -25,8 +30,8 @@ const FeaturedImage = (props: FeaturedImageProps) => {
         width={width}
         height={height}
         style={{
-          width: "100%",
-          height: "auto",
+          width: isPortrait ? "auto" : "100%", // Adjust width for portrait images
+          height: isPortrait ? `${props.containerWidth}px` : "auto", // Adjust height for portrait images
         }}
         alt={alt}
       />

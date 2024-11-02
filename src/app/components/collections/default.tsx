@@ -1,4 +1,5 @@
 "use client"
+import { useEffect, useRef, useState } from "react"
 import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import FeaturedImage from "../featuredImage"
@@ -34,44 +35,77 @@ const CollectionDefault = (collection: Collections) => {
   )
 }
 
-interface PromoProps {
+interface PromosProps {
   articles: Articles[]
 }
 
-const Promos = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, featured_image } = article
+const Promos = (props: PromosProps) => {
+  const { articles } = props
+  return (
+    <>
+      {articles.map((article, index) => (
+        <Promo key={article.id} article={article} />
+      ))}
+    </>
+  )
+}
 
-    const permalink = getPermalink({
-      year: issue.year,
-      month: issue.month,
-      section: section.slug,
-      slug: article.slug,
-      type: PageType.Article,
-    })
+interface PromoProps {
+  article: Articles
+}
 
-    return (
-      <div
-        key={article.id}
-        className={`pt-1 pb-3 px-3 tablet-lg:px-6 first:pl-0 first:tablet:pr-6 snap-center w-60 desktop:w-1/4 flex-none space-y-3`}
-      >
-        {featured_image && (
-          <div className={`flex-none w-full`}>
-            <FeaturedImage image={featured_image} title={title} hideCaption={true} permalink={permalink} />
-          </div>
-        )}
-        <div className="flex flex-col space-y-6">
-          <div className="space-y-1.5">
-            <Title title={article.title} permalink={permalink} classes="text-xl tablet:text-2xl font-normal" />
-            <Bylines article={article} type={BylineType.CollectionDefault} />
-          </div>
-          <Excerpt excerpt={article.excerpt} classes={`excerpt-md`} />
-        </div>
-      </div>
-    )
+const Promo = (props: PromoProps) => {
+  const { article } = props
+  const { issue, section, title, featured_image, slug, id, excerpt } = props.article
+
+  const [divWidth, setDivWidth] = useState(0)
+  const divRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (divRef.current) {
+        setDivWidth(divRef.current.offsetWidth)
+      }
+    }
+
+    updateWidth()
+    window.addEventListener("resize", updateWidth)
+    return () => window.removeEventListener("resize", updateWidth)
+  }, [])
+
+  const permalink = getPermalink({
+    year: issue.year,
+    month: issue.month,
+    section: section.slug,
+    slug: slug,
+    type: PageType.Article,
   })
 
-  return <>{articles}</>
+  return (
+    <div
+      key={id}
+      className={`pt-1 pb-3 px-3 tablet-lg:px-6 first:pl-0 first:tablet:pr-6 snap-center w-60 desktop:w-1/4 flex-none space-y-3`}
+    >
+      {featured_image && (
+        <div ref={divRef} className={`flex-none w-full bg-pink-300`}>
+          <FeaturedImage
+            containerWidth={divWidth}
+            image={featured_image}
+            title={title}
+            hideCaption={true}
+            permalink={permalink}
+          />
+        </div>
+      )}
+      <div className="flex flex-col space-y-6">
+        <div className="space-y-1.5">
+          <Title title={title} permalink={permalink} classes="text-xl tablet:text-2xl font-normal" />
+          <Bylines article={article} type={BylineType.CollectionDefault} />
+        </div>
+        <Excerpt excerpt={excerpt} classes={`excerpt-md`} />
+      </div>
+    </div>
+  )
 }
 
 export default CollectionDefault
