@@ -67,7 +67,7 @@ const PromosArt = (props: PromoProps) => {
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-3">
           <div className="flex flex-col space-y-3">
             <div className="space-y-1">
-              <Kicker article={article} />
+              <Kicker issue={article.issue} kicker={article.kicker} articleID={article.id} />
               <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
             </div>
             <Bylines article={article} type={BylineType.Default} />
@@ -110,7 +110,7 @@ const LeadPromoArt = (props: LeadPromoArtProps) => {
         <div className="col-span-4 tablet:col-span-6">
           <div className="flex flex-col space-y-3">
             <div className="space-y-1">
-              <Kicker article={article} />
+              <Kicker issue={article.issue} kicker={article.kicker} articleID={article.id} />
               <Title h2 title={article.title} permalink={permalink} classes="text-4xl tablet:text-5xl font-light" />
             </div>
             <Bylines article={article} type={BylineType.Default} />

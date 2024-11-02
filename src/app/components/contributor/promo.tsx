@@ -24,7 +24,7 @@ const Promo = (props: PromoProps) => {
     <div className="py-3 pb-6 flex flex-col space-y-1" itemType="http://schema.org/Article">
       <div className="flex space-x-4 justify-between">
         <div className="space-y-1">
-          <Kicker article={article} />
+          <Kicker issue={article.issue} section={article.section} articleID={article.id} />
           <Title title={title} permalink={permalink} type={TitleType.SectionPromo} />
           <Bylines article={article} type={BylineType.SectionPromo} />
           <div className="text-md font-serif">{parse(excerpt)}</div>

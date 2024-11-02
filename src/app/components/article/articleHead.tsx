@@ -4,10 +4,11 @@ import { stripHtml } from "string-strip-html"
 import parse from "html-react-parser"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSquareFacebook, faTwitter } from "@fortawesome/free-brands-svg-icons"
-import Kicker from "./kicker"
+
 import FeaturedImage from "../featuredImage"
 import Title, { TitleType } from "../collections/promos/title"
 import Bylines, { BylineType } from "../collections/promos/bylines"
+import Kicker from "../collections/promos/kicker"
 
 interface ArticleHeadProps {
   permalink: string
@@ -17,11 +18,9 @@ interface ArticleHeadProps {
 }
 
 const ArticleHead = (props: ArticleHeadProps) => {
-  const { permalink, thisIssueData, currentSection, articleData } = props
+  const { articleData } = props
 
   const { kicker, title, deck, featured_image, header_type } = articleData
-
-  const kickerProps = { kicker, thisIssueData, currentSection }
 
   // const articleShareTools = (
   //   <div className="flex border-2 rail-border p-1 divide-x-2 rail-divide">
@@ -47,7 +46,15 @@ const ArticleHead = (props: ArticleHeadProps) => {
             <div className="col-span-4 tablet-lg:col-span-7 desktop:col-span-6">
               <div className="space-y-9 h-full flex flex-col justify-center">
                 <div className="space-y-6 px-6">
-                  <Kicker centered={true} {...kickerProps} />
+                  <Kicker
+                    kicker={articleData.kicker}
+                    issue={articleData.issue}
+                    section={articleData.section}
+                    order={["section", "issue", "kicker"]}
+                    articleID={articleData.id}
+                    onArticle={true}
+                  />
+
                   <div className="space-y-6">
                     <Title title={title} classes="text-5xl tablet:text-6xl font-light text-center" />
                     {deck && <h2 className="text-center text-2xl font-serif font-light">{parse(deck)}</h2>}
@@ -79,7 +86,15 @@ const ArticleHead = (props: ArticleHeadProps) => {
             <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <Kicker centered={false} {...kickerProps} />
+                  <Kicker
+                    kicker={articleData.kicker}
+                    issue={articleData.issue}
+                    section={articleData.section}
+                    order={["section", "issue", "kicker"]}
+                    articleID={articleData.id}
+                    onArticle={true}
+                  />
+
                   <Title title={title} type={TitleType.ArticleHead} />
                   {deck && <h2 className="text-4xl font-light">{parse(deck)}</h2>}
                 </div>

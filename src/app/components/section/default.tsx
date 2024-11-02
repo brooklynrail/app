@@ -148,7 +148,7 @@ const Promo = ({ article, layoutMode }: PromoProps) => {
         )}
         <div className="flex flex-col space-y-3">
           <div className="space-y-1">
-            <Kicker article={article} />
+            <Kicker issue={article.issue} articleID={article.id} />
             <Title title={article.title} permalink={permalink} classes={titleClasses} />
           </div>
           <Bylines article={article} type={BylineType.CollectionDefault} />

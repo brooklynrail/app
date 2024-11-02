@@ -65,7 +65,7 @@ const PromosMobile = (props: PromoProps) => {
     return (
       <div key={article.id} className="px-3 py-1 snap-center">
         <div className="flex flex-col space-y-3 flex-none w-[calc(100vw-6.5rem)] tablet:w-auto">
-          <Kicker article={article} />
+          <Kicker issue={article.issue} articleID={article.id} />
           {artwork && (
             <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
               <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />

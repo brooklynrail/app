@@ -33,7 +33,7 @@ const SectionCriticsPage = (props: SectionProps) => {
         return (
           <div key={index} className="py-6">
             <div className="px-3 tablet-lg:px-6 py-3">
-              <Kicker article={featuredArticle} />
+              <Kicker issue={featuredArticle.issue} kicker={featuredArticle.kicker} articleID={featuredArticle.id} />
               <h2 className="font-serif font-medium text-3xl tablet-lg:text-4xl">{`Guest Critic: ${guestCritic}`}</h2>
             </div>
             <div className="block">
