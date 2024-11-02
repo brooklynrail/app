@@ -147,7 +147,7 @@ const LeadPromoArt = (props: LeadPromoArtProps) => {
         </div>
         <div className="col-span-4 tablet:col-span-6">
           <div className="flex flex-col space-y-3">
-            <Title h2 title={article.title} permalink={permalink} type={TitleType.Lead} />
+            <Title h2 title={article.title} permalink={permalink} classes="text-4xl tablet:text-5xl font-light" />
             <Bylines article={article} type={BylineType.Default} />
             <Excerpt excerpt={article.excerpt} classes="excerpt-2xl" />
           </div>

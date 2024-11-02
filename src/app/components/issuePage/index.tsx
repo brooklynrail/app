@@ -1,13 +1,12 @@
 "use client"
 import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
+import parse from "html-react-parser"
 import { Articles, Issues } from "../../../../lib/types"
 import { CoverImages } from "../collections/banner/coverImages"
 import Paper, { PaperType } from "../paper"
-import PreviewHeader from "../preview/previewHead"
-import TableOfContents from "./tableOfContents"
 import CoversPopup from "./coversPopup"
-import parse from "html-react-parser"
 import IssueHead from "./head"
+import TableOfContents from "./tableOfContents"
 
 export interface PromoProps {
   currentArticles: Articles[]

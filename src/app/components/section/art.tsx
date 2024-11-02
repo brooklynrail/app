@@ -111,7 +111,7 @@ const LeadPromoArt = (props: LeadPromoArtProps) => {
           <div className="flex flex-col space-y-3">
             <div className="space-y-1">
               <Kicker article={article} />
-              <Title h2 title={article.title} permalink={permalink} type={TitleType.Lead} />
+              <Title h2 title={article.title} permalink={permalink} classes="text-4xl tablet:text-5xl font-light" />
             </div>
             <Bylines article={article} type={BylineType.Default} />
             <Excerpt excerpt={article.excerpt} classes="excerpt-2xl" />
