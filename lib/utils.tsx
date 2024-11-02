@@ -770,6 +770,7 @@ export async function getContributor(slug: string) {
     `&fields[]=articles.articles_contributors_id.featured` +
     `&fields[]=articles.articles_contributors_id.featured_image.id` +
     `&fields[]=articles.articles_contributors_id.featured_image.caption` +
+    `&fields[]=articles.articles_contributors_id.featured_image.alt` +
     `&fields[]=articles.articles_contributors_id.featured_image.filename_disk` +
     `&fields[]=articles.articles_contributors_id.featured_image.width` +
     `&fields[]=articles.articles_contributors_id.featured_image.height` +
@@ -778,15 +779,13 @@ export async function getContributor(slug: string) {
     `&fields[]=articles.articles_contributors_id.issue.year` +
     `&fields[]=articles.articles_contributors_id.issue.month` +
     `&fields[]=articles.articles_contributors_id.issue.slug` +
-    `&fields[]=articles.articles_contributors_id.issue.special_issue` +
+    `&fields[]=articles.articles_contributors_id.issue.published` +
     `&fields[]=articles.articles_contributors_id.section.slug` +
     `&fields[]=articles.articles_contributors_id.section.name` +
     `&fields[]=articles.articles_contributors_id.contributors.contributors_id.id` +
     `&fields[]=articles.articles_contributors_id.contributors.contributors_id.first_name` +
     `&fields[]=articles.articles_contributors_id.contributors.contributors_id.last_name` +
-    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.old_id` +
     `&fields[]=articles.articles_contributors_id.contributors.contributors_id.slug` +
-    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.bio` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=published` +
     `&filter[articles][_nnull]=true` +

@@ -22,11 +22,15 @@ const Promo = (props: PromoProps) => {
 
   return (
     <div className="py-3 pb-6 flex flex-col space-y-1" itemType="http://schema.org/Article">
-      <div className="flex space-x-4 justify-between">
-        <div className="space-y-1">
-          <Kicker issue={article.issue} section={article.section} articleID={article.id} />
-          <Title title={title} permalink={permalink} type={TitleType.SectionPromo} />
-          <Bylines article={article} type={BylineType.SectionPromo} />
+      <div className="flex space-x-3 justify-between">
+        <div className="space-y-6">
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <Kicker issue={article.issue} section={article.section} articleID={article.id} />
+              <Title title={title} permalink={permalink} type={TitleType.SectionPromo} />
+            </div>
+            <Bylines article={article} type={BylineType.SectionPromo} linked={true} />
+          </div>
           <div className="text-md font-serif">{parse(excerpt)}</div>
         </div>
         <div className="w-32 tablet-lg:w-card-lg flex-none">

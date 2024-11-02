@@ -10,7 +10,7 @@ export enum BylineType {
   TOC = "text-sm not-italic inline",
   ArticleHeadDiptych = "text-md tablet-lg:text-lg font-sans not-italic",
   ArticleHead = "text-md tablet-lg:text-lg font-sans not-italic",
-  SectionPromo = "text-md font-sans not-italic",
+  SectionPromo = "font-sans text-sm not-italic",
   CollectionArtSeen = "text-sm font-sans not-italic",
   CollectionBooks = "not-italic text-sm font-sans",
   CollectionDefault = "text-sm tablet:text-md font-sans",
@@ -72,10 +72,12 @@ const Bylines = (props: BylinesProps) => {
               })
 
               return (
-                <Link key={key} rel="author" href={permalink} className="url fn n">
+                <>
                   {!isFirst && separator}
-                  {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
-                </Link>
+                  <Link key={key} rel="author" href={permalink} className="url fn n">
+                    {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
+                  </Link>
+                </>
               )
             }
 
