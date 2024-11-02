@@ -4,6 +4,8 @@ import { getCurrentIssueData, getHomepageData, getNavData } from "../../lib/util
 import { notFound } from "next/navigation"
 import HomePage, { CollectionType } from "./components/homepage"
 
+export const dynamic = "force-static"
+
 export interface HomePageProps {
   navData: Homepage
   homepageData: Homepage
