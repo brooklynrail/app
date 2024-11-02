@@ -63,7 +63,7 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
     )
 
     return (
-      <div ref={layoutContainer} className={`py-6 ${isListMode && `max-w-screen-desktop-lg mx-auto`}`}>
+      <div ref={layoutContainer} className={`py-3 tablet-lg:py-6 ${isListMode && `max-w-screen-desktop-lg mx-auto`}`}>
         {allArticles}
       </div>
     )
@@ -76,7 +76,7 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
   })
 
   return (
-    <div className={`py-6 ${isListMode && `max-w-screen-desktop-lg mx-auto`}`}>
+    <div className={`tablet:px-3 py-3 tablet-lg:py-6 ${isListMode && `max-w-screen-desktop-lg mx-auto`}`}>
       <div
         ref={layoutContainer}
         className={`grid items-start gap-0 grid-cols-1 ${isListMode ? `divide-y rail-divide` : `tablet:grid-cols-3 desktop:grid-cols-4`}`}
@@ -86,21 +86,6 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
     </div>
   )
 }
-
-// interface PromosProps {
-//   articles: Articles[]
-// }
-
-// const Promos = (props: PromosProps) => {
-//   const { articles } = props
-//   return (
-//     <>
-//       {articles.map((article, index) => (
-//         <Promo key={article.id} article={article} />
-//       ))}
-//     </>
-//   )
-// }
 
 interface PromoProps {
   article: Articles
@@ -138,8 +123,12 @@ const Promo = ({ article, layoutMode }: PromoProps) => {
       ? "flex flex-col px-3 py-3"
       : `flex flex-col px-3 pb-3 border-l rail-border ${styles.card} ${layoutMode === LayoutMode.Grid && "h-full"}`
   const contentClasses =
-    layoutMode === LayoutMode.List ? "flex flex-row space-x-12" : "p-3 flex flex-col space-y-6 border-t rail-border"
-  const imageContainerClasses = layoutMode === LayoutMode.List ? "w-52 flex-none" : ""
+    layoutMode === LayoutMode.List
+      ? "flex flex-row space-x-6 desktop:space-x-12"
+      : "p-3 flex flex-col space-y-6 border-t rail-border"
+  const imageContainerClasses = layoutMode === LayoutMode.List ? "w-28 tablet-lg:w-52 flex-none" : ""
+  const titleClasses =
+    layoutMode === LayoutMode.List ? "text-xl tablet:text-3xl font-light" : "text-3xl tablet:text-3xl font-light"
 
   return (
     <div key={article.id} className={containerClasses}>
@@ -158,7 +147,7 @@ const Promo = ({ article, layoutMode }: PromoProps) => {
         <div className="flex flex-col space-y-3">
           <div className="space-y-1">
             <Kicker article={article} />
-            <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-3xl font-light" />
+            <Title title={article.title} permalink={permalink} classes={titleClasses} />
           </div>
           <Bylines article={article} type={BylineType.CollectionDefault} />
           <Excerpt

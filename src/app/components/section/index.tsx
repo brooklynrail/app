@@ -35,6 +35,7 @@ const Section = (props: SectionProps & NavProps) => {
 
   const [articles, setArticles] = useState<Articles[]>(articlesData)
 
+  let hasViews = false
   const allArticles = (() => {
     switch (sectionData.slug) {
       case SectionType.Art:
@@ -46,6 +47,7 @@ const Section = (props: SectionProps & NavProps) => {
       case SectionType.Poetry:
         return <SectionPoetry sectionData={sectionData} articlesData={articles} permalink={permalink} />
       default:
+        hasViews = true
         return (
           <SectionDefault
             sectionData={sectionData}
@@ -86,8 +88,7 @@ const Section = (props: SectionProps & NavProps) => {
           title={sectionData.name}
           description={sectionData.description}
           permalink={permalink}
-          setLayoutMode={setLayoutMode}
-          layoutMode={layoutMode}
+          {...(hasViews ? { setLayoutMode, layoutMode } : {})}
         />
 
         <div className="divide-y rail-divide">{allArticles}</div>
