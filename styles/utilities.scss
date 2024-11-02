@@ -41,11 +41,13 @@ b {
   @apply relative;
 }
 
+// =================================
+// Underlines
+
 a {
-  @apply underline-offset-2;
-  text-decoration: none;
+  @apply no-underline;
   &:hover {
-    text-decoration: underline;
+    @apply underline decoration-1 decoration-dotted underline-offset-4;
   }
 }
 a:hover .media figcaption {

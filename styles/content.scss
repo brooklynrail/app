@@ -21,7 +21,10 @@
   }
 
   a {
-    @apply underline decoration-blue-600;
+    @apply underline decoration-2 decoration-solid decoration-blue-600 underline-offset-4;
+    &:hover {
+      @apply underline decoration-2 underline-offset-4;
+    }
   }
 
   p,
@@ -104,7 +107,7 @@
     @apply font-normal font-sans text-sm;
 
     a {
-      @apply underline;
+      @apply underline decoration-1;
     }
 
     li {
@@ -136,14 +139,7 @@
   pre {
     @apply max-w-none;
   }
-  a {
-    @apply underline text-indigo-700 decoration-sky-500 decoration-dotted underline-offset-4;
-  }
 }
-// .paper .content-bio {
-//   @extend .content;
-//   @apply text-md tablet-lg:text-lg font-normal font-sans;
-// }
 
 figcaption,
 figcaption p {

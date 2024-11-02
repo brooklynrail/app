@@ -2,7 +2,6 @@ import Link from "next/link"
 import { ArticlesContributors } from "../../../../lib/types"
 import parse from "html-react-parser"
 import { Fragment } from "react"
-import style from "./contributorsBox.module.css"
 
 interface ContributorsProps {
   contributors: ArticlesContributors[]
@@ -27,7 +26,7 @@ const ContributorsBox = (props: ContributorsProps) => {
     const hasAuthorName = bio && bio.includes(authorName)
 
     return (
-      <div rel="author" className={`text-lg max-w-[72ex] ${style.author}`} key={key}>
+      <div rel="author" className={`text-lg max-w-[72ex]`} key={key}>
         {(!hasAuthorName || !bio) && <h4 className="text-lg">{authorLink}</h4>}
         {bio &&
           addAuthorLinkToBio({
@@ -39,7 +38,11 @@ const ContributorsBox = (props: ContributorsProps) => {
     )
   })
 
-  return <section className="border-t-[1px] rail-border py-6 font-sans space-y-6">{authors}</section>
+  return (
+    <section className="content">
+      <div className="border-t-[1px] rail-border py-6 font-sans space-y-6">{authors}</div>
+    </section>
+  )
 }
 
 interface AuthorLinkProps {

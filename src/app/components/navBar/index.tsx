@@ -15,7 +15,10 @@ const NavBar = (props: NavBarProps) => {
 
   const home = (
     <li>
-      <Link href={`/`} className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase">
+      <Link
+        href={`/`}
+        className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase hover:underline-offset-4 hover:decoration-solid"
+      >
         Home
       </Link>
     </li>
@@ -60,7 +63,10 @@ const NavBar = (props: NavBarProps) => {
 
     return (
       <li key={`nav-${thisCollection.id}`}>
-        <Link href={permalink} className="py-2 px-2 tablet:px-3 text-nowrap inline-block text-xs font-bold uppercase">
+        <Link
+          href={permalink}
+          className="py-2 px-2 tablet:px-3 text-nowrap inline-block text-xs font-bold uppercase hover:underline-offset-4 hover:decoration-solid"
+        >
           {thisCollection.title}
         </Link>
       </li>
