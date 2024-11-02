@@ -19,7 +19,7 @@ const SectionHead = (props: SectionHeadProps) => {
   const handleListView = () => setLayoutMode && setLayoutMode(LayoutMode.List)
 
   return (
-    <div className="px-3 tablet:px-6 sticky top-12 z-10 section-head">
+    <div className="px-3 tablet:px-6 sticky top-11 tablet-lg:top-13 z-10 section-head">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">
           <div className="flex justify-between items-center space-x-6 py-3 pb-1.5 tablet:pb-3 tablet:pt-6">
