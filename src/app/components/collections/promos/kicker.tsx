@@ -6,6 +6,7 @@ interface KickerProps {
   issue?: Issues
   section?: Sections
   onArticle?: boolean // Optional prop to control the size
+  isCentered?: boolean // Optional prop to control the size
   order?: Array<"issue" | "section" | "kicker"> // Optional prop to control the order
   articleID: string
 }
@@ -49,7 +50,8 @@ const Kicker = (props: KickerProps) => {
     return null
   }
 
-  const articleStyles = props.onArticle ? "text-sm text-center font-normal" : "text-xs font-medium"
+  const centered = props.isCentered ? "text-center" : ""
+  const articleStyles = props.onArticle ? `text-sm font-normal ${centered}` : `text-xs font-medium ${centered}`
 
   return (
     <p className={`${articleStyles} uppercase divide-x divide-solid divide-zinc-600`}>

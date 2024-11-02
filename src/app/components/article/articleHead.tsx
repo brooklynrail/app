@@ -52,6 +52,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
                     section={articleData.section}
                     order={["section", "issue", "kicker"]}
                     articleID={articleData.id}
+                    isCentered={true}
                     onArticle={true}
                   />
 
