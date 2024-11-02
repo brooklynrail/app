@@ -9,7 +9,7 @@ import SectionDefault from "./default"
 import SectionArtSeen from "./artseen"
 import SectionCriticsPage from "./criticsPage"
 import SectionPoetry from "./poetry"
-import { LayoutMode } from "@/app/hooks/useMasonry"
+import { LayoutMode } from "@/app/hooks/useLayout"
 
 interface NavProps {
   navData: Homepage
@@ -31,7 +31,7 @@ const Section = (props: SectionProps & NavProps) => {
   const { sectionData, permalink, articlesData, navData } = props
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
-  const [layoutMode, setLayoutMode] = useState<LayoutMode>(LayoutMode.Block)
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>(LayoutMode.Grid)
 
   const [articles, setArticles] = useState<Articles[]>(articlesData)
 

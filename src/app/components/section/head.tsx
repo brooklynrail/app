@@ -1,7 +1,7 @@
 "use client"
 import parse from "html-react-parser"
 import SearchField from "../search/searchField"
-import { LayoutMode } from "@/app/hooks/useMasonry"
+import { LayoutMode } from "@/app/hooks/useLayout"
 
 interface SectionHeadProps {
   title: string
@@ -15,8 +15,7 @@ const SectionHead = (props: SectionHeadProps) => {
   const { title, description, layoutMode, setLayoutMode } = props
 
   // Functions to toggle between layout modes
-  const handleMasonryOn = () => setLayoutMode(LayoutMode.Block)
-  const handleMasonryOff = () => setLayoutMode(LayoutMode.Grid)
+  const handleGridView = () => setLayoutMode(LayoutMode.Grid)
   const handleListView = () => setLayoutMode(LayoutMode.List)
 
   return (
@@ -29,10 +28,7 @@ const SectionHead = (props: SectionHeadProps) => {
               {description && <div className="text-sm">{parse(description)}</div>}
             </div>
             <div className="space-x-3">
-              <button onClick={handleMasonryOn} className="">
-                <BlockIcon active={layoutMode === LayoutMode.Block} />
-              </button>
-              <button onClick={handleMasonryOff} className="">
+              <button onClick={handleGridView} className="">
                 <BlockIcon active={layoutMode === LayoutMode.Grid} />
               </button>
               <button onClick={handleListView} className="">
@@ -54,8 +50,8 @@ interface IconProps {
 }
 
 const BlockIcon = ({ active }: IconProps) => {
-  const fill = active ? "white" : "#18181B"
-  const stroke = active ? "#18181B" : "white"
+  const fill = active ? "#18181B" : "white"
+  const stroke = active ? "white" : "#18181B"
   return (
     <>
       <svg
@@ -101,8 +97,8 @@ const BlockIcon = ({ active }: IconProps) => {
 }
 
 const ListIcon = ({ active }: IconProps) => {
-  const fill = active ? "white" : "#18181B"
-  const stroke = active ? "#18181B" : "white"
+  const fill = active ? "#18181B" : "white"
+  const stroke = active ? "white" : "#18181B"
   return (
     <svg
       className="shadow-lg"
