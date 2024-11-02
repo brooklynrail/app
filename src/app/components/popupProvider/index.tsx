@@ -53,7 +53,9 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   useEffect(() => {
     if (viewedDonateCount !== null && viewedDonateCount < 2) {
       setPopupType("donate")
-      setShowPopup(true)
+      setTimeout(() => {
+        setShowPopup(true)
+      }, 3500)
       const newCount = viewedDonateCount + 1
       setViewedDonateCount(newCount)
       setCookie("viewDonatePopup", newCount.toString(), 1) // Expires in 1 hour
