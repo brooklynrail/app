@@ -15,7 +15,9 @@ const PageBody = (props: PageBodyProps) => {
   return (
     <div className="divide-y rail-divide space-y-12">
       {pageData.body_text && (
-        <div className={`content`}>{replaceShortcodes({ html: pageData.body_text, images: pageData.images })}</div>
+        <div className={`content content-page`}>
+          {replaceShortcodes({ html: pageData.body_text, images: pageData.images })}
+        </div>
       )}
       <Board pageData={pageData} />
       <Staff pageData={pageData} />

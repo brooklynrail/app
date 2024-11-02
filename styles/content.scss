@@ -1,5 +1,5 @@
 .content {
-  @apply text-2xl tablet-lg:text-2xl font-normal font-serif;
+  @apply text-xl tablet-lg:text-2xl font-normal font-serif;
 
   h1 {
     @apply hidden;
@@ -128,6 +128,9 @@
       @apply max-w-[100ex];
     }
   }
+}
+.content-page {
+  @apply text-xl;
 }
 
 .paper-event .content {
