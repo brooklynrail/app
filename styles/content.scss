@@ -1,5 +1,5 @@
 .content {
-  @apply text-xl tablet-lg:text-2xl font-normal font-serif;
+  @apply text-xl tablet-lg:text-2xl font-normal font-serif break-words;
 
   h1 {
     @apply hidden;
@@ -104,7 +104,7 @@
   }
   .endnote {
     @apply my-8;
-    @apply font-normal font-sans text-sm;
+    @apply font-normal font-sans text-sm break-words;
 
     a {
       @apply underline decoration-1;
