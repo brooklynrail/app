@@ -76,7 +76,7 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
   })
 
   return (
-    <div className={`tablet:px-3 py-3 tablet-lg:py-6 ${isListMode && `max-w-screen-desktop-lg mx-auto`}`}>
+    <div className={`py-3 tablet-lg:py-6 ${isListMode && `tablet:px-3 max-w-screen-desktop-lg mx-auto`}`}>
       <div
         ref={layoutContainer}
         className={`grid items-start gap-0 grid-cols-1 ${isListMode ? `divide-y rail-divide` : `tablet:grid-cols-3 desktop:grid-cols-4`}`}
@@ -121,14 +121,16 @@ const Promo = ({ article, layoutMode }: PromoProps) => {
   const containerClasses =
     layoutMode === LayoutMode.List
       ? "flex flex-col px-3 py-3"
-      : `flex flex-col px-3 pb-3 border-l rail-border ${styles.card} ${layoutMode === LayoutMode.Grid && "h-full"}`
+      : `flex flex-col tablet:px-3 pb-3 border-l rail-border ${styles.card} ${layoutMode === LayoutMode.Grid && "h-full"}`
   const contentClasses =
     layoutMode === LayoutMode.List
       ? "flex flex-row space-x-6 desktop:space-x-12"
       : "p-3 flex flex-col space-y-6 border-t rail-border"
   const imageContainerClasses = layoutMode === LayoutMode.List ? "w-28 tablet-lg:w-52 flex-none" : ""
   const titleClasses =
-    layoutMode === LayoutMode.List ? "text-xl tablet:text-3xl font-light" : "text-3xl tablet:text-3xl font-light"
+    layoutMode === LayoutMode.List
+      ? "text-xl tablet:text-2xl desktop:text-3xl font-light"
+      : "text-2xl tablet:text-2xl desktop:text-3xl font-light"
 
   return (
     <div key={article.id} className={containerClasses}>
