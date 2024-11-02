@@ -8,8 +8,8 @@ const PopupDonate = () => {
 
   const [donateAmt, setDonateAmt] = useState<number | null>(null) // State to hold fetched donation data
   const [donateCount, setDonateCount] = useState<number | null>(null) // State to hold fetched donation data
-  // const [email, setEmail] = useState("") // State to capture email
-  // const [formStatus, setFormStatus] = useState<string | null>(null) // Status for the form submission
+  const [email, setEmail] = useState("") // State to capture email
+  const [formStatus, setFormStatus] = useState<string | null>(null) // Status for the form submission
 
   // Use useEffect to fetch donation data when the component is mounted
   useEffect(() => {

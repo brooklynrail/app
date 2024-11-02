@@ -56,7 +56,7 @@ const Paper = (props: PaperProps) => {
           <Footer />
           <Ad970 />
           <Menu collections={navData.collections} />
-          <PopupDonate />
+          {!isHomepage && <PopupDonate />}
         </div>
       </MenuProvider>
     </PopupProvider>
