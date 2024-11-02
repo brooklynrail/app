@@ -49,7 +49,7 @@ const Promos = (props: PromoProps) => {
       <div key={article.id} className={`pt-1 pb-3 px-6 first:pl-0 first:tablet:pr-6 snap-center`}>
         <div className={`flex flex-col w-[calc(100vw-9.5rem)] tablet:w-auto space-y-3`}>
           {featured_image && (
-            <div className={`flex-none w-32 tablet:w-card ${i === 0 ? "tablet-lg:w-[476px]" : "tablet-lg:w-44"}`}>
+            <div className={`flex-none tablet:w-card ${i === 0 ? "tablet-lg:w-[476px]" : "tablet-lg:w-44"}`}>
               <FeaturedImage image={featured_image} title={title} hideCaption={true} permalink={permalink} />
             </div>
           )}
