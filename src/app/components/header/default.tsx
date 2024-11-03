@@ -12,7 +12,7 @@ const HeaderDefault = (props: HeaderProps) => {
   const permalink = getPermalink({
     type: PageType.Home,
   })
-  const subheadFill = theme === "dark" ? "fill-zinc-800" : "fill-zinc-800"
+  const subheadFill = theme === "dark" ? "fill-slate-50" : "fill-zinc-800"
 
   return (
     <header id={styles.rail_header} className={`border-b rail-border rail-header-${type}`}>
