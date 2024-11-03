@@ -55,11 +55,11 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
           })
           return (
             <div key={index} className="group divide-y rail-divide">
-              <div className="p-3 tablet-lg:px-6">
-                <h2 className="text-lg tablet-lg:text-2xl font-bold uppercase">{issueTitle}</h2>
+              <div className="p-3 tablet:px-6">
+                <h2 className="text-lg tablet:text-2xl font-bold uppercase">{issueTitle}</h2>
               </div>
               <div className="py-3">
-                <div className={isListMode ? `max-w-screen-desktop-lg mx-auto` : ``}>
+                <div className={isListMode ? `tablet:px-3 max-w-screen-desktop-lg mx-auto` : ``}>
                   <div
                     className={`grid items-start gap-0 grid-cols-1 ${isListMode ? `divide-y rail-divide` : `tablet:grid-cols-3 desktop:grid-cols-4`}`}
                   >
@@ -139,12 +139,12 @@ const Promo = ({ article, layoutMode, priority, framedImage }: PromoProps) => {
     layoutMode === LayoutMode.List
       ? "flex-row space-x-6 desktop:space-x-12"
       : `p-3 flex-col border-t rail-border ${isArtSeen ? `space-y-3` : `space-y-6`}`
-  const imageContainerClasses = layoutMode === LayoutMode.List ? "w-28 tablet-lg:w-52 flex-none" : ``
+  const imageContainerClasses = layoutMode === LayoutMode.List ? "w-28 tablet-lg:w-36 flex-none" : ``
   const titleClasses =
     layoutMode === LayoutMode.List
-      ? "text-xl tablet:text-2xl desktop:text-3xl"
+      ? "text-xl tablet:text-xl desktop:text-xl"
       : isArtSeen
-        ? `text-lg`
+        ? `text-xl`
         : `text-2xl tablet:text-2xl desktop:text-3xl`
 
   return (
@@ -173,7 +173,7 @@ const Promo = ({ article, layoutMode, priority, framedImage }: PromoProps) => {
             {!isArtSeen && <Kicker issue={article.issue} articleID={article.id} />}
             <Title title={article.title} permalink={permalink} classes={`font-light ${titleClasses}`} />
           </div>
-          <Bylines article={article} type={BylineType.CollectionDefault} />
+          <Bylines article={article} type={BylineType.SectionDefault} />
           {!isArtSeen && (
             <Excerpt
               excerpt={article.excerpt}

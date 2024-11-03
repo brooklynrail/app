@@ -14,6 +14,7 @@ export enum BylineType {
   CollectionArtSeen = "text-sm font-sans not-italic",
   CollectionBooks = "not-italic text-sm font-sans",
   CollectionDefault = "text-sm tablet:text-md font-sans",
+  SectionDefault = "text-sm font-sans",
   CollectionDance = "text-sm not-italic font-sans",
   TributeArticle = "text-lg tablet-lg:text-lg font-bold font-sans not-italic",
   TributeNextPrev = "text-sm tablet-lg:text-md font-medium font-sans not-italic",
@@ -93,6 +94,7 @@ const Bylines = (props: BylinesProps) => {
                   type === BylineType.CollectionBooks ||
                   type === BylineType.CollectionDance ||
                   type === BylineType.DancePromo ||
+                  type === BylineType.SectionDefault ||
                   type === BylineType.CollectionDefault ||
                   type === BylineType.TOC
                     ? "font-bold"
