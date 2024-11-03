@@ -9,49 +9,48 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
 
   // Memoize the current index to avoid recalculating on each key press
   const currentIndex = useMemo(() => {
-    return articles.findIndex((article) => article.slug === currentArticle.slug)
-  }, [articles, currentArticle.slug])
+    return articles.findIndex((article) => article.slug === articleSlug)
+  }, [articles, articleSlug])
 
   // Function to fetch and set a new article
-  const fetchAndSetArticle = useCallback(
-    async (slug: string) => {
-      if (slug === currentArticle.slug) return // Avoid unnecessary fetch if slug is the same
-      try {
-        const response = await fetch(`/api/article/${slug}`)
-        if (!response.ok) throw new Error("Failed to fetch article")
+  const fetchAndSetArticle = useCallback(async (slug: string) => {
+    try {
+      const response = await fetch(`/api/article/${slug}`)
+      if (!response.ok) throw new Error("Failed to fetch article")
 
-        const newArticle: Articles = await response.json()
-        setCurrentArticle(newArticle)
+      const newArticle: Articles = await response.json()
+      setCurrentArticle(newArticle) // Update the displayed article
 
-        // Generate permalink
-        let articlePermalink = getPermalink({
-          year: newArticle.issue.year,
-          month: newArticle.issue.month,
-          section: newArticle.section.slug,
+      // Generate permalink
+      let articlePermalink = getPermalink({
+        year: newArticle.issue.year,
+        month: newArticle.issue.month,
+        section: newArticle.section.slug,
+        slug: newArticle.slug,
+        type: PageType.Article,
+      })
+      if (newArticle.tribute) {
+        articlePermalink = getPermalink({
+          tributeSlug: newArticle.tribute.slug,
           slug: newArticle.slug,
-          type: PageType.Article,
+          type: PageType.TributeArticle,
         })
-        if (newArticle.tribute) {
-          articlePermalink = getPermalink({
-            tributeSlug: newArticle.tribute.slug,
-            slug: newArticle.slug,
-            type: PageType.TributeArticle,
-          })
-        }
-
-        // Update the URL without reloading the page
-        window.history.pushState({}, "", articlePermalink)
-      } catch (error) {
-        console.error("Failed to fetch new article data:", error)
       }
-    },
-    [currentArticle.slug],
-  )
 
-  // Effect to fetch the article when articleSlug changes
+      // Update the URL without reloading the page
+      window.history.pushState({}, "", articlePermalink)
+      setArticleSlug(slug) // Ensure state sync with the new article slug
+    } catch (error) {
+      console.error("Failed to fetch new article data:", error)
+    }
+  }, [])
+
+  // Update `currentArticle` when `articleSlug` changes
   useEffect(() => {
-    fetchAndSetArticle(articleSlug)
-  }, [articleSlug, fetchAndSetArticle])
+    if (articleSlug !== currentArticle.slug) {
+      fetchAndSetArticle(articleSlug)
+    }
+  }, [articleSlug, currentArticle.slug, fetchAndSetArticle])
 
   // Keyboard navigation handler
   const handleKeyDown = useCallback(
