@@ -62,14 +62,17 @@ const SectionArtSeen = (props: SectionProps) => {
           return groups
         }
 
-        const articleGroups = groupArray(issueArticles, groupCount).map((group, i) => (
-          <div
-            key={`group-${group[0].id}`}
-            className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide py-3 px-3"
-          >
-            <Promos articles={group} />
-          </div>
-        ))
+        const articleGroups = groupArray(issueArticles, groupCount).map((group, i) => {
+          const priority = index === 0 && i < 3 ? true : false
+          return (
+            <div
+              key={`group-${group[0].id}`}
+              className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide py-3 px-3"
+            >
+              <Promos articles={group} priority={priority} />
+            </div>
+          )
+        })
 
         return (
           <div key={index} className="divide-y rail-divide">
@@ -86,6 +89,7 @@ const SectionArtSeen = (props: SectionProps) => {
 
 interface PromoProps {
   articles: Articles[]
+  priority: boolean
 }
 
 const Promos = (props: PromoProps) => {
@@ -103,7 +107,15 @@ const Promos = (props: PromoProps) => {
     return (
       <div key={article.id} className={`col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop:col-span-3`}>
         <div className="p-3 flex flex-col space-y-6">
-          {artwork && <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />}
+          {artwork && (
+            <FeaturedImage
+              priority={props.priority}
+              image={artwork}
+              title={title}
+              hideCaption={true}
+              permalink={permalink}
+            />
+          )}
           <div className="flex flex-col space-y-3">
             <Title title={article.title} permalink={permalink} classes="text-md tablet:text-xl font-light" />
             <Bylines article={article} type={BylineType.Default} />

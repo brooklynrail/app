@@ -11,11 +11,12 @@ interface FeaturedImageProps {
   hideCaption?: boolean
   permalink?: string
   sizes?: string
+  priority?: boolean
   containerWidth?: number
 }
 
 const FeaturedImage = (props: FeaturedImageProps) => {
-  const { containerWidth } = props
+  const { containerWidth, priority } = props
   const { filename_disk, caption, width, height } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
   const alt = caption ? caption : `${stripHtml(props.title).result}`
@@ -25,7 +26,8 @@ const FeaturedImage = (props: FeaturedImageProps) => {
   const image = (
     <>
       <Image
-        priority
+        priority={priority ? priority : false}
+        data-image={src}
         src={src}
         sizes={sizes}
         width={width}

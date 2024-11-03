@@ -130,7 +130,7 @@ const EventCard = (props: EventCardProps) => {
         {main_image && (
           <Image
             className="absolute -top-0 left-0 right-0 bottom-0"
-            priority
+            priority={true}
             id={`event-${slug}`}
             src={main_image}
             width={128}

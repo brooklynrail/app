@@ -68,7 +68,7 @@ const ArticleHead = (props: ArticleHeadProps) => {
             </div>
 
             <div className="col-span-4 tablet-lg:col-span-5 desktop:col-span-4">
-              {featured_image ? <FeaturedImage image={featured_image} title={title} /> : null}
+              {featured_image ? <FeaturedImage image={featured_image} title={title} priority={true} /> : null}
             </div>
           </div>
         </header>

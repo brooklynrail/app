@@ -26,15 +26,6 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
   const grouped = false
 
   if (grouped) {
-    // Utility function to split array into groups
-    const groupArray = (array: Articles[], groupSize: number) => {
-      const groups = []
-      for (let i = 0; i < array.length; i += groupSize) {
-        groups.push(array.slice(i, i + groupSize))
-      }
-      return groups
-    }
-
     // Take all of the articles,
     // and group articles by their respective issue
     const articlesByIssue = groupByIssue(articlesData)
@@ -46,7 +37,8 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
           const issueArticles = articlesByIssue[issueId]
           const issueTitle = issueArticles[0]?.issue.title || "Untitled Issue" // Assuming issue title is the same for all articles in the issue
           const thisGroup = issueArticles.map((article, i) => {
-            return <Promo key={article.id} article={article} layoutMode={props.layoutMode} />
+            const priority = index === 0 && i < 3 ? true : false
+            return <Promo key={article.id} article={article} layoutMode={props.layoutMode} priority={priority} />
           })
           return (
             <div>
@@ -72,7 +64,8 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
   // ==================================
   // All the articles
   const allArticles = articlesData.map((article, i) => {
-    return <Promo key={article.id} article={article} layoutMode={props.layoutMode} />
+    const priority = i < 3 ? true : false
+    return <Promo key={article.id} article={article} layoutMode={props.layoutMode} priority={priority} />
   })
 
   return (
@@ -90,9 +83,10 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
 interface PromoProps {
   article: Articles
   layoutMode: LayoutMode
+  priority: boolean
 }
 
-const Promo = ({ article, layoutMode }: PromoProps) => {
+const Promo = ({ article, layoutMode, priority }: PromoProps) => {
   const { issue, section, title, featured_image, featured_artwork, slug, excerpt } = article
   const [divWidth, setDivWidth] = useState(0)
   const divRef = useRef<HTMLDivElement>(null)
@@ -143,6 +137,8 @@ const Promo = ({ article, layoutMode }: PromoProps) => {
               title={title}
               hideCaption={true}
               permalink={permalink}
+              priority={priority}
+              sizes={layoutMode === LayoutMode.Grid ? `30vw` : `20vw`}
             />
           </div>
         )}

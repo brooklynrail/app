@@ -23,6 +23,7 @@ const SectionCriticsPage = (props: SectionProps) => {
       {Object.keys(articlesByIssue).map((issueId, index) => {
         const issueArticles = articlesByIssue[issueId]
 
+        const priority = index === 0 ? true : false
         // get the first article where featured is true, if none, get the first article in the array
         const featuredArticle = issueArticles.find((article) => article.featured === true) || issueArticles[0]
         const featuredContributor = featuredArticle.contributors[0].contributors_id
@@ -38,7 +39,7 @@ const SectionCriticsPage = (props: SectionProps) => {
             </div>
             <div className="block">
               <Frame
-                LeadPromo={<LeadPromo article={featuredArticle} />}
+                LeadPromo={<LeadPromo priority={priority} article={featuredArticle} />}
                 Promos={<Promos articles={issueArticles} />}
                 alt={false}
               />
@@ -52,9 +53,10 @@ const SectionCriticsPage = (props: SectionProps) => {
 
 interface LeadPromoProps {
   article: Articles
+  priority: boolean
 }
 const LeadPromo = (props: LeadPromoProps) => {
-  const { article } = props
+  const { article, priority } = props
   const { title, issue, section, featured_artwork, featured_image } = article
 
   const artwork = featured_artwork ? featured_artwork : featured_image
@@ -72,7 +74,13 @@ const LeadPromo = (props: LeadPromoProps) => {
         <div className="col-span-4 tablet:col-span-2" itemType="http://schema.org/Article">
           {artwork && (
             <div className="">
-              <FeaturedImage image={artwork} hideCaption={true} title={title} permalink={permalink} />
+              <FeaturedImage
+                priority={priority}
+                image={artwork}
+                hideCaption={true}
+                title={title}
+                permalink={permalink}
+              />
             </div>
           )}
         </div>
