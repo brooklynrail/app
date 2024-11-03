@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef, useState } from "react"
 import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import FeaturedImage from "../featuredImage"
@@ -94,6 +95,20 @@ const Promos = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
     const { issue, section, title, featured_artwork, featured_image, kicker } = article
     const artwork = featured_artwork ? featured_artwork : featured_image
+    const [divWidth, setDivWidth] = useState(0)
+    const divRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+      const updateWidth = () => {
+        if (divRef.current) {
+          setDivWidth(divRef.current.offsetWidth)
+        }
+      }
+      updateWidth()
+      window.addEventListener("resize", updateWidth)
+      return () => window.removeEventListener("resize", updateWidth)
+    }, [])
+
     const permalink = getPermalink({
       year: issue.year,
       month: issue.month,
@@ -105,8 +120,9 @@ const Promos = (props: PromoProps) => {
     return (
       <div key={article.id} className="py-6 pb-8 flex flex-col space-y-3">
         {artwork && (
-          <div className="">
+          <div className="" ref={divRef}>
             <FeaturedImage
+              containerWidth={divWidth}
               image={artwork}
               title={title}
               hideCaption={true}
