@@ -3,6 +3,12 @@
   @apply border-l-0;
 }
 
+@media (max-width: 640px) {
+  .card:first-child > div {
+    @apply border-t-0;
+    // @apply bg-green-100;
+  }
+}
 /* Tablet view - applies only for 3-column grid between 640px and 1023px */
 @media (min-width: 640px) and (max-width: 1023px) {
   .card:nth-child(3n + 1) {

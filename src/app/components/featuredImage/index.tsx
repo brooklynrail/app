@@ -13,13 +13,18 @@ interface FeaturedImageProps {
   sizes?: string
   priority?: boolean
   containerWidth?: number
+  isFramed?: boolean
 }
 
 const FeaturedImage = (props: FeaturedImageProps) => {
-  const { containerWidth, priority } = props
+  const { containerWidth, priority, isFramed } = props
   const { filename_disk, caption, width, height } = props.image
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
-  const alt = caption ? caption : `${stripHtml(props.title).result}`
+  const alt = props.image.alt
+    ? props.image.alt
+    : caption
+      ? `${stripHtml(caption).result}`
+      : `${stripHtml(props.title).result}`
   const isPortrait = containerWidth && height > width
   const sizes = props.sizes ? props.sizes : `(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw`
 
@@ -46,11 +51,13 @@ const FeaturedImage = (props: FeaturedImageProps) => {
 
   if (props.permalink) {
     return (
-      <div>
-        <Link className={styles.media} title={`Visit ${stripHtml(props.title).result}`} href={props.permalink}>
-          {image}
-        </Link>
-      </div>
+      <Link
+        className={`${styles.media} ${isFramed ? `aspect-square flex flex-col justify-center items-center` : ``}`}
+        title={`Visit ${stripHtml(props.title).result}`}
+        href={props.permalink}
+      >
+        {image}
+      </Link>
     )
   }
   return <div className={styles.media}>{image}</div>

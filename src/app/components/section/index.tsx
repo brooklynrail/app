@@ -1,15 +1,12 @@
 "use client"
-
 import { useState } from "react"
 import { Articles, Homepage, Sections } from "../../../../lib/types"
 import Paper, { PaperType } from "../paper"
 import SectionArt from "./art"
 import SectionHead from "./head"
-import SectionDefault from "./default"
-import SectionArtSeen from "./artseen"
+import SectionDefault, { LayoutMode } from "./default"
 import SectionCriticsPage from "./criticsPage"
 import SectionPoetry from "./poetry"
-import { LayoutMode } from "@/app/hooks/useLayout"
 
 interface NavProps {
   navData: Homepage
@@ -35,25 +32,37 @@ const Section = (props: SectionProps & NavProps) => {
 
   const [articles, setArticles] = useState<Articles[]>(articlesData)
 
-  let hasViews = false
+  let hasMultipleLayouts = false
   const allArticles = (() => {
     switch (sectionData.slug) {
       case SectionType.Art:
         return <SectionArt sectionData={sectionData} articlesData={articles} permalink={permalink} />
       case SectionType.ArtSeen:
-        return <SectionArtSeen sectionData={sectionData} articlesData={articles} permalink={permalink} />
-      case SectionType.CriticsPage:
-        return <SectionCriticsPage sectionData={sectionData} articlesData={articles} permalink={permalink} />
-      case SectionType.Poetry:
-        return <SectionPoetry sectionData={sectionData} articlesData={articles} permalink={permalink} />
-      default:
-        hasViews = true
+        hasMultipleLayouts = true
         return (
           <SectionDefault
             sectionData={sectionData}
             articlesData={articles}
             permalink={permalink}
             layoutMode={layoutMode}
+            grouped={true}
+            framedImage={true}
+          />
+        )
+      case SectionType.CriticsPage:
+        return <SectionCriticsPage sectionData={sectionData} articlesData={articles} permalink={permalink} />
+      case SectionType.Poetry:
+        return <SectionPoetry sectionData={sectionData} articlesData={articles} permalink={permalink} />
+      default:
+        hasMultipleLayouts = true
+        return (
+          <SectionDefault
+            sectionData={sectionData}
+            articlesData={articles}
+            permalink={permalink}
+            layoutMode={layoutMode}
+            grouped={false}
+            framedImage={false}
           />
         )
     }
@@ -88,7 +97,9 @@ const Section = (props: SectionProps & NavProps) => {
           title={sectionData.name}
           description={sectionData.description}
           permalink={permalink}
-          {...(hasViews ? { setLayoutMode, layoutMode } : {})}
+          hasMultipleLayouts={hasMultipleLayouts}
+          layoutMode={layoutMode}
+          setLayoutMode={setLayoutMode}
         />
 
         <div className="divide-y rail-divide">{allArticles}</div>
