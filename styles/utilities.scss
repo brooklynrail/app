@@ -53,3 +53,25 @@ a {
 a:hover .media figcaption {
   text-decoration: none !important;
 }
+
+/* Article animation */
+.article-container {
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.article-enter {
+  opacity: 0;
+  transform: translateX(20%);
+}
+
+.article-exit {
+  opacity: 0;
+  transform: translateX(-20%);
+}
+
+.article-active {
+  opacity: 1;
+  transform: translateX(0);
+}

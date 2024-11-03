@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { Articles } from "../../../lib/types"
 import { useSwipeable } from "react-swipeable"
@@ -9,13 +7,13 @@ import { sendGAEvent } from "@next/third-parties/google"
 export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[]) => {
   const [currentArticle, setCurrentArticle] = useState<Articles>(initialArticle)
   const [articleSlug, setArticleSlug] = useState<string>(initialArticle.slug)
+  const [animationState, setAnimationState] = useState("article-active") // New state for animations
 
-  // Memoize the current index to avoid recalculating on each key press
+  // Memoize the current index
   const currentIndex = useMemo(() => {
     return articles.findIndex((article) => article.slug === articleSlug)
   }, [articles, articleSlug])
 
-  // GA Event tracking function using sendGAEvent
   const handleGAEvent = (
     action: "page_view" | "article_navigation",
     method: "swipe" | "keyboard" | "click",
@@ -29,7 +27,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
       type: PageType.Article,
     })
 
-    // Log page view in GA
+    // Log page view
     if (action === "page_view") {
       sendGAEvent("page_view", articlePermalink, {
         page_path: articlePermalink,
@@ -37,7 +35,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
       })
     }
 
-    // Log custom event for navigation method
+    // Log navigation event
     if (action === "article_navigation") {
       sendGAEvent("event", "article_navigation", {
         event_category: "navigation",
@@ -48,16 +46,20 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     }
   }
 
-  // Function to fetch and set a new article
   const fetchAndSetArticle = useCallback(async (slug: string, method: "swipe" | "keyboard" | "click") => {
     try {
+      setAnimationState("article-exit") // Set exit animation
+
       const response = await fetch(`/api/article/${slug}`)
       if (!response.ok) throw new Error("Failed to fetch article")
 
       const newArticle: Articles = await response.json()
-      setCurrentArticle(newArticle) // Update the displayed article
+      setTimeout(() => {
+        setCurrentArticle(newArticle) // Update article after exit animation
+        setAnimationState("article-enter") // Set enter animation
+      }, 300) // Duration of the exit animation
 
-      // Update the URL without reloading the page
+      // Update URL
       const articlePermalink = getPermalink({
         year: newArticle.issue.year,
         month: newArticle.issue.month,
@@ -66,17 +68,19 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
         type: PageType.Article,
       })
       window.history.pushState({}, "", articlePermalink)
-      setArticleSlug(slug) // Ensure state sync with the new article slug
+      setArticleSlug(slug)
 
-      // Trigger Google Analytics events
-      handleGAEvent("page_view", method, newArticle) // Log page view
-      handleGAEvent("article_navigation", method, newArticle) // Log navigation event
+      // Trigger GA events
+      handleGAEvent("page_view", method, newArticle)
+      handleGAEvent("article_navigation", method, newArticle)
+
+      // Reset to active animation
+      setTimeout(() => setAnimationState("article-active"), 300) // Duration of the enter animation
     } catch (error) {
       console.error("Failed to fetch new article data:", error)
     }
   }, [])
 
-  // Trigger article fetching whenever `articleSlug` changes
   useEffect(() => {
     if (articleSlug !== currentArticle.slug) {
       fetchAndSetArticle(articleSlug, "click")
@@ -95,13 +99,11 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     [articles, currentIndex, fetchAndSetArticle],
   )
 
-  // Attach the keyboard event listener once
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [handleKeyDown])
 
-  // Swipe handlers
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
       if (currentIndex < articles.length - 1) {
@@ -121,5 +123,6 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     currentArticle,
     setArticleSlug,
     swipeHandlers,
+    animationState, // Return animation state
   }
 }
