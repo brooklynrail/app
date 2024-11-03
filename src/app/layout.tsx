@@ -1,3 +1,4 @@
+import localFont from "@next/font/local"
 import "../../styles/globals.scss"
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
@@ -8,6 +9,107 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "./components/theme"
 
 const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
+
+// FONTS ==============================================
+// https://nextjs.org/docs/app/building-your-application/optimizing/fonts#local-fonts
+
+// Untitled Sans Font Configuration
+const untitledSans = localFont({
+  src: [
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-Light.woff2",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-LightItalic.woff2",
+      weight: "300",
+      style: "italic",
+    },
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-RegularItalic.woff2",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-MediumItalic.woff2",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-BoldItalic.woff2",
+      weight: "700",
+      style: "italic",
+    },
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-Black.woff2",
+      weight: "900",
+      style: "normal",
+    },
+    {
+      path: "./fonts/untitled-sans/UntitledSansWeb-BlackItalic.woff2",
+      weight: "900",
+      style: "italic",
+    },
+  ],
+  variable: "--font-family-sans",
+  display: "swap",
+})
+
+// Untitled Serif Font Configuration
+const untitledSerif = localFont({
+  src: [
+    {
+      path: "./fonts/untitled-serif/UntitledSerifWeb-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/untitled-serif/UntitledSerifWeb-RegularItalic.woff2",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/untitled-serif/UntitledSerifWeb-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/untitled-serif/UntitledSerifWeb-MediumItalic.woff2",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "./fonts/untitled-serif/UntitledSerifWeb-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/untitled-serif/UntitledSerifWeb-BoldItalic.woff2",
+      weight: "700",
+      style: "italic",
+    },
+  ],
+  variable: "--font-family-serif",
+  display: "swap",
+})
+
+// ==============================================
 
 export const metadata = {
   metadataBase: process.env.NEXT_PUBLIC_BASE_URL
@@ -65,7 +167,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${untitledSans.variable} ${untitledSerif.variable}`}>
       <meta name="theme-color" content="#EF4444" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <body>
