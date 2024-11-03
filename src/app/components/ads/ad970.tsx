@@ -1,23 +1,23 @@
-import Link from "next/link"
-import { Ads } from "../../../../lib/types"
-import Image from "next/image"
 import { sendGAEvent } from "@next/third-parties/google"
+import Image from "next/image"
+import Link from "next/link"
 import { useEffect, useState } from "react"
-import { AdTypes, getAds } from "../../../../lib/utils/ads"
+import { Ads } from "../../../../lib/types"
+import { AdTypes } from "../../../../lib/utils/ads"
 
 const Ad970 = () => {
-  const [randomAd, setRandomAd] = useState<Ads | undefined>(undefined) // Store the randomly selected ad
+  const [randomAd, setRandomAd] = useState<Ads | undefined>(undefined)
   const [showAd, setShowAd] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ads = await getAds({ adType: AdTypes.Banner })
-        const [fetchedAds] = await Promise.all([ads])
+        const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.Banner}`)
+        const ads = await adsResponse.json()
 
-        if (fetchedAds.length > 0) {
-          const randomAd = fetchedAds[Math.floor(Math.random() * fetchedAds.length)]
-          setRandomAd(randomAd) // Set the random ad here
+        if (Array.isArray(ads) && ads.length > 0) {
+          const randomAd = ads[Math.floor(Math.random() * ads.length)]
+          setRandomAd(randomAd)
         }
       } catch (error) {
         console.error("Failed to fetch Ad data on Article page:", error)
@@ -27,36 +27,40 @@ const Ad970 = () => {
     fetchData()
   }, [])
 
-  if (!randomAd) {
-    return null // Don't render anything until the random ad is selected
-  }
-
-  const { banner_image, banner_image_mobile, ad_url, campaign_title, slug } = randomAd
-  if (!banner_image || !banner_image_mobile || !ad_url) {
+  if (!randomAd || !randomAd.banner_image || !randomAd.banner_image_mobile || !randomAd.ad_url) {
     return null
   }
 
-  const alt = campaign_title
-  const desktopImage = banner_image
-  const srcDesktop = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${desktopImage.filename_disk}`
-  const desktopSize = 1008
-  const dwidth = desktopImage.width ?? 0
-  const dheight = desktopImage.height ?? 0
-  const desktopWidth = dwidth > desktopSize ? desktopSize : dwidth
-  const desktopHeight = dwidth > desktopSize ? (desktopSize * dheight) / dwidth : (dheight * desktopWidth) / dwidth
+  const { banner_image, banner_image_mobile, ad_url, campaign_title, slug } = randomAd
+  const desktopSrc = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${banner_image.filename_disk}`
+  const mobileSrc = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${banner_image_mobile.filename_disk}`
 
-  const mobileImage = banner_image_mobile
-  const srcMobile = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${mobileImage.filename_disk}`
-  const mwidth = mobileImage.width ?? 0
-  const mheight = mobileImage.height ?? 0
-  const mobileSize = 640
-  const mobileWidth = mwidth > mobileSize ? mobileSize : mwidth
-  const mobileHeight = mwidth > mobileSize ? (mobileSize * mheight) / mwidth : (mheight * mobileWidth) / mwidth
+  const getImageDimensions = (image: { width?: number; height?: number }, maxWidth: number) => {
+    const width = image.width ?? 0
+    const height = image.height ?? 0
+    const scaledWidth = width > maxWidth ? maxWidth : width
+    const scaledHeight = width > maxWidth ? (maxWidth * height) / width : (height * scaledWidth) / width
+    return { width: scaledWidth, height: scaledHeight }
+  }
+
+  const desktopDimensions = getImageDimensions(banner_image, 1008)
+  const mobileDimensions = getImageDimensions(banner_image_mobile, 640)
+
+  const handleGAEvent = (action: "impression" | "click") => {
+    sendGAEvent("event", action, {
+      event_category: "ads",
+      event_label: slug,
+      event_value: ad_url,
+      ad_format: AdTypes.Banner,
+      campaign: campaign_title,
+      campaign_id: slug,
+      ad_source: "br-studio",
+    })
+  }
 
   return (
     showAd && (
       <div className="m-0 mt-2 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3 bg-white bg-opacity-80 backdrop-blur-md">
-        {/* <div className="absolute -z-10 top-0 bottom-0 left-0 right-0 bg-white backdrop-blur-md"></div> */}
         <button
           className="py-0 px-3 border border-zinc-200 text-zinc-500 text-center absolute -top-7 right-2 font-medium text-xs tablet:text-sm rounded-full bg-white flex items-center justify-center space-x-1 uppercase"
           onClick={() => setShowAd(false)}
@@ -68,53 +72,21 @@ const Ad970 = () => {
           <Link href={ad_url} target="_blank">
             <Image
               className="hidden tablet:block mx-auto"
-              src={srcDesktop}
-              width={desktopWidth}
-              height={desktopHeight}
-              alt={alt}
-              onLoad={(e) => {
-                sendGAEvent("event", "impression", {
-                  event_category: "ads",
-                  event_label: slug,
-                  event_value: ad_url,
-                  ad_format: AdTypes.Banner,
-                  campaign: campaign_title,
-                  campaign_id: slug,
-                  ad_source: "br-studio",
-                })
-              }}
-              onClick={() =>
-                sendGAEvent("event", "click", {
-                  event_category: "ads",
-                  event_label: slug,
-                  event_value: ad_url,
-                  ad_format: AdTypes.Banner,
-                  campaign: campaign_title,
-                  campaign_id: slug,
-                  ad_source: "br-studio",
-                })
-              }
+              src={desktopSrc}
+              width={desktopDimensions.width}
+              height={desktopDimensions.height}
+              alt={campaign_title}
+              onLoad={() => handleGAEvent("impression")}
+              onClick={() => handleGAEvent("click")}
             />
             <Image
               className="block tablet:hidden"
-              src={srcMobile}
-              width={mobileWidth}
-              height={mobileHeight}
-              alt={alt}
-              onLoad={(e) => {
-                sendGAEvent("event", "impression", {
-                  event_category: "ads",
-                  event_label: slug,
-                  event_value: ad_url,
-                })
-              }}
-              onClick={() =>
-                sendGAEvent("event", "click", {
-                  event_category: "ads",
-                  event_label: slug,
-                  event_value: ad_url,
-                })
-              }
+              src={mobileSrc}
+              width={mobileDimensions.width}
+              height={mobileDimensions.height}
+              alt={campaign_title}
+              onLoad={() => handleGAEvent("impression")}
+              onClick={() => handleGAEvent("click")}
             />
           </Link>
         </div>
