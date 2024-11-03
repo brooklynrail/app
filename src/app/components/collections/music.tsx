@@ -65,7 +65,13 @@ const PromosMobile = (props: PromoProps) => {
         <div className="flex flex-col space-y-3 flex-none w-[calc(100vw-6.5rem)] tablet:w-auto">
           {artwork && (
             <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
-              <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
+              <FeaturedImage
+                image={artwork}
+                title={title}
+                hideCaption={true}
+                permalink={permalink}
+                sizes={`(max-width: 640px) 85vw, 33vw`}
+              />
             </div>
           )}
           <div className="flex flex-col space-y-3">
@@ -98,7 +104,13 @@ const PromosMusic = (props: PromoProps) => {
           <div className="flex flex-col space-y-3 tablet:space-y-0 tablet:flex-row tablet:space-x-6">
             {artwork && (
               <div className="flex-none tablet:w-60 desktop-lg:w-80">
-                <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
+                <FeaturedImage
+                  image={artwork}
+                  title={title}
+                  hideCaption={true}
+                  permalink={permalink}
+                  sizes={`(max-width: 640px) 85vw, 25vw`}
+                />
               </div>
             )}
             <div className="flex flex-col space-y-6">

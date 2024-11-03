@@ -107,7 +107,13 @@ const LeadPromo = (props: LeadPromoProps) => {
       <div className="col-span-4 tablet-lg:col-span-3" itemType="http://schema.org/Article">
         {featured_image && (
           <div className="pr-3">
-            <FeaturedImage image={featured_image} hideCaption={true} title={title} permalink={permalink} />
+            <FeaturedImage
+              image={featured_image}
+              hideCaption={true}
+              title={title}
+              permalink={permalink}
+              sizes={`(max-width: 640px) 100vw, 33vw`}
+            />
           </div>
         )}
       </div>

@@ -68,7 +68,7 @@ const PromosMobile = (props: PromoProps) => {
             </div>
             {artwork && (
               <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
-                <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
+                <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} sizes={`100vw`} />
               </div>
             )}
           </div>
@@ -101,7 +101,7 @@ const PromosArt = (props: PromoProps) => {
         <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
           {artwork && (
             <div className="">
-              <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
+              <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} sizes={`25vw`} />
             </div>
           )}
         </div>
@@ -141,7 +141,7 @@ const LeadPromoArt = (props: LeadPromoArtProps) => {
         <div className="col-span-4 tablet:col-span-6" itemType="http://schema.org/Article">
           {artwork && (
             <div className="">
-              <FeaturedImage image={artwork} hideCaption={true} title={title} permalink={permalink} />
+              <FeaturedImage image={artwork} hideCaption={true} title={title} permalink={permalink} sizes={`50vw`} />
             </div>
           )}
         </div>

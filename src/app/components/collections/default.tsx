@@ -94,6 +94,7 @@ const Promo = (props: PromoProps) => {
             title={title}
             hideCaption={true}
             permalink={permalink}
+            sizes={`(max-width: 640px) 85vw, 25vw`}
           />
         </div>
       )}

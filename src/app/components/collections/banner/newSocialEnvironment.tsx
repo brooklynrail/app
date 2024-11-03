@@ -136,7 +136,7 @@ const EventCard = (props: EventCardProps) => {
             width={128}
             height={96}
             alt="alt"
-            sizes="20vw"
+            sizes="15vw"
           />
         )}
         <div className="z-10 relative top-0 flex flex-col justify-between bg-zinc-800 bg-opacity-60 px-1.5 py-1 h-24">

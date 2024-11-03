@@ -68,7 +68,7 @@ const PromosMobile = (props: PromoProps) => {
           <Kicker issue={article.issue} articleID={article.id} />
           {artwork && (
             <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
-              <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
+              <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} sizes={`100vw`} />
             </div>
           )}
           <div className="flex flex-col space-y-3">
@@ -101,7 +101,7 @@ const PromosArtSeen = (props: PromoProps) => {
           <div className="flex flex-col space-y-3 tablet:space-y-0 tablet:flex-row tablet:space-x-3">
             {artwork && (
               <div className="flex-none tablet:w-card tablet-lg:w-28">
-                <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
+                <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} sizes={`25vw`} />
               </div>
             )}
             <div className="flex flex-col space-y-1.5">
@@ -115,39 +115,6 @@ const PromosArtSeen = (props: PromoProps) => {
   })
 
   return <>{articles}</>
-}
-
-interface LeadPromoProps {
-  article: Articles
-}
-const LeadPromoArtSeen = (props: LeadPromoProps) => {
-  const { article } = props
-  const { title, issue, section, featured_artwork, featured_image } = article
-
-  const artwork = featured_artwork ? featured_artwork : featured_image
-  const permalink = getPermalink({
-    year: issue.year,
-    month: issue.month,
-    section: section.slug,
-    slug: article.slug,
-    type: PageType.Article,
-  })
-
-  return (
-    <div className="flex flex-col space-y-3">
-      <div className="" itemType="http://schema.org/Article">
-        {artwork && (
-          <div className="px-6 tablet:px-0">
-            <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
-          </div>
-        )}
-      </div>
-      <div className="px-6 tablet:px-0 flex flex-col space-y-3">
-        <Title title={article.title} permalink={permalink} type={TitleType.LeadArtSeen} />
-        <Bylines article={article} type={BylineType.CollectionArtSeen} />
-      </div>
-    </div>
-  )
 }
 
 export default CollectionArtSeen

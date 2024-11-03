@@ -132,7 +132,7 @@ const Covers = (props: CoversProps) => {
         width={width}
         height={height}
         alt={"alt"}
-        sizes="10vw"
+        sizes="25vw"
         onClick={handleClick}
       />
     )

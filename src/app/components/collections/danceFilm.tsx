@@ -106,7 +106,13 @@ const Promos = (props: PromoProps) => {
       <div key={article.id} className="py-6 pb-8 flex flex-col space-y-3">
         {artwork && (
           <div className="">
-            <FeaturedImage image={artwork} title={title} hideCaption={true} permalink={permalink} />
+            <FeaturedImage
+              image={artwork}
+              title={title}
+              hideCaption={true}
+              permalink={permalink}
+              sizes={`(max-width: 640px) 85vw, 33vw`}
+            />
           </div>
         )}
         <div className="flex flex-col space-y-6">
@@ -144,7 +150,13 @@ const LeadPromo = (props: LeadPromoArtProps) => {
       <div className="flex flex-col py-6">
         {artwork && (
           <div className="">
-            <FeaturedImage image={artwork} hideCaption={true} title={title} permalink={permalink} />
+            <FeaturedImage
+              image={artwork}
+              hideCaption={true}
+              title={title}
+              permalink={permalink}
+              sizes={`(max-width: 640px) 85vw, 50vw`}
+            />
           </div>
         )}
       </div>
