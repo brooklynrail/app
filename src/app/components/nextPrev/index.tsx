@@ -4,6 +4,8 @@ import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Title, { TitleType } from "../collections/promos/title"
+import { useArticleSwitcher } from "@/app/hooks/useArticleSwitcher"
+import { useEffect } from "react"
 
 export enum NextPrevType {
   Issues = "issues",
@@ -23,6 +25,13 @@ interface NextPrevProps {
 const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle }: NextPrevProps) => {
   const currentArticleIndex = articles.findIndex((article) => article.slug === currentSlug)
   const articlesListCount = articles.length
+
+  // Initialize the hook with the current article and list of articles
+  const { currentArticle, setArticleSlug, swipeHandlers } = useArticleSwitcher(articles[currentArticleIndex], articles)
+
+  useEffect(() => {
+    console.log("Viewing article:", currentArticle.title)
+  }, [currentArticle])
 
   const getParentPermalink = () => {
     if (type === NextPrevType.Issues) {
@@ -98,7 +107,10 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle
   }
 
   return (
-    <nav className={`py-3 flex justify-between ${type === NextPrevType.Tributes ? "pt-0 pb-6" : "pb-3 tablet:pb-3"}`}>
+    <nav
+      {...swipeHandlers} // Attach swipe handlers to the nav for mobile swipe support
+      className={`py-3 flex justify-between ${type === NextPrevType.Tributes ? "pt-0 pb-6" : "pb-3 tablet:pb-3"}`}
+    >
       {prevLink()}
       {nextLink()}
     </nav>
@@ -150,7 +162,6 @@ const ArticleLink = ({
       <Link
         href={permalink}
         onClick={(e) => {
-          // Conditionally handle link behavior based on the presence of `switchArticle`
           if (switchArticle) {
             e.preventDefault() // Prevent default navigation behavior
             switchArticle(article.slug) // Trigger article switch

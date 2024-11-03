@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { Articles } from "../../../lib/types"
 import { useSwipeable } from "react-swipeable"
 import { getPermalink, PageType } from "../../../lib/utils"
@@ -7,75 +7,78 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
   const [currentArticle, setCurrentArticle] = useState<Articles>(initialArticle)
   const [articleSlug, setArticleSlug] = useState<string>(initialArticle.slug)
 
-  useEffect(() => {
-    const handleArticleChange = async (slug: string) => {
+  // Memoize the current index to avoid recalculating on each key press
+  const currentIndex = useMemo(() => {
+    return articles.findIndex((article) => article.slug === currentArticle.slug)
+  }, [articles, currentArticle.slug])
+
+  // Function to fetch and set a new article
+  const fetchAndSetArticle = useCallback(
+    async (slug: string) => {
+      if (slug === currentArticle.slug) return // Avoid unnecessary fetch if slug is the same
       try {
-        if (slug !== currentArticle.slug) {
-          const response = await fetch(`/api/article/${slug}`)
-          if (!response.ok) throw new Error("Failed to fetch article")
+        const response = await fetch(`/api/article/${slug}`)
+        if (!response.ok) throw new Error("Failed to fetch article")
 
-          const newArticle: Articles = await response.json()
-          setCurrentArticle(newArticle)
+        const newArticle: Articles = await response.json()
+        setCurrentArticle(newArticle)
 
-          // Update the URL
-          let articlePermalink = getPermalink({
-            year: newArticle.issue.year,
-            month: newArticle.issue.month,
-            section: newArticle.section.slug,
+        // Generate permalink
+        let articlePermalink = getPermalink({
+          year: newArticle.issue.year,
+          month: newArticle.issue.month,
+          section: newArticle.section.slug,
+          slug: newArticle.slug,
+          type: PageType.Article,
+        })
+        if (newArticle.tribute) {
+          articlePermalink = getPermalink({
+            tributeSlug: newArticle.tribute.slug,
             slug: newArticle.slug,
-            type: PageType.Article,
+            type: PageType.TributeArticle,
           })
-          if (newArticle.tribute) {
-            articlePermalink = getPermalink({
-              tributeSlug: newArticle.tribute.slug,
-              slug: newArticle.slug,
-              type: PageType.TributeArticle,
-            })
-          }
-
-          window.history.pushState({}, "", articlePermalink)
         }
+
+        // Update the URL without reloading the page
+        window.history.pushState({}, "", articlePermalink)
       } catch (error) {
         console.error("Failed to fetch new article data:", error)
       }
-    }
+    },
+    [currentArticle.slug],
+  )
 
-    handleArticleChange(articleSlug)
-  }, [articleSlug, currentArticle.slug])
-
-  // Effect to handle keyboard navigation
+  // Effect to fetch the article when articleSlug changes
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const currentIndex = articles.findIndex((article: Articles) => article.slug === currentArticle.slug)
+    fetchAndSetArticle(articleSlug)
+  }, [articleSlug, fetchAndSetArticle])
 
+  // Keyboard navigation handler
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" && currentIndex < articles.length - 1) {
-        // Go to the next article
         setArticleSlug(articles[currentIndex + 1].slug)
       } else if (e.key === "ArrowLeft" && currentIndex > 0) {
-        // Go to the previous article
         setArticleSlug(articles[currentIndex - 1].slug)
       }
-    }
+    },
+    [articles, currentIndex],
+  )
 
-    // Attach the event listener for keydown events
+  // Attach the keyboard event listener once
+  useEffect(() => {
     window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [handleKeyDown])
 
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [currentArticle, setArticleSlug, articles])
-
-  // Handle swipe gestures
+  // Swipe handlers
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      const currentIndex = articles.findIndex((article: Articles) => article.slug === currentArticle.slug)
       if (currentIndex < articles.length - 1) {
         setArticleSlug(articles[currentIndex + 1].slug)
       }
     },
     onSwipedRight: () => {
-      const currentIndex = articles.findIndex((article: Articles) => article.slug === currentArticle.slug)
       if (currentIndex > 0) {
         setArticleSlug(articles[currentIndex - 1].slug)
       }
