@@ -39,7 +39,7 @@ const ContributorsBox = (props: ContributorsProps) => {
   })
 
   return (
-    <section className="content">
+    <section className="content content-contributors">
       <div className="border-t-[1px] rail-border py-6 font-sans space-y-6">{authors}</div>
     </section>
   )

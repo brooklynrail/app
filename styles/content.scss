@@ -144,6 +144,17 @@
   }
 }
 
+// ==========================================================================
+// Contributors
+
+.content-contributors {
+  a {
+    @apply decoration-zinc-800;
+  }
+}
+
+// IMAGES
+
 figcaption,
 figcaption p {
   @apply no-underline hover:no-underline;
