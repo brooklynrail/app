@@ -56,7 +56,7 @@ const Kicker = (props: KickerProps) => {
   return (
     <p className={`${articleStyles} uppercase divide-x divide-solid divide-zinc-600`}>
       {elements.map((element, i) => (
-        <span key={articleID} className="px-2 first:pl-0 last:pr-0">
+        <span key={`${articleID}-${order[i]}-${i}`} className="px-2 first:pl-0 last:pr-0">
           {element}
         </span>
       ))}

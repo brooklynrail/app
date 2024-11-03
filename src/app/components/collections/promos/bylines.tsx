@@ -73,12 +73,12 @@ const Bylines = (props: BylinesProps) => {
               })
 
               return (
-                <>
+                <span key={key}>
                   {!isFirst && separator}
-                  <Link key={key} rel="author" href={permalink} className="url fn n">
+                  <Link rel="author" href={permalink} className="url fn n">
                     {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
                   </Link>
-                </>
+                </span>
               )
             }
 
