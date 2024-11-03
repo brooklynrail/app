@@ -74,7 +74,7 @@ const NextPrev = ({ articles, currentSlug, parentCollection, type, switchArticle
       text={text}
       parentCollection={parentCollection}
       type={type}
-      switchArticle={switchArticle}
+      switchArticle={setArticleSlug} // Use setArticleSlug for article switching
     />
   )
 

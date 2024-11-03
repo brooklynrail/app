@@ -19,6 +19,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
       if (!response.ok) throw new Error("Failed to fetch article")
 
       const newArticle: Articles = await response.json()
+      console.log("Viewing article:", newArticle)
       setCurrentArticle(newArticle) // Update the displayed article
 
       // Generate permalink
@@ -39,18 +40,17 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
 
       // Update the URL without reloading the page
       window.history.pushState({}, "", articlePermalink)
-      setArticleSlug(slug) // Ensure state sync with the new article slug
     } catch (error) {
       console.error("Failed to fetch new article data:", error)
     }
   }, [])
 
-  // Update `currentArticle` when `articleSlug` changes
+  // Trigger article fetching whenever `articleSlug` changes
   useEffect(() => {
     if (articleSlug !== currentArticle.slug) {
       fetchAndSetArticle(articleSlug)
     }
-  }, [articleSlug, currentArticle.slug, fetchAndSetArticle])
+  }, [articleSlug, fetchAndSetArticle, currentArticle.slug])
 
   // Keyboard navigation handler
   const handleKeyDown = useCallback(
