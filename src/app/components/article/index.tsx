@@ -31,7 +31,7 @@ const Article = (props: ArticleProps) => {
         {/* Previous article (sticky to the left) */}
         {prevArticle && (
           <article
-            className={`bg-amber-400 bg-opacity-20 sticky top-0 right-[80%] article-container ${articleContainerStyles} ${
+            className={`bg-amber-400 bg-opacity-20 absolute right-[80%] article-container ${articleContainerStyles} ${
               animationState === "prev-enter" ? "enter-animation" : ""
             }`}
           >
@@ -55,7 +55,7 @@ const Article = (props: ArticleProps) => {
         {/* Next article (sticky to the right) */}
         {nextArticle && (
           <article
-            className={`bg-amber-400 bg-opacity-20 sticky top-0 left-[80%] article-container ${articleContainerStyles} ${
+            className={`bg-amber-400 bg-opacity-20 absolute left-[80%] article-container ${articleContainerStyles} ${
               animationState === "next-enter" ? "enter-animation" : ""
             } `}
           >
