@@ -46,6 +46,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     preloadAdjacentArticles()
   }, [currentArticle, preloadAdjacentArticles])
 
+  // GA Tracking Event Handler
   const handleGAEvent = (action: GAEventAction, method: NavigationMethod, article: Articles) => {
     const articlePermalink = getPermalink({
       year: article.issue.year,
@@ -55,11 +56,21 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
       type: PageType.Article,
     })
 
-    // Log page view
-    sendGAEvent(action, articlePermalink, {
-      page_path: articlePermalink,
-      page_title: article.title,
-    })
+    if (action === "page_view") {
+      // Correctly log a page view using the "config" method
+      sendGAEvent("config", "G-P4BEY1BZ04", {
+        page_path: articlePermalink,
+        page_title: article.title,
+      })
+    } else if (action === "article_navigation") {
+      // Log custom navigation event using the "event" method
+      sendGAEvent("event", "article_navigation", {
+        event_category: "navigation",
+        event_label: article.title,
+        method,
+        page_path: articlePermalink,
+      })
+    }
   }
 
   // Set article from preloaded data if available, else fetch
@@ -102,6 +113,16 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     },
     [preloadedArticles, currentArticle],
   )
+
+  // AD970: Trigger ad impression on article change
+  useEffect(() => {
+    // Trigger ad impression each time a new article is shown
+    const triggerAdImpression = () => {
+      // You can define this function in a way that communicates with Ad970
+      document.dispatchEvent(new Event("newAdImpression"))
+    }
+    triggerAdImpression()
+  }, [currentArticle]) // Run whenever the current article changes
 
   // Keyboard navigation handler
   const handleKeyDown = useCallback(
