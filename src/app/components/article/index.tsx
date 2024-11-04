@@ -19,7 +19,7 @@ const Article = (props: ArticleProps) => {
 
   // Scroll to the top when the current article changes
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    window.scrollTo({ top: 0, behavior: "auto" })
   }, [currentArticle])
 
   const articleContainerStyles = `w-[100%] h-full flex-none flex overflow-hidden opacity-100 px-3 tablet-lg:px-6 `
