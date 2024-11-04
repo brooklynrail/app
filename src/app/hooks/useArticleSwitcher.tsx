@@ -1,92 +1,137 @@
-import { useState, useEffect } from "react"
+"use client"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { Articles } from "../../../lib/types"
-import { useSwipeable } from "react-swipeable"
+import { useSwipeable, SwipeableHandlers } from "react-swipeable"
 import { getPermalink, PageType } from "../../../lib/utils"
+import { sendGAEvent } from "@next/third-parties/google"
+
+// Define event types for GA
+type GAEventAction = "page_view" | "article_navigation"
+type NavigationMethod = "swipe" | "keyboard" | "click"
+
+interface PreloadedArticles {
+  [slug: string]: Articles
+}
 
 export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[]) => {
   const [currentArticle, setCurrentArticle] = useState<Articles>(initialArticle)
   const [articleSlug, setArticleSlug] = useState<string>(initialArticle.slug)
+  const [animationState, setAnimationState] = useState<string>("active")
+  const [preloadedArticles, setPreloadedArticles] = useState<PreloadedArticles>({})
 
-  useEffect(() => {
-    const handleArticleChange = async (slug: string) => {
-      try {
-        if (slug !== currentArticle.slug) {
-          const response = await fetch(`/api/article/${slug}`)
-          if (!response.ok) throw new Error("Failed to fetch article")
+  const currentIndex = useMemo(
+    () => articles.findIndex((article) => article.slug === articleSlug),
+    [articles, articleSlug],
+  )
+  const nextArticle = articles[currentIndex + 1]
+  const prevArticle = articles[currentIndex - 1]
 
-          const newArticle: Articles = await response.json()
-          setCurrentArticle(newArticle)
-
-          // Update the URL
-          let articlePermalink = getPermalink({
-            year: newArticle.issue.year,
-            month: newArticle.issue.month,
-            section: newArticle.section.slug,
-            slug: newArticle.slug,
-            type: PageType.Article,
-          })
-          if (newArticle.tribute) {
-            articlePermalink = getPermalink({
-              tributeSlug: newArticle.tribute.slug,
-              slug: newArticle.slug,
-              type: PageType.TributeArticle,
-            })
-          }
-
-          window.history.pushState({}, "", articlePermalink)
+  // Preload adjacent articles
+  const preloadAdjacentArticles = useCallback(() => {
+    const preloadArticle = async (slug: string) => {
+      if (slug && !preloadedArticles[slug]) {
+        const response = await fetch(`/api/article/${slug}`)
+        if (response.ok) {
+          const articleData: Articles = await response.json()
+          setPreloadedArticles((prev) => ({ ...prev, [slug]: articleData }))
         }
-      } catch (error) {
-        console.error("Failed to fetch new article data:", error)
       }
     }
 
-    handleArticleChange(articleSlug)
-  }, [articleSlug, currentArticle.slug])
+    if (nextArticle) preloadArticle(nextArticle.slug)
+    if (prevArticle) preloadArticle(prevArticle.slug)
+  }, [nextArticle, prevArticle, preloadedArticles])
 
-  // Effect to handle keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const currentIndex = articles.findIndex((article: Articles) => article.slug === currentArticle.slug)
+    preloadAdjacentArticles()
+  }, [currentArticle, preloadAdjacentArticles])
 
-      if (e.key === "ArrowRight" && currentIndex < articles.length - 1) {
-        // Go to the next article
-        setArticleSlug(articles[currentIndex + 1].slug)
-      } else if (e.key === "ArrowLeft" && currentIndex > 0) {
-        // Go to the previous article
-        setArticleSlug(articles[currentIndex - 1].slug)
+  const handleGAEvent = (action: GAEventAction, method: NavigationMethod, article: Articles) => {
+    const articlePermalink = getPermalink({
+      year: article.issue.year,
+      month: article.issue.month,
+      section: article.section.slug,
+      slug: article.slug,
+      type: PageType.Article,
+    })
+
+    // Log page view
+    sendGAEvent(action, articlePermalink, {
+      page_path: articlePermalink,
+      page_title: article.title,
+    })
+  }
+
+  // Set article from preloaded data if available, else fetch
+  const fetchAndSetArticle = useCallback(
+    async (slug: string, method: NavigationMethod) => {
+      // Use preloaded article data if available
+      const articleData = preloadedArticles[slug] || currentArticle
+
+      // If articleData is undefined or does not match the requested slug, fetch it
+      if (!articleData || articleData.slug !== slug) {
+        const response = await fetch(`/api/article/${slug}`)
+        if (response.ok) {
+          const fetchedArticleData: Articles = await response.json()
+          setPreloadedArticles((prev) => ({ ...prev, [slug]: fetchedArticleData }))
+          setCurrentArticle(fetchedArticleData)
+        }
+      } else {
+        setCurrentArticle(articleData)
       }
-    }
 
-    // Attach the event listener for keydown events
+      // Update state and animations
+      setAnimationState("exit") // Trigger exit animation
+      setTimeout(() => {
+        setAnimationState("enter") // Trigger enter animation
+      }, 300)
+
+      const articlePermalink = getPermalink({
+        year: articleData.issue.year,
+        month: articleData.issue.month,
+        section: articleData.section.slug,
+        slug: articleData.slug,
+        type: PageType.Article,
+      })
+      window.history.pushState({}, "", articlePermalink)
+      setArticleSlug(slug)
+      handleGAEvent("page_view", method, articleData)
+      handleGAEvent("article_navigation", method, articleData)
+
+      setTimeout(() => setAnimationState("active"), 300)
+    },
+    [preloadedArticles, currentArticle],
+  )
+
+  // Keyboard navigation handler
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" && nextArticle) {
+        fetchAndSetArticle(nextArticle.slug, "keyboard")
+      } else if (e.key === "ArrowLeft" && prevArticle) {
+        fetchAndSetArticle(prevArticle.slug, "keyboard")
+      }
+    },
+    [nextArticle, prevArticle, fetchAndSetArticle],
+  )
+
+  useEffect(() => {
     window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [handleKeyDown])
 
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [currentArticle, setArticleSlug, articles])
-
-  // Handle swipe gestures
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => {
-      const currentIndex = articles.findIndex((article: Articles) => article.slug === currentArticle.slug)
-      if (currentIndex < articles.length - 1) {
-        setArticleSlug(articles[currentIndex + 1].slug)
-      }
-    },
-    onSwipedRight: () => {
-      const currentIndex = articles.findIndex((article: Articles) => article.slug === currentArticle.slug)
-      if (currentIndex > 0) {
-        setArticleSlug(articles[currentIndex - 1].slug)
-      }
-    },
+  const swipeHandlers: SwipeableHandlers = useSwipeable({
+    onSwipedLeft: () => nextArticle && fetchAndSetArticle(nextArticle.slug, "swipe"),
+    onSwipedRight: () => prevArticle && fetchAndSetArticle(prevArticle.slug, "swipe"),
     preventScrollOnSwipe: true,
     trackMouse: false,
   })
 
   return {
     currentArticle,
-    setArticleSlug,
+    nextArticle: preloadedArticles[nextArticle?.slug] || nextArticle,
+    prevArticle: preloadedArticles[prevArticle?.slug] || prevArticle,
     swipeHandlers,
+    animationState,
   }
 }
