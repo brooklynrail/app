@@ -53,7 +53,13 @@ export const PromosBooks = (props: PromoProps) => {
           >
             {featured_image && (
               <div className={`flex-none w-28 tablet:w-card ${i === 0 ? "tablet-lg:w-[276px]" : "tablet-lg:w-44"}`}>
-                <FeaturedImage image={featured_image} title={title} hideCaption={true} permalink={permalink} />
+                <FeaturedImage
+                  image={featured_image}
+                  title={title}
+                  hideCaption={true}
+                  permalink={permalink}
+                  sizes={`33vw`}
+                />
               </div>
             )}
             <div className={i === 0 ? `flex flex-col space-y-3` : `flex flex-col space-y-1.5`}>

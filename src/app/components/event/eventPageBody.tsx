@@ -19,7 +19,7 @@ const EventPageBody = (props: EventProps) => {
   const eventTypeText = getEventTypeText(type, eventTypes)
 
   const railProduced = type === EventTypes.TheNewSocialEnvironment || type === EventTypes.CommonGround
-  const isFutureEvent = new Date(start_date) > new Date()
+  const isFutureEvent = new Date(end_date) > new Date()
 
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT

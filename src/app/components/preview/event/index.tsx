@@ -71,7 +71,7 @@ const EventPreview = (props: EventPreviewProps) => {
     return <Password {...passwordProps} />
   }
 
-  const isFutureEvent = new Date(eventData.start_date) > new Date()
+  const isFutureEvent = new Date(eventData.end_date) > new Date()
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/event/${eventData.id}/`
   return (

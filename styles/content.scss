@@ -1,5 +1,5 @@
 .content {
-  @apply text-2xl tablet-lg:text-2xl font-normal font-serif;
+  @apply text-xl tablet-lg:text-2xl font-normal font-serif break-words;
 
   h1 {
     @apply hidden;
@@ -21,7 +21,10 @@
   }
 
   a {
-    @apply underline decoration-blue-600;
+    @apply underline decoration-2 decoration-solid decoration-blue-600 underline-offset-4;
+    &:hover {
+      @apply underline decoration-2 underline-offset-4;
+    }
   }
 
   p,
@@ -101,10 +104,10 @@
   }
   .endnote {
     @apply my-8;
-    @apply font-normal font-sans text-sm;
+    @apply font-normal font-sans text-sm break-words;
 
     a {
-      @apply underline;
+      @apply underline decoration-1;
     }
 
     li {
@@ -126,6 +129,9 @@
     }
   }
 }
+.content-page {
+  @apply text-xl;
+}
 
 .paper-event .content {
   @extend .content;
@@ -136,14 +142,18 @@
   pre {
     @apply max-w-none;
   }
+}
+
+// ==========================================================================
+// Contributors
+
+.content-contributors {
   a {
-    @apply underline text-indigo-700 decoration-sky-500 decoration-dotted underline-offset-4;
+    @apply decoration-zinc-800;
   }
 }
-// .paper .content-bio {
-//   @extend .content;
-//   @apply text-md tablet-lg:text-lg font-normal font-sans;
-// }
+
+// IMAGES
 
 figcaption,
 figcaption p {

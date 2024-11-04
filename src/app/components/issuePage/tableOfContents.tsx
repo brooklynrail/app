@@ -77,7 +77,7 @@ const IssueSection = (props: IssueSectionProps) => {
             })
             return (
               <li key={`toc-article-${i}`} className={`text-xs`} itemType="http://schema.org/Article">
-                <h4 className="font-medium inline">
+                <h4 className="text-xl">
                   <Link href={permalink} itemProp="name" title={`Visit ${stripHtml(article.tribute.title).result}`}>
                     {parse(article.tribute.title)}
                   </Link>

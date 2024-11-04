@@ -11,7 +11,7 @@ const PageHead = (props: PageHeadProps) => {
 
   return (
     <header className="">
-      <h1 className="font-bold text-4xl tablet-lg:text-5xl">{parse(title)}</h1>
+      <h1 className="font-bold text-3xl tablet-lg:text-4xl">{parse(title)}</h1>
     </header>
   )
 }

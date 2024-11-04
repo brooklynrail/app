@@ -1,9 +1,9 @@
-import Link from "next/link"
-import { Ads } from "../../../../lib/types"
-import Image from "next/image"
 import { sendGAEvent } from "@next/third-parties/google"
+import Image from "next/image"
+import Link from "next/link"
 import { useEffect, useState } from "react"
-import { AdTypes, getAds } from "../../../../lib/utils/ads"
+import { Ads } from "../../../../lib/types"
+import { AdTypes } from "../../../../lib/utils/ads"
 
 const AdsTileStrip = () => {
   const [randomAds, setRandomAds] = useState<Ads[] | undefined>(undefined) // Store the randomly selected ad
@@ -11,11 +11,11 @@ const AdsTileStrip = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ads = await getAds({ adType: AdTypes.Tile })
-        const filteredAds = ads.filter((ad) => ad.ad_type === "tile")
+        const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.Tile}`)
+        const ads = await adsResponse.json()
 
-        if (filteredAds.length > 0) {
-          const shuffledAds = filteredAds.sort(() => 0.5 - Math.random())
+        if (Array.isArray(ads) && ads.length > 0) {
+          const shuffledAds = ads.sort(() => 0.5 - Math.random())
           setRandomAds(shuffledAds) // Set the shuffled ads array here
         }
       } catch (error) {

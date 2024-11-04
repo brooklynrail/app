@@ -83,6 +83,18 @@ async function getData({ params }: { params: ContributorsParams }) {
   // This is an array of all articles for all contributors with the same slug
   const allArticles = allContributors.flatMap((contributor) => contributor.articles)
 
+  // Sort the articles by the Issue published date, most recent first
+  allArticles.sort((a, b) => {
+    const dateA = a.articles_contributors_id?.issue?.published
+      ? new Date(a.articles_contributors_id.issue.published).getTime()
+      : -Infinity // Use -Infinity for null dates to sort them to the end
+    const dateB = b.articles_contributors_id?.issue?.published
+      ? new Date(b.articles_contributors_id.issue.published).getTime()
+      : -Infinity
+
+    return dateB - dateA // Sort descending by date
+  })
+
   const permalink = getPermalink({
     slug: contributorData.slug,
     type: PageType.Contributor,

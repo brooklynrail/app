@@ -35,7 +35,13 @@ const CollectionTribute = (collection: Collections) => {
             <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-3 row-span-2 tablet-lg:col-start-10">
               {featured_image && (
                 <div className="flex flex-col justify-center px-0">
-                  <FeaturedImage image={featured_image} hideCaption={true} title={title} permalink={permalink} />
+                  <FeaturedImage
+                    image={featured_image}
+                    hideCaption={true}
+                    title={title}
+                    permalink={permalink}
+                    sizes={`50vw`}
+                  />
                 </div>
               )}
             </div>

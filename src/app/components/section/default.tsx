@@ -10,31 +10,27 @@ import Excerpt from "../collections/promos/excerpt"
 import Kicker from "../collections/promos/kicker"
 import styles from "./section.module.scss"
 import { groupByIssue } from "../../../../lib/utils/sections/utils"
-import useLayout, { LayoutMode } from "@/app/hooks/useLayout"
+
+export enum LayoutMode {
+  Grid = "grid",
+  List = "list",
+  Framed = "framed",
+}
 
 interface SectionLayoutProps {
   layoutMode: LayoutMode
+  grouped: boolean
+  framedImage: boolean
 }
 
 const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
-  const { layoutContainer } = useLayout()
-  const { articlesData } = props
-  const isListMode = props.layoutMode === LayoutMode.List
+  const { articlesData, grouped, layoutMode, framedImage } = props
+  const isListMode = layoutMode === LayoutMode.List
 
   // ==================================
   // Group articles by issue
-  const grouped = false
 
   if (grouped) {
-    // Utility function to split array into groups
-    const groupArray = (array: Articles[], groupSize: number) => {
-      const groups = []
-      for (let i = 0; i < array.length; i += groupSize) {
-        groups.push(array.slice(i, i + groupSize))
-      }
-      return groups
-    }
-
     // Take all of the articles,
     // and group articles by their respective issue
     const articlesByIssue = groupByIssue(articlesData)
@@ -46,15 +42,30 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
           const issueArticles = articlesByIssue[issueId]
           const issueTitle = issueArticles[0]?.issue.title || "Untitled Issue" // Assuming issue title is the same for all articles in the issue
           const thisGroup = issueArticles.map((article, i) => {
-            return <Promo key={article.id} article={article} layoutMode={props.layoutMode} />
+            const priority = index === 0 && i < 3 ? true : false
+            return (
+              <Promo
+                framedImage={framedImage}
+                key={article.id}
+                article={article}
+                layoutMode={layoutMode}
+                priority={priority}
+              />
+            )
           })
           return (
-            <div>
-              <h3>{issueTitle}</h3>
-              <div
-                className={`grid items-start gap-0 grid-cols-1 ${isListMode ? `divide-y rail-divide` : `tablet:grid-cols-3 desktop:grid-cols-4`}`}
-              >
-                {thisGroup}
+            <div key={index} className="group divide-y rail-divide">
+              <div className="p-3 tablet:px-6">
+                <h2 className="text-lg tablet:text-2xl font-bold uppercase">{issueTitle}</h2>
+              </div>
+              <div className="py-3">
+                <div className={isListMode ? `tablet:px-3 max-w-screen-desktop-lg mx-auto` : ``}>
+                  <div
+                    className={`grid items-start gap-0 grid-cols-1 ${isListMode ? `divide-y rail-divide` : `tablet:grid-cols-3 desktop:grid-cols-4`}`}
+                  >
+                    {thisGroup}
+                  </div>
+                </div>
               </div>
             </div>
           )
@@ -62,23 +73,21 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
       </>
     )
 
-    return (
-      <div ref={layoutContainer} className={`py-3 tablet-lg:py-6 ${isListMode && `max-w-screen-desktop-lg mx-auto`}`}>
-        {allArticles}
-      </div>
-    )
+    return <div className={`divide-y rail-divide ${isListMode && ``}`}>{allArticles}</div>
   }
 
   // ==================================
   // All the articles
   const allArticles = articlesData.map((article, i) => {
-    return <Promo key={article.id} article={article} layoutMode={props.layoutMode} />
+    const priority = i < 3 ? true : false
+    return (
+      <Promo framedImage={framedImage} key={article.id} article={article} layoutMode={layoutMode} priority={priority} />
+    )
   })
 
   return (
     <div className={`py-3 tablet-lg:py-6 ${isListMode && `tablet:px-3 max-w-screen-desktop-lg mx-auto`}`}>
       <div
-        ref={layoutContainer}
         className={`grid items-start gap-0 grid-cols-1 ${isListMode ? `divide-y rail-divide` : `tablet:grid-cols-3 desktop:grid-cols-4`}`}
       >
         {allArticles}
@@ -90,12 +99,16 @@ const SectionDefault = (props: SectionProps & SectionLayoutProps) => {
 interface PromoProps {
   article: Articles
   layoutMode: LayoutMode
+  priority: boolean
+  framedImage: boolean
 }
 
-const Promo = ({ article, layoutMode }: PromoProps) => {
+const Promo = ({ article, layoutMode, priority, framedImage }: PromoProps) => {
   const { issue, section, title, featured_image, featured_artwork, slug, excerpt } = article
   const [divWidth, setDivWidth] = useState(0)
   const divRef = useRef<HTMLDivElement>(null)
+
+  const isArtSeen = framedImage
 
   useEffect(() => {
     const updateWidth = () => {
@@ -120,42 +133,53 @@ const Promo = ({ article, layoutMode }: PromoProps) => {
   // Define layout-specific classes
   const containerClasses =
     layoutMode === LayoutMode.List
-      ? "flex flex-col px-3 py-3"
-      : `flex flex-col tablet:px-3 pb-3 border-l rail-border ${styles.card} ${layoutMode === LayoutMode.Grid && "h-full"}`
+      ? "p-3"
+      : `tablet:px-3 pb-3 border-l rail-border ${styles.card} ${layoutMode === LayoutMode.Grid && "h-full"}`
   const contentClasses =
     layoutMode === LayoutMode.List
-      ? "flex flex-row space-x-6 desktop:space-x-12"
-      : "p-3 flex flex-col space-y-6 border-t rail-border"
-  const imageContainerClasses = layoutMode === LayoutMode.List ? "w-28 tablet-lg:w-52 flex-none" : ""
+      ? "flex-row space-x-6 desktop:space-x-12"
+      : `p-3 flex-col border-t rail-border ${isArtSeen ? `space-y-3` : `space-y-6`}`
+  const imageContainerClasses = layoutMode === LayoutMode.List ? "w-28 tablet-lg:w-36 flex-none" : ``
   const titleClasses =
     layoutMode === LayoutMode.List
-      ? "text-xl tablet:text-2xl desktop:text-3xl font-light"
-      : "text-2xl tablet:text-2xl desktop:text-3xl font-light"
+      ? "text-xl tablet:text-xl desktop:text-xl"
+      : isArtSeen
+        ? `text-xl`
+        : `text-2xl tablet:text-2xl desktop:text-3xl`
 
   return (
-    <div key={article.id} className={containerClasses}>
-      <div className={contentClasses}>
+    <div key={article.id} className={`flex flex-col ${containerClasses}`}>
+      <div className={`flex ${contentClasses}`}>
         {artwork && (
-          <div ref={divRef} className={imageContainerClasses}>
-            <FeaturedImage
-              containerWidth={layoutMode === LayoutMode.Grid ? divWidth : undefined}
-              image={artwork}
-              title={title}
-              hideCaption={true}
-              permalink={permalink}
-            />
+          <div ref={divRef} className={`${imageContainerClasses}`}>
+            {divWidth ? (
+              <FeaturedImage
+                containerWidth={layoutMode === LayoutMode.Grid ? divWidth : undefined}
+                image={artwork}
+                title={title}
+                hideCaption={true}
+                permalink={permalink}
+                priority={priority}
+                sizes={layoutMode === LayoutMode.Grid ? `30vw` : `20vw`}
+                isFramed={isArtSeen && layoutMode === LayoutMode.Grid}
+              />
+            ) : (
+              <div className="w-full h-full bg-slate-200 aspect-square"></div>
+            )}
           </div>
         )}
         <div className="flex flex-col space-y-3">
           <div className="space-y-1">
-            <Kicker article={article} />
-            <Title title={article.title} permalink={permalink} classes={titleClasses} />
+            {!isArtSeen && <Kicker issue={article.issue} articleID={article.id} />}
+            <Title title={article.title} permalink={permalink} classes={`font-light ${titleClasses}`} />
           </div>
-          <Bylines article={article} type={BylineType.CollectionDefault} />
-          <Excerpt
-            excerpt={article.excerpt}
-            classes={`excerpt-md ${layoutMode === LayoutMode.List ? "max-w-[100ex]" : ""}`}
-          />
+          <Bylines article={article} type={BylineType.SectionDefault} />
+          {!isArtSeen && (
+            <Excerpt
+              excerpt={article.excerpt}
+              classes={`excerpt-md ${layoutMode === LayoutMode.List ? "max-w-[100ex]" : ""}`}
+            />
+          )}
         </div>
       </div>
     </div>

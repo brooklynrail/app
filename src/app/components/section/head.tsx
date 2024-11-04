@@ -1,25 +1,26 @@
 "use client"
 import parse from "html-react-parser"
 import SearchField from "../search/searchField"
-import { LayoutMode } from "@/app/hooks/useLayout"
+import { LayoutMode } from "./default"
 
 interface SectionHeadProps {
   title: string
   permalink: string
   description?: string | null
-  setLayoutMode?: (mode: LayoutMode) => void
-  layoutMode?: LayoutMode
+  hasMultipleLayouts: boolean
+  layoutMode: LayoutMode
+  setLayoutMode: (mode: LayoutMode) => void
 }
 
 const SectionHead = (props: SectionHeadProps) => {
-  const { title, description, layoutMode, setLayoutMode } = props
+  const { title, description, hasMultipleLayouts, layoutMode, setLayoutMode } = props
 
   // Functions to toggle between layout modes
-  const handleGridView = () => setLayoutMode && setLayoutMode(LayoutMode.Grid)
-  const handleListView = () => setLayoutMode && setLayoutMode(LayoutMode.List)
+  const handleGridView = () => hasMultipleLayouts && setLayoutMode(LayoutMode.Grid)
+  const handleListView = () => hasMultipleLayouts && setLayoutMode(LayoutMode.List)
 
   return (
-    <div className="px-3 tablet:px-6 sticky top-12 z-10 section-head">
+    <div className="px-3 tablet:px-6 sticky top-11 tablet-lg:top-13 z-10 section-head">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
         <div className="col-span-4 tablet-lg:col-span-12">
           <div className="flex justify-between items-center space-x-6 py-3 pb-1.5 tablet:pb-3 tablet:pt-6">
@@ -28,7 +29,7 @@ const SectionHead = (props: SectionHeadProps) => {
               {description && <div className="text-sm">{parse(description)}</div>}
             </div>
             <div className="flex space-x-3">
-              {layoutMode && setLayoutMode && (
+              {hasMultipleLayouts && (
                 <div className="flex space-x-3">
                   <button onClick={handleGridView} className="">
                     <BlockIcon active={layoutMode === LayoutMode.Grid} />

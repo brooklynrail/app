@@ -87,12 +87,12 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&fields[]=people.people_id.portrait.width` +
     `&fields[]=people.people_id.portrait.height` +
     `&fields[]=people.people_id.portrait.alt` +
-    `&fields[]=people.people_id.portrait.type` +
     `&fields[]=people.people_id.portrait.modified_on` +
     `&fields[]=start_date` +
     `&fields[]=all_day` +
     `&sort=start_date` +
     `&limit=6` +
+    `&deep[people][_limit]=1` +
     `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
     `&filter[youtube_id][_empty]=true` +
     `&filter[status][_eq]=published`

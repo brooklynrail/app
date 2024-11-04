@@ -8,9 +8,10 @@ import Person from "./person"
 
 const EventPage = (props: EventProps) => {
   const { eventData, navData } = props
-  const { start_date } = eventData
+  const { end_date } = eventData
 
-  const isFutureEvent = new Date(start_date) > new Date()
+  // It is in the future if the end date is greater than the current date
+  const isFutureEvent = new Date(end_date) > new Date()
 
   return (
     <Paper pageClass="theme-events" type={PaperType.Events} navData={navData}>

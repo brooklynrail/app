@@ -10,10 +10,11 @@ export enum BylineType {
   TOC = "text-sm not-italic inline",
   ArticleHeadDiptych = "text-md tablet-lg:text-lg font-sans not-italic",
   ArticleHead = "text-md tablet-lg:text-lg font-sans not-italic",
-  SectionPromo = "text-md font-sans not-italic",
+  SectionPromo = "font-sans text-sm not-italic",
   CollectionArtSeen = "text-sm font-sans not-italic",
   CollectionBooks = "not-italic text-sm font-sans",
   CollectionDefault = "text-sm tablet:text-md font-sans",
+  SectionDefault = "text-sm font-sans",
   CollectionDance = "text-sm not-italic font-sans",
   TributeArticle = "text-lg tablet-lg:text-lg font-bold font-sans not-italic",
   TributeNextPrev = "text-sm tablet-lg:text-md font-medium font-sans not-italic",
@@ -72,10 +73,12 @@ const Bylines = (props: BylinesProps) => {
               })
 
               return (
-                <Link key={key} rel="author" href={permalink} className="url fn n">
+                <span key={key}>
                   {!isFirst && separator}
-                  {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
-                </Link>
+                  <Link rel="author" href={permalink} className="url fn n">
+                    {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
+                  </Link>
+                </span>
               )
             }
 
@@ -91,6 +94,7 @@ const Bylines = (props: BylinesProps) => {
                   type === BylineType.CollectionBooks ||
                   type === BylineType.CollectionDance ||
                   type === BylineType.DancePromo ||
+                  type === BylineType.SectionDefault ||
                   type === BylineType.CollectionDefault ||
                   type === BylineType.TOC
                     ? "font-bold"
