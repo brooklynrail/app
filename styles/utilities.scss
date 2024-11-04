@@ -54,24 +54,48 @@ a:hover .media figcaption {
   text-decoration: none !important;
 }
 
-/* Article animation */
 .article-container {
   transition:
     transform 0.3s ease,
     opacity 0.3s ease;
 }
 
-.article-enter {
-  opacity: 0;
-  transform: translateX(20%);
+.article-card {
+  flex: 1 0 100%;
+  transition: transform 0.3s ease;
 }
 
+/* Initial positioning */
+.article-enter-left .article-card {
+  transform: translateX(-100%); /* Entering from the left */
+}
+
+.article-enter-right .article-card {
+  transform: translateX(100%); /* Entering from the right */
+}
+
+/* Active state (centered) */
+.article-active .article-card {
+  transform: translateX(0); /* Centered in view */
+  opacity: 1;
+}
+
+/* Exiting states */
+.article-exit-left .article-card {
+  transform: translateX(-100%); /* Exiting to the left */
+}
+
+.article-exit-right .article-card {
+  transform: translateX(100%); /* Exiting to the right */
+}
+
+/* Fade and entrance animation */
+.enter-animation {
+  opacity: 1;
+  transform: translateX(0%);
+}
+
+/* Overall opacity and transition control */
 .article-exit {
   opacity: 0;
-  transform: translateX(-20%);
-}
-
-.article-active {
-  opacity: 1;
-  transform: translateX(0);
 }
