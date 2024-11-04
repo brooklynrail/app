@@ -4,7 +4,7 @@ import Link from "next/link"
 import { stripHtml } from "string-strip-html"
 import { Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import IssueHead from "../issuePage/head"
 import { CoverImages } from "../collections/banner/coverImages"
 import { useEffect, useState } from "react"
@@ -56,7 +56,7 @@ const ArchivePage = (props: ArchivePageProps) => {
   ))
 
   return (
-    <Paper pageClass="" type={PaperType.Default} navData={navData}>
+    <Paper pageClass="" navData={navData}>
       <main id="main" className="">
         <IssueHead title={`All Issues`} allIssues={issues} />
         <div className="divide-y rail-divide">{articleGroups}</div>

@@ -3,8 +3,6 @@ import Ad970 from "../ads/ad970"
 import Footer from "../footer"
 import PopupDonate from "../popupDonate"
 import { PopupProvider } from "../popupProvider"
-import { useTheme } from "../theme"
-import ThemeToggle from "../themeToggle"
 import Header from "../header"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import NavBar from "../navBar"
@@ -20,7 +18,7 @@ export interface PaperProps {
   currentIssue?: Issues
   banners?: HomepageBanners[]
   children: React.ReactNode
-  type: PaperType
+  type?: PaperType
   previewURL?: string
 }
 
@@ -47,7 +45,7 @@ const Paper = (props: PaperProps) => {
             <PreviewHeader previewURL={previewURL} />
           ) : (
             <>
-              <Header type={type} banners={banners} currentIssue={currentIssue} />
+              <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
               <NavBar navData={navData} isHomepage={isHomepage} />
             </>
           )}

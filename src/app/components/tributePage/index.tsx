@@ -1,6 +1,6 @@
 "use client"
 import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import PreviewHeader from "../preview/previewHead"
 import styles from "./tribute.module.scss"
 import TributeHead from "./tributeHead"
@@ -13,7 +13,7 @@ const TributePage = (props: TributePageProps) => {
   const tributeClass = `tribute-${slug.toLowerCase()}`
 
   return (
-    <Paper pageClass={`theme-tribute ${tributeClass}`} type={PaperType.Default} navData={navData}>
+    <Paper pageClass={`theme-tribute ${tributeClass}`} navData={navData}>
       {previewURL && <PreviewHeader previewURL={previewURL} />}
       <div className="rail-divide divide-y">
         <section id="main" className={`${styles.main}`}>

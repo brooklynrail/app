@@ -1,7 +1,7 @@
 "use client"
 import { useEffect } from "react"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import ArticlePage from "./page/article"
 import ArticleCriticsPage from "./page/criticsPage"
 import { useArticleSwitcher } from "@/app/hooks/useArticleSwitcher"
@@ -15,8 +15,6 @@ const Article = (props: ArticleProps) => {
     thisIssueData.articles,
   )
 
-  const type = currentSection.slug === "criticspage" ? PaperType.CriticsPage : PaperType.Default
-
   // Scroll to the top when the current article changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" })
@@ -24,7 +22,7 @@ const Article = (props: ArticleProps) => {
 
   const articleContainerStyles = `w-[100%] h-full flex-none flex overflow-hidden opacity-100 px-3 tablet-lg:px-6 `
   return (
-    <Paper pageClass={`theme-${currentSection.slug}`} type={type} navData={navData}>
+    <Paper pageClass={`theme-${currentArticle.section.slug}`} navData={navData}>
       {/* Container for swipeable articles */}
       <div className="flex w-screen h-full overflow-hidden" {...swipeHandlers}>
         {/* Current article */}

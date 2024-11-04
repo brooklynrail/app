@@ -1,11 +1,11 @@
 "use client"
 import { useState } from "react"
 import { Articles, Homepage, Sections } from "../../../../lib/types"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import SectionArt from "./art"
-import SectionHead from "./head"
-import SectionDefault, { LayoutMode } from "./default"
 import SectionCriticsPage from "./criticsPage"
+import SectionDefault, { LayoutMode } from "./default"
+import SectionHead from "./head"
 import SectionPoetry from "./poetry"
 
 interface NavProps {
@@ -88,10 +88,8 @@ const Section = (props: SectionProps & NavProps) => {
     }
   }
 
-  const type = sectionData.slug === "criticspage" ? PaperType.CriticsPage : PaperType.Default
-
   return (
-    <Paper pageClass={`theme-${sectionData.slug}`} type={type} navData={navData}>
+    <Paper pageClass={`theme-${sectionData.slug}`} navData={navData}>
       <main className="divide-y rail-divide">
         <SectionHead
           title={sectionData.name}

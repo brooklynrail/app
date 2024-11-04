@@ -3,7 +3,7 @@ import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
 import parse from "html-react-parser"
 import { Articles, Issues } from "../../../../lib/types"
 import { CoverImages } from "../collections/banner/coverImages"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import CoversPopup from "./coversPopup"
 import IssueHead from "./head"
 import TableOfContents from "./tableOfContents"
@@ -40,7 +40,7 @@ const IssuePage = (props: IssuePageProps) => {
   const credits = thisIssueData.credits
 
   return (
-    <Paper pageClass={``} type={PaperType.Default} navData={navData} previewURL={previewURL}>
+    <Paper pageClass={``} navData={navData} previewURL={previewURL}>
       <main className="divide-y rail-divide">
         <IssueHead title={thisIssueData.title} allIssues={allIssues} currentIssueSlug={thisIssueData.slug} />
 
