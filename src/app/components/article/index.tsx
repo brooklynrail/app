@@ -1,7 +1,6 @@
 "use client"
 import { useEffect } from "react"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import CoversPopup from "../issuePage/coversPopup"
 import Paper, { PaperType } from "../paper"
 import ArticlePage from "./page/article"
 import ArticleCriticsPage from "./page/criticsPage"
@@ -23,52 +22,20 @@ const Article = (props: ArticleProps) => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }, [currentArticle])
 
-  const articleContainerStyles = `w-[60%] flex-none flex overflow-hidden opacity-100 px-3 tablet-lg:px-6 `
+  const articleContainerStyles = `w-[100%] h-full flex-none flex overflow-hidden opacity-100 px-3 tablet-lg:px-6 `
   return (
     <Paper pageClass={`theme-${currentSection.slug}`} type={type} navData={navData}>
       {/* Container for swipeable articles */}
-      <div className="relative flex w-full bg-pink-100 overflow-hidden" {...swipeHandlers}>
-        {/* Previous article (sticky to the left) */}
-        {prevArticle && (
-          <article
-            className={`bg-amber-400 bg-opacity-20 absolute right-[80%] article-container ${articleContainerStyles} ${
-              animationState === "prev-enter" ? "enter-animation" : ""
-            }`}
-          >
-            {prevArticle.section.slug === "criticspage" ? (
-              <ArticleCriticsPage {...props} articleData={prevArticle} />
-            ) : (
-              <ArticlePage {...props} articleData={prevArticle} />
-            )}
-          </article>
-        )}
-
+      <div className="flex w-screen h-full overflow-hidden" {...swipeHandlers}>
         {/* Current article */}
-        <article className={`mx-auto article-container ${articleContainerStyles} ${animationState} sticky top-0`}>
+        <article className={`article-container ${articleContainerStyles} ${animationState} sticky top-0`}>
           {currentArticle.section.slug === "criticspage" ? (
             <ArticleCriticsPage {...props} articleData={currentArticle} />
           ) : (
             <ArticlePage {...props} articleData={currentArticle} />
           )}
         </article>
-
-        {/* Next article (sticky to the right) */}
-        {nextArticle && (
-          <article
-            className={`bg-amber-400 bg-opacity-20 absolute left-[80%] article-container ${articleContainerStyles} ${
-              animationState === "next-enter" ? "enter-animation" : ""
-            } `}
-          >
-            {nextArticle.section.slug === "criticspage" ? (
-              <ArticleCriticsPage {...props} articleData={nextArticle} />
-            ) : (
-              <ArticlePage {...props} articleData={nextArticle} />
-            )}
-          </article>
-        )}
       </div>
-
-      <CoversPopup />
     </Paper>
   )
 }
