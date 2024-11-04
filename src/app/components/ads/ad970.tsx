@@ -1,14 +1,15 @@
 import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { Ads } from "../../../../lib/types"
 import { AdTypes } from "../../../../lib/utils/ads"
 
 const Ad970 = () => {
-  const [randomAd, setRandomAd] = useState<Ads | undefined>(undefined)
+  const [randomAd, setRandomAd] = useState<Ads | null>(null)
   const [showAd, setShowAd] = useState(true)
 
+  // Fetch ad data only once on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -16,8 +17,8 @@ const Ad970 = () => {
         const ads = await adsResponse.json()
 
         if (Array.isArray(ads) && ads.length > 0) {
-          const randomAd = ads[Math.floor(Math.random() * ads.length)]
-          setRandomAd(randomAd)
+          const selectedAd = ads[Math.floor(Math.random() * ads.length)]
+          setRandomAd(selectedAd)
         }
       } catch (error) {
         console.error("Failed to fetch Ad data on Article page:", error)
@@ -27,11 +28,52 @@ const Ad970 = () => {
     fetchData()
   }, [])
 
+  // Memoized function to handle GA events for impressions and clicks
+  const handleGAEvent = useCallback(
+    (action: "impression" | "click") => {
+      if (showAd && randomAd) {
+        // Ensure ad is shown before logging
+        const { slug, ad_url, campaign_title } = randomAd
+        sendGAEvent("event", action, {
+          event_category: "ads",
+          event_label: slug,
+          event_value: ad_url,
+          ad_format: AdTypes.Banner,
+          campaign: campaign_title,
+          campaign_id: slug,
+          ad_source: "br-studio",
+        })
+      }
+    },
+    [randomAd, showAd], // Depend on `randomAd` and `showAd`
+  )
+
+  // Trigger a new impression when `randomAd` changes, if `showAd` is true
+  useEffect(() => {
+    if (showAd && randomAd) {
+      handleGAEvent("impression")
+    }
+  }, [randomAd, handleGAEvent, showAd])
+
+  // Listen for new ad impressions when navigating
+  useEffect(() => {
+    const handleNewAdImpression = () => {
+      if (showAd) {
+        handleGAEvent("impression")
+      }
+    }
+
+    document.addEventListener("newAdImpression", handleNewAdImpression)
+    return () => {
+      document.removeEventListener("newAdImpression", handleNewAdImpression)
+    }
+  }, [handleGAEvent, showAd])
+
   if (!randomAd || !randomAd.banner_image || !randomAd.banner_image_mobile || !randomAd.ad_url) {
     return null
   }
 
-  const { banner_image, banner_image_mobile, ad_url, campaign_title, slug } = randomAd
+  const { banner_image, banner_image_mobile, ad_url, campaign_title } = randomAd
   const desktopSrc = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${banner_image.filename_disk}`
   const mobileSrc = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${banner_image_mobile.filename_disk}`
 
@@ -45,18 +87,6 @@ const Ad970 = () => {
 
   const desktopDimensions = getImageDimensions(banner_image, 1008)
   const mobileDimensions = getImageDimensions(banner_image_mobile, 640)
-
-  const handleGAEvent = (action: "impression" | "click") => {
-    sendGAEvent("event", action, {
-      event_category: "ads",
-      event_label: slug,
-      event_value: ad_url,
-      ad_format: AdTypes.Banner,
-      campaign: campaign_title,
-      campaign_id: slug,
-      ad_source: "br-studio",
-    })
-  }
 
   return (
     showAd && (
@@ -76,7 +106,7 @@ const Ad970 = () => {
               width={desktopDimensions.width}
               height={desktopDimensions.height}
               alt={campaign_title}
-              onLoad={() => handleGAEvent("impression")}
+              onLoad={() => showAd && handleGAEvent("impression")} // Check showAd before logging impression
               onClick={() => handleGAEvent("click")}
             />
             <Image
@@ -85,7 +115,7 @@ const Ad970 = () => {
               width={mobileDimensions.width}
               height={mobileDimensions.height}
               alt={campaign_title}
-              onLoad={() => handleGAEvent("impression")}
+              onLoad={() => showAd && handleGAEvent("impression")} // Check showAd before logging impression
               onClick={() => handleGAEvent("click")}
             />
           </Link>
