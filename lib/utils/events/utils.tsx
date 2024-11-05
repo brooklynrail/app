@@ -79,6 +79,8 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&fields[]=featured_image.caption` +
     `&fields[]=featured_image.alt` +
     `&fields[]=featured_image.filename_disk` +
+    `&fields[]=featured_image.width` +
+    `&fields[]=featured_image.height` +
     `&fields[]=featured_image.type` +
     `&fields[]=featured_image.modified_on` +
     `&fields[]=people.people_id.portrait.id` +
