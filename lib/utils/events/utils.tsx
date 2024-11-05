@@ -55,7 +55,7 @@ export const getUpcomingEvents = cache(async () => {
     `&fields[]=all_day` +
     `&fields[]=youtube_id` +
     `&sort=start_date` +
-    `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
+    `&filter[end_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
     `&filter[youtube_id][_empty]=true` +
     `&filter[status][_eq]=published`
 
