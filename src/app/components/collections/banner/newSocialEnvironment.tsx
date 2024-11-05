@@ -73,7 +73,7 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
           </h3>
         </div>
         <div className="col-span-2 tablet:col-span-5 row-start-2">
-          <div className="h-24 bg-opacity-60 flex divide-x divide-indigo-50 divide-dotted overflow-x-auto">
+          <div className="h-24 bg-opacity-60 flex divide-x divide-indigo-50 divide-dotted overflow-x-auto no-scrollbar">
             {!loading && events}
           </div>
         </div>
