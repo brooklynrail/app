@@ -11,7 +11,7 @@ import Sponsor from "./sponsor"
 const EventsPage = (props: EventsProps) => {
   const { navData } = props
   const allEvents = props.allEvents.map((event: Events, index: number) => {
-    return <EventCard key={index} event={event} eventTypes={props.eventTypes} />
+    return <EventCard key={index} event={event} eventTypes={props.eventTypes} priority={false} />
   })
 
   return (
