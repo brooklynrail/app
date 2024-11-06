@@ -68,7 +68,7 @@ async function getData() {
     return notFound()
   }
 
-  const initialEvents = await getPastEvents({ limit: 4, offset: 0 })
+  const initialEvents = await getPastEvents({ limit: 32, offset: 0 })
   if (!initialEvents) {
     return notFound()
   }
