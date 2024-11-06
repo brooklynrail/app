@@ -49,7 +49,6 @@ export const getArticlesBySection = cache(async (props: ArticlesBySectionProps) 
       `&fields[]=featured_artwork.alt` +
       `&filter[status][_eq]=published` +
       `&filter[section][slug][_eq]=${slug}` +
-      `&filter[issue][published][_nnull]=true` +
       `&limit=${limit}` +
       `&page=${Math.floor(offset / limit) + 1}` +
       `&sort[]=-issue.published` +
