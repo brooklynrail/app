@@ -608,6 +608,7 @@ export type Issues = {
   issue_number: number
   summary: string
   credits: string
+  store_url?: string | null
 }
 
 export type Organizations = {

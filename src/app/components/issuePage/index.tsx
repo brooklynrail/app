@@ -7,6 +7,7 @@ import Paper, { PaperType } from "../paper"
 import CoversPopup from "./coversPopup"
 import IssueHead from "./head"
 import TableOfContents from "./tableOfContents"
+import Link from "next/link"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -81,10 +82,20 @@ const PublishInfo = (props: PublishInfoProps) => {
     })
 
   return (
-    <div className="pb-20 text-sm space-y-2 text-zinc-700 dark:text-slate-100">
+    <div className="pb-20 text-sm space-y-6 text-zinc-700 dark:text-slate-100">
       <p>
         The “{thisIssueData.title}” Issue of the Brooklyn Rail was published on {publishedOn}.
       </p>
+      {thisIssueData.store_url && (
+        <p>
+          <Link
+            href={thisIssueData.store_url}
+            className="bg-zinc-800 dark:bg-slate-50 text-white dark:text-zinc-900 font-medium uppercase py-1.5 px-3 rounded inline-block"
+          >
+            Buy this issue
+          </Link>
+        </p>
+      )}
     </div>
   )
 }

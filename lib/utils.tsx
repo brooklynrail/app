@@ -190,6 +190,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=published` +
     `&fields[]=issue_number` +
     `&fields[]=special_issue` +
+    `&fields[]=store_url` +
     `&fields[]=old_id` +
     `&fields[]=summary` +
     `&fields[]=credits` +
