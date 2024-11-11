@@ -66,7 +66,7 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
     >
       <div className="grid grid-cols-3 tablet:grid-cols-6 gap-3 tablet:gap-x-6">
         <div className="col-span-3 tablet:col-span-6 row-start-1">
-          <h3 className="text-sm tablet-lg:text-md font-medium text-white">
+          <h3 className="text-sm tablet-lg:text-lg font-medium text-white">
             <Link href="/events">
               <span className="">{parse(banner.title)}</span>
             </Link>
@@ -122,7 +122,7 @@ const EventCard = (props: EventCardProps) => {
   })
 
   return (
-    <div className="px-3 first:pl-0">
+    <div className="px-1.5 first:pl-0">
       <Link
         href={permalink}
         className={`block rounded-xl w-32 h-24 ${style.card} hover:no-underline relative overflow-hidden`}
@@ -149,7 +149,7 @@ const EventCard = (props: EventCardProps) => {
 }
 
 const AllEventsCard = () => (
-  <div className="px-3 last:pr-0">
+  <div className="px-1.5 last:pr-0">
     <div className="bg-white bg-opacity-20 rounded-xl w-32 h-24 px-3 flex flex-col justify-center items-center">
       <p className="text-indigo-50 text-xs uppercase">
         <Link href={`/events`}>All events</Link> »
