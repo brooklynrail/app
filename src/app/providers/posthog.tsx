@@ -16,7 +16,8 @@ export function CSPostHogProvider({ children }: { children: ReactNode }) {
   if (typeof window !== "undefined") {
     posthog.init(posthogKey, {
       api_host: posthogHost,
-      person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
+      person_profiles: "always", // or 'always' to create profiles for anonymous users as well
+      persistence: "localStorage", // or 'cookie' if you prefer
     })
   }
 
