@@ -21,15 +21,12 @@ export const usePopup = () => {
   return context
 }
 
-const getCookie = (name: string): string | null => {
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
-  return match ? match[2] : null
+const getLocalStorageItem = (key: string): string | null => {
+  return localStorage.getItem(key)
 }
 
-const setCookie = (name: string, value: string, hours: number) => {
-  const expires = new Date()
-  expires.setHours(expires.getHours() + hours)
-  document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/`
+const setLocalStorageItem = (key: string, value: string) => {
+  localStorage.setItem(key, value)
 }
 
 interface PopupProviderProps {
@@ -43,9 +40,9 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   const [images, setImages] = useState<any[]>([])
   const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
 
-  // Read cookie value once on mount
+  // Read localStorage value once on mount
   useEffect(() => {
-    const count = parseInt(getCookie("viewDonatePopup") || "0", 10) || 0
+    const count = parseInt(getLocalStorageItem("viewDonatePopup") || "0", 10) || 0
     setViewedDonateCount(count)
   }, [])
 
@@ -56,7 +53,7 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
       setShowPopup(true)
       const newCount = viewedDonateCount + 1
       setViewedDonateCount(newCount)
-      setCookie("viewDonatePopup", newCount.toString(), 1) // Expires in 1 hour
+      setLocalStorageItem("viewDonatePopup", newCount.toString()) // Store in localStorage
     }
   }, [viewedDonateCount])
 
