@@ -11,6 +11,7 @@ import NavBar from "../navBar"
 import PopupDonate from "../popupDonate"
 import { PopupProvider } from "../popupProvider"
 import PreviewHeader from "../preview/previewHead"
+import ScreenIndicator from "../screenIndicator"
 
 export interface PaperProps {
   pageClass: string
@@ -55,6 +56,7 @@ const Paper = (props: PaperProps) => {
             {children}
             <Footer />
             <Ad970 />
+            <ScreenIndicator />
             <Menu collections={navData.collections} />
             {!isHomepage && <PopupDonate />}
           </div>
