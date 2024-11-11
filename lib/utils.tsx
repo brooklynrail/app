@@ -190,6 +190,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=published` +
     `&fields[]=issue_number` +
     `&fields[]=special_issue` +
+    `&fields[]=store_url` +
     `&fields[]=old_id` +
     `&fields[]=summary` +
     `&fields[]=credits` +
@@ -314,45 +315,6 @@ export const getSectionsByIssueId = cache(async (issueId: string, status: string
     return null
   }
 })
-
-export async function getArticlePages() {
-  try {
-    let articlePages: Articles[] = []
-    let page = 1
-    let isMore = true
-    while (isMore) {
-      const articleDataAPI =
-        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
-        `?fields[]=slug` +
-        `&fields[]=section.slug` +
-        `&fields[]=issue.year` +
-        `&fields[]=issue.month` +
-        `&fields[]=issue.slug` +
-        `&fields[]=issue.special_issue` +
-        `&fields[]=issue.status` +
-        `&filter[status][_eq]=published` +
-        `&filter[slug][_nempty]=true` +
-        `&filter[issue][_nnull]=true` +
-        `&sort[]=-date_updated` +
-        `&page=${page}` +
-        `&limit=100` +
-        `&offset=${page * 100 - 100}`
-      const res = await fetch(articleDataAPI)
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error("Failed to fetch getArticlePages data")
-      }
-      const data = await res.json()
-      articlePages = articlePages.concat(data.data)
-      isMore = data.data.length === 100 // assumes there is another page of records
-      page++
-    }
-    return articlePages as Articles[]
-  } catch (error) {
-    console.error("Error in getArticlePages", error)
-    return null
-  }
-}
 
 export async function getPreviewArticle(id: string) {
   try {

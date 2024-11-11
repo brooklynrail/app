@@ -30,19 +30,16 @@ const Header = (props: HeaderProps) => {
   }
 }
 
-const getCookie = (name: string): string | null => {
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
-  return match ? match[2] : null
+const getLocalStorageItem = (key: string): string | null => {
+  return localStorage.getItem(key)
 }
 
-const setCookie = (name: string, value: string, hours: number) => {
-  const expires = new Date()
-  expires.setHours(expires.getHours() + hours)
-  document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/`
+const setLocalStorageItem = (key: string, value: string) => {
+  localStorage.setItem(key, value)
 }
 
-const deleteCookie = (name: string) => {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+const removeLocalStorageItem = (key: string) => {
+  localStorage.removeItem(key)
 }
 
 const HeaderHomepage = (props: HeaderProps) => {
@@ -53,8 +50,8 @@ const HeaderHomepage = (props: HeaderProps) => {
   const subheadFill = theme === "dark" ? "fill-white" : "fill-white"
 
   useEffect(() => {
-    // Check if the cookie is already set for video pause
-    const isVideoPaused = getCookie("videoBGPaused")
+    // Check if the localStorage item is already set for video pause
+    const isVideoPaused = getLocalStorageItem("homepageVideoPaused")
     if (isVideoPaused === "true" && videoRef.current) {
       videoRef.current.pause()
       setIsPaused(true)
@@ -65,10 +62,10 @@ const HeaderHomepage = (props: HeaderProps) => {
     if (videoRef.current) {
       if (isPaused) {
         videoRef.current.play()
-        deleteCookie("videoBGPaused")
+        removeLocalStorageItem("homepageVideoPaused")
       } else {
         videoRef.current.pause()
-        setCookie("videoBGPaused", "true", 24) // Set cookie for 1 day
+        setLocalStorageItem("homepageVideoPaused", "true") // Set localStorage item
       }
       setIsPaused(!isPaused)
     }

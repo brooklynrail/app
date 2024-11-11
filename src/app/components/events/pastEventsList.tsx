@@ -12,36 +12,9 @@ interface PastEventsListProps {
 
 const PastEventsList = (props: PastEventsProps & PastEventsListProps) => {
   const { initialEvents, eventTypes } = props
-  const currentBreakpoint = useBreakpoints()
-  const [groupCount, setGroupCount] = useState(1)
   const [allEvents, setAllEvents] = useState<Events[]>(initialEvents)
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
-
-  useEffect(() => {
-    const calculateGroupNumber = () => {
-      switch (currentBreakpoint) {
-        case "tablet-lg":
-        case "desktop":
-          return 3
-        case "desktop-lg":
-        case "widescreen":
-          return 4
-        default:
-          return 1
-      }
-    }
-    setGroupCount(calculateGroupNumber())
-  }, [currentBreakpoint])
-
-  // Utility function to split array into groups
-  const groupArray = (array: Events[], groupSize: number) => {
-    const groups = []
-    for (let i = 0; i < array.length; i += groupSize) {
-      groups.push(array.slice(i, i + groupSize))
-    }
-    return groups
-  }
 
   // Function to load more events
   const loadMoreEvents = async () => {
@@ -66,21 +39,19 @@ const PastEventsList = (props: PastEventsProps & PastEventsListProps) => {
     }
   }
 
-  const eventGroups = groupArray(allEvents, groupCount).map((group, index) => {
-    const row = group.map((event, i) => <PastEventCard key={event.id} event={event} eventTypes={eventTypes} />)
-    return (
-      <div
-        key={index}
-        className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-0 divide-x rail-divide tablet-lg:py-3 pb-3"
-      >
-        {row}
-      </div>
-    )
+  const allEventCards = allEvents.map((event, i) => {
+    const priority = i < 3 ? true : false
+    return <PastEventCard key={event.id} event={event} eventTypes={eventTypes} priority={priority} />
   })
 
   return (
     <div className="pb-9">
-      <div className="divide-y rail-divide">{eventGroups}</div>
+      {/* <div className="divide-y rail-divide">{eventGroups}</div> */}
+      <div className={`py-3 tablet-lg:py-6`}>
+        <div className={`grid items-start gap-0 grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4`}>
+          {allEventCards}
+        </div>
+      </div>
       {props.limit && hasMore ? (
         <div className="text-center pt-6">
           <button

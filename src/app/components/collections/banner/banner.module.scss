@@ -4,7 +4,7 @@
     @apply hover:no-underline space-y-2;
   }
   h3 {
-    @apply text-lg tablet-lg:text-2xl font-normal italic hover:underline;
+    @apply text-lg tablet-lg:text-xl font-normal italic hover:underline;
     line-height: 28px;
   }
 }

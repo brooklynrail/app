@@ -8,6 +8,7 @@ import { formatEventDate, formatTime, getEventTypeText } from "../../../../lib/u
 export interface EventCardProps {
   event: Events
   eventTypes: EventsTypes[]
+  priority: boolean
 }
 
 const EventCard = (props: EventCardProps) => {

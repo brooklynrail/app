@@ -55,7 +55,7 @@ export const getUpcomingEvents = cache(async () => {
     `&fields[]=all_day` +
     `&fields[]=youtube_id` +
     `&sort=start_date` +
-    `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
+    `&filter[end_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
     `&filter[youtube_id][_empty]=true` +
     `&filter[status][_eq]=published`
 
@@ -79,6 +79,8 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&fields[]=featured_image.caption` +
     `&fields[]=featured_image.alt` +
     `&fields[]=featured_image.filename_disk` +
+    `&fields[]=featured_image.width` +
+    `&fields[]=featured_image.height` +
     `&fields[]=featured_image.type` +
     `&fields[]=featured_image.modified_on` +
     `&fields[]=people.people_id.portrait.id` +
@@ -508,6 +510,8 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
           type: PageType.Event,
         })
 
+        const eventPermalink = `${permalink}?br=events`
+
         // get the start date in this format:
         // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
         const endDate = new Date(event.end_date)
@@ -526,15 +530,15 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
         return `
       <div class="event">
         ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
-        <h3><a href="${permalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
+        <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
         <p class="summary">${event.summary}</p>
         <div class="event-details">
           <p className="text-xl text-center font-light space-x-3">
-            <strong>${dateString}</strong> ${timeString ? `<span>${timeString}</span>` : ""}
+            <strong>${dateString}</strong> ${timeString ? `<br/><span>${timeString}</span>` : ""}
           </p>
         </div>
         <div class="actions">
-          <a class="btn btn-register" title="Register for ${event.title}" href="${permalink}" target="_blank">
+          <a class="btn btn-register" title="Register for ${event.title}" href="${eventPermalink}" target="_blank">
             <span>Register</span>
           </a>
         </div>

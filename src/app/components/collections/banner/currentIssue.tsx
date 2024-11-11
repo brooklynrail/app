@@ -46,7 +46,7 @@ const BannerCurrentIssue = (props: BannerCurrentIssueProps) => {
     >
       <div className="grid grid-cols-3 gap-3 tablet:gap-x-6">
         <div className="col-span-3 row-start-1">
-          <h3 className="text-sm tablet-lg:text-md font-medium text-white">
+          <h3 className="text-sm tablet-lg:text-lg font-medium text-white">
             <Link href={issuePermalink}>{currentIssue.title} Issue</Link>
           </h3>
         </div>

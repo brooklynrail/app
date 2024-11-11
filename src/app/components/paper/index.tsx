@@ -1,15 +1,16 @@
 "use client"
+import { MenuProvider } from "@/app/hooks/useMenu"
+import { CSPostHogProvider } from "@/app/providers/posthog"
+import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import Ad970 from "../ads/ad970"
 import Footer from "../footer"
+import Menu from "../menu/menu"
+import NavBar from "../navBar"
 import PopupDonate from "../popupDonate"
 import { PopupProvider } from "../popupProvider"
 import Header from "../header"
-import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
-import NavBar from "../navBar"
 import { usePathname } from "next/navigation"
 import PreviewHeader from "../preview/previewHead"
-import { MenuProvider, useMenu } from "@/app/hooks/useMenu"
-import Menu from "../menu/menu"
 
 export interface PaperProps {
   pageClass: string
@@ -38,26 +39,28 @@ const Paper = (props: PaperProps) => {
   const isHomepage = pathname === "/"
 
   return (
-    <PopupProvider hidePopup={hidePopup}>
-      <MenuProvider>
-        <div className={`theme ${pageClass}`}>
-          {previewURL ? (
-            <PreviewHeader previewURL={previewURL} />
-          ) : (
-            <>
-              <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
-              <NavBar navData={navData} isHomepage={isHomepage} />
-            </>
-          )}
+    <CSPostHogProvider>
+      <PopupProvider hidePopup={hidePopup}>
+        <MenuProvider>
+          <div className={`theme ${pageClass}`}>
+            {previewURL ? (
+              <PreviewHeader previewURL={previewURL} />
+            ) : (
+              <>
+                <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
+                <NavBar navData={navData} isHomepage={isHomepage} />
+              </>
+            )}
 
-          {children}
-          <Footer />
-          <Ad970 />
-          <Menu collections={navData.collections} />
-          {!isHomepage && <PopupDonate />}
-        </div>
-      </MenuProvider>
-    </PopupProvider>
+            {children}
+            <Footer />
+            <Ad970 />
+            <Menu collections={navData.collections} />
+            {!isHomepage && <PopupDonate />}
+          </div>
+        </MenuProvider>
+      </PopupProvider>
+    </CSPostHogProvider>
   )
 }
 
