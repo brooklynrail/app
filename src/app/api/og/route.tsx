@@ -34,7 +34,12 @@ export async function GET(request: Request) {
     return null
   }
 
+  const ogTitle = data.title
   const ogExcerpt = data.deck ? parse(data.deck) : data.excerpt
+  const ogSection = data.section
+  const ogIssue = data.issue
+  const ogImage = data.image && `https://localhost:3000/_next/image?url=${encodeURIComponent(data.image)}&w=1200&q=85`
+  const ogContributors = data.contributors
 
   function Label({ children }: { children: React.ReactNode; style?: React.CSSProperties }) {
     return (
@@ -80,24 +85,25 @@ export async function GET(request: Request) {
             backgroundColor: "#FEF9C3",
           }}
         >
-          <Label style={{ display: "flex" }}>October 2024</Label>
-          <Label style={{ display: "flex" }}>ArtSeen</Label>
+          <Label style={{ display: "flex" }}>{ogIssue}</Label>
+          <Label style={{ display: "flex" }}>{ogSection}</Label>
         </div>
 
         <div style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
-          <img
-            width="100%"
-            height="400"
-            src="https://studio.brooklynrail.org/assets/d616ba7e-6b66-4ead-92a0-ac560afebd9e"
-            style={{
-              objectFit: "cover",
-              maxWidth: "100%",
-              height: "400px",
-            }}
-          />
+          {ogImage && (
+            <img
+              src={ogImage}
+              width="100%"
+              height="400"
+              alt=""
+              tw="flex-1 w-full h-full"
+              style={{ objectFit: "contain", objectPosition: "center", maxWidth: "100%", height: "400px" }}
+            />
+          )}
         </div>
 
         <div
+          tw=""
           style={{
             marginTop: 30,
             marginBottom: 40,
@@ -107,11 +113,11 @@ export async function GET(request: Request) {
             lineHeight: "1.1",
           }}
         >
-          Ron Gorchov: Exploring the Near/Far Painterly Horizons of Modern Space
+          {ogTitle}
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", textAlign: "center" }}>
-          <Label>By Ekin Erkan</Label>
+          <Label>By {ogContributors}</Label>
         </div>
 
         <div
@@ -124,9 +130,7 @@ export async function GET(request: Request) {
             textAlign: "center",
           }}
         >
-          Vito Schnabel's Ron Gorchov retrospective, curated by Robert Storr, Exploring the Near/Far Painterly Horizons
-          of Modern Space, excavates works from the late artist's studio, punctuating them with some of Gorchov's most
-          important saddle-shaped canvases.
+          {ogExcerpt}
         </div>
 
         <div

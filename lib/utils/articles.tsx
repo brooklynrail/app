@@ -39,6 +39,8 @@ export async function getArticleOGData(slug: string, status?: string) {
     `&fields[]=featured_image.filename_disk` +
     `&fields[]=issue.title` +
     `&fields[]=section.name` +
+    `&fields[]=contributors.contributors_id.first_name` +
+    `&fields[]=contributors.contributors_id.last_name` +
     `&filter[slug][_eq]=${slug}` +
     `&filter[status][_eq]=${status}`
 
@@ -61,6 +63,23 @@ export async function getArticleOGData(slug: string, status?: string) {
 }
 
 const transformArticle = (data: Articles) => {
+  const contributors = data.contributors
+    .map((contributor) =>
+      contributor.contributors_id
+        ? `${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name}`
+        : "",
+    )
+    .filter(Boolean)
+
+  let contributorsString = ""
+  if (contributors.length === 1) {
+    contributorsString = contributors[0]
+  } else if (contributors.length === 2) {
+    contributorsString = contributors.join(" and ")
+  } else if (contributors.length > 2) {
+    contributorsString = `${contributors.slice(0, -1).join(", ")}, and ${contributors[contributors.length - 1]}`
+  }
+
   // Build a new article object with the type of OGArticle
   const article = {} as OGArticle
   article.title = data.title
@@ -68,6 +87,7 @@ const transformArticle = (data: Articles) => {
   article.deck = data.deck ? data.deck : null
   article.issue = data.issue.title
   article.section = data.section.name
+  article.contributors = contributorsString
   article.image = data.featured_image
     ? `${process.env.NEXT_PUBLIC_IMAGE_PATH}${data.featured_image.filename_disk}`
     : null
