@@ -8,7 +8,6 @@ interface ArticleBarProps {
 const ArticleBar = (props: ArticleBarProps) => {
   const { goToNextArticle, goToPrevArticle } = props
   const { isAdVisible } = useAdVisibility()
-  console.log("isAdVisible 970", isAdVisible)
 
   const bottom = isAdVisible ? "bottom-36" : "bottom-9"
   return (

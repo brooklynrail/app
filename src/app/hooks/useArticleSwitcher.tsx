@@ -1,9 +1,10 @@
 "use client"
-import { useState, useEffect, useMemo, useCallback } from "react"
-import { Articles } from "../../../lib/types"
-import { useSwipeable, SwipeableHandlers } from "react-swipeable"
-import { getPermalink, PageType } from "../../../lib/utils"
 import { sendGAEvent } from "@next/third-parties/google"
+import { useRouter } from "next/navigation"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { SwipeableHandlers, useSwipeable } from "react-swipeable"
+import { Articles } from "../../../lib/types"
+import { getPermalink, PageType } from "../../../lib/utils"
 
 // Define event types for GA
 type GAEventAction = "page_view" | "article_navigation"
@@ -14,6 +15,7 @@ interface PreloadedArticles {
 }
 
 export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[]) => {
+  const router = useRouter()
   const [currentArticle, setCurrentArticle] = useState<Articles>(initialArticle)
   const [articleSlug, setArticleSlug] = useState<string>(initialArticle.slug)
   const [animationState, setAnimationState] = useState<string>("active")
@@ -29,6 +31,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
   // Preload adjacent articles
   const preloadAdjacentArticles = useCallback(() => {
     const preloadArticle = async (slug: string) => {
+      // check if article is not already preloaded
       if (slug && !preloadedArticles[slug]) {
         const response = await fetch(`/api/article/${slug}`)
         if (response.ok) {
@@ -57,13 +60,11 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     })
 
     if (action === "page_view") {
-      // Correctly log a page view using the "config" method
       sendGAEvent("config", "G-P4BEY1BZ04", {
         page_path: articlePermalink,
         page_title: article.title,
       })
     } else if (action === "article_navigation") {
-      // Log custom navigation event using the "event" method
       sendGAEvent("event", "article_navigation", {
         event_category: "navigation",
         event_label: article.title,
@@ -76,10 +77,8 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
   // Set article from preloaded data if available, else fetch
   const fetchAndSetArticle = useCallback(
     async (slug: string, method: NavigationMethod) => {
-      // Use preloaded article data if available
       const articleData = preloadedArticles[slug] || currentArticle
 
-      // If articleData is undefined or does not match the requested slug, fetch it
       if (!articleData || articleData.slug !== slug) {
         const response = await fetch(`/api/article/${slug}`)
         if (response.ok) {
@@ -91,10 +90,9 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
         setCurrentArticle(articleData)
       }
 
-      // Update state and animations
-      setAnimationState("exit") // Trigger exit animation
+      setAnimationState("exit")
       setTimeout(() => {
-        setAnimationState("enter") // Trigger enter animation
+        setAnimationState("enter")
       }, 300)
 
       const articlePermalink = getPermalink({
@@ -104,8 +102,11 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
         slug: articleData.slug,
         type: PageType.Article,
       })
-      window.history.pushState({}, "", articlePermalink)
+
+      router.push(articlePermalink)
+
       setArticleSlug(slug)
+
       handleGAEvent("page_view", method, articleData)
       handleGAEvent("article_navigation", method, articleData)
 
@@ -114,17 +115,13 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     [preloadedArticles, currentArticle],
   )
 
-  // AD970: Trigger ad impression on article change
   useEffect(() => {
-    // Trigger ad impression each time a new article is shown
     const triggerAdImpression = () => {
-      // You can define this function in a way that communicates with Ad970
       document.dispatchEvent(new Event("newAdImpression"))
     }
     triggerAdImpression()
-  }, [currentArticle]) // Run whenever the current article changes
+  }, [currentArticle])
 
-  // Keyboard navigation handler
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" && nextArticle) {
