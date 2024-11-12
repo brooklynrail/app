@@ -1,9 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { Issues } from "../../../../../lib/types"
-import { getPermalink, PageType } from "../../../../../lib/utils"
-import { usePopup } from "../../popupProvider"
+import { Issues } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
+import { usePopup } from "../popupProvider"
 
 interface CoverImagesProps {
   currentIssue: Issues

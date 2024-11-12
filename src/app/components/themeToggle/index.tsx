@@ -1,46 +1,5 @@
 import { useEffect, useState } from "react"
 import styles from "./themeToggle.module.scss"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons"
-
-// const isDevOrPreview =
-//   process.env.NEXT_PUBLIC_VERCEL_ENV === "development" ||
-//   process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
-//   process.env.NEXT_PUBLIC_VERCEL_ENV === undefined
-
-// {
-//   isDevOrPreview && (
-//     <p className="text-xs">
-//       <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden widescreen:block`}>
-//         widescreen
-//       </span>
-//       <span
-//         className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop-lg:max-widescreen:block`}
-//       >
-//         desktop-lg
-//       </span>
-//       <span
-//         className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden desktop:max-desktop-lg:block`}
-//       >
-//         desktop
-//       </span>
-//       <span
-//         className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet-lg:max-desktop:block`}
-//       >
-//         tablet-lg
-//       </span>
-//       <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden tablet:max-tablet-lg:block`}>
-//         tablet
-//       </span>
-//       <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile-lg:max-tablet:block`}>
-//         mobile-lg
-//       </span>
-//       <span className={`bg-slate-200 dark:bg-slate-800 dark:text-white px-1 rounded hidden mobile:max-mobile-lg:block`}>
-//         mobile
-//       </span>
-//     </p>
-//   )
-// }
 
 interface ThemeToggleProps {
   theme: string | null

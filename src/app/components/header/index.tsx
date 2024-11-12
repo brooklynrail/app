@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { HomepageBanners, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import FeaturedBanner from "../homepage/featuredBanner"
+import FeaturedBanner from "../banner"
 import { PaperType } from "../paper"
 import HeaderDefault from "./default"
 import HomeBanner from "./homeBanner"
@@ -115,7 +115,7 @@ const HeaderHomepage = (props: HeaderProps) => {
         </button>
       </div>
 
-      {banners && currentIssue && <FeaturedBanner banners={banners} currentIssue={currentIssue} />}
+      {banners && currentIssue && <FeaturedBanner currentIssue={currentIssue} />}
     </header>
   )
 }

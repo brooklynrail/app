@@ -6,10 +6,10 @@ import { Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper, { PaperType } from "../paper"
 import IssueHead from "../issuePage/head"
-import { CoverImages } from "../collections/banner/coverImages"
 import { useEffect, useState } from "react"
 import { useBreakpoints } from "@/app/hooks/useBreakpoints"
 import style from "./archive.module.scss"
+import { CoverImages } from "../banner/coverImages"
 
 export interface ArchivePageProps {
   navData: Homepage
