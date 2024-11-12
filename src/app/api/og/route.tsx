@@ -38,7 +38,8 @@ export async function GET(request: Request) {
   const ogExcerpt = data.deck ? parse(data.deck) : data.excerpt
   const ogSection = data.section
   const ogIssue = data.issue
-  const ogImage = data.image && `https://localhost:3000/_next/image?url=${encodeURIComponent(data.image)}&w=1200&q=85`
+  const ogImage =
+    data.image && `${process.env.NEXT_PUBLIC_BASE_URL}/_next/image?url=${encodeURIComponent(data.image)}&w=1200&q=85`
   const ogContributors = data.contributors
 
   function Label({ children }: { children: React.ReactNode; style?: React.CSSProperties }) {
