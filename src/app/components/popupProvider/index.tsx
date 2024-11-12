@@ -21,13 +21,18 @@ export const usePopup = () => {
   return context
 }
 
+// Helper to retrieve and parse local storage item
 const getLocalStorageItem = (key: string): string | null => {
   return localStorage.getItem(key)
 }
 
+// Helper to set item in local storage
 const setLocalStorageItem = (key: string, value: string) => {
   localStorage.setItem(key, value)
 }
+
+// Define expiration time (1 hour in milliseconds)
+const ONE_HOUR = 60 * 60 * 1000
 
 interface PopupProviderProps {
   children: ReactNode
@@ -40,10 +45,21 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   const [images, setImages] = useState<any[]>([])
   const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
 
-  // Read localStorage value once on mount
+  // Initialize viewedDonateCount and handle expiration logic
   useEffect(() => {
-    const count = parseInt(getLocalStorageItem("viewDonatePopup") || "0", 10) || 0
-    setViewedDonateCount(count)
+    const storedCount = parseInt(getLocalStorageItem("donatePopup") || "0", 10) || 0
+    const storedTimestamp = parseInt(getLocalStorageItem("donatePopupTimestamp") || "0", 10)
+
+    const currentTime = Date.now()
+    if (storedTimestamp && currentTime - storedTimestamp < ONE_HOUR) {
+      // If within expiration period, use stored count
+      setViewedDonateCount(storedCount)
+    } else {
+      // If expired, reset count and timestamp
+      setViewedDonateCount(0)
+      setLocalStorageItem("donatePopup", "0")
+      setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
+    }
   }, [])
 
   // Trigger donation popup if conditions are met
@@ -51,9 +67,13 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
     if (viewedDonateCount !== null && viewedDonateCount < 2) {
       setPopupType("donate")
       setShowPopup(true)
+
+      // Increment count and reset timestamp in local storage
       const newCount = viewedDonateCount + 1
+      const currentTime = Date.now()
       setViewedDonateCount(newCount)
-      setLocalStorageItem("viewDonatePopup", newCount.toString()) // Store in localStorage
+      setLocalStorageItem("donatePopup", newCount.toString())
+      setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
     }
   }, [viewedDonateCount])
 
