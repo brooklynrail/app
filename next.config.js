@@ -52,6 +52,14 @@ module.exports = {
       },
       // ===================================
       // ISSUE REDIRECT
+
+      // Redirect old issue paths to new issue paths
+      {
+        source: "/issue/:issueSlug/",
+        destination: "/issues/:issueSlug/",
+        permanent: false,
+      },
+
       // Redirect old issue paths to new issue paths
       {
         source: "/:year(\\d{4})/:month(\\d{2})/",
