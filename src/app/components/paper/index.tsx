@@ -11,6 +11,7 @@ import { PopupProvider } from "../popupProvider"
 import Header from "../header"
 import { usePathname } from "next/navigation"
 import PreviewHeader from "../preview/previewHead"
+import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
 
 export interface PaperProps {
   pageClass: string
@@ -40,26 +41,28 @@ const Paper = (props: PaperProps) => {
 
   return (
     <CSPostHogProvider>
-      <PopupProvider hidePopup={hidePopup}>
-        <MenuProvider>
-          <div className={`theme ${pageClass}`}>
-            {previewURL ? (
-              <PreviewHeader previewURL={previewURL} />
-            ) : (
-              <>
-                <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
-                <NavBar navData={navData} isHomepage={isHomepage} />
-              </>
-            )}
+      <AdVisibilityProvider>
+        <PopupProvider hidePopup={hidePopup}>
+          <MenuProvider>
+            <div className={`relative theme ${pageClass}`}>
+              {previewURL ? (
+                <PreviewHeader previewURL={previewURL} />
+              ) : (
+                <>
+                  <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
+                  <NavBar navData={navData} isHomepage={isHomepage} />
+                </>
+              )}
 
-            {children}
-            <Footer />
-            <Ad970 />
+              {children}
+              <Ad970 />
+              <Footer />
+            </div>
             <Menu collections={navData.collections} />
             {!isHomepage && <PopupDonate />}
-          </div>
-        </MenuProvider>
-      </PopupProvider>
+          </MenuProvider>
+        </PopupProvider>
+      </AdVisibilityProvider>
     </CSPostHogProvider>
   )
 }

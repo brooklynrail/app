@@ -4,10 +4,11 @@ import Link from "next/link"
 import { useEffect, useState, useCallback } from "react"
 import { Ads } from "../../../../lib/types"
 import { AdTypes } from "../../../../lib/utils/ads"
+import { useAdVisibility } from "@/app/hooks/adVisibilityContext"
 
 const Ad970 = () => {
   const [randomAd, setRandomAd] = useState<Ads | null>(null)
-  const [showAd, setShowAd] = useState(true)
+  const { isAdVisible, closeAd } = useAdVisibility()
 
   // Fetch ad data only once on mount
   useEffect(() => {
@@ -31,7 +32,7 @@ const Ad970 = () => {
   // Memoized function to handle GA events for impressions and clicks
   const handleGAEvent = useCallback(
     (action: "impression" | "click") => {
-      if (showAd && randomAd) {
+      if (isAdVisible && randomAd) {
         // Ensure ad is shown before logging
         const { slug, ad_url, campaign_title } = randomAd
         sendGAEvent("event", action, {
@@ -45,20 +46,20 @@ const Ad970 = () => {
         })
       }
     },
-    [randomAd, showAd], // Depend on `randomAd` and `showAd`
+    [randomAd, isAdVisible], // Depend on `randomAd` and `isAdVisible`
   )
 
-  // Trigger a new impression when `randomAd` changes, if `showAd` is true
+  // Trigger a new impression when `randomAd` changes, if `isAdVisible` is true
   useEffect(() => {
-    if (showAd && randomAd) {
+    if (isAdVisible && randomAd) {
       handleGAEvent("impression")
     }
-  }, [randomAd, handleGAEvent, showAd])
+  }, [randomAd, handleGAEvent, isAdVisible])
 
   // Listen for new ad impressions when navigating
   useEffect(() => {
     const handleNewAdImpression = () => {
-      if (showAd) {
+      if (isAdVisible) {
         handleGAEvent("impression")
       }
     }
@@ -67,7 +68,7 @@ const Ad970 = () => {
     return () => {
       document.removeEventListener("newAdImpression", handleNewAdImpression)
     }
-  }, [handleGAEvent, showAd])
+  }, [handleGAEvent, isAdVisible])
 
   if (!randomAd || !randomAd.banner_image || !randomAd.banner_image_mobile || !randomAd.ad_url) {
     return null
@@ -89,11 +90,11 @@ const Ad970 = () => {
   const mobileDimensions = getImageDimensions(banner_image_mobile, 640)
 
   return (
-    showAd && (
+    isAdVisible && (
       <div className="m-0 mt-2 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3 bg-white bg-opacity-80 backdrop-blur-md">
         <button
           className="py-0 px-3 border border-zinc-200 text-zinc-500 text-center absolute -top-7 right-2 font-medium text-xs tablet:text-sm rounded-full bg-white flex items-center justify-center space-x-1 uppercase"
-          onClick={() => setShowAd(false)}
+          onClick={closeAd} // Use `closeAd` from the hook to hide the ad
         >
           <span className="hover:underline">Close</span> <span className="text-sm">&#x2715;</span>
         </button>
@@ -106,7 +107,7 @@ const Ad970 = () => {
               width={desktopDimensions.width}
               height={desktopDimensions.height}
               alt={campaign_title}
-              onLoad={() => showAd && handleGAEvent("impression")} // Check showAd before logging impression
+              onLoad={() => isAdVisible && handleGAEvent("impression")}
               onClick={() => handleGAEvent("click")}
             />
             <Image
@@ -115,7 +116,7 @@ const Ad970 = () => {
               width={mobileDimensions.width}
               height={mobileDimensions.height}
               alt={campaign_title}
-              onLoad={() => showAd && handleGAEvent("impression")} // Check showAd before logging impression
+              onLoad={() => isAdVisible && handleGAEvent("impression")}
               onClick={() => handleGAEvent("click")}
             />
           </Link>

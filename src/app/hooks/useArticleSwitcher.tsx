@@ -148,11 +148,25 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     trackMouse: false,
   })
 
+  const goToNextArticle = useCallback(() => {
+    if (nextArticle) {
+      fetchAndSetArticle(nextArticle.slug, "click")
+    }
+  }, [nextArticle, fetchAndSetArticle])
+
+  const goToPrevArticle = useCallback(() => {
+    if (prevArticle) {
+      fetchAndSetArticle(prevArticle.slug, "click")
+    }
+  }, [prevArticle, fetchAndSetArticle])
+
   return {
     currentArticle,
     nextArticle: preloadedArticles[nextArticle?.slug] || nextArticle,
     prevArticle: preloadedArticles[prevArticle?.slug] || prevArticle,
     swipeHandlers,
     animationState,
+    goToNextArticle,
+    goToPrevArticle,
   }
 }
