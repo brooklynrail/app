@@ -3,7 +3,6 @@ import { Issues } from "../../../../lib/types"
 import CurrentIssue from "./currentIssue"
 import Exhibitions from "./exhibitions"
 import NewSocialEnvironment from "./newSocialEnvironment"
-import styles from "./banner.module.scss"
 
 interface BannerProps {
   currentIssue: Issues
@@ -15,7 +14,7 @@ const FeaturedBanner = (props: BannerProps) => {
   return (
     <div className={`bg-white border-b rail-border`}>
       <div
-        className={`grid grid-cols-4 tablet-lg:grid-cols-12 divide-y-reverse divide-y tablet-lg:divide-y-0 tablet-lg:divide-x rail-divide py-3 ${styles.banner}`}
+        className={`grid grid-cols-4 tablet-lg:grid-cols-12 divide-y-reverse divide-y tablet-lg:divide-y-0 tablet-lg:divide-x rail-divide py-3`}
       >
         <CurrentIssue currentIssue={currentIssue} />
         <Exhibitions />
