@@ -4,9 +4,9 @@ import { ArticlesFiles } from "../../../../lib/types"
 
 enum ImageSize {
   SM = 240,
-  MD = 440,
-  LG = 800,
-  XL = 1020,
+  MD = 550,
+  LG = 1056,
+  XL = 2000,
 }
 
 interface RailImageProps {
@@ -85,6 +85,8 @@ const RailImage = (props: RailImageProps) => {
     <div className={`media ${mediaType}`}>
       <div className={`frame ${mediaType}`}>
         <Image
+          data-width={image.directus_files_id.width}
+          data-height={image.directus_files_id.height}
           src={src}
           style={{
             width: "100%",
