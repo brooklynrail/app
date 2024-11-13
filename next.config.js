@@ -56,7 +56,7 @@ module.exports = {
       // Redirect old Table of Contents path to the issue path
       // /issues/2024-11/table-of-contents/
       {
-        source: "/issues/:issueSlug/table-of-contents/",
+        source: "/issues/:issueSlug/table_of_contents/",
         destination: "/issues/:issueSlug/",
         permanent: true,
       },
