@@ -22,6 +22,7 @@
     "@vercel/speed-insights": "^1.0.12",
     "algoliasearch": "^5.10.2",
     "compromise": "^14.14.2",
+    "embla-carousel-react": "^8.3.1",
     "fast-average-color": "^9.4.0",
     "html-react-parser": "^5.1.12",
     "lodash.isequal": "^4.5.0",

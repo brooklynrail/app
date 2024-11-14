@@ -1,6 +1,7 @@
 import parse from "html-react-parser"
 import Image from "next/image"
 import { ArticlesFiles } from "../../../../lib/types"
+import { usePopup } from "../popupProvider"
 
 enum ImageSize {
   SM = 240,
@@ -18,6 +19,7 @@ interface RailImageProps {
 
 const RailImage = (props: RailImageProps) => {
   const { name, type, images, preview } = props
+  const { showArticleSlideShow, toggleArticleSlideShow } = usePopup()
 
   let image = images.find(
     (image: ArticlesFiles) => image.directus_files_id && image.directus_files_id.shortcode_key === name,
@@ -38,6 +40,11 @@ const RailImage = (props: RailImageProps) => {
   if (!image.directus_files_id.width || !image.directus_files_id.height) {
     return <></>
   }
+
+  // get the index # of the image in the images array
+  const index = images.findIndex(
+    (i) => image.directus_files_id && i.directus_files_id && i.directus_files_id.id === image.directus_files_id.id,
+  )
 
   const checkWidth = (ogwidth: number, type: string) => {
     const sizeMap = {
@@ -85,6 +92,7 @@ const RailImage = (props: RailImageProps) => {
     <div className={`media ${mediaType}`}>
       <div className={`frame ${mediaType}`}>
         <Image
+          className="cursor-pointer"
           data-width={image.directus_files_id.width}
           data-height={image.directus_files_id.height}
           src={src}
@@ -97,6 +105,7 @@ const RailImage = (props: RailImageProps) => {
           height={height}
           alt={name}
           object-fit="contain"
+          onClick={() => toggleArticleSlideShow(index)}
         />
       </div>
       {caption}
