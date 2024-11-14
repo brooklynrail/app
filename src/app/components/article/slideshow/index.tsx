@@ -21,6 +21,9 @@ const SlideShow = (props: SlideShowProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
   const [currentCaption, setCurrentCaption] = useState("")
 
+  const bodytext = article.body_text
+  // Find all of the images
+
   // Set the initial slide based on slideId
   useEffect(() => {
     if (emblaApi && slideId !== null) {
@@ -98,7 +101,7 @@ const SlideShow = (props: SlideShowProps) => {
             <div className={styles.embla__container}>{allImages}</div>
           </div>
           <div className={styles.embla__controls}>
-            <div className="caption text-sm text-white mb-4">{currentCaption}</div>
+            <div className={styles.embla__caption}>{currentCaption}</div>
             <div className={styles.embla__buttons}>
               <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
               <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />

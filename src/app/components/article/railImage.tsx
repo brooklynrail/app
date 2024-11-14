@@ -21,6 +21,7 @@ const RailImage = (props: RailImageProps) => {
   const { name, type, images, preview } = props
   const { showArticleSlideShow, toggleArticleSlideShow } = usePopup()
 
+  // find the image by shortcode key (name)
   let image = images.find(
     (image: ArticlesFiles) => image.directus_files_id && image.directus_files_id.shortcode_key === name,
   )
