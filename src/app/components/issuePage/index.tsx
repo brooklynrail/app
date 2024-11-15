@@ -2,12 +2,12 @@
 import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
 import parse from "html-react-parser"
 import { Articles, Issues } from "../../../../lib/types"
-import { CoverImages } from "../collections/banner/coverImages"
 import Paper from "../paper"
 import CoversPopup from "./coversPopup"
 import IssueHead from "./head"
 import TableOfContents from "./tableOfContents"
 import Link from "next/link"
+import { CoverImages } from "../banner/coverImages"
 
 export interface PromoProps {
   currentArticles: Articles[]

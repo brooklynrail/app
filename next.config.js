@@ -51,7 +51,22 @@ module.exports = {
         permanent: false,
       },
       // ===================================
-      // ISSUE REDIRECT
+      // ISSUES REDIRECT
+
+      // Redirect old Table of Contents path to the issue path
+      // /issues/2024-11/table-of-contents/
+      {
+        source: "/issues/:issueSlug/table_of_contents/",
+        destination: "/issues/:issueSlug/",
+        permanent: true,
+      },
+      // Redirect /issue/ to /issues/
+      {
+        source: "/issue/:issueSlug/",
+        destination: "/issues/:issueSlug/",
+        permanent: false,
+      },
+
       // Redirect old issue paths to new issue paths
       {
         source: "/:year(\\d{4})/:month(\\d{2})/",

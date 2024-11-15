@@ -12,6 +12,7 @@ import Header from "../header"
 import { usePathname } from "next/navigation"
 import PreviewHeader from "../preview/previewHead"
 import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
+import ScreenIndicator from "../screenIndicator"
 
 export interface PaperProps {
   pageClass: string
@@ -57,6 +58,7 @@ const Paper = (props: PaperProps) => {
               {children}
               <Ad970 />
               <Footer />
+              <ScreenIndicator />
             </div>
             <Menu collections={navData.collections} />
             {!isHomepage && <PopupDonate />}

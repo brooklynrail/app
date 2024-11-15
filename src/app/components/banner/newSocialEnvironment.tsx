@@ -1,20 +1,13 @@
 "use client"
 import style from "./banner.module.scss"
 import Link from "next/link"
-import { CollectionLinks, Collections, Events } from "../../../../../lib/types"
 import parse from "html-react-parser"
 import { useEffect, useState } from "react"
-import { getPermalink, PageType } from "../../../../../lib/utils"
 import Image from "next/image"
+import { Collections, Events } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
 
-interface BannerNewSocialEnvironmentProps {
-  banner: Collections
-  first: boolean
-  last: boolean
-}
-
-const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
-  const { banner } = props
+const NewSocialEnvironment = () => {
   const [currentEvents, setCurrentEvents] = useState<Events[] | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
@@ -38,50 +31,43 @@ const BannerNewSocialEnvironment = (props: BannerNewSocialEnvironmentProps) => {
     fetchData()
   }, []) // Empty dependency array ensures this runs only once
 
-  const first = props.first ? "pl-3 tablet:pl-6" : ""
-  const last = props.last ? "pr-3 tablet:pr-6" : ""
-
-  const links =
-    banner.links &&
-    banner.links.map((link: CollectionLinks, i: number) => {
-      const first = i === 0 ? "border border-dotted border-indigo-50 px-0.5" : ""
-      return (
-        <Link
-          key={`event-link-${i}`}
-          href={link.url}
-          className={`py-1 text-center text-indigo-50 uppercase font-medium text-xs ${first} flex justify-center w-full`}
-        >
-          <button className="uppercase hover:underline">{link.text}</button>
-        </Link>
-      )
-    })
-
   const events = currentEvents?.map((event: Events, i: number) => <EventCard key={event.id} event={event} />)
   events?.push(<AllEventsCard key="all-events" />)
 
   return (
     <div
-      key={banner.id}
-      className={`col-span-4 tablet:col-span-6 py-3 pb-6 px-3 tablet:px-6 bg-zinc-800 bg-opacity-90 ${first} ${last}`}
+      className={`banner-card col-span-4 tablet-lg:col-span-6 pb-3 px-3 tablet-lg:px-6 tablet-lg:pb-0 order-first tablet-lg:order-last`}
     >
-      <div className="grid grid-cols-3 tablet:grid-cols-6 gap-3 tablet:gap-x-6">
-        <div className="col-span-3 tablet:col-span-6 row-start-1">
-          <h3 className="text-sm tablet-lg:text-lg font-medium text-white">
+      <div className="grid grid-cols-3 tablet-lg:grid-cols-6 gap-3 tablet-lg:gap-x-6">
+        <div className="col-span-3 tablet-lg:col-span-6 row-start-1">
+          <h3 className="text-sm tablet-lg:text-lg font-medium">
             <Link href="/events">
-              <span className="">{parse(banner.title)}</span>
+              <span className="">The New Social Environment</span>
             </Link>
           </h3>
         </div>
-        <div className="col-span-2 tablet:col-span-5 row-start-2">
-          <div className="h-24 bg-opacity-60 flex divide-x divide-indigo-50 divide-dotted overflow-x-auto no-scrollbar">
+        <div className="col-span-2 tablet-lg:col-span-5 row-start-2">
+          <div className="h-24 bg-opacity-60 flex divide-x rail-divide overflow-x-auto no-scrollbar">
             {!loading && events}
           </div>
         </div>
-        {links && (
-          <div className="col-span-1 row-start-2">
-            <div className="flex flex-col items-center justify-center space-y-1">{links}</div>
+
+        <div className="col-span-1 row-start-2">
+          <div className="flex flex-col items-center justify-center space-y-1">
+            <Link
+              href={`/events`}
+              className={`py-1 text-center uppercase font-medium text-xs border rail-border px-0.5 flex justify-center w-full`}
+            >
+              <button className="uppercase hover:underline">Upcoming Events</button>
+            </Link>
+            <Link
+              href={`/events/past`}
+              className={`py-1 text-center uppercase font-medium text-xs flex justify-center w-full`}
+            >
+              <button className="uppercase hover:underline">Past Events</button>
+            </Link>
           </div>
-        )}
+        </div>
       </div>
     </div>
   )
@@ -150,12 +136,12 @@ const EventCard = (props: EventCardProps) => {
 
 const AllEventsCard = () => (
   <div className="px-1.5 last:pr-0">
-    <div className="bg-white bg-opacity-20 rounded-xl w-32 h-24 px-3 flex flex-col justify-center items-center">
-      <p className="text-indigo-50 text-xs uppercase">
+    <div className="bg-zinc-800 bg-opacity-20 rounded-xl w-32 h-24 px-3 flex flex-col justify-center items-center">
+      <p className="text-xs uppercase">
         <Link href={`/events`}>All events</Link> »
       </p>
     </div>
   </div>
 )
 
-export default BannerNewSocialEnvironment
+export default NewSocialEnvironment
