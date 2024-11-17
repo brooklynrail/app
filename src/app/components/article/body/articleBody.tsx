@@ -10,7 +10,7 @@ import ArticleBar from "../../articleBar"
 
 const ArticleBody = (props: ArticleProps) => {
   const { thisIssueData, articleData } = props
-  const { goToNextArticle, goToPrevArticle, currentArticle } = useArticleSwitcher(articleData, thisIssueData.articles)
+  const { currentArticle } = useArticleSwitcher(articleData, thisIssueData.articles)
   const { body_text, images, endnote, contributors } = currentArticle
 
   // Use the article switcher hook, which now returns next and previous articles
