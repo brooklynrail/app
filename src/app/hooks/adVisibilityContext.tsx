@@ -1,5 +1,6 @@
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react"
+import { getCookie, setCookie } from "../../../lib/utils/cookies"
 
 interface AdVisibilityContextProps {
   isAdVisible: boolean
@@ -10,15 +11,17 @@ const AdVisibilityContext = createContext<AdVisibilityContextProps | undefined>(
 
 export const AdVisibilityProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname()
-  // Initialize from sessionStorage once per session
+  // Initialize from cookies
   const [isAdVisible, setIsAdVisible] = useState<boolean>(() => {
-    const storedValue = sessionStorage.getItem("isAdVisible")
+    const storedValue = getCookie("isAdVisible")
     return storedValue !== null ? JSON.parse(storedValue) : true
   })
 
+  const days = 0.041 // roughly 1 hour
+
   const closeAd = useCallback(() => {
     setIsAdVisible(false)
-    sessionStorage.setItem("isAdVisible", JSON.stringify(false))
+    setCookie("isAdVisible", JSON.stringify(false), days)
   }, [])
 
   useEffect(() => {
@@ -31,11 +34,10 @@ export const AdVisibilityProvider = ({ children }: { children: ReactNode }) => {
 
     if (shouldShowAd) {
       setIsAdVisible(true)
-      sessionStorage.setItem("isAdVisible", JSON.stringify(true))
+      setCookie("isAdVisible", JSON.stringify(true), days)
     }
   }, [pathname])
 
-  // No need for an additional useEffect because session storage persists the value for the current session
   return <AdVisibilityContext.Provider value={{ isAdVisible, closeAd }}>{children}</AdVisibilityContext.Provider>
 }
 
