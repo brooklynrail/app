@@ -22,7 +22,7 @@ const HeaderDefault = (props: HeaderProps) => {
         {title && <h3>{title}</h3>}
       </div>
       <div className="relative">
-        <div className="p-3 tablet:px-6">
+        <div className="p-3 tablet-lg:px-6">
           <Link href={permalink} className="w-full space-y-3">
             <Banner type={type} />
             <Subhead fill={subheadFill} />
