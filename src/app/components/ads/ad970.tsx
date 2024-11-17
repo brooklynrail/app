@@ -91,14 +91,14 @@ const Ad970 = () => {
 
   return (
     isAdVisible && (
-      <div className="m-0 mt-2 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3 bg-white bg-opacity-80 backdrop-blur-md">
+      <div className="m-0 fixed bottom-0 left-0 right-0 z-20 pt-1 tablet-lg:pt-1 bg-white bg-opacity-80 backdrop-blur-md">
         <button
           className="py-0 px-3 border border-zinc-200 text-zinc-500 text-center absolute -top-7 right-2 font-medium text-xs tablet:text-sm rounded-full bg-white flex items-center justify-center space-x-1 uppercase"
           onClick={closeAd} // Use `closeAd` from the hook to hide the ad
         >
           <span className="hover:underline">Close</span> <span className="text-sm">&#x2715;</span>
         </button>
-        <p className="z-10 text-[11px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
+        <p className="z-10 text-[10px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
         <div>
           <Link href={ad_url} target="_blank">
             <Image
