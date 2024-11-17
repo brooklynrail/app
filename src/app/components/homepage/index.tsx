@@ -5,6 +5,8 @@ import CollectionTribute from "../collections/tribute"
 import Paper, { PaperType } from "../paper"
 import { CollectionSection } from "./collections"
 import AdsTileStrip from "../ads/adsTileStrip"
+import { PageContextProvider, usePageContext } from "../pageContext"
+import { useEffect } from "react"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -20,6 +22,12 @@ export enum CollectionType {
 
 const HomePage = (props: HomePageProps) => {
   const { homepageData, currentIssue, banners, navData } = props
+  const { setCurrentContext } = usePageContext()
+
+  useEffect(() => {
+    setCurrentContext("issue")
+    return () => setCurrentContext(null) // Clear context on unmount if needed
+  }, [setCurrentContext])
 
   const allCollections = homepageData.collections.map((collection: HomepageCollections, i: number) => {
     const thisCollection = collection.collections_id
