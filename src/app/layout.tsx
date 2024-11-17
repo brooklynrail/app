@@ -7,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "./components/theme"
+import { PageContextProvider } from "./components/pageContext"
 
 const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
@@ -171,7 +172,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="theme-color" content="#EF4444" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <PageContextProvider>{children}</PageContextProvider>
+        </ThemeProvider>
         <GoogleAnalytics gaId="G-P4BEY1BZ04" />
         <Analytics />
         <SpeedInsights />
