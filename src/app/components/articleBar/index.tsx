@@ -19,8 +19,10 @@ const ArticleBar = (props: ArticleBarProps) => {
     const items = []
     for (let i = 0; i < 4; i++) {
       items.push(
-        <p key={`text-${i}`}>
-          <Link href={``}>{marqueeText}</Link>
+        <p key={`text-${i}`} aria-hidden={i !== 0 ? "true" : undefined}>
+          <Link href={`/subscribe`} prefetch={false}>
+            {marqueeText}
+          </Link>
         </p>,
         <p key={`character-${i}`} aria-hidden="true">
           <span>&#10140;</span>
