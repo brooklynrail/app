@@ -1,6 +1,19 @@
+"use client"
 import { usePathname } from "next/navigation"
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react"
-import { getCookie, setCookie } from "../../../lib/utils/cookies"
+
+// Utility functions for cookies
+const getCookie = (name: string) => {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop()?.split(";").shift() || null
+  return null
+}
+
+const setCookie = (name: string, value: string, days: number) => {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString()
+  document.cookie = `${name}=${value}; expires=${expires}; path=/`
+}
 
 interface AdVisibilityContextProps {
   isAdVisible: boolean
