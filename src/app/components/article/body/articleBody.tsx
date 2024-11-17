@@ -5,13 +5,10 @@ import ContributorsBox from "../../contributorsBox"
 import BookshopWidget from "../bookshop"
 import styles from "../poetry.module.scss"
 import replaceShortcodes from "../shortcodes"
-import { useArticleSwitcher } from "@/app/hooks/useArticleSwitcher"
-import ArticleBar from "../../articleBar"
 
 const ArticleBody = (props: ArticleProps) => {
-  const { thisIssueData, articleData } = props
-  const { currentArticle } = useArticleSwitcher(articleData, thisIssueData.articles)
-  const { body_text, images, endnote, contributors } = currentArticle
+  const { articleData } = props
+  const { body_text, images, endnote, contributors } = articleData
 
   // Use the article switcher hook, which now returns next and previous articles
   return (
@@ -24,10 +21,10 @@ const ArticleBody = (props: ArticleProps) => {
               {endnote && (
                 <div className="endnote">
                   <span className="line"></span>
-                  {parse(currentArticle.endnote)}
+                  {parse(articleData.endnote)}
                 </div>
               )}
-              <BookshopWidget {...currentArticle} />
+              <BookshopWidget {...articleData} />
             </div>
           </div>
         </>

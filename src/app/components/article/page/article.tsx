@@ -8,13 +8,6 @@ const ArticlePage = (props: ArticleProps) => {
   const { thisIssueData, articleData, permalink, currentSection } = props
   return (
     <div className="divide-y rail-divide pb-6">
-      <NextPrev
-        parentCollection={thisIssueData}
-        articles={thisIssueData.articles}
-        currentSlug={articleData.slug}
-        type={NextPrevType.Issues}
-      />
-
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-y-6">
         <div className="col-span-4 tablet-lg:col-span-12 desktop:col-span-10 desktop:col-start-2">
           <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
