@@ -90,10 +90,13 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
         setCurrentArticle(articleData)
       }
 
-      setAnimationState("exit")
+      setAnimationState("article-exit")
       setTimeout(() => {
-        setAnimationState("enter")
-      }, 300)
+        setAnimationState("article-enter")
+        setTimeout(() => {
+          setAnimationState("article-active")
+        }, 150) // Match the new transition duration
+      }, 150) // Match the new transition duration
 
       const articlePermalink = getPermalink({
         year: articleData.issue.year,
@@ -109,8 +112,6 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
 
       handleGAEvent("page_view", method, articleData)
       handleGAEvent("article_navigation", method, articleData)
-
-      setTimeout(() => setAnimationState("active"), 300)
     },
     [preloadedArticles, currentArticle],
   )
