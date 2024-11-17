@@ -24,30 +24,36 @@ const AdVisibilityContext = createContext<AdVisibilityContextProps | undefined>(
 
 export const AdVisibilityProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname()
-  // Initialize from cookies
-  const [isAdVisible, setIsAdVisible] = useState<boolean>(() => {
-    const storedValue = getCookie("isAdVisible")
-    return storedValue !== null ? JSON.parse(storedValue) : true
-  })
+  const [isAdVisible, setIsAdVisible] = useState<boolean>(true)
 
   const days = 0.041 // roughly 1 hour
 
   const closeAd = useCallback(() => {
     setIsAdVisible(false)
-    setCookie("isAdVisible", JSON.stringify(false), days)
+    if (typeof document !== "undefined") {
+      setCookie("isAdVisible", JSON.stringify(false), days)
+    }
   }, [])
 
   useEffect(() => {
-    // Check if the current path is '/' or starts with '/section/'
-    const shouldShowAd =
-      pathname === "/" ||
-      pathname.startsWith("/section/") ||
-      pathname.startsWith("/events/") ||
-      pathname.startsWith("/issue/")
+    if (typeof document !== "undefined") {
+      const storedValue = getCookie("isAdVisible")
+      setIsAdVisible(storedValue !== null ? JSON.parse(storedValue) : true)
+    }
+  }, [])
 
-    if (shouldShowAd) {
-      setIsAdVisible(true)
-      setCookie("isAdVisible", JSON.stringify(true), days)
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const shouldShowAd =
+        pathname === "/" ||
+        pathname.startsWith("/section/") ||
+        pathname.startsWith("/events/") ||
+        pathname.startsWith("/issue/")
+
+      if (shouldShowAd) {
+        setIsAdVisible(true)
+        setCookie("isAdVisible", JSON.stringify(true), days)
+      }
     }
   }, [pathname])
 
