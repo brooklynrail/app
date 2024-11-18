@@ -1,6 +1,5 @@
 "use client"
 import { MenuProvider } from "@/app/hooks/useMenu"
-import { CSPostHogProvider } from "@/app/providers/posthog"
 import { usePathname } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import Ad970 from "../ads/ad970"
@@ -40,29 +39,27 @@ const Paper = (props: PaperProps) => {
   const isHomepage = pathname === "/"
 
   return (
-    <CSPostHogProvider>
-      <PopupProvider hidePopup={hidePopup}>
-        <MenuProvider>
-          <div className={`theme ${pageClass}`}>
-            {previewURL ? (
-              <PreviewHeader previewURL={previewURL} />
-            ) : (
-              <>
-                <Header type={type} banners={banners} currentIssue={currentIssue} />
-                <NavBar navData={navData} isHomepage={isHomepage} />
-              </>
-            )}
+    <PopupProvider hidePopup={hidePopup}>
+      <MenuProvider>
+        <div className={`theme ${pageClass}`}>
+          {previewURL ? (
+            <PreviewHeader previewURL={previewURL} />
+          ) : (
+            <>
+              <Header type={type} banners={banners} currentIssue={currentIssue} />
+              <NavBar navData={navData} isHomepage={isHomepage} />
+            </>
+          )}
 
-            {children}
-            <Footer />
-            <Ad970 />
-            <ScreenIndicator />
-            <Menu collections={navData.collections} />
-            {!isHomepage && <PopupDonate />}
-          </div>
-        </MenuProvider>
-      </PopupProvider>
-    </CSPostHogProvider>
+          {children}
+          <Footer />
+          <Ad970 />
+          <ScreenIndicator />
+          <Menu collections={navData.collections} />
+          {!isHomepage && <PopupDonate />}
+        </div>
+      </MenuProvider>
+    </PopupProvider>
   )
 }
 
