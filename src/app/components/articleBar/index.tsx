@@ -32,7 +32,7 @@ const ArticleBar = (props: ArticleBarProps) => {
     return items
   }
 
-  const bottom = isAdVisible ? "bottom-36" : "bottom-0"
+  const bottom = isAdVisible ? "bottom-44 tablet:bottom-36" : "bottom-0"
   return (
     <div
       className={`article-bar border-t rail-border fixed w-full ${bottom} left-1/2 transform -translate-x-1/2 flex justify-center`}
