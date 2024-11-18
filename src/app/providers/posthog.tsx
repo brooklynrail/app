@@ -2,10 +2,9 @@
 "use client"
 import posthog from "posthog-js"
 import { PostHogProvider } from "posthog-js/react"
+import { ReactNode, useEffect } from "react"
 
-import { ReactNode } from "react"
-
-export function CSPostHogProvider({ children }: { children: ReactNode }) {
+export function RailPostHogProvider({ children }: { children: ReactNode }) {
   const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
   const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST
 
@@ -13,13 +12,15 @@ export function CSPostHogProvider({ children }: { children: ReactNode }) {
     return <>{children}</>
   }
 
-  if (typeof window !== "undefined") {
+  useEffect(() => {
     posthog.init(posthogKey, {
       api_host: posthogHost,
-      person_profiles: "always", // or 'always' to create profiles for anonymous users as well
+      person_profiles: "always",
+      capture_pageview: false, // Disable automatic pageview capture, as we capture manually
       persistence: "localStorage", // or 'cookie' if you prefer
+      capture_pageleave: true, // Enable pageleave capture
     })
-  }
+  }, [])
 
   return <PostHogProvider client={posthog}>{children}</PostHogProvider>
 }
