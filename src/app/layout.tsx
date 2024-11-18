@@ -9,6 +9,7 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "./components/theme"
 import { RailPostHogProvider } from "./providers/posthog"
 import PostHogPageView from "./providers/postHogPageView"
+import { Suspense } from "react"
 
 const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
@@ -174,7 +175,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <RailPostHogProvider>
         <body>
-          <PostHogPageView />
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
           <ThemeProvider>{children}</ThemeProvider>
           <GoogleAnalytics gaId="G-P4BEY1BZ04" />
           <Analytics />
