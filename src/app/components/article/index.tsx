@@ -17,7 +17,7 @@ const Article = (props: ArticleProps) => {
   })
 
   // Use the article switcher hook, which now returns next and previous articles
-  const { swipeHandlers, nextArticlePermalink, prevArticlePermalink, collectionPermalink } = useArticleSwitcher(
+  const { currentArticle, swipeHandlers, animationState, goToNextArticle, goToPrevArticle } = useArticleSwitcher(
     articleData,
     thisIssueData.articles,
     issuePermalink,
@@ -26,24 +26,24 @@ const Article = (props: ArticleProps) => {
   // Scroll to the top when the current article changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" })
-  }, [articleData])
+  }, [currentArticle])
 
   return (
-    <Paper pageClass={`theme-${articleData.section.slug}`} navData={navData}>
+    <Paper pageClass={`theme-${currentArticle.section.slug}`} navData={navData}>
       {/* Container for swipeable articles */}
       <div className="flex w-screen h-full overflow-hidden" {...swipeHandlers}>
         {/* Current article */}
         <article className={`article-container w-screen h-full overflow-hidden opacity-100 px-3 tablet-lg:px-6`}>
-          {articleData.section.slug === "criticspage" ? (
-            <ArticleCriticsPage {...props} articleData={articleData} />
+          {currentArticle.section.slug === "criticspage" ? (
+            <ArticleCriticsPage {...props} articleData={currentArticle} />
           ) : (
-            <ArticlePage {...props} articleData={articleData} />
+            <ArticlePage {...props} articleData={currentArticle} />
           )}
 
           <ArticleBar
-            collectionPermalink={collectionPermalink}
-            nextArticlePermalink={nextArticlePermalink}
-            prevArticlePermalink={prevArticlePermalink}
+            goToNextArticle={goToNextArticle}
+            goToPrevArticle={goToPrevArticle}
+            collectionPermalink={issuePermalink}
           />
         </article>
       </div>
