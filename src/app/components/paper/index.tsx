@@ -1,6 +1,6 @@
 "use client"
 import { MenuProvider } from "@/app/hooks/useMenu"
-import { CSPostHogProvider } from "@/app/providers/posthog"
+import { usePathname } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import Ad970 from "../ads/ad970"
 import Footer from "../footer"
@@ -9,7 +9,6 @@ import NavBar from "../navBar"
 import PopupDonate from "../popupDonate"
 import { PopupProvider } from "../popupProvider"
 import Header from "../header"
-import { usePathname } from "next/navigation"
 import PreviewHeader from "../preview/previewHead"
 import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
 import ScreenIndicator from "../screenIndicator"
@@ -41,31 +40,29 @@ const Paper = (props: PaperProps) => {
   const isHomepage = pathname === "/"
 
   return (
-    <CSPostHogProvider>
-      <AdVisibilityProvider>
-        <PopupProvider hidePopup={hidePopup}>
-          <MenuProvider>
-            <div className={`relative theme ${pageClass}`}>
-              {previewURL ? (
-                <PreviewHeader previewURL={previewURL} />
-              ) : (
-                <>
-                  <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
-                  <NavBar navData={navData} isHomepage={isHomepage} />
-                </>
-              )}
+    <AdVisibilityProvider>
+      <PopupProvider hidePopup={hidePopup}>
+        <MenuProvider>
+          <div className={`relative theme ${pageClass}`}>
+            {previewURL ? (
+              <PreviewHeader previewURL={previewURL} />
+            ) : (
+              <>
+                <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
+                <NavBar navData={navData} isHomepage={isHomepage} />
+              </>
+            )}
 
-              {children}
-              {!previewURL && <Ad970 />}
-              <Footer />
-              <ScreenIndicator />
-            </div>
-            <Menu collections={navData.collections} />
-            {!previewURL && !isHomepage && <PopupDonate />}
-          </MenuProvider>
-        </PopupProvider>
-      </AdVisibilityProvider>
-    </CSPostHogProvider>
+            {children}
+            {!previewURL && <Ad970 />}
+            <Footer />
+            <ScreenIndicator />
+          </div>
+          <Menu collections={navData.collections} />
+          {!previewURL && !isHomepage && <PopupDonate />}
+        </MenuProvider>
+      </PopupProvider>
+    </AdVisibilityProvider>
   )
 }
 
