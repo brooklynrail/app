@@ -4,6 +4,7 @@ import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Title, { TitleType } from "../collections/promos/title"
+import { usePostHog } from "posthog-js/react"
 
 export enum NextPrevType {
   Issues = "issues",
@@ -145,6 +146,22 @@ const ArticleLink = ({
   type: NextPrevType
   switchArticle?: (slug: string) => void
 }) => {
+  const posthog = usePostHog()
+
+  // GA Tracking Event Handler
+  const handleArticleEvent = (article: Articles) => {
+    // Send PostHog event
+    if (posthog) {
+      posthog.capture(`use_pagination`, {
+        permalink: permalink,
+        slug: article.slug,
+        section: article.section.slug,
+        issue: article.issue.slug,
+        type: PageType.Article,
+      })
+    }
+  }
+
   return (
     <div className={`text-xs w-1/2 ${text === "Next" && "text-right"}`}>
       <Link
@@ -155,6 +172,7 @@ const ArticleLink = ({
             e.preventDefault() // Prevent default navigation behavior
             switchArticle(article.slug) // Trigger article switch
           }
+          handleArticleEvent(article)
         }}
       >
         <span className="uppercase block">{text}</span>

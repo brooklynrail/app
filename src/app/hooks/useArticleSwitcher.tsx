@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { SwipeableHandlers, useSwipeable } from "react-swipeable"
 import { Articles } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
+import { usePostHog } from "posthog-js/react"
 
 // Define event types for GA
 type GAEventAction = "page_view" | "article_navigation"
@@ -20,6 +21,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
   const [articleSlug, setArticleSlug] = useState<string>(initialArticle.slug)
   const [animationState, setAnimationState] = useState<string>("active")
   const [preloadedArticles, setPreloadedArticles] = useState<PreloadedArticles>({})
+  const posthog = usePostHog()
 
   const currentIndex = useMemo(
     () => articles.findIndex((article) => article.slug === articleSlug),
@@ -49,7 +51,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
   }, [currentArticle, preloadAdjacentArticles])
 
   // GA Tracking Event Handler
-  const handleGAEvent = (action: GAEventAction, method: NavigationMethod, article: Articles) => {
+  const handleArticleEvent = (action: GAEventAction, method: NavigationMethod, article: Articles) => {
     const articlePermalink = getPermalink({
       year: article.issue.year,
       month: article.issue.month,
@@ -58,19 +60,21 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
       type: PageType.Article,
     })
 
-    if (action === "page_view") {
-      sendGAEvent("config", "G-P4BEY1BZ04", {
-        page_path: articlePermalink,
-        page_title: article.title,
-      })
-    } else if (action === "article_navigation") {
-      sendGAEvent("event", "article_navigation", {
-        event_category: "navigation",
-        event_label: article.title,
-        method,
-        page_path: articlePermalink,
+    // Send PostHog event
+    if (posthog) {
+      posthog.capture(`use_pagination`, {
+        permalink: articlePermalink,
+        slug: article.slug,
+        section: article.section.slug,
+        issue: article.issue.slug,
+        type: PageType.Article,
       })
     }
+
+    sendGAEvent("config", "G-P4BEY1BZ04", {
+      page_path: articlePermalink,
+      page_title: article.title,
+    })
   }
 
   const navigateTo = useCallback(
@@ -100,8 +104,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
         router.push(articlePermalink)
 
         setArticleSlug(slug)
-        handleGAEvent("page_view", method, articleData)
-        handleGAEvent("article_navigation", method, articleData)
+        handleArticleEvent("page_view", method, articleData)
       } else {
         // Redirect to collection permalink if no slug is provided
         router.push(collectionPermalink)
