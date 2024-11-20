@@ -7,8 +7,7 @@ import { Articles } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
 import { usePostHog } from "posthog-js/react"
 
-// Define event types for GA
-type GAEventAction = "page_view" | "article_navigation"
+// Define event types for navigation
 type NavigationMethod = "swipe" | "keyboard" | "click"
 
 interface PreloadedArticles {
@@ -50,8 +49,8 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     preloadAdjacentArticles()
   }, [currentArticle, preloadAdjacentArticles])
 
-  // GA Tracking Event Handler
-  const handleArticleEvent = (action: GAEventAction, method: NavigationMethod, article: Articles) => {
+  // PostHog and GA Tracking Event Handler
+  const handleArticleEvent = (article: Articles) => {
     const articlePermalink = getPermalink({
       year: article.issue.year,
       month: article.issue.month,
@@ -104,7 +103,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
         router.push(articlePermalink)
 
         setArticleSlug(slug)
-        handleArticleEvent("page_view", method, articleData)
+        handleArticleEvent(articleData)
       } else {
         // Redirect to collection permalink if no slug is provided
         router.push(collectionPermalink)
