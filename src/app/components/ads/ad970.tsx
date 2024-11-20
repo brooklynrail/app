@@ -1,14 +1,18 @@
 import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useRef } from "react"
 import { Ads } from "../../../../lib/types"
 import { AdTypes } from "../../../../lib/utils/ads"
 import { useAdVisibility } from "@/app/hooks/adVisibilityContext"
+import { usePostHog } from "posthog-js/react"
 
 const Ad970 = () => {
   const [randomAd, setRandomAd] = useState<Ads | null>(null)
   const { isAdVisible, closeAd } = useAdVisibility()
+  const posthog = usePostHog()
+  const adRef = useRef<HTMLDivElement>(null)
+  const [isInView, setIsInView] = useState(false)
 
   // Fetch ad data only once on mount
   useEffect(() => {
@@ -29,12 +33,26 @@ const Ad970 = () => {
     fetchData()
   }, [])
 
-  // Memoized function to handle GA events for impressions and clicks
-  const handleGAEvent = useCallback(
-    (action: "impression" | "click") => {
+  // Memoized function to handle GA and PostHog events
+  const handleAdEvent = useCallback(
+    (action: "impression" | "click" | "close") => {
       if (isAdVisible && randomAd) {
-        // Ensure ad is shown before logging
         const { slug, ad_url, campaign_title } = randomAd
+
+        // Send PostHog event
+        if (posthog) {
+          posthog.capture(`${action}_ad`, {
+            slug,
+            campaign_title,
+            ad_format: AdTypes.Banner,
+          })
+        }
+
+        if (action === "close") {
+          closeAd()
+        }
+
+        // Send GA event
         sendGAEvent("event", action, {
           event_category: "ads",
           event_label: slug,
@@ -46,29 +64,32 @@ const Ad970 = () => {
         })
       }
     },
-    [randomAd, isAdVisible], // Depend on `randomAd` and `isAdVisible`
+    [randomAd, isAdVisible, posthog],
   )
 
-  // Trigger a new impression when `randomAd` changes, if `isAdVisible` is true
+  // Use IntersectionObserver to track if the ad is in view
   useEffect(() => {
-    if (isAdVisible && randomAd) {
-      handleGAEvent("impression")
-    }
-  }, [randomAd, handleGAEvent, isAdVisible])
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting)
+        if (entry.isIntersecting && randomAd) {
+          handleAdEvent("impression")
+        }
+      },
+      { threshold: 0.5 },
+      // A threshold of 0.5 means the ad must be at least 50% visible in the viewport to count as an impression.
+    )
 
-  // Listen for new ad impressions when navigating
-  useEffect(() => {
-    const handleNewAdImpression = () => {
-      if (isAdVisible) {
-        handleGAEvent("impression")
+    if (adRef.current) {
+      observer.observe(adRef.current)
+    }
+
+    return () => {
+      if (adRef.current) {
+        observer.unobserve(adRef.current)
       }
     }
-
-    document.addEventListener("newAdImpression", handleNewAdImpression)
-    return () => {
-      document.removeEventListener("newAdImpression", handleNewAdImpression)
-    }
-  }, [handleGAEvent, isAdVisible])
+  }, [randomAd, handleAdEvent])
 
   if (!randomAd || !randomAd.banner_image || !randomAd.banner_image_mobile || !randomAd.ad_url) {
     return null
@@ -91,24 +112,25 @@ const Ad970 = () => {
 
   return (
     isAdVisible && (
-      <div className="m-0 fixed bottom-0 left-0 right-0 z-20 pt-1 tablet-lg:pt-1 bg-white bg-opacity-80 backdrop-blur-md">
+      <div
+        ref={adRef}
+        className="m-0 fixed bottom-0 left-0 right-0 z-20 pt-1 tablet-lg:pt-1 bg-white bg-opacity-80 backdrop-blur-md"
+      >
         <button
           className="border border-zinc-200 text-zinc-700 text-center shadow-lg absolute -top-3.5 tablet:-top-5 right-3 rounded-full bg-white w-8 tablet:w-9 h-8 tablet:h-9 flex items-center justify-center"
-          onClick={closeAd} // Use `closeAd` from the hook to hide the ad
+          onClick={() => handleAdEvent("close")}
         >
           <span className="text-lg tablet:text-xl font-bold">&#x2715;</span>
         </button>
         <p className="z-10 text-[10px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
         <div className="flex justify-center items-center">
-          <Link href={ad_url} target="_blank">
+          <Link href={ad_url} target="_blank" onClick={() => handleAdEvent("click")}>
             <Image
               className="hidden tablet:block"
               src={desktopSrc}
               width={desktopDimensions.width}
               height={desktopDimensions.height}
               alt={campaign_title}
-              onLoad={() => isAdVisible && handleGAEvent("impression")}
-              onClick={() => handleGAEvent("click")}
             />
             <Image
               className="block tablet:hidden"
@@ -116,8 +138,6 @@ const Ad970 = () => {
               width={mobileDimensions.width}
               height={mobileDimensions.height}
               alt={campaign_title}
-              onLoad={() => isAdVisible && handleGAEvent("impression")}
-              onClick={() => handleGAEvent("click")}
             />
           </Link>
         </div>
