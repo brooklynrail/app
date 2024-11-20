@@ -40,11 +40,11 @@ const Article = (props: ArticleProps) => {
             <ArticlePage {...props} articleData={currentArticle} />
           )}
 
-          <ArticleBar
+          {/* <ArticleBar
             goToNextArticle={goToNextArticle}
             goToPrevArticle={goToPrevArticle}
             collectionPermalink={issuePermalink}
-          />
+          /> */}
         </article>
       </div>
     </Paper>
