@@ -7,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "./components/theme"
+import { PageContextProvider } from "./components/pageContext"
 import { RailPostHogProvider } from "./providers/posthog"
 import PostHogPageView from "./providers/postHogPageView"
 import { Suspense } from "react"
@@ -178,7 +179,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Suspense fallback={null}>
             <PostHogPageView />
           </Suspense>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <PageContextProvider>{children}</PageContextProvider>
+          </ThemeProvider>
           <GoogleAnalytics gaId="G-P4BEY1BZ04" />
           <Analytics />
           <SpeedInsights />

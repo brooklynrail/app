@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { Contributors, Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 
 interface ContributorsPageProps {
   thisIssueData: Issues
@@ -33,7 +33,7 @@ const ContributorsPage = (props: ContributorsPageProps) => {
   )
 
   return (
-    <Paper pageClass="theme-people" type={PaperType.Default} navData={navData}>
+    <Paper pageClass="theme-people" navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">

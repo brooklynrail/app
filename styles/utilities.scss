@@ -53,3 +53,71 @@ a {
 a:hover .media figcaption {
   text-decoration: none !important;
 }
+
+// .article-container {
+//   transition:
+//     transform 0.1s ease,
+//     opacity 0.1s ease;
+// }
+
+// .article-card {
+//   flex: 1 0 100%;
+//   transition:
+//     transform 0.5s ease,
+//     opacity 0.5s ease;
+// }
+
+// /* Initial positioning */
+// .article-enter-left .article-card,
+// .article-enter-right .article-card {
+//   opacity: 0; /* Start with opacity 0 */
+//   transform: translateY(-20px); /* Slightly above */
+// }
+
+// /* Active state (centered) */
+// .article-active .article-card {
+//   opacity: 1;
+//   transform: translateY(0); /* Centered in view */
+// }
+
+// /* Exiting states */
+// .article-exit-left .article-card,
+// .article-exit-right .article-card {
+//   opacity: 0; /* Fade out */
+//   // transform: translateY(20px); /* Slightly below */
+// }
+
+// /* Fade and entrance animation */
+// .enter-animation {
+//   opacity: 1;
+//   transform: translateY(0%);
+// }
+
+// /* Overall opacity and transition control */
+// .article-exit {
+//   opacity: 0;
+// }
+
+// .article-enter {
+//   opacity: 0;
+//   // transform: translateY(-20px); /* Slightly above */
+//   transition:
+//     opacity 0.1s ease,
+//     transform 0.1s ease;
+// }
+
+// .article-enter-active {
+//   opacity: 1;
+//   // transform: translateY(0);
+//   transition:
+//     opacity 0.1s ease,
+//     transform 0.1s ease;
+// }
+
+// .article-exit-active {
+//   opacity: 0;
+//   // transform: translateY(20px); /* Slightly below */
+//   transition:
+//     opacity 0.1s ease,
+//     transform 0.1s ease;
+// }

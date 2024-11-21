@@ -1,14 +1,20 @@
 import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback, useRef } from "react"
 import { Ads } from "../../../../lib/types"
 import { AdTypes } from "../../../../lib/utils/ads"
+import { useAdVisibility } from "@/app/hooks/adVisibilityContext"
+import { usePostHog } from "posthog-js/react"
 
 const Ad970 = () => {
-  const [randomAd, setRandomAd] = useState<Ads | undefined>(undefined)
-  const [showAd, setShowAd] = useState(true)
+  const [randomAd, setRandomAd] = useState<Ads | null>(null)
+  const { isAdVisible, closeAd } = useAdVisibility()
+  const posthog = usePostHog()
+  const adRef = useRef<HTMLDivElement>(null)
+  const [isInView, setIsInView] = useState(false)
 
+  // Fetch ad data only once on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -16,8 +22,8 @@ const Ad970 = () => {
         const ads = await adsResponse.json()
 
         if (Array.isArray(ads) && ads.length > 0) {
-          const randomAd = ads[Math.floor(Math.random() * ads.length)]
-          setRandomAd(randomAd)
+          const selectedAd = ads[Math.floor(Math.random() * ads.length)]
+          setRandomAd(selectedAd)
         }
       } catch (error) {
         console.error("Failed to fetch Ad data on Article page:", error)
@@ -27,11 +33,69 @@ const Ad970 = () => {
     fetchData()
   }, [])
 
+  // Memoized function to handle GA and PostHog events
+  const handleAdEvent = useCallback(
+    (action: "impression" | "click" | "close") => {
+      if (isAdVisible && randomAd) {
+        const { slug, ad_url, campaign_title } = randomAd
+
+        // Send PostHog event
+        if (posthog) {
+          posthog.capture(`${action}_ad`, {
+            slug,
+            campaign_title,
+            ad_format: AdTypes.Banner,
+          })
+        }
+
+        if (action === "close") {
+          closeAd()
+        }
+
+        // Send GA event
+        sendGAEvent("event", action, {
+          event_category: "ads",
+          event_label: slug,
+          event_value: ad_url,
+          ad_format: AdTypes.Banner,
+          campaign: campaign_title,
+          campaign_id: slug,
+          ad_source: "br-studio",
+        })
+      }
+    },
+    [randomAd, isAdVisible, posthog],
+  )
+
+  // Use IntersectionObserver to track if the ad is in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting)
+        if (entry.isIntersecting && randomAd) {
+          handleAdEvent("impression")
+        }
+      },
+      { threshold: 0.5 },
+      // A threshold of 0.5 means the ad must be at least 50% visible in the viewport to count as an impression.
+    )
+
+    if (adRef.current) {
+      observer.observe(adRef.current)
+    }
+
+    return () => {
+      if (adRef.current) {
+        observer.unobserve(adRef.current)
+      }
+    }
+  }, [randomAd, handleAdEvent])
+
   if (!randomAd || !randomAd.banner_image || !randomAd.banner_image_mobile || !randomAd.ad_url) {
     return null
   }
 
-  const { banner_image, banner_image_mobile, ad_url, campaign_title, slug } = randomAd
+  const { banner_image, banner_image_mobile, ad_url, campaign_title } = randomAd
   const desktopSrc = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${banner_image.filename_disk}`
   const mobileSrc = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${banner_image_mobile.filename_disk}`
 
@@ -46,38 +110,27 @@ const Ad970 = () => {
   const desktopDimensions = getImageDimensions(banner_image, 1008)
   const mobileDimensions = getImageDimensions(banner_image_mobile, 640)
 
-  const handleGAEvent = (action: "impression" | "click") => {
-    sendGAEvent("event", action, {
-      event_category: "ads",
-      event_label: slug,
-      event_value: ad_url,
-      ad_format: AdTypes.Banner,
-      campaign: campaign_title,
-      campaign_id: slug,
-      ad_source: "br-studio",
-    })
-  }
-
   return (
-    showAd && (
-      <div className="m-0 mt-2 fixed bottom-0 left-0 right-0 z-20 pt-1.5 tablet-lg:py-1.5 tablet-lg:pb-3 bg-white bg-opacity-80 backdrop-blur-md">
+    isAdVisible && (
+      <div
+        ref={adRef}
+        className="m-0 fixed bottom-0 left-0 right-0 z-20 pt-1 tablet-lg:pt-1 bg-white bg-opacity-80 backdrop-blur-md"
+      >
         <button
-          className="py-0 px-3 border border-zinc-200 text-zinc-500 text-center absolute -top-7 right-2 font-medium text-xs tablet:text-sm rounded-full bg-white flex items-center justify-center space-x-1 uppercase"
-          onClick={() => setShowAd(false)}
+          className="border border-zinc-200 text-zinc-700 text-center shadow-lg absolute -top-3.5 tablet:-top-5 right-3 rounded-full bg-white w-8 tablet:w-9 h-8 tablet:h-9 flex items-center justify-center"
+          onClick={() => handleAdEvent("close")}
         >
-          <span className="hover:underline">Close</span> <span className="text-sm">&#x2715;</span>
+          <span className="text-lg tablet:text-xl font-bold">&#x2715;</span>
         </button>
-        <p className="z-10 text-[11px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
-        <div>
-          <Link href={ad_url} target="_blank">
+        <p className="z-10 text-[10px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
+        <div className="flex justify-center items-center">
+          <Link href={ad_url} target="_blank" onClick={() => handleAdEvent("click")}>
             <Image
-              className="hidden tablet:block mx-auto"
+              className="hidden tablet:block"
               src={desktopSrc}
               width={desktopDimensions.width}
               height={desktopDimensions.height}
               alt={campaign_title}
-              onLoad={() => handleGAEvent("impression")}
-              onClick={() => handleGAEvent("click")}
             />
             <Image
               className="block tablet:hidden"
@@ -85,8 +138,6 @@ const Ad970 = () => {
               width={mobileDimensions.width}
               height={mobileDimensions.height}
               alt={campaign_title}
-              onLoad={() => handleGAEvent("impression")}
-              onClick={() => handleGAEvent("click")}
             />
           </Link>
         </div>

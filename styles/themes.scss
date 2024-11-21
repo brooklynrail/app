@@ -23,7 +23,16 @@ body * {
   --navbar-text-color: #18181b; /* zinc-900 */
   --collection-background-color: #f8fafc; /* slate-50 */
   --collection-text-color: #18181b; /* zinc-900 */
+  .banner {
+    .pathfill {
+      @apply fill-none tablet:fill-zinc-800;
+    }
+    .textfill {
+      @apply fill-red-500 tablet:fill-none;
+    }
+  }
 }
+
 .dark {
   --background-color: #27272a; /* zinc-800 */
   --text-color: #eef2ff; /* indigo-50 */
@@ -31,6 +40,14 @@ body * {
   --navbar-text-color: #eef2ff; /* indigo-50 */
   --collection-background-color: #27272a; /* zinc-800 */
   --collection-text-color: #eef2ff; /* indigo-50 */
+  .banner {
+    .pathfill {
+      @apply fill-none tablet:fill-indigo-50;
+    }
+    .textfill {
+      @apply fill-indigo-50 tablet:fill-none;
+    }
+  }
 }
 
 // EVENTS ==========================================
@@ -41,6 +58,14 @@ body * {
   --navbar-text-color: #18181b; /* zinc-900 */
   --collection-background-color: #eef2ff; /* indigo-50 */
   --collection-text-color: #18181b; /* zinc-900 */
+  .banner {
+    .pathfill {
+      @apply fill-none tablet:fill-indigo-950;
+    }
+    .textfill {
+      @apply fill-indigo-950 tablet:fill-none;
+    }
+  }
 }
 .dark .theme-events {
   --background-color: #27272a; /* zinc-800 */
@@ -49,6 +74,14 @@ body * {
   --navbar-text-color: #eef2ff; /* indigo-50 */
   --collection-background-color: #27272a; /* zinc-800 */
   --collection-text-color: #eef2ff; /* indigo-50 */
+  .banner {
+    .pathfill {
+      @apply fill-none tablet:fill-indigo-50;
+    }
+    .textfill {
+      @apply fill-indigo-50 tablet:fill-none;
+    }
+  }
 }
 
 // CRITICS PAGE ==========================================
@@ -59,6 +92,14 @@ body * {
   --navbar-text-color: #18181b; /* zinc-900 */
   --collection-background-color: #fffbeb; /* amber-50 */
   --collection-text-color: #18181b; /* zinc-900 */
+  .banner {
+    .pathfill {
+      @apply fill-none tablet:fill-none;
+    }
+    .textfill {
+      @apply fill-teal-300 tablet:fill-green-200;
+    }
+  }
 }
 .dark .theme-criticspage {
   --background-color: #2d2d2f; /* stone-800 */
@@ -67,6 +108,14 @@ body * {
   --navbar-text-color: #eef2ff; /* indigo-50 */
   --collection-background-color: #2d2d2f; /* stone-800 */
   --collection-text-color: #eef2ff; /* indigo-50 */
+  .banner {
+    .pathfill {
+      @apply fill-none tablet:fill-indigo-50;
+    }
+    .textfill {
+      @apply fill-indigo-50 tablet:fill-none;
+    }
+  }
 }
 
 // TRIUBTES ==========================================
@@ -135,6 +184,14 @@ body * {
   --navbar-text-color: #18181b; /* zinc-900 */
   --collection-background-color: #e0f7fa; /* cyan-50 */
   --collection-text-color: #18181b; /* zinc-900 */
+  .banner {
+    .pathfill {
+      @apply fill-none tablet:fill-indigo-950;
+    }
+    .textfill {
+      @apply fill-cyan-900 tablet:fill-none;
+    }
+  }
 }
 .dark .theme-page {
   --background-color: #27272a; /* zinc-800 */
@@ -143,6 +200,14 @@ body * {
   --navbar-text-color: #eef2ff; /* indigo-50 */
   --collection-background-color: #27272a; /* zinc-800 */
   --collection-text-color: #eef2ff; /* indigo-50 */
+  .banner {
+    .pathfill {
+      @apply fill-none tablet:fill-indigo-50;
+    }
+    .textfill {
+      @apply fill-indigo-50 tablet:fill-none;
+    }
+  }
 }
 
 .theme {
@@ -150,6 +215,7 @@ body * {
   color: var(--text-color);
 }
 
+.article-bar,
 .navbar {
   background-color: var(--navbar-background-color);
   color: var(--navbar-text-color);

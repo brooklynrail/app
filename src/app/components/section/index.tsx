@@ -1,12 +1,13 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Articles, Homepage, Sections } from "../../../../lib/types"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import SectionArt from "./art"
-import SectionHead from "./head"
-import SectionDefault, { LayoutMode } from "./default"
 import SectionCriticsPage from "./criticsPage"
+import SectionDefault, { LayoutMode } from "./default"
+import SectionHead from "./head"
 import SectionPoetry from "./poetry"
+import { usePageContext } from "../pageContext"
 
 interface NavProps {
   navData: Homepage
@@ -29,8 +30,13 @@ const Section = (props: SectionProps & NavProps) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [layoutMode, setLayoutMode] = useState<LayoutMode>(LayoutMode.Grid)
-
+  const { setCurrentContext } = usePageContext()
   const [articles, setArticles] = useState<Articles[]>(articlesData)
+
+  useEffect(() => {
+    setCurrentContext("section")
+    // return () => setCurrentContext(null) // Clear context on unmount if needed
+  }, [setCurrentContext])
 
   let hasMultipleLayouts = false
   const allArticles = (() => {
@@ -84,14 +90,12 @@ const Section = (props: SectionProps & NavProps) => {
       setArticles((prev) => [...prev, ...newArticles])
       setCurrentPage((prev) => prev + 1)
     } catch (error) {
-      console.error("Failed to load more events:", error)
+      console.error("Failed to load more articles:", error)
     }
   }
 
-  const type = sectionData.slug === "criticspage" ? PaperType.CriticsPage : PaperType.Default
-
   return (
-    <Paper pageClass={`theme-${sectionData.slug}`} type={type} navData={navData}>
+    <Paper pageClass={`theme-${sectionData.slug}`} navData={navData}>
       <main className="divide-y rail-divide">
         <SectionHead
           title={sectionData.name}

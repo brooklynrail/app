@@ -3,7 +3,7 @@
 import { EventsProps } from "@/app/events/page"
 import Link from "next/link"
 import { Events } from "../../../../lib/types"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import EventCard from "./eventCard"
 import PastEventsList from "./pastEventsList"
 import Sponsor from "./sponsor"
@@ -15,8 +15,8 @@ const EventsPage = (props: EventsProps) => {
   })
 
   return (
-    <Paper pageClass="theme-events" type={PaperType.Events} navData={navData}>
-      <main className="px-3 tablet-lg:px-6 pb-12 divide-y rail-divide">
+    <Paper pageClass="theme-events" navData={navData}>
+      <main className="px-3 tablet-lg:px-6 pb-12 desktop:max-w-screen-widescreen mx-auto divide-y rail-divide">
         <div className="space-y-9 divide-y rail-divide">
           <div className="pt-9 flex flex-col tablet-lg:flex-row tablet-lg:justify-between tablet-lg:items-end space-y-3 tablet-lg:space-y-0">
             <h1 className="font-bold text-4xl tablet-lg:text-5xl">Upcoming Events</h1>

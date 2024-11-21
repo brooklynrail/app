@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { Homepage } from "../../../../lib/types"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import SearchField from "../search/searchBox"
 
 interface NotFoundProps {
@@ -10,7 +10,7 @@ interface NotFoundProps {
 
 const NotFound = (props: NotFoundProps) => {
   return (
-    <Paper pageClass="paper-404" type={PaperType.Default} navData={props.navData}>
+    <Paper pageClass="paper-404" navData={props.navData}>
       <main className="">
         <div className="py-6 space-y-6">
           <div className="py-6 space-y-3">

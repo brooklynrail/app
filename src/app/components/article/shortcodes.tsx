@@ -146,6 +146,7 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
   // IMAGES
   // Options for the html-react-parser
   // This function will replace the [img name="img1" type="lg"] shortcode with the RailImage component
+  let firstImageFound = false
   const options = {
     replace: ({ data }: any) => {
       if (data) {
@@ -156,8 +157,15 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
           // Extract name and type from each match
           const name = match[1]
           const type = match[2]
+
+          // Determine if this is the first image
+          const isFirstImage = !firstImageFound
+          firstImageFound = true
+
           // Construct the RailImage component for each match
-          const railImageComponent = <RailImage name={name} type={type} images={images} preview={preview} />
+          const railImageComponent = (
+            <RailImage name={name} type={type} images={images} preview={preview} priority={isFirstImage} />
+          )
           // Replace the matched shortcode with the RailImage component
           newData = newData.replace(match[0], railImageComponent)
           return railImageComponent

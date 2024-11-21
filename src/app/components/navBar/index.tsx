@@ -75,9 +75,9 @@ const NavBar = (props: NavBarProps) => {
 
   return (
     <nav className="navbar sticky top-0 z-[11] border-b rail-border">
-      <div className="flex justify-center items-center w-full pl-3 tablet:px-6">
+      <div className="flex justify-center items-center w-full pl-3 tablet-lg:px-6">
         <div className="py-1.5">
-          <MenuButton classes={`w-[8vw] h-[8vw]`} />
+          <MenuButton />
         </div>
         <ul className="pr-3 pl-1 flex items-center w-full overflow-x-auto no-scrollbar z-0">
           {!isHomepage && home}
