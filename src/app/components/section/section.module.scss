@@ -1,3 +1,15 @@
+.description,
+.sponsor {
+  @apply text-sm;
+  max-width: 114ex;
+  a {
+    @apply underline decoration-1 decoration-dotted underline-offset-2;
+  }
+}
+.sponsor {
+  @apply font-medium;
+}
+
 /* Hide left border for the first item */
 .card:first-child {
   @apply border-l-0;

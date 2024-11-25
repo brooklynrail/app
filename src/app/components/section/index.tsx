@@ -39,6 +39,7 @@ const Section = (props: SectionProps & NavProps) => {
   }, [setCurrentContext])
 
   let hasMultipleLayouts = false
+
   const allArticles = (() => {
     switch (sectionData.slug) {
       case SectionType.Art:
@@ -100,6 +101,7 @@ const Section = (props: SectionProps & NavProps) => {
         <SectionHead
           title={sectionData.name}
           description={sectionData.description}
+          sponsor={sectionData.sponsor}
           permalink={permalink}
           hasMultipleLayouts={hasMultipleLayouts}
           layoutMode={layoutMode}

@@ -74,7 +74,7 @@ export const getSectionData = cache(async (props: SectionDataProps) => {
   try {
     const sections = await directus.request(
       readItems("sections", {
-        fields: ["id", "name", "description", "slug"],
+        fields: ["id", "name", "description", "slug", "sponsor"],
         filter: {
           _and: [
             {
