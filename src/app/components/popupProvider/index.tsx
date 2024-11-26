@@ -85,7 +85,6 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
 
   // Toggle function for the ArticleSlideShow popup with optional ID
   const toggleArticleSlideShow = (id?: number) => {
-    console.log("toggleArticleSlideShow", id)
     setShowArticleSlideShow((prev) => !prev)
     if (id !== undefined) setSlideId(id)
   }
