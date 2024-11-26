@@ -155,12 +155,13 @@ const SlideShow = ({ article }: SlideShowProps) => {
 const Close = () => {
   const { toggleArticleSlideShow } = usePopup()
   return (
-    <div className="absolute top-0 right-0 p-4 z-40">
+    <div className="absolute top-0 right-0 p-3 z-40">
       <button
-        className="border-white border rounded-sm text-white uppercase text-xs px-1.5 py-1 bg-white bg-opacity-20"
+        className="border border-zinc-200 text-zinc-700 text-center shadow-lg rounded-full bg-white w-8 tablet:w-9 h-8 tablet:h-9 flex items-center justify-center"
         onClick={(e) => toggleArticleSlideShow()}
+        title="Close"
       >
-        <span>Close</span>
+        <span className="text-lg tablet:text-xl font-bold">&#x2715;</span>
       </button>
     </div>
   )
