@@ -15,10 +15,11 @@ interface RailImageProps {
   type: string
   images: Array<ArticlesFiles>
   preview?: boolean
+  priority: boolean
 }
 
 const RailImage = (props: RailImageProps) => {
-  const { name, type, images, preview } = props
+  const { name, type, images, preview, priority } = props
   const { showArticleSlideShow, toggleArticleSlideShow } = usePopup()
 
   // find the image by shortcode key (name)
@@ -101,6 +102,7 @@ const RailImage = (props: RailImageProps) => {
             width: "100%",
             height: "auto",
           }}
+          priority={priority}
           data-src={src}
           width={width}
           height={height}

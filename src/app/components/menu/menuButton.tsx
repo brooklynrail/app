@@ -1,11 +1,6 @@
 import { useMenu } from "@/app/hooks/useMenu"
 
-interface MenuButtonProps {
-  classes: string
-}
-
-const MenuButton = (props: MenuButtonProps) => {
-  const { classes } = props
+const MenuButton = () => {
   const { toggleMenu } = useMenu()
 
   const pathfill = "fill-zinc-900 dark:fill-slate-100"
@@ -13,10 +8,14 @@ const MenuButton = (props: MenuButtonProps) => {
 
   return (
     <div className="">
-      <div
-        className={`${classes} shadow-lg max-w-10 max-h-10 rounded-sm p-1 bg-white dark:bg-zinc-700 hover:cursor-pointer`}
-      >
-        <svg onClick={toggleMenu} className="" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <div className={`w-[42px] h-[42px] shadow-lg rounded-sm bg-white dark:bg-zinc-700 hover:cursor-pointer`}>
+        <svg
+          onClick={toggleMenu}
+          className="w-[42px] h-[42px]"
+          viewBox="0 0 27 28"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path d="M4 8H12" className={strokefill} strokeLinecap="round" />
           <path d="M4 14H12" className={strokefill} strokeLinecap="round" />
           <path d="M4 21H18" className={strokefill} strokeLinecap="round" />

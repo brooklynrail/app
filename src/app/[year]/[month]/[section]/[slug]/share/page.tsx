@@ -10,8 +10,6 @@ interface ArticleParams {
 }
 
 export default async function ArticlePageController({ params }: { params: ArticleParams }) {
-  console.log("ArticlePageController", params)
-
   const ogImage = `${process.env.NEXT_PUBLIC_BASE_URL}/api/og/?type=article&slug=${params.slug}`
 
   if (!ogImage) {

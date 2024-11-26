@@ -1,16 +1,16 @@
 "use client"
 import { MenuProvider } from "@/app/hooks/useMenu"
-import { CSPostHogProvider } from "@/app/providers/posthog"
 import { usePathname } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import Ad970 from "../ads/ad970"
 import Footer from "../footer"
-import Header from "../header"
 import Menu from "../menu/menu"
 import NavBar from "../navBar"
 import PopupDonate from "../popupDonate"
 import { PopupProvider } from "../popupProvider"
+import Header from "../header"
 import PreviewHeader from "../preview/previewHead"
+import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
 import ScreenIndicator from "../screenIndicator"
 
 export interface PaperProps {
@@ -20,7 +20,7 @@ export interface PaperProps {
   currentIssue?: Issues
   banners?: HomepageBanners[]
   children: React.ReactNode
-  type: PaperType
+  type?: PaperType
   previewURL?: string
 }
 
@@ -40,29 +40,29 @@ const Paper = (props: PaperProps) => {
   const isHomepage = pathname === "/"
 
   return (
-    <CSPostHogProvider>
+    <AdVisibilityProvider>
       <PopupProvider hidePopup={hidePopup}>
         <MenuProvider>
-          <div className={`theme ${pageClass}`}>
+          <div className={`relative theme ${pageClass}`}>
             {previewURL ? (
               <PreviewHeader previewURL={previewURL} />
             ) : (
               <>
-                <Header type={type} banners={banners} currentIssue={currentIssue} />
+                <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
                 <NavBar navData={navData} isHomepage={isHomepage} />
               </>
             )}
 
             {children}
+            {!previewURL && <Ad970 />}
             <Footer />
-            <Ad970 />
             <ScreenIndicator />
-            <Menu collections={navData.collections} />
-            {!isHomepage && <PopupDonate />}
           </div>
+          <Menu collections={navData.collections} />
+          {!previewURL && !isHomepage && <PopupDonate />}
         </MenuProvider>
       </PopupProvider>
-    </CSPostHogProvider>
+    </AdVisibilityProvider>
   )
 }
 

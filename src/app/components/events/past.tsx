@@ -1,15 +1,15 @@
 "use client"
 import { PastEventsProps } from "@/app/events/past/page"
 import Link from "next/link"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import PastEventsList from "./pastEventsList"
 import SearchField from "../search/searchField"
 
 const PastEventsPage = (props: PastEventsProps) => {
   const { navData } = props
   return (
-    <Paper pageClass="theme-events" type={PaperType.Events} navData={navData}>
-      <main className="pt-9 px-3 tablet-lg:px-6 pb-12">
+    <Paper pageClass="theme-events" navData={navData}>
+      <main className="px-3 tablet-lg:px-6 pb-12 desktop:max-w-screen-widescreen mx-auto">
         <div className="space-y-9 divide-y rail-divide">
           <div className="">
             <div className="flex justify-between items-center">
