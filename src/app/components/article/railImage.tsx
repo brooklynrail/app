@@ -22,15 +22,20 @@ const RailImage = (props: RailImageProps) => {
   const { name, type, images, preview, priority } = props
   const { showArticleSlideShow, toggleArticleSlideShow } = usePopup()
 
-  // find the image by shortcode key (name)
+  // First, try to find the image by its shortcode key (name) in the images array
+  // The shortcode key is a unique identifier for each image, stored in directus_files_id
   let image = images.find(
     (image: ArticlesFiles) => image.directus_files_id && image.directus_files_id.shortcode_key === name,
   )
+
+  // If no image is found by shortcode key, fall back to using the numeric index
+  // Example: for "img1", extract "1" and use it as a 0-based index into images array
   if (!image) {
     const sort = parseInt(name.replace("img", ""), 10)
-    image = images[sort - 1]
+    image = images[sort - 1] // Subtract 1 since array is 0-based
   }
 
+  // If we still don't have a valid image with directus_files_id, render nothing
   if (!image || !image.directus_files_id) {
     return <></>
   }
@@ -44,6 +49,7 @@ const RailImage = (props: RailImageProps) => {
   }
 
   // get the index # of the image in the images array
+  // the order of the images in the array is based on the order of the images field in the article, not the order of the images in the body_text
   const index = images.findIndex(
     (i) => image.directus_files_id && i.directus_files_id && i.directus_files_id.id === image.directus_files_id.id,
   )
