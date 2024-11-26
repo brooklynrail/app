@@ -7,6 +7,7 @@ import ArticleCriticsPage from "./page/criticsPage"
 import { useArticleSwitcher } from "@/app/hooks/useArticleSwitcher"
 import ArticleBar from "../articleBar"
 import { getPermalink, PageType } from "../../../../lib/utils"
+import SlideShow from "./slideshow"
 
 const Article = (props: ArticleProps) => {
   const { articleData, currentSection, navData, thisIssueData } = props
@@ -30,6 +31,7 @@ const Article = (props: ArticleProps) => {
 
   return (
     <Paper pageClass={`theme-${currentArticle.section.slug}`} navData={navData}>
+      <SlideShow article={articleData} />
       {/* Container for swipeable articles */}
       <div className="flex w-screen h-full overflow-hidden" {...swipeHandlers}>
         {/* Current article */}
