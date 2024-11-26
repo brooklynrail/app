@@ -46,8 +46,12 @@ const SlideShow = ({ article }: SlideShowProps) => {
 
   // Keyboard controls
   useEffect(() => {
+    // Only add keyboard listeners if slideshow is visible
+    if (!showArticleSlideShow || !emblaApi) return
+
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (!emblaApi) return
+      // Prevent event propagation to stop article navigation from triggering
+      event.stopPropagation()
 
       const keyActions = {
         ArrowRight: () => emblaApi.scrollNext(),
@@ -61,7 +65,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
 
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [emblaApi, toggleArticleSlideShow])
+  }, [emblaApi, toggleArticleSlideShow, showArticleSlideShow])
 
   // Caption management
   useEffect(() => {
@@ -81,6 +85,22 @@ const SlideShow = ({ article }: SlideShowProps) => {
       emblaApi.off("select", updateCaption)
     }
   }, [emblaApi, article, filteredImages])
+
+  // Add this effect to handle body scroll locking
+  useEffect(() => {
+    if (showArticleSlideShow) {
+      // Prevent scrolling on the body
+      document.body.style.overflow = "hidden"
+    } else {
+      // Re-enable scrolling when slideshow is closed
+      document.body.style.overflow = "unset"
+    }
+
+    // Cleanup function to ensure scroll is re-enabled when component unmounts
+    return () => {
+      document.body.style.overflow = "unset"
+    }
+  }, [showArticleSlideShow])
 
   const renderSlide = (image: ArticlesFiles, index: number) => {
     if (!image.directus_files_id) return null
