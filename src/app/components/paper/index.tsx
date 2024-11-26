@@ -41,27 +41,25 @@ const Paper = (props: PaperProps) => {
 
   return (
     <AdVisibilityProvider>
-      <PopupProvider hidePopup={hidePopup}>
-        <MenuProvider>
-          <div className={`relative theme ${pageClass}`}>
-            {previewURL ? (
-              <PreviewHeader previewURL={previewURL} />
-            ) : (
-              <>
-                <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
-                <NavBar navData={navData} isHomepage={isHomepage} />
-              </>
-            )}
+      <MenuProvider>
+        <div className={`relative theme ${pageClass}`}>
+          {previewURL ? (
+            <PreviewHeader previewURL={previewURL} />
+          ) : (
+            <>
+              <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
+              <NavBar navData={navData} isHomepage={isHomepage} />
+            </>
+          )}
 
-            {children}
-            {!previewURL && <Ad970 />}
-            <Footer />
-            <ScreenIndicator />
-          </div>
-          <Menu collections={navData.collections} />
-          {!previewURL && !isHomepage && <PopupDonate />}
-        </MenuProvider>
-      </PopupProvider>
+          {children}
+          {!previewURL && <Ad970 />}
+          <Footer />
+          <ScreenIndicator />
+        </div>
+        <Menu collections={navData.collections} />
+        {!previewURL && !isHomepage && <PopupDonate />}
+      </MenuProvider>
     </AdVisibilityProvider>
   )
 }
