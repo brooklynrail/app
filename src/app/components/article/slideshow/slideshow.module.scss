@@ -1,5 +1,7 @@
 .embla {
-  @apply w-screen fixed z-30 top-0 bottom-0 left-0 right-0 flex flex-col h-screen;
+  @apply w-screen fixed z-30 top-0 bottom-0 left-0 right-0 flex flex-col;
+  height: 100vh; /* Fallback */
+  height: 100dvh; // Replace h-screen with dynamic viewport height
   @apply bg-zinc-900 m-auto max-w-max;
 }
 
