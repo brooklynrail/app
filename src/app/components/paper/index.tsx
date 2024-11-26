@@ -35,7 +35,7 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, hidePopup, navData, type, banners, currentIssue, previewURL } = props
+  const { pageClass, children, navData, type, banners, currentIssue, previewURL } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
