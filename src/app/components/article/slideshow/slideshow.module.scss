@@ -11,6 +11,7 @@
 
 .embla__container {
   @apply flex h-full px-6;
+  @apply space-x-3;
   touch-action: pan-y pinch-zoom;
 }
 
@@ -19,6 +20,7 @@
   @apply flex-none flex flex-col w-full justify-center items-center;
   @apply w-screen;
   min-width: 0;
+  @apply pb-24; // offset for controls
 }
 .embla__caption {
   @apply m-0 text-xs tablet:text-sm text-white max-w-screen-tablet-lg;
@@ -29,6 +31,7 @@
 
 .embla__controls {
   @apply bg-zinc-900 px-3 tablet:px-20 py-3 space-x-3 flex justify-between items-end w-full;
+  @apply fixed bottom-0 left-0 right-0;
   grid-template-columns: auto 1fr;
 }
 
@@ -38,13 +41,11 @@
 
 .embla__button {
   @apply w-10 h-10 rounded-full text-white flex justify-center items-center;
-  @apply border-2 border-white;
+  @apply border-2 border-white cursor-pointer;
+  @apply p-0 m-0 z-[1];
+  @apply hover:bg-white hover:bg-opacity-90 hover:text-black transition-all duration-300;
   touch-action: manipulation;
   text-decoration: none;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  z-index: 1;
 }
 
 .embla__button:disabled {
