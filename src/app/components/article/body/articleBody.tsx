@@ -8,7 +8,7 @@ import { useMemo } from "react"
 import RailImage from "../railImage"
 
 const ArticleBody = (props: ArticleProps) => {
-  const { articleData, permalink, currentSection } = props
+  const { articleData } = props
   const { body_text, images, endnote, contributors } = articleData
 
   const fullBodyText = body_text && replaceShortcodes({ html: body_text, images: images })
