@@ -17,9 +17,6 @@
   @apply flex-none flex flex-col w-full justify-center items-center;
   @apply w-screen;
   min-width: 0;
-  img {
-    @apply opacity-60;
-  }
 }
 .embla__caption {
   @apply m-0 text-xs tablet:text-sm text-white max-w-screen-tablet-lg;
