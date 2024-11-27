@@ -8,9 +8,45 @@ import { useEffect, useState, useMemo } from "react"
 import { NextButton, PrevButton, usePrevNextButtons } from "./arrowButtons"
 import { useDotButton } from "./dotButtons"
 import { usePopup } from "../../popupProvider"
+import parse from "html-react-parser"
 
 interface SlideShowProps {
   article: Articles
+}
+
+interface SlideProps {
+  image: ArticlesFiles
+  index: number
+  selectedIndex: number
+  articleTitle: string
+}
+
+const Slide = ({ image, index, selectedIndex, articleTitle }: SlideProps) => {
+  if (!image.directus_files_id) {
+    return null
+  }
+
+  // Extract image metadata from the Directus file
+  const { filename_disk, caption, width, height } = image.directus_files_id
+  const altText = caption ? stripHtml(caption).result : stripHtml(articleTitle).result
+  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
+
+  return (
+    <div key={index} className={`${styles.embla__slide} ${selectedIndex === index ? styles.embla__slide_active : ""}`}>
+      <Image
+        src={src}
+        width={width}
+        height={height}
+        sizes="33vw"
+        style={{
+          width: "auto",
+          height: "100%",
+          objectFit: "contain",
+        }}
+        alt={altText}
+      />
+    </div>
+  )
 }
 
 const SlideShow = ({ article }: SlideShowProps) => {
@@ -19,6 +55,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
   const currentSlideId = slideId ? slideId - 1 : 0
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: currentSlideId })
   const [currentCaption, setCurrentCaption] = useState("")
+  const [isCaptionExpanded, setIsCaptionExpanded] = useState(false)
 
   if (!body_text) return null
 
@@ -40,7 +77,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
       // Update caption for initial slide
       const currentImage = filteredImages[currentSlideId]
       const caption = currentImage && currentImage.directus_files_id ? currentImage.directus_files_id.caption : ""
-      caption && setCurrentCaption(stripHtml(caption).result)
+      caption && setCurrentCaption(caption)
     }
   }, [emblaApi, currentSlideId, filteredImages, article.title])
 
@@ -74,8 +111,12 @@ const SlideShow = ({ article }: SlideShowProps) => {
     const updateCaption = () => {
       const currentIndex = emblaApi.selectedScrollSnap()
       const currentImage = filteredImages[currentIndex]
-      const caption = currentImage?.directus_files_id?.caption || article.title
-      setCurrentCaption(stripHtml(caption).result)
+      const caption =
+        currentImage.directus_files_id && currentImage.directus_files_id.caption
+          ? currentImage.directus_files_id.caption
+          : ""
+      setCurrentCaption(caption)
+      setIsCaptionExpanded(false)
     }
 
     emblaApi.on("select", updateCaption)
@@ -94,6 +135,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
     } else {
       // Re-enable scrolling when slideshow is closed
       document.body.style.overflow = "unset"
+      setIsCaptionExpanded(false)
     }
 
     // Cleanup function to ensure scroll is re-enabled when component unmounts
@@ -102,47 +144,34 @@ const SlideShow = ({ article }: SlideShowProps) => {
     }
   }, [showArticleSlideShow])
 
-  const renderSlide = (image: ArticlesFiles, index: number) => {
-    if (!image.directus_files_id) return null
-
-    // Extract image metadata from the Directus file
-    const { filename_disk, caption, width, height } = image.directus_files_id
-    const slideCaption = caption ? stripHtml(caption).result : stripHtml(article.title).result
-    const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
-
-    return (
-      <div
-        key={index}
-        className={`${styles.embla__slide} ${selectedIndex === index ? styles.embla__slide_active : ""}`}
-      >
-        <Image
-          src={src}
-          width={width}
-          height={height}
-          sizes="33vw"
-          style={{
-            width: "auto",
-            height: "100%",
-            objectFit: "contain",
-          }}
-          alt={slideCaption}
-        />
-      </div>
-    )
-  }
-
   if (!showArticleSlideShow) {
     return null
+  }
+
+  const captionLength = 240
+  const isLongCaption = currentCaption.length > captionLength
+
+  const handleCaptionClick = () => {
+    setIsCaptionExpanded(!isCaptionExpanded)
   }
 
   return (
     <div className={styles.embla}>
       <Close />
       <div className={styles.embla__viewport} ref={emblaRef}>
-        <div className={styles.embla__container}>{filteredImages.map((image, i) => renderSlide(image, i))}</div>
+        <div className={styles.embla__container}>
+          {filteredImages.map((image, i) => (
+            <Slide key={i} image={image} index={i} selectedIndex={selectedIndex} articleTitle={article.title} />
+          ))}
+        </div>
       </div>
       <div className={styles.embla__controls}>
-        <div className={styles.embla__caption}>{currentCaption}</div>
+        <div
+          className={`${styles.embla__caption} ${!isCaptionExpanded && isLongCaption ? "line-clamp-2" : ""} cursor-pointer`}
+          onClick={handleCaptionClick}
+        >
+          {parse(currentCaption)}
+        </div>
         <div className={styles.embla__buttons}>
           <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
           <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />

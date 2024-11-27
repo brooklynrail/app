@@ -23,14 +23,15 @@
   @apply pb-24; // offset for controls
 }
 .embla__caption {
-  @apply m-0 text-xs tablet:text-sm text-white max-w-screen-tablet-lg;
+  @apply m-0 text-xs tablet:text-sm text-white max-w-screen-tablet-lg diagonal-fractions;
 }
 .embla__slide_active img {
   @apply opacity-100;
 }
 
 .embla__controls {
-  @apply bg-zinc-900 px-3 tablet:px-20 py-3 space-x-3 flex justify-between items-end w-full;
+  @apply bg-zinc-900 bg-opacity-80 backdrop-blur-md;
+  @apply px-3 tablet:px-20 py-3 pb-6 space-x-6 flex justify-between items-end w-full;
   @apply fixed bottom-0 left-0 right-0;
   grid-template-columns: auto 1fr;
 }
