@@ -1,11 +1,12 @@
-import { stripHtml } from "string-strip-html"
-import { PageType, getPermalink, getPreviewPassword, getPreviewTribute } from "../../../../../lib/utils"
-import { Articles, Homepage, Issues, Sections, Tributes } from "../../../../../lib/types"
+import TributePreview from "@/app/components/preview/tribute"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import TributePreview from "@/app/components/preview/tribute"
+import { stripHtml } from "string-strip-html"
+import { Articles, Homepage, Tributes } from "../../../../../lib/types"
+import { PageType, getPermalink } from "../../../../../lib/utils"
 import { getNavData } from "../../../../../lib/utils/homepage"
+import { getPreviewPassword, getPreviewTribute } from "../../../../../lib/utils/preview"
 
 export interface TributePreviewProps {
   navData: Homepage

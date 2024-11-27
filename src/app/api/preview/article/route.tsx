@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers"
-import { getPreviewArticle } from "../../../../../lib/utils"
+import { getPreviewArticle } from "../../../../../lib/utils/preview"
 import { redirect } from "next/navigation"
 
 export async function GET(request: Request) {

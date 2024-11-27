@@ -1,13 +1,14 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getOGImage, getPermalink, getPreviewPassword } from "../../../../../lib/utils"
-import { Events, EventsTypes, Homepage, Issues, Sections } from "../../../../../lib/types"
+import { PageType, getPermalink } from "../../../../../lib/utils"
+import { Events, EventsTypes, Homepage } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { getEventTypes, getPreviewEvent, getUpcomingEvents } from "../../../../../lib/utils/events/utils"
+import { getEventTypes } from "../../../../../lib/utils/events/utils"
+import { getPreviewEvent } from "../../../../../lib/utils/preview"
 import EventPreview from "@/app/components/preview/event"
 import { getNavData } from "../../../../../lib/utils/homepage"
-
+import { getPreviewPassword } from "../../../../../lib/utils/preview"
 export interface EventPreviewProps {
   navData: Homepage
   eventData: Events

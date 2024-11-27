@@ -28,7 +28,7 @@
     "lodash.isequal": "^4.5.0",
     "luxon": "^3.5.0",
     "next": "14.2.14",
-    "posthog-js": "^1.186.3",
+    "posthog-js": "^1.190.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-instantsearch": "^7.13.5",
