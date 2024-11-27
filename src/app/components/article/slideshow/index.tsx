@@ -81,7 +81,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
       // Reset the slides viewed count
       setSlidesViewed(new Set([]))
     }
-  }, [showArticleSlideShow, slidesViewed.size, article.id, filteredImages.length])
+  }, [showArticleSlideShow, slidesViewed.size, article.slug, filteredImages.length])
 
   useEffect(() => {
     if (!emblaApi) return
