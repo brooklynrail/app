@@ -1,6 +1,6 @@
 import directus from "../directus"
 import { readItems } from "@directus/sdk"
-import { Articles, Issues, Tributes } from "../types"
+import { Articles, Events, Issues, Tributes } from "../types"
 import { getGlobalSettings } from "../utils"
 
 export async function getPreviewPassword() {
@@ -82,6 +82,64 @@ export const getPreviewIssue = async (id: string) => {
     return preview[0] as Issues
   } catch (error) {
     console.error("error in getPreviewIssue", error)
+    return null
+  }
+}
+
+export async function getPreviewEvent(id: string) {
+  try {
+    // Search for the event with the matching ID
+    const preview = await directus.request(
+      readItems("events", {
+        version: "draft",
+        fields: [
+          "*",
+          {
+            people: [
+              {
+                people_id: [
+                  "id",
+                  "slug",
+                  "bio",
+                  "display_name",
+                  "website",
+                  "instagram",
+                  "related_links",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            poets: [
+              {
+                people_id: [
+                  "id",
+                  "slug",
+                  "bio",
+                  "display_name",
+                  "website",
+                  "instagram",
+                  "related_links",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
+                  },
+                ],
+              },
+            ],
+          },
+          { user_updated: ["id", "first_name", "last_name", "avatar"] },
+        ],
+        filter: {
+          id: { _eq: id },
+        },
+      }),
+    )
+    return preview[0] as Events
+  } catch (error) {
+    console.error("error in getPreviewArticle", error)
     return null
   }
 }
