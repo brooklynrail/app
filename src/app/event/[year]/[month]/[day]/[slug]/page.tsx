@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { Events, EventsPeople, EventsTypes, Homepage } from "../../../../../../../lib/types"
 import { getOGImage, getPermalink, PageType, share_card } from "../../../../../../../lib/utils"
-import { checkYearMonthDay, getEvent, getEventTypes } from "../../../../../../../lib/utils/events/utils"
+import { checkYearMonthDay, getEvent, getEventTypes } from "../../../../../../../lib/utils/events"
 import { getRedirect, RedirectTypes } from "../../../../../../../lib/utils/redirects"
 import EventPage from "@/app/components/event"
 import { Metadata } from "next"

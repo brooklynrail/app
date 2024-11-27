@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server"
-import { getUpcomingEventsBanner } from "../../../../lib/utils/events/utils"
+import { getUpcomingEventsBanner } from "../../../../lib/utils/events"
 
 export async function GET(request: NextRequest) {
   const eventsData = await getUpcomingEventsBanner()

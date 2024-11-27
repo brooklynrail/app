@@ -6,7 +6,7 @@ import {
   generateYouTubeCopy,
   generateYouTubeTags,
   getUpcomingEvents,
-} from "../../../../../lib/utils/events/utils"
+} from "../../../../../lib/utils/events"
 import { EditorInfo } from "../article/previewInfo"
 
 interface PreviewInfoProps {

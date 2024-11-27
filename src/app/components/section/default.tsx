@@ -9,7 +9,7 @@ import FeaturedImage from "../featuredImage"
 import Excerpt from "../collections/promos/excerpt"
 import Kicker from "../collections/promos/kicker"
 import styles from "./section.module.scss"
-import { groupByIssue } from "../../../../lib/utils/sections/utils"
+import { groupByIssue } from "../../../../lib/utils/sections"
 
 export enum LayoutMode {
   Grid = "grid",

@@ -2,7 +2,7 @@ import PastEventsPage from "@/app/components/events/past"
 import { notFound } from "next/navigation"
 import { Events, EventsTypes, Homepage } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import { getEventTypes, getPastEvents } from "../../../../lib/utils/events/utils"
+import { getEventTypes, getPastEvents } from "../../../../lib/utils/events"
 import { getNavData } from "../../../../lib/utils/homepage"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.

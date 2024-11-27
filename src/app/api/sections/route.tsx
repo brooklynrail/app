@@ -1,4 +1,4 @@
-import { getArticlesBySection } from "../../../../lib/utils/sections/utils"
+import { getArticlesBySection } from "../../../../lib/utils/sections"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)

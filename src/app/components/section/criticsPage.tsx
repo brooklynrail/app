@@ -9,7 +9,7 @@ import Kicker from "../collections/promos/kicker"
 import Title from "../collections/promos/title"
 import FeaturedImage from "../featuredImage"
 import Frame from "../frames/frame"
-import { groupByIssue } from "../../../../lib/utils/sections/utils"
+import { groupByIssue } from "../../../../lib/utils/sections"
 
 const SectionCriticsPage = (props: SectionProps) => {
   const { articlesData } = props

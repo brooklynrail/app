@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import { getArticlesBySection, getSectionData } from "../../../../lib/utils/sections/utils"
+import { getArticlesBySection, getSectionData } from "../../../../lib/utils/sections"
 
 import Section from "@/app/components/section"
 import { getNavData } from "../../../../lib/utils/homepage"

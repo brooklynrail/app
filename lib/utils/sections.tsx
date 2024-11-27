@@ -1,7 +1,7 @@
 import { readItems } from "@directus/sdk"
 import { cache } from "react"
-import directus from "../../directus"
-import { Articles, Sections } from "../../types"
+import directus from "../directus"
+import { Articles, Sections } from "../types"
 
 interface ArticlesBySectionProps {
   slug: string
