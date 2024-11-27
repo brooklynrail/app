@@ -8,18 +8,20 @@ import { NextButton, PrevButton, usePrevNextButtons } from "./arrowButtons"
 import { useDotButton } from "./dotButtons"
 import styles from "./slideshow.module.scss"
 import Slide from "./slide"
+import posthog from "posthog-js"
 
 interface SlideShowProps {
   article: Articles
 }
 
 const SlideShow = ({ article }: SlideShowProps) => {
-  const { body_text, images } = article
+  const { body_text } = article
   const { showArticleSlideShow, slideId, toggleArticleSlideShow } = usePopup()
   const currentSlideId = slideId ? slideId - 1 : 0
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: currentSlideId })
   const [currentCaption, setCurrentCaption] = useState("")
   const [isCaptionExpanded, setIsCaptionExpanded] = useState(false)
+  const [slidesViewed, setSlidesViewed] = useState(new Set<number>([currentSlideId]))
 
   if (!body_text) return null
 
@@ -68,19 +70,39 @@ const SlideShow = ({ article }: SlideShowProps) => {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [emblaApi, toggleArticleSlideShow, showArticleSlideShow])
 
-  // Caption management
+  // Add effect to track slideshow closing
+  useEffect(() => {
+    if (!showArticleSlideShow && slidesViewed.size > 0) {
+      posthog.capture("close_slideshow", {
+        article_slug: article.slug,
+        total_unique_slides_viewed: slidesViewed.size,
+        total_slides: filteredImages.length,
+      })
+      // Reset the slides viewed count
+      setSlidesViewed(new Set([]))
+    }
+  }, [showArticleSlideShow, slidesViewed.size, article.id, filteredImages.length])
+
   useEffect(() => {
     if (!emblaApi) return
 
     const updateCaption = () => {
       const currentIndex = emblaApi.selectedScrollSnap()
+      // Track this slide as viewed
+      setSlidesViewed((prev) => new Set(prev.add(currentIndex)))
+
+      // Existing caption logic
       const currentImage = filteredImages[currentIndex]
-      const caption =
-        currentImage.directus_files_id && currentImage.directus_files_id.caption
-          ? currentImage.directus_files_id.caption
-          : ""
+      const caption = currentImage.directus_files_id?.caption || ""
       setCurrentCaption(caption)
       setIsCaptionExpanded(false)
+
+      // Track slide change event
+      posthog.capture("advanced_slideshow", {
+        article_slug: article.slug,
+        slide_index: currentIndex,
+        total_unique_slides_viewed: slidesViewed.size,
+      })
     }
 
     emblaApi.on("select", updateCaption)
@@ -90,6 +112,14 @@ const SlideShow = ({ article }: SlideShowProps) => {
       emblaApi.off("select", updateCaption)
     }
   }, [emblaApi, article, filteredImages])
+
+  useEffect(() => {
+    if (showArticleSlideShow) {
+      posthog.capture("viewed_slideshow", {
+        article_slug: article.slug,
+      })
+    }
+  }, [showArticleSlideShow, article.slug])
 
   // Add this effect to handle body scroll locking
   useEffect(() => {
