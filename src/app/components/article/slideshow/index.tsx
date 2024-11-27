@@ -9,6 +9,7 @@ import { useDotButton } from "./dotButtons"
 import styles from "./slideshow.module.scss"
 import Slide from "./slide"
 import posthog from "posthog-js"
+import Link from "next/link"
 
 interface SlideShowProps {
   article: Articles
@@ -37,7 +38,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
   const { selectedIndex } = useDotButton(emblaApi)
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi)
 
-  // Initialize slide position based on clicked image
+  // Initialize caption for the initial slide when carousel is first mounted
   useEffect(() => {
     if (emblaApi !== null) {
       // Update caption for initial slide
@@ -47,7 +48,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
     }
   }, [emblaApi, currentSlideId, filteredImages, article.title])
 
-  // Keyboard controls
+  // Handle keyboard navigation (left/right arrows) and escape to close
   useEffect(() => {
     // Only add keyboard listeners if slideshow is visible
     if (!showArticleSlideShow || !emblaApi) return
@@ -70,7 +71,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [emblaApi, toggleArticleSlideShow, showArticleSlideShow])
 
-  // Add effect to track slideshow closing
+  // Track analytics when slideshow is closed
   useEffect(() => {
     if (!showArticleSlideShow && slidesViewed.size > 0) {
       posthog.capture("close_slideshow", {
@@ -83,6 +84,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
     }
   }, [showArticleSlideShow, slidesViewed.size, article.slug, filteredImages.length])
 
+  // Update caption and track analytics when slides change
   useEffect(() => {
     if (!emblaApi) return
 
@@ -113,6 +115,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
     }
   }, [emblaApi, article, filteredImages])
 
+  // Track analytics when slideshow is first opened
   useEffect(() => {
     if (showArticleSlideShow) {
       posthog.capture("viewed_slideshow", {
@@ -121,7 +124,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
     }
   }, [showArticleSlideShow, article.slug])
 
-  // Add this effect to handle body scroll locking
+  // Handle body scroll locking when slideshow is open/closed
   useEffect(() => {
     if (showArticleSlideShow) {
       // Prevent scrolling on the body
@@ -149,6 +152,21 @@ const SlideShow = ({ article }: SlideShowProps) => {
     setIsCaptionExpanded(!isCaptionExpanded)
   }
 
+  const renderCaption = () => {
+    if (!isLongCaption || isCaptionExpanded) {
+      return parse(currentCaption)
+    }
+
+    return (
+      <>
+        <span className="line-clamp-2">{parse(currentCaption)}</span>
+        <Link className="block text-right" href="#" onClick={(e) => e.preventDefault()}>
+          {isCaptionExpanded ? "less" : "more"}
+        </Link>
+      </>
+    )
+  }
+
   return (
     <div className={styles.embla}>
       <Close />
@@ -160,12 +178,35 @@ const SlideShow = ({ article }: SlideShowProps) => {
         </div>
       </div>
       <div className={styles.embla__controls}>
-        <div
-          className={`${styles.embla__caption} ${!isCaptionExpanded && isLongCaption ? "line-clamp-2" : ""} cursor-pointer`}
-          onClick={handleCaptionClick}
-        >
-          {parse(currentCaption)}
+        <div className="max-w-screen-tablet-lg">
+          <div className="flex flex-col ">
+            <div
+              className={`
+            ${styles.embla__caption} 
+            ${!isCaptionExpanded ? "line-clamp-2" : ""}
+          `}
+            >
+              {parse(currentCaption)}
+            </div>
+            {isLongCaption && (
+              <button
+                onClick={handleCaptionClick}
+                className="self-end flex items-center gap-1 text-slate-100 text-xs uppercase transition-colors"
+              >
+                <span>{isCaptionExpanded ? "Less" : "More"}</span>
+                <svg
+                  className={`w-3 h-3 mt-0.5 transform transition-transform ${isCaptionExpanded ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
+
         <div className={styles.embla__buttons}>
           <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
           <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
