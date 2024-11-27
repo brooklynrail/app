@@ -79,7 +79,7 @@ const ArticleBody = (props: ArticleProps) => {
   return (
     <>
       <div className={`content`}>{parse(firstHalf, options)}</div>
-      <div className="h-36">
+      <div className="h-36 hidden">
         <div className="h-36 w-screen bg-zinc-900 absolute left-0 right-0"></div>
       </div>
       <div className={`content`}>{parse(secondHalf, options)}</div>

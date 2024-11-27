@@ -33,7 +33,7 @@
   @apply bg-zinc-900 bg-opacity-80 backdrop-blur-md;
   @apply px-3 tablet:px-20 py-3 pb-6 space-x-6 flex justify-between items-end w-full;
   @apply fixed bottom-0 left-0 right-0;
-  @apply flex justify-end items-end;
+  @apply flex justify-center items-end;
   grid-template-columns: auto 1fr;
 }
 
