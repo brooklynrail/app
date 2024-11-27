@@ -1,52 +1,16 @@
 "use client"
-import { Articles, ArticlesFiles } from "../../../../../lib/types"
-import { stripHtml } from "string-strip-html"
-import Image from "next/image"
-import styles from "./slideshow.module.scss"
 import useEmblaCarousel from "embla-carousel-react"
-import { useEffect, useState, useMemo } from "react"
+import parse from "html-react-parser"
+import { useEffect, useMemo, useState } from "react"
+import { Articles, ArticlesFiles } from "../../../../../lib/types"
+import { usePopup } from "../../popupProvider"
 import { NextButton, PrevButton, usePrevNextButtons } from "./arrowButtons"
 import { useDotButton } from "./dotButtons"
-import { usePopup } from "../../popupProvider"
-import parse from "html-react-parser"
+import styles from "./slideshow.module.scss"
+import Slide from "./slide"
 
 interface SlideShowProps {
   article: Articles
-}
-
-interface SlideProps {
-  image: ArticlesFiles
-  index: number
-  selectedIndex: number
-  articleTitle: string
-}
-
-const Slide = ({ image, index, selectedIndex, articleTitle }: SlideProps) => {
-  if (!image.directus_files_id) {
-    return null
-  }
-
-  // Extract image metadata from the Directus file
-  const { filename_disk, caption, width, height } = image.directus_files_id
-  const altText = caption ? stripHtml(caption).result : stripHtml(articleTitle).result
-  const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${filename_disk}`
-
-  return (
-    <div key={index} className={`${styles.embla__slide} ${selectedIndex === index ? styles.embla__slide_active : ""}`}>
-      <Image
-        src={src}
-        width={width}
-        height={height}
-        sizes="33vw"
-        style={{
-          width: "auto",
-          height: "100%",
-          objectFit: "contain",
-        }}
-        alt={altText}
-      />
-    </div>
-  )
 }
 
 const SlideShow = ({ article }: SlideShowProps) => {
