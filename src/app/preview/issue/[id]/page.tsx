@@ -1,12 +1,6 @@
 import { stripHtml } from "string-strip-html"
-import {
-  PageType,
-  getAllIssues,
-  getPermalink,
-  getPreviewIssue,
-  getPreviewPassword,
-  getTributes,
-} from "../../../../../lib/utils"
+import { PageType, getAllIssues, getPermalink, getTributes } from "../../../../../lib/utils"
+import { getPreviewIssue, getPreviewPassword } from "../../../../../lib/utils/preview"
 import { Homepage, Issues, Sections, Tributes } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
