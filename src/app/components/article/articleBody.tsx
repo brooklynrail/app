@@ -50,6 +50,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
     },
   }
 
+  // ================================================
   // Split the content by paragraphs
   const paragraphs = fullBodyText.split(/<\/p>/).map((para) => para + "</p>")
 
@@ -81,12 +82,20 @@ const ArticleBody = (props: ArticleBodyProps) => {
     return { firstHalf, secondHalf }
   }, [paragraphs, totalWordCount])
 
+  const ArticleAd = () => {
+    // return (
+    //   <div className="h-36 hidden">
+    //     <div className="h-36 w-screen bg-zinc-900 absolute left-0 right-0"></div>
+    //   </div>
+    // )
+    return <></>
+  }
+  // ================================================
+
   return (
     <>
       <div className={`content`}>{parse(firstHalf, options)}</div>
-      <div className="h-36 hidden">
-        <div className="h-36 w-screen bg-zinc-900 absolute left-0 right-0"></div>
-      </div>
+      <ArticleAd />
       <div className={`content`}>{parse(secondHalf, options)}</div>
 
       {endnote && (
