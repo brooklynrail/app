@@ -20,7 +20,7 @@ interface RailImageProps {
 
 const RailImage = (props: RailImageProps) => {
   const { name, type, images, preview, priority } = props
-  const { showArticleSlideShow, toggleArticleSlideShow } = usePopup()
+  const { toggleArticleSlideShow } = usePopup()
 
   // First, try to find the image by its shortcode key (name) in the images array
   // The shortcode key is a unique identifier for each image, stored in directus_files_id
