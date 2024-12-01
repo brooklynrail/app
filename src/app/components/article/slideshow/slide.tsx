@@ -27,9 +27,8 @@ const Slide = ({ image, index, selectedIndex, articleTitle }: SlideProps) => {
         src={src}
         width={width}
         height={height}
-        sizes="33vw"
+        sizes="100vw"
         style={{
-          width: "auto",
           height: "100%",
           objectFit: "contain",
         }}
