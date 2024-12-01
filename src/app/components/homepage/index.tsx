@@ -8,6 +8,7 @@ import AdsTileStrip from "../ads/adsTileStrip"
 import { PageContextProvider, usePageContext } from "../pageContext"
 import { useEffect } from "react"
 import CollectionTileAds from "../collections/tileAds"
+import CollectionRailCommunity from "../collections/railCommunity"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -20,6 +21,7 @@ export enum CollectionType {
   Tribute = "tribute",
   Banner = "banner",
   Ad = "ad",
+  RailCommunity = "rail_community",
 }
 
 const HomePage = (props: HomePageProps) => {
@@ -45,6 +47,8 @@ const HomePage = (props: HomePageProps) => {
           return <CollectionTribute key={`${i}-${thisCollection.id}`} {...thisCollection} />
         case CollectionType.Ad:
           return <CollectionTileAds key={`${i}-${thisCollection.id}`} {...thisCollection} />
+        case CollectionType.RailCommunity:
+          return <CollectionRailCommunity key={`${i}-${thisCollection.id}`} {...thisCollection} />
         default:
           return null
       }

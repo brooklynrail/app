@@ -40,17 +40,6 @@ const SlideShow = ({ article }: SlideShowProps) => {
       .filter((image): image is ArticlesFiles => image !== undefined)
   }, [article.images, body_text])
 
-  // Add debugging to verify order
-  useEffect(() => {
-    console.log(
-      "Filtered Images Order:",
-      filteredImages.map((img) => ({
-        shortcode: img.directus_files_id?.shortcode_key || `img${article.images.indexOf(img) + 1}`,
-        id: img.directus_files_id?.id,
-      })),
-    )
-  }, [filteredImages, article.images])
-
   // Find the index of the clicked image in filteredImages
   const currentSlideId = useMemo(() => {
     if (!slideId) return 0
