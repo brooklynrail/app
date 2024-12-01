@@ -45,9 +45,13 @@
   @apply w-10 h-10 rounded-full text-white flex justify-center items-center;
   @apply border-2 border-white cursor-pointer;
   @apply p-0 m-0 z-[1];
-  @apply hover:bg-white hover:bg-opacity-80 active:bg-opacity-100 hover:text-black transition-all duration-300;
+  @apply active:bg-white active:bg-opacity-100 active:text-black transition-all duration-300;
   touch-action: manipulation;
   text-decoration: none;
+
+  @media (hover: hover) {
+    @apply hover:bg-white hover:bg-opacity-80 hover:text-black;
+  }
 }
 
 .embla__button:disabled {
