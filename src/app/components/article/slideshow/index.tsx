@@ -175,6 +175,59 @@ const SlideShow = ({ article }: SlideShowProps) => {
     }
   }, [showArticleSlideShow])
 
+  useEffect(() => {
+    if (showArticleSlideShow) {
+      // Store last focused element
+      const lastFocusedElement = document.activeElement as HTMLElement
+
+      // Focus first interactive element in slideshow
+      const firstFocusableElement = document.querySelector(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      ) as HTMLElement
+      firstFocusableElement?.focus()
+
+      return () => {
+        // Restore focus when slideshow closes
+        lastFocusedElement?.focus()
+      }
+    }
+  }, [showArticleSlideShow])
+
+  const [liveRegionText, setLiveRegionText] = useState("")
+
+  useEffect(() => {
+    if (emblaApi) {
+      const currentIndex = emblaApi.selectedScrollSnap()
+      const total = filteredImages.length
+      setLiveRegionText(`Image ${currentIndex + 1} of ${total}`)
+    }
+  }, [emblaApi, selectedIndex, filteredImages.length])
+
+  useEffect(() => {
+    if (showArticleSlideShow) {
+      const handleTabKey = (e: KeyboardEvent) => {
+        if (e.key === "Tab") {
+          const focusableElements = document.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          )
+          const firstElement = focusableElements[0] as HTMLElement
+          const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
+
+          if (e.shiftKey && document.activeElement === firstElement) {
+            e.preventDefault()
+            lastElement.focus()
+          } else if (!e.shiftKey && document.activeElement === lastElement) {
+            e.preventDefault()
+            firstElement.focus()
+          }
+        }
+      }
+
+      document.addEventListener("keydown", handleTabKey)
+      return () => document.removeEventListener("keydown", handleTabKey)
+    }
+  }, [showArticleSlideShow])
+
   if (!showArticleSlideShow) {
     return null
   }
@@ -187,12 +240,25 @@ const SlideShow = ({ article }: SlideShowProps) => {
   }
 
   return (
-    <div className={styles.embla}>
-      <Close />
+    <div className={styles.embla} role="dialog" aria-label="Image slideshow" aria-modal="true">
+      <Close ariaLabel="Close image slideshow" />
       <div className={styles.embla__viewport} ref={emblaRef}>
-        <div className={styles.embla__container}>
+        <div
+          className={styles.embla__container}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label={`${filteredImages.length} images from ${article.title}`}
+        >
           {filteredImages.map((image, i) => (
-            <Slide key={i} image={image} index={i} selectedIndex={selectedIndex} articleTitle={article.title} />
+            <Slide
+              key={i}
+              image={image}
+              index={i}
+              selectedIndex={selectedIndex}
+              articleTitle={article.title}
+              aria-roledescription="slide"
+              aria-label={`Image ${i + 1} of ${filteredImages.length}`}
+            />
           ))}
         </div>
       </div>
@@ -204,38 +270,37 @@ const SlideShow = ({ article }: SlideShowProps) => {
             ${styles.embla__caption} 
             ${!isCaptionExpanded ? "line-clamp-2" : ""}
           `}
+              role="complementary"
+              aria-label="Image caption"
             >
               {parse(currentCaption)}
             </div>
             {isLongCaption && (
               <button
                 onClick={handleCaptionClick}
-                className="self-end flex items-center gap-1 text-slate-100 text-xs uppercase transition-colors"
+                className="self-end flex items-center gap-1 text-slate-100 text-xs uppercase"
+                aria-expanded={isCaptionExpanded}
+                aria-controls="caption-text"
               >
-                <span>{isCaptionExpanded ? "Less" : "More"}</span>
-                <svg
-                  className={`w-3 h-3 mt-0.5 transform transition-transform ${isCaptionExpanded ? "rotate-180" : ""}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                <span>{isCaptionExpanded ? "Show less" : "Show more"}</span>
               </button>
             )}
           </div>
         </div>
 
         <div className={styles.embla__buttons}>
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} aria-label="Previous image" />
+          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} aria-label="Next image" />
         </div>
+      </div>
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {liveRegionText}
       </div>
     </div>
   )
 }
 
-const Close = () => {
+const Close = ({ ariaLabel }: { ariaLabel: string }) => {
   const { toggleArticleSlideShow } = usePopup()
   return (
     <div className="absolute top-0 right-0 p-3 z-40">
@@ -243,6 +308,7 @@ const Close = () => {
         className="border border-zinc-200 text-zinc-700 text-center shadow-lg rounded-full bg-white w-8 tablet:w-9 h-8 tablet:h-9 flex items-center justify-center"
         onClick={(e) => toggleArticleSlideShow()}
         title="Close"
+        aria-label={ariaLabel}
       >
         <span className="text-lg tablet:text-xl font-bold">&#x2715;</span>
       </button>
