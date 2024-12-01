@@ -197,7 +197,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
         </div>
       </div>
       <div className={styles.embla__controls}>
-        <div className="max-w-screen-tablet-lg">
+        <div className="w-full max-w-screen-tablet-lg">
           <div className="flex flex-col ">
             <div
               className={`
