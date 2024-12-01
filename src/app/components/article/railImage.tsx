@@ -30,13 +30,11 @@ const RailImage = (props: RailImageProps) => {
     image = images[sort - 1]
   }
 
-  // Single guard clause checking all required properties
+  // Check all required properties
   if (!image?.directus_files_id?.id || !image.directus_files_id?.width || !image.directus_files_id?.height) {
     return null
   }
 
-  // After this point, TypeScript knows image.directus_files_id is defined
-  // and has all required properties
   const nowDate = new Date()
   const previewNow = nowDate.toISOString()
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${image.directus_files_id.id}${preview ? `?preview=${previewNow}` : ""}`
