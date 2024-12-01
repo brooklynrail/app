@@ -6,8 +6,13 @@ import BookshopWidget from "../bookshop"
 import replaceShortcodes from "../shortcodes"
 import { useMemo } from "react"
 import RailImage from "../railImage"
+import { Articles } from "../../../../../lib/types"
 
-const ArticleBody = (props: ArticleProps) => {
+interface ArticleBodyProps {
+  articleData: Articles
+}
+
+const ArticleBody = (props: ArticleBodyProps) => {
   const { articleData } = props
   const { body_text, images, endnote, contributors } = articleData
 
@@ -91,7 +96,7 @@ const ArticleBody = (props: ArticleProps) => {
         </div>
       )}
 
-      <div className="">
+      <div className="hidden">
         <p>Word count: {totalWordCount}</p>
         <p>Paragraphs: {paragraphs.length}</p>
       </div>

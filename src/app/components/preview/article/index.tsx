@@ -1,18 +1,13 @@
 "use client"
 import { ArticlePreviewProps } from "@/app/preview/article/[id]/page"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
+import ArticleHead from "../../article/articleHead"
+import ArticleBody from "../../article/body/articleBody"
+import Bylines, { BylineType } from "../../collections/promos/bylines"
+import Title, { TitleType } from "../../collections/promos/title"
+import Paper from "../../paper"
 import Password from "../password"
 import PreviewInfo from "./previewInfo"
-import PreviewHeader from "../previewHead"
-import Title, { TitleType } from "../../collections/promos/title"
-import Bylines, { BylineType } from "../../collections/promos/bylines"
-import Paper from "../../paper"
-import parse from "html-react-parser"
-import BookshopWidget from "../../article/bookshop"
-import styles from "../../article/poetry.module.scss"
-import replaceShortcodes from "../../article/shortcodes"
-import ContributorsBox from "../../contributorsBox"
-import ArticleHead from "../../article/articleHead"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl, navData } = props
@@ -101,23 +96,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
               )}
               <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
                 <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-                  <div className={`content ${articleData.section.slug === "poetry" ? styles.content_poetry : ""}`}>
-                    {articleData.body_text &&
-                      replaceShortcodes({
-                        html: articleData.body_text,
-                        images: articleData.images,
-                        preview: true,
-                      })}
-
-                    {articleData.endnote && (
-                      <div className="endnote">
-                        <span className="line"></span>
-                        {parse(articleData.endnote)}
-                      </div>
-                    )}
-                    <BookshopWidget {...articleData} />
-                  </div>
-                  {articleData.contributors && <ContributorsBox contributors={articleData.contributors} />}
+                  <ArticleBody articleData={articleData} />
                 </div>
               </div>
             </article>
