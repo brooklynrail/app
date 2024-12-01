@@ -18,11 +18,6 @@ interface SlideShowProps {
 const SlideShow = ({ article }: SlideShowProps) => {
   const { body_text } = article
   const { showArticleSlideShow, slideId, toggleArticleSlideShow } = usePopup()
-  const currentSlideId = slideId ? slideId - 1 : 0
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: currentSlideId })
-  const [currentCaption, setCurrentCaption] = useState("")
-  const [isCaptionExpanded, setIsCaptionExpanded] = useState(false)
-  const [slidesViewed, setSlidesViewed] = useState(new Set<number>([currentSlideId]))
 
   if (!body_text) return null
 
@@ -34,6 +29,27 @@ const SlideShow = ({ article }: SlideShowProps) => {
       return body_text.includes(`[img name="${name}"`)
     })
   }, [article.images, body_text])
+
+  // Find the index of the clicked image in filteredImages
+  const currentSlideId = useMemo(() => {
+    if (!slideId) return 0
+    const index = filteredImages.findIndex((image) => image.directus_files_id?.id === slideId)
+    return index >= 0 ? index : 0
+  }, [slideId, filteredImages])
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    startIndex: currentSlideId,
+  })
+
+  const [currentCaption, setCurrentCaption] = useState("")
+  const [isCaptionExpanded, setIsCaptionExpanded] = useState(false)
+  const [slidesViewed, setSlidesViewed] = useState(new Set<number>([currentSlideId]))
+
+  if (!body_text) return null
+
+  console.log("filteredImages", filteredImages)
+  console.log("slideId", slideId)
 
   const { selectedIndex } = useDotButton(emblaApi)
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi)
@@ -150,21 +166,6 @@ const SlideShow = ({ article }: SlideShowProps) => {
 
   const handleCaptionClick = () => {
     setIsCaptionExpanded(!isCaptionExpanded)
-  }
-
-  const renderCaption = () => {
-    if (!isLongCaption || isCaptionExpanded) {
-      return parse(currentCaption)
-    }
-
-    return (
-      <>
-        <span className="line-clamp-2">{parse(currentCaption)}</span>
-        <Link className="block text-right" href="#" onClick={(e) => e.preventDefault()}>
-          {isCaptionExpanded ? "less" : "more"}
-        </Link>
-      </>
-    )
   }
 
   return (

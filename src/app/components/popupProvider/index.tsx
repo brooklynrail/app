@@ -11,8 +11,8 @@ interface PopupContextType {
   togglePopup: (type: string) => void
   showArticleSlideShow: boolean
   setShowArticleSlideShow: (show: boolean) => void
-  toggleArticleSlideShow: (id?: number) => void
-  slideId: number | null
+  toggleArticleSlideShow: (id?: string) => void
+  slideId: string | null
 }
 
 const PopupContext = createContext<PopupContextType | undefined>(undefined)
@@ -49,7 +49,7 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   const [images, setImages] = useState<any[]>([])
   const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
   const [showArticleSlideShow, setShowArticleSlideShow] = useState(false)
-  const [slideId, setSlideId] = useState<number | null>(null)
+  const [slideId, setSlideId] = useState<string | null>(null)
 
   // Initialize viewedDonateCount and handle expiration logic
   useEffect(() => {
@@ -84,7 +84,7 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   }
 
   // Toggle function for the ArticleSlideShow popup with optional ID
-  const toggleArticleSlideShow = (id?: number) => {
+  const toggleArticleSlideShow = (id?: string) => {
     setShowArticleSlideShow((prev) => !prev)
     if (id !== undefined) setSlideId(id)
   }
