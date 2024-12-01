@@ -21,14 +21,35 @@ const SlideShow = ({ article }: SlideShowProps) => {
 
   if (!body_text) return null
 
-  // Filter images that are actually used in the article body
+  // Build filteredImages array based on order in body text
   const filteredImages: ArticlesFiles[] = useMemo(() => {
-    return article.images.filter((image) => {
-      if (!image.directus_files_id) return false
-      const name = image.directus_files_id.shortcode_key || `img${article.images.indexOf(image) + 1}`
-      return body_text.includes(`[img name="${name}"`)
-    })
+    // Find all image shortcodes in order they appear in body text
+    const regex = /\[img name="([^"]+)"/g
+    const matches = Array.from(body_text.matchAll(regex))
+
+    // Map through matches to create array in order of appearance
+    return matches
+      .map((match) => {
+        const shortcodeName = match[1]
+        return article.images.find((image) => {
+          if (!image.directus_files_id) return false
+          const imageName = image.directus_files_id.shortcode_key || `img${article.images.indexOf(image) + 1}`
+          return imageName === shortcodeName
+        })
+      })
+      .filter((image): image is ArticlesFiles => image !== undefined)
   }, [article.images, body_text])
+
+  // Add debugging to verify order
+  useEffect(() => {
+    console.log(
+      "Filtered Images Order:",
+      filteredImages.map((img) => ({
+        shortcode: img.directus_files_id?.shortcode_key || `img${article.images.indexOf(img) + 1}`,
+        id: img.directus_files_id?.id,
+      })),
+    )
+  }, [filteredImages, article.images])
 
   // Find the index of the clicked image in filteredImages
   const currentSlideId = useMemo(() => {
@@ -47,9 +68,6 @@ const SlideShow = ({ article }: SlideShowProps) => {
   const [slidesViewed, setSlidesViewed] = useState(new Set<number>([currentSlideId]))
 
   if (!body_text) return null
-
-  console.log("filteredImages", filteredImages)
-  console.log("slideId", slideId)
 
   const { selectedIndex } = useDotButton(emblaApi)
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi)
