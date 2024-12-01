@@ -143,40 +143,9 @@ const replaceShortcodes = (props: ReplaceShortcodesProps) => {
   cleanedHtml = replaceRule(cleanedHtml)
   cleanedHtml = replacePoetry(cleanedHtml)
 
-  // IMAGES
-  // Options for the html-react-parser
-  // This function will replace the [img name="img1" type="lg"] shortcode with the RailImage component
-  let firstImageFound = false
-  const options = {
-    replace: ({ data }: any) => {
-      if (data) {
-        const regex = /(?:<p>\s*)?\[img name="([^"]*)" type="([^"]*)"\s*\/?\](?:\s*<\/p>)?/g
-        let match
-        let newData = data
-        while ((match = regex.exec(data)) !== null) {
-          // Extract name and type from each match
-          const name = match[1]
-          const type = match[2]
-
-          // Determine if this is the first image
-          const isFirstImage = !firstImageFound
-          firstImageFound = true
-
-          // Construct the RailImage component for each match
-          const railImageComponent = (
-            <RailImage name={name} type={type} images={images} preview={preview} priority={isFirstImage} />
-          )
-          // Replace the matched shortcode with the RailImage component
-          newData = newData.replace(match[0], railImageComponent)
-          return railImageComponent
-        }
-      }
-    },
-  }
-
   // Clean up the HTML content before parsing
   const finalHtml = cleanup(cleanedHtml)
-  return parse(finalHtml, options)
+  return finalHtml
 }
 
 const cleanup = (str: string) => {

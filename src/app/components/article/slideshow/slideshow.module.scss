@@ -1,0 +1,105 @@
+.embla {
+  @apply w-screen fixed z-30 top-0 bottom-0 left-0 right-0 flex flex-col;
+  height: 100vh; /* Fallback */
+  height: 100dvh; // Replace h-screen with dynamic viewport height
+  @apply bg-zinc-900 m-auto max-w-max;
+}
+
+.embla__viewport {
+  @apply overflow-hidden h-full;
+}
+
+.embla__container {
+  @apply flex h-full px-6;
+  @apply space-x-3;
+  touch-action: pan-y pinch-zoom;
+}
+
+.embla__slide {
+  transform: translate3d(0, 0, 0);
+  @apply flex-none flex flex-col w-full justify-center items-center;
+  @apply w-screen;
+  min-width: 0;
+  @apply pb-24; // offset for controls
+}
+.embla__caption {
+  @apply m-0 text-xs tablet:text-sm text-white max-w-screen-tablet-lg diagonal-fractions;
+}
+.embla__slide_active img {
+  @apply opacity-100;
+}
+
+.embla__controls {
+  @apply bg-zinc-900 bg-opacity-80 backdrop-blur-md;
+  @apply px-3 tablet:px-20 py-3 pb-6 space-x-6 flex justify-between items-end w-full;
+  @apply fixed bottom-0 left-0 right-0;
+  @apply flex justify-center items-end;
+  grid-template-columns: auto 1fr;
+}
+
+.embla__buttons {
+  @apply flex space-x-3 flex-none;
+}
+
+.embla__button {
+  @apply w-10 h-10 rounded-full text-white flex justify-center items-center;
+  @apply border-2 border-white cursor-pointer;
+  @apply p-0 m-0 z-[1];
+  @apply active:bg-white active:bg-opacity-100 active:text-black transition-all duration-300;
+  touch-action: manipulation;
+  text-decoration: none;
+
+  @media (hover: hover) {
+    @apply hover:bg-white hover:bg-opacity-80 hover:text-black;
+  }
+}
+
+.embla__button:disabled {
+  color: #000;
+}
+
+.embla__button__svg {
+  width: 35%;
+  height: 35%;
+}
+
+.embla__dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: calc((2.6rem - 1.4rem) / 2 * -1);
+}
+
+.embla__dot {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.5);
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  touch-action: manipulation;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  &::after {
+    box-shadow: inset 0 0 0 0.2rem #555;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    content: "";
+  }
+}
+
+.embla__dot_selected:after {
+  box-shadow: inset 0 0 0 0.2rem #000;
+}

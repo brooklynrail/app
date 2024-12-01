@@ -35,33 +35,31 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, hidePopup, navData, type, banners, currentIssue, previewURL } = props
+  const { pageClass, children, navData, type, banners, currentIssue, previewURL } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
   return (
     <AdVisibilityProvider>
-      <PopupProvider hidePopup={hidePopup}>
-        <MenuProvider>
-          <div className={`relative theme ${pageClass}`}>
-            {previewURL ? (
-              <PreviewHeader previewURL={previewURL} />
-            ) : (
-              <>
-                <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
-                <NavBar navData={navData} isHomepage={isHomepage} />
-              </>
-            )}
+      <MenuProvider>
+        <div className={`relative theme ${pageClass}`}>
+          {previewURL ? (
+            <PreviewHeader previewURL={previewURL} />
+          ) : (
+            <>
+              <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
+              <NavBar navData={navData} isHomepage={isHomepage} />
+            </>
+          )}
 
-            {children}
-            {!previewURL && <Ad970 />}
-            <Footer />
-            <ScreenIndicator />
-          </div>
-          <Menu collections={navData.collections} />
-          {!previewURL && !isHomepage && <PopupDonate />}
-        </MenuProvider>
-      </PopupProvider>
+          {children}
+          {!previewURL && <Ad970 />}
+          <Footer />
+          <ScreenIndicator />
+        </div>
+        <Menu collections={navData.collections} />
+        {!previewURL && !isHomepage && <PopupDonate />}
+      </MenuProvider>
     </AdVisibilityProvider>
   )
 }

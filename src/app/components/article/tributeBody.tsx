@@ -1,11 +1,7 @@
 import { Articles, Issues, Sections } from "../../../../lib/types"
-import parse from "html-react-parser"
-import replaceShortcodes from "./shortcodes"
-import BookshopWidget from "./bookshop"
-import ArticleHead from "./articleHead"
-import ContributorsBox from "../contributorsBox"
-import styles from "./poetry.module.scss"
 import NextPrev, { NextPrevType } from "../nextPrev"
+import ArticleHead from "./articleHead"
+import ArticleBody from "./articleBody"
 
 export enum BodyTypes {
   Article = "article",
@@ -53,20 +49,7 @@ const TributeBody = (props: ArticleBodyProps) => {
         )}
         <div className="grid grid-cols-4 tablet-lg:grid-cols-10 gap-3">
           <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-2">
-            <div
-              className={`content ${currentSection && currentSection.slug === "poetry" ? styles.content_poetry : ""}`}
-            >
-              {replaceShortcodes({ html: body_text, images: images, preview: preview })}
-
-              {articleData.endnote && (
-                <div className="endnote">
-                  <span className="line"></span>
-                  {parse(articleData.endnote)}
-                </div>
-              )}
-              <BookshopWidget {...articleData} />
-            </div>
-            {articleData.contributors && <ContributorsBox contributors={articleData.contributors} />}
+            <ArticleBody articleData={articleData} />
           </div>
         </div>
       </div>

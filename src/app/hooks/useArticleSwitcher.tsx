@@ -6,6 +6,7 @@ import { SwipeableHandlers, useSwipeable } from "react-swipeable"
 import { Articles } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
 import { usePostHog } from "posthog-js/react"
+import { usePopup } from "../components/popupProvider"
 
 // Define event types for navigation
 type NavigationMethod = "swipe" | "keyboard" | "click"
@@ -21,6 +22,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
   const [animationState, setAnimationState] = useState<string>("active")
   const [preloadedArticles, setPreloadedArticles] = useState<PreloadedArticles>({})
   const posthog = usePostHog()
+  const { showArticleSlideShow } = usePopup()
 
   const currentIndex = useMemo(
     () => articles.findIndex((article) => article.slug === articleSlug),
@@ -121,13 +123,16 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      // Add this check to prevent article navigation when slideshow is open
+      if (showArticleSlideShow) return
+
       if (e.key === "ArrowRight") {
         navigateTo(nextArticle?.slug || null, "keyboard")
       } else if (e.key === "ArrowLeft") {
         navigateTo(prevArticle?.slug || null, "keyboard")
       }
     },
-    [nextArticle, prevArticle, navigateTo],
+    [nextArticle, prevArticle, navigateTo, showArticleSlideShow], // Add showArticleSlideShow to dependencies
   )
 
   useEffect(() => {

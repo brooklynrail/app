@@ -9,6 +9,10 @@ interface PopupContextType {
   images: any[]
   setImages: (images: any[]) => void
   togglePopup: (type: string) => void
+  showArticleSlideShow: boolean
+  setShowArticleSlideShow: (show: boolean) => void
+  toggleArticleSlideShow: (id?: string) => void
+  slideId: string | null
 }
 
 const PopupContext = createContext<PopupContextType | undefined>(undefined)
@@ -44,6 +48,8 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   const [popupType, setPopupType] = useState<string | null>(null)
   const [images, setImages] = useState<any[]>([])
   const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
+  const [showArticleSlideShow, setShowArticleSlideShow] = useState(false)
+  const [slideId, setSlideId] = useState<string | null>(null)
 
   // Initialize viewedDonateCount and handle expiration logic
   useEffect(() => {
@@ -52,23 +58,18 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
 
     const currentTime = Date.now()
     if (storedTimestamp && currentTime - storedTimestamp < ONE_HOUR) {
-      // If within expiration period, use stored count
       setViewedDonateCount(storedCount)
     } else {
-      // If expired, reset count and timestamp
       setViewedDonateCount(0)
       setLocalStorageItem("donatePopup", "0")
       setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
     }
   }, [])
 
-  // Trigger donation popup if conditions are met
   useEffect(() => {
     if (viewedDonateCount !== null && viewedDonateCount < 2) {
       setPopupType("donate")
       setShowPopup(true)
-
-      // Increment count and reset timestamp in local storage
       const newCount = viewedDonateCount + 1
       const currentTime = Date.now()
       setViewedDonateCount(newCount)
@@ -82,6 +83,12 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
     setShowPopup((prev) => !prev)
   }
 
+  // Toggle function for the ArticleSlideShow popup with optional ID
+  const toggleArticleSlideShow = (id?: string) => {
+    setShowArticleSlideShow((prev) => !prev)
+    if (id !== undefined) setSlideId(id)
+  }
+
   const value: PopupContextType = {
     showPopup,
     setShowPopup,
@@ -90,6 +97,10 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
     images,
     setImages,
     togglePopup,
+    showArticleSlideShow,
+    setShowArticleSlideShow,
+    toggleArticleSlideShow,
+    slideId,
   }
 
   return <PopupContext.Provider value={value}>{children}</PopupContext.Provider>

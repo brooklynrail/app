@@ -1,6 +1,7 @@
 import parse from "html-react-parser"
 import Image from "next/image"
 import { ArticlesFiles } from "../../../../lib/types"
+import { usePopup } from "../popupProvider"
 
 enum ImageSize {
   SM = 240,
@@ -19,26 +20,24 @@ interface RailImageProps {
 
 const RailImage = (props: RailImageProps) => {
   const { name, type, images, preview, priority } = props
+  const { toggleArticleSlideShow } = usePopup()
 
-  let image = images.find(
-    (image: ArticlesFiles) => image.directus_files_id && image.directus_files_id.shortcode_key === name,
-  )
+  // Find image and validate all required properties in one place
+  let image = images.find((image) => image.directus_files_id?.shortcode_key === name)
+
   if (!image) {
     const sort = parseInt(name.replace("img", ""), 10)
     image = images[sort - 1]
   }
 
-  if (!image || !image.directus_files_id) {
-    return <></>
+  // Check all required properties
+  if (!image?.directus_files_id?.id || !image.directus_files_id?.width || !image.directus_files_id?.height) {
+    return null
   }
 
   const nowDate = new Date()
   const previewNow = nowDate.toISOString()
   const src = `${process.env.NEXT_PUBLIC_IMAGE_PATH}${image.directus_files_id.id}${preview ? `?preview=${previewNow}` : ""}`
-
-  if (!image.directus_files_id.width || !image.directus_files_id.height) {
-    return <></>
-  }
 
   const checkWidth = (ogwidth: number, type: string) => {
     const sizeMap = {
@@ -75,17 +74,19 @@ const RailImage = (props: RailImageProps) => {
   }
 
   const height = image.directus_files_id.height
-
   const { width, mediaType } = checkWidth(image.directus_files_id.width, type)
 
   const caption = image.directus_files_id.caption ? (
-    <figcaption className={`${mediaType}`}>{parse(image.directus_files_id.caption)}</figcaption>
+    <figcaption className={`${mediaType} diagonal-fractions`}>{parse(image.directus_files_id.caption)}</figcaption>
   ) : null
+
+  const imageId = image.directus_files_id.id
 
   return (
     <div className={`media ${mediaType}`}>
       <div className={`frame ${mediaType}`}>
         <Image
+          className="cursor-pointer"
           data-width={image.directus_files_id.width}
           data-height={image.directus_files_id.height}
           src={src}
@@ -99,6 +100,7 @@ const RailImage = (props: RailImageProps) => {
           height={height}
           alt={name}
           object-fit="contain"
+          onClick={() => toggleArticleSlideShow(imageId)}
         />
       </div>
       {caption}

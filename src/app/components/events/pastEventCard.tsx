@@ -3,7 +3,7 @@ import parse from "html-react-parser"
 import Image from "next/image"
 import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import { getEventTypeText } from "../../../../lib/utils/events/utils"
+import { getEventTypeText } from "../../../../lib/utils/events"
 import { EventCardProps } from "./eventCard"
 import style from "./events.module.scss"
 

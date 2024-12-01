@@ -9,7 +9,7 @@ import { Poets, SoundWaves } from "."
 import ReactMarkdown from "react-markdown"
 import Person from "./person"
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
-import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "../../../../lib/utils/events/utils"
+import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "../../../../lib/utils/events"
 
 const EventPageBody = (props: EventProps) => {
   const { eventData, eventTypes } = props

@@ -2,7 +2,7 @@ html,
 body {
   @apply text-base font-normal;
   @apply font-sans antialiased;
-  @apply bg-[#EF4444] text-black;
+  @apply text-black;
 }
 //=========================================
 // Theme Switcher
@@ -23,6 +23,10 @@ body * {
   --navbar-text-color: #18181b; /* zinc-900 */
   --collection-background-color: #f8fafc; /* slate-50 */
   --collection-text-color: #18181b; /* zinc-900 */
+  html,
+  body {
+    @apply bg-slate-100 tablet:bg-[#EF4444];
+  }
   .banner {
     .pathfill {
       @apply fill-none tablet:fill-zinc-800;
@@ -40,6 +44,10 @@ body * {
   --navbar-text-color: #eef2ff; /* indigo-50 */
   --collection-background-color: #27272a; /* zinc-800 */
   --collection-text-color: #eef2ff; /* indigo-50 */
+  html,
+  body {
+    @apply bg-indigo-800;
+  }
   .banner {
     .pathfill {
       @apply fill-none tablet:fill-indigo-50;

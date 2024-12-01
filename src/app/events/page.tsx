@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { Events, EventsTypes, Homepage } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
-import { getEventTypes, getPastEvents, getUpcomingEvents } from "../../../lib/utils/events/utils"
+import { getEventTypes, getPastEvents, getUpcomingEvents } from "../../../lib/utils/events"
 import EventsPage from "@/app/components/events"
 import { Metadata } from "next"
 import { getNavData } from "../../../lib/utils/homepage"

@@ -1,10 +1,10 @@
 import { DateTime } from "luxon"
 import { aggregate, readItems, readField } from "@directus/sdk"
 import { cache } from "react"
-import directus from "../../directus"
-import { Events, EventsTypes } from "../../types"
+import directus from "../directus"
+import { Events, EventsTypes } from "../types"
 import { stripHtml } from "string-strip-html"
-import { getPermalink, PageType } from "../../utils"
+import { getPermalink, PageType } from "../utils"
 
 export enum EventTypes {
   TheNewSocialEnvironment = "the-new-social-environment",
