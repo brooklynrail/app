@@ -1,7 +1,7 @@
 import { Articles, Issues, Sections } from "../../../../lib/types"
 import NextPrev, { NextPrevType } from "../nextPrev"
 import ArticleHead from "./articleHead"
-import ArticleBody from "./body/articleBody"
+import ArticleBody from "./articleBody"
 
 export enum BodyTypes {
   Article = "article",

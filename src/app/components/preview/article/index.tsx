@@ -2,7 +2,7 @@
 import { ArticlePreviewProps } from "@/app/preview/article/[id]/page"
 import { useEffect, useState } from "react"
 import ArticleHead from "../../article/articleHead"
-import ArticleBody from "../../article/body/articleBody"
+import ArticleBody from "../../article/articleBody"
 import Bylines, { BylineType } from "../../collections/promos/bylines"
 import Title, { TitleType } from "../../collections/promos/title"
 import Paper from "../../paper"

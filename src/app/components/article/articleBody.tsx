@@ -1,12 +1,12 @@
 "use client"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import parse from "html-react-parser"
-import ContributorsBox from "../../contributorsBox"
-import BookshopWidget from "../bookshop"
-import replaceShortcodes from "../shortcodes"
+import ContributorsBox from "../contributorsBox"
+import BookshopWidget from "./bookshop"
+import replaceShortcodes from "./shortcodes"
 import { useMemo } from "react"
-import RailImage from "../railImage"
-import { Articles } from "../../../../../lib/types"
+import RailImage from "./railImage"
+import { Articles } from "../../../../lib/types"
 
 interface ArticleBodyProps {
   articleData: Articles

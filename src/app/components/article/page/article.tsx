@@ -1,6 +1,6 @@
 "use client"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import ArticleBody from "../body/articleBody"
+import ArticleBody from "../articleBody"
 import NextPrev, { NextPrevType } from "../../nextPrev"
 import ArticleHead from "../articleHead"
 
