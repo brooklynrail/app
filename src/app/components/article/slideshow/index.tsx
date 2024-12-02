@@ -277,10 +277,12 @@ const SlideShow = ({ article }: SlideShowProps) => {
           </div>
         </div>
 
-        <div className={styles.embla__buttons}>
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} aria-label="Previous image" />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} aria-label="Next image" />
-        </div>
+        {filteredImages.length > 1 && (
+          <div className={styles.embla__buttons}>
+            <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} aria-label="Previous image" />
+            <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} aria-label="Next image" />
+          </div>
+        )}
       </div>
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         {liveRegionText}
