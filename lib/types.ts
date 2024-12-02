@@ -631,6 +631,8 @@ export type Organizations = {
   status: string
   type: string
   url?: string | null
+  community_sponsor: boolean
+  logo?: DirectusFiles
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }

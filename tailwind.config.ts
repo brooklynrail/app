@@ -115,12 +115,15 @@ const config: Config = {
         "desktop-lg": "1256px",
         widescreen: "1400px",
       },
-      // gridTemplateColumns: {
-      //   // Simple 16 column grid
-      //   12: "repeat(12, minmax(0, 1fr))",
-      //   // Complex site-specific column configuration
-      //   footer: "200px minmax(900px, 1fr) 100px",
-      // },
+      animation: {
+        marquee: "marquee 40s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(calc(-50% - 2.25rem))" }, // 2.25rem = 9px (space-x-9)
+        },
+      },
     },
   },
 

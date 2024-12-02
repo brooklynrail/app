@@ -1,1 +1,19 @@
+.marquee_text {
+  overflow: clip;
+  @apply space-y-1.5;
+}
 
+.marquee_text_track {
+  @apply flex gap-x-20 pl-20;
+  width: max-content;
+  animation: marquee-move-text var(--speed, 40s) linear infinite var(--direction, forwards);
+}
+
+.marquee_text_track_reverse {
+  animation-direction: reverse;
+}
+@keyframes marquee-move-text {
+  to {
+    transform: translateX(-50%);
+  }
+}
