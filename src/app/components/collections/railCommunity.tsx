@@ -9,7 +9,6 @@ import styles from "./collection.module.scss"
 
 const CollectionRailCommunity = (collection: Collections) => {
   const [randomOrgs, setRandomOrgs] = useState<Organizations[] | null>(null)
-  const [shuffledOrgs, setShuffledOrgs] = useState<Organizations[] | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const posthog = usePostHog()
 
@@ -28,16 +27,12 @@ const CollectionRailCommunity = (collection: Collections) => {
           // Save original shuffled list
           const firstShuffle = shuffleArray(orgs)
           setRandomOrgs(firstShuffle)
-          // Create second shuffled list
-          setShuffledOrgs(shuffleArray(firstShuffle))
         } else {
           setRandomOrgs(null)
-          setShuffledOrgs(null)
         }
       } catch (error) {
         console.error("Failed to fetch Organizations data:", error)
         setRandomOrgs(null)
-        setShuffledOrgs(null)
       } finally {
         setIsLoading(false)
       }
@@ -84,10 +79,6 @@ const CollectionRailCommunity = (collection: Collections) => {
           <ul className={`${styles.marquee_text_track}`}>
             {randomOrgs?.map((org: Organizations, i: number) => renderOrgItem(org, i))}
             {randomOrgs?.map((org: Organizations, i: number) => renderOrgItem(org, i, true))}
-          </ul>
-          <ul className={`${styles.marquee_text_track} ${styles.marquee_text_track_reverse}`}>
-            {shuffledOrgs?.map((org: Organizations, i: number) => renderOrgItem(org, i))}
-            {shuffledOrgs?.map((org: Organizations, i: number) => renderOrgItem(org, i, true))}
           </ul>
         </div>
       </div>
