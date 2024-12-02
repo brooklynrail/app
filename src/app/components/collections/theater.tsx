@@ -4,7 +4,7 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import FeaturedImage from "../featuredImage"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
-import Title, { TitleType } from "./promos/title"
+import Title from "./promos/title"
 
 const CollectionTheater = (collection: Collections) => {
   const { section } = collection
@@ -63,7 +63,7 @@ const Promos = (props: PromoProps) => {
             <Title
               title={article.title}
               permalink={permalink}
-              classes={i === 0 ? "text-lg tablet:text-3xl font-light" : "text-xl font-normal"}
+              classes={i === 0 ? "text-lg tablet:text-4xl font-light" : "text-2xl font-normal"}
             />
             <Bylines article={article} type={BylineType.CollectionBooks} />
           </div>
