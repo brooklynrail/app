@@ -5,28 +5,39 @@ import { Collections, Organizations } from "../../../../lib/types"
 import { usePostHog } from "posthog-js/react"
 import Image from "next/image"
 import Link from "next/link"
+import styles from "./collection.module.scss"
 
 const CollectionRailCommunity = (collection: Collections) => {
   const [randomOrgs, setRandomOrgs] = useState<Organizations[] | null>(null)
+  const [shuffledOrgs, setShuffledOrgs] = useState<Organizations[] | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const posthog = usePostHog()
+
+  // Helper function to shuffle array
+  const shuffleArray = (array: Organizations[]) => {
+    return [...array].sort(() => Math.random() - 0.5)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const orgsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/organizations/?onlySponsors=true`)
         const orgs = await orgsResponse.json()
-        console.log("orgs", orgs)
 
         if (Array.isArray(orgs) && orgs.length > 0) {
-          const shuffledOrgs = orgs.sort(() => 0.5 - Math.random())
-          setRandomOrgs(shuffledOrgs)
+          // Save original shuffled list
+          const firstShuffle = shuffleArray(orgs)
+          setRandomOrgs(firstShuffle)
+          // Create second shuffled list
+          setShuffledOrgs(shuffleArray(firstShuffle))
         } else {
           setRandomOrgs(null)
+          setShuffledOrgs(null)
         }
       } catch (error) {
         console.error("Failed to fetch Organizations data:", error)
         setRandomOrgs(null)
+        setShuffledOrgs(null)
       } finally {
         setIsLoading(false)
       }
@@ -68,12 +79,15 @@ const CollectionRailCommunity = (collection: Collections) => {
     }
 
     return (
-      <div className="flex w-full overflow-hidden min-h-[100px]">
-        <div className="animate-marquee flex whitespace-nowrap">
-          <ul className="flex items-center space-x-9 shrink-0 pl-9">
+      <div className={`overflow-hidden`}>
+        <div className={`${styles.marquee_text}`}>
+          <ul className={`${styles.marquee_text_track}`}>
             {randomOrgs?.map((org: Organizations, i: number) => renderOrgItem(org, i))}
             {randomOrgs?.map((org: Organizations, i: number) => renderOrgItem(org, i, true))}
-            {randomOrgs?.map((org: Organizations, i: number) => renderOrgItem(org, i, true))}
+          </ul>
+          <ul className={`${styles.marquee_text_track} ${styles.marquee_text_track_reverse}`}>
+            {shuffledOrgs?.map((org: Organizations, i: number) => renderOrgItem(org, i))}
+            {shuffledOrgs?.map((org: Organizations, i: number) => renderOrgItem(org, i, true))}
           </ul>
         </div>
       </div>
@@ -94,7 +108,11 @@ const CollectionRailCommunity = (collection: Collections) => {
     const scaledHeight = width > size ? (size * height) / width : (height * scaledWidth) / width
 
     return (
-      <li key={`org-${org.id}-${i}${isDuplicate ? "-duplicate" : ""}`} className="flex-none" aria-hidden={isDuplicate}>
+      <li
+        key={`org-${org.id}-${i}${isDuplicate ? "-duplicate" : ""}`}
+        className="flex-none flex items-center justify-center"
+        aria-hidden={isDuplicate}
+      >
         <Link
           href={org.url}
           target="_blank"
@@ -116,7 +134,7 @@ const CollectionRailCommunity = (collection: Collections) => {
 
   return (
     <div key={collection.id} className="collection">
-      <div className="flex flex-col py-3 pb-6 bg-white">
+      <div className="flex flex-col py-3 pb-6 bg-white space-y-1.5">
         <p className="pb-0.5 text-[11px] text-center leading-4 uppercase text-slate-400">Rail Community</p>
         {renderAds()}
       </div>
