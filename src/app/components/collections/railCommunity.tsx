@@ -57,8 +57,8 @@ const CollectionRailCommunity = (collection: Collections) => {
   const renderAds = () => {
     if (isLoading) {
       return (
-        <div className="flex w-full overflow-hidden min-h-[147px]">
-          <ul className="flex justify-center items-center space-x-4">
+        <div className="flex w-full overflow-hidden min-h-[100px]">
+          <ul className="flex w-full justify-center items-center space-x-4">
             <OrgSkeleton />
             <OrgSkeleton />
             <OrgSkeleton />
@@ -104,7 +104,7 @@ const CollectionRailCommunity = (collection: Collections) => {
           <Image
             src={src}
             width={scaledWidth}
-            height={100}
+            height={scaledHeight}
             sizes="20vw"
             alt={org.name}
             onLoad={() => !isDuplicate && handleOrgEvent("impression", org, i + 1)}
@@ -126,7 +126,7 @@ const CollectionRailCommunity = (collection: Collections) => {
 
 const OrgSkeleton = () => (
   <li className="flex-none animate-pulse">
-    <div className="w-[147px] h-[147px] bg-zinc-600/50 rounded" />
+    <div className="w-[147px] h-[100px] bg-zinc-600/50 rounded" />
   </li>
 )
 
