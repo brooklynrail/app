@@ -2,6 +2,7 @@ import parse from "html-react-parser"
 import Image from "next/image"
 import { ArticlesFiles } from "../../../../lib/types"
 import { usePopup } from "../popupProvider"
+import styles from "./article.module.scss"
 
 enum ImageSize {
   SM = 240,
@@ -84,9 +85,8 @@ const RailImage = (props: RailImageProps) => {
 
   return (
     <div className={`media ${mediaType}`}>
-      <div className={`frame ${mediaType}`}>
+      <div className={`frame ${mediaType} ${styles.railImage}`} style={{ position: "relative" }}>
         <Image
-          className="cursor-pointer"
           data-width={image.directus_files_id.width}
           data-height={image.directus_files_id.height}
           src={src}
@@ -102,6 +102,21 @@ const RailImage = (props: RailImageProps) => {
           object-fit="contain"
           onClick={() => toggleArticleSlideShow(imageId)}
         />
+        <svg
+          className={`${styles.zoomIcon}`}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          onClick={() => toggleArticleSlideShow(imageId)}
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          <line x1="11" y1="8" x2="11" y2="14" />
+          <line x1="8" y1="11" x2="14" y2="11" />
+        </svg>
       </div>
       {caption}
     </div>
