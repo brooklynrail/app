@@ -14,13 +14,10 @@ const PageBody = (props: PageBodyProps) => {
   const { body_text, images } = pageData
 
   const fullBodyText = body_text && replaceShortcodes({ html: body_text, images: images })
-  if (!body_text || !fullBodyText) {
-    return <></>
-  }
 
   return (
     <div className="divide-y rail-divide space-y-12">
-      <div className={`content content-page`}>{parse(fullBodyText)}</div>
+      {fullBodyText && <div className={`content content-page`}>{parse(fullBodyText)}</div>}
       <Board pageData={pageData} />
       <Staff pageData={pageData} />
       <Supporters pageData={pageData} />
