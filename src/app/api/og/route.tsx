@@ -11,8 +11,11 @@ enum PageType {
 }
 
 export default async function getFonts(): Promise<Font[]> {
-  const [UntitledSansRegular] = await Promise.all([
+  const [UntitledSansMedium, UntitledSansMediumItalic] = await Promise.all([
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/fonts/untitled-sans/UntitledSansWeb-Medium.ttf`).then((res) =>
+      res.arrayBuffer(),
+    ),
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/fonts/untitled-sans/UntitledSansWeb-MediumItalic.ttf`).then((res) =>
       res.arrayBuffer(),
     ),
   ])
@@ -20,8 +23,14 @@ export default async function getFonts(): Promise<Font[]> {
   return [
     {
       name: "Untitled Sans",
-      data: UntitledSansRegular,
+      data: UntitledSansMedium,
       style: "normal",
+      weight: 500,
+    },
+    {
+      name: "Untitled Sans",
+      data: UntitledSansMediumItalic,
+      style: "italic",
       weight: 500,
     },
   ]
@@ -52,8 +61,20 @@ export async function GET(request: Request) {
     return null
   }
 
+  // Function to wrap each segment in inline-flex spans
+  // Function to wrap each segment in its own flex container
+  const flexWrap = (text: string): JSX.Element[] =>
+    parse(text).map((node, index) => (
+      <div key={index} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+        {node}
+      </div>
+    ))
+
   const ogTitle = data.title
-  const ogExcerpt = data.deck ? parse(data.deck) : data.excerpt
+  // const ogExcerpt = data.excerpt
+  const excerpt = `<span>This special occasion brings in conversation Vietnamese American artist An-My Lê with Vietnamese American writers, Monique Truong and Ocean Vuong. It is organized in conjunction with the exhibition</span> <em>An-My Lê: Between Two Rivers</span></em>.</span>`
+  const ogExcerpt: JSX.Element[] = flexWrap(excerpt)
+  console.log("ogExcerpt", ogExcerpt)
   const ogSection = data.section
   const ogIssue = data.issue
   const ogImage =
@@ -140,14 +161,15 @@ export async function GET(request: Request) {
         </div>
 
         <div
-          style={{
-            marginTop: 10,
-            color: "gray",
-            fontSize: "20px",
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
+          tw="flex text-lg mt-9"
+          style={
+            {
+              // display: "flex",
+              // fontStyle: "italic",
+              // flexWrap: "wrap",
+              // gap: 2,
+            }
+          }
         >
           {ogExcerpt}
         </div>

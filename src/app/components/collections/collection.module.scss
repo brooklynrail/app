@@ -17,3 +17,34 @@
     transform: translateX(-50%);
   }
 }
+
+.card {
+  @apply h-full;
+}
+
+@media (max-width: 640px) {
+  .card:first-child > div {
+    @apply border-t-0;
+  }
+  .card:nth-child(-n + 2) {
+    @apply border-l-0;
+  }
+}
+/* Tablet view - applies only for 3-column grid between 640px and 1023px */
+@media (min-width: 640px) and (max-width: 1023px) {
+  // Apply styles to the first 1 items
+  .card > div {
+    @apply h-full;
+  }
+  .card:nth-child(-n + 2) {
+    @apply border-l-0;
+  }
+}
+
+// /* Desktop view - applies only for 2-column grid from 1024px and up */
+@media (min-width: 1024px) {
+  // Apply styles to the first 4 items
+  .card:nth-child(-n + 4) > div {
+    @apply border-t-0;
+  }
+}

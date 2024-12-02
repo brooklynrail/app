@@ -10,6 +10,7 @@ import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
 import Excerpt from "./promos/excerpt"
 import Title, { TitleType } from "./promos/title"
+import styles from "./collection.module.scss"
 
 const CollectionArt = (collection: Collections) => {
   const { section } = collection
@@ -32,16 +33,15 @@ const CollectionArt = (collection: Collections) => {
   return (
     <div key={collection.id} className="collection theme-art">
       <CollectionHead title={collection.title} permalink={section.featured ? sectionPermalink : null} />
-      <div className="hidden tablet-lg:block">
-        <Frame
-          LeadPromo={<LeadPromoArt article={leadArticle} />}
-          Promos={<PromosArt articles={restOfArticles} />}
-          alt={false}
-        />
+      <div className="py-3 px-3 tablet:px-6">
+        <div className="flex flex-row h-full overflow-x-auto desktop:grid items-start grid-rows-1 gap-0 grid-cols-1 desktop:grid-cols-5">
+          <LeadPromoArt article={leadArticle} />
+          <PromosArt articles={restOfArticles} />
+        </div>
       </div>
-      <div className="tablet-lg:hidden">
+      {/* <div className="tablet-lg:hidden">
         <FrameScrollable Promos={<PromosMobile articles={articles} />} />
-      </div>
+      </div> */}
     </div>
   )
 }
@@ -110,6 +110,20 @@ interface PromoProps {
 const PromosArt = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
     const { issue, section, title, featured_artwork, featured_image, kicker } = article
+    const [divWidth, setDivWidth] = useState(0)
+    const divRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+      const updateWidth = () => {
+        if (divRef.current) {
+          setDivWidth(divRef.current.offsetWidth)
+        }
+      }
+      updateWidth()
+      window.addEventListener("resize", updateWidth)
+      return () => window.removeEventListener("resize", updateWidth)
+    }, [])
+
     const artwork = featured_artwork ? featured_artwork : featured_image
     const permalink = getPermalink({
       year: issue.year,
@@ -120,11 +134,15 @@ const PromosArt = (props: PromoProps) => {
     })
 
     return (
-      <div key={article.id} className="grid grid-cols-4 tablet:grid-cols-6 gap-3 pt-3 pb-6 px-3">
-        <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-2 desktop-lg:col-span-3 tablet-lg:order-last">
+      <div
+        key={article.id}
+        className={`px-3 snap-center desktop:col-span-1 border-l rail-border row-span-1 ${styles.card}`}
+      >
+        <div className="w-[calc(100vw-4.5rem)] tablet:w-[45vw] desktop:w-auto desktop:border-t rail-border py-3 pb-6 space-y-3">
           {artwork && (
-            <div className="">
+            <div ref={divRef} className="">
               <FeaturedImage
+                containerWidth={divWidth}
                 priority={true}
                 image={artwork}
                 title={title}
@@ -134,10 +152,8 @@ const PromosArt = (props: PromoProps) => {
               />
             </div>
           )}
-        </div>
-        <div className="col-span-4 tablet:col-span-6 tablet-lg:col-span-4 desktop-lg:col-span-3">
           <div className="flex flex-col space-y-3">
-            <Title title={article.title} permalink={permalink} classes="text-3xl tablet:text-4xl font-light" />
+            <Title title={article.title} permalink={permalink} classes="text-xl desktop:text-3xl font-light" />
             <Bylines article={article} type={BylineType.Default} />
             <Excerpt excerpt={article.excerpt} />
           </div>
@@ -166,31 +182,26 @@ const LeadPromoArt = (props: LeadPromoArtProps) => {
   })
 
   return (
-    <>
-      <div className="grid grid-cols-4 tablet:grid-cols-6 gap-x-3 gap-y-3">
-        <div className="col-span-4 tablet:col-span-6" itemType="http://schema.org/Article">
-          {artwork && (
-            <div className="">
-              <FeaturedImage
-                priority={true}
-                image={artwork}
-                hideCaption={true}
-                title={title}
-                permalink={permalink}
-                sizes={`50vw`}
-              />
-            </div>
-          )}
+    <div className="flex-none snap-center w-[calc(100vw-4.5rem)] tablet:w-[45vw] desktop:w-auto border-r rail-border desktop:border-0 space-y-3 pt-3 pr-3 row-start-1 row-span-1 desktop:row-span-2 col-span-1 desktop:col-span-2">
+      {artwork && (
+        <div className="">
+          <FeaturedImage
+            priority={true}
+            image={artwork}
+            hideCaption={true}
+            title={title}
+            permalink={permalink}
+            sizes={`50vw`}
+          />
         </div>
-        <div className="col-span-4 tablet:col-span-6">
-          <div className="flex flex-col space-y-3">
-            <Title h2 title={article.title} permalink={permalink} classes="text-4xl tablet:text-5xl font-light" />
-            <Bylines article={article} type={BylineType.Default} />
-            <Excerpt excerpt={article.excerpt} classes="excerpt-2xl" />
-          </div>
-        </div>
+      )}
+
+      <div className="flex flex-col space-y-3">
+        <Title h2 title={article.title} permalink={permalink} classes="text-4xl tablet:text-5xl font-light" />
+        <Bylines article={article} type={BylineType.Default} />
+        <Excerpt excerpt={article.excerpt} classes="excerpt-2xl" />
       </div>
-    </>
+    </div>
   )
 }
 
