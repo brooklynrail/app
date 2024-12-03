@@ -7,6 +7,7 @@ import replaceShortcodes from "./shortcodes"
 import { useMemo } from "react"
 import RailImage from "./railImage"
 import { Articles } from "../../../../lib/types"
+import ArticleAd from "./articleAd"
 
 interface ArticleBodyProps {
   articleData: Articles
@@ -82,14 +83,6 @@ const ArticleBody = (props: ArticleBodyProps) => {
     return { firstHalf, secondHalf }
   }, [paragraphs, totalWordCount])
 
-  const ArticleAd = () => {
-    // return (
-    //   <div className="h-36 hidden">
-    //     <div className="h-36 w-screen bg-zinc-900 absolute left-0 right-0"></div>
-    //   </div>
-    // )
-    return <></>
-  }
   // ================================================
 
   return (

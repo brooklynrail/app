@@ -167,13 +167,16 @@ const DonateButton = () => {
     <Link
       href={"/donate"}
       prefetch={false}
-      onClick={() =>
+      onClick={() => {
         posthog?.capture("used_navbar", {
           link_name: "Donate",
           link_type: "action",
           path: window.location.pathname,
         })
-      }
+        posthog?.capture("clicked_donate", {
+          location: "navbar",
+        })
+      }}
     >
       <button
         className={`shadow-lg bg-red-500 text-white font-medium text-xs tablet:text-sm px-2.5 py-2 tablet:px-3 tablet:py-2.5 rounded-sm uppercase hover:underline underline-offset-2`}
