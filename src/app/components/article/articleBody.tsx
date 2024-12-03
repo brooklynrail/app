@@ -83,12 +83,14 @@ const ArticleBody = (props: ArticleBodyProps) => {
     return { firstHalf, secondHalf }
   }, [paragraphs, totalWordCount])
 
+  const sectionSlug = articleData.section.slug
+
   // ================================================
 
   return (
     <>
       <div className={`content`}>{parse(firstHalf, options)}</div>
-      <ArticleAd />
+      {sectionSlug !== "poetry" && <ArticleAd />}
       <div className={`content`}>{parse(secondHalf, options)}</div>
 
       {endnote && (
