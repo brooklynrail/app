@@ -42,8 +42,8 @@ const ArticleAd = () => {
   }
 
   return (
-    <div className="h-60">
-      <div className="py-6 w-screen bg-zinc-200 bg-opacity-50 shadow-inner absolute left-0 right-0 space-y-3">
+    <div className="h-60 clear-both">
+      <div className="article-ad py-6 space-y-3">
         <p className="uppercase text-md tablet-lg:text-2xl text-center text-zinc-800 dark:text-slate-100">
           Help us raise $200,000 by December 31
         </p>

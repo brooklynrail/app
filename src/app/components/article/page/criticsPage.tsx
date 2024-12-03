@@ -55,7 +55,7 @@ const ArticleCriticsPage = (props: ArticleProps) => {
               <div className="col-span-4 tablet-lg:col-span-9">
                 <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
               </div>
-              <div className="col-span-4 tablet-lg:col-span-9">
+              <div className="col-span-4 tablet-lg:col-span-9 space-y-12">
                 <ArticleBody articleData={articleData} />
               </div>
             </div>
