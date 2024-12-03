@@ -7,7 +7,6 @@ import Footer from "../footer"
 import Menu from "../menu/menu"
 import NavBar from "../navBar"
 import PopupDonate from "../popupDonate"
-import { PopupProvider } from "../popupProvider"
 import Header from "../header"
 import PreviewHeader from "../preview/previewHead"
 import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
@@ -58,7 +57,7 @@ const Paper = (props: PaperProps) => {
           <ScreenIndicator />
         </div>
         <Menu collections={navData.collections} />
-        {!previewURL && !isHomepage && <PopupDonate />}
+        {!previewURL && <PopupDonate />}
       </MenuProvider>
     </AdVisibilityProvider>
   )

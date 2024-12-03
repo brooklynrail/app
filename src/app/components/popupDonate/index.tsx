@@ -47,7 +47,7 @@ const PopupDonate = () => {
       onClick={() => setShowPopup(false)}
     >
       <div
-        className="bg-gradient-to-b from-[#EF4444] to-[#CFCFE0] dark:from-indigo-700 p-6 py-12 tablet:py-6 w-screen h-mobile-lg bottom-0 absolute"
+        className="bg-gradient-to-b from-[#EF4444] to-[#CFCFE0] dark:from-indigo-700 dark:to-zinc-800 p-6 py-12 tablet:py-6 w-screen h-mobile-lg bottom-0 absolute"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -57,9 +57,13 @@ const PopupDonate = () => {
           &#x2715;
         </button>
         <div className="space-y-3 tablet:space-y-6">
-          <h2 className="text-4xl tablet-lg:text-6xl text-center font-light uppercase">Celebrating 24 Years</h2>
+          <h2 className="text-4xl tablet-lg:text-6xl text-center font-light uppercase text-zinc-800 dark:text-slate-100">
+            Celebrating 24 Years
+          </h2>
           <div className="space-y-3">
-            <p className="uppercase text-md tablet-lg:text-2xl text-center">Help us raise $200,000 by December 31</p>
+            <p className="uppercase text-md tablet-lg:text-2xl text-center text-zinc-800 dark:text-slate-100">
+              Help us raise $200,000 by December 31
+            </p>
             <div className="bg-indigo-100 h-9 w-auto max-w-screen-tablet-lg mx-auto flex justify-start items-center">
               {currentAmount && (
                 <div className="bg-lime-500 h-9 flex justify-end items-center" style={{ width: `${progressPercent}%` }}>
@@ -76,7 +80,7 @@ const PopupDonate = () => {
               {currentAmount && <span className="pl-6 text-zinc-600">${currentAmount.toLocaleString()}</span>}
             </div>
           </div>
-          <p className="uppercase text-center text-sm tablet-lg:text-lg">
+          <p className="uppercase text-center text-sm tablet-lg:text-lg text-zinc-800 dark:text-slate-100">
             DONATE to ensure that the rail remains
             <br /> FREE and accessible to all, forever
           </p>
@@ -86,19 +90,6 @@ const PopupDonate = () => {
                 {`Donate`}
               </button>
             </Link>
-          </div>
-
-          <div className="pt-3 flex flex-row justify-center items-center relative">
-            <div className="flex justify-center">
-              <p className="text-nowrap text-xs tablet-lg:text-md text-center font-medium text-zinc-700">
-                <Link className="hover:underline" href="https://mailchi.mp/brooklynrail/join/">
-                  Get notified when our new website launches later this month »
-                </Link>
-              </p>
-            </div>
-            <div className="space-y-1 hidden">
-              <NewsLetterSignUpForm />
-            </div>
           </div>
         </div>
       </div>

@@ -44,7 +44,7 @@ interface PopupProviderProps {
 }
 
 export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
-  const [showPopup, setShowPopup] = useState(false)
+  const [showPopup, setShowPopup] = useState(true)
   const [popupType, setPopupType] = useState<string | null>(null)
   const [images, setImages] = useState<any[]>([])
   const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
@@ -52,30 +52,30 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   const [slideId, setSlideId] = useState<string | null>(null)
 
   // Initialize viewedDonateCount and handle expiration logic
-  useEffect(() => {
-    const storedCount = parseInt(getLocalStorageItem("donatePopup") || "0", 10) || 0
-    const storedTimestamp = parseInt(getLocalStorageItem("donatePopupTimestamp") || "0", 10)
+  // useEffect(() => {
+  //   const storedCount = parseInt(getLocalStorageItem("donatePopup") || "0", 10) || 0
+  //   const storedTimestamp = parseInt(getLocalStorageItem("donatePopupTimestamp") || "0", 10)
 
-    const currentTime = Date.now()
-    if (storedTimestamp && currentTime - storedTimestamp < ONE_HOUR) {
-      setViewedDonateCount(storedCount)
-    } else {
-      setViewedDonateCount(0)
-      setLocalStorageItem("donatePopup", "0")
-      setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
-    }
-  }, [])
+  //   const currentTime = Date.now()
+  //   if (storedTimestamp && currentTime - storedTimestamp < ONE_HOUR) {
+  //     setViewedDonateCount(storedCount)
+  //   } else {
+  //     setViewedDonateCount(0)
+  //     setLocalStorageItem("donatePopup", "0")
+  //     setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
+  //   }
+  // }, [])
 
   useEffect(() => {
-    if (viewedDonateCount !== null && viewedDonateCount < 2) {
-      setPopupType("donate")
-      setShowPopup(true)
-      const newCount = viewedDonateCount + 1
-      const currentTime = Date.now()
-      setViewedDonateCount(newCount)
-      setLocalStorageItem("donatePopup", newCount.toString())
-      setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
-    }
+    setPopupType("donate")
+    setShowPopup(true)
+    // if (viewedDonateCount !== null && viewedDonateCount < 2) {
+    //   const newCount = viewedDonateCount + 1
+    //   const currentTime = Date.now()
+    //   setViewedDonateCount(newCount)
+    //   setLocalStorageItem("donatePopup", newCount.toString())
+    //   setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
+    // }
   }, [viewedDonateCount])
 
   const togglePopup = (type: string) => {
