@@ -12,6 +12,7 @@ export const getAllPeople = cache(async () => {
           "last_name",
           "id",
           "slug",
+          { events: ["id"] },
           {
             portrait: ["id", "width", "height", "filename_disk", "alt", "caption", "modified_on"],
           },
