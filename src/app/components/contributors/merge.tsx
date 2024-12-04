@@ -76,7 +76,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   )
 
   return (
-    <Paper pageClass="theme-people" navData={navData}>
+    <Paper pageClass="theme" navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
@@ -89,16 +89,26 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         </div>
 
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <div className="col-span-4 tablet-lg:col-span-5">
-            <h2 className="text-2xl font-light">People</h2>
-            <p className="text-sm">{twins.length} People likely have a Contributor record</p>
-            <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">{allTwins}</div>
+          <div className="col-span-4 tablet-lg:col-span-4 space-y-3">
+            <div className="">
+              <div className="space-y-3">
+                <h2 className="text-2xl font-light">People</h2>
+              </div>
+              <p className="text-sm">
+                <strong>{twins.length} people</strong> have likely contributed to the <em>Rail</em>
+              </p>
+              <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border">
+                {allTwins}
+              </div>
+            </div>
           </div>
-          <div className="col-span-4 tablet-lg:col-span-5 tablet-lg:col-start-8 space-y-9">
-            {selectedPerson && <Person {...(selectedPerson as People)} showBio={true} />}
-            <div className="space-y-3 border-t rail-border py-3">
-              <p className="text-lg font-light">Select the contributors that match this person</p>
-              <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">{selectedContributors}</div>
+          <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-5 space-y-9">
+            <div className="space-y-12 mt-[4.85rem] border-t rail-border ">
+              {selectedPerson && <Person {...(selectedPerson as People)} showBio={true} />}
+              <div className="space-y-3 border-t rail-border py-3">
+                <p className="text-lg font-light">Select the contributors that match this person</p>
+                <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">{selectedContributors}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -125,23 +135,37 @@ interface ContributorProps {
 
 const Contributor = ({ permalink, contributor }: ContributorProps) => {
   return (
-    <div className="space-y-1.5">
-      <div className="flex justify-between items-center">
-        <p className="font-light text-lg">
-          <Link
-            target="_blank"
-            className="underline decoration-1 underline-offset-4 decoration-dotted"
-            href={permalink}
-            title={`${contributor.first_name} ${contributor.last_name}`}
-          >
-            {contributor.first_name} {contributor.last_name}
-          </Link>
-        </p>
-        <p className="text-xs">{contributor.articles.length} articles</p>
+    <div className="space-y-1.5 py-3">
+      <div className="flex space-x-6">
+        <div className="flex flex-col">
+          <div className="flex justify-between items-center">
+            <p className="font-light text-lg">
+              <Link
+                target="_blank"
+                className="underline decoration-1 underline-offset-4 decoration-dotted"
+                href={permalink}
+                title={`${contributor.first_name} ${contributor.last_name}`}
+              >
+                {contributor.first_name} {contributor.last_name}
+              </Link>
+            </p>
+            <p className="text-xs">{contributor.articles.length} articles</p>
+          </div>
+          <p className="text-xs">
+            <span className="block">{parse(contributor.bio || "---")}</span>
+          </p>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <div className="flex space-x-3 h-full items-center justify-center">
+            <button className="bg-blue-200 text-xs flex-none px-3 py-1 block dark:bg-gray-800 rounded-md">
+              Primary
+            </button>
+            <button className="bg-green-200 text-xs flex-none px-3 py-1 block dark:bg-gray-800 rounded-md">
+              Match
+            </button>
+          </div>
+        </div>
       </div>
-      <p className="text-xs">
-        <span className="block">{parse(contributor.bio || "---")}</span>
-      </p>
     </div>
   )
 }
