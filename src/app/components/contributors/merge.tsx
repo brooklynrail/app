@@ -204,12 +204,22 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
               </div>
             </div>
           </div>
-          <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-5 space-y-9">
-            <div className="space-y-12 mt-[4.85rem] border-t rail-border ">
+          <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-5 space-y-6">
+            <div className="flex justify-end">
+              <button className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-300 px-3 py-1 rounded-md">
+                Merge
+              </button>
+            </div>
+
+            <div className="space-y-12 border-t rail-border py-3">
               {selectedPerson && <Person {...(selectedPerson as People)} showBio={true} />}
               <div className="space-y-3 border-t rail-border py-3">
                 <p className="text-lg font-light">
-                  <strong className="font-medium">{selectedContributorIds.length} of the contributors</strong> matched{" "}
+                  <strong className="font-medium">
+                    {selectedContributorIds.length}{" "}
+                    {selectedContributorIds.length === 1 ? "contributor" : "contributors"}
+                  </strong>{" "}
+                  matched{" "}
                   <span>
                     {selectedPerson?.first_name} {selectedPerson?.last_name}
                   </span>
@@ -233,17 +243,6 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
             </div>
           </div>
         </div>
-
-        {/* <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <div className="col-span-4 tablet-lg:col-span-5">
-            <h2 className="text-2xl font-light">People</h2>
-            <div className="contributors divide-y divide-gray-600 divide-dotted">{allPeople}</div>
-          </div>
-          <div className="col-span-4 tablet-lg:col-span-5 tablet-lg:col-start-8">
-            <h2 className="text-2xl font-light">Contributors</h2>
-            <div className="contributors divide-y divide-gray-600 divide-dotted">{allContributors}</div>
-          </div>
-        </div> */}
       </main>
     </Paper>
   )
