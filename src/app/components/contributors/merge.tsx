@@ -283,7 +283,9 @@ const Contributor = ({
             </p>
             <p className="text-xs">#{contributor.old_id}</p>
             <p className="text-xs">{contributor.articles.length} articles</p>
-            <p className="text-xs bg-gray-200 px-1 rounded-sm text-red-800">{contributor.slug}</p>
+            <p className="text-xs bg-gray-200 dark:bg-gray-700 px-1 rounded-sm text-red-800 dark:text-red-300">
+              {contributor.slug}
+            </p>
           </div>
           <p className="text-xs">
             <span className="block">{parse(contributor.bio || "---")}</span>
@@ -295,8 +297,8 @@ const Contributor = ({
               onClick={onPrimarySelect}
               className={`text-xs flex-none px-3 py-1 block rounded-md ${
                 isPrimary
-                  ? "bg-blue-500 text-white dark:bg-blue-600"
-                  : "bg-gray-200 dark:bg-gray-800 text-gray-500 line-through"
+                  ? "bg-blue-500 text-white dark:bg-blue-500"
+                  : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-300 line-through"
               }`}
             >
               Short Bio
@@ -305,7 +307,7 @@ const Contributor = ({
               onClick={onToggleSelect}
               className={`text-xs flex-none px-3 py-1 block rounded-md ${
                 isSelected
-                  ? "bg-green-500 dark:bg-green-800"
+                  ? "bg-green-500 dark:bg-green-500 text-white"
                   : "bg-gray-200 dark:bg-gray-800 text-gray-500 line-through"
               }`}
             >
