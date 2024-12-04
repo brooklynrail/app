@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { Events, EventsPeople, EventsTypes, Homepage } from "../../../../../../../lib/types"
+import { Events, EventsTypes, Homepage } from "../../../../../../../lib/types"
 import { getOGImage, getPermalink, PageType, share_card } from "../../../../../../../lib/utils"
 import { checkYearMonthDay, getEvent, getEventTypes } from "../../../../../../../lib/utils/events"
 import { getRedirect, RedirectTypes } from "../../../../../../../lib/utils/redirects"
@@ -10,10 +10,6 @@ import { AddRedirect } from "@/app/actions/redirect"
 import { getNavData } from "../../../../../../../lib/utils/homepage"
 import { Event, WithContext } from "schema-dts"
 import Script from "next/script"
-
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
