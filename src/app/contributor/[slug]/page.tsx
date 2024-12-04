@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     return {}
   }
 
-  const { first_name, last_name, bio, date_updated, date_created } = data.contributorData
+  const { first_name, last_name, bio } = data.contributorData
   const ogtitle = `${first_name && stripHtml(first_name).result} ${last_name && stripHtml(last_name).result}`
   const ogdescription = `${bio && stripHtml(bio).result}`
 
