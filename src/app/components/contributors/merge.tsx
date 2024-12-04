@@ -22,11 +22,13 @@ interface PersonWithMatches extends People {
 
 const ContributorsMerge = (props: ContributorsMergeProps) => {
   const router = useRouter()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [selectedContributorIds, setSelectedContributorIds] = useState<string[]>([])
+  const [primaryContributorId, setPrimaryContributorId] = useState<string | null>(null)
   const [selectedPerson, setSelectedPerson] = useState<PersonWithMatches | null>(null)
   const { navData, allPeople: people } = props
 
   console.log("selectedPerson", selectedPerson)
+  console.log("selectedContributorIds", selectedContributorIds)
 
   // for each person, check if they also exist as a contributor
   // using the first_name and last_name from the people record
@@ -41,8 +43,37 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     return matches.length > 0 ? { ...person, matches } : person
   })
 
+  const handleContributorToggle = (contributorId: string) => {
+    setSelectedContributorIds((prev) =>
+      prev.includes(contributorId) ? prev.filter((id) => id !== contributorId) : [...prev, contributorId],
+    )
+  }
+
   const handlePersonClick = (person: People) => {
-    setSelectedPerson(person === selectedPerson ? null : person)
+    if (person === selectedPerson) {
+      setSelectedPerson(null)
+      setSelectedContributorIds([])
+      setPrimaryContributorId(null)
+    } else {
+      setSelectedPerson(person)
+      const matches = (person as PersonWithMatches).matches || []
+      const matchingContributorIds = matches.map((c) => c.id)
+      setSelectedContributorIds(matchingContributorIds)
+
+      // Set primary contributor based on old_id
+      if (matches.length > 0) {
+        const primaryContributor = matches.reduce((prev, current) => {
+          const prevOldId = parseInt(String(prev.old_id || "0"))
+          const currentOldId = parseInt(String(current.old_id || "0"))
+          return currentOldId > prevOldId ? current : prev
+        })
+        setPrimaryContributorId(primaryContributor.id)
+      }
+    }
+  }
+
+  const handlePrimarySelect = (contributorId: string) => {
+    setPrimaryContributorId(contributorId === primaryContributorId ? null : contributorId)
   }
 
   const allTwins = (
@@ -52,7 +83,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           return (
             <div
               onClick={() => handlePersonClick(twin)}
-              className={`cursor-pointer ${selectedPerson?.id === twin.id ? "bg-gray-100 dark:bg-gray-800" : ""}`}
+              className={`cursor-pointer ${selectedPerson?.id === twin.id ? "bg-amber-200 dark:bg-gray-800" : ""}`}
             >
               <Person key={`${twin.id}-${i}`} {...twin} showBio={false} />
             </div>
@@ -65,13 +96,30 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
 
   const selectedContributors = (
     <>
-      {selectedPerson?.matches?.map((contributor: Contributors, i: number) => {
-        const permalink = getPermalink({
-          slug: contributor.slug,
-          type: PageType.Contributor,
+      {selectedPerson?.matches
+        ?.sort((a, b) => {
+          const aOldId = parseInt(String(a.old_id || "0"))
+          const bOldId = parseInt(String(b.old_id || "0"))
+          return bOldId - aOldId
         })
-        return <Contributor key={`${contributor.id}-${i}`} permalink={permalink} contributor={contributor} />
-      }) || <p className="text-sm text-gray-500">Select a person to see matching contributors</p>}
+        .map((contributor: Contributors, i: number) => {
+          const permalink = getPermalink({
+            slug: contributor.slug,
+            type: PageType.Contributor,
+          })
+
+          return (
+            <Contributor
+              key={`${contributor.id}-${i}`}
+              permalink={permalink}
+              contributor={contributor}
+              isSelected={selectedContributorIds.includes(contributor.id)}
+              isPrimary={primaryContributorId === contributor.id}
+              onToggleSelect={() => handleContributorToggle(contributor.id)}
+              onPrimarySelect={() => handlePrimarySelect(contributor.id)}
+            />
+          )
+        }) || <p className="text-sm text-gray-500">Select a person to see matching contributors</p>}
     </>
   )
 
@@ -131,14 +179,25 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
 interface ContributorProps {
   permalink: string
   contributor: Contributors
+  isSelected: boolean
+  isPrimary: boolean
+  onToggleSelect: () => void
+  onPrimarySelect: () => void
 }
 
-const Contributor = ({ permalink, contributor }: ContributorProps) => {
+const Contributor = ({
+  permalink,
+  contributor,
+  isSelected,
+  isPrimary,
+  onToggleSelect,
+  onPrimarySelect,
+}: ContributorProps) => {
   return (
     <div className="space-y-1.5 py-3">
-      <div className="flex space-x-6">
-        <div className="flex flex-col">
-          <div className="flex justify-between items-center">
+      <div className="flex space-x-6 justify-between">
+        <div className="flex flex-col w-full space-y-1.5">
+          <div className="flex justify-start items-end space-x-3">
             <p className="font-light text-lg">
               <Link
                 target="_blank"
@@ -149,18 +208,34 @@ const Contributor = ({ permalink, contributor }: ContributorProps) => {
                 {contributor.first_name} {contributor.last_name}
               </Link>
             </p>
+            <p className="text-xs">#{contributor.old_id}</p>
             <p className="text-xs">{contributor.articles.length} articles</p>
+            <p className="text-xs bg-gray-200 px-1 rounded-sm text-red-800">{contributor.slug}</p>
           </div>
           <p className="text-xs">
             <span className="block">{parse(contributor.bio || "---")}</span>
           </p>
         </div>
-        <div className="flex flex-col justify-center items-center">
-          <div className="flex space-x-3 h-full items-center justify-center">
-            <button className="bg-blue-200 text-xs flex-none px-3 py-1 block dark:bg-gray-800 rounded-md">
-              Primary
+        <div className="flex flex-col">
+          <div className="flex space-x-3 h-full items-start justify-center">
+            <button
+              onClick={onPrimarySelect}
+              className={`text-xs flex-none px-3 py-1 block rounded-md ${
+                isPrimary
+                  ? "bg-blue-500 text-white dark:bg-blue-600"
+                  : "bg-gray-200 dark:bg-gray-800 text-gray-500 line-through"
+              }`}
+            >
+              Short Bio
             </button>
-            <button className="bg-green-200 text-xs flex-none px-3 py-1 block dark:bg-gray-800 rounded-md">
+            <button
+              onClick={onToggleSelect}
+              className={`text-xs flex-none px-3 py-1 block rounded-md ${
+                isSelected
+                  ? "bg-green-500 dark:bg-green-800"
+                  : "bg-gray-200 dark:bg-gray-800 text-gray-500 line-through"
+              }`}
+            >
               Match
             </button>
           </div>
@@ -179,7 +254,7 @@ const Person = (person: People & { showBio: boolean }) => {
     `${process.env.NEXT_PUBLIC_IMAGE_PATH}${person.portrait.filename_disk}?fit=cover&width=400&height=400&quality=85&modified_on=${person.portrait.modified_on}`
   return (
     <div className="flex flex-col space-y-3">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center pr-1">
         <div className="py-1.5 flex items-center space-x-3">
           <div className="w-9 h-9 flex-none">
             {person.portrait && src && (
@@ -200,7 +275,7 @@ const Person = (person: People & { showBio: boolean }) => {
           </div>
         </div>
         <div>
-          <p className="text-xs">{person.events.length}</p>
+          <p className="text-xs">{person.events.length} events</p>
         </div>
       </div>
       {person.showBio && <div className="text-sm">{parse(person.bio || "---")}</div>}
