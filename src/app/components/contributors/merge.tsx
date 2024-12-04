@@ -27,15 +27,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   const [selectedPerson, setSelectedPerson] = useState<PersonWithMatches | null>(null)
   const { navData, allPeople: people } = props
 
-  console.log("selectedPerson", selectedPerson)
-  console.log("selectedContributorIds", selectedContributorIds)
-
-  // for each person, check if they also exist as a contributor
-  // using the first_name and last_name from the people record
-  // and the first_name and last_name from the contributor record
-  // there also might be multiple contributors with the same name, which is fine
-  // we need to end up with a list of people and for each person, an array of contributor objects that match
-  const twins = people.map((person: People) => {
+  const likelyMatches = people.map((person: People) => {
     const matches = props.allContributors.filter((contributor: Contributors) => {
       return contributor.first_name === person.first_name && contributor.last_name === person.last_name
     })
@@ -76,16 +68,16 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     setPrimaryContributorId(contributorId === primaryContributorId ? null : contributorId)
   }
 
-  const allTwins = (
+  const allPeople = (
     <>
-      {twins.map((twin: any, i: number) => {
-        if ("matches" in twin) {
+      {likelyMatches.map((person: any, i: number) => {
+        if ("matches" in person) {
           return (
             <div
-              onClick={() => handlePersonClick(twin)}
-              className={`cursor-pointer ${selectedPerson?.id === twin.id ? "bg-amber-200 dark:bg-gray-800" : ""}`}
+              onClick={() => handlePersonClick(person)}
+              className={`cursor-pointer ${selectedPerson?.id === person.id ? "bg-amber-200 dark:bg-gray-800" : ""}`}
             >
-              <Person key={`${twin.id}-${i}`} {...twin} showBio={false} />
+              <Person key={`${person.id}-${i}`} {...person} showBio={false} />
             </div>
           )
         }
@@ -143,10 +135,10 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
                 <h2 className="text-2xl font-light">People</h2>
               </div>
               <p className="text-sm">
-                <strong>{twins.length} people</strong> have likely contributed to the <em>Rail</em>
+                <strong>{likelyMatches.length} people</strong> have likely contributed to the <em>Rail</em>
               </p>
               <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border">
-                {allTwins}
+                {allPeople}
               </div>
             </div>
           </div>
