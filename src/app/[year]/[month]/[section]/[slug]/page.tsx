@@ -10,10 +10,6 @@ import { getRedirect, RedirectTypes } from "../../../../../../lib/utils/redirect
 import { checkYearMonthSection, extractPeopleFromArticle } from "../../../../../../lib/utils/articles"
 import { getNavData } from "../../../../../../lib/utils/homepage"
 
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
-
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
 
