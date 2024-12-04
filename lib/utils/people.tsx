@@ -12,6 +12,7 @@ export const getAllPeople = cache(async () => {
           "last_name",
           "id",
           "slug",
+          "bio",
           { events: ["id"] },
           {
             portrait: ["id", "width", "height", "filename_disk", "alt", "caption", "modified_on"],
@@ -61,7 +62,7 @@ export const getAllContributorsMerge = cache(async () => {
     let page = 1
     let isMore = true
     while (isMore) {
-      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=first_name&filter[status][_eq]=published&page=${page}&limit=100&offset=${page * 100 - 100}`
+      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=bio&fields[]=articles&sort=first_name&filter[status][_eq]=published&page=${page}&limit=100&offset=${page * 100 - 100}`
       const res = await fetch(contributorsAPI)
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary

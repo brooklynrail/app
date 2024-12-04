@@ -2,7 +2,7 @@ import ContributorsMerge from "@/app/components/contributors/merge"
 import { notFound } from "next/navigation"
 import { getCurrentIssueData } from "../../../../lib/utils"
 import { getNavData } from "../../../../lib/utils/homepage"
-import { getAllContributorsMerge } from "../../../../lib/utils/people"
+import { getAllContributorsMerge, getAllPeople } from "../../../../lib/utils/people"
 
 // Dynamic segments not included in generateStaticParams are generated on demand.
 // See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
@@ -16,13 +16,15 @@ export default async function ContributorsIndex() {
       thisIssueData={data.thisIssueData}
       allContributors={data.allContributors}
       navData={data.navData}
+      allPeople={data.allPeople}
     />
   )
 }
 
 async function getData() {
   let allContributors = await getAllContributorsMerge()
-  if (!allContributors || allContributors.length === 0) {
+  let allPeople = await getAllPeople()
+  if (!allContributors || allContributors.length === 0 || !allPeople || allPeople.length === 0) {
     return notFound()
   }
   const navData = await getNavData()
@@ -40,5 +42,6 @@ async function getData() {
     navData,
     thisIssueData,
     allContributors,
+    allPeople,
   }
 }
