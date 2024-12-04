@@ -225,7 +225,7 @@ export const getEvent = cache(async (slug: string) => {
   return event[0] as Events
 })
 
-export async function getAllEvents() {
+export const getAllEvents = cache(async () => {
   try {
     let allEvents: Events[] = []
     let page = 1
@@ -256,9 +256,9 @@ export async function getAllEvents() {
     console.error("Error fetching allEvents:", error)
     return null
   }
-}
+})
 
-export const getTotalEventsCount = async () => {
+export const getTotalEventsCount = cache(async () => {
   const totalCount = await directus.request(
     aggregate("events", {
       aggregate: { count: "*" },
@@ -266,7 +266,7 @@ export const getTotalEventsCount = async () => {
   )
   const count = Number(totalCount[0].count)
   return count ? count : 0
-}
+})
 
 export const generateYouTubeTags = (eventData: Events) => {
   const tags = []

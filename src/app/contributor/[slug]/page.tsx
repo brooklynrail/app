@@ -1,14 +1,10 @@
-import { getPermalink, PageType } from "../../../../lib/utils"
-import { Metadata } from "next"
-import { stripHtml } from "string-strip-html"
-import { notFound } from "next/navigation"
 import ContributorPage from "@/app/components/contributor"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { stripHtml } from "string-strip-html"
+import { getPermalink, PageType } from "../../../../lib/utils"
 import { getNavData } from "../../../../lib/utils/homepage"
 import { getContributor } from "../../../../lib/utils/people"
-
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })

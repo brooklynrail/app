@@ -1,11 +1,6 @@
 import { MetadataRoute } from "next"
-import { getIssues, getPermalink, PageType } from "../../../lib/utils"
 import { Issues } from "../../../lib/types"
-import { get } from "http"
-
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
+import { getIssues, getPermalink, PageType } from "../../../lib/utils"
 
 interface SiteLinksProps {
   url: string

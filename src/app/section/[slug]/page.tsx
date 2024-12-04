@@ -1,13 +1,8 @@
 import { notFound } from "next/navigation"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { getArticlesBySection, getSectionData } from "../../../../lib/utils/sections"
-
 import Section from "@/app/components/section"
 import { getNavData } from "../../../../lib/utils/homepage"
-
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
 
 export default async function SectionPage({ params }: { params: SectionParams }) {
   const data = await getData({ params })
