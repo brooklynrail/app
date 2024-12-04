@@ -54,6 +54,32 @@ export const getAllContributors = cache(async () => {
   }
 })
 
+export const getAllContributorsMerge = cache(async () => {
+  try {
+    let contributorPages: Contributors[] = []
+    let page = 1
+    let isMore = true
+    while (isMore) {
+      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=first_name&filter[status][_eq]=published&page=${page}&limit=100&offset=${page * 100 - 100}`
+      const res = await fetch(contributorsAPI)
+      if (!res.ok) {
+        // This will activate the closest `error.js` Error Boundary
+        throw new Error("Failed to fetch getAllContributors data")
+      }
+      const data = await res.json()
+      contributorPages = contributorPages.concat(data.data)
+      isMore = data.data.length === 100 // assumes there is another page of records
+      page++
+    }
+
+    return contributorPages
+  } catch (error) {
+    // Handle the error here
+    console.error("Failed to fetch getAllContributors data", error)
+    return null
+  }
+})
+
 // Get contributor
 // NOTE: There are multiple contributors with the same slug
 // This returns all contributors with the same slug, but their specific name and bio information may be different
