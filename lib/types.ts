@@ -68,6 +68,13 @@ export type Articles = {
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
+
+export type ArticlesPeople = {
+  articles_id?: Articles | null
+  people_id?: People | null
+  id: number
+}
+
 export interface Redirects {
   path: string
   type: string
@@ -690,6 +697,7 @@ export type People = {
   pronouns?: string | null
   related_links?: RelatedLinks[] | null
   slug: string
+  articles: ArticlesPeople[]
   events: EventsPeople[]
   poets: EventsPeoplePoets[]
   sort?: number | null
