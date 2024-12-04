@@ -629,7 +629,7 @@ export const getAllContributors = cache(async () => {
     let page = 1
     let isMore = true
     while (isMore) {
-      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_nnull]=true&page=${page}&limit=100&offset=${page * 100 - 100}`
+      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_nnull]=true&page=${page}&limit=100&offset=${page * 100 - 100}`
       const res = await fetch(contributorsAPI)
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
@@ -764,15 +764,6 @@ export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataPar
     }),
   )
   return tribute[0] as Tributes
-})
-
-export const getAllPeople = cache(async () => {
-  const people = await directus.request(
-    readItems("people", {
-      fields: ["*"],
-    }),
-  )
-  return people as People[]
 })
 
 export const getNavigation = cache(async () => {
