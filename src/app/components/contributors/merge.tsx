@@ -61,7 +61,7 @@ const ContributorsMerge = (props: ContributorsPageProps) => {
           type: PageType.Contributor,
         })
 
-        return <Contributor key={contributor.id} permalink={permalink} contributor={contributor} />
+        return <Contributor key={`${contributor.id}-${i}`} permalink={permalink} contributor={contributor} />
       })}
     </>
   )
@@ -89,12 +89,12 @@ const ContributorsMerge = (props: ContributorsPageProps) => {
         </div>
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
           <div className="col-span-4 tablet-lg:col-span-5">
-            <h2 className="text-2xl font-light">Contributors</h2>
-            <div className="contributors divide-y divide-gray-600 divide-dotted">{allContributors}</div>
-          </div>
-          <div className="col-span-4 tablet-lg:col-span-5 tablet-lg:col-start-8">
             <h2 className="text-2xl font-light">People</h2>
             <div className="contributors divide-y divide-gray-600 divide-dotted">{allPeople}</div>
+          </div>
+          <div className="col-span-4 tablet-lg:col-span-5 tablet-lg:col-start-8">
+            <h2 className="text-2xl font-light">Contributors</h2>
+            <div className="contributors divide-y divide-gray-600 divide-dotted">{allContributors}</div>
           </div>
         </div>
       </main>
@@ -123,8 +123,6 @@ const Contributor = ({ permalink, contributor }: ContributorProps) => {
 }
 
 const Person = (person: People) => {
-  console.log("person", person)
-
   const src =
     person.portrait &&
     `${process.env.NEXT_PUBLIC_IMAGE_PATH}${person.portrait.filename_disk}?fit=cover&width=400&height=400&quality=85&modified_on=${person.portrait.modified_on}`
