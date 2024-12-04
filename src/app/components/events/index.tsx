@@ -35,7 +35,7 @@ const EventsPage = (props: EventsProps) => {
                   <h2>The New Social Environment is on break</h2>
                 </div>
                 <p className="text-center">
-                  We look forward to seeing you <strong>Monday, January 6, 2025</strong> for more live dialogues with
+                  We look forward to seeing you <strong>Monday, January 13, 2025</strong> for more live dialogues with
                   artists, filmmakers, writers, and poets. In the meantime, dive into our archive.
                 </p>
                 <p className="text-center">
