@@ -208,7 +208,12 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
             <div className="space-y-12 mt-[4.85rem] border-t rail-border ">
               {selectedPerson && <Person {...(selectedPerson as People)} showBio={true} />}
               <div className="space-y-3 border-t rail-border py-3">
-                <p className="text-lg font-light">Select the contributors that match this person</p>
+                <p className="text-lg font-light">
+                  <strong className="font-medium">{selectedContributorIds.length} of the contributors</strong> matched{" "}
+                  <span>
+                    {selectedPerson?.first_name} {selectedPerson?.last_name}
+                  </span>
+                </p>
                 <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">{selectedContributors}</div>
               </div>
               <div className="space-y-3 border-t rail-border py-3">
