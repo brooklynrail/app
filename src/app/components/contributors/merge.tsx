@@ -7,12 +7,12 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper from "../paper"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { mergePeople } from "../../../../lib/utils/people"
+import { mergePeople, getAllContributorsMerge } from "../../../../lib/utils/people"
 
 interface ContributorsMergeProps {
   thisIssueData: Issues
-  allContributors: Contributors[]
   allPeople: People[]
+  allContributors: Contributors[]
   navData: Homepage
 }
 
@@ -49,6 +49,45 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     setMessage(null)
   }, [selectedPerson])
 
+  useEffect(() => {
+    const fetchContributors = async () => {
+      if (selectedPerson && selectedPerson.first_name && selectedPerson.last_name) {
+        const queryParams = new URLSearchParams({
+          firstName: selectedPerson.first_name,
+          lastName: selectedPerson.last_name,
+        }).toString()
+
+        const response = await fetch(`/api/contributors?${queryParams}`)
+        if (response.ok) {
+          const contributors = await response.json()
+          console.log("Fetched contributors from API:", contributors)
+
+          // Filter out contributors whose articles are already in selectedPerson.articles
+          const filteredContributors = contributors.filter((contributor: Contributors) => {
+            const contributorArticleIds = contributor.articles
+              .map((article) => article.articles_contributors_id?.id)
+              .filter((id): id is string => id !== undefined)
+            const personArticleIds = selectedPerson.articles
+              .map((article) => article.articles_id?.id)
+              .filter((id): id is string => id !== undefined)
+
+            console.log("====================")
+            console.log("ID:", contributor.old_id)
+            console.log("Contributor article IDs:", contributorArticleIds)
+            console.log("Person article IDs:", personArticleIds)
+            return !contributorArticleIds.some((id) => personArticleIds.includes(id))
+          })
+
+          setSelectedContributors(filteredContributors)
+        } else {
+          console.error("Failed to fetch contributors")
+        }
+      }
+    }
+
+    fetchContributors()
+  }, [selectedPerson])
+
   const likelyMatches = people
     .map((person: People) => {
       const matches = props.allContributors.filter((contributor: Contributors) => {
@@ -72,12 +111,12 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   const handlePersonClick = (person: People) => {
     if (person === selectedPerson) {
       setSelectedPerson(null)
-      setSelectedContributors([])
+      // setSelectedContributors([])
       setPrimaryContributor(null)
     } else {
       setSelectedPerson(person)
       const matches = (person as PersonWithMatches).matches || []
-      setSelectedContributors(matches)
+      // setSelectedContributors(matches)
 
       // Set primary contributor based on old_id
       if (matches.length > 0) {
@@ -184,101 +223,6 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     </>
   )
 
-  const firstNameMatches = (
-    <>
-      {(selectedPerson &&
-        props.allContributors
-          .filter(
-            (contributor) =>
-              contributor.first_name === selectedPerson.first_name &&
-              !selectedPerson.matches?.some((match) => match.id === contributor.id),
-          )
-          .sort((a, b) => {
-            const aOldId = parseInt(String(a.old_id || "0"))
-            const bOldId = parseInt(String(b.old_id || "0"))
-            return bOldId - aOldId
-          })
-          .map((contributor: Contributors, i: number) => {
-            const permalink = getPermalink({
-              slug: contributor.slug,
-              type: PageType.Contributor,
-            })
-
-            return (
-              <Contributor
-                key={`first-${contributor.id}-${i}`}
-                permalink={permalink}
-                contributor={contributor}
-                isSelected={selectedContributors.some((c) => c.id === contributor.id)}
-                isPrimary={primaryContributor?.id === contributor.id}
-                onToggleSelect={() => handleContributorToggle(contributor)}
-                onPrimarySelect={() => handlePrimarySelect(contributor)}
-              />
-            )
-          })) ||
-        null}
-    </>
-  )
-
-  const lastNameMatches = (
-    <>
-      {(selectedPerson &&
-        props.allContributors
-          .filter(
-            (contributor) =>
-              contributor.last_name === selectedPerson.last_name &&
-              !selectedPerson.matches?.some((match) => match.id === contributor.id) &&
-              contributor.first_name !== selectedPerson.first_name,
-          )
-          .sort((a, b) => {
-            const aOldId = parseInt(String(a.old_id || "0"))
-            const bOldId = parseInt(String(b.old_id || "0"))
-            return bOldId - aOldId
-          })
-          .map((contributor: Contributors, i: number) => {
-            const permalink = getPermalink({
-              slug: contributor.slug,
-              type: PageType.Contributor,
-            })
-
-            return (
-              <Contributor
-                key={`last-${contributor.id}-${i}`}
-                permalink={permalink}
-                contributor={contributor}
-                isSelected={selectedContributors.some((c) => c.id === contributor.id)}
-                isPrimary={primaryContributor?.id === contributor.id}
-                onToggleSelect={() => handleContributorToggle(contributor)}
-                onPrimarySelect={() => handlePrimarySelect(contributor)}
-              />
-            )
-          })) ||
-        null}
-    </>
-  )
-
-  const allContributors = (
-    <>
-      {props.allContributors.map((contributor: Contributors, i: number) => {
-        const permalink = getPermalink({
-          slug: contributor.slug,
-          type: PageType.Contributor,
-        })
-        return (
-          <Contributor
-            key={`${contributor.id}-${i}`}
-            permalink={permalink}
-            contributor={contributor}
-            isSelected={false}
-            isPrimary={false}
-            onToggleSelect={() => {}}
-            onPrimarySelect={() => {}}
-          />
-        )
-      })}
-    </>
-  )
-
   const description = showOnlyMatches ? (
     <p className="text-xs">
       These <strong>{likelyMatches.length} people</strong> have the same first_name and last_name as one or more
@@ -301,15 +245,6 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
       </span>
     </p>
   )
-
-  const hasLastNameMatches =
-    selectedPerson &&
-    props.allContributors.some(
-      (contributor) =>
-        contributor.last_name === selectedPerson.last_name &&
-        !selectedPerson.matches?.some((match) => match.id === contributor.id) &&
-        contributor.first_name !== selectedPerson.first_name,
-    )
 
   const messageText = (() => {
     switch (mergeState) {
@@ -395,45 +330,6 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
                     </div>
                   </div>
                 )}
-
-                {showOnlyMatches && (
-                  <>
-                    {firstNameMatches && (
-                      <div className="space-y-3 border-t rail-border py-3">
-                        <p className="text-lg font-light">Same First Name</p>
-                        <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">
-                          {firstNameMatches}
-                        </div>
-                      </div>
-                    )}
-
-                    {hasLastNameMatches && (
-                      <div className="space-y-3 border-t rail-border py-3">
-                        <p className="text-lg font-light">Same Last Name</p>
-                        <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">
-                          {lastNameMatches}
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
-
-                <div className="space-y-3 border-t rail-border py-3">
-                  {showOnlyMatches && (
-                    <div className="flex justify-between items-center">
-                      <p className="text-lg font-light">All contributors</p>
-                      <button
-                        onClick={() => setShowAllContributors(!showAllContributors)}
-                        className="text-xs px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
-                      >
-                        {showAllContributors ? "Hide All" : "Load All"}
-                      </button>
-                    </div>
-                  )}
-                  {showAllContributors && (
-                    <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">{allContributors}</div>
-                  )}
-                </div>
               </div>
             </div>
           )}
@@ -485,6 +381,7 @@ const Contributor = ({
             <span className="block">{parse(contributor.bio || "---")}</span>
           </div>
           <div className="text-xs">{contributor.id}</div>
+          <div className="text-xs">{contributor.status}</div>
         </div>
         <div className="flex flex-col">
           <div className="flex space-x-3 h-full items-start justify-center">
@@ -558,6 +455,16 @@ const Person = (person: People & { showBio: boolean }) => {
         )}
       </div>
       {person.showBio && <div className="text-sm">{parse(person.bio || "---")}</div>}
+      {person.showBio && <div className="text-sm">Short Bio: {parse(person.short_bio || "---")}</div>}
+      {person.showBio && (
+        <Link
+          className="text-xs uppercase text-blue-600 dark:text-blue-300"
+          href={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/admin/content/people/${person.id}`}
+          target="_blank"
+        >
+          Edit in Studio
+        </Link>
+      )}
     </div>
   )
 }

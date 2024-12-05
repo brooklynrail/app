@@ -166,31 +166,46 @@ export const getAllContributors = cache(async () => {
   }
 })
 
-export const getAllContributorsMerge = cache(async () => {
-  try {
-    let contributorPages: Contributors[] = []
-    let page = 1
-    let isMore = true
-    while (isMore) {
-      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=first_name&fields[]=old_id&fields[]=last_name&fields[]=bio&fields[]=articles&fields[]=articles.articles_contributors_id.id&sort=first_name&filter[status][_eq]=published&page=${page}&limit=100&offset=${page * 100 - 100}`
-      const res = await fetch(contributorsAPI)
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error("Failed to fetch getAllContributors data")
-      }
-      const data = await res.json()
-      contributorPages = contributorPages.concat(data.data)
-      isMore = data.data.length === 100 // assumes there is another page of records
-      page++
-    }
+interface ContributorFilterParams {
+  firstName?: string
+  lastName?: string
+}
 
-    return contributorPages
-  } catch (error) {
-    // Handle the error here
-    console.error("Failed to fetch getAllContributors data", error)
-    return null
-  }
-})
+export const getAllContributorsMerge = cache(
+  async (filterParams?: ContributorFilterParams): Promise<Contributors[] | null> => {
+    try {
+      let contributorPages: Contributors[] = []
+      let page = 1
+      let isMore = true
+
+      // Build filter string based on provided parameters
+      let filterString = "&filter[status][_eq]=published"
+      if (filterParams?.firstName) {
+        filterString += `&filter[first_name][_eq]=${encodeURIComponent(filterParams.firstName)}`
+      }
+      if (filterParams?.lastName) {
+        filterString += `&filter[last_name][_eq]=${encodeURIComponent(filterParams.lastName)}`
+      }
+
+      while (isMore) {
+        const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=status&fields[]=first_name&fields[]=old_id&fields[]=last_name&fields[]=bio&fields[]=articles&fields[]=articles.articles_contributors_id.id&sort=first_name&page=${page}&limit=100&offset=${page * 100 - 100}${filterString}`
+        const res = await fetch(contributorsAPI)
+        if (!res.ok) {
+          throw new Error("Failed to fetch getAllContributors data")
+        }
+        const data = await res.json()
+        contributorPages = contributorPages.concat(data.data)
+        isMore = data.data.length === 100
+        page++
+      }
+
+      return contributorPages
+    } catch (error) {
+      console.error("Failed to fetch getAllContributors data", error)
+      return null
+    }
+  },
+)
 
 // Get contributor
 // NOTE: There are multiple contributors with the same slug
