@@ -82,7 +82,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   }
 
   const handleMerge = async () => {
-    if (!selectedPerson || !primaryContributorId || selectedContributors.length === 0) {
+    if (!selectedPerson || selectedContributors.length === 0) {
       return
     }
 
@@ -93,12 +93,13 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
       })
 
       // Reset selections after successful merge
-      setSelectedPerson(null)
-      setSelectedContributors([])
-      setPrimaryContributorId(null)
+      // setSelectedPerson(null)
+      // setSelectedContributors([])
+      // setPrimaryContributorId(null)
 
       // Optionally refresh the page or data
-      router.refresh()
+      // router.refresh()
+      return
     } catch (error) {
       console.error("Error merging people:", error)
       // You might want to add error handling UI here
@@ -275,8 +276,6 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         contributor.first_name !== selectedPerson.first_name,
     )
 
-  console.log("Has last name matches:", hasLastNameMatches)
-
   return (
     <Paper pageClass="theme" navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
@@ -433,9 +432,9 @@ const Contributor = ({
             </p>
             <p className="text-xs">{contributor.articles.length} articles</p>
           </div>
-          <p className="text-xs">
+          <div className="text-xs">
             <span className="block">{parse(contributor.bio || "---")}</span>
-          </p>
+          </div>
           <div className="text-xs">{contributor.id}</div>
         </div>
         <div className="flex flex-col">

@@ -3,17 +3,7 @@ import { readItems, readSingleton } from "@directus/sdk"
 import { cache } from "react"
 import { stripHtml } from "string-strip-html"
 import directus from "./directus"
-import {
-  Articles,
-  Contributors,
-  DirectusFiles,
-  Events,
-  GlobalSettings,
-  Issues,
-  People,
-  Sections,
-  Tributes,
-} from "./types"
+import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
 
 // Used in
 // - Issue Select dropdown

@@ -1,4 +1,4 @@
-import { readItems } from "@directus/sdk"
+import { readItems, updateItem, updateItems } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../directus"
 import { Contributors, People } from "../types"
@@ -7,18 +7,38 @@ interface MergePeopleProps {
   selectedPerson: People
   allContributors: Contributors[]
 }
-export const mergePeople = cache(async (props: MergePeopleProps) => {
+export const mergePeople = async (props: MergePeopleProps) => {
   const { selectedPerson, allContributors } = props
-  // I need this to run a series of updates to the database in serial
-  // get the selectedPerson from the People Collection
-  // for each of the allContributors
-  // - get the array of article ids
-  // - update the selectedPerson.articles.articles_people with the articles_id
-  // - update all the articles.contributors.contributors_id with the selectedPerson.id
-  // - update all the articles.articles_contributors_id with the selectedPerson.id
 
-  return <></>
-})
+  const allArticleIds = allContributors
+    .flatMap((contributor) => contributor.articles)
+    .map((article) => article.articles_contributors_id?.id)
+    .filter((id): id is string => id !== undefined)
+
+  console.log("All article ids", allArticleIds)
+
+  await updatePersonArticles(selectedPerson.id, allArticleIds)
+  return true
+}
+
+const updatePersonArticles = async (personId: string, articleIds: string[]) => {
+  try {
+    const peopleData = await directus.request(
+      updateItem("people", personId, {
+        articles: {
+          create: articleIds.map((id) => ({ articles_id: id })),
+          delete: [], // This ensures we only add new relationships
+        },
+      }),
+    )
+
+    console.log("People data", peopleData)
+    return "success"
+  } catch (error) {
+    console.error("Error updating person articles:", error)
+    return null
+  }
+}
 
 export const getAllPeople = cache(async () => {
   try {
@@ -30,8 +50,10 @@ export const getAllPeople = cache(async () => {
           "id",
           "slug",
           "bio",
+          {
+            articles: [{ articles_id: ["id", "title"] }],
+          },
           { events: ["id"] },
-          { articles: ["id"] },
           {
             portrait: ["id", "width", "height", "filename_disk", "alt", "caption", "modified_on"],
           },
@@ -80,7 +102,7 @@ export const getAllContributorsMerge = cache(async () => {
     let page = 1
     let isMore = true
     while (isMore) {
-      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=first_name&fields[]=old_id&fields[]=last_name&fields[]=bio&fields[]=articles&sort=first_name&filter[status][_eq]=published&page=${page}&limit=100&offset=${page * 100 - 100}`
+      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=first_name&fields[]=old_id&fields[]=last_name&fields[]=bio&fields[]=articles&fields[]=articles.articles_contributors_id.id&sort=first_name&filter[status][_eq]=published&page=${page}&limit=100&offset=${page * 100 - 100}`
       const res = await fetch(contributorsAPI)
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary

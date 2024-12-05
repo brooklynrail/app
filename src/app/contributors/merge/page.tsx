@@ -4,7 +4,7 @@ import { getCurrentIssueData } from "../../../../lib/utils"
 import { getNavData } from "../../../../lib/utils/homepage"
 import { getAllContributorsMerge, getAllPeople } from "../../../../lib/utils/people"
 
-export default async function ContributorsIndex() {
+export default async function ContributorsMergeIndex() {
   const data = await getData()
 
   return (
