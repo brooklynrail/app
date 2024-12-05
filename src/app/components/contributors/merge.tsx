@@ -10,9 +10,6 @@ import { useRouter } from "next/navigation"
 import { mergePeople, getAllContributorsMerge } from "../../../../lib/utils/people"
 
 interface ContributorsMergeProps {
-  thisIssueData: Issues
-  allPeople: People[]
-  allContributors: Contributors[]
   navData: Homepage
 }
 
@@ -42,12 +39,38 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   const [showAllContributors, setShowAllContributors] = useState(false)
   const [message, setMessage] = useState<MergeMessage | null>(null)
   const [mergeState, setMergeState] = useState<MergeState>(MergeState.Ready)
-  const { navData, allPeople: people } = props
+  const [allPeople, setAllPeople] = useState<People[] | null>(null)
+  const [allContributors, setAllContributors] = useState<Contributors[]>([])
+  const { navData } = props
 
   useEffect(() => {
     setMergeState(MergeState.Ready)
     setMessage(null)
   }, [selectedPerson])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const peopleResponse = await fetch("/api/people")
+        if (!peopleResponse.ok) {
+          throw new Error("Failed to fetch people")
+        }
+        const people = await peopleResponse.json()
+        setAllPeople(people)
+
+        const contributorsResponse = await fetch("/api/contributors")
+        if (!contributorsResponse.ok) {
+          throw new Error("Failed to fetch contributors")
+        }
+        const contributors = await contributorsResponse.json()
+        setAllContributors(contributors)
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   useEffect(() => {
     const fetchContributors = async () => {
@@ -88,9 +111,13 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     fetchContributors()
   }, [selectedPerson])
 
-  const likelyMatches = people
+  if (!allPeople || !allContributors) {
+    return null
+  }
+
+  const likelyMatches = allPeople
     .map((person: People) => {
-      const matches = props.allContributors.filter((contributor: Contributors) => {
+      const matches = allContributors.filter((contributor: Contributors) => {
         return contributor.first_name === person.first_name && contributor.last_name === person.last_name
       })
       if (matches.length > 0) {
@@ -100,7 +127,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     })
     .filter((person): person is NonNullable<PersonWithMatches> => person !== null)
 
-  const displayedPeople = showOnlyMatches ? likelyMatches : props.allPeople
+  const displayedPeople = showOnlyMatches ? likelyMatches : allPeople
 
   const handleContributorToggle = (contributor: Contributors) => {
     setSelectedContributors((prev) =>
@@ -108,24 +135,30 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     )
   }
 
-  const handlePersonClick = (person: People) => {
+  const handlePersonClick = async (person: People) => {
     if (person === selectedPerson) {
       setSelectedPerson(null)
-      // setSelectedContributors([])
       setPrimaryContributor(null)
     } else {
-      setSelectedPerson(person)
-      const matches = (person as PersonWithMatches).matches || []
-      // setSelectedContributors(matches)
+      try {
+        const response = await fetch(`/api/contributors/merge?id=${person.id}`)
+        if (!response.ok) {
+          throw new Error("Failed to fetch person details")
+        }
+        const personData = await response.json()
+        const matches = (person as PersonWithMatches).matches || []
+        setSelectedPerson({ ...personData, matches })
 
-      // Set primary contributor based on old_id
-      if (matches.length > 0) {
-        const primaryContributor = matches.reduce((prev, current) => {
-          const prevOldId = parseInt(String(prev.old_id || "0"))
-          const currentOldId = parseInt(String(current.old_id || "0"))
-          return currentOldId > prevOldId ? current : prev
-        })
-        setPrimaryContributor(primaryContributor)
+        if (matches.length > 0) {
+          const primaryContributor = matches.reduce((prev, current) => {
+            const prevOldId = parseInt(String(prev.old_id || "0"))
+            const currentOldId = parseInt(String(current.old_id || "0"))
+            return currentOldId > prevOldId ? current : prev
+          })
+          setPrimaryContributor(primaryContributor)
+        }
+      } catch (error) {
+        console.error("Error fetching person details:", error)
       }
     }
   }
@@ -175,7 +208,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     }
   }
 
-  const allPeople = (
+  const allPeopleRecords = (
     <>
       {displayedPeople.map((person: any, i: number) => (
         <div
@@ -223,6 +256,10 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     </>
   )
 
+  console.log("selectedPerson", selectedPerson)
+  console.log("selectedPerson.matches", selectedPerson?.matches)
+  console.log("matchedContributors", matchedContributors)
+
   const description = showOnlyMatches ? (
     <p className="text-xs">
       These <strong>{likelyMatches.length} people</strong> have the same first_name and last_name as one or more
@@ -236,7 +273,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     </p>
   ) : (
     <p className="text-xs">
-      These are all <strong>{props.allPeople.length} people</strong>{" "}
+      These are all <strong>{allPeople.length} people</strong>{" "}
       <span
         onClick={() => setShowOnlyMatches(showOnlyMatches)}
         className="underline decoration-1 underline-offset-4 decoration-dotted cursor-pointer text-blue-600 dark:dark-blue-300"
@@ -270,7 +307,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
             <div className="">
               <header className="py-6">
-                <h1 className="font-light text-5xl">Contributors</h1>
+                <h1 className="font-light text-5xl">People + Contributors</h1>
               </header>
             </div>
           </div>
@@ -280,8 +317,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           <div className="col-span-4 tablet-lg:col-span-12">
             <div className="pb-3">
               <p>
-                Match and merge the <strong>{props.allContributors.length} Contributors</strong> with the{" "}
-                <strong>{props.allPeople.length} People</strong>. There are{" "}
+                Match and merge the <strong>{allContributors.length} Contributors</strong> with the{" "}
+                <strong>{allPeople.length} People</strong>. There are{" "}
                 <strong>{likelyMatches.length} likely matches</strong>.
               </p>
             </div>
@@ -293,7 +330,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
             <div className="sticky top-16">
               <div className="flex flex-col items-start py-1.5">{description}</div>
               <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border">
-                {allPeople}
+                {allPeopleRecords}
               </div>
             </div>
           </div>

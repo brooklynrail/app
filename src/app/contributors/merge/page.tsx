@@ -7,37 +7,16 @@ import { getAllContributorsMerge, getAllPeople } from "../../../../lib/utils/peo
 export default async function ContributorsMergeIndex() {
   const data = await getData()
 
-  return (
-    <ContributorsMerge
-      thisIssueData={data.thisIssueData}
-      allContributors={data.allContributors}
-      navData={data.navData}
-      allPeople={data.allPeople}
-    />
-  )
+  return <ContributorsMerge navData={data.navData} />
 }
 
 async function getData() {
-  let allContributors = await getAllContributorsMerge()
-  let allPeople = await getAllPeople()
-  if (!allContributors || allContributors.length === 0 || !allPeople || allPeople.length === 0) {
-    return notFound()
-  }
   const navData = await getNavData()
   if (!navData) {
     return notFound()
   }
 
-  const thisIssueData = await getCurrentIssueData()
-
-  if (!thisIssueData) {
-    return notFound()
-  }
-
   return {
     navData,
-    thisIssueData,
-    allContributors,
-    allPeople,
   }
 }

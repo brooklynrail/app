@@ -1,4 +1,4 @@
-import { createItem, readItems, updateItem, updateItems } from "@directus/sdk"
+import { createItem, readItem, readItems, updateItem, updateItems } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../directus"
 import { Contributors, People } from "../types"
@@ -134,6 +134,39 @@ export const getAllPeople = cache(async () => {
     )
 
     return peopleData as People[]
+  } catch (error) {
+    console.error("Error fetching page data:", error)
+    return null
+  }
+})
+
+export const getPersonMerge = cache(async (personId: string) => {
+  try {
+    const peopleData = await directus.request(
+      readItem("people", personId, {
+        fields: [
+          "first_name",
+          "last_name",
+          "id",
+          "slug",
+          "bio",
+          {
+            articles: [{ articles_id: ["id", "title"] }],
+          },
+          { events: ["id"] },
+          {
+            portrait: ["id", "width", "height", "filename_disk", "alt", "caption", "modified_on"],
+          },
+        ],
+        limit: -1,
+        filter: {
+          status: { _eq: "published" },
+          id: { _eq: personId },
+        },
+      }),
+    )
+
+    return peopleData as People
   } catch (error) {
     console.error("Error fetching page data:", error)
     return null
