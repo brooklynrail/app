@@ -4,10 +4,6 @@ import { getCurrentIssueData } from "../../../../lib/utils"
 import { getNavData } from "../../../../lib/utils/homepage"
 import { getAllContributorsMerge, getAllPeople } from "../../../../lib/utils/people"
 
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
-
 export default async function ContributorsIndex() {
   const data = await getData()
 

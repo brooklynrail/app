@@ -7,7 +7,6 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper from "../paper"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import PortraitImage from "../portraitImage"
 import { mergePeople } from "../../../../lib/utils/people"
 
 interface ContributorsMergeProps {
@@ -73,6 +72,12 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   }
 
   const handlePrimarySelect = (contributorId: string) => {
+    if (contributorId !== primaryContributorId) {
+      const contributor = props.allContributors.find((c) => c.id === contributorId)
+      if (contributor && !selectedContributors.includes(contributor)) {
+        handleContributorToggle(contributor)
+      }
+    }
     setPrimaryContributorId(contributorId === primaryContributorId ? null : contributorId)
   }
 
@@ -143,6 +148,79 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     </>
   )
 
+  const firstNameMatches = (
+    <>
+      {(selectedPerson &&
+        props.allContributors
+          .filter(
+            (contributor) =>
+              contributor.first_name === selectedPerson.first_name &&
+              !selectedPerson.matches?.some((match) => match.id === contributor.id),
+          )
+          .sort((a, b) => {
+            const aOldId = parseInt(String(a.old_id || "0"))
+            const bOldId = parseInt(String(b.old_id || "0"))
+            return bOldId - aOldId
+          })
+          .map((contributor: Contributors, i: number) => {
+            const permalink = getPermalink({
+              slug: contributor.slug,
+              type: PageType.Contributor,
+            })
+
+            return (
+              <Contributor
+                key={`first-${contributor.id}-${i}`}
+                permalink={permalink}
+                contributor={contributor}
+                isSelected={selectedContributors.some((c) => c.id === contributor.id)}
+                isPrimary={primaryContributorId === contributor.id}
+                onToggleSelect={() => handleContributorToggle(contributor)}
+                onPrimarySelect={() => handlePrimarySelect(contributor.id)}
+              />
+            )
+          })) ||
+        null}
+    </>
+  )
+
+  const lastNameMatches = (
+    <>
+      {(selectedPerson &&
+        props.allContributors
+          .filter(
+            (contributor) =>
+              contributor.last_name === selectedPerson.last_name &&
+              !selectedPerson.matches?.some((match) => match.id === contributor.id) &&
+              contributor.first_name !== selectedPerson.first_name,
+          )
+          .sort((a, b) => {
+            const aOldId = parseInt(String(a.old_id || "0"))
+            const bOldId = parseInt(String(b.old_id || "0"))
+            return bOldId - aOldId
+          })
+          .map((contributor: Contributors, i: number) => {
+            const permalink = getPermalink({
+              slug: contributor.slug,
+              type: PageType.Contributor,
+            })
+
+            return (
+              <Contributor
+                key={`last-${contributor.id}-${i}`}
+                permalink={permalink}
+                contributor={contributor}
+                isSelected={selectedContributors.some((c) => c.id === contributor.id)}
+                isPrimary={primaryContributorId === contributor.id}
+                onToggleSelect={() => handleContributorToggle(contributor)}
+                onPrimarySelect={() => handlePrimarySelect(contributor.id)}
+              />
+            )
+          })) ||
+        null}
+    </>
+  )
+
   const allContributors = (
     <>
       {props.allContributors.map((contributor: Contributors, i: number) => {
@@ -165,12 +243,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     </>
   )
 
-  console.log("likelyMatches", likelyMatches.length)
-  console.log("displayedPeople", displayedPeople.length)
-  console.log("all", props.allPeople.length)
-
   const description = showOnlyMatches ? (
-    <p>
+    <p className="text-xs">
       These <strong>{likelyMatches.length} people</strong> have the same first_name and last_name as one or more
       contributors.
       <span
@@ -181,8 +255,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
       </span>
     </p>
   ) : (
-    <p>
-      <strong>These are all {props.allPeople.length} people</strong>{" "}
+    <p className="text-xs">
+      These are all <strong>{props.allPeople.length} people</strong>{" "}
       <span
         onClick={() => setShowOnlyMatches(showOnlyMatches)}
         className="underline decoration-1 underline-offset-4 decoration-dotted cursor-pointer text-blue-600 dark:dark-blue-300"
@@ -191,6 +265,17 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
       </span>
     </p>
   )
+
+  const hasLastNameMatches =
+    selectedPerson &&
+    props.allContributors.some(
+      (contributor) =>
+        contributor.last_name === selectedPerson.last_name &&
+        !selectedPerson.matches?.some((match) => match.id === contributor.id) &&
+        contributor.first_name !== selectedPerson.first_name,
+    )
+
+  console.log("Has last name matches:", hasLastNameMatches)
 
   return (
     <Paper pageClass="theme" navData={navData}>
@@ -218,11 +303,9 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         </div>
 
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <div className="col-span-4 tablet-lg:col-span-4 space-y-3">
-            <div className="">
-              <div className="flex flex-col items-start py-1.5">
-                <p className="text-xs">{description}</p>
-              </div>
+          <div className="col-span-4 tablet-lg:col-span-4 space-y-3 relative">
+            <div className="sticky top-16">
+              <div className="flex flex-col items-start py-1.5">{description}</div>
               <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border">
                 {allPeople}
               </div>
@@ -247,29 +330,58 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
               <div className="space-y-12 border-t rail-border py-3">
                 <Person {...selectedPerson} showBio={true} />
 
-                <div className="space-y-3 border-t rail-border py-3">
-                  <p className="text-lg font-light">
-                    <strong className="font-medium">
-                      {selectedContributors.length} {selectedContributors.length === 1 ? "contributor" : "contributors"}
-                    </strong>{" "}
-                    matched{" "}
-                    <span>
-                      {selectedPerson.first_name} {selectedPerson.last_name}
-                    </span>
-                  </p>
-                  <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">{matchedContributors}</div>
-                </div>
+                {showOnlyMatches && (
+                  <div className="space-y-3 border-t rail-border py-3">
+                    <p className="text-lg font-light">
+                      <strong className="font-medium">
+                        {selectedContributors.length}{" "}
+                        {selectedContributors.length === 1 ? "contributor" : "contributors"}
+                      </strong>{" "}
+                      matched{" "}
+                      <span>
+                        {selectedPerson.first_name} {selectedPerson.last_name}
+                      </span>
+                    </p>
+                    <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">
+                      {matchedContributors}
+                    </div>
+                  </div>
+                )}
+
+                {showOnlyMatches && (
+                  <>
+                    {firstNameMatches && (
+                      <div className="space-y-3 border-t rail-border py-3">
+                        <p className="text-lg font-light">Same First Name</p>
+                        <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">
+                          {firstNameMatches}
+                        </div>
+                      </div>
+                    )}
+
+                    {hasLastNameMatches && (
+                      <div className="space-y-3 border-t rail-border py-3">
+                        <p className="text-lg font-light">Same Last Name</p>
+                        <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">
+                          {lastNameMatches}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
 
                 <div className="space-y-3 border-t rail-border py-3">
-                  <div className="flex justify-between items-center">
-                    <p className="text-lg font-light">All contributors</p>
-                    <button
-                      onClick={() => setShowAllContributors(!showAllContributors)}
-                      className="text-xs px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
-                    >
-                      {showAllContributors ? "Hide All" : "Load All"}
-                    </button>
-                  </div>
+                  {showOnlyMatches && (
+                    <div className="flex justify-between items-center">
+                      <p className="text-lg font-light">All contributors</p>
+                      <button
+                        onClick={() => setShowAllContributors(!showAllContributors)}
+                        className="text-xs px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                      >
+                        {showAllContributors ? "Hide All" : "Load All"}
+                      </button>
+                    </div>
+                  )}
                   {showAllContributors && (
                     <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">{allContributors}</div>
                   )}
@@ -315,15 +427,16 @@ const Contributor = ({
                 {contributor.first_name} {contributor.last_name}
               </Link>
             </p>
-            <p className="text-xs">#{contributor.old_id}</p>
-            <p className="text-xs">{contributor.articles.length} articles</p>
+            <p className="text-xs">Old ID: #{contributor.old_id}</p>
             <p className="text-xs bg-gray-200 dark:bg-gray-700 px-1 rounded-sm text-red-800 dark:text-red-300">
               {contributor.slug}
             </p>
+            <p className="text-xs">{contributor.articles.length} articles</p>
           </div>
           <p className="text-xs">
             <span className="block">{parse(contributor.bio || "---")}</span>
           </p>
+          <div className="text-xs">{contributor.id}</div>
         </div>
         <div className="flex flex-col">
           <div className="flex space-x-3 h-full items-start justify-center">
@@ -355,9 +468,6 @@ const Contributor = ({
 }
 
 const Person = (person: People & { showBio: boolean }) => {
-  if (person.id === "4d146d30-7c6a-4b7c-b0be-4f18639fead1") {
-    console.log("Dao Strom", person)
-  }
   const src =
     person.portrait &&
     `${process.env.NEXT_PUBLIC_IMAGE_PATH}${person.portrait.filename_disk}?fit=cover&width=400&height=400&quality=85&modified_on=${person.portrait.modified_on}`
@@ -383,12 +493,23 @@ const Person = (person: People & { showBio: boolean }) => {
             </p>
           </div>
         </div>
-        <div>
-          <p className="text-xs">{person.events.length} events</p>
-        </div>
+        {person.showBio && (
+          <div>
+            <p className="text-xs">
+              {person.articles && (
+                <span>
+                  {person.articles.length} {person.articles.length === 1 ? "article" : "articles"}
+                </span>
+              )}{" "}
+              |{" "}
+              <span>
+                {person.events.length} {person.events.length === 1 ? "event" : "events"}
+              </span>
+            </p>
+          </div>
+        )}
       </div>
       {person.showBio && <div className="text-sm">{parse(person.bio || "---")}</div>}
-      {person.articles && <p className="text-xs">Articles: {person.articles.length}</p>}
     </div>
   )
 }
