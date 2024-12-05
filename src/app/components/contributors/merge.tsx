@@ -5,7 +5,7 @@ import parse from "html-react-parser"
 import { Contributors, Homepage, Issues, People } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper from "../paper"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { mergePeople } from "../../../../lib/utils/people"
 
@@ -20,14 +20,34 @@ interface PersonWithMatches extends People {
   matches?: Contributors[]
 }
 
+interface MergeMessage {
+  status: "success" | "merging" | "error"
+  text: string
+  details?: string
+}
+
+enum MergeState {
+  Ready = "ready",
+  Merging = "merging",
+  Merged = "merged",
+  Error = "error",
+}
+
 const ContributorsMerge = (props: ContributorsMergeProps) => {
   const router = useRouter()
   const [selectedContributors, setSelectedContributors] = useState<Contributors[]>([])
-  const [primaryContributorId, setPrimaryContributorId] = useState<string | null>(null)
+  const [primaryContributor, setPrimaryContributor] = useState<Contributors | null>(null)
   const [selectedPerson, setSelectedPerson] = useState<PersonWithMatches | null>(null)
   const [showOnlyMatches, setShowOnlyMatches] = useState(true)
   const [showAllContributors, setShowAllContributors] = useState(false)
+  const [message, setMessage] = useState<MergeMessage | null>(null)
+  const [mergeState, setMergeState] = useState<MergeState>(MergeState.Ready)
   const { navData, allPeople: people } = props
+
+  useEffect(() => {
+    setMergeState(MergeState.Ready)
+    setMessage(null)
+  }, [selectedPerson])
 
   const likelyMatches = people
     .map((person: People) => {
@@ -53,7 +73,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     if (person === selectedPerson) {
       setSelectedPerson(null)
       setSelectedContributors([])
-      setPrimaryContributorId(null)
+      setPrimaryContributor(null)
     } else {
       setSelectedPerson(person)
       const matches = (person as PersonWithMatches).matches || []
@@ -66,43 +86,53 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           const currentOldId = parseInt(String(current.old_id || "0"))
           return currentOldId > prevOldId ? current : prev
         })
-        setPrimaryContributorId(primaryContributor.id)
+        setPrimaryContributor(primaryContributor)
       }
     }
   }
 
-  const handlePrimarySelect = (contributorId: string) => {
-    if (contributorId !== primaryContributorId) {
-      const contributor = props.allContributors.find((c) => c.id === contributorId)
-      if (contributor && !selectedContributors.includes(contributor)) {
+  const handlePrimarySelect = (contributor: Contributors) => {
+    if (contributor.id !== primaryContributor?.id) {
+      if (!selectedContributors.includes(contributor)) {
         handleContributorToggle(contributor)
       }
     }
-    setPrimaryContributorId(contributorId === primaryContributorId ? null : contributorId)
+    setPrimaryContributor(contributor.id === primaryContributor?.id ? null : contributor)
   }
 
   const handleMerge = async () => {
-    if (!selectedPerson || selectedContributors.length === 0) {
+    if (!selectedPerson || selectedContributors.length === 0 || !primaryContributor) {
       return
     }
+    setMessage({
+      status: "merging",
+      text: "Merging contributors...",
+      details: `Merging ${selectedContributors.length} contributors...`,
+    })
+    setMergeState(MergeState.Merging)
 
     try {
-      await mergePeople({
+      const result = await mergePeople({
         selectedPerson: selectedPerson,
         allContributors: selectedContributors,
+        shortBio: primaryContributor.bio,
       })
 
-      // Reset selections after successful merge
-      // setSelectedPerson(null)
-      // setSelectedContributors([])
-      // setPrimaryContributorId(null)
-
-      // Optionally refresh the page or data
-      // router.refresh()
-      return
+      setMessage({
+        status: "success",
+        text: "Successfully merged contributors",
+        details: `Merged ${selectedContributors.length} contributors into ${selectedPerson.first_name} ${selectedPerson.last_name}`,
+      })
+      setMergeState(MergeState.Merged)
+      router.refresh()
     } catch (error) {
+      setMergeState(MergeState.Error)
+      setMessage({
+        status: "error",
+        text: "Failed to merge contributors",
+        details: error instanceof Error ? error.message : "Unknown error occurred",
+      })
       console.error("Error merging people:", error)
-      // You might want to add error handling UI here
     }
   }
 
@@ -123,7 +153,12 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   const matchedContributors = (
     <>
       {selectedPerson?.matches
-        ?.sort((a, b) => {
+        ?.filter(
+          (contributor, index, self) =>
+            // Remove duplicates by checking if this is the first occurrence of this ID
+            self.findIndex((c) => c.id === contributor.id) === index,
+        )
+        .sort((a, b) => {
           const aOldId = parseInt(String(a.old_id || "0"))
           const bOldId = parseInt(String(b.old_id || "0"))
           return bOldId - aOldId
@@ -140,9 +175,9 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
               permalink={permalink}
               contributor={contributor}
               isSelected={selectedContributors.some((c) => c.id === contributor.id)}
-              isPrimary={primaryContributorId === contributor.id}
+              isPrimary={primaryContributor?.id === contributor.id}
               onToggleSelect={() => handleContributorToggle(contributor)}
-              onPrimarySelect={() => handlePrimarySelect(contributor.id)}
+              onPrimarySelect={() => handlePrimarySelect(contributor)}
             />
           )
         }) || <p className="text-sm text-gray-500">Select a person to see matching contributors</p>}
@@ -175,9 +210,9 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
                 permalink={permalink}
                 contributor={contributor}
                 isSelected={selectedContributors.some((c) => c.id === contributor.id)}
-                isPrimary={primaryContributorId === contributor.id}
+                isPrimary={primaryContributor?.id === contributor.id}
                 onToggleSelect={() => handleContributorToggle(contributor)}
-                onPrimarySelect={() => handlePrimarySelect(contributor.id)}
+                onPrimarySelect={() => handlePrimarySelect(contributor)}
               />
             )
           })) ||
@@ -212,9 +247,9 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
                 permalink={permalink}
                 contributor={contributor}
                 isSelected={selectedContributors.some((c) => c.id === contributor.id)}
-                isPrimary={primaryContributorId === contributor.id}
+                isPrimary={primaryContributor?.id === contributor.id}
                 onToggleSelect={() => handleContributorToggle(contributor)}
-                onPrimarySelect={() => handlePrimarySelect(contributor.id)}
+                onPrimarySelect={() => handlePrimarySelect(contributor)}
               />
             )
           })) ||
@@ -276,6 +311,23 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         contributor.first_name !== selectedPerson.first_name,
     )
 
+  const messageText = (() => {
+    switch (mergeState) {
+      case MergeState.Ready:
+        return (
+          <p>
+            Merge {selectedContributors.length} {selectedContributors.length === 1 ? "contributor" : "contributors"}
+          </p>
+        )
+      case MergeState.Merging:
+        return <p>{message?.details}</p>
+      case MergeState.Merged:
+        return <p>{message?.details}</p>
+      case MergeState.Error:
+        return <p>{message?.details}</p>
+    }
+  })()
+
   return (
     <Paper pageClass="theme" navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto">
@@ -313,13 +365,10 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           {selectedPerson && (
             <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-5 space-y-6">
               <div className="flex justify-end items-center space-x-3">
-                <p>
-                  Merge {selectedContributors.length}{" "}
-                  {selectedContributors.length === 1 ? "contributor" : "contributors"}
-                </p>
+                {messageText}
                 <button
                   onClick={handleMerge}
-                  disabled={!primaryContributorId || selectedContributors.length === 0}
+                  disabled={!primaryContributor || selectedContributors.length === 0}
                   className="text-md bg-emerald-500 dark:bg-gray-700 text-white dark:text-gray-300 px-3 py-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Merge
@@ -400,7 +449,7 @@ interface ContributorProps {
   isSelected: boolean
   isPrimary: boolean
   onToggleSelect: () => void
-  onPrimarySelect: () => void
+  onPrimarySelect: (contributor: Contributors) => void
 }
 
 const Contributor = ({
@@ -440,7 +489,7 @@ const Contributor = ({
         <div className="flex flex-col">
           <div className="flex space-x-3 h-full items-start justify-center">
             <button
-              onClick={onPrimarySelect}
+              onClick={() => onPrimarySelect(contributor)}
               className={`text-xs flex-none px-3 py-1 block rounded-md ${
                 isPrimary
                   ? "bg-blue-500 text-white dark:bg-blue-500"

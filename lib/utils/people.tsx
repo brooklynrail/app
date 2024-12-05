@@ -1,27 +1,96 @@
-import { readItems, updateItem, updateItems } from "@directus/sdk"
+import { createItem, readItems, updateItem, updateItems } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../directus"
 import { Contributors, People } from "../types"
+import { getPermalink } from "../utils"
+import { PageType } from "../utils"
 
 interface MergePeopleProps {
   selectedPerson: People
   allContributors: Contributors[]
+  shortBio?: string | null
 }
 export const mergePeople = async (props: MergePeopleProps) => {
-  const { selectedPerson, allContributors } = props
+  const { selectedPerson, allContributors, shortBio } = props
 
-  const allArticleIds = allContributors
-    .flatMap((contributor) => contributor.articles)
-    .map((article) => article.articles_contributors_id?.id)
-    .filter((id): id is string => id !== undefined)
+  try {
+    const allArticleIds = allContributors
+      .flatMap((contributor) => contributor.articles)
+      .map((article) => article.articles_contributors_id?.id)
+      .filter((id): id is string => id !== undefined)
 
-  console.log("All article ids", allArticleIds)
+    if (allArticleIds.length === 0) {
+      return {
+        success: false,
+        error: "No articles found to merge",
+        message: `No articles found to merge for ${selectedPerson.first_name} ${selectedPerson.last_name}`,
+      }
+    }
 
-  await updatePersonArticles(selectedPerson.id, allArticleIds)
-  return true
+    const result = await updatePersonArticles(selectedPerson.id, allArticleIds, shortBio)
+
+    allContributors.map(async (contributor: Contributors) => {
+      const redirectResult = await addRedirects(contributor)
+      const result = await updateContributor(contributor)
+      return { result, redirectResult }
+    })
+
+    if (!result) {
+      return {
+        success: false,
+        error: "Failed to update person articles",
+        message: `Failed to merge articles for ${selectedPerson.first_name} ${selectedPerson.last_name}`,
+      }
+    }
+
+    return {
+      success: true,
+      error: null,
+      message: `Successfully merged ${allArticleIds.length} articles to ${selectedPerson.first_name} ${selectedPerson.last_name}`,
+    }
+  } catch (error) {
+    console.error("Error in mergePeople:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error occurred",
+      message: `Error merging articles for ${selectedPerson.first_name} ${selectedPerson.last_name}`,
+    }
+  }
 }
 
-const updatePersonArticles = async (personId: string, articleIds: string[]) => {
+const addRedirects = async (contributor: Contributors) => {
+  const permalink = getPermalink({
+    slug: contributor.slug,
+    type: PageType.Contributor,
+  })
+  const url = new URL(permalink)
+  try {
+    const redirectsData = await directus.request(
+      createItem("redirects", {
+        path: url.pathname,
+        contributors: contributor,
+      }),
+    )
+  } catch (error) {
+    console.error("Error updating contributor articles:", error)
+    return null
+  }
+}
+
+const updateContributor = async (contributor: Contributors) => {
+  try {
+    const contributorsData = await directus.request(
+      updateItem("contributors", contributor.id, {
+        status: "archived",
+      }),
+    )
+  } catch (error) {
+    console.error("Error updating contributor articles:", error)
+    return null
+  }
+}
+
+const updatePersonArticles = async (personId: string, articleIds: string[], shortBio?: string | null) => {
   try {
     const peopleData = await directus.request(
       updateItem("people", personId, {
@@ -29,11 +98,12 @@ const updatePersonArticles = async (personId: string, articleIds: string[]) => {
           create: articleIds.map((id) => ({ articles_id: id })),
           delete: [], // This ensures we only add new relationships
         },
+        short_bio: shortBio,
       }),
     )
 
     console.log("People data", peopleData)
-    return "success"
+    return true
   } catch (error) {
     console.error("Error updating person articles:", error)
     return null

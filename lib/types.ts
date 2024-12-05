@@ -80,6 +80,7 @@ export interface Redirects {
   type: string
   articles: Articles
   events: Events
+  contributors: Contributors
 }
 
 export type ArticlesContributors = {
@@ -688,6 +689,7 @@ export type PagesQuotes = {
 export type People = {
   id: string
   bio: string
+  short_bio?: string | null
   date_created: string
   date_updated: string
   email?: string | null

@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache"
 import { Redirects } from "../../../lib/types"
 
 export async function AddRedirect(props: Redirects) {
-  const { path, articles, events, type } = props
+  const { path, articles, events, contributors, type } = props
   let redirectPath = ""
   switch (type) {
     case "article":
@@ -22,6 +22,10 @@ export async function AddRedirect(props: Redirects) {
       const month = (startDate.getMonth() + 1).toString().padStart(2, "0")
       const day = startDate.getDate().toString().padStart(2, "0")
       redirectPath = `/event/${year}/${month}/${day}/${events.slug}`
+      revalidatePath(redirectPath)
+      redirect(redirectPath)
+    case "contributor":
+      redirectPath = `/contributor/${contributors.slug}`
       revalidatePath(redirectPath)
       redirect(redirectPath)
     default:

@@ -5,6 +5,8 @@ import { stripHtml } from "string-strip-html"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { getNavData } from "../../../../lib/utils/homepage"
 import { getContributor } from "../../../../lib/utils/people"
+import { getRedirect, RedirectTypes } from "../../../../lib/utils/redirects"
+import { AddRedirect } from "@/app/actions/redirect"
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -68,6 +70,13 @@ async function getData({ params }: { params: ContributorsParams }) {
   // This returns all contributors with the same slug, but their specific name and bio information may be different
   const allContributors = await getContributor(slug)
   if (!allContributors || allContributors.length == 0) {
+    // If the slug is incorrect, but the dates in the URL are correct,
+    // check if a redirect exists that includes this slug
+    // Note: this does not account for changes to the year/month of the URL
+    const redirect = await getRedirect(RedirectTypes.Contributor, slug)
+    if (redirect) {
+      await AddRedirect(redirect)
+    }
     return notFound()
   }
 
