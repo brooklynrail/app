@@ -476,17 +476,17 @@ export const generateSingleEventNewsletter = ({ eventTypes, event }: SingleNewsl
 
     const buttonText = isFutureEvent ? "Register" : "Watch"
     return `
-      <div class="event">
-        ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
-        <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
-        <p class="summary">${event.summary}</p>
-        ${details}
-        <div class="actions">
-          <a class="btn btn-register" title="${isFutureEvent ? "Register for" : "Watch: "} ${event.title}" href="${eventPermalink}" target="_blank">
-            <span>${buttonText}</span>
-          </a>
-        </div>
-      </div>
+<div class="event">
+  ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
+  <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
+  <p class="summary">${event.summary}</p>
+  ${details}
+  <div class="actions">
+    <a class="btn btn-register" title="${isFutureEvent ? "Register for" : "Watch: "} ${event.title}" href="${eventPermalink}" target="_blank">
+      <span>${buttonText}</span>
+    </a>
+  </div>
+</div>
     `
   }
 
@@ -534,21 +534,21 @@ export const generateFullNewsletter = (props: FullNewsletterEventProps) => {
         const eventTypeText = getEventTypeText(event.type, eventTypes)
 
         return `
-      <div class="event">
-        ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
-        <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
-        <p class="summary">${event.summary}</p>
-        <div class="event-details">
-          <p className="text-xl text-center font-light space-x-3">
-            <strong>${dateString}</strong> ${timeString ? `<br/><span>${timeString}</span>` : ""}
-          </p>
-        </div>
-        <div class="actions">
-          <a class="btn btn-register" title="Register for ${event.title}" href="${eventPermalink}" target="_blank">
-            <span>Register</span>
-          </a>
-        </div>
-      </div>
+<div class="event">
+  ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
+  <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
+  <p class="summary">${event.summary}</p>
+  <div class="event-details">
+    <p className="text-xl text-center font-light space-x-3">
+      <strong>${dateString}</strong> ${timeString ? `<br/><span>${timeString}</span>` : ""}
+    </p>
+  </div>
+  <div class="actions">
+    <a class="btn btn-register" title="Register for ${event.title}" href="${eventPermalink}" target="_blank">
+      <span>Register</span>
+    </a>
+  </div>
+</div>
       `
       })
       .join("")
