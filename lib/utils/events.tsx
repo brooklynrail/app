@@ -499,7 +499,7 @@ interface FullNewsletterEventProps {
   allEvents: Events[]
 }
 
-export const generateNewsletter = (props: NewsletterEventProps) => {
+export const generateFullNewsletter = (props: FullNewsletterEventProps) => {
   const { eventTypes, allEvents } = props
 
   // Helper function to build HTML for all events
@@ -558,7 +558,6 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
   const newsletterHTML = `
 <div class="rail-newsletter">
   <div class="event-listing">
-    <h2>This Week's Events</h2>
     ${buildEventsHTML(allEvents)}
   </div>
 </div>
