@@ -7,7 +7,7 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper from "../paper"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { mergePeople, getAllContributorsMerge } from "../../../../lib/utils/people"
+import { mergePeople } from "../../../../lib/utils/people"
 
 interface ContributorsMergeProps {
   navData: Homepage
@@ -112,7 +112,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   }, [selectedPerson])
 
   if (!allPeople || !allContributors) {
-    return null
+    return <></>
   }
 
   const likelyMatches = allPeople
@@ -186,8 +186,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     try {
       const result = await mergePeople({
         selectedPerson: selectedPerson,
+        primaryContributor: primaryContributor,
         allContributors: selectedContributors,
-        shortBio: primaryContributor.bio,
       })
 
       setMessage({
@@ -196,6 +196,15 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         details: `Merged ${selectedContributors.length} contributors into ${selectedPerson.first_name} ${selectedPerson.last_name}`,
       })
       setMergeState(MergeState.Merged)
+
+      // Re-fetch the person data
+      const response = await fetch(`/api/contributors/merge?id=${selectedPerson.id}`)
+      if (!response.ok) {
+        throw new Error("Failed to re-fetch person details")
+      }
+      const updatedPersonData = await response.json()
+      setSelectedPerson(updatedPersonData)
+
       router.refresh()
     } catch (error) {
       setMergeState(MergeState.Error)

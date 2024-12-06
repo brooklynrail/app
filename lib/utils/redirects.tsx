@@ -32,6 +32,9 @@ export const getRedirect = cache(async (type: string, slug: string) => {
           {
             events: ["slug", "title", "start_date"],
           },
+          {
+            contributors: ["slug"],
+          },
         ],
         filter: {
           _and: [

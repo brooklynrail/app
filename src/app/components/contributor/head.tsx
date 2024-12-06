@@ -7,7 +7,7 @@ interface PeopleHeadProps {
 }
 const PeopleHead = (props: PeopleHeadProps) => {
   const { contributorData } = props
-  const { first_name, last_name, bio } = contributorData
+  const { first_name, last_name, bio, id } = contributorData
 
   return (
     <header className="py-6 px-3">
@@ -17,6 +17,7 @@ const PeopleHead = (props: PeopleHeadProps) => {
             <h1 className="font-light text-5xl text-center">
               {first_name} {last_name}
             </h1>
+            <p className="text-center">{contributorData.id}</p>
             {bio && <div className="w-fit mx-auto text-md tablet-lg:text-lg">{parse(bio)}</div>}
           </div>
         </div>

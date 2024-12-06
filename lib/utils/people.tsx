@@ -8,10 +8,10 @@ import { PageType } from "../utils"
 interface MergePeopleProps {
   selectedPerson: People
   allContributors: Contributors[]
-  shortBio?: string | null
+  primaryContributor?: Contributors | null
 }
 export const mergePeople = async (props: MergePeopleProps) => {
-  const { selectedPerson, allContributors, shortBio } = props
+  const { selectedPerson, allContributors, primaryContributor } = props
 
   try {
     const allArticleIds = allContributors
@@ -27,12 +27,19 @@ export const mergePeople = async (props: MergePeopleProps) => {
       }
     }
 
-    const result = await updatePersonArticles(selectedPerson.id, allArticleIds, shortBio)
+    // update the articles in the person record
+    const result = await updatePersonArticles(selectedPerson.id, allArticleIds, primaryContributor?.bio)
 
+    // update the contributor records
+    // -- archive all but the primary contributor
+    // -- add redirects for all to the primary contributor
     allContributors.map(async (contributor: Contributors) => {
-      const redirectResult = await addRedirects(contributor)
-      const result = await updateContributor(contributor)
-      return { result, redirectResult }
+      if (primaryContributor && contributor.id !== primaryContributor.id) {
+        await addRedirect(primaryContributor, contributor)
+        await archiveContributor(contributor)
+      }
+
+      return
     })
 
     if (!result) {
@@ -58,17 +65,29 @@ export const mergePeople = async (props: MergePeopleProps) => {
   }
 }
 
-const addRedirects = async (contributor: Contributors) => {
+const addRedirect = async (primaryContributor: Contributors, contributor: Contributors) => {
   const permalink = getPermalink({
     slug: contributor.slug,
     type: PageType.Contributor,
   })
   const url = new URL(permalink)
   try {
-    const redirectsData = await directus.request(
+    // check if the redirect already exists using url.pathname
+    const redirect = await directus.request(
+      readItems("redirects", {
+        filter: { path: { _eq: url.pathname } },
+      }),
+    )
+
+    if (!redirect || redirect.length > 0) {
+      return true
+    }
+
+    await directus.request(
       createItem("redirects", {
         path: url.pathname,
-        contributors: contributor,
+        contributors: primaryContributor,
+        type: "contributor",
       }),
     )
   } catch (error) {
@@ -77,9 +96,9 @@ const addRedirects = async (contributor: Contributors) => {
   }
 }
 
-const updateContributor = async (contributor: Contributors) => {
+const archiveContributor = async (contributor: Contributors) => {
   try {
-    const contributorsData = await directus.request(
+    await directus.request(
       updateItem("contributors", contributor.id, {
         status: "archived",
       }),
