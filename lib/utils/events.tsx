@@ -435,9 +435,7 @@ interface SingleNewsletterEventProps {
   event: Events
 }
 
-export const generateSingleEventNewsletter = (props: SingleNewsletterEventProps) => {
-  const { eventTypes, event } = props
-
+export const generateSingleEventNewsletter = ({ eventTypes, event }: SingleNewsletterEventProps) => {
   // Helper function to build HTML for a single event
   const buildEventHTML = (event: Events) => {
     const startDate = new Date(event.start_date)
@@ -487,10 +485,7 @@ export const generateSingleEventNewsletter = (props: SingleNewsletterEventProps)
   }
 
   // Build and return the newsletter HTML for a single event
-  const newsletterHTML = `
-${buildEventHTML(event)}
-  `
-  return newsletterHTML
+  return buildEventHTML(event)
 }
 
 interface FullNewsletterEventProps {
