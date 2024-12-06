@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react"
 import { Events, EventsTypes } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
 import {
-  generateNewsletter,
+  generateFullNewsletter,
+  generateSingleEventNewsletter,
   generateYouTubeCopy,
   generateYouTubeTags,
   getUpcomingEvents,
@@ -17,13 +18,18 @@ interface PreviewInfoProps {
 
 const PreviewInfo = (props: PreviewInfoProps) => {
   const { status, user_updated, date_updated, start_date, slug } = props.eventData
-  const youtubeRef = useRef<HTMLPreElement>(null)
-  const [showNewsletterCopy, setShowNewsletterCopy] = useState(false)
+  const preRef = useRef<HTMLPreElement>(null)
+  const [showFullNewsletter, setShowFullNewsletter] = useState(false)
+  const [showSingleEventNewsletter, setShowSingleEventNewsletter] = useState(false)
   const [showYouTubeCopy, setShowYouTubeCopy] = useState(false)
   const [showYouTubeTags, setShowYouTubeTags] = useState(false)
 
   const youtube_copy = generateYouTubeCopy(props.eventData)
   const youtube_tags = generateYouTubeTags(props.eventData)
+  const single_event_newsletter = generateSingleEventNewsletter({
+    eventTypes: props.eventTypes,
+    event: props.eventData,
+  })
 
   const startDate = new Date(start_date)
   const eventYear = startDate.getFullYear()
@@ -55,7 +61,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
       : null
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-6">
       <div className="bg-slate-200 flex justify-between items-center">
         {user_updated && typeof user_updated !== "string" && (
           <div className="w-1/2">
@@ -66,17 +72,30 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           <button
             className="text-xs flex-none bg-white rounded-sm px-1 py-0.5 hover:underline"
             onClick={() => {
-              setShowNewsletterCopy(!showNewsletterCopy)
+              setShowFullNewsletter(!showFullNewsletter)
+              setShowSingleEventNewsletter(false)
               setShowYouTubeCopy(false)
               setShowYouTubeTags(false)
             }}
           >
-            Newsletter
+            Full Newsletter
           </button>
           <button
             className="text-xs flex-none bg-white rounded-sm px-1 py-0.5 hover:underline"
             onClick={() => {
-              setShowNewsletterCopy(false)
+              setShowFullNewsletter(false)
+              setShowSingleEventNewsletter(!showSingleEventNewsletter)
+              setShowYouTubeCopy(false)
+              setShowYouTubeTags(false)
+            }}
+          >
+            Single Event Newsletter
+          </button>
+          <button
+            className="text-xs flex-none bg-white rounded-sm px-1 py-0.5 hover:underline"
+            onClick={() => {
+              setShowFullNewsletter(false)
+              setShowSingleEventNewsletter(false)
               setShowYouTubeCopy(!showYouTubeCopy)
               setShowYouTubeTags(false)
             }}
@@ -84,9 +103,10 @@ const PreviewInfo = (props: PreviewInfoProps) => {
             YouTube copy
           </button>
           <button
-            className="text-xs flex-none  bg-white rounded-sm px-1 py-0.5 hover:underline"
+            className="text-xs flex-none bg-white rounded-sm px-1 py-0.5 hover:underline"
             onClick={() => {
-              setShowNewsletterCopy(false)
+              setShowFullNewsletter(false)
+              setShowSingleEventNewsletter(false)
               setShowYouTubeCopy(false)
               setShowYouTubeTags(!showYouTubeTags)
             }}
@@ -95,27 +115,32 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           </button>
         </div>
       </div>
-      {showNewsletterCopy && currentEvents && (
+      {showFullNewsletter && currentEvents && (
         <pre
           className="bg-white rounded-md outline-dotted outline-indigo-500 p-6 max-h-96 text-xs overflow-auto"
-          ref={youtubeRef}
+          ref={preRef}
         >
-          {generateNewsletter({ allEvents: currentEvents, eventTypes: props.eventTypes })}
+          {generateFullNewsletter({ allEvents: currentEvents, eventTypes: props.eventTypes })}
+        </pre>
+      )}
+      {showSingleEventNewsletter && (
+        <pre
+          className="bg-white rounded-md outline-dotted outline-indigo-500 p-6 max-h-96 text-xs overflow-auto"
+          ref={preRef}
+        >
+          {single_event_newsletter}
         </pre>
       )}
       {showYouTubeCopy && (
         <pre
           className="bg-white rounded-md outline-dotted outline-indigo-500 p-6 max-h-96 text-xs overflow-auto"
-          ref={youtubeRef}
+          ref={preRef}
         >
           {youtube_copy}
         </pre>
       )}
       {showYouTubeTags && (
-        <pre
-          className="bg-white rounded-md outline-dotted outline-indigo-500 p-6 text-xs overflow-auto"
-          ref={youtubeRef}
-        >
+        <pre className="bg-white rounded-md outline-dotted outline-indigo-500 p-6 text-xs overflow-auto" ref={preRef}>
           {youtube_tags}
         </pre>
       )}
