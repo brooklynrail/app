@@ -62,7 +62,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
             <EditorInfo {...user_updated} date={date_updated} status={status} permalink={permalink} />
           </div>
         )}
-        <div className="flex space-x-3 pr-3">
+        <div className="flex flex-col space-y-1.5 pr-3">
           <button
             className="text-xs flex-none bg-white rounded-sm px-1 py-0.5 hover:underline"
             onClick={() => {
