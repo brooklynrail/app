@@ -61,7 +61,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
       : null
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       <div className="bg-slate-200 flex justify-between items-center">
         {user_updated && typeof user_updated !== "string" && (
           <div className="w-1/2">

@@ -455,6 +455,7 @@ export const generateSingleEventNewsletter = ({ eventTypes, event }: SingleNewsl
     const endDate = new Date(event.end_date)
     const isSameDay = startDate.toDateString() === endDate.toDateString()
     const dateString = formatEventDate(startDate, endDate, isSameDay)
+    const isFutureEvent = new Date(event.end_date) > new Date()
 
     // Get the time in both Eastern and Pacific time
     const startTimeET = formatTime(event.start_date, "America/New_York")
@@ -465,19 +466,24 @@ export const generateSingleEventNewsletter = ({ eventTypes, event }: SingleNewsl
     // Get the readable event type text
     const eventTypeText = getEventTypeText(event.type, eventTypes)
 
+    const details = isFutureEvent
+      ? `<div class="event-details">
+          <p className="text-xl text-center font-light space-x-3">
+            <strong>${dateString}</strong> ${timeString ? `<br/><span>${timeString}</span>` : ""}
+          </p>
+        </div>`
+      : ""
+
+    const buttonText = isFutureEvent ? "Register" : "Watch"
     return `
       <div class="event">
         ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
         <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
         <p class="summary">${event.summary}</p>
-        <div class="event-details">
-          <p className="text-xl text-center font-light space-x-3">
-            <strong>${dateString}</strong> ${timeString ? `<br/><span>${timeString}</span>` : ""}
-          </p>
-        </div>
+        ${details}
         <div class="actions">
           <a class="btn btn-register" title="Register for ${event.title}" href="${eventPermalink}" target="_blank">
-            <span>Register</span>
+            <span>${buttonText}</span>
           </a>
         </div>
       </div>
