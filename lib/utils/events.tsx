@@ -430,12 +430,76 @@ const encodeHtmlEntities = (str: string) => {
     .replace(/'/g, "&#39;")
 }
 
-interface NewsletterEventProps {
+interface SingleNewsletterEventProps {
+  eventTypes: EventsTypes[]
+  event: Events
+}
+
+export const generateSingleEventNewsletter = ({ eventTypes, event }: SingleNewsletterEventProps) => {
+  // Helper function to build HTML for a single event
+  const buildEventHTML = (event: Events) => {
+    const startDate = new Date(event.start_date)
+
+    const permalink = getPermalink({
+      eventYear: startDate.getFullYear(),
+      eventMonth: startDate.getMonth() + 1,
+      eventDay: startDate.getDate(),
+      slug: event.slug,
+      type: PageType.Event,
+    })
+
+    const eventPermalink = `${permalink}?br=events`
+
+    // get the start date in this format:
+    // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
+    const endDate = new Date(event.end_date)
+    const isSameDay = startDate.toDateString() === endDate.toDateString()
+    const dateString = formatEventDate(startDate, endDate, isSameDay)
+    const isFutureEvent = new Date(event.end_date) > new Date()
+
+    // Get the time in both Eastern and Pacific time
+    const startTimeET = formatTime(event.start_date, "America/New_York")
+    const startTimePT = formatTime(event.start_date, "America/Los_Angeles")
+
+    const timeString = isSameDay && !event.all_day ? `${startTimeET} Eastern / ${startTimePT} Pacific` : null
+
+    // Get the readable event type text
+    const eventTypeText = getEventTypeText(event.type, eventTypes)
+
+    const details = isFutureEvent
+      ? `<div class="event-details">
+          <p className="text-xl text-center font-light space-x-3">
+            <strong>${dateString}</strong> ${timeString ? `<br/><span>${timeString}</span>` : ""}
+          </p>
+        </div>`
+      : ""
+
+    const buttonText = isFutureEvent ? "Register" : "Watch"
+    return `
+      <div class="event">
+        ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
+        <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
+        <p class="summary">${event.summary}</p>
+        ${details}
+        <div class="actions">
+          <a class="btn btn-register" title="Register for ${event.title}" href="${eventPermalink}" target="_blank">
+            <span>${buttonText}</span>
+          </a>
+        </div>
+      </div>
+    `
+  }
+
+  // Build and return the newsletter HTML for a single event
+  return buildEventHTML(event)
+}
+
+interface FullNewsletterEventProps {
   eventTypes: EventsTypes[]
   allEvents: Events[]
 }
 
-export const generateNewsletter = (props: NewsletterEventProps) => {
+export const generateFullNewsletter = (props: FullNewsletterEventProps) => {
   const { eventTypes, allEvents } = props
 
   // Helper function to build HTML for all events
@@ -494,7 +558,6 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
   const newsletterHTML = `
 <div class="rail-newsletter">
   <div class="event-listing">
-    <h2>This Week's Events</h2>
     ${buildEventsHTML(allEvents)}
   </div>
 </div>
