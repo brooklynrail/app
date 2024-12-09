@@ -1,4 +1,10 @@
-import { RevalidateType } from "../../../../lib/utils/revalidate"
+import {
+  revalidateArticle,
+  revalidateContributor,
+  revalidateEvent,
+  revalidateIssue,
+  RevalidateType,
+} from "../../../../lib/utils/revalidate"
 import { Articles, Contributors, Events } from "../../../../lib/types"
 import { revalidatePath } from "next/cache"
 
@@ -30,69 +36,45 @@ export async function GET(request: Request) {
     console.log(`Starting revalidation for ${type}:${id}`)
 
     let response: Response
-    let pathsToRevalidate: string[] = []
-
+    let path: string
     switch (type) {
       case RevalidateType.Homepage:
-        revalidatePath("/", "page")
+        revalidatePath(`/`, "page")
         return new Response(`Revalidation started for the homepage`, { status: 200 })
 
       case RevalidateType.Articles:
+        // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch article")
         const articleData: Articles = await response.json()
+        path = await revalidateArticle(articleData)
+        const issuePath = await revalidateIssue(articleData.issue)
 
-        // Define all paths that need revalidation
-        pathsToRevalidate = [
-          "/", // homepage
-          "/sitemap.xml",
-          `/section/${articleData.section.slug}`,
-          `/issues/${articleData.issue.year}-${articleData.issue.month}/`,
-          `/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}`,
-          `/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/${articleData.slug}`,
-          `/issues/sitemap.xml`,
-          `/archive`,
-        ]
-        break
+        console.log(`Revalidated article paths: ${path}, ${issuePath}`)
+        return new Response(`Revalidation started for paths: ${path}, and ${issuePath}`, { status: 200 })
 
       case RevalidateType.Contributors:
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch contributor")
         const contributorData: Contributors = await response.json()
+        path = await revalidateContributor(contributorData)
 
-        pathsToRevalidate = [`/contributor/${contributorData.slug}`, "/contributors", "/contributors/sitemap.xml"]
-        break
+        console.log(`Revalidated contributor path: ${path}`)
+        return new Response(`Revalidation started for path: ${path}`, { status: 200 })
 
       case RevalidateType.Events:
+        // Example path: /event/2024/10/07/event-slug
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/event/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch event")
         const eventData: Events = await response.json()
-        const eventDate = new Date(eventData.start_date)
-        const eventYear = eventDate.getFullYear()
-        const eventMonth = (eventDate.getMonth() + 1).toString().padStart(2, "0")
-        const eventDay = eventDate.getDate().toString().padStart(2, "0")
+        path = await revalidateEvent(eventData)
 
-        pathsToRevalidate = [
-          `/event/${eventYear}/${eventMonth}/${eventDay}/${eventData.slug}`,
-          "/events",
-          "/events/past",
-          "/",
-        ]
-        break
+        console.log(`Revalidated event path: ${path}`)
+        return new Response(`Revalidation started for path: ${path}`, { status: 200 })
 
       default:
         return new Response("Content type not supported", { status: 400 })
     }
-
-    // Revalidate all paths
-    for (const path of pathsToRevalidate) {
-      revalidatePath(path, "page")
-      console.log(`Revalidated: ${path}`)
-    }
-
-    return new Response(`Revalidated paths: ${pathsToRevalidate.join(", ")}`, {
-      status: 200,
-    })
   } catch (err) {
     console.error("Revalidation error:", err)
     return new Response("Error revalidating", { status: 500 })
