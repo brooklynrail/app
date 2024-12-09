@@ -1,21 +1,29 @@
-import {
-  revalidateArticle,
-  revalidateContributor,
-  revalidateEvent,
-  revalidateIssue,
-  RevalidateType,
-} from "../../../../lib/utils/revalidate"
-import { Articles, Contributors, Events } from "../../../../lib/types"
+import { revalidateContributor, revalidateEvent, RevalidateType } from "../../../../lib/utils/revalidate"
+import { Contributors, Events } from "../../../../lib/types"
 import { revalidatePath } from "next/cache"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
 // This is the payload that is returned by the Directus Flow
+
 // {
-// type: {{$trigger.collection}},
-// id: {{$trigger.keys[0]}},
-// secret: "7giV5gQ6",
+//   "type": "{{$trigger.collection}}",
+//   "id": "{{$trigger.keys[0]}}",
+//   "secret": "7giV5gQ6",
+//   "data": {
+//     "slug": "{{$trigger.payload.slug}}",
+//     "section": {
+//       "slug": "{{$trigger.payload.section.slug}}"
+//     },
+//     "issue": {
+//       "year": "{{$trigger.payload.issue.year}}",
+//       "month": "{{$trigger.payload.issue.month}}",
+//       "slug": "{{$trigger.payload.issue.slug}}"
+//     }
+//   }
 // }
+
+// Webhook URL: https://brooklynrail.org/api/refresh/?secret=7giV5gQ6&id={{$trigger.keys[0]}}&type={{$trigger.collection}}&slug={{$trigger.payload.slug}}&sectionSlug={{$trigger.payload.section.slug}}&issueYear={{$trigger.payload.issue.year}}&issueMonth={{$trigger.payload.issue.month}}&issueSlug={{$trigger.payload.issue.slug}}
 
 export async function GET(request: Request) {
   try {
@@ -56,14 +64,41 @@ export async function GET(request: Request) {
         revalidatePath(`/`)
         return new Response(`Revalidation started for the homepage: `, { status: 200 })
       case RevalidateType.Articles:
-        // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
-        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
-        if (!response.ok) throw new Error("Failed to fetch article")
-        const articleData: Articles = await response.json()
-        path = await revalidateArticle(articleData)
+        const slug = searchParams.get("slug")
+        const sectionSlug = searchParams.get("sectionSlug")
+        const issueYear = searchParams.get("issueYear")
+        const issueMonth = searchParams.get("issueMonth")
+        const issueSlug = searchParams.get("issueSlug")
 
-        const issuePath = await revalidateIssue(articleData.issue)
-        return new Response(`Revalidation started for paths: ${path}, and ${issuePath}`, { status: 200 })
+        if (!slug || !sectionSlug || !issueYear || !issueMonth) {
+          return new Response("Missing required article data", { status: 400 })
+        }
+
+        // Define all paths that need revalidation
+        const pathsToRevalidate = [
+          "/", // homepage
+          "/sitemap.xml",
+          `/section/${sectionSlug}`,
+          `/issues/${issueYear}-${issueMonth}/`,
+          `/${issueYear}/${issueMonth}/${sectionSlug}`,
+          `/${issueYear}/${issueMonth}/${sectionSlug}/${slug}`,
+        ]
+
+        console.log("Revalidating paths:", pathsToRevalidate)
+
+        // Revalidate all paths
+        for (const path of pathsToRevalidate) {
+          try {
+            revalidatePath(path, "page")
+            console.log(`Successfully revalidated: ${path}`)
+          } catch (error) {
+            console.error(`Failed to revalidate ${path}:`, error)
+          }
+        }
+
+        return new Response(`Revalidated ${pathsToRevalidate.length} paths`, {
+          status: 200,
+        })
 
       case RevalidateType.Contributors:
         // Example path: /contributor/louis-block/
