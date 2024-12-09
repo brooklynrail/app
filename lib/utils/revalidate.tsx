@@ -24,10 +24,10 @@ export const revalidateArticle = cache(async (data: Articles) => {
     type: PageType.Article,
   })
   const url = new URL(permalink)
-  revalidatePath(url.pathname)
-  revalidatePath(`/section/${data.section.slug}`)
-  revalidatePath(`/issues/${data.issue.year}-${data.issue.month}/`)
-  revalidatePath(`/${data.issue.year}/${data.issue.month}/${data.section.slug}`)
+  revalidatePath(url.pathname, "page")
+  revalidatePath(`/section/${data.section.slug}`, "page")
+  revalidatePath(`/issues/${data.issue.year}-${data.issue.month}/`, "page")
+  revalidatePath(`/${data.issue.year}/${data.issue.month}/${data.section.slug}`, "page")
   revalidatePath(`/`)
   revalidatePath(`/sitemap.xml`)
   return url.pathname
