@@ -1,14 +1,14 @@
 "use client"
 import { HomePageProps } from "@/app/page"
+import { useEffect } from "react"
 import { Articles, HomepageCollections } from "../../../../lib/types"
+import FeaturedBanner from "../banner"
+import CollectionRailCommunity from "../collections/railCommunity"
+import CollectionTileAds from "../collections/tileAds"
 import CollectionTribute from "../collections/tribute"
+import { usePageContext } from "../pageContext"
 import Paper, { PaperType } from "../paper"
 import { CollectionSection } from "./collections"
-import AdsTileStrip from "../ads/adsTileStrip"
-import { PageContextProvider, usePageContext } from "../pageContext"
-import { useEffect } from "react"
-import CollectionTileAds from "../collections/tileAds"
-import CollectionRailCommunity from "../collections/railCommunity"
 
 export interface PromoProps {
   currentArticles: Articles[]
@@ -61,8 +61,8 @@ const HomePage = (props: HomePageProps) => {
     <Paper
       pageClass="paper-homepage"
       type={PaperType.Homepage}
-      navData={navData}
       banners={banners}
+      navData={navData}
       currentIssue={currentIssue}
     >
       <main className="divide-y rail-divide">{allCollections}</main>

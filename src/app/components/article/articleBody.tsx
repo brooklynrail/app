@@ -98,7 +98,6 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
   // ================================================
 
-  console.log("showAd", showAd)
   return (
     <>
       <div className={`content`}>{parse(firstHalf, options)}</div>

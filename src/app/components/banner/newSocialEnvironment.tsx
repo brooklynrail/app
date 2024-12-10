@@ -4,13 +4,22 @@ import Link from "next/link"
 import parse from "html-react-parser"
 import { useEffect, useState, useMemo } from "react"
 import Image from "next/image"
-import { Collections, Events } from "../../../../lib/types"
+import { Collections, Events, HomepageBanners } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 
-const NewSocialEnvironment = () => {
+interface NewSocialEnvironmentProps {
+  banner: HomepageBanners
+}
+
+const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
+  const { banner } = props
   const [currentEvents, setCurrentEvents] = useState<Events[] | undefined>(undefined)
   const [featuredEvents, setFeaturedEvents] = useState<Events[] | undefined>(undefined)
   const [loading, setLoading] = useState(true)
+
+  if (!banner.collections_id) {
+    return null
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,7 +57,8 @@ const NewSocialEnvironment = () => {
     return (featuredEvents || []).map((event: Events) => <FeaturedEventCard key={event.id} event={event} />)
   }, [featuredEvents])
 
-  console.log("featuredEvents", featuredEvents)
+  const bannerTitle = banner.collections_id.title
+  const bannerDescription = banner.collections_id.description
 
   return (
     <div
@@ -57,13 +67,9 @@ const NewSocialEnvironment = () => {
       <div className="flex flex-col space-y-3 h-full">
         <div className="w-full">
           <h3 className="text-sm tablet-lg:text-lg font-medium">
-            <Link href="/events">
-              <span className="">The New Social Environment</span>
-            </Link>
+            <Link href="/events">{bannerTitle}</Link>
           </h3>
-          <p className="text-xs">
-            Daily conversations with artists, filmmakers, writers, and poets will resume on January 13, 2025.
-          </p>
+          {bannerDescription && <div className="text-xs">{parse(bannerDescription)}</div>}
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto no-scrollbar">
@@ -167,8 +173,7 @@ const FeaturedEventCard = (props: EventCardProps) => {
   const eventMonthText = new Intl.DateTimeFormat("en-US", { month: "long" }).format(startDate)
   const eventDay = startDate.getDate()
 
-  const seriesText = series ? `#${series} |` : ""
-  const kicker = `${seriesText} ${eventMonthText} ${eventDay}`
+  const kicker = `${eventMonthText} ${eventDay}, ${eventYear}`
   const youtube_image = `https://i.ytimg.com/vi/${youtube_id}/mqdefault.jpg`
 
   const permalink = getPermalink({
