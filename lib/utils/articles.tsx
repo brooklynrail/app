@@ -1,8 +1,8 @@
-import directus from "../directus"
-import { readItems, readSingleton } from "@directus/sdk"
-import { Articles, Issues, OGArticle, Sections } from "../types"
+import { readItems } from "@directus/sdk"
 import nlp from "compromise"
 import { cache } from "react"
+import directus from "../directus"
+import { Articles, Issues, OGArticle, Sections } from "../types"
 
 export const extractPeopleFromArticle = cache(async (text: string) => {
   const doc = nlp(text)
@@ -111,6 +111,8 @@ export const getCurrentIssueSection = cache(async (props: CurrentIssueSectionPro
           "excerpt",
           "slug",
           "hide_title",
+          "hide_bylines",
+          "hide_bylines_downstream",
           { section: ["id", "name", "slug"] },
           { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
