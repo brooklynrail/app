@@ -81,8 +81,8 @@ const HeaderHomepage = (props: HeaderProps) => {
 
   const pause = (
     <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M6 5H9V19H6V5Z" fill="currentColor" />
-      <path d="M15 5H18V19H15V5Z" fill="currentColor" />
+      <path d="M6 5H9V19H6V5Z" className="fill-zinc-800" />
+      <path d="M15 5H18V19H15V5Z" className="fill-zinc-800" />
     </svg>
   )
 
@@ -105,12 +105,17 @@ const HeaderHomepage = (props: HeaderProps) => {
             </Link>
           </div>
         </div>
-        <button
-          onClick={handleVideoToggle}
-          className="absolute font-sm bottom-3 right-3 bg-zinc-700 w-6 h-6 text-center rounded-full text-white z-10 flex justify-center items-center"
-        >
-          {isPaused ? play : pause}
-        </button>
+        <div className="bg-zinc-900 rounded-tl-sm p-0.5 pl-1.5 py-0.5 absolute bottom-0 right-0 z-10 flex justify-center items-center space-x-3">
+          <p className="text-white text-xs">
+            Shirin Neshat, <em>"Do U Dare!"</em>, 2024-25.
+          </p>
+          <button
+            onClick={handleVideoToggle}
+            className="font-sm bg-zinc-400 w-6 h-6 text-center text-white flex justify-center items-center"
+          >
+            {isPaused ? play : pause}
+          </button>
+        </div>
       </div>
     </header>
   )
