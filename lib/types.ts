@@ -90,7 +90,6 @@ export type ArticlesFiles = {
 export type Collections = {
   date_created?: string | null
   date_updated?: string | null
-  deck?: string | null
   homepage: any[] | HomepageCollections[]
   id: string
   limit?: number | null

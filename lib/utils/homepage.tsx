@@ -12,17 +12,7 @@ export const getNavData = cache(async () => {
           {
             banners: [
               {
-                collections_id: [
-                  "id",
-                  "type",
-                  "kicker",
-                  "title",
-                  "deck",
-                  "description",
-                  "links",
-                  "limit",
-                  "banner_type",
-                ],
+                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
               },
             ],
           },
@@ -34,7 +24,6 @@ export const getNavData = cache(async () => {
                   "type",
                   "kicker",
                   "title",
-                  "deck",
                   "limit",
                   "links",
                   "banner_type",
@@ -68,17 +57,7 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
           {
             banners: [
               {
-                collections_id: [
-                  "id",
-                  "type",
-                  "kicker",
-                  "title",
-                  "deck",
-                  "description",
-                  "links",
-                  "limit",
-                  "banner_type",
-                ],
+                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
               },
             ],
           },
@@ -90,7 +69,6 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
                   "type",
                   "kicker",
                   "title",
-                  "deck",
                   "limit",
                   "links",
                   "banner_type",
