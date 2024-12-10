@@ -1,30 +1,28 @@
 import Link from "next/link"
-import { HomepageBanners, Issues } from "../../../../lib/types"
+import { useEffect, useRef, useState } from "react"
+import { Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import FeaturedBanner from "../banner"
 import { PaperType } from "../paper"
+import { useTheme } from "../theme"
 import HeaderDefault from "./default"
 import HomeBanner from "./homeBanner"
 import Subhead from "./subhead"
 import VideoBG from "./videobg"
-import { useRef, useState, useEffect } from "react"
-import { useTheme } from "../theme"
 
 export interface HeaderProps {
   special_issue?: boolean | null
   issue_number?: number
   title?: string
   type: PaperType
-  banners?: HomepageBanners[]
   currentIssue?: Issues
 }
 
 const Header = (props: HeaderProps) => {
-  const { title, type, banners, currentIssue } = props
+  const { title, type, currentIssue } = props
 
   switch (type) {
     case PaperType.Homepage:
-      return <HeaderHomepage title={title} type={type} banners={banners} currentIssue={currentIssue} />
+      return <HeaderHomepage title={title} type={type} currentIssue={currentIssue} />
     default:
       return <HeaderDefault title={title} type={type} />
   }
@@ -43,7 +41,7 @@ const removeLocalStorageItem = (key: string) => {
 }
 
 const HeaderHomepage = (props: HeaderProps) => {
-  const { title, type, banners, currentIssue } = props
+  const { title, type, currentIssue } = props
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPaused, setIsPaused] = useState(false)
   const { theme } = useTheme()
@@ -114,8 +112,6 @@ const HeaderHomepage = (props: HeaderProps) => {
           {isPaused ? play : pause}
         </button>
       </div>
-
-      {banners && currentIssue && <FeaturedBanner currentIssue={currentIssue} />}
     </header>
   )
 }

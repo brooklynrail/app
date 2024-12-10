@@ -99,25 +99,11 @@
       @apply p-0 bg-transparent;
     }
   }
+
   code {
     @apply py-0.5 px-1 bg-slate-200 text-red-600 font-mono font-bold text-sm rounded-sm;
   }
-  .endnote {
-    @apply my-8;
-    @apply font-normal font-sans text-sm break-words;
 
-    a {
-      @apply underline decoration-1;
-    }
-
-    li {
-      @apply mb-2 tablet:mb-3;
-    }
-    .line {
-      @apply mb-6 block w-20;
-      @apply border-b-[1px] border-gray-500 border-solid;
-    }
-  }
   .media {
     @apply clear-both;
     .frame {
@@ -129,6 +115,24 @@
     }
   }
 }
+
+.endnote {
+  @apply my-8;
+  @apply font-normal font-sans text-sm break-words;
+
+  a {
+    @apply underline decoration-1;
+  }
+
+  li {
+    @apply mb-2 tablet:mb-3;
+  }
+  .line {
+    @apply mb-6 block w-20;
+    @apply border-b-[1px] border-gray-500 border-solid;
+  }
+}
+
 .content-page {
   @apply text-xl;
 }

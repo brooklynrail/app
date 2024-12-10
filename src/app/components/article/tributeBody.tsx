@@ -49,7 +49,8 @@ const TributeBody = (props: ArticleBodyProps) => {
         )}
         <div className="grid grid-cols-4 tablet-lg:grid-cols-10 gap-3">
           <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-2">
-            <ArticleBody articleData={articleData} />
+            {/* dont show article ads on Tribute pages */}
+            <ArticleBody articleData={articleData} showAd={false} />
           </div>
         </div>
       </div>

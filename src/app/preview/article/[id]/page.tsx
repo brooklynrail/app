@@ -21,8 +21,6 @@ export interface ArticlePreviewProps {
   directusUrl: string
 }
 
-// export const dynamicParams = true
-
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
   const data = await getData({ params })
 

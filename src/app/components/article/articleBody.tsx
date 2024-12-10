@@ -11,10 +11,11 @@ import ArticleAd from "./articleAd"
 
 interface ArticleBodyProps {
   articleData: Articles
+  showAd: boolean
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
-  const { articleData } = props
+  const { articleData, showAd } = props
   const { body_text, images, endnote, contributors } = articleData
 
   const fullBodyText = body_text && replaceShortcodes({ html: body_text, images: images })
@@ -58,11 +59,23 @@ const ArticleBody = (props: ArticleBodyProps) => {
   // Calculate total word count
   const totalWordCount = paragraphs.reduce((count, para) => count + para.split(/\s+/).filter(Boolean).length, 0)
 
+  const sectionSlug = articleData.section.slug
+
+  // Calculate split content only for non-poetry articles
   const { firstHalf, secondHalf } = useMemo(() => {
+    // For poetry section, return full content as firstHalf
+    if (sectionSlug === "poetry") {
+      return {
+        firstHalf: fullBodyText,
+        secondHalf: "",
+      }
+    }
+
     let splitIndex = 0
     let wordCount = 0
 
-    // Determine target word count for splitting
+    // For articles with 1500 words or less, split the content in half
+    // For articles over 1500 words, split after the first 1000 words
     const targetWordCount = totalWordCount <= 1500 ? Math.ceil(totalWordCount / 2) : 1000
 
     // Loop through paragraphs to find the split index
@@ -81,17 +94,15 @@ const ArticleBody = (props: ArticleBodyProps) => {
     const secondHalf = paragraphs.slice(splitIndex).join("")
 
     return { firstHalf, secondHalf }
-  }, [paragraphs, totalWordCount])
-
-  const sectionSlug = articleData.section.slug
+  }, [paragraphs, totalWordCount, sectionSlug, fullBodyText])
 
   // ================================================
 
   return (
     <>
       <div className={`content`}>{parse(firstHalf, options)}</div>
-      {sectionSlug !== "poetry" && <ArticleAd />}
-      <div className={`content`}>{parse(secondHalf, options)}</div>
+      {sectionSlug !== "poetry" && secondHalf && showAd && <ArticleAd />}
+      {secondHalf && <div className={`content`}>{parse(secondHalf, options)}</div>}
 
       {endnote && (
         <div className="content endnote">
