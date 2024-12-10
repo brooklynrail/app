@@ -199,6 +199,7 @@ export const getCurrentIssueData = cache(async () => {
               "id",
               "title",
               "slug",
+              "summary",
               "special_issue",
               { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
               { cover_2: ["id", "width", "height", "filename_disk", "caption"] },

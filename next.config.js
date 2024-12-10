@@ -425,6 +425,7 @@ module.exports = {
   async headers() {
     return [
       {
+        // Static assets (images, etc)
         source: "/assets/:path*",
         headers: [
           {
@@ -434,11 +435,22 @@ module.exports = {
         ],
       },
       {
+        // API routes should use Next.js's built-in caching
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store",
+          },
+        ],
+      },
+      {
+        // All other routes (pages)
         source: "/:path*",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000",
+            value: "public, max-age=31536000, must-revalidate",
           },
         ],
       },

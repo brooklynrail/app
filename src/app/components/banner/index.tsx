@@ -17,7 +17,6 @@ const FeaturedBanner = (props: BannerProps) => {
         className={`grid grid-cols-4 tablet-lg:grid-cols-12 divide-y-reverse divide-y tablet-lg:divide-y-0 tablet-lg:divide-x rail-divide py-3`}
       >
         <CurrentIssue currentIssue={currentIssue} />
-        <Exhibitions />
         <NewSocialEnvironment />
       </div>
     </div>

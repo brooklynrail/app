@@ -498,6 +498,7 @@ export type Events = {
   date_created: string
   date_updated: string
   deck?: string | null
+  featured: boolean
   end_date: string
   airtable_id?: string | null
   featured_image?: DirectusFiles

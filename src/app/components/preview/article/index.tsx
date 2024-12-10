@@ -74,6 +74,8 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
 
   const isTribute = articleData.tribute
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.id}/`
+  const showAd = isStudioPreview && isViewable
+
   return (
     <Paper pageClass={`theme-${articleData.section.slug}`} hidePopup={true} navData={navData} previewURL={previewURL}>
       <main className="">
@@ -95,8 +97,8 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                 <ArticleHead {...{ permalink: previewURL, articleData, currentSection: articleData.section }} />
               )}
               <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
-                <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-                  <ArticleBody articleData={articleData} />
+                <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9 space-y-12">
+                  <ArticleBody articleData={articleData} showAd={showAd} />
                 </div>
               </div>
             </article>
