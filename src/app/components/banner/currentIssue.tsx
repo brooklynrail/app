@@ -36,7 +36,7 @@ const CurrentIssue = (props: BannerCurrentIssueProps) => {
           </div>
 
           <div className="space-y-3">
-            <div className={`${styles.summary} text-xl`}>{parse(currentIssue.summary)}</div>
+            <div className={`${styles.summary} text-lg desktop:text-xl`}>{parse(currentIssue.summary)}</div>
             <div className="flex items-center space-y-1">
               <Link
                 href={`/about/where-to-find-us/`}
