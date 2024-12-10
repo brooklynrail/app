@@ -189,8 +189,6 @@ export async function getFeaturedEvents() {
       return null
     }
     const data = await res.json()
-
-    console.log("data", data)
     return data.data as Events[]
   } catch (error) {
     console.error("Error fetching All Events data:", error)

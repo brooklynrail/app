@@ -17,8 +17,6 @@ enum BannerType {
 const Banners = (props: BannerProps) => {
   const { currentIssue, banners } = props
 
-  console.log("banners", banners)
-
   const allBanners = banners.map((banner, index) => {
     if (!banner.collections_id) {
       return null
