@@ -23,16 +23,45 @@ const NavBar = (props: NavBarProps) => {
     })
   }
 
-  const home = (
-    <li>
-      <Link
-        href={`/`}
-        className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase hover:underline-offset-4 hover:decoration-solid"
-        onClick={() => handleNavClick("Home", "home")}
-      >
-        Home
-      </Link>
-    </li>
+  const homeLinks = (
+    <>
+      <li>
+        <Link
+          href={`/`}
+          className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase hover:underline-offset-4 hover:decoration-solid"
+          onClick={() => handleNavClick("Home", "home")}
+        >
+          Home
+        </Link>
+      </li>
+      <li>
+        <Link
+          href={`/archive`}
+          className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase hover:underline-offset-4 hover:decoration-solid"
+          onClick={() => handleNavClick("Issues", "collection")}
+        >
+          Issues
+        </Link>
+      </li>
+      <li>
+        <Link
+          href={`/events`}
+          className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase hover:underline-offset-4 hover:decoration-solid"
+          onClick={() => handleNavClick("Events", "collection")}
+        >
+          Events
+        </Link>
+      </li>
+      <li>
+        <Link
+          href={`https://singing-in-unison.brooklynrail.org/`}
+          className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase hover:underline-offset-4 hover:decoration-solid"
+          onClick={() => handleNavClick("Exhibitions", "collection")}
+        >
+          Exhibitions
+        </Link>
+      </li>
+    </>
   )
 
   const allCollections = navData.collections.map((collection: HomepageCollections, i: number) => {
@@ -76,7 +105,7 @@ const NavBar = (props: NavBarProps) => {
       <li key={`nav-${thisCollection.id}`}>
         <Link
           href={permalink}
-          className="py-2 px-2 tablet:px-3 text-nowrap inline-block text-xs font-bold uppercase hover:underline-offset-4 hover:decoration-solid"
+          className="py-2 px-2 tablet:px-3 text-nowrap inline-block text-xs font-medium uppercase hover:underline-offset-4 hover:decoration-solid"
           onClick={() => handleNavClick(thisCollection.title, "collection")}
         >
           {thisCollection.title}
@@ -92,7 +121,7 @@ const NavBar = (props: NavBarProps) => {
           <MenuButton onMenuClick={() => handleNavClick("Menu Toggle", "menu")} />
         </div>
         <ul className="pr-3 pl-1 flex items-center w-full overflow-x-auto no-scrollbar z-0">
-          {!isHomepage && home}
+          {!isHomepage && homeLinks}
           {allCollections}
         </ul>
         <div className="hidden tablet:flex space-x-3 z-[2]">
