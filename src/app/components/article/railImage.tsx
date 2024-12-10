@@ -78,7 +78,7 @@ const RailImage = (props: RailImageProps) => {
   const { width, mediaType } = checkWidth(image.directus_files_id.width, type)
 
   const caption = image.directus_files_id.caption ? (
-    <figcaption className={`${mediaType} diagonal-fractions`}>{parse(image.directus_files_id.caption)}</figcaption>
+    <figcaption className={`${mediaType}`}>{parse(image.directus_files_id.caption)}</figcaption>
   ) : null
 
   const imageId = image.directus_files_id.id
