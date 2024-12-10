@@ -40,7 +40,7 @@ const Banners = (props: BannerProps) => {
   return (
     <div className={`bg-white dark:bg-zinc-700 border-b rail-border`}>
       <div
-        className={`grid grid-cols-4 tablet-lg:grid-cols-12 divide-y-reverse divide-y tablet-lg:divide-y-0 tablet-lg:divide-x rail-divide py-3`}
+        className={`grid grid-cols-4 tablet-lg:grid-cols-12 divide-y tablet-lg:divide-y-0 tablet-lg:divide-x tablet-lg:divide-x-reverse rail-divide py-3`}
       >
         {allBanners}
       </div>
