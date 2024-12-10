@@ -57,7 +57,17 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
           {
             banners: [
               {
-                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
+                collections_id: [
+                  "id",
+                  "type",
+                  "kicker",
+                  "title",
+                  "description",
+                  "links",
+                  "limit",
+                  "banner_type",
+                  "show_featured",
+                ],
               },
             ],
           },
