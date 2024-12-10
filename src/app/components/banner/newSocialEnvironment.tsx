@@ -72,9 +72,10 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
           {bannerDescription && <div className="text-xs">{parse(bannerDescription)}</div>}
         </div>
         <div className="flex space-x-6 h-full pb-3">
-          <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto no-scrollbar">
+          <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto no-scrollbar pr-3">
             {currentEventCards}
             {featuredEventCards}
+            <AllEventsCard type="past" />
           </div>
         </div>
       </div>
@@ -211,11 +212,17 @@ const FeaturedEventCard = (props: EventCardProps) => {
   )
 }
 
-const AllEventsCard = () => (
+interface AllEventsCardProps {
+  type?: "current" | "past"
+}
+
+const AllEventsCard = ({ type = "current" }: AllEventsCardProps) => (
   <div className="px-1.5 last:pr-0">
     <div className="bg-zinc-800 bg-opacity-20 rounded-xl w-32 h-24 px-3 flex flex-col justify-center items-center">
       <p className="text-xs uppercase">
-        <Link href={`/events`}>All events</Link> »
+        <Link href={type === "current" ? "/events" : "/events/past"}>
+          {type === "current" ? "Current events" : "Past events"} »
+        </Link>
       </p>
     </div>
   </div>
