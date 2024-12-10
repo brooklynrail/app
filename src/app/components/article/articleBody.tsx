@@ -74,9 +74,10 @@ const ArticleBody = (props: ArticleBodyProps) => {
     let splitIndex = 0
     let wordCount = 0
 
-    // For articles with 1500 words or less, split the content in half
-    // For articles over 1500 words, split after the first 1000 words
-    const targetWordCount = totalWordCount <= 1500 ? Math.ceil(totalWordCount / 2) : 1000
+    // If the article is over 1500 words, put the Ad at 800 words
+    // If the article is under 1500 words, split the content in half and put the Ad in the middle
+
+    const targetWordCount = totalWordCount <= 1500 ? Math.ceil(totalWordCount / 2) : 800
 
     // Loop through paragraphs to find the split index
     for (let i = 0; i < paragraphs.length; i++) {
