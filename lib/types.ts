@@ -100,6 +100,7 @@ export type Collections = {
   kicker?: string | null
   description?: string | null
   links?: CollectionLinks[] | null
+  show_featured: boolean
   tribute?: Tributes | null
   type: string
   banner_type?: string | null
