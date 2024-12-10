@@ -101,7 +101,6 @@ const ArticleBody = (props: ArticleBodyProps) => {
   console.log("showAd", showAd)
   return (
     <>
-      <p>Show ad: {showAd ? "true" : "false"}</p>
       <div className={`content`}>{parse(firstHalf, options)}</div>
       {sectionSlug !== "poetry" && secondHalf && showAd && <ArticleAd />}
       {secondHalf && <div className={`content`}>{parse(secondHalf, options)}</div>}
