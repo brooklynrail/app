@@ -100,6 +100,7 @@ export type Collections = {
   kicker?: string | null
   description?: string | null
   links?: CollectionLinks[] | null
+  show_featured: boolean
   tribute?: Tributes | null
   type: string
   banner_type?: string | null
@@ -497,6 +498,7 @@ export type Events = {
   date_created: string
   date_updated: string
   deck?: string | null
+  featured: boolean
   end_date: string
   airtable_id?: string | null
   featured_image?: DirectusFiles

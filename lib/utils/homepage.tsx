@@ -57,7 +57,17 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
           {
             banners: [
               {
-                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
+                collections_id: [
+                  "id",
+                  "type",
+                  "kicker",
+                  "title",
+                  "description",
+                  "links",
+                  "limit",
+                  "banner_type",
+                  "show_featured",
+                ],
               },
             ],
           },
@@ -177,6 +187,7 @@ export const getCurrentIssueData = cache(async () => {
               "id",
               "title",
               "slug",
+              "summary",
               "special_issue",
               { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
               { cover_2: ["id", "width", "height", "filename_disk", "caption"] },

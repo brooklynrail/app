@@ -11,10 +11,11 @@ import ArticleAd from "./articleAd"
 
 interface ArticleBodyProps {
   articleData: Articles
+  showAd: boolean
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
-  const { articleData } = props
+  const { articleData, showAd } = props
   const { body_text, images, endnote, contributors } = articleData
 
   const fullBodyText = body_text && replaceShortcodes({ html: body_text, images: images })
@@ -100,7 +101,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
   return (
     <>
       <div className={`content`}>{parse(firstHalf, options)}</div>
-      {sectionSlug !== "poetry" && secondHalf && <ArticleAd />}
+      {sectionSlug !== "poetry" && secondHalf && showAd && <ArticleAd />}
       {secondHalf && <div className={`content`}>{parse(secondHalf, options)}</div>}
 
       {endnote && (

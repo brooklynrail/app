@@ -33,8 +33,6 @@ export async function GET(request: Request) {
       return new Response("id and type are required", { status: 400 })
     }
 
-    console.log(`Starting revalidation for ${type}:${id}`)
-
     let response: Response
     let path: string
     switch (type) {
@@ -50,7 +48,6 @@ export async function GET(request: Request) {
         path = await revalidateArticle(articleData)
         const issuePath = await revalidateIssue(articleData.issue)
 
-        console.log(`Revalidated article paths: ${path}, ${issuePath}`)
         return new Response(`Revalidation started for paths: ${path}, and ${issuePath}`, { status: 200 })
 
       case RevalidateType.Contributors:
@@ -59,7 +56,6 @@ export async function GET(request: Request) {
         const contributorData: Contributors = await response.json()
         path = await revalidateContributor(contributorData)
 
-        console.log(`Revalidated contributor path: ${path}`)
         return new Response(`Revalidation started for path: ${path}`, { status: 200 })
 
       case RevalidateType.Events:
@@ -69,7 +65,6 @@ export async function GET(request: Request) {
         const eventData: Events = await response.json()
         path = await revalidateEvent(eventData)
 
-        console.log(`Revalidated event path: ${path}`)
         return new Response(`Revalidation started for path: ${path}`, { status: 200 })
 
       default:

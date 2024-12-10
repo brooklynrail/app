@@ -68,7 +68,7 @@ export const getUpcomingEvents = cache(async () => {
   return events as Events[]
 })
 
-export const getUpcomingEventsBanner = cache(async () => {
+export const getUpcomingEventsBanner = async () => {
   const eventsDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
     `?fields[]=id` +
@@ -106,7 +106,7 @@ export const getUpcomingEventsBanner = cache(async () => {
   const data = await res.json()
   const events = data.data
   return events as Events[]
-})
+}
 
 interface PastEventsParams {
   limit: number
@@ -138,6 +138,52 @@ export async function getPastEvents(props: PastEventsParams) {
       `&limit=${limit}`
 
     const res = await fetch(allEventsDataAPI)
+    if (!res.ok) {
+      console.error(`Failed to fetch All Events data: ${res.statusText}`)
+      return null
+    }
+    const data = await res.json()
+    return data.data as Events[]
+  } catch (error) {
+    console.error("Error fetching All Events data:", error)
+    return null
+  }
+}
+
+export async function getFeaturedEvents() {
+  try {
+    const eventsDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+      `?fields[]=id` +
+      `&fields[]=slug` +
+      `&fields[]=title` +
+      `&fields[]=series` +
+      `&fields[]=featured_image.id` +
+      `&fields[]=featured_image.caption` +
+      `&fields[]=featured_image.alt` +
+      `&fields[]=featured_image.filename_disk` +
+      `&fields[]=featured_image.width` +
+      `&fields[]=featured_image.height` +
+      `&fields[]=featured_image.type` +
+      `&fields[]=featured_image.modified_on` +
+      `&fields[]=people` +
+      `&fields[]=people.people_id.portrait.id` +
+      `&fields[]=people.people_id.portrait.caption` +
+      `&fields[]=people.people_id.portrait.filename_disk` +
+      `&fields[]=people.people_id.portrait.width` +
+      `&fields[]=people.people_id.portrait.height` +
+      `&fields[]=people.people_id.portrait.alt` +
+      `&fields[]=people.people_id.portrait.modified_on` +
+      `&fields[]=start_date` +
+      `&fields[]=all_day` +
+      `&fields[]=youtube_id` +
+      `&sort=-start_date` +
+      `&filter[end_date][_lte]=$NOW` +
+      `&filter[featured][_eq]=true` +
+      `&filter[youtube_id][_nempty]=true` +
+      `&filter[status][_eq]=published`
+
+    const res = await fetch(eventsDataAPI)
     if (!res.ok) {
       console.error(`Failed to fetch All Events data: ${res.statusText}`)
       return null
