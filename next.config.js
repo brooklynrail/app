@@ -420,13 +420,40 @@ module.exports = {
         destination: "/",
         permanent: false,
       },
-
-      // {
-      //   source: "/article_image/image/:id/:filename",
-      //   destination:
-      //     "https://storage.googleapis.com/rail-legacy-media/production/content/article_image/image/:id/:filename",
-      //   permanent: false,
-      // },
+    ]
+  },
+  async headers() {
+    return [
+      {
+        // Static assets (images, etc)
+        source: "/assets/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // API routes should use Next.js's built-in caching
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store",
+          },
+        ],
+      },
+      {
+        // All other routes (pages)
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, must-revalidate",
+          },
+        ],
+      },
     ]
   },
 }

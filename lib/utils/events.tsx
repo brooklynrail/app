@@ -68,7 +68,7 @@ export const getUpcomingEvents = cache(async () => {
   return events as Events[]
 })
 
-export const getUpcomingEventsBanner = cache(async () => {
+export const getUpcomingEventsBanner = async () => {
   const eventsDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
     `?fields[]=id` +
@@ -106,7 +106,7 @@ export const getUpcomingEventsBanner = cache(async () => {
   const data = await res.json()
   const events = data.data
   return events as Events[]
-})
+}
 
 interface PastEventsParams {
   limit: number
@@ -138,6 +138,52 @@ export async function getPastEvents(props: PastEventsParams) {
       `&limit=${limit}`
 
     const res = await fetch(allEventsDataAPI)
+    if (!res.ok) {
+      console.error(`Failed to fetch All Events data: ${res.statusText}`)
+      return null
+    }
+    const data = await res.json()
+    return data.data as Events[]
+  } catch (error) {
+    console.error("Error fetching All Events data:", error)
+    return null
+  }
+}
+
+export async function getFeaturedEvents() {
+  try {
+    const eventsDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+      `?fields[]=id` +
+      `&fields[]=slug` +
+      `&fields[]=title` +
+      `&fields[]=series` +
+      `&fields[]=featured_image.id` +
+      `&fields[]=featured_image.caption` +
+      `&fields[]=featured_image.alt` +
+      `&fields[]=featured_image.filename_disk` +
+      `&fields[]=featured_image.width` +
+      `&fields[]=featured_image.height` +
+      `&fields[]=featured_image.type` +
+      `&fields[]=featured_image.modified_on` +
+      `&fields[]=people` +
+      `&fields[]=people.people_id.portrait.id` +
+      `&fields[]=people.people_id.portrait.caption` +
+      `&fields[]=people.people_id.portrait.filename_disk` +
+      `&fields[]=people.people_id.portrait.width` +
+      `&fields[]=people.people_id.portrait.height` +
+      `&fields[]=people.people_id.portrait.alt` +
+      `&fields[]=people.people_id.portrait.modified_on` +
+      `&fields[]=start_date` +
+      `&fields[]=all_day` +
+      `&fields[]=youtube_id` +
+      `&sort=-start_date` +
+      `&filter[end_date][_lte]=$NOW` +
+      `&filter[featured][_eq]=true` +
+      `&filter[youtube_id][_nempty]=true` +
+      `&filter[status][_eq]=published`
+
+    const res = await fetch(eventsDataAPI)
     if (!res.ok) {
       console.error(`Failed to fetch All Events data: ${res.statusText}`)
       return null
@@ -225,7 +271,7 @@ export const getEvent = cache(async (slug: string) => {
   return event[0] as Events
 })
 
-export async function getAllEvents() {
+export const getAllEvents = cache(async () => {
   try {
     let allEvents: Events[] = []
     let page = 1
@@ -256,9 +302,9 @@ export async function getAllEvents() {
     console.error("Error fetching allEvents:", error)
     return null
   }
-}
+})
 
-export const getTotalEventsCount = async () => {
+export const getTotalEventsCount = cache(async () => {
   const totalCount = await directus.request(
     aggregate("events", {
       aggregate: { count: "*" },
@@ -266,7 +312,7 @@ export const getTotalEventsCount = async () => {
   )
   const count = Number(totalCount[0].count)
   return count ? count : 0
-}
+})
 
 export const generateYouTubeTags = (eventData: Events) => {
   const tags = []
@@ -430,12 +476,76 @@ const encodeHtmlEntities = (str: string) => {
     .replace(/'/g, "&#39;")
 }
 
-interface NewsletterEventProps {
+interface SingleNewsletterEventProps {
+  eventTypes: EventsTypes[]
+  event: Events
+}
+
+export const generateSingleEventNewsletter = ({ eventTypes, event }: SingleNewsletterEventProps) => {
+  // Helper function to build HTML for a single event
+  const buildEventHTML = (event: Events) => {
+    const startDate = new Date(event.start_date)
+
+    const permalink = getPermalink({
+      eventYear: startDate.getFullYear(),
+      eventMonth: startDate.getMonth() + 1,
+      eventDay: startDate.getDate(),
+      slug: event.slug,
+      type: PageType.Event,
+    })
+
+    const eventPermalink = `${permalink}?br=events`
+
+    // get the start date in this format:
+    // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
+    const endDate = new Date(event.end_date)
+    const isSameDay = startDate.toDateString() === endDate.toDateString()
+    const dateString = formatEventDate(startDate, endDate, isSameDay)
+    const isFutureEvent = new Date(event.end_date) > new Date()
+
+    // Get the time in both Eastern and Pacific time
+    const startTimeET = formatTime(event.start_date, "America/New_York")
+    const startTimePT = formatTime(event.start_date, "America/Los_Angeles")
+
+    const timeString = isSameDay && !event.all_day ? `${startTimeET} Eastern / ${startTimePT} Pacific` : null
+
+    // Get the readable event type text
+    const eventTypeText = getEventTypeText(event.type, eventTypes)
+
+    const details = isFutureEvent
+      ? `<div class="event-details">
+          <p className="text-xl text-center font-light space-x-3">
+            <strong>${dateString}</strong> ${timeString ? `<br/><span>${timeString}</span>` : ""}
+          </p>
+        </div>`
+      : ""
+
+    const buttonText = isFutureEvent ? "Register" : "Watch"
+    return `
+<div class="event">
+  ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
+  <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
+  <p class="summary">${event.summary}</p>
+  ${details}
+  <div class="actions">
+    <a class="btn btn-register" title="${isFutureEvent ? "Register for" : "Watch: "} ${event.title}" href="${eventPermalink}" target="_blank">
+      <span>${buttonText}</span>
+    </a>
+  </div>
+</div>
+    `
+  }
+
+  // Build and return the newsletter HTML for a single event
+  return buildEventHTML(event)
+}
+
+interface FullNewsletterEventProps {
   eventTypes: EventsTypes[]
   allEvents: Events[]
 }
 
-export const generateNewsletter = (props: NewsletterEventProps) => {
+export const generateFullNewsletter = (props: FullNewsletterEventProps) => {
   const { eventTypes, allEvents } = props
 
   // Helper function to build HTML for all events
@@ -470,21 +580,21 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
         const eventTypeText = getEventTypeText(event.type, eventTypes)
 
         return `
-      <div class="event">
-        ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
-        <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
-        <p class="summary">${event.summary}</p>
-        <div class="event-details">
-          <p className="text-xl text-center font-light space-x-3">
-            <strong>${dateString}</strong> ${timeString ? `<br/><span>${timeString}</span>` : ""}
-          </p>
-        </div>
-        <div class="actions">
-          <a class="btn btn-register" title="Register for ${event.title}" href="${eventPermalink}" target="_blank">
-            <span>Register</span>
-          </a>
-        </div>
-      </div>
+<div class="event">
+  ${event.series ? `<p class="kicker"><span>${eventTypeText}</span> <span class="series">#${event.series}</span></p>` : ""}
+  <h3><a href="${eventPermalink}" title="${event.title}" target="_blank">${event.title}</a></h3>
+  <p class="summary">${event.summary}</p>
+  <div class="event-details">
+    <p className="text-xl text-center font-light space-x-3">
+      <strong>${dateString}</strong> ${timeString ? `<br/><span>${timeString}</span>` : ""}
+    </p>
+  </div>
+  <div class="actions">
+    <a class="btn btn-register" title="Register for ${event.title}" href="${eventPermalink}" target="_blank">
+      <span>Register</span>
+    </a>
+  </div>
+</div>
       `
       })
       .join("")
@@ -494,7 +604,6 @@ export const generateNewsletter = (props: NewsletterEventProps) => {
   const newsletterHTML = `
 <div class="rail-newsletter">
   <div class="event-listing">
-    <h2>This Week's Events</h2>
     ${buildEventsHTML(allEvents)}
   </div>
 </div>

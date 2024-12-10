@@ -18,7 +18,7 @@ import {
 // Used in
 // - Issue Select dropdown
 // - Archive page
-export async function getAllIssues() {
+export const getAllIssues = cache(async () => {
   try {
     let allIssues: Issues[] = []
     let page = 1
@@ -89,9 +89,9 @@ export async function getAllIssues() {
     console.error("Error fetching All Issues data:", error)
     return null
   }
-}
+})
 
-export async function getIssues() {
+export const getIssues = cache(async () => {
   try {
     let allIssues: Issues[] = []
     let page = 1
@@ -125,7 +125,7 @@ export async function getIssues() {
     console.error("Error fetching getIssues:", error)
     return null
   }
-}
+})
 
 export const getCurrentIssueData = cache(async () => {
   try {
@@ -176,7 +176,7 @@ export const getGlobalSettings = cache(async () => {
 interface IssueDataProps {
   slug: string
 }
-export async function getIssueData(props: IssueDataProps) {
+export const getIssueData = cache(async (props: IssueDataProps) => {
   const { slug } = props
   const issueDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
@@ -287,7 +287,7 @@ export async function getIssueData(props: IssueDataProps) {
     console.error("Error fetching issue data:", error)
     return null
   }
-}
+})
 
 export const getSectionsByIssueId = cache(async (issueId: string, status: string) => {
   try {
@@ -315,7 +315,7 @@ export const getSectionsByIssueId = cache(async (issueId: string, status: string
   }
 })
 
-export async function getArticle(slug: string, status?: string) {
+export const getArticle = cache(async (slug: string, status?: string) => {
   const articleAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
     `?fields[]=slug` +
@@ -388,7 +388,7 @@ export async function getArticle(slug: string, status?: string) {
     console.error(error)
     return null
   }
-}
+})
 
 export const getEvent = cache(async (slug: string) => {
   const events = await directus.request(
@@ -563,7 +563,7 @@ export function getPermalink(props: PermalinkProps) {
 // Get contributor
 // NOTE: There are multiple contributors with the same slug
 // This returns all contributors with the same slug, but their specific name and bio information may be different
-export async function getContributor(slug: string) {
+export const getContributor = cache(async (slug: string) => {
   const issueDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors` +
     `?fields[]=id` +
@@ -621,7 +621,7 @@ export async function getContributor(slug: string) {
     console.error("Failed to fetch getContributor data", error)
     return null
   }
-}
+})
 
 export const getAllContributors = cache(async () => {
   try {

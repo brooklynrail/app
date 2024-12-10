@@ -11,6 +11,7 @@ import Header from "../header"
 import PreviewHeader from "../preview/previewHead"
 import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
 import ScreenIndicator from "../screenIndicator"
+import Banners from "../banner"
 
 export interface PaperProps {
   pageClass: string
@@ -46,7 +47,8 @@ const Paper = (props: PaperProps) => {
             <PreviewHeader previewURL={previewURL} />
           ) : (
             <>
-              <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
+              <Header type={type ? type : PaperType.Default} currentIssue={currentIssue} />
+              {banners && isHomepage && currentIssue && <Banners currentIssue={currentIssue} banners={banners} />}
               <NavBar navData={navData} isHomepage={isHomepage} />
             </>
           )}

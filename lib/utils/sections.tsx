@@ -95,7 +95,7 @@ export const getSectionData = cache(async (props: SectionDataProps) => {
 })
 
 // Group articles by issue
-export const groupByIssue = (articles: Articles[]) => {
+export const groupByIssue = cache((articles: Articles[]) => {
   return articles.reduce((acc: Record<string, Articles[]>, article) => {
     const issueId = article.issue.id // or any unique identifier for the issue
     if (!acc[issueId]) {
@@ -104,4 +104,4 @@ export const groupByIssue = (articles: Articles[]) => {
     acc[issueId].push(article)
     return acc
   }, {})
-}
+})
