@@ -177,7 +177,7 @@ export async function getFeaturedEvents() {
       `&fields[]=start_date` +
       `&fields[]=all_day` +
       `&fields[]=youtube_id` +
-      `&sort=start_date` +
+      `&sort=-start_date` +
       `&filter[end_date][_lte]=$NOW` +
       `&filter[featured][_eq]=true` +
       `&filter[youtube_id][_nempty]=true` +
