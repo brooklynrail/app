@@ -9,8 +9,28 @@ module.exports = {
   productionBrowserSourceMaps: true,
   trailingSlash: true,
   images: {
-    domains: ["localhost", "studio.brooklynrail.org", "brooklynrail.org", "storage.googleapis.com", "i.ytimg.com"],
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "localhost",
+        port: "",
+        pathname: "/**",
+        search: "",
+      },
+      {
+        protocol: "https",
+        hostname: "brooklynrail.org",
+        port: "",
+        pathname: "/**",
+        search: "",
+      },
+      {
+        protocol: "https",
+        hostname: "studio.brooklynrail.org",
+        port: "",
+        pathname: "/assets/**",
+        search: "",
+      },
       {
         protocol: "https",
         hostname: "i.ytimg.com",
@@ -25,6 +45,58 @@ module.exports = {
     fetches: {
       fullUrl: true,
     },
+  },
+
+  // Caching
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains",
+          },
+          {
+            key: "Content-Security-Policy",
+            value:
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; object-src 'none'; frame-ancestors 'none';",
+          },
+        ],
+      },
+      {
+        // API routes should use Next.js's built-in caching
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store",
+          },
+        ],
+      },
+      {
+        // All other routes (pages)
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, must-revalidate",
+          },
+        ],
+      },
+    ]
   },
   // Redirects
   async redirects() {
@@ -419,40 +491,6 @@ module.exports = {
         source: "/rss",
         destination: "/",
         permanent: false,
-      },
-    ]
-  },
-  async headers() {
-    return [
-      {
-        // Static assets (images, etc)
-        source: "/assets/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        // API routes should use Next.js's built-in caching
-        source: "/api/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "no-cache, no-store",
-          },
-        ],
-      },
-      {
-        // All other routes (pages)
-        source: "/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, must-revalidate",
-          },
-        ],
       },
     ]
   },
