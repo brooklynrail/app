@@ -6,11 +6,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
+        protocol: "http",
         hostname: "localhost",
-        port: "",
-        pathname: "/**",
-        search: "",
+        port: "8055",
+        pathname: "/assets/**",
       },
       {
         protocol: "https",
@@ -33,23 +32,6 @@ const nextConfig = {
         pathname: "/vi/**",
         search: "",
       },
-
-      // For localhost Directus
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "8055",
-        pathname: "/**",
-        search: "",
-      },
-      // For localhost front-end images in the /public folder
-      {
-        protocol: "https",
-        hostname: "localhost",
-        port: "3000",
-        pathname: "/**",
-        search: "",
-      },
     ],
   },
   // Logging
@@ -62,28 +44,6 @@ const nextConfig = {
   // Caching
   async headers() {
     return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
-          },
-          {
-            key: "Strict-Transport-Security",
-            value: "max-age=31536000; includeSubDomains",
-          },
-          {
-            key: "Content-Security-Policy",
-            value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; object-src 'none'; frame-ancestors 'self' https://brooklynrail.org https://*.brooklynrail.org;",
-          },
-        ],
-      },
       {
         // API routes should use Next.js's built-in caching
         source: "/api/:path*",
