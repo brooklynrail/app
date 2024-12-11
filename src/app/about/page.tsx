@@ -4,6 +4,34 @@ import { getPermalink, PageType } from "../../../lib/utils"
 import { getNavData } from "../../../lib/utils/homepage"
 import { getAllPages, getPageData } from "../../../lib/utils/pages"
 import Page from "../components/page"
+import { Metadata } from "next"
+import { stripHtml } from "string-strip-html"
+
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const data = await getData()
+
+  if (!data.pageData || !data.permalink) {
+    return {}
+  }
+
+  const { title, body_text } = data.pageData
+  const ogtitle = stripHtml(title).result
+  const ogdescription = body_text ? stripHtml(body_text).result : ""
+
+  return {
+    title: ogtitle,
+    description: ogdescription,
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: ogtitle,
+      description: ogdescription,
+      url: data.permalink,
+      type: "article",
+    },
+  }
+}
 
 export default async function AboutPage() {
   const data = await getData()
@@ -12,10 +40,6 @@ export default async function AboutPage() {
   }
 
   return <Page {...data} />
-}
-
-interface PageParams {
-  slug: string
 }
 
 async function getData() {

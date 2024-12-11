@@ -4,6 +4,8 @@ import Page from "../../components/page"
 import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
 import { getNavData } from "../../../../lib/utils/homepage"
 import { getAllPages, getPageData } from "../../../../lib/utils/pages"
+import { stripHtml } from "string-strip-html"
+import { Metadata } from "next"
 
 export interface PageProps {
   navData: Homepage
@@ -18,6 +20,32 @@ export interface PageProps {
 interface PageParams {
   slug: string
   thisIssueData: Issues
+}
+
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const data = await getData({ params })
+
+  if (!data.pageData || !data.permalink) {
+    return {}
+  }
+
+  const { title, body_text } = data.pageData
+  const ogtitle = stripHtml(title).result
+  const ogdescription = body_text ? stripHtml(body_text).result : ""
+
+  return {
+    title: ogtitle,
+    description: ogdescription,
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: ogtitle,
+      description: ogdescription,
+      url: data.permalink,
+      type: "article",
+    },
+  }
 }
 
 export default async function ChildPage({ params }: { params: PageParams }) {
