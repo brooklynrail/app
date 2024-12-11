@@ -4,12 +4,14 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   trailingSlash: true,
   images: {
+    domains: ["localhost", "studio.brooklynrail.org", "brooklynrail.org"],
     remotePatterns: [
       {
-        protocol: "http",
+        protocol: "https",
         hostname: "localhost",
-        port: "8055",
-        pathname: "/assets/**",
+        port: "",
+        pathname: "/**",
+        search: "",
       },
       {
         protocol: "https",
@@ -463,3 +465,5 @@ const nextConfig = {
     ]
   },
 }
+
+module.exports = nextConfig
