@@ -25,12 +25,20 @@ export const revalidateArticle = cache(async (data: Articles) => {
   })
   const url = new URL(permalink)
   revalidatePath(url.pathname)
-  revalidatePath(`/section/${data.section.slug}`)
-  revalidatePath(`/issues/${data.issue.year}-${data.issue.month}/`)
   revalidatePath(`/${data.issue.year}/${data.issue.month}/${data.section.slug}`)
+  return url.pathname
+})
+
+export const revalidateSection = cache(async (data: Sections) => {
+  const sectionPath = `/section/${data.slug}`
+  revalidatePath(sectionPath)
+  return sectionPath
+})
+
+export const revalidateHomepage = cache(async () => {
   revalidatePath(`/`)
   revalidatePath(`/sitemap.xml`)
-  return url.pathname
+  return `/`
 })
 
 export const revalidateIssue = cache(async (data: Issues) => {

@@ -2,7 +2,9 @@ import {
   revalidateArticle,
   revalidateContributor,
   revalidateEvent,
+  revalidateHomepage,
   revalidateIssue,
+  revalidateSection,
   RevalidateType,
 } from "../../../../lib/utils/revalidate"
 import { Articles, Contributors, Events } from "../../../../lib/types"
@@ -46,9 +48,13 @@ export async function GET(request: Request) {
         if (!response.ok) throw new Error("Failed to fetch article")
         const articleData: Articles = await response.json()
         path = await revalidateArticle(articleData)
+        const homePath = await revalidateHomepage()
         const issuePath = await revalidateIssue(articleData.issue)
+        const sectionPath = await revalidateSection(articleData.section)
 
-        return new Response(`Revalidation started for paths: ${path}, and ${issuePath}`, { status: 200 })
+        return new Response(`Revalidation started for paths: ${homePath}, ${path}, ${sectionPath}, and ${issuePath}`, {
+          status: 200,
+        })
 
       case RevalidateType.Contributors:
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`)
