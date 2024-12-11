@@ -55,7 +55,7 @@ interface ContributorsParams {
 }
 
 async function getData({ params }: { params: ContributorsParams }) {
-  const slug = params.slug
+  const { slug } = await params
 
   const navData = await getNavData()
   if (!navData) {

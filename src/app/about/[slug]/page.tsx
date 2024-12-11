@@ -35,7 +35,7 @@ interface PageParams {
 }
 
 async function getData({ params }: { params: PageParams }) {
-  const slug = String(params.slug)
+  const { slug } = await params
 
   const navData = await getNavData()
   if (!navData) {

@@ -126,10 +126,7 @@ export default async function EventPageController({ params }: { params: EventPar
 }
 
 async function getData({ params }: { params: EventParams }) {
-  const year: string = params.year
-  const month: string = params.month
-  const day: string = params.day
-  const slug: string = params.slug.toString()
+  const { year, month, day, slug } = await params
 
   // Month & Day —— Both need to have a leading zero if they are less than 10
   // otherwise it should go to a 404 page

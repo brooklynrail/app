@@ -5,12 +5,7 @@ import { getNavData } from "../../../lib/utils/homepage"
 import { getAllPages, getPageData } from "../../../lib/utils/pages"
 import Page from "../components/page"
 
-interface PageParams {
-  slug: string
-  thisIssueData: Issues
-}
-
-export default async function AboutPage({ params }: { params: PageParams }) {
+export default async function AboutPage() {
   const data = await getData()
   if (!data.pageData || !data.permalink) {
     return notFound()

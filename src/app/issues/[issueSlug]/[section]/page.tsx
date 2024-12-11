@@ -52,8 +52,7 @@ interface SectionParams {
 }
 
 async function getData({ params }: { params: SectionParams }) {
-  const issueSlug = params.issueSlug
-  const section = params.section.toString()
+  const { issueSlug, section } = await params
 
   const navData = await getNavData()
   if (!navData) {

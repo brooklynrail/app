@@ -82,7 +82,7 @@ interface PreviewParams {
 }
 
 async function getData({ params }: { params: PreviewParams }) {
-  const id = params.id
+  const { id } = await params
 
   const navData = await getNavData()
   if (!navData) {

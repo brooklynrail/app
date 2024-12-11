@@ -69,10 +69,7 @@ interface ArticleParams {
 }
 
 async function getData({ params }: { params: ArticleParams }) {
-  const year: string = params.year
-  const month: string = params.month
-  const section: string = params.section
-  const slug: string = params.slug.toString()
+  const { year, month, section, slug } = await params
 
   // Month & Day —— Both need to have a leading zero if they are less than 10
   // otherwise it should go to a 404 page

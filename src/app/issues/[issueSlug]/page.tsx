@@ -55,7 +55,7 @@ interface IssueParams {
 }
 
 async function getData({ params }: { params: IssueParams }) {
-  const issueSlug = params.issueSlug
+  const { issueSlug } = await params
 
   const navData = await getNavData()
   if (!navData) {
