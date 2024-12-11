@@ -156,7 +156,7 @@ export const metadata = {
     },
     description:
       "The Brooklyn Rail is a journal committed to providing an independent forum for visual arts, culture, and politics throughout New York City and beyond.",
-    url: "https://brooklynrail.org",
+    url: "https://brooklynrail.org/",
     type: "website",
     image: share_card,
   },
@@ -168,6 +168,7 @@ export const metadata = {
     creator: "@thebrooklynrail",
     images: [share_card],
   },
+  canonical: "https://brooklynrail.org/",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
