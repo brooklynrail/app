@@ -96,7 +96,7 @@ const HeaderHomepage = (props: HeaderProps) => {
 
       <div className="relative h-[calc(100vh-26.5rem)] tablet-lg:h-[calc(100vh-20.5rem)]">
         <div className="absolute inset-0 bg-black bg-opacity-15 z-[1]" />
-        <VideoBG videoRef={videoRef} />
+        <VideoBG videoRef={videoRef as React.RefObject<HTMLVideoElement>} />
         <div className="sticky top-0 z-[2]">
           <div className="p-3 pb-9 tablet:px-6">
             <Link href={permalink} className="w-full space-y-3">
