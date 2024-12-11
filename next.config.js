@@ -1,10 +1,5 @@
 const nextConfig = {
   reactStrictMode: true,
-}
-
-module.exports = nextConfig
-
-module.exports = {
   staticPageGenerationTimeout: 1000,
   productionBrowserSourceMaps: true,
   trailingSlash: true,
@@ -58,10 +53,6 @@ module.exports = {
             value: "nosniff",
           },
           {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-          {
             key: "Referrer-Policy",
             value: "strict-origin-when-cross-origin",
           },
@@ -72,7 +63,7 @@ module.exports = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; object-src 'none'; frame-ancestors 'none';",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; object-src 'none'; frame-ancestors 'self' https://brooklynrail.org https://*.brooklynrail.org;",
           },
         ],
       },
@@ -495,3 +486,5 @@ module.exports = {
     ]
   },
 }
+
+module.exports = nextConfig
