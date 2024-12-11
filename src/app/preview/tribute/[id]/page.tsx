@@ -53,8 +53,9 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
 }
 
 export default async function TributePreviewPage({ params }: { params: PreviewParams }) {
-  const { isEnabled } = draftMode()
-  console.log("Draft mode enabled: ", isEnabled)
+  const draft = await draftMode()
+  draft.enable()
+  console.log("Draft mode enabled: ", draft.isEnabled)
 
   const data = await getData({ params })
 
@@ -70,10 +71,10 @@ export default async function TributePreviewPage({ params }: { params: PreviewPa
     permalink,
     directusUrl,
     previewPassword,
-    isEnabled,
+    isEnabled: draft.isEnabled,
   }
 
-  return <TributePreview {...tributePreviewProps} isEnabled={isEnabled} />
+  return <TributePreview {...tributePreviewProps} isEnabled={draft.isEnabled} />
 }
 
 interface PreviewParams {

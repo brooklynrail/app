@@ -66,8 +66,9 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
 }
 
 export default async function ArticlePreviewPage({ params }: { params: PreviewParams }) {
-  const { isEnabled } = draftMode()
-  console.log("Draft mode enabled: ", isEnabled)
+  const draft = await draftMode()
+  draft.enable()
+  console.log("Draft mode enabled: ", draft.isEnabled)
 
   const data = await getData({ params })
 
@@ -84,7 +85,7 @@ export default async function ArticlePreviewPage({ params }: { params: PreviewPa
     currentSection,
     directusUrl,
     previewPassword,
-    isEnabled,
+    isEnabled: draft.isEnabled,
   }
 
   return <ArticlePreview {...articlePreviewProps} />
