@@ -26,11 +26,28 @@ const CollectionCriticsPage = (collection: Collections) => {
     type: PageType.SuperSection,
   })
 
-  const guestCritic = leadArticle.contributors[0].contributors_id
-    ? `${leadArticle.contributors[0].contributors_id?.first_name} ${leadArticle.contributors[0].contributors_id?.last_name}`
-    : ""
+  // Get all valid contributors
+  const contributors = leadArticle.contributors
+    .map(({ contributors_id }) => {
+      if (!contributors_id) return null
+      return `${contributors_id.first_name} ${contributors_id.last_name}`
+    })
+    .filter(Boolean)
+  // Format the contributors list with appropriate separators
+  const guestCritics = contributors.reduce((acc: string, name: string | null, i: number) => {
+    if (i === 0) return name || ""
 
-  const guestCriticHead = `Guest Critic: ${guestCritic}`
+    let separator = ", "
+    if (contributors.length === 2) {
+      separator = " and "
+    } else if (i === contributors.length - 1) {
+      separator = ", and "
+    }
+
+    return acc + separator + name
+  }, "")
+
+  const guestCriticHead = `Guest Critic${contributors.length > 1 ? "s" : ""}: ${guestCritics}`
 
   return (
     <div key={collection.id} className={`collection theme-${section.slug}`}>
