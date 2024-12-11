@@ -33,6 +33,23 @@ const nextConfig = {
         pathname: "/vi/**",
         search: "",
       },
+
+      // For localhost Directus
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8055",
+        pathname: "/**",
+        search: "",
+      },
+      // For localhost front-end images in the /public folder
+      {
+        protocol: "https",
+        hostname: "localhost",
+        port: "3000",
+        pathname: "/**",
+        search: "",
+      },
     ],
   },
   // Logging
@@ -486,5 +503,3 @@ const nextConfig = {
     ]
   },
 }
-
-module.exports = nextConfig
