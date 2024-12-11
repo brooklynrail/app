@@ -2,14 +2,13 @@
 import { sendGAEvent } from "@next/third-parties/google"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { SwipeableHandlers, useSwipeable } from "react-swipeable"
 import { Articles } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
 import { usePostHog } from "posthog-js/react"
 import { usePopup } from "../components/popupProvider"
 
 // Define event types for navigation
-type NavigationMethod = "swipe" | "keyboard" | "click"
+type NavigationMethod = "keyboard" | "click"
 
 interface PreloadedArticles {
   [slug: string]: Articles
@@ -140,13 +139,6 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [handleKeyDown])
 
-  const swipeHandlers: SwipeableHandlers = useSwipeable({
-    onSwipedLeft: () => navigateTo(nextArticle?.slug || null, "swipe"),
-    onSwipedRight: () => navigateTo(prevArticle?.slug || null, "swipe"),
-    preventScrollOnSwipe: true,
-    trackMouse: false,
-  })
-
   const goToNextArticle = useCallback(() => {
     navigateTo(nextArticle?.slug || null, "click")
   }, [nextArticle, navigateTo])
@@ -159,7 +151,6 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     currentArticle,
     nextArticle: preloadedArticles[nextArticle?.slug] || nextArticle,
     prevArticle: preloadedArticles[prevArticle?.slug] || prevArticle,
-    swipeHandlers,
     animationState,
     goToNextArticle,
     goToPrevArticle,
