@@ -6,10 +6,10 @@ import { EventsPeople } from "../../../../lib/types"
 import EventVideo from "./eventVideo"
 import Sponsor from "../events/sponsor"
 import { Poets, SoundWaves } from "."
-import ReactMarkdown from "react-markdown"
 import Person from "./person"
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
 import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "../../../../lib/utils/events"
+import Markdown from "markdown-to-jsx"
 
 const EventPageBody = (props: EventProps) => {
   const { eventData, eventTypes } = props
@@ -117,7 +117,7 @@ const EventPageBody = (props: EventProps) => {
               <h3 className="text-lg tablet-lg:text-xl uppercase font-bold">In this Talk</h3>
               {body && (
                 <div className="text-xl tablet-lg:text-3xl content">
-                  <ReactMarkdown>{body}</ReactMarkdown>
+                  <Markdown>{body}</Markdown>
                 </div>
               )}
             </div>

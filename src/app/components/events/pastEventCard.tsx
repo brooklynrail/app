@@ -79,7 +79,7 @@ const PlayButton = () => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <rect x="0.5" y="0.5" width="59" height="59" rx="3.5" fill="#18181B" fill-opacity="0.7" />
+        <rect x="0.5" y="0.5" width="59" height="59" rx="3.5" fill="#18181B" fillOpacity="0.7" />
         <rect x="0.5" y="0.5" width="59" height="59" rx="3.5" stroke="white" />
         <path d="M43 30L22.75 41.6913L22.75 18.3087L43 30Z" fill="white" />
       </svg>

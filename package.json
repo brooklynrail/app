@@ -27,6 +27,7 @@
     "html-react-parser": "^5.1.12",
     "lodash.isequal": "^4.5.0",
     "luxon": "^3.5.0",
+    "markdown-to-jsx": "^7.7.1",
     "next": "15.1.0",
     "posthog-js": "^1.190.2",
     "react": "^19.0.0",
@@ -34,7 +35,6 @@
     "react-instantsearch": "^7.13.5",
     "react-instantsearch-nextjs": "^0.3.15",
     "react-instantsearch-router-nextjs": "^7.13.6",
-    "react-markdown": "^9.0.1",
     "schema-dts": "^1.1.2",
     "sharp": "^0.33.5",
     "string-strip-html": "^13.4.8"
