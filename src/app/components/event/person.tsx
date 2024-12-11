@@ -1,17 +1,20 @@
 "use client"
-import Link from "next/link"
+import { faInstagram } from "@fortawesome/free-brands-svg-icons"
+import { faGlobeAmericas, faLink } from "@fortawesome/free-solid-svg-icons"
+import type { FontAwesomeIconProps } from "@fortawesome/react-fontawesome"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import parse from "html-react-parser"
+import Link from "next/link"
 import { People, RelatedLinks } from "../../../../lib/types"
 import PortraitImage from "../portraitImage"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faInstagram } from "@fortawesome/free-brands-svg-icons"
-import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons"
-import { faLink } from "@fortawesome/free-solid-svg-icons"
 
 interface PersonProps {
   person: People
   index: number
 }
+
+// Add this type assertion to help TypeScript understand the component
+const Icon = FontAwesomeIcon as React.ComponentType<FontAwesomeIconProps>
 
 const Person = (props: PersonProps) => {
   const { person, index } = props
@@ -33,7 +36,7 @@ const Person = (props: PersonProps) => {
               <ul className="text-sm list-disc space-y-0.5">
                 {website && (
                   <li className="space-x-1 flex items-center">
-                    <FontAwesomeIcon className="relative w-4 top-[1px] no-underline" icon={faGlobeAmericas} />
+                    <Icon className="relative w-4 top-[1px] no-underline" icon={faGlobeAmericas} />
                     <Link href={website} target="_blank" rel="noopener noreferrer u-url">
                       {person.website}
                     </Link>
@@ -41,7 +44,7 @@ const Person = (props: PersonProps) => {
                 )}
                 {instagram && (
                   <li className="space-x-1 flex items-center">
-                    <FontAwesomeIcon className="relative w-4 top-[1px] no-underline" icon={faInstagram} />
+                    <Icon className="relative w-4 top-[1px] no-underline" icon={faInstagram} />
                     <Link href={instagram_url} target="_blank" rel="noopener noreferrer u-url">
                       {instagram}
                     </Link>
@@ -50,7 +53,7 @@ const Person = (props: PersonProps) => {
                 {related_links &&
                   related_links.map((link: RelatedLinks, index) => (
                     <li key={index} className="space-x-1 flex items-center">
-                      <FontAwesomeIcon className="relative w-4 top-[1px] no-underline" icon={faLink} />
+                      <Icon className="relative w-4 top-[1px] no-underline" icon={faLink} />
                       <Link href={link.url}>{parse(link.text)}</Link>
                     </li>
                   ))}

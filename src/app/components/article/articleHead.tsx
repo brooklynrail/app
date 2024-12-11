@@ -1,14 +1,9 @@
-import Link from "next/link"
-import { Articles, Issues, Sections } from "../../../../lib/types"
-import { stripHtml } from "string-strip-html"
 import parse from "html-react-parser"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSquareFacebook, faTwitter } from "@fortawesome/free-brands-svg-icons"
-
-import FeaturedImage from "../featuredImage"
-import Title, { TitleType } from "../collections/promos/title"
+import { Articles, Issues, Sections } from "../../../../lib/types"
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Kicker from "../collections/promos/kicker"
+import Title, { TitleType } from "../collections/promos/title"
+import FeaturedImage from "../featuredImage"
 
 interface ArticleHeadProps {
   permalink: string
