@@ -26,16 +26,38 @@ const SectionCriticsPage = (props: SectionProps) => {
         const priority = index === 0 ? true : false
         // get the first article where featured is true, if none, get the first article in the array
         const featuredArticle = issueArticles.find((article) => article.featured === true) || issueArticles[0]
-        const featuredContributor = featuredArticle.contributors[0].contributors_id
-        const guestCritic = featuredContributor
-          ? `${featuredContributor.first_name} ${featuredContributor.last_name}`
-          : null
+
+        // Get all valid contributors
+        const contributors = featuredArticle.contributors
+          .map(({ contributors_id }) => {
+            if (!contributors_id) return null
+            return `${contributors_id.first_name} ${contributors_id.last_name}`
+          })
+          .filter(Boolean)
+
+        // Format the contributors list with appropriate separators
+        const guestCritics = contributors.reduce((acc: string, name, i) => {
+          const isLast = i === contributors.length - 1
+          let separator = ", "
+
+          if (contributors.length > 2 && isLast) {
+            separator = ", and "
+          } else if (contributors.length === 2 && isLast) {
+            separator = " and "
+          } else if (isLast) {
+            separator = ""
+          }
+
+          return acc + name + separator
+        }, "")
 
         return (
           <div key={index} className="py-6">
             <div className="px-3 tablet-lg:px-6 py-3">
               <Kicker issue={featuredArticle.issue} kicker={featuredArticle.kicker} articleID={featuredArticle.id} />
-              <h2 className="font-serif font-medium text-3xl tablet-lg:text-4xl">{`Guest Critic: ${guestCritic}`}</h2>
+              <h2 className="font-serif font-medium text-3xl tablet-lg:text-4xl">
+                {`Guest Critic${contributors.length > 1 ? "s" : ""}: ${guestCritics}`}
+              </h2>
             </div>
             <div className="block">
               <Frame
