@@ -34,21 +34,18 @@ const SectionCriticsPage = (props: SectionProps) => {
             return `${contributors_id.first_name} ${contributors_id.last_name}`
           })
           .filter(Boolean)
-
         // Format the contributors list with appropriate separators
-        const guestCritics = contributors.reduce((acc: string, name, i) => {
-          const isLast = i === contributors.length - 1
-          let separator = ", "
+        const guestCritics = contributors.reduce((acc: string, name: string | null, i: number) => {
+          if (i === 0) return name || ""
 
-          if (contributors.length > 2 && isLast) {
-            separator = ", and "
-          } else if (contributors.length === 2 && isLast) {
+          let separator = ", "
+          if (contributors.length === 2) {
             separator = " and "
-          } else if (isLast) {
-            separator = ""
+          } else if (i === contributors.length - 1) {
+            separator = ", and "
           }
 
-          return acc + name + separator
+          return acc + separator + name
         }, "")
 
         return (
