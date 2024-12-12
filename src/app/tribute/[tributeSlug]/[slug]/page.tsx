@@ -42,8 +42,7 @@ interface TributeParams {
 }
 
 async function getData({ params }: { params: TributeParams }) {
-  const tributeSlug = params.tributeSlug
-  const slug = params.slug
+  const { tributeSlug, slug } = await params
 
   const navData = await getNavData()
   if (!navData) {

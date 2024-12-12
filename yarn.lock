@@ -547,6 +547,11 @@
   dependencies:
     tslib "^2.8.0"
 
+"@types/cookie@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.6.0.tgz#eac397f28bf1d6ae0ae081363eca2f425bedf0d5"
+  integrity sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==
+
 "@types/dom-speech-recognition@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@types/dom-speech-recognition/-/dom-speech-recognition-0.0.1.tgz#e326761a04b4a49c0eec2ac7948afc1c6aa12baa"
@@ -561,6 +566,11 @@
   version "3.58.1"
   resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.58.1.tgz#71ce3dec44de1452f56641d2c87c7dd8ea964b4d"
   integrity sha512-X9QTSvGJ0nCfMzYOnaVs/k6/4L+7F5uCS+4iUmkLEls6J9S/Phv+m/i3mDeyc49ZBgwab3EFO1HEoBY7k98EGQ==
+
+"@types/history@^4.7.11":
+  version "4.7.11"
+  resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.11.tgz#56588b17ae8f50c53983a524fc3cc47437969d64"
+  integrity sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==
 
 "@types/hogan.js@^3.0.0":
   version "3.0.5"
@@ -618,7 +628,24 @@
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-19.0.2.tgz#ad21f9a1ee881817995fd3f7fd33659c87e7b1b7"
   integrity sha512-c1s+7TKFaDRRxr1TxccIX2u7sfCnc3RxkVyBIUA2lCpyqCF+QoAwQ/CBg7bsMdVwP120HEH143VQezKtef5nCg==
 
-"@types/react@^19.0.1":
+"@types/react-router-dom@^5.3.3":
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-5.3.3.tgz#e9d6b4a66fcdbd651a5f106c2656a30088cc1e83"
+  integrity sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==
+  dependencies:
+    "@types/history" "^4.7.11"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router@*":
+  version "5.1.20"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.1.20.tgz#88eccaa122a82405ef3efbcaaa5dcdd9f021387c"
+  integrity sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==
+  dependencies:
+    "@types/history" "^4.7.11"
+    "@types/react" "*"
+
+"@types/react@*", "@types/react@^19.0.1":
   version "19.0.1"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-19.0.1.tgz#a000d5b78f473732a08cecbead0f3751e550b3df"
   integrity sha512-YW6614BDhqbpR5KtUYzTA+zlA7nayzJRA9ljz9CQoxthR0sDisYZLuvSMsil36t4EH/uAt8T52Xb4sVw17G+SQ==
@@ -752,10 +779,10 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-algoliasearch-helper@3.22.5:
-  version "3.22.5"
-  resolved "https://registry.yarnpkg.com/algoliasearch-helper/-/algoliasearch-helper-3.22.5.tgz#2fcc26814e10a121a2c2526a1b05c754061c56c0"
-  integrity sha512-lWvhdnc+aKOKx8jyA3bsdEgHzm/sglC4cYdMG4xSQyRiPLJVJtH/IVYZG3Hp6PkTEhQqhyVYkeP9z2IlcHJsWw==
+algoliasearch-helper@3.22.6:
+  version "3.22.6"
+  resolved "https://registry.yarnpkg.com/algoliasearch-helper/-/algoliasearch-helper-3.22.6.tgz#6a31c67d277a32f3f7ae1b8a6e57ca73f1e1a0b0"
+  integrity sha512-F2gSb43QHyvZmvH/2hxIjbk/uFdO2MguQYTFP7J+RowMW1csjIODMobEnpLI8nbLQuzZnGZdIxl5Bpy1k9+CFQ==
   dependencies:
     "@algolia/events" "^4.0.1"
 
@@ -1205,6 +1232,11 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
+
+cookie@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-1.0.2.tgz#27360701532116bd3f1f9416929d176afe1e4610"
+  integrity sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==
 
 core-js@^3.38.1:
   version "3.39.0"
@@ -2309,41 +2341,23 @@ instantsearch-ui-components@0.9.0:
   dependencies:
     "@babel/runtime" "^7.1.2"
 
-instantsearch.js@4.75.2:
-  version "4.75.2"
-  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.75.2.tgz#cbc88ed37b8c8763daad6235972aacadd22b7a76"
-  integrity sha512-+NER2ZxOzDcoM6/ujUpw5XBPXINJ59K7vH+hRCQQhEBBxv1IASzEdMNYKcbXP+nipTOpTPQ5rk6Pt2YWPi+VzA==
+instantsearch.js@4.75.6:
+  version "4.75.6"
+  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.75.6.tgz#72c0c315c91cc72bcc7219027b91ad0e765e038d"
+  integrity sha512-rQyF3VHmxdwR+9VFhwrBtKgAWjPIpN8QdjSOq72HHJOx4wZhLfBhJhOhSDhjl5GP1a1+Ly2/CI62K8ZDVeAEHw==
   dependencies:
     "@algolia/events" "^4.0.1"
     "@types/dom-speech-recognition" "^0.0.1"
     "@types/google.maps" "^3.55.12"
     "@types/hogan.js" "^3.0.0"
     "@types/qs" "^6.5.3"
-    algoliasearch-helper "3.22.5"
+    algoliasearch-helper "3.22.6"
     hogan.js "^3.0.2"
     htm "^3.0.0"
     instantsearch-ui-components "0.9.0"
     preact "^10.10.0"
     qs "^6.5.1 < 6.10"
-    search-insights "^2.15.0"
-
-instantsearch.js@4.75.3:
-  version "4.75.3"
-  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.75.3.tgz#f5c921b6f9f80f244d043efb9ce4b730beb3205c"
-  integrity sha512-WVVWlqR3XDqJjrEt4+kQXudrdxWIhkxzUhwxFnccB/RdsMvVHp+N6bIcVSIMGyRo/rGfGZ5Rki2E++iGwOljtA==
-  dependencies:
-    "@algolia/events" "^4.0.1"
-    "@types/dom-speech-recognition" "^0.0.1"
-    "@types/google.maps" "^3.55.12"
-    "@types/hogan.js" "^3.0.0"
-    "@types/qs" "^6.5.3"
-    algoliasearch-helper "3.22.5"
-    hogan.js "^3.0.2"
-    htm "^3.0.0"
-    instantsearch-ui-components "0.9.0"
-    preact "^10.10.0"
-    qs "^6.5.1 < 6.10"
-    search-insights "^2.15.0"
+    search-insights "^2.17.2"
 
 internal-slot@^1.0.5:
   version "1.0.6"
@@ -3272,48 +3286,30 @@ react-dom@^19.0.0:
   dependencies:
     scheduler "^0.25.0"
 
-react-instantsearch-core@7.13.5:
-  version "7.13.5"
-  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.13.5.tgz#4b05b5ddfe55192d0be84d7202a52131543397cc"
-  integrity sha512-ELwCuNdssJxk/FCj7cApnd/IhQHtcGFEyQRyJtdskmIM8wHJWPZIp/z1dlsNTCg8f5OsyVw6nNWGjBYN2Gz9TQ==
+react-instantsearch-core@7.13.9:
+  version "7.13.9"
+  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.13.9.tgz#f6bcf02150c770ca82005d18ff53b77eb6073619"
+  integrity sha512-xPCLbDErcrEuu9EGZJclsSTPmrIucQdBxqP3OiQSgh8xeRL7juQgqITukTqbfarloC3gRiZFWbd/NtAb+SmJ2g==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    algoliasearch-helper "3.22.5"
-    instantsearch.js "4.75.2"
+    algoliasearch-helper "3.22.6"
+    instantsearch.js "4.75.6"
     use-sync-external-store "^1.0.0"
 
-react-instantsearch-core@7.13.6:
-  version "7.13.6"
-  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.13.6.tgz#73c81990a34fa9cbdec671515912a0d79954f7b9"
-  integrity sha512-ZFSGnhbqI8OF7Pi1MYkSFBJxd9A5qFJkb7y6Xd6sUm98xu6D4U4P6uvxPucihPwgTTj8YwTGe/lwcDIYPGqXNw==
-  dependencies:
-    "@babel/runtime" "^7.1.2"
-    algoliasearch-helper "3.22.5"
-    instantsearch.js "4.75.3"
-    use-sync-external-store "^1.0.0"
+react-instantsearch-nextjs@^0.3.20:
+  version "0.3.20"
+  resolved "https://registry.yarnpkg.com/react-instantsearch-nextjs/-/react-instantsearch-nextjs-0.3.20.tgz#e756366e8c01db4e434dd1d84b6f9a5a170079d8"
+  integrity sha512-3ZLFom2beqQ3oNUKH+ddrFy/U0Ll/qcMmhj5eenSUdJBRBz1gxbex/QrFLY2XQ27FZQ+qnRtns4OfcWmbO67Bw==
 
-react-instantsearch-nextjs@^0.3.15:
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/react-instantsearch-nextjs/-/react-instantsearch-nextjs-0.3.15.tgz#fab4af2356976fe6a65a5a5ee5a53899870f14d1"
-  integrity sha512-4iE8YT+7y7TSNHxjilCT+fvkylUSgcgXbCpYN9d6hPBgP7cAILBdxXVjGPN3x5diquyCgwoBUWh17QZPC6iv9Q==
-
-react-instantsearch-router-nextjs@^7.13.6:
-  version "7.13.6"
-  resolved "https://registry.yarnpkg.com/react-instantsearch-router-nextjs/-/react-instantsearch-router-nextjs-7.13.6.tgz#f909dc5dca87b55b60fb597c5eb73bdbae4f76db"
-  integrity sha512-4XyKcYU8uRX21u0Zu/gQpKyMOh2BT0gBcgZC/fqIDc+9fe0+mVlgRrda7jJEjELroWLM+q9d3ItplzWX6Ap8pw==
-  dependencies:
-    instantsearch.js "4.75.3"
-    react-instantsearch-core "7.13.6"
-
-react-instantsearch@^7.13.5:
-  version "7.13.5"
-  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.13.5.tgz#ab94bb1a21960804c62648b45e4dbc224ed859b0"
-  integrity sha512-F4cm+SyCpYBLYF3knY4B6OsgqGpq595I4l2Zaib3Qz6LTBM2CmpaPoARy7pIW7WUorTI26cwiWlw/0kzvsFOVA==
+react-instantsearch@^7.13.9:
+  version "7.13.9"
+  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.13.9.tgz#50f87893a3090698d067219bef526a7cef80ca7a"
+  integrity sha512-UlllLY5blY7PaRVKMHw3gg42iR3Wwtp7g4833Vq2OqcYX4blaxUuveY8O2vEvAiQYek+MQgXqrkHTLHU4DvuiQ==
   dependencies:
     "@babel/runtime" "^7.1.2"
     instantsearch-ui-components "0.9.0"
-    instantsearch.js "4.75.2"
-    react-instantsearch-core "7.13.5"
+    instantsearch.js "4.75.6"
+    react-instantsearch-core "7.13.9"
 
 react-is@^16.13.1:
   version "16.13.1"
@@ -3324,6 +3320,23 @@ react-property@2.0.2:
   version "2.0.2"
   resolved "https://registry.npmjs.org/react-property/-/react-property-2.0.2.tgz"
   integrity sha512-+PbtI3VuDV0l6CleQMsx2gtK0JZbZKbpdu5ynr+lbsuvtmgbNcS3VM0tuY2QjFNOcWxvXeHjDpy42RO+4U2rug==
+
+react-router-dom@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-7.0.2.tgz#cbd7ce2db7112f1bc3e9eee3657ad32d7515a913"
+  integrity sha512-VJOQ+CDWFDGaWdrG12Nl+d7yHtLaurNgAQZVgaIy7/Xd+DojgmYLosFfZdGz1wpxmjJIAkAMVTKWcvkx1oggAw==
+  dependencies:
+    react-router "7.0.2"
+
+react-router@7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-7.0.2.tgz#2820e107cb8cec8acc5db15a17470c056ea86022"
+  integrity sha512-m5AcPfTRUcjwmhBzOJGEl6Y7+Crqyju0+TgTQxoS4SO+BkWbhOrcfZNq6wSWdl2BBbJbsAoBUb8ZacOFT+/JlA==
+  dependencies:
+    "@types/cookie" "^0.6.0"
+    cookie "^1.0.1"
+    set-cookie-parser "^2.6.0"
+    turbo-stream "2.4.0"
 
 react@^19.0.0:
   version "19.0.0"
@@ -3512,10 +3525,10 @@ schema-dts@^1.1.2:
   resolved "https://registry.yarnpkg.com/schema-dts/-/schema-dts-1.1.2.tgz#82ccf71b5dcb80065a1cc5941888507a4ce1e44b"
   integrity sha512-MpNwH0dZJHinVxk9bT8XUdjKTxMYrA5bLtrrGmFA6PTLwlOKnhi67XoRd6/ty+Djt6ZC0slR57qFhZDNMI6DhQ==
 
-search-insights@^2.15.0:
-  version "2.17.2"
-  resolved "https://registry.yarnpkg.com/search-insights/-/search-insights-2.17.2.tgz#d13b2cabd44e15ade8f85f1c3b65c8c02138629a"
-  integrity sha512-zFNpOpUO+tY2D85KrxJ+aqwnIfdEGi06UH2+xEb+Bp9Mwznmauqc9djbnBibJO5mpfUPPa8st6Sx65+vbeO45g==
+search-insights@^2.17.2:
+  version "2.17.3"
+  resolved "https://registry.yarnpkg.com/search-insights/-/search-insights-2.17.3.tgz#8faea5d20507bf348caba0724e5386862847b661"
+  integrity sha512-RQPdCYTa8A68uM2jwxoY842xDhvx3E5LFL1LxvxCNMev4o5mLuokczhzjAgGwUZBAmOKZknArSxLKmXtIi2AxQ==
 
 semver@^6.3.1:
   version "6.3.1"
@@ -3531,6 +3544,11 @@ server-only@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/server-only/-/server-only-0.0.1.tgz#0f366bb6afb618c37c9255a314535dc412cd1c9e"
   integrity sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==
+
+set-cookie-parser@^2.6.0:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/set-cookie-parser/-/set-cookie-parser-2.7.1.tgz#3016f150072202dfbe90fadee053573cc89d2943"
+  integrity sha512-IOc8uWeOZgnb3ptbCURJWNjWUPcO3ZnTTdzsurqERrP6nPyv+paC55vJM0LpOlT2ne+Ix+9+CRG1MNLlyZ4GjQ==
 
 set-function-length@^1.1.1:
   version "1.1.1"
@@ -4030,6 +4048,11 @@ tslib@^2.8.0:
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.8.1.tgz#612efe4ed235d567e8aba5f2a5fab70280ade83f"
   integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==
+
+turbo-stream@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/turbo-stream/-/turbo-stream-2.4.0.tgz#1e4fca6725e90fa14ac4adb782f2d3759a5695f0"
+  integrity sha512-FHncC10WpBd2eOmGwpmQsWLDoK4cqsA/UT/GqNoaKOQnT8uzhtCbg3EoUDMvqpOSAI0S26mr0rkjzbOO6S3v1g==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
