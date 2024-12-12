@@ -72,7 +72,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
           {bannerDescription && <div className="text-xs">{parse(bannerDescription)}</div>}
         </div>
         <div className="flex space-x-6 h-full pb-3">
-          <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto no-scrollbar pr-3">
+          <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
             {currentEventCards}
             {featuredEventCards}
             <AllEventsCard type="past" />
