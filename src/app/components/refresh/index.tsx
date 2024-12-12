@@ -4,7 +4,7 @@ import { useState } from "react"
 
 const Refresh = () => {
   const [url, setUrl] = useState("")
-  const [message, setMessage] = useState<JSX.Element | string>("")
+  const [result, setResult] = useState<{ success: boolean; path?: string; error?: string } | null>(null)
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -24,21 +24,14 @@ const Refresh = () => {
       })
 
       if (response.ok) {
-        setMessage(
-          <p>
-            <span>Success: </span>
-            <Link href={path} className="text-blue-500 underline">
-              {`${process.env.NEXT_PUBLIC_BASE_URL}${path}`}
-            </Link>
-          </p>,
-        )
+        setResult({ success: true, path })
       } else {
         const errorData = await response.text()
-        setMessage(errorData)
+        setResult({ success: false, error: errorData })
       }
     } catch (error) {
       console.error("Failed to revalidate path:", error)
-      setMessage("An error occurred. Please try again.")
+      setResult({ success: false, error: "An error occurred. Please try again." })
     }
   }
 
@@ -56,7 +49,20 @@ const Refresh = () => {
           Revalidate
         </button>
       </form>
-      {message && <div className="py-3 text-white">{typeof message === "string" ? message : message}</div>}
+      {result && (
+        <div className="py-3 text-white">
+          {result.success ? (
+            <p>
+              <span>Success: </span>
+              <Link href={result.path!} className="text-blue-500 underline">
+                {`${process.env.NEXT_PUBLIC_BASE_URL}${result.path}`}
+              </Link>
+            </p>
+          ) : (
+            <p>{result.error}</p>
+          )}
+        </div>
+      )}
     </div>
   )
 }
