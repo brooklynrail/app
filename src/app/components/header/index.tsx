@@ -107,7 +107,7 @@ const HeaderHomepage = (props: HeaderProps) => {
         </div>
         <div className="bg-zinc-900 rounded-tl-sm p-0.5 pl-1.5 py-0.5 absolute bottom-0 right-0 z-10 flex justify-center items-center space-x-3">
           <p className="text-white text-xs">
-            Shirin Neshat, <em>"Do U Dare!"</em>, 2024-25.
+            Shirin Neshat, <em>"Do U Dare!,"</em> 2024–25.
           </p>
           <button
             onClick={handleVideoToggle}
