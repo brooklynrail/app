@@ -3,12 +3,14 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import { getArticlesBySection, getSectionData } from "../../../../lib/utils/sections"
 import Section from "@/app/components/section"
 import { getNavData } from "../../../../lib/utils/homepage"
+import { Metadata } from "next"
+import { stripHtml } from "string-strip-html"
 
 export default async function SectionPage({ params }: { params: SectionParams }) {
   const data = await getData({ params })
 
   if (!data.sectionData) {
-    return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
+    return notFound()
   }
 
   return <Section {...data} />
@@ -45,5 +47,31 @@ async function getData({ params }: { params: SectionParams }) {
     sectionData,
     articlesData,
     permalink,
+  }
+}
+
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const data = await getData({ params })
+
+  if (!data) {
+    return {}
+  }
+
+  const { name, description, date_updated, date_created } = data.sectionData
+  const ogtitle = `${stripHtml(name).result}`
+  const ogdescription = `${description && stripHtml(description).result}`
+
+  return {
+    title: `${ogtitle}`,
+    description: ogdescription,
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: `${ogtitle}`,
+      description: ogdescription,
+      url: data.permalink,
+      type: `website`,
+    },
   }
 }
