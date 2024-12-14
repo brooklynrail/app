@@ -2,13 +2,27 @@ import { notFound } from "next/navigation"
 import { getAllIssues, getPermalink, PageType } from "../../../lib/utils"
 import { getNavData } from "../../../lib/utils/homepage"
 import ArchivePage from "../components/archive"
+import { Metadata } from "next"
 
-export enum PageLayout {
-  Issue = "issue",
-  Section = "section",
-  SpecialIssue = "special-issue",
-  SpecialSection = "special-section",
-  Contributor = "contributor",
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getData()
+
+  if (!data) {
+    return {}
+  }
+
+  const ogtitle = "All Issues"
+  return {
+    title: ogtitle,
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: ogtitle,
+      url: data.permalink,
+      type: "website",
+    },
+  }
 }
 
 export default async function Archive() {

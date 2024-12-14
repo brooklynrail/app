@@ -7,7 +7,7 @@ import Page from "../components/page"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()
 
   if (!data.pageData || !data.permalink) {
