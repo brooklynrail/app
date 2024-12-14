@@ -10,7 +10,7 @@ interface GetAdsProps {
   adType: AdTypes
 }
 
-export const getAds = cache(async (props: GetAdsProps): Promise<Ads[]> => {
+export const getAds = async (props: GetAdsProps): Promise<Ads[]> => {
   const { adType } = props
 
   const today = new Date()
@@ -59,4 +59,4 @@ export const getAds = cache(async (props: GetAdsProps): Promise<Ads[]> => {
     console.error("Error fetching ads:", error)
     return []
   }
-})
+}
