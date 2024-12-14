@@ -61,6 +61,8 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   const ogtitle = `${stripHtml(name).result}`
   const ogdescription = `${description && stripHtml(description).result}`
 
+  const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
+
   return {
     title: `${ogtitle}`,
     description: ogdescription,
@@ -72,6 +74,10 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       description: ogdescription,
       url: data.permalink,
       type: `website`,
+      images: share_card,
+    },
+    twitter: {
+      images: share_card,
     },
   }
 }

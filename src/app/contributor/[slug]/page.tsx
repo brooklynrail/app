@@ -15,6 +15,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   const { first_name, last_name, bio, date_updated, date_created } = data.contributorData
   const ogtitle = `${first_name && stripHtml(first_name).result} ${last_name && stripHtml(last_name).result}`
   const ogdescription = `${bio && stripHtml(bio).result}`
+  const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
   return {
     title: `${ogtitle}`,
@@ -34,6 +35,10 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       description: ogdescription,
       url: data.permalink,
       type: `website`,
+      images: share_card,
+    },
+    twitter: {
+      images: share_card,
     },
   }
 }

@@ -20,6 +20,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const bodySummary = body_text ? stripHtml(body_text).result.slice(0, 240) : ""
   const ogdescription = summary ? stripHtml(summary).result.slice(0, 240) : bodySummary
 
+  const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
+
   return {
     title: ogtitle,
     description: ogdescription,
@@ -31,6 +33,10 @@ export async function generateMetadata(): Promise<Metadata> {
       description: ogdescription,
       url: data.permalink,
       type: "article",
+      images: share_card,
+    },
+    twitter: {
+      images: share_card,
     },
   }
 }

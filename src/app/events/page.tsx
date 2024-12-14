@@ -36,7 +36,6 @@ export async function generateMetadata(): Promise<Metadata> {
       title: `${ogtitle}`,
       url: data.permalink,
       images: share_card,
-      // type: `article`,
     },
     twitter: {
       images: share_card,

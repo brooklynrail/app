@@ -10,6 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   if (!data) {
     return {}
   }
+  const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
   const ogtitle = "All Issues"
   return {
@@ -21,6 +22,10 @@ export async function generateMetadata(): Promise<Metadata> {
       title: ogtitle,
       url: data.permalink,
       type: "website",
+      images: share_card,
+    },
+    twitter: {
+      images: share_card,
     },
   }
 }

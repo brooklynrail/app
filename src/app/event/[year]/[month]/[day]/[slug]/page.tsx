@@ -50,10 +50,9 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       type: `article`,
       publishedTime: date_created,
       modifiedTime: date_updated,
-      // authors: authors,
     },
     twitter: {
-      // images: ogimages,
+      images: ogimages,
     },
   }
 }
