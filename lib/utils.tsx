@@ -453,6 +453,7 @@ export enum PageType {
   TributeArticle = "tribute_article",
   Home = "home",
   Contributor = "contributor",
+  Contributors = "contributors",
   Person = "person",
   People = "people",
   Events = "events",
@@ -535,6 +536,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/tribute/${tributeSlug}/${slug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
+    case PageType.Contributors:
+      return `${baseURL}/contributors/`
     case PageType.Person:
       return `${baseURL}/people/${personSlug}/`
     case PageType.People:

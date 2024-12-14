@@ -3,6 +3,28 @@ import { getAllContributors, getCurrentIssueData, getPermalink, PageType } from 
 import { notFound } from "next/navigation"
 import ContributorsPage from "../components/contributors"
 import { getNavData } from "../../../lib/utils/homepage"
+import { Metadata } from "next"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getData()
+
+  if (!data) {
+    return {}
+  }
+
+  const ogtitle = "All Contributors"
+  return {
+    title: ogtitle,
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: ogtitle,
+      url: data.permalink,
+      type: "website",
+    },
+  }
+}
 
 export default async function ContributorsIndex() {
   const data = await getData()
@@ -33,9 +55,12 @@ async function getData() {
     return notFound()
   }
 
+  const permalink = getPermalink({ type: PageType.Contributors })
+
   return {
     navData,
     thisIssueData,
     allContributors,
+    permalink,
   }
 }
