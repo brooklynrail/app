@@ -646,6 +646,7 @@ export type Pages = {
   status: string
   title: string
   body_text?: string | null
+  summary?: string | null
   footnotes?: string | null
   map_key?: string | null
   images: any[] | ArticlesFiles[]
