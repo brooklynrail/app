@@ -2,68 +2,86 @@
 import style from "./banner.module.scss"
 import Link from "next/link"
 import parse from "html-react-parser"
-import { useEffect, useState, useMemo } from "react"
+import { Suspense } from "react"
 import Image from "next/image"
-import { Collections, Events, HomepageBanners } from "../../../../lib/types"
+import { Events, HomepageBanners } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 
 interface NewSocialEnvironmentProps {
   banner: HomepageBanners
 }
 
-const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
-  const { banner } = props
-  const [currentEvents, setCurrentEvents] = useState<Events[] | undefined>(undefined)
-  const [featuredEvents, setFeaturedEvents] = useState<Events[] | undefined>(undefined)
-  const [loading, setLoading] = useState(true)
+// Loading Skeleton Component
+const LoadingSkeleton = () => {
+  return (
+    <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
+      <div className="flex flex-col space-y-3 h-full">
+        {/* Title and description skeleton */}
+        <div className="w-full">
+          <div className="h-6 w-1/3 bg-gray-200 animate-pulse rounded" />
+          <div className="h-4 w-2/3 bg-gray-200 animate-pulse rounded mt-2" />
+        </div>
 
-  if (!banner.collections_id) {
-    return null
+        {/* Events cards skeleton */}
+        <div className="flex space-x-6 h-full pb-3">
+          <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
+            {[...Array(4)].map((_, index) => (
+              <div key={index} className="px-1.5 w-36 flex-none first:pl-0">
+                <div className="rounded-xl h-24 bg-gray-200 animate-pulse overflow-hidden">
+                  <div className="w-full h-full bg-gray-300" />
+                </div>
+                <div className="mt-2">
+                  <div className="h-3 w-20 bg-gray-200 animate-pulse rounded" />
+                  <div className="h-3 w-24 bg-gray-200 animate-pulse rounded mt-1.5" />
+                </div>
+              </div>
+            ))}
+            <div className="px-1.5 last:pr-0">
+              <div className="bg-gray-200 animate-pulse rounded-xl w-32 h-24" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Data fetching component
+async function EventsData() {
+  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/`, {
+    cache: "no-store",
+  }).then((res) => {
+    if (!res.ok) throw new Error("Failed to fetch current events")
+    return res.json()
+  })
+
+  const currentEventsArray = Array.isArray(currentEvents) ? currentEvents : []
+
+  let featuredEvents = []
+  if (currentEventsArray.length < 4) {
+    const timestamp = new Date().getTime()
+    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
+      cache: "no-store",
+    }).then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch featured events")
+      return res.json()
+    })
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // First fetch current events
-        const currentResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/`)
-        if (!currentResponse.ok) throw new Error("Failed to fetch current events")
-        const currentEvents = await currentResponse.json()
-        const currentEventsArray = Array.isArray(currentEvents) ? currentEvents : []
-        setCurrentEvents(currentEventsArray)
+  return { currentEvents: currentEventsArray, featuredEvents }
+}
 
-        // Only fetch featured events if we have less than 4 current events
-        if (currentEventsArray.length < 4) {
-          const featuredResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured/`)
-          if (!featuredResponse.ok) throw new Error("Failed to fetch featured events")
-          const featuredEvents = await featuredResponse.json()
-          setFeaturedEvents(Array.isArray(featuredEvents) ? featuredEvents : [])
-        }
-      } catch (error) {
-        console.error("Failed to fetch events:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
+// Content Component
+const EventsContent = async ({ banner }: { banner: HomepageBanners }) => {
+  const { collections_id } = banner
+  if (!collections_id) return null
 
-    fetchData()
-  }, [])
-
-  // Create separate cards for current and featured events
-  const currentEventCards = useMemo(() => {
-    return (currentEvents || []).map((event: Events) => <EventCard key={event.id} event={event} />)
-  }, [currentEvents])
-
-  const featuredEventCards = useMemo(() => {
-    return (featuredEvents || []).map((event: Events) => <FeaturedEventCard key={event.id} event={event} />)
-  }, [featuredEvents])
-
-  const bannerTitle = banner.collections_id.title
-  const bannerDescription = banner.collections_id.description
+  const { currentEvents, featuredEvents } = await EventsData()
+  const bannerTitle = collections_id.title
+  const bannerDescription = collections_id.description
 
   return (
-    <div
-      className={`banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last`}
-    >
+    <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
       <div className="flex flex-col space-y-3 h-full">
         <div className="w-full">
           <h3 className="text-sm tablet-lg:text-lg font-medium">
@@ -73,31 +91,32 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {currentEventCards}
-            {featuredEventCards}
+            {currentEvents.map((event: Events) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+            {featuredEvents.map((event: Events) => (
+              <FeaturedEventCard key={event.id} event={event} />
+            ))}
             <AllEventsCard type="past" />
           </div>
         </div>
       </div>
-
-      {/* Navigation Links */}
-      <div className="col-span-1 row-start-2 hidden">
-        <div className="flex flex-col items-center justify-center space-y-1">
-          <Link
-            href={`/events`}
-            className={`py-1 text-center uppercase font-medium text-xs border rail-border px-0.5 flex justify-center w-full`}
-          >
-            <button className="uppercase hover:underline">Upcoming Events</button>
-          </Link>
-          <Link
-            href={`/events/past`}
-            className={`py-1 text-center uppercase font-medium text-xs flex justify-center w-full`}
-          >
-            <button className="uppercase hover:underline">Past Events</button>
-          </Link>
-        </div>
-      </div>
     </div>
+  )
+}
+
+// Main Component
+const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
+  const { banner } = props
+
+  if (!banner.collections_id) {
+    return null
+  }
+
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <EventsContent banner={banner} />
+    </Suspense>
   )
 }
 
