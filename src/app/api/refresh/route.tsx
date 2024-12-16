@@ -28,7 +28,9 @@ export async function GET(request: Request) {
 
     // Check if the secret matches the expected secret
     if (secret !== process.env.REVALIDATION_SECRET) {
-      return new Response("Unauthorized", { status: 401 })
+      return new Response(`Invalid credentials`, {
+        status: 500,
+      })
     }
 
     if (!id || !type) {
@@ -40,7 +42,7 @@ export async function GET(request: Request) {
     switch (type) {
       case RevalidateType.Homepage:
         revalidatePath(`/`, "page")
-        return new Response(`Revalidation started for the homepage`, { status: 200 })
+        return new Response(`Revalidation started for the homepage ${Date.now()}`, { status: 200 })
 
       case RevalidateType.Articles:
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/

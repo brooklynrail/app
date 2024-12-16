@@ -5,6 +5,7 @@ import directus from "../directus"
 import { Events, EventsTypes } from "../types"
 import { stripHtml } from "string-strip-html"
 import { getPermalink, PageType } from "../utils"
+import { unstable_cache } from "next/cache"
 
 export enum EventTypes {
   TheNewSocialEnvironment = "the-new-social-environment",
@@ -150,51 +151,58 @@ export async function getPastEvents(props: PastEventsParams) {
   }
 }
 
-export async function getFeaturedEvents() {
-  try {
-    const eventsDataAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
-      `?fields[]=id` +
-      `&fields[]=slug` +
-      `&fields[]=title` +
-      `&fields[]=series` +
-      `&fields[]=featured_image.id` +
-      `&fields[]=featured_image.caption` +
-      `&fields[]=featured_image.alt` +
-      `&fields[]=featured_image.filename_disk` +
-      `&fields[]=featured_image.width` +
-      `&fields[]=featured_image.height` +
-      `&fields[]=featured_image.type` +
-      `&fields[]=featured_image.modified_on` +
-      `&fields[]=people` +
-      `&fields[]=people.people_id.portrait.id` +
-      `&fields[]=people.people_id.portrait.caption` +
-      `&fields[]=people.people_id.portrait.filename_disk` +
-      `&fields[]=people.people_id.portrait.width` +
-      `&fields[]=people.people_id.portrait.height` +
-      `&fields[]=people.people_id.portrait.alt` +
-      `&fields[]=people.people_id.portrait.modified_on` +
-      `&fields[]=start_date` +
-      `&fields[]=all_day` +
-      `&fields[]=youtube_id` +
-      `&sort=-start_date` +
-      `&filter[end_date][_lte]=$NOW` +
-      `&filter[featured][_eq]=true` +
-      `&filter[youtube_id][_nempty]=true` +
-      `&filter[status][_eq]=published`
+export const getFeaturedEvents = unstable_cache(
+  async () => {
+    try {
+      const eventsDataAPI =
+        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+        `?fields[]=id` +
+        `&fields[]=slug` +
+        `&fields[]=title` +
+        `&fields[]=series` +
+        `&fields[]=featured_image.id` +
+        `&fields[]=featured_image.caption` +
+        `&fields[]=featured_image.alt` +
+        `&fields[]=featured_image.filename_disk` +
+        `&fields[]=featured_image.width` +
+        `&fields[]=featured_image.height` +
+        `&fields[]=featured_image.type` +
+        `&fields[]=featured_image.modified_on` +
+        `&fields[]=people` +
+        `&fields[]=people.people_id.portrait.id` +
+        `&fields[]=people.people_id.portrait.caption` +
+        `&fields[]=people.people_id.portrait.filename_disk` +
+        `&fields[]=people.people_id.portrait.width` +
+        `&fields[]=people.people_id.portrait.height` +
+        `&fields[]=people.people_id.portrait.alt` +
+        `&fields[]=people.people_id.portrait.modified_on` +
+        `&fields[]=start_date` +
+        `&fields[]=all_day` +
+        `&fields[]=youtube_id` +
+        `&sort=-start_date` +
+        `&filter[end_date][_lte]=$NOW` +
+        `&filter[featured][_eq]=true` +
+        `&filter[youtube_id][_nempty]=true` +
+        `&filter[status][_eq]=published`
 
-    const res = await fetch(eventsDataAPI)
-    if (!res.ok) {
-      console.error(`Failed to fetch All Events data: ${res.statusText}`)
+      const res = await fetch(eventsDataAPI, { next: { revalidate: 1800 } }) // 30 minutes in seconds
+      if (!res.ok) {
+        console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
+        return null
+      }
+      const data = await res.json()
+      return data.data as Events[]
+    } catch (error) {
+      console.error("Error fetching Featured Events data:", error)
       return null
     }
-    const data = await res.json()
-    return data.data as Events[]
-  } catch (error) {
-    console.error("Error fetching All Events data:", error)
-    return null
-  }
-}
+  },
+  ["homepage"], // cache key
+  {
+    revalidate: 1800, // 30 minutes in seconds
+    tags: ["homepage"],
+  },
+)
 
 export const getEvent = cache(async (slug: string) => {
   const event = await directus.request(
