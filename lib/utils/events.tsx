@@ -197,10 +197,10 @@ export const getFeaturedEvents = unstable_cache(
       return null
     }
   },
-  ["homepage"], // cache key
+  ["featured-events"], // cache key
   {
     revalidate: 1800, // 30 minutes in seconds
-    tags: ["homepage"],
+    tags: ["homepage", "events"],
   },
 )
 
