@@ -7,7 +7,7 @@ import { AdTypes } from "../../../../lib/utils/ads"
 import { useAdVisibility } from "@/app/hooks/adVisibilityContext"
 import { usePostHog } from "posthog-js/react"
 
-const Ad970 = () => {
+const AdFixedBanner = () => {
   const [randomAd, setRandomAd] = useState<Ads | null>(null)
   const { isAdVisible, closeAd } = useAdVisibility()
   const posthog = usePostHog()
@@ -18,7 +18,7 @@ const Ad970 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.Banner}`)
+        const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.FixedBanner}`)
         const ads = await adsResponse.json()
 
         if (Array.isArray(ads) && ads.length > 0) {
@@ -44,7 +44,7 @@ const Ad970 = () => {
           posthog.capture(`${action}_ad`, {
             slug,
             campaign_title,
-            ad_format: AdTypes.Banner,
+            ad_format: AdTypes.FixedBanner,
           })
         }
 
@@ -57,7 +57,7 @@ const Ad970 = () => {
           event_category: "ads",
           event_label: slug,
           event_value: ad_url,
-          ad_format: AdTypes.Banner,
+          ad_format: AdTypes.FixedBanner,
           campaign: campaign_title,
           campaign_id: slug,
           ad_source: "br-studio",
@@ -146,4 +146,4 @@ const Ad970 = () => {
   )
 }
 
-export default Ad970
+export default AdFixedBanner
