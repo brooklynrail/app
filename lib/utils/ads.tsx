@@ -1,9 +1,9 @@
-import { cache } from "react"
 import { Ads } from "../types"
 
 export enum AdTypes {
-  Banner = "banner",
+  FixedBanner = "banner",
   Tile = "tile",
+  InArticle900 = "in_article_900x100",
 }
 
 interface GetAdsProps {
