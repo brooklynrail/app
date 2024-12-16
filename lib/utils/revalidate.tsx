@@ -2,7 +2,7 @@ import { readItem, readItems } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
 import { Articles, Contributors, Events, Issues, People, Sections } from "../types"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { getPermalink, PageType } from "../utils"
 
 export enum RevalidateType {
@@ -32,12 +32,13 @@ export const revalidateArticle = cache(async (data: Articles) => {
 export const revalidateSection = cache(async (data: Sections) => {
   const sectionPath = `/section/${data.slug}`
   revalidatePath(sectionPath)
+  revalidateTag("homepage")
   return sectionPath
 })
 
 export const revalidateHomepage = cache(async () => {
-  revalidatePath(`/`)
   revalidatePath(`/sitemap.xml`)
+  revalidateTag("homepage")
   return `/`
 })
 
@@ -50,7 +51,7 @@ export const revalidateIssue = cache(async (data: Issues) => {
   revalidatePath(url.pathname)
   revalidatePath(`/issues/sitemap.xml`)
   revalidatePath(`/archive`)
-  revalidatePath(`/`)
+  revalidateTag("homepage")
   return url.pathname
 })
 
@@ -84,7 +85,7 @@ export const revalidateEvent = cache(async (data: Events) => {
   revalidatePath(url.pathname)
   revalidatePath("/events")
   revalidatePath("/events/past")
-  revalidatePath(`/`)
+  revalidateTag("homepage")
   return url.pathname
 })
 

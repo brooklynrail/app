@@ -1,5 +1,4 @@
-import { revalidatePath } from "next/cache"
-import Link from "next/link"
+import { revalidatePath, revalidateTag } from "next/cache"
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
 export async function GET(request: Request) {
