@@ -13,6 +13,60 @@ interface ArticleBodyProps {
   showAd: boolean
 }
 
+interface ContentSection {
+  content: string
+  showAd: boolean
+}
+
+function splitContent(paragraphs: string[], totalWordCount: number, sectionSlug: string): ContentSection[] {
+  // Poetry articles don't get split
+  if (sectionSlug === "poetry") {
+    return [{ content: paragraphs.join(""), showAd: false }]
+  }
+
+  const sections: ContentSection[] = []
+  let currentIndex = 0
+  let currentWordCount = 0
+
+  // Helper function to find next split point
+  const findNextSplit = (startIndex: number, targetWords: number) => {
+    let wordCount = 0
+    for (let i = startIndex; i < paragraphs.length; i++) {
+      const paragraphWordCount = paragraphs[i].split(/\s+/).filter(Boolean).length
+      wordCount += paragraphWordCount
+
+      if (wordCount >= targetWords) {
+        return i + 1 // Split after this paragraph
+      }
+    }
+    return paragraphs.length // If we can't reach target, return end
+  }
+
+  // For articles under 1500 words, split once in the middle
+  if (totalWordCount <= 1500) {
+    const splitIndex = findNextSplit(0, Math.ceil(totalWordCount / 2))
+    sections.push({ content: paragraphs.slice(0, splitIndex).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(splitIndex).join(""), showAd: false })
+  }
+  // For articles between 1500-2000 words, split at 800 words
+  else if (totalWordCount <= 2000) {
+    const splitIndex = findNextSplit(0, 800)
+    sections.push({ content: paragraphs.slice(0, splitIndex).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(splitIndex).join(""), showAd: false })
+  }
+  // For articles over 2000 words, split at 800, 1600, and remaining
+  else {
+    const firstSplit = findNextSplit(0, 800)
+    const secondSplit = findNextSplit(firstSplit, 800)
+
+    sections.push({ content: paragraphs.slice(0, firstSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(firstSplit, secondSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(secondSplit).join(""), showAd: false })
+  }
+
+  return sections
+}
+
 const ArticleBody = (props: ArticleBodyProps) => {
   const { articleData, showAd } = props
   const { body_text, images, endnote, contributors } = articleData
@@ -60,40 +114,9 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
   const sectionSlug = articleData.section.slug
 
-  // Calculate split content only for non-poetry articles
-  const { firstHalf, secondHalf } = useMemo(() => {
-    // For poetry section, return full content as firstHalf
-    if (sectionSlug === "poetry") {
-      return {
-        firstHalf: fullBodyText,
-        secondHalf: "",
-      }
-    }
-
-    let splitIndex = 0
-    let wordCount = 0
-
-    // If the article is over 1500 words, put the Ad at 800 words
-    // If the article is under 1500 words, split the content in half and put the Ad in the middle
-    const targetWordCount = totalWordCount <= 1500 ? Math.ceil(totalWordCount / 2) : 800
-
-    // Loop through paragraphs to find the split index
-    for (let i = 0; i < paragraphs.length; i++) {
-      const paragraphWordCount = paragraphs[i].split(/\s+/).filter((word) => word).length
-      wordCount += paragraphWordCount
-
-      if (wordCount >= targetWordCount) {
-        splitIndex = i + 1 // Ensure we split after this paragraph
-        break
-      }
-    }
-
-    // Split the paragraphs at the identified split index
-    const firstHalf = paragraphs.slice(0, splitIndex).join("")
-    const secondHalf = paragraphs.slice(splitIndex).join("")
-
-    return { firstHalf, secondHalf }
-  }, [paragraphs, totalWordCount, sectionSlug, fullBodyText])
+  const contentSections = useMemo(() => {
+    return splitContent(paragraphs, totalWordCount, sectionSlug)
+  }, [paragraphs, totalWordCount, sectionSlug])
 
   // ================================================
 
@@ -104,9 +127,12 @@ const ArticleBody = (props: ArticleBodyProps) => {
         <p>Paragraphs: {paragraphs.length}</p>
       </div>
 
-      <div className={`content`}>{parse(firstHalf, options)}</div>
-      {sectionSlug !== "poetry" && secondHalf && showAd && <AdInArticle />}
-      {secondHalf && <div className={`content`}>{parse(secondHalf, options)}</div>}
+      {contentSections.map((section, index) => (
+        <div key={index}>
+          <div className={`content`}>{parse(section.content, options)}</div>
+          {section.showAd && showAd && <AdInArticle />}
+        </div>
+      ))}
 
       {endnote && (
         <div className="content endnote">
