@@ -2,7 +2,7 @@
 import { MenuProvider } from "@/app/hooks/useMenu"
 import { usePathname } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
-import Ad970 from "../ads/ad970"
+import AdFixedBanner from "../ads/adFixedBanner"
 import Footer from "../footer"
 import Menu from "../menu/menu"
 import NavBar from "../navBar"
@@ -54,7 +54,7 @@ const Paper = (props: PaperProps) => {
           )}
 
           {children}
-          {!previewURL && <Ad970 />}
+          {!previewURL && <AdFixedBanner />}
           <Footer />
           <ScreenIndicator />
         </div>

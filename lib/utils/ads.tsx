@@ -1,9 +1,9 @@
-import { cache } from "react"
 import { Ads } from "../types"
 
 export enum AdTypes {
-  Banner = "banner",
+  FixedBanner = "banner",
   Tile = "tile",
+  InArticleStandard = "in_article_standard",
 }
 
 interface GetAdsProps {
@@ -13,7 +13,6 @@ interface GetAdsProps {
 export const getAds = async (props: GetAdsProps): Promise<Ads[]> => {
   const { adType } = props
 
-  const today = new Date()
   const adsAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/ads` +
     `?fields[]=ad_type` +

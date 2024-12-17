@@ -1,6 +1,8 @@
+import { AdTypes } from "./utils/ads"
+
 /* eslint max-lines: 0 */
 export type Ads = {
-  ad_type: string
+  ad_type: AdTypes
   ad_url?: string | null
   date_created?: string | null
   date_updated?: string | null

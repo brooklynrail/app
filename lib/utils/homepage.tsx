@@ -1,3 +1,5 @@
+"use server"
+
 import { readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { unstable_cache } from "next/cache"
@@ -189,47 +191,58 @@ export const getCurrentIssueSlug = unstable_cache(
   { revalidate: 1800, tags: ["homepage"] },
 )
 
-export const getCurrentIssueData = unstable_cache(
-  async () => {
-    try {
-      const settings = await directus.request(
-        readSingleton("global_settings", {
-          fields: [
-            {
-              current_issue: [
-                "id",
-                "title",
-                "slug",
-                "summary",
-                "special_issue",
-                { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
-                { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
-                { cover_3: ["id", "width", "height", "filename_disk", "caption"] },
-                { cover_4: ["id", "width", "height", "filename_disk", "caption"] },
-                { cover_5: ["id", "width", "height", "filename_disk", "caption"] },
-                { cover_6: ["id", "width", "height", "filename_disk", "caption"] },
+export const getCurrentIssueData = async () => {
+  try {
+    return await unstable_cache(
+      async () => {
+        try {
+          const settings = await directus.request(
+            readSingleton("global_settings", {
+              fields: [
+                {
+                  current_issue: [
+                    "id",
+                    "title",
+                    "slug",
+                    "summary",
+                    "special_issue",
+                    { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
+                    { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
+                    { cover_3: ["id", "width", "height", "filename_disk", "caption"] },
+                    { cover_4: ["id", "width", "height", "filename_disk", "caption"] },
+                    { cover_5: ["id", "width", "height", "filename_disk", "caption"] },
+                    { cover_6: ["id", "width", "height", "filename_disk", "caption"] },
+                  ],
+                },
               ],
-            },
-          ],
-        }),
-      )
+            }),
+          )
 
-      const curruentIssueData = settings.current_issue
-      if (!curruentIssueData) {
-        // throw an error if there is no current issue
-        console.error("There is no current issue set", curruentIssueData)
-        return
-      }
+          const curruentIssueData = settings.current_issue
+          if (!curruentIssueData) {
+            // throw an error if there is no current issue
+            console.error("There is no current issue set", curruentIssueData)
+            return
+          }
 
-      return settings.current_issue as Issues
-    } catch (error) {
-      console.error("Error fetching CurrentIssueData data:", error)
-      return null
-    }
-  },
-  ["homepage-current-issue-data"],
-  { revalidate: 1800, tags: ["homepage"] },
-)
+          return settings.current_issue as Issues
+        } catch (error) {
+          console.error("Error fetching CurrentIssueData data:", error)
+          return null
+        }
+      },
+      ["homepage-current-issue-data"],
+      {
+        revalidate: 1800,
+        tags: ["homepage"],
+      },
+    )()
+  } catch (error) {
+    console.error("Cache error:", error)
+    // Fallback to non-cached version
+    // ... your existing code without caching ...
+  }
+}
 
 interface CollectionArticlesProps {
   slug: string
