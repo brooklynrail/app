@@ -1,13 +1,12 @@
 "use client"
-import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import parse from "html-react-parser"
+import { useMemo } from "react"
+import { Articles } from "../../../../lib/types"
 import ContributorsBox from "../contributorsBox"
 import BookshopWidget from "./bookshop"
-import replaceShortcodes from "./shortcodes"
-import { useMemo } from "react"
 import RailImage from "./railImage"
-import { Articles } from "../../../../lib/types"
-import ArticleAd from "./articleAd"
+import replaceShortcodes from "./shortcodes"
+import AdInArticle from "../ads/adInArticle"
 
 interface ArticleBodyProps {
   articleData: Articles
@@ -100,8 +99,13 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
   return (
     <>
+      <div className="max-w-[120ex] p-3 text-xl bg-white dark:bg-zinc-700 bg-opacity-80 dark:bg-opacity-60 backdrop-blur-md">
+        <p>Word count: {totalWordCount}</p>
+        <p>Paragraphs: {paragraphs.length}</p>
+      </div>
+
       <div className={`content`}>{parse(firstHalf, options)}</div>
-      {sectionSlug !== "poetry" && secondHalf && showAd && <ArticleAd />}
+      {sectionSlug !== "poetry" && secondHalf && showAd && <AdInArticle />}
       {secondHalf && <div className={`content`}>{parse(secondHalf, options)}</div>}
 
       {endnote && (
@@ -110,11 +114,6 @@ const ArticleBody = (props: ArticleBodyProps) => {
           {parse(articleData.endnote)}
         </div>
       )}
-
-      <div className="hidden">
-        <p>Word count: {totalWordCount}</p>
-        <p>Paragraphs: {paragraphs.length}</p>
-      </div>
 
       <BookshopWidget {...articleData} />
 

@@ -13,7 +13,6 @@ interface GetAdsProps {
 export const getAds = async (props: GetAdsProps): Promise<Ads[]> => {
   const { adType } = props
 
-  const today = new Date()
   const adsAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/ads` +
     `?fields[]=ad_type` +
