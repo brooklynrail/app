@@ -18,7 +18,9 @@ const AdInArticle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.InArticle900}`)
+        const adsResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.InArticleStandard}`,
+        )
         const ads = await adsResponse.json()
 
         if (Array.isArray(ads) && ads.length > 0) {
@@ -46,7 +48,7 @@ const AdInArticle = () => {
           posthog.capture(`${action}_ad`, {
             slug,
             campaign_title,
-            ad_format: AdTypes.InArticle900,
+            ad_format: AdTypes.InArticleStandard,
           })
         }
 
@@ -55,7 +57,7 @@ const AdInArticle = () => {
           event_category: "ads",
           event_label: slug,
           event_value: ad_url,
-          ad_format: AdTypes.InArticle900,
+          ad_format: AdTypes.InArticleStandard,
           campaign: campaign_title,
           campaign_id: slug,
           ad_source: "br-studio",

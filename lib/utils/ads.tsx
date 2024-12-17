@@ -3,7 +3,7 @@ import { Ads } from "../types"
 export enum AdTypes {
   FixedBanner = "banner",
   Tile = "tile",
-  InArticle900 = "in_article_900x100",
+  InArticleStandard = "in_article_standard",
 }
 
 interface GetAdsProps {
