@@ -134,7 +134,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
   return (
     <>
-      <div className="max-w-[120ex] p-3 text-xl bg-white dark:bg-zinc-700 bg-opacity-80 dark:bg-opacity-60 backdrop-blur-md">
+      <div className="hidden max-w-[120ex] text-xl">
         <p>Word count: {totalWordCount}</p>
         <p>Paragraphs: {paragraphs.length}</p>
       </div>
@@ -144,8 +144,8 @@ const ArticleBody = (props: ArticleBodyProps) => {
           <div className={`content`}>{parse(section.content, options)}</div>
           {section.showAd &&
             showAd &&
-            // Show DonationAd for third section in longer articles
-            (index === 2 ? <DonationAd /> : <AdInArticle />)}
+            // Show DonationAd for second section in articles over 3000 words
+            (totalWordCount > 3000 && index === 1 ? <DonationAd /> : <AdInArticle />)}
         </div>
       ))}
 
