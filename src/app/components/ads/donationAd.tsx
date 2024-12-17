@@ -73,7 +73,7 @@ const DonationAd = () => {
               title="Donate to The Brooklyn Rail"
               onClick={handleDonateClick}
             >
-              <button className="bg-red-500 text-white px-3 tablet-lg:px-6 py-1.5 tablet-lg:py-3 rounded-sm text-nowrap text-md tablet-lg:text-lg uppercase hover:underline underline-offset-2 font-normal">
+              <button className="bg-red-500 text-white px-3 tablet-lg:px-6 py-1.5 tablet-lg:py-3 rounded-sm text-nowrap text-md tablet-lg:text-lg uppercase hover:underline underline-offset-2 font-medium">
                 {`Donate`}
               </button>
             </Link>
