@@ -114,7 +114,7 @@ const AdFixedBanner = () => {
     isAdVisible && (
       <div
         ref={adRef}
-        className="m-0 fixed bottom-0 left-0 right-0 z-20 pt-1 tablet-lg:pt-1 bg-white bg-opacity-80 backdrop-blur-md"
+        className="m-0 fixed bottom-0 left-0 right-0 z-20 pt-1 tablet-lg:pt-1 bg-white dark:bg-zinc-700 bg-opacity-80 dark:bg-opacity-60 backdrop-blur-md"
       >
         <button
           className="border border-zinc-200 text-zinc-700 text-center shadow-lg absolute -top-3.5 tablet:-top-5 right-3 rounded-full bg-white w-8 tablet:w-9 h-8 tablet:h-9 flex items-center justify-center"
@@ -122,7 +122,9 @@ const AdFixedBanner = () => {
         >
           <span className="text-lg tablet:text-xl font-bold">&#x2715;</span>
         </button>
-        <p className="z-10 text-[10px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
+        <p className="z-10 text-[10px] leading-4 text-center uppercase text-gray-700 dark:text-slate-100">
+          Advertisement
+        </p>
         <div className="flex justify-center items-center">
           <Link href={ad_url} target="_blank" onClick={() => handleAdEvent("click")}>
             <Image
