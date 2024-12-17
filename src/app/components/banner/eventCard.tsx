@@ -2,18 +2,17 @@
 import style from "./banner.module.scss"
 import Link from "next/link"
 import parse from "html-react-parser"
-import { useEffect, useState } from "react"
+import { Suspense } from "react"
 import Image from "next/image"
 import { Events, HomepageBanners } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import { fetchEvents } from "../../../../lib/utils/events"
 
 interface NewSocialEnvironmentProps {
   banner: HomepageBanners
 }
 
 // Loading Skeleton Component
-const LoadingSkeleton = () => {
+export const LoadingSkeleton = () => {
   return (
     <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
       <div className="flex flex-col space-y-3 h-full">
@@ -47,33 +46,37 @@ const LoadingSkeleton = () => {
   )
 }
 
-// Content Component
-const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
-  const [events, setEvents] = useState<{ currentEvents: Events[]; featuredEvents: Events[] }>({
-    currentEvents: [],
-    featuredEvents: [],
+// Data fetching component
+async function EventsData() {
+  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/`, {
+    cache: "no-store",
+  }).then((res) => {
+    if (!res.ok) throw new Error("Failed to fetch current events")
+    return res.json()
   })
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const loadEvents = async () => {
-      try {
-        const data = await fetchEvents()
-        setEvents(data)
-      } catch (error) {
-        console.error("Failed to fetch events:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    loadEvents()
-  }, [])
+  const currentEventsArray = Array.isArray(currentEvents) ? currentEvents : []
 
+  let featuredEvents = []
+  if (currentEventsArray.length < 4) {
+    const timestamp = new Date().getTime()
+    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
+      cache: "no-store",
+    }).then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch featured events")
+      return res.json()
+    })
+  }
+
+  return { currentEvents: currentEventsArray, featuredEvents }
+}
+
+// Content Component
+const EventsContent = async ({ banner }: { banner: HomepageBanners }) => {
   const { collections_id } = banner
   if (!collections_id) return null
 
-  if (loading) return <LoadingSkeleton />
-
+  const { currentEvents, featuredEvents } = await EventsData()
   const bannerTitle = collections_id.title
   const bannerDescription = collections_id.description
 
@@ -88,10 +91,10 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {events.currentEvents.map((event: Events) => (
+            {currentEvents.map((event: Events) => (
               <EventCard key={event.id} event={event} />
             ))}
-            {events.featuredEvents.map((event: Events) => (
+            {featuredEvents.map((event: Events) => (
               <FeaturedEventCard key={event.id} event={event} />
             ))}
             <AllEventsCard type="past" />
@@ -110,7 +113,11 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
     return null
   }
 
-  return <EventsContent banner={banner} />
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <EventsContent banner={banner} />
+    </Suspense>
+  )
 }
 
 interface EventCardProps {

@@ -5,7 +5,6 @@ import directus from "../directus"
 import { Events, EventsTypes } from "../types"
 import { stripHtml } from "string-strip-html"
 import { getPermalink, PageType } from "../utils"
-import { unstable_cache } from "next/cache"
 
 export enum EventTypes {
   TheNewSocialEnvironment = "the-new-social-environment",
@@ -151,58 +150,85 @@ export async function getPastEvents(props: PastEventsParams) {
   }
 }
 
-export const getFeaturedEvents = unstable_cache(
-  async () => {
-    try {
-      const eventsDataAPI =
-        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
-        `?fields[]=id` +
-        `&fields[]=slug` +
-        `&fields[]=title` +
-        `&fields[]=series` +
-        `&fields[]=featured_image.id` +
-        `&fields[]=featured_image.caption` +
-        `&fields[]=featured_image.alt` +
-        `&fields[]=featured_image.filename_disk` +
-        `&fields[]=featured_image.width` +
-        `&fields[]=featured_image.height` +
-        `&fields[]=featured_image.type` +
-        `&fields[]=featured_image.modified_on` +
-        `&fields[]=people` +
-        `&fields[]=people.people_id.portrait.id` +
-        `&fields[]=people.people_id.portrait.caption` +
-        `&fields[]=people.people_id.portrait.filename_disk` +
-        `&fields[]=people.people_id.portrait.width` +
-        `&fields[]=people.people_id.portrait.height` +
-        `&fields[]=people.people_id.portrait.alt` +
-        `&fields[]=people.people_id.portrait.modified_on` +
-        `&fields[]=start_date` +
-        `&fields[]=all_day` +
-        `&fields[]=youtube_id` +
-        `&sort=-start_date` +
-        `&filter[end_date][_lte]=$NOW` +
-        `&filter[featured][_eq]=true` +
-        `&filter[youtube_id][_nempty]=true` +
-        `&filter[status][_eq]=published`
+/**
+ * Fetches current and featured events for display
+ *
+ * This function:
+ * 1. Fetches current events from the API with no caching
+ * 2. If fewer than 4 current events exist, also fetches featured events
+ *    to fill out the display
+ * 3. Featured events request includes timestamp to prevent caching
+ *
+ */
+export async function fetchEvents() {
+  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/`, {
+    cache: "no-store",
+  }).then((res) => {
+    if (!res.ok) throw new Error("Failed to fetch current events")
+    return res.json()
+  })
 
-      const res = await fetch(eventsDataAPI, { next: { revalidate: 1800 } }) // 30 minutes in seconds
-      if (!res.ok) {
-        console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
-        return null
-      }
-      const data = await res.json()
-      return data.data as Events[]
-    } catch (error) {
-      console.error("Error fetching Featured Events data:", error)
+  const currentEventsArray = Array.isArray(currentEvents) ? currentEvents : []
+
+  let featuredEvents = []
+  if (currentEventsArray.length < 4) {
+    const timestamp = new Date().getTime()
+    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
+      cache: "no-store",
+    }).then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch featured events")
+      return res.json()
+    })
+  }
+
+  return { currentEvents: currentEventsArray, featuredEvents }
+}
+
+export const getFeaturedEvents = cache(async () => {
+  try {
+    const eventsDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+      `?fields[]=id` +
+      `&fields[]=slug` +
+      `&fields[]=title` +
+      `&fields[]=series` +
+      `&fields[]=featured_image.id` +
+      `&fields[]=featured_image.caption` +
+      `&fields[]=featured_image.alt` +
+      `&fields[]=featured_image.filename_disk` +
+      `&fields[]=featured_image.width` +
+      `&fields[]=featured_image.height` +
+      `&fields[]=featured_image.type` +
+      `&fields[]=featured_image.modified_on` +
+      `&fields[]=people` +
+      `&fields[]=people.people_id.portrait.id` +
+      `&fields[]=people.people_id.portrait.caption` +
+      `&fields[]=people.people_id.portrait.filename_disk` +
+      `&fields[]=people.people_id.portrait.width` +
+      `&fields[]=people.people_id.portrait.height` +
+      `&fields[]=people.people_id.portrait.alt` +
+      `&fields[]=people.people_id.portrait.modified_on` +
+      `&fields[]=start_date` +
+      `&fields[]=all_day` +
+      `&fields[]=youtube_id` +
+      `&sort=-start_date` +
+      `&filter[end_date][_lte]=$NOW` +
+      `&filter[featured][_eq]=true` +
+      `&filter[youtube_id][_nempty]=true` +
+      `&filter[status][_eq]=published`
+
+    const res = await fetch(eventsDataAPI, { next: { revalidate: 1800 } }) // 30 minutes in seconds
+    if (!res.ok) {
+      console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
       return null
     }
-  },
-  ["featured-events"], // cache key
-  {
-    revalidate: 1800, // 30 minutes in seconds
-    tags: ["homepage", "events"],
-  },
-)
+    const data = await res.json()
+    return data.data as Events[]
+  } catch (error) {
+    console.error("Error fetching Featured Events data:", error)
+    return null
+  }
+})
 
 export const getEvent = cache(async (slug: string) => {
   const event = await directus.request(
