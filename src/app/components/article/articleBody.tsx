@@ -7,6 +7,7 @@ import BookshopWidget from "./bookshop"
 import RailImage from "./railImage"
 import replaceShortcodes from "./shortcodes"
 import AdInArticle from "../ads/adInArticle"
+import DonationAd from "../ads/donationAd"
 
 interface ArticleBodyProps {
   articleData: Articles
@@ -54,14 +55,25 @@ function splitContent(paragraphs: string[], totalWordCount: number, sectionSlug:
     sections.push({ content: paragraphs.slice(0, splitIndex).join(""), showAd: true })
     sections.push({ content: paragraphs.slice(splitIndex).join(""), showAd: false })
   }
-  // For articles over 2000 words, split at 800, 1600, and remaining
-  else {
+  // For articles between 2000-3000 words, split at 800, 1600, and remaining
+  else if (totalWordCount <= 3000) {
     const firstSplit = findNextSplit(0, 800)
     const secondSplit = findNextSplit(firstSplit, 800)
 
     sections.push({ content: paragraphs.slice(0, firstSplit).join(""), showAd: true })
     sections.push({ content: paragraphs.slice(firstSplit, secondSplit).join(""), showAd: true })
     sections.push({ content: paragraphs.slice(secondSplit).join(""), showAd: false })
+  }
+  // For articles over 3000 words, split at 800, 1600, 2400, and remaining
+  else {
+    const firstSplit = findNextSplit(0, 800)
+    const secondSplit = findNextSplit(firstSplit, 800)
+    const thirdSplit = findNextSplit(secondSplit, 800)
+
+    sections.push({ content: paragraphs.slice(0, firstSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(firstSplit, secondSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(secondSplit, thirdSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(thirdSplit).join(""), showAd: false })
   }
 
   return sections
@@ -130,7 +142,10 @@ const ArticleBody = (props: ArticleBodyProps) => {
       {contentSections.map((section, index) => (
         <div key={index}>
           <div className={`content`}>{parse(section.content, options)}</div>
-          {section.showAd && showAd && <AdInArticle />}
+          {section.showAd &&
+            showAd &&
+            // Show DonationAd for third section in longer articles
+            (index === 2 ? <DonationAd /> : <AdInArticle />)}
         </div>
       ))}
 
