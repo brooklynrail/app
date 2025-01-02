@@ -71,13 +71,11 @@ const Ad970 = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInView(entry.isIntersecting)
-        if (entry.isIntersecting && randomAd) {
+        if (entry.isIntersecting && isInView && randomAd) {
           handleAdEvent("impression")
         }
       },
       { threshold: 0.5 },
-      // A threshold of 0.5 means the ad must be at least 50% visible in the viewport to count as an impression.
     )
 
     if (adRef.current) {
@@ -89,7 +87,7 @@ const Ad970 = () => {
         observer.unobserve(adRef.current)
       }
     }
-  }, [randomAd, handleAdEvent])
+  }, [randomAd, handleAdEvent, isInView])
 
   if (!randomAd || !randomAd.banner_image || !randomAd.banner_image_mobile || !randomAd.ad_url) {
     return null
@@ -131,6 +129,7 @@ const Ad970 = () => {
               width={desktopDimensions.width}
               height={desktopDimensions.height}
               alt={campaign_title}
+              onLoadingComplete={() => setIsInView(true)}
             />
             <Image
               className="block tablet:hidden"
@@ -138,6 +137,7 @@ const Ad970 = () => {
               width={mobileDimensions.width}
               height={mobileDimensions.height}
               alt={campaign_title}
+              onLoadingComplete={() => setIsInView(true)}
             />
           </Link>
         </div>
