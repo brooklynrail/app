@@ -41,9 +41,9 @@ const AdsTileStrip = () => {
     fetchData()
   }, [])
 
-  // If no ads are available, don't render the component
-  if (!isLoading && !randomAds) {
-    return null
+  // Move this check to after rendering logic
+  if (!isLoading && (!randomAds || randomAds.length === 0)) {
+    return <></>
   }
 
   const handleAdEvent = useCallback(
