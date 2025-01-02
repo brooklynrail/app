@@ -59,7 +59,7 @@ const Paper = (props: PaperProps) => {
           <ScreenIndicator />
         </div>
         <Menu collections={navData.collections} />
-        {/* {!previewURL && <PopupDonate />} */}
+        {!previewURL && <PopupDonate />}
       </MenuProvider>
     </AdVisibilityProvider>
   )
