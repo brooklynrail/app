@@ -41,11 +41,6 @@ const AdsTileStrip = () => {
     fetchData()
   }, [])
 
-  // Modify the early return to be more explicit
-  if (!isLoading && (!randomAds || randomAds.length === 0)) {
-    return null
-  }
-
   const handleAdEvent = useCallback(
     (action: "impression" | "click", ad: Ads, position: number) => {
       const { slug, ad_url, campaign_title } = ad
@@ -85,9 +80,13 @@ const AdsTileStrip = () => {
       )
     }
 
+    if (!randomAds || randomAds.length === 0) {
+      return null
+    }
+
     return (
       <ul className="flex w-full justify-center items-center space-x-4 overflow-x-auto scroll-smooth min-h-[147px]">
-        {randomAds?.map((ad: Ads, i: number) => {
+        {randomAds.map((ad: Ads, i: number) => {
           if (!ad.tile_image || !ad.ad_url) {
             return null
           }
@@ -117,6 +116,11 @@ const AdsTileStrip = () => {
         })}
       </ul>
     )
+  }
+
+  // An empty state check
+  if (!isLoading && (!randomAds || randomAds.length === 0)) {
+    return null
   }
 
   return (
