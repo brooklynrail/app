@@ -2,7 +2,7 @@ import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState, useCallback } from "react"
-import { Ads } from "../../../../lib/types"
+import { Ads, Collections } from "../../../../lib/types"
 import { AdTypes } from "../../../../lib/utils/ads"
 import { usePostHog } from "posthog-js/react"
 
@@ -12,7 +12,7 @@ const AdTileSkeleton = () => (
   </li>
 )
 
-const AdsTileStrip = () => {
+const AdsTileStrip = ({ collection }: { collection: Collections }) => {
   const [randomAds, setRandomAds] = useState<Ads[] | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const posthog = usePostHog()
@@ -124,11 +124,13 @@ const AdsTileStrip = () => {
   }
 
   return (
-    <div className="flex flex-col py-3 pb-6 bg-zinc-700">
-      <p className="pb-0.5 text-slate-100 text-[11px] text-center leading-4 uppercase dark:text-slate-400">
-        Advertisements
-      </p>
-      {renderAds()}
+    <div key={collection.id} className="collection">
+      <div className="flex flex-col py-3 pb-6 bg-zinc-700">
+        <p className="pb-0.5 text-slate-100 text-[11px] text-center leading-4 uppercase dark:text-slate-400">
+          Advertisements
+        </p>
+        {renderAds()}
+      </div>
     </div>
   )
 }
