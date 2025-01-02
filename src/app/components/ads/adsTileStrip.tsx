@@ -41,9 +41,9 @@ const AdsTileStrip = () => {
     fetchData()
   }, [])
 
-  // Move this check to after rendering logic
+  // Modify the early return to be more explicit
   if (!isLoading && (!randomAds || randomAds.length === 0)) {
-    return <></>
+    return null
   }
 
   const handleAdEvent = useCallback(

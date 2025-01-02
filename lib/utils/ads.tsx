@@ -13,7 +13,6 @@ interface GetAdsProps {
 export const getAds = async (props: GetAdsProps): Promise<Ads[]> => {
   const { adType } = props
 
-  const today = new Date()
   const adsAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/ads` +
     `?fields[]=ad_type` +
@@ -43,18 +42,31 @@ export const getAds = async (props: GetAdsProps): Promise<Ads[]> => {
   try {
     const res = await fetch(adsAPI)
     if (!res.ok) {
-      console.error(`Failed to fetch ADs data: ${res.statusText}`)
+      console.warn(`Ads API returned status ${res.status}: ${res.statusText}`)
       return []
     }
 
     const result = await res.json()
 
-    if (!result || !result.data || !Array.isArray(result.data)) {
-      console.error("Invalid data format received")
+    if (!result?.data) {
+      console.warn("Ads API returned invalid data format")
       return []
     }
 
-    return result.data as Ads[]
+    const validAds = result.data.filter((ad: any) => {
+      const isValid =
+        ad?.ad_url &&
+        ad?.status === "published" &&
+        ((adType === AdTypes.Tile && ad?.tile_image) ||
+          (adType === AdTypes.Banner && ad?.banner_image && ad?.banner_image_mobile))
+
+      if (!isValid) {
+        console.warn(`Invalid ad data found for ID: ${ad?.id}`)
+      }
+      return isValid
+    })
+
+    return validAds
   } catch (error) {
     console.error("Error fetching ads:", error)
     return []

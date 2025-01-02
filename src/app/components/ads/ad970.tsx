@@ -21,12 +21,24 @@ const Ad970 = () => {
         const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.Banner}`)
         const ads = await adsResponse.json()
 
-        if (Array.isArray(ads) && ads.length > 0) {
-          const selectedAd = ads[Math.floor(Math.random() * ads.length)]
-          setRandomAd(selectedAd)
+        // More explicit handling of empty ads
+        if (!Array.isArray(ads)) {
+          console.warn("Invalid ads data format received")
+          setRandomAd(null)
+          return
         }
+
+        if (ads.length === 0) {
+          console.info("No active ads available")
+          setRandomAd(null)
+          return
+        }
+
+        const selectedAd = ads[Math.floor(Math.random() * ads.length)]
+        setRandomAd(selectedAd)
       } catch (error) {
-        console.error("Failed to fetch Ad data on Article page:", error)
+        console.error("Failed to fetch Ad data:", error)
+        setRandomAd(null)
       }
     }
 
