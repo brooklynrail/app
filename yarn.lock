@@ -147,10 +147,10 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@directus/sdk@^18.0.1":
-  version "18.0.1"
-  resolved "https://registry.yarnpkg.com/@directus/sdk/-/sdk-18.0.1.tgz#35219fbc1a06d382d0fa94092b23e7ed6743dd3e"
-  integrity sha512-vUYhqn7qwuaIcqbVRhQtKhjGB9DNhumnzauOg0M8dVnuxk6BgW1W6ZYzkhXmP1vcsU3RohM1l8KPTxOkjikktg==
+"@directus/sdk@^18.0.3":
+  version "18.0.3"
+  resolved "https://registry.yarnpkg.com/@directus/sdk/-/sdk-18.0.3.tgz#779f4e7bae1bba71c87b7ac2e7f8248bf97da01a"
+  integrity sha512-PnEDRDqr2x/DG3HZ3qxU7nFp2nW6zqJqswjii57NhriXgTz4TBUI8NmSdzQvnyHuTL9J0nedYfQGfW4v8odS1A==
 
 "@emnapi/runtime@^1.2.0":
   version "1.2.0"
