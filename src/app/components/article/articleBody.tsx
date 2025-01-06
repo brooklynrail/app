@@ -145,7 +145,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
           {section.showAd &&
             showAd &&
             // Show DonationAd for second section in articles over 3000 words
-            (totalWordCount > 3000 && index === 1 ? <DonationAd /> : <AdInArticle />)}
+            (totalWordCount > 3000 && index === 1 ? <></> : <AdInArticle />)}
         </div>
       ))}
 
