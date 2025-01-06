@@ -7,7 +7,7 @@ import { AdTypes } from "../../../../lib/utils/ads"
 import { useAdVisibility } from "@/app/hooks/adVisibilityContext"
 import { usePostHog } from "posthog-js/react"
 
-const Ad970 = () => {
+const AdFixedBanner = () => {
   const [randomAd, setRandomAd] = useState<Ads | null>(null)
   const { isAdVisible, closeAd } = useAdVisibility()
   const posthog = usePostHog()
@@ -18,7 +18,7 @@ const Ad970 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.Banner}`)
+        const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.FixedBanner}`)
         const ads = await adsResponse.json()
 
         // More explicit handling of empty ads
@@ -56,7 +56,7 @@ const Ad970 = () => {
           posthog.capture(`${action}_ad`, {
             slug,
             campaign_title,
-            ad_format: AdTypes.Banner,
+            ad_format: AdTypes.FixedBanner,
           })
         }
 
@@ -69,7 +69,7 @@ const Ad970 = () => {
           event_category: "ads",
           event_label: slug,
           event_value: ad_url,
-          ad_format: AdTypes.Banner,
+          ad_format: AdTypes.FixedBanner,
           campaign: campaign_title,
           campaign_id: slug,
           ad_source: "br-studio",
@@ -124,7 +124,7 @@ const Ad970 = () => {
     isAdVisible && (
       <div
         ref={adRef}
-        className="m-0 fixed bottom-0 left-0 right-0 z-20 pt-1 tablet-lg:pt-1 bg-white bg-opacity-80 backdrop-blur-md"
+        className="m-0 fixed bottom-0 left-0 right-0 z-20 pt-1 tablet-lg:pt-1 bg-white dark:bg-zinc-700 bg-opacity-80 dark:bg-opacity-60 backdrop-blur-md"
       >
         <button
           className="border border-zinc-200 text-zinc-700 text-center shadow-lg absolute -top-3.5 tablet:-top-5 right-3 rounded-full bg-white w-8 tablet:w-9 h-8 tablet:h-9 flex items-center justify-center"
@@ -132,7 +132,9 @@ const Ad970 = () => {
         >
           <span className="text-lg tablet:text-xl font-bold">&#x2715;</span>
         </button>
-        <p className="z-10 text-[10px] leading-4 text-center uppercase text-gray-700">Advertisement</p>
+        <p className="z-10 text-[10px] leading-4 text-center uppercase text-gray-700 dark:text-slate-100">
+          Advertisement
+        </p>
         <div className="flex justify-center items-center">
           <Link href={ad_url} target="_blank" onClick={() => handleAdEvent("click")}>
             <Image
@@ -158,4 +160,4 @@ const Ad970 = () => {
   )
 }
 
-export default Ad970
+export default AdFixedBanner

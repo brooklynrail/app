@@ -1,3 +1,5 @@
+"use server"
+
 import { readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"

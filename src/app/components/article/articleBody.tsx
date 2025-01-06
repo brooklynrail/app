@@ -1,17 +1,82 @@
 "use client"
-import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
 import parse from "html-react-parser"
+import { useMemo } from "react"
+import { Articles } from "../../../../lib/types"
 import ContributorsBox from "../contributorsBox"
 import BookshopWidget from "./bookshop"
-import replaceShortcodes from "./shortcodes"
-import { useMemo } from "react"
 import RailImage from "./railImage"
-import { Articles } from "../../../../lib/types"
-import ArticleAd from "./articleAd"
+import replaceShortcodes from "./shortcodes"
+import AdInArticle from "../ads/adInArticle"
+import DonationAd from "../ads/donationAd"
 
 interface ArticleBodyProps {
   articleData: Articles
   showAd: boolean
+}
+
+interface ContentSection {
+  content: string
+  showAd: boolean
+}
+
+function splitContent(paragraphs: string[], totalWordCount: number, sectionSlug: string): ContentSection[] {
+  // Poetry articles don't get split
+  if (sectionSlug === "poetry") {
+    return [{ content: paragraphs.join(""), showAd: false }]
+  }
+
+  const sections: ContentSection[] = []
+  let currentIndex = 0
+  let currentWordCount = 0
+
+  // Helper function to find next split point
+  const findNextSplit = (startIndex: number, targetWords: number) => {
+    let wordCount = 0
+    for (let i = startIndex; i < paragraphs.length; i++) {
+      const paragraphWordCount = paragraphs[i].split(/\s+/).filter(Boolean).length
+      wordCount += paragraphWordCount
+
+      if (wordCount >= targetWords) {
+        return i + 1 // Split after this paragraph
+      }
+    }
+    return paragraphs.length // If we can't reach target, return end
+  }
+
+  // For articles under 1500 words, split once in the middle
+  if (totalWordCount <= 1500) {
+    const splitIndex = findNextSplit(0, Math.ceil(totalWordCount / 2))
+    sections.push({ content: paragraphs.slice(0, splitIndex).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(splitIndex).join(""), showAd: false })
+  }
+  // For articles between 1500-2000 words, split at 800 words
+  else if (totalWordCount <= 2000) {
+    const splitIndex = findNextSplit(0, 800)
+    sections.push({ content: paragraphs.slice(0, splitIndex).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(splitIndex).join(""), showAd: false })
+  }
+  // For articles between 2000-3000 words, split at 800, 1600, and remaining
+  else if (totalWordCount <= 3000) {
+    const firstSplit = findNextSplit(0, 800)
+    const secondSplit = findNextSplit(firstSplit, 800)
+
+    sections.push({ content: paragraphs.slice(0, firstSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(firstSplit, secondSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(secondSplit).join(""), showAd: false })
+  }
+  // For articles over 3000 words, split at 800, 1600, 2400, and remaining
+  else {
+    const firstSplit = findNextSplit(0, 800)
+    const secondSplit = findNextSplit(firstSplit, 800)
+    const thirdSplit = findNextSplit(secondSplit, 800)
+
+    sections.push({ content: paragraphs.slice(0, firstSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(firstSplit, secondSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(secondSplit, thirdSplit).join(""), showAd: true })
+    sections.push({ content: paragraphs.slice(thirdSplit).join(""), showAd: false })
+  }
+
+  return sections
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
@@ -61,48 +126,28 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
   const sectionSlug = articleData.section.slug
 
-  // Calculate split content only for non-poetry articles
-  const { firstHalf, secondHalf } = useMemo(() => {
-    // For poetry section, return full content as firstHalf
-    if (sectionSlug === "poetry") {
-      return {
-        firstHalf: fullBodyText,
-        secondHalf: "",
-      }
-    }
-
-    let splitIndex = 0
-    let wordCount = 0
-
-    // If the article is over 1500 words, put the Ad at 800 words
-    // If the article is under 1500 words, split the content in half and put the Ad in the middle
-    const targetWordCount = totalWordCount <= 1500 ? Math.ceil(totalWordCount / 2) : 800
-
-    // Loop through paragraphs to find the split index
-    for (let i = 0; i < paragraphs.length; i++) {
-      const paragraphWordCount = paragraphs[i].split(/\s+/).filter((word) => word).length
-      wordCount += paragraphWordCount
-
-      if (wordCount >= targetWordCount) {
-        splitIndex = i + 1 // Ensure we split after this paragraph
-        break
-      }
-    }
-
-    // Split the paragraphs at the identified split index
-    const firstHalf = paragraphs.slice(0, splitIndex).join("")
-    const secondHalf = paragraphs.slice(splitIndex).join("")
-
-    return { firstHalf, secondHalf }
-  }, [paragraphs, totalWordCount, sectionSlug, fullBodyText])
+  const contentSections = useMemo(() => {
+    return splitContent(paragraphs, totalWordCount, sectionSlug)
+  }, [paragraphs, totalWordCount, sectionSlug])
 
   // ================================================
 
   return (
     <>
-      <div className={`content`}>{parse(firstHalf, options)}</div>
-      {sectionSlug !== "poetry" && secondHalf && showAd && <ArticleAd />}
-      {secondHalf && <div className={`content`}>{parse(secondHalf, options)}</div>}
+      <div className="hidden max-w-[120ex] text-xl">
+        <p>Word count: {totalWordCount}</p>
+        <p>Paragraphs: {paragraphs.length}</p>
+      </div>
+
+      {contentSections.map((section, index) => (
+        <div key={index}>
+          <div className={`content`}>{parse(section.content, options)}</div>
+          {section.showAd &&
+            showAd &&
+            // Show DonationAd for second section in articles over 3000 words
+            (totalWordCount > 3000 && index === 1 ? <DonationAd /> : <AdInArticle />)}
+        </div>
+      ))}
 
       {endnote && (
         <div className="content endnote">
@@ -110,11 +155,6 @@ const ArticleBody = (props: ArticleBodyProps) => {
           {parse(articleData.endnote)}
         </div>
       )}
-
-      <div className="hidden">
-        <p>Word count: {totalWordCount}</p>
-        <p>Paragraphs: {paragraphs.length}</p>
-      </div>
 
       <BookshopWidget {...articleData} />
 
