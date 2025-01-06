@@ -58,7 +58,7 @@ export const getAds = async (props: GetAdsProps): Promise<Ads[]> => {
         ad?.ad_url &&
         ad?.status === "published" &&
         ((adType === AdTypes.Tile && ad?.tile_image) ||
-          (adType === AdTypes.Banner && ad?.banner_image && ad?.banner_image_mobile))
+          (adType === AdTypes.FixedBanner && ad?.banner_image && ad?.banner_image_mobile))
 
       if (!isValid) {
         console.warn(`Invalid ad data found for ID: ${ad?.id}`)
