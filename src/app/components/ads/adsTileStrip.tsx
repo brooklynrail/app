@@ -2,7 +2,7 @@ import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState, useCallback } from "react"
-import { Ads } from "../../../../lib/types"
+import { Ads, Collections } from "../../../../lib/types"
 import { AdTypes } from "../../../../lib/utils/ads"
 import { usePostHog } from "posthog-js/react"
 
@@ -12,7 +12,7 @@ const AdTileSkeleton = () => (
   </li>
 )
 
-const AdsTileStrip = () => {
+const AdsTileStrip = ({ collection }: { collection: Collections }) => {
   const [randomAds, setRandomAds] = useState<Ads[] | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const posthog = usePostHog()
@@ -40,11 +40,6 @@ const AdsTileStrip = () => {
 
     fetchData()
   }, [])
-
-  // If no ads are available, don't render the component
-  if (!isLoading && !randomAds) {
-    return null
-  }
 
   const handleAdEvent = useCallback(
     (action: "impression" | "click", ad: Ads, position: number) => {
@@ -85,9 +80,13 @@ const AdsTileStrip = () => {
       )
     }
 
+    if (!randomAds || randomAds.length === 0) {
+      return null
+    }
+
     return (
       <ul className="flex w-full justify-center items-center space-x-4 overflow-x-auto scroll-smooth min-h-[147px]">
-        {randomAds?.map((ad: Ads, i: number) => {
+        {randomAds.map((ad: Ads, i: number) => {
           if (!ad.tile_image || !ad.ad_url) {
             return null
           }
@@ -109,7 +108,7 @@ const AdsTileStrip = () => {
                   height={scaledHeight}
                   sizes="20vw"
                   alt={ad.campaign_title}
-                  onLoad={() => handleAdEvent("impression", ad, i + 1)}
+                  onLoadingComplete={() => handleAdEvent("impression", ad, i + 1)}
                 />
               </Link>
             </li>
@@ -119,12 +118,19 @@ const AdsTileStrip = () => {
     )
   }
 
+  // An empty state check
+  if (!isLoading && (!randomAds || randomAds.length === 0)) {
+    return null
+  }
+
   return (
-    <div className="flex flex-col py-3 pb-6 bg-zinc-700">
-      <p className="pb-0.5 text-slate-100 text-[11px] text-center leading-4 uppercase dark:text-slate-400">
-        Advertisements
-      </p>
-      {renderAds()}
+    <div key={collection.id} className="collection">
+      <div className="flex flex-col py-3 pb-6 bg-zinc-700">
+        <p className="pb-0.5 text-slate-100 text-[11px] text-center leading-4 uppercase dark:text-slate-400">
+          Advertisements
+        </p>
+        {renderAds()}
+      </div>
     </div>
   )
 }

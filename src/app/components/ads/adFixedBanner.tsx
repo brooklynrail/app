@@ -21,12 +21,24 @@ const AdFixedBanner = () => {
         const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.FixedBanner}`)
         const ads = await adsResponse.json()
 
-        if (Array.isArray(ads) && ads.length > 0) {
-          const selectedAd = ads[Math.floor(Math.random() * ads.length)]
-          setRandomAd(selectedAd)
+        // More explicit handling of empty ads
+        if (!Array.isArray(ads)) {
+          console.warn("Invalid ads data format received")
+          setRandomAd(null)
+          return
         }
+
+        if (ads.length === 0) {
+          console.info("No active ads available")
+          setRandomAd(null)
+          return
+        }
+
+        const selectedAd = ads[Math.floor(Math.random() * ads.length)]
+        setRandomAd(selectedAd)
       } catch (error) {
-        console.error("Failed to fetch Ad data on Article page:", error)
+        console.error("Failed to fetch Ad data:", error)
+        setRandomAd(null)
       }
     }
 
@@ -71,13 +83,11 @@ const AdFixedBanner = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInView(entry.isIntersecting)
-        if (entry.isIntersecting && randomAd) {
+        if (entry.isIntersecting && isInView && randomAd) {
           handleAdEvent("impression")
         }
       },
       { threshold: 0.5 },
-      // A threshold of 0.5 means the ad must be at least 50% visible in the viewport to count as an impression.
     )
 
     if (adRef.current) {
@@ -89,7 +99,7 @@ const AdFixedBanner = () => {
         observer.unobserve(adRef.current)
       }
     }
-  }, [randomAd, handleAdEvent])
+  }, [randomAd, handleAdEvent, isInView])
 
   if (!randomAd || !randomAd.banner_image || !randomAd.banner_image_mobile || !randomAd.ad_url) {
     return null
@@ -133,6 +143,7 @@ const AdFixedBanner = () => {
               width={desktopDimensions.width}
               height={desktopDimensions.height}
               alt={campaign_title}
+              onLoadingComplete={() => setIsInView(true)}
             />
             <Image
               className="block tablet:hidden"
@@ -140,6 +151,7 @@ const AdFixedBanner = () => {
               width={mobileDimensions.width}
               height={mobileDimensions.height}
               alt={campaign_title}
+              onLoadingComplete={() => setIsInView(true)}
             />
           </Link>
         </div>

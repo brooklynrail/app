@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const adsData = await getAds({ adType: type as AdTypes })
 
   if (!adsData) {
-    return new Response("Invalid adsData", { status: 401 })
+    return Response.json([])
   }
 
   return Response.json(adsData)

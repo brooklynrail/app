@@ -47,7 +47,7 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   const [showPopup, setShowPopup] = useState(true)
   const [popupType, setPopupType] = useState<string | null>(null)
   const [images, setImages] = useState<any[]>([])
-  const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
+  // const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
   const [showArticleSlideShow, setShowArticleSlideShow] = useState(false)
   const [slideId, setSlideId] = useState<string | null>(null)
 
@@ -66,17 +66,17 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   //   }
   // }, [])
 
-  useEffect(() => {
-    setPopupType("donate")
-    setShowPopup(true)
-    // if (viewedDonateCount !== null && viewedDonateCount < 2) {
-    //   const newCount = viewedDonateCount + 1
-    //   const currentTime = Date.now()
-    //   setViewedDonateCount(newCount)
-    //   setLocalStorageItem("donatePopup", newCount.toString())
-    //   setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
-    // }
-  }, [viewedDonateCount])
+  // useEffect(() => {
+  //   setPopupType("donate")
+  //   setShowPopup(true)
+  //   // if (viewedDonateCount !== null && viewedDonateCount < 2) {
+  //   //   const newCount = viewedDonateCount + 1
+  //   //   const currentTime = Date.now()
+  //   //   setViewedDonateCount(newCount)
+  //   //   setLocalStorageItem("donatePopup", newCount.toString())
+  //   //   setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
+  //   // }
+  // }, [viewedDonateCount])
 
   const togglePopup = (type: string) => {
     setPopupType(type)
