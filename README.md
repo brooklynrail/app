@@ -6,17 +6,13 @@ The Brooklyn Rail is built with [Next.js](https://nextjs.org/) and [Directus Clo
 
 ## Getting Started
 
-You will need the following to run the site locally:
-
-- Directus API key
-
-## Create a `.env.local` file
+### Create a `.env.local` file
 
 ```bash
 cp .env.example .env.local
 ```
 
-## Run the site locally
+### Run the site locally
 
 First, run the development server:
 
