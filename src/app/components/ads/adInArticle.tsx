@@ -94,8 +94,8 @@ const AdInArticle = () => {
   if (!currentAd || !currentAd.banner_image || !currentAd.banner_image_mobile || !currentAd.ad_url) {
     // Only show DonationAd if we've attempted to fetch ads (randomAd is null) and found none
     if (!isLoading && !currentAd) {
-      return <DonationAd />
-      // return <></>
+      // return <DonationAd />
+      return <></>
     }
     // Otherwise show nothing while we're still loading
     return <></>
