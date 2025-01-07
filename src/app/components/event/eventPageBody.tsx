@@ -13,7 +13,21 @@ import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "../..
 
 const EventPageBody = (props: EventProps) => {
   const { eventData, eventTypes } = props
-  const { title, deck, start_date, end_date, all_day, summary, type, series, body, youtube_id, airtable_id } = eventData
+  const {
+    title,
+    deck,
+    start_date,
+    end_date,
+    soldout,
+    registration_url,
+    all_day,
+    summary,
+    type,
+    series,
+    body,
+    youtube_id,
+    airtable_id,
+  } = eventData
 
   // Get the readable event type text
   const eventTypeText = getEventTypeText(type, eventTypes)
@@ -45,11 +59,17 @@ const EventPageBody = (props: EventProps) => {
   })
 
   const handleRegister = () => {
-    const register = document.getElementById("register")
-    if (register) {
-      register.scrollIntoView({ behavior: "smooth" })
+    if (airtable_id) {
+      const register = document.getElementById("register")
+      if (register) {
+        register.scrollIntoView({ behavior: "smooth" })
+      }
+    } else if (registration_url) {
+      window.open(registration_url, "_blank")
     }
   }
+
+  const showRegisterButton = airtable_id || registration_url
 
   return (
     <article className="h-entry py-6 tablet-lg:py-12">
@@ -79,13 +99,18 @@ const EventPageBody = (props: EventProps) => {
                 )}
               </p>
             </div>
-            {isFutureEvent && (
+            {isFutureEvent && !soldout && showRegisterButton && (
               <button
                 onClick={handleRegister}
                 className="py-3 px-6 rounded-sm shadow-lg text-lg uppercase bg-violet-800 text-white hover:underline underline-offset-4"
               >
                 Register
               </button>
+            )}
+            {isFutureEvent && soldout && (
+              <p className="text-center text-md font-medium py-1.5 px-3 rounded-md uppercase bg-amber-100">
+                Sold out, this event is at capacity
+              </p>
             )}
           </div>
         </div>

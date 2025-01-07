@@ -516,6 +516,7 @@ export type Events = {
   sort?: number | null
   start_date: string
   status: string
+  registration_url?: string | null
   kicker?: string | null
   title: string
   type: string

@@ -245,6 +245,8 @@ export const getEvent = cache(async (slug: string) => {
         "body_text",
         "body",
         "series",
+        "soldout",
+        "registration_url",
         "start_date",
         "all_day",
         "end_date",

@@ -8,7 +8,7 @@ import Person from "./person"
 
 const EventPage = (props: EventProps) => {
   const { eventData, navData } = props
-  const { end_date } = eventData
+  const { end_date, airtable_id } = eventData
 
   // It is in the future if the end date is greater than the current date
   const isFutureEvent = new Date(end_date) > new Date()
@@ -19,7 +19,7 @@ const EventPage = (props: EventProps) => {
         <EventPageBody {...props} />
       </main>
 
-      {isFutureEvent && eventData.airtable_id && <Register {...props} />}
+      {isFutureEvent && airtable_id && <Register {...props} />}
     </Paper>
   )
 }
