@@ -12,9 +12,9 @@ const VideoBG = (props: VideoBGProps) => {
       loop
       playsInline
       className="absolute top-0 left-0 w-full h-full object-cover transform"
-      poster="/video/shirin-neshat-1.png"
+      poster="/video/shirin-neshat-2.png"
     >
-      <source src="https://studio.brooklynrail.org/assets/b1a9a7a8-dda0-44c8-a683-c66a7ead83bb.mp4" type="video/mp4" />
+      <source src="https://studio.brooklynrail.org/assets/c2da0ae6-d635-44c2-a323-0a090a6f9569.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   )
