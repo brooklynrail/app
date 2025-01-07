@@ -1,6 +1,9 @@
 import { NextRequest } from "next/server"
 import { AdTypes } from "../../../../lib/utils/ads"
 
+// Revalidates every 30 minutes
+export const revalidate = 1800
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const type = searchParams.get("type")
