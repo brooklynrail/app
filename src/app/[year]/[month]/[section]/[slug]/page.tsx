@@ -7,8 +7,15 @@ import { notFound, redirect } from "next/navigation"
 import { AddRedirect } from "@/app/actions/redirect"
 import { revalidatePath } from "next/cache"
 import { getRedirect, RedirectTypes } from "../../../../../../lib/utils/redirects"
-import { checkYearMonthSection, extractPeopleFromArticle } from "../../../../../../lib/utils/articles"
+import { checkYearMonthSection, getArticlePages } from "../../../../../../lib/utils/articles"
 import { getNavData } from "../../../../../../lib/utils/homepage"
+
+// Dynamic segments not included in generateStaticParams are generated on demand.
+// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
+export const dynamicParams = true
+
+// Next.js will invalidate the cache when a request comes in, at most once every hour.
+export const revalidate = 3600
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -69,6 +76,8 @@ interface ArticleParams {
 }
 
 async function getData({ params }: { params: ArticleParams }) {
+  // Add segment config for revalidation
+
   const year: string = params.year
   const month: string = params.month
   const section: string = params.section
@@ -159,4 +168,20 @@ export default async function ArticlePageController({ params }: { params: Articl
   }
 
   return <Article {...data.props} />
+}
+
+export async function generateStaticParams() {
+  const articlePages = await getArticlePages()
+
+  if (!articlePages) return []
+
+  return articlePages.map((article: Articles) => {
+    const month = article.issue.month
+    return {
+      year: article.issue.year.toString(),
+      month: month < 10 ? `0${month.toString()}` : month.toString(),
+      section: article.section.slug.toString(),
+      slug: article.slug,
+    }
+  })
 }

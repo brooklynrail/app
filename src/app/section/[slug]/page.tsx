@@ -6,6 +6,13 @@ import { getNavData } from "../../../../lib/utils/homepage"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 
+// Dynamic segments not included in generateStaticParams are generated on demand.
+// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
+export const dynamicParams = true
+
+// Next.js will invalidate the cache when a request comes in, at most once every hour.
+export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 3600 : 0
+
 export default async function SectionPage({ params }: { params: SectionParams }) {
   const data = await getData({ params })
 
