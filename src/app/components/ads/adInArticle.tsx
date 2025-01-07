@@ -22,6 +22,7 @@ const AdInArticle = () => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.InArticleStandard}`,
         )
         const ads = await adsResponse.json()
+        console.log("ads", ads)
 
         if (Array.isArray(ads) && ads.length > 0) {
           const selectedAd = ads[Math.floor(Math.random() * ads.length)]
@@ -95,6 +96,7 @@ const AdInArticle = () => {
     // Only show DonationAd if we've attempted to fetch ads (randomAd is null) and found none
     if (!isLoading && !currentAd) {
       return <DonationAd />
+      // return <></>
     }
     // Otherwise show nothing while we're still loading
     return <></>
