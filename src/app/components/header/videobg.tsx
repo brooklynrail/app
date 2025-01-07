@@ -13,7 +13,7 @@ const VideoBG = (props: VideoBGProps) => {
       playsInline
       className="absolute top-0 left-0 w-full h-full object-cover transform"
       style={{
-        objectPosition: "center 10%",
+        objectPosition: "center 25%",
       }}
       poster="/video/shirin-neshat-2.png"
     >
