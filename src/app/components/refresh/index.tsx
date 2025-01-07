@@ -13,7 +13,7 @@ const Refresh = () => {
     const parsedUrl = new URL(url, window.location.origin)
     const path = parsedUrl.pathname + parsedUrl.search
 
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh/path?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&path=${path}`
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh/path?secret=${process.env.REVALIDATION_SECRET}&path=${path}`
 
     try {
       const response = await fetch(apiUrl, {
