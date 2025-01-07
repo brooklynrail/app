@@ -2,9 +2,21 @@
 
 ---
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+The Brooklyn Rail is built with [Next.js](https://nextjs.org/) and [Directus Cloud](https://directus.io/), hosted on [Vercel](https://vercel.com/).
 
 ## Getting Started
+
+You will need the following to run the site locally:
+
+- Directus API key
+
+## Create a `.env.local` file
+
+```bash
+cp .env.example .env.local
+```
+
+## Run the site locally
 
 First, run the development server:
 
@@ -13,6 +25,8 @@ yarn dev
 ```
 
 Open [https://localhost:3000](https://localhost:3000) with your browser to see the result.
+
+---
 
 ## Redirects
 

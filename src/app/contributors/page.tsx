@@ -3,10 +3,33 @@ import { getAllContributors, getCurrentIssueData, getPermalink, PageType } from 
 import { notFound } from "next/navigation"
 import ContributorsPage from "../components/contributors"
 import { getNavData } from "../../../lib/utils/homepage"
+import { Metadata } from "next"
 
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getData()
+
+  if (!data) {
+    return {}
+  }
+  const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
+
+  const ogtitle = "All Contributors"
+  return {
+    title: ogtitle,
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: ogtitle,
+      url: data.permalink,
+      type: "website",
+      images: share_card,
+    },
+    twitter: {
+      images: share_card,
+    },
+  }
+}
 
 export default async function ContributorsIndex() {
   const data = await getData()
@@ -37,9 +60,12 @@ async function getData() {
     return notFound()
   }
 
+  const permalink = getPermalink({ type: PageType.Contributors })
+
   return {
     navData,
     thisIssueData,
     allContributors,
+    permalink,
   }
 }

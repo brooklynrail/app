@@ -75,6 +75,14 @@ const CurrentCollections = (props: CurrentCollectionsProps) => {
       {allCollections}
       <li className="text-center">
         <Link
+          href={`https://brooklynrail.org/section/artonic`}
+          className="py-3 block text-sm font-bold uppercase text-center"
+        >
+          ArTonic
+        </Link>
+      </li>
+      <li className="text-center">
+        <Link
           href={`https://intranslation.brooklynrail.org/`}
           className="py-3 block text-sm font-bold uppercase text-center"
         >

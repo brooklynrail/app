@@ -1,6 +1,8 @@
 /* eslint max-lines: 0 */
-import directus from "./directus"
 import { readItems, readSingleton } from "@directus/sdk"
+import { cache } from "react"
+import { stripHtml } from "string-strip-html"
+import directus from "./directus"
 import {
   Articles,
   Contributors,
@@ -8,18 +10,15 @@ import {
   Events,
   GlobalSettings,
   Issues,
-  Pages,
   People,
   Sections,
   Tributes,
 } from "./types"
-import { stripHtml } from "string-strip-html"
-import { cache } from "react"
 
 // Used in
 // - Issue Select dropdown
 // - Archive page
-export async function getAllIssues() {
+export const getAllIssues = cache(async () => {
   try {
     let allIssues: Issues[] = []
     let page = 1
@@ -90,9 +89,9 @@ export async function getAllIssues() {
     console.error("Error fetching All Issues data:", error)
     return null
   }
-}
+})
 
-export async function getIssues() {
+export const getIssues = cache(async () => {
   try {
     let allIssues: Issues[] = []
     let page = 1
@@ -126,7 +125,7 @@ export async function getIssues() {
     console.error("Error fetching getIssues:", error)
     return null
   }
-}
+})
 
 export const getCurrentIssueData = cache(async () => {
   try {
@@ -177,7 +176,7 @@ export const getGlobalSettings = cache(async () => {
 interface IssueDataProps {
   slug: string
 }
-export async function getIssueData(props: IssueDataProps) {
+export const getIssueData = cache(async (props: IssueDataProps) => {
   const { slug } = props
   const issueDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/issues` +
@@ -190,6 +189,7 @@ export async function getIssueData(props: IssueDataProps) {
     `&fields[]=published` +
     `&fields[]=issue_number` +
     `&fields[]=special_issue` +
+    `&fields[]=store_url` +
     `&fields[]=old_id` +
     `&fields[]=summary` +
     `&fields[]=credits` +
@@ -287,7 +287,7 @@ export async function getIssueData(props: IssueDataProps) {
     console.error("Error fetching issue data:", error)
     return null
   }
-}
+})
 
 export const getSectionsByIssueId = cache(async (issueId: string, status: string) => {
   try {
@@ -315,188 +315,7 @@ export const getSectionsByIssueId = cache(async (issueId: string, status: string
   }
 })
 
-export async function getArticlePages() {
-  try {
-    let articlePages: Articles[] = []
-    let page = 1
-    let isMore = true
-    while (isMore) {
-      const articleDataAPI =
-        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
-        `?fields[]=slug` +
-        `&fields[]=section.slug` +
-        `&fields[]=issue.year` +
-        `&fields[]=issue.month` +
-        `&fields[]=issue.slug` +
-        `&fields[]=issue.special_issue` +
-        `&fields[]=issue.status` +
-        `&filter[status][_eq]=published` +
-        `&filter[slug][_nempty]=true` +
-        `&filter[issue][_nnull]=true` +
-        `&sort[]=-date_updated` +
-        `&page=${page}` +
-        `&limit=100` +
-        `&offset=${page * 100 - 100}`
-      const res = await fetch(articleDataAPI)
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error("Failed to fetch getArticlePages data")
-      }
-      const data = await res.json()
-      articlePages = articlePages.concat(data.data)
-      isMore = data.data.length === 100 // assumes there is another page of records
-      page++
-    }
-    return articlePages as Articles[]
-  } catch (error) {
-    console.error("Error in getArticlePages", error)
-    return null
-  }
-}
-
-export async function getPreviewArticle(id: string) {
-  try {
-    // Search for the article with the matching slug
-    // assuming that slug is unique!
-    const preview = await directus.request(
-      readItems("articles", {
-        version: "draft",
-        fields: [
-          "*",
-          "tribute",
-          "hide_title",
-          { section: ["id", "name", "slug"] },
-          { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
-          { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
-          { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
-          { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
-          { user_updated: ["id", "first_name", "last_name", "avatar"] },
-        ],
-        filter: {
-          id: { _eq: id },
-        },
-      }),
-    )
-    return preview[0] as Articles
-  } catch (error) {
-    console.error("error in getPreviewArticle", error)
-    return null
-  }
-}
-
-export async function getPreviewIssue(id: string) {
-  try {
-    const preview = await directus.request(
-      readItems("issues", {
-        fields: [
-          "*",
-          "title",
-          {
-            articles: [
-              "id",
-              "status",
-              "slug",
-              "title",
-              "excerpt",
-              "kicker",
-              "sort",
-              "featured",
-              { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
-              { section: ["id", "slug", "name"] },
-              { featured_image: ["id", "width", "height", "filename_disk", "caption"] },
-            ],
-          },
-          { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
-          { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
-          { cover_3: ["id", "width", "height", "filename_disk", "caption"] },
-          { cover_4: ["id", "width", "height", "filename_disk", "caption"] },
-          { cover_5: ["id", "width", "height", "filename_disk", "caption"] },
-          { cover_6: ["id", "width", "height", "filename_disk", "caption"] },
-          { user_updated: ["id", "first_name", "last_name", "avatar"] },
-        ],
-        filter: {
-          id: { _eq: id },
-        },
-        deep: {
-          articles: {
-            _limit: -1,
-          },
-        },
-      }),
-    )
-
-    return preview[0] as Issues
-  } catch (error) {
-    console.error("error in getPreviewIssue", error)
-    return null
-  }
-}
-
-export async function getPreviewTribute(id: string) {
-  try {
-    const preview = await directus.request(
-      readItems("tributes", {
-        fields: [
-          "id",
-          "title",
-          "deck",
-          "slug",
-          "blurb",
-          "summary",
-          "excerpt",
-          "published",
-          "title_tag",
-          {
-            editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-          },
-          {
-            featured_image: ["id", "width", "height", "filename_disk", "caption"],
-          },
-          {
-            articles: [
-              "slug",
-              "title",
-              "excerpt",
-              "body_text",
-              "sort",
-              "hide_title",
-              "status",
-              {
-                tribute: ["slug"],
-              },
-              {
-                images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
-              },
-              {
-                section: ["name", "slug"],
-              },
-              {
-                issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
-              },
-              {
-                contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
-              },
-              {
-                featured_image: ["id", "width", "height", "filename_disk", "caption"],
-              },
-            ],
-          },
-        ],
-        filter: {
-          id: {
-            _eq: id,
-          },
-        },
-      }),
-    )
-    return preview[0] as Tributes
-  } catch (error) {
-    console.error("error in getPreviewTribute", error)
-    return null
-  }
-}
-
-export async function getArticle(slug: string, status?: string) {
+export const getArticle = cache(async (slug: string, status?: string) => {
   const articleAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
     `?fields[]=slug` +
@@ -569,7 +388,7 @@ export async function getArticle(slug: string, status?: string) {
     console.error(error)
     return null
   }
-}
+})
 
 export const getEvent = cache(async (slug: string) => {
   const events = await directus.request(
@@ -634,6 +453,7 @@ export enum PageType {
   TributeArticle = "tribute_article",
   Home = "home",
   Contributor = "contributor",
+  Contributors = "contributors",
   Person = "person",
   People = "people",
   Events = "events",
@@ -716,6 +536,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/tribute/${tributeSlug}/${slug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
+    case PageType.Contributors:
+      return `${baseURL}/contributors/`
     case PageType.Person:
       return `${baseURL}/people/${personSlug}/`
     case PageType.People:
@@ -741,15 +563,10 @@ export function getPermalink(props: PermalinkProps) {
   }
 }
 
-export async function getPreviewPassword() {
-  const settings = await getGlobalSettings()
-  return settings.preview_password
-}
-
 // Get contributor
 // NOTE: There are multiple contributors with the same slug
 // This returns all contributors with the same slug, but their specific name and bio information may be different
-export async function getContributor(slug: string) {
+export const getContributor = cache(async (slug: string) => {
   const issueDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors` +
     `?fields[]=id` +
@@ -807,7 +624,7 @@ export async function getContributor(slug: string) {
     console.error("Failed to fetch getContributor data", error)
     return null
   }
-}
+})
 
 export const getAllContributors = cache(async () => {
   try {

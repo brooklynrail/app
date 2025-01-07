@@ -54,48 +54,70 @@ a:hover .media figcaption {
   text-decoration: none !important;
 }
 
-.article-container {
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
-}
+// .article-container {
+//   transition:
+//     transform 0.1s ease,
+//     opacity 0.1s ease;
+// }
 
-.article-card {
-  flex: 1 0 100%;
-  transition: transform 0.3s ease;
-}
+// .article-card {
+//   flex: 1 0 100%;
+//   transition:
+//     transform 0.5s ease,
+//     opacity 0.5s ease;
+// }
 
-/* Initial positioning */
-.article-enter-left .article-card {
-  transform: translateX(-100%); /* Entering from the left */
-}
+// /* Initial positioning */
+// .article-enter-left .article-card,
+// .article-enter-right .article-card {
+//   opacity: 0; /* Start with opacity 0 */
+//   transform: translateY(-20px); /* Slightly above */
+// }
 
-.article-enter-right .article-card {
-  transform: translateX(100%); /* Entering from the right */
-}
+// /* Active state (centered) */
+// .article-active .article-card {
+//   opacity: 1;
+//   transform: translateY(0); /* Centered in view */
+// }
 
-/* Active state (centered) */
-.article-active .article-card {
-  transform: translateX(0); /* Centered in view */
-  opacity: 1;
-}
+// /* Exiting states */
+// .article-exit-left .article-card,
+// .article-exit-right .article-card {
+//   opacity: 0; /* Fade out */
+//   // transform: translateY(20px); /* Slightly below */
+// }
 
-/* Exiting states */
-.article-exit-left .article-card {
-  transform: translateX(-100%); /* Exiting to the left */
-}
+// /* Fade and entrance animation */
+// .enter-animation {
+//   opacity: 1;
+//   transform: translateY(0%);
+// }
 
-.article-exit-right .article-card {
-  transform: translateX(100%); /* Exiting to the right */
-}
+// /* Overall opacity and transition control */
+// .article-exit {
+//   opacity: 0;
+// }
 
-/* Fade and entrance animation */
-.enter-animation {
-  opacity: 1;
-  transform: translateX(0%);
-}
+// .article-enter {
+//   opacity: 0;
+//   // transform: translateY(-20px); /* Slightly above */
+//   transition:
+//     opacity 0.1s ease,
+//     transform 0.1s ease;
+// }
 
-/* Overall opacity and transition control */
-.article-exit {
-  opacity: 0;
-}
+// .article-enter-active {
+//   opacity: 1;
+//   // transform: translateY(0);
+//   transition:
+//     opacity 0.1s ease,
+//     transform 0.1s ease;
+// }
+
+// .article-exit-active {
+//   opacity: 0;
+//   // transform: translateY(20px); /* Slightly below */
+//   transition:
+//     opacity 0.1s ease,
+//     transform 0.1s ease;
+// }

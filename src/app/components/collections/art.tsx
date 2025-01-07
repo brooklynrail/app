@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef, useState } from "react"
 import { Articles, Collections } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import FeaturedImage from "../featuredImage"
@@ -47,7 +48,21 @@ const CollectionArt = (collection: Collections) => {
 
 const PromosMobile = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, featured_artwork, featured_image, kicker } = article
+    const { issue, section, title, featured_artwork, featured_image } = article
+    const [divWidth, setDivWidth] = useState(0)
+    const divRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+      const updateWidth = () => {
+        if (divRef.current) {
+          setDivWidth(divRef.current.offsetWidth)
+        }
+      }
+      updateWidth()
+      window.addEventListener("resize", updateWidth)
+      return () => window.removeEventListener("resize", updateWidth)
+    }, [])
+
     const artwork = featured_artwork ? featured_artwork : featured_image
     const permalink = getPermalink({
       year: issue.year,
@@ -67,8 +82,9 @@ const PromosMobile = (props: PromoProps) => {
               <Excerpt excerpt={article.excerpt} classes={`excerpt-sm tablet-lg:excerpt-md desktop-lg:excerpt-lg`} />
             </div>
             {artwork && (
-              <div className="flex-none tablet:w-card desktop-lg:w-[336px]">
+              <div ref={divRef} className="flex-none tablet:w-card desktop-lg:w-[336px]">
                 <FeaturedImage
+                  containerWidth={divWidth}
                   image={artwork}
                   title={title}
                   hideCaption={true}

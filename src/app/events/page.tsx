@@ -1,14 +1,10 @@
 import { notFound } from "next/navigation"
 import { Events, EventsTypes, Homepage } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
-import { getEventTypes, getPastEvents, getUpcomingEvents } from "../../../lib/utils/events/utils"
+import { getEventTypes, getPastEvents, getUpcomingEvents } from "../../../lib/utils/events"
 import EventsPage from "@/app/components/events"
 import { Metadata } from "next"
 import { getNavData } from "../../../lib/utils/homepage"
-
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
 
 export interface EventsProps {
   navData: Homepage
@@ -40,7 +36,6 @@ export async function generateMetadata(): Promise<Metadata> {
       title: `${ogtitle}`,
       url: data.permalink,
       images: share_card,
-      // type: `article`,
     },
     twitter: {
       images: share_card,
@@ -68,7 +63,7 @@ async function getData() {
     return notFound()
   }
 
-  const initialEvents = await getPastEvents({ limit: 4, offset: 0 })
+  const initialEvents = await getPastEvents({ limit: 32, offset: 0 })
   if (!initialEvents) {
     return notFound()
   }

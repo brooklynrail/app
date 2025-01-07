@@ -2,51 +2,60 @@
 import parse from "html-react-parser"
 import SearchField from "../search/searchField"
 import { LayoutMode } from "./default"
+import styles from "./section.module.scss"
 
 interface SectionHeadProps {
   title: string
   permalink: string
   description?: string | null
+  sponsor?: string | null
   hasMultipleLayouts: boolean
   layoutMode: LayoutMode
   setLayoutMode: (mode: LayoutMode) => void
 }
 
 const SectionHead = (props: SectionHeadProps) => {
-  const { title, description, hasMultipleLayouts, layoutMode, setLayoutMode } = props
+  const { title, description, sponsor, hasMultipleLayouts, layoutMode, setLayoutMode } = props
 
   // Functions to toggle between layout modes
   const handleGridView = () => hasMultipleLayouts && setLayoutMode(LayoutMode.Grid)
   const handleListView = () => hasMultipleLayouts && setLayoutMode(LayoutMode.List)
 
   return (
-    <div className="px-3 tablet:px-6 sticky top-11 tablet-lg:top-13 z-10 section-head">
-      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
-        <div className="col-span-4 tablet-lg:col-span-12">
-          <div className="flex justify-between items-center space-x-6 py-3 pb-1.5 tablet:pb-3 tablet:pt-6">
-            <div className="space-y-1 tablet:w-2/3 desktop:w-1/2">
-              <h2 className="text-2xl tablet:text-4xl font-bold">{title}</h2>
-              {description && <div className="text-sm">{parse(description)}</div>}
-            </div>
-            <div className="flex space-x-3">
-              {hasMultipleLayouts && (
-                <div className="flex space-x-3">
-                  <button onClick={handleGridView} className="">
-                    <BlockIcon active={layoutMode === LayoutMode.Grid} />
-                  </button>
-                  <button onClick={handleListView} className="">
-                    <ListIcon active={layoutMode === LayoutMode.List} />
-                  </button>
+    <>
+      <div className="px-3 tablet:px-6 sticky top-11 tablet-lg:top-13 z-10 section-head">
+        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3">
+          <div className="col-span-4 tablet-lg:col-span-12">
+            <div className="flex justify-between items-center space-x-6 py-3 pb-1.5 tablet:pb-3 tablet:pt-6">
+              <div className="space-y-1 tablet:w-2/3 desktop:w-1/2">
+                <h2 className="text-2xl tablet:text-4xl font-bold">{title}</h2>
+              </div>
+              <div className="flex space-x-3">
+                {hasMultipleLayouts && (
+                  <div className="flex space-x-3">
+                    <button onClick={handleGridView} className="">
+                      <BlockIcon active={layoutMode === LayoutMode.Grid} />
+                    </button>
+                    <button onClick={handleListView} className="">
+                      <ListIcon active={layoutMode === LayoutMode.List} />
+                    </button>
+                  </div>
+                )}
+                <div className="hidden tablet-lg:block w-72 desktop:w-96">
+                  <SearchField />
                 </div>
-              )}
-              <div className="hidden tablet-lg:block w-72 desktop:w-96">
-                <SearchField />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      {(description || sponsor) && (
+        <div className="p-3 tablet:px-6">
+          {description && <div className={styles.description}>{parse(description)}</div>}
+          {sponsor && <div className={styles.sponsor}>{parse(sponsor)}</div>}
+        </div>
+      )}
+    </>
   )
 }
 

@@ -2,21 +2,32 @@ import { notFound } from "next/navigation"
 import { getAllIssues, getPermalink, PageType } from "../../../lib/utils"
 import { getNavData } from "../../../lib/utils/homepage"
 import ArchivePage from "../components/archive"
+import { Metadata } from "next"
 
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getData()
 
-// Next.js will invalidate the cache when a
-// request comes in, at most once every 60 seconds.
-export const revalidate = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? 42600 : 0
+  if (!data) {
+    return {}
+  }
+  const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
-export enum PageLayout {
-  Issue = "issue",
-  Section = "section",
-  SpecialIssue = "special-issue",
-  SpecialSection = "special-section",
-  Contributor = "contributor",
+  const ogtitle = "All Issues"
+  return {
+    title: ogtitle,
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: ogtitle,
+      url: data.permalink,
+      type: "website",
+      images: share_card,
+    },
+    twitter: {
+      images: share_card,
+    },
+  }
 }
 
 export default async function Archive() {

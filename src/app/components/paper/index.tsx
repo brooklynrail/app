@@ -1,17 +1,17 @@
 "use client"
-import Ad970 from "../ads/ad970"
-import Footer from "../footer"
-import PopupDonate from "../popupDonate"
-import { PopupProvider } from "../popupProvider"
-import { useTheme } from "../theme"
-import ThemeToggle from "../themeToggle"
-import Header from "../header"
-import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
-import NavBar from "../navBar"
+import { MenuProvider } from "@/app/hooks/useMenu"
 import { usePathname } from "next/navigation"
-import PreviewHeader from "../preview/previewHead"
-import { MenuProvider, useMenu } from "@/app/hooks/useMenu"
+import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
+import AdFixedBanner from "../ads/adFixedBanner"
+import Footer from "../footer"
 import Menu from "../menu/menu"
+import NavBar from "../navBar"
+import PopupDonate from "../popupDonate"
+import Header from "../header"
+import PreviewHeader from "../preview/previewHead"
+import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
+import ScreenIndicator from "../screenIndicator"
+import Banners from "../banner"
 
 export interface PaperProps {
   pageClass: string
@@ -20,7 +20,7 @@ export interface PaperProps {
   currentIssue?: Issues
   banners?: HomepageBanners[]
   children: React.ReactNode
-  type: PaperType
+  type?: PaperType
   previewURL?: string
 }
 
@@ -35,31 +35,33 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, hidePopup, navData, type, banners, currentIssue, previewURL } = props
+  const { pageClass, children, navData, type, banners, currentIssue, previewURL } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
   return (
-    <PopupProvider hidePopup={hidePopup}>
+    <AdVisibilityProvider>
       <MenuProvider>
-        <div className={`theme ${pageClass}`}>
+        <div className={`relative theme ${pageClass}`}>
           {previewURL ? (
             <PreviewHeader previewURL={previewURL} />
           ) : (
             <>
-              <Header type={type} banners={banners} currentIssue={currentIssue} />
+              <Header type={type ? type : PaperType.Default} currentIssue={currentIssue} />
+              {banners && isHomepage && currentIssue && <Banners currentIssue={currentIssue} banners={banners} />}
               <NavBar navData={navData} isHomepage={isHomepage} />
             </>
           )}
 
           {children}
+          {!previewURL && <AdFixedBanner />}
           <Footer />
-          <Ad970 />
-          <Menu collections={navData.collections} />
-          {!isHomepage && <PopupDonate />}
+          <ScreenIndicator />
         </div>
+        <Menu collections={navData.collections} />
+        {/* {!previewURL && <PopupDonate />} */}
       </MenuProvider>
-    </PopupProvider>
+    </AdVisibilityProvider>
   )
 }
 

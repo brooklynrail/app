@@ -1,18 +1,13 @@
 "use client"
 import { ArticlePreviewProps } from "@/app/preview/article/[id]/page"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
+import ArticleHead from "../../article/articleHead"
+import ArticleBody from "../../article/articleBody"
+import Bylines, { BylineType } from "../../collections/promos/bylines"
+import Title, { TitleType } from "../../collections/promos/title"
+import Paper from "../../paper"
 import Password from "../password"
 import PreviewInfo from "./previewInfo"
-import PreviewHeader from "../previewHead"
-import Title, { TitleType } from "../../collections/promos/title"
-import Bylines, { BylineType } from "../../collections/promos/bylines"
-import Paper, { PaperType } from "../../paper"
-import parse from "html-react-parser"
-import BookshopWidget from "../../article/bookshop"
-import styles from "../../article/poetry.module.scss"
-import replaceShortcodes from "../../article/shortcodes"
-import ContributorsBox from "../../contributorsBox"
-import ArticleHead from "../../article/articleHead"
 
 const ArticlePreview = (props: ArticlePreviewProps) => {
   const { articleData, isEnabled, previewPassword, directusUrl, navData } = props
@@ -79,14 +74,10 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
 
   const isTribute = articleData.tribute
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.id}/`
+  const showAd = isStudioPreview && isViewable
+
   return (
-    <Paper
-      pageClass={`theme-${articleData.section.slug}`}
-      hidePopup={true}
-      type={PaperType.Preview}
-      navData={navData}
-      previewURL={previewURL}
-    >
+    <Paper pageClass={`theme-${articleData.section.slug}`} hidePopup={true} navData={navData} previewURL={previewURL}>
       <main className="">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-3 px-3">
           <div className="col-span-4 tablet-lg:col-span-9">
@@ -106,24 +97,8 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                 <ArticleHead {...{ permalink: previewURL, articleData, currentSection: articleData.section }} />
               )}
               <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
-                <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
-                  <div className={`content ${articleData.section.slug === "poetry" ? styles.content_poetry : ""}`}>
-                    {articleData.body_text &&
-                      replaceShortcodes({
-                        html: articleData.body_text,
-                        images: articleData.images,
-                        preview: true,
-                      })}
-
-                    {articleData.endnote && (
-                      <div className="endnote">
-                        <span className="line"></span>
-                        {parse(articleData.endnote)}
-                      </div>
-                    )}
-                    <BookshopWidget {...articleData} />
-                  </div>
-                  {articleData.contributors && <ContributorsBox contributors={articleData.contributors} />}
+                <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9 space-y-12">
+                  <ArticleBody articleData={articleData} showAd={showAd} />
                 </div>
               </div>
             </article>

@@ -3,11 +3,12 @@ import parse from "html-react-parser"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { Events, EventsTypes } from "../../../../lib/types"
 import Link from "next/link"
-import { formatEventDate, formatTime, getEventTypeText } from "../../../../lib/utils/events/utils"
+import { formatEventDate, formatTime, getEventTypeText } from "../../../../lib/utils/events"
 
 export interface EventCardProps {
   event: Events
   eventTypes: EventsTypes[]
+  priority: boolean
 }
 
 const EventCard = (props: EventCardProps) => {

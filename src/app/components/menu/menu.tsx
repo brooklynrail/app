@@ -38,7 +38,8 @@ const Menu = (props: MenuProps) => {
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="grid grid-cols-3 gap-x-3">
+        <Settings />
+        <div className="theme grid grid-cols-3 gap-x-3">
           <div className="col-span-3">
             <div className="p-6 space-y-6">
               <div className="relative flex flex-row-reverse justify-between w-full">
@@ -65,7 +66,6 @@ const Menu = (props: MenuProps) => {
             </div>
           </div>
         </div>
-        <Settings />
       </div>
     </>
   )

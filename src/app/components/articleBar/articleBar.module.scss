@@ -1,0 +1,27 @@
+.marquee_text {
+  overflow: clip;
+  mask-image: linear-gradient(to right, transparent, black 1rem, black calc(100% - 1rem), transparent);
+}
+
+.marquee_text_track {
+  display: flex;
+  padding-left: 2rem;
+  gap: 2rem;
+  width: max-content;
+  animation: marquee-move-text var(--speed, 10s) linear infinite var(--direction, forwards);
+  p {
+    @apply text-sm;
+    span {
+      @apply text-lg;
+    }
+    a {
+      @apply underline decoration-1 decoration-dotted underline-offset-2;
+    }
+  }
+}
+
+@keyframes marquee-move-text {
+  to {
+    transform: translateX(-25%);
+  }
+}

@@ -9,6 +9,10 @@ interface PopupContextType {
   images: any[]
   setImages: (images: any[]) => void
   togglePopup: (type: string) => void
+  showArticleSlideShow: boolean
+  setShowArticleSlideShow: (show: boolean) => void
+  toggleArticleSlideShow: (id?: string) => void
+  slideId: string | null
 }
 
 const PopupContext = createContext<PopupContextType | undefined>(undefined)
@@ -21,16 +25,18 @@ export const usePopup = () => {
   return context
 }
 
-const getCookie = (name: string): string | null => {
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
-  return match ? match[2] : null
+// Helper to retrieve and parse local storage item
+const getLocalStorageItem = (key: string): string | null => {
+  return localStorage.getItem(key)
 }
 
-const setCookie = (name: string, value: string, hours: number) => {
-  const expires = new Date()
-  expires.setHours(expires.getHours() + hours)
-  document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/`
+// Helper to set item in local storage
+const setLocalStorageItem = (key: string, value: string) => {
+  localStorage.setItem(key, value)
 }
+
+// Define expiration time (1 hour in milliseconds)
+const ONE_HOUR = 60 * 60 * 1000
 
 interface PopupProviderProps {
   children: ReactNode
@@ -38,31 +44,49 @@ interface PopupProviderProps {
 }
 
 export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
-  const [showPopup, setShowPopup] = useState(false)
+  const [showPopup, setShowPopup] = useState(true)
   const [popupType, setPopupType] = useState<string | null>(null)
   const [images, setImages] = useState<any[]>([])
-  const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
+  // const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
+  const [showArticleSlideShow, setShowArticleSlideShow] = useState(false)
+  const [slideId, setSlideId] = useState<string | null>(null)
 
-  // Read cookie value once on mount
-  useEffect(() => {
-    const count = parseInt(getCookie("viewDonatePopup") || "0", 10) || 0
-    setViewedDonateCount(count)
-  }, [])
+  // Initialize viewedDonateCount and handle expiration logic
+  // useEffect(() => {
+  //   const storedCount = parseInt(getLocalStorageItem("donatePopup") || "0", 10) || 0
+  //   const storedTimestamp = parseInt(getLocalStorageItem("donatePopupTimestamp") || "0", 10)
 
-  // Trigger donation popup if conditions are met
-  useEffect(() => {
-    if (viewedDonateCount !== null && viewedDonateCount < 2) {
-      setPopupType("donate")
-      setShowPopup(true)
-      const newCount = viewedDonateCount + 1
-      setViewedDonateCount(newCount)
-      setCookie("viewDonatePopup", newCount.toString(), 1) // Expires in 1 hour
-    }
-  }, [viewedDonateCount])
+  //   const currentTime = Date.now()
+  //   if (storedTimestamp && currentTime - storedTimestamp < ONE_HOUR) {
+  //     setViewedDonateCount(storedCount)
+  //   } else {
+  //     setViewedDonateCount(0)
+  //     setLocalStorageItem("donatePopup", "0")
+  //     setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
+  //   }
+  // }, [])
+
+  // useEffect(() => {
+  //   setPopupType("donate")
+  //   setShowPopup(true)
+  //   // if (viewedDonateCount !== null && viewedDonateCount < 2) {
+  //   //   const newCount = viewedDonateCount + 1
+  //   //   const currentTime = Date.now()
+  //   //   setViewedDonateCount(newCount)
+  //   //   setLocalStorageItem("donatePopup", newCount.toString())
+  //   //   setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
+  //   // }
+  // }, [viewedDonateCount])
 
   const togglePopup = (type: string) => {
     setPopupType(type)
     setShowPopup((prev) => !prev)
+  }
+
+  // Toggle function for the ArticleSlideShow popup with optional ID
+  const toggleArticleSlideShow = (id?: string) => {
+    setShowArticleSlideShow((prev) => !prev)
+    if (id !== undefined) setSlideId(id)
   }
 
   const value: PopupContextType = {
@@ -73,6 +97,10 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
     images,
     setImages,
     togglePopup,
+    showArticleSlideShow,
+    setShowArticleSlideShow,
+    toggleArticleSlideShow,
+    slideId,
   }
 
   return <PopupContext.Provider value={value}>{children}</PopupContext.Provider>

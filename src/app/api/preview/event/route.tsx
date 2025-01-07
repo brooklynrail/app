@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers"
-import { getPreviewEvent } from "../../../../../lib/utils/events/utils"
+import { getPreviewEvent } from "../../../../../lib/utils/preview"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)

@@ -1,10 +1,5 @@
 const nextConfig = {
   reactStrictMode: true,
-}
-
-module.exports = nextConfig
-
-module.exports = {
   staticPageGenerationTimeout: 1000,
   productionBrowserSourceMaps: true,
   trailingSlash: true,
@@ -25,6 +20,32 @@ module.exports = {
     fetches: {
       fullUrl: true,
     },
+  },
+
+  // Caching
+  async headers() {
+    return [
+      {
+        // API routes should use Next.js's built-in caching
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store",
+          },
+        ],
+      },
+      {
+        // All other routes (pages)
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, must-revalidate",
+          },
+        ],
+      },
+    ]
   },
   // Redirects
   async redirects() {
@@ -51,7 +72,22 @@ module.exports = {
         permanent: false,
       },
       // ===================================
-      // ISSUE REDIRECT
+      // ISSUES REDIRECT
+
+      // Redirect old Table of Contents path to the issue path
+      // /issues/2024-11/table-of-contents/
+      {
+        source: "/issues/:issueSlug/table_of_contents/",
+        destination: "/issues/:issueSlug/",
+        permanent: true,
+      },
+      // Redirect /issue/ to /issues/
+      {
+        source: "/issue/:issueSlug/",
+        destination: "/issues/:issueSlug/",
+        permanent: false,
+      },
+
       // Redirect old issue paths to new issue paths
       {
         source: "/:year(\\d{4})/:month(\\d{2})/",
@@ -405,13 +441,8 @@ module.exports = {
         destination: "/",
         permanent: false,
       },
-
-      // {
-      //   source: "/article_image/image/:id/:filename",
-      //   destination:
-      //     "https://storage.googleapis.com/rail-legacy-media/production/content/article_image/image/:id/:filename",
-      //   permanent: false,
-      // },
     ]
   },
 }
+
+module.exports = nextConfig

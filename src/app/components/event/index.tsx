@@ -1,5 +1,5 @@
 "use client"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
 import { EventsPeople, EventsPeoplePoets } from "../../../../lib/types"
 import Register from "./register"
@@ -14,7 +14,7 @@ const EventPage = (props: EventProps) => {
   const isFutureEvent = new Date(end_date) > new Date()
 
   return (
-    <Paper pageClass="theme-events" type={PaperType.Events} navData={navData}>
+    <Paper pageClass="theme-events" navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
         <EventPageBody {...props} />
       </main>

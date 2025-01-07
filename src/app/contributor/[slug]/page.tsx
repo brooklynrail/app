@@ -1,13 +1,9 @@
-import { getContributor, getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
-import { Metadata } from "next"
-import { stripHtml } from "string-strip-html"
-import { notFound } from "next/navigation"
 import ContributorPage from "@/app/components/contributor"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { stripHtml } from "string-strip-html"
+import { getContributor, getPermalink, PageType } from "../../../../lib/utils"
 import { getNavData } from "../../../../lib/utils/homepage"
-
-// Dynamic segments not included in generateStaticParams are generated on demand.
-// See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamicparams
-export const dynamicParams = true
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -19,6 +15,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   const { first_name, last_name, bio, date_updated, date_created } = data.contributorData
   const ogtitle = `${first_name && stripHtml(first_name).result} ${last_name && stripHtml(last_name).result}`
   const ogdescription = `${bio && stripHtml(bio).result}`
+  const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
   return {
     title: `${ogtitle}`,
@@ -38,6 +35,10 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       description: ogdescription,
       url: data.permalink,
       type: `website`,
+      images: share_card,
+    },
+    twitter: {
+      images: share_card,
     },
   }
 }

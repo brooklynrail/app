@@ -1,6 +1,6 @@
 "use client"
 import { ArticleProps } from "@/app/[year]/[month]/[section]/[slug]/page"
-import ArticleBody from "../body/articleBody"
+import ArticleBody from "../articleBody"
 import NextPrev, { NextPrevType } from "../../nextPrev"
 import ArticleHead from "../articleHead"
 
@@ -19,8 +19,8 @@ const ArticlePage = (props: ArticleProps) => {
         <div className="col-span-4 tablet-lg:col-span-12 desktop:col-span-10 desktop:col-start-2">
           <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
         </div>
-        <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 space-y-12">
-          <ArticleBody {...props} />
+        <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 space-y-6">
+          <ArticleBody articleData={articleData} showAd={true} />
         </div>
       </div>
 

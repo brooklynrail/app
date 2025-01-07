@@ -47,7 +47,7 @@ const CoversPopup = () => {
       className="z-[999] fixed w-full h-full top-0 left-0 right-0 bottom-0 bg-black bg-opacity-95 flex flex-col justify-center py-9"
       onClick={handleClick}
     >
-      <div className="flex items-start overflow-x-auto space-x-9 px-20">{allCovers}</div>
+      <div className="flex items-start overflow-x-auto space-x-9 px-20 py-9">{allCovers}</div>
     </div>
   )
 }

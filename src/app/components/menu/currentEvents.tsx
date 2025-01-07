@@ -2,7 +2,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Events } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import { formatTime } from "../../../../lib/utils/events/utils"
+import { formatTime } from "../../../../lib/utils/events"
 
 const CurrentEvents = () => {
   const [currentEvents, setCurrentEvents] = useState<Events[] | undefined>(undefined)

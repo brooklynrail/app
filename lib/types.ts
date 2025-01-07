@@ -1,6 +1,8 @@
+import { AdTypes } from "./utils/ads"
+
 /* eslint max-lines: 0 */
 export type Ads = {
-  ad_type: string
+  ad_type: AdTypes
   ad_url?: string | null
   date_created?: string | null
   date_updated?: string | null
@@ -27,6 +29,7 @@ export type OGArticle = {
   image?: string | null
   section: string
   issue: string
+  contributors?: string | null
 }
 
 export type Articles = {
@@ -89,7 +92,6 @@ export type ArticlesFiles = {
 export type Collections = {
   date_created?: string | null
   date_updated?: string | null
-  deck?: string | null
   homepage: any[] | HomepageCollections[]
   id: string
   limit?: number | null
@@ -100,6 +102,7 @@ export type Collections = {
   kicker?: string | null
   description?: string | null
   links?: CollectionLinks[] | null
+  show_featured: boolean
   tribute?: Tributes | null
   type: string
   banner_type?: string | null
@@ -497,6 +500,7 @@ export type Events = {
   date_created: string
   date_updated: string
   deck?: string | null
+  featured: boolean
   end_date: string
   airtable_id?: string | null
   featured_image?: DirectusFiles
@@ -608,6 +612,7 @@ export type Issues = {
   issue_number: number
   summary: string
   credits: string
+  store_url?: string | null
 }
 
 export type Organizations = {
@@ -629,6 +634,8 @@ export type Organizations = {
   status: string
   type: string
   url?: string | null
+  community_sponsor: boolean
+  logo?: DirectusFiles
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
@@ -641,6 +648,7 @@ export type Pages = {
   status: string
   title: string
   body_text?: string | null
+  summary?: string | null
   footnotes?: string | null
   map_key?: string | null
   images: any[] | ArticlesFiles[]
@@ -731,6 +739,7 @@ export type Sections = {
   old_id: number
   featured: boolean
   slug: string
+  sponsor?: string | null
   sort?: number | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null

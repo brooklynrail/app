@@ -9,7 +9,7 @@ import { getCurrentIssueSection } from "../../../../../lib/utils/articles"
 import Bylines, { BylineType } from "../../collections/promos/bylines"
 import Title from "../../collections/promos/title"
 import NextPrev, { NextPrevType } from "../../nextPrev"
-import ArticleBody from "../body/articleBody"
+import ArticleBody from "../articleBody"
 import ArticleHead from "../articleHead"
 
 const ArticleCriticsPage = (props: ArticleProps) => {
@@ -55,8 +55,8 @@ const ArticleCriticsPage = (props: ArticleProps) => {
               <div className="col-span-4 tablet-lg:col-span-9">
                 <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
               </div>
-              <div className="col-span-4 tablet-lg:col-span-9">
-                <ArticleBody {...props} />
+              <div className="col-span-4 tablet-lg:col-span-9 space-y-12">
+                <ArticleBody articleData={articleData} showAd={true} />
               </div>
             </div>
 

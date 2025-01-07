@@ -9,7 +9,7 @@ import FrameScrollable from "../frames/frameScrollable"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
 import Excerpt from "./promos/excerpt"
-import Title, { TitleType } from "./promos/title"
+import Title from "./promos/title"
 
 const CollectionDanceFilm = (collection: Collections) => {
   const { section } = collection
@@ -133,7 +133,7 @@ const Promos = (props: PromoProps) => {
         )}
         <div className="flex flex-col space-y-6">
           <div className="space-y-1.5">
-            <Title title={article.title} permalink={permalink} classes="text-xl font-normal" />
+            <Title title={article.title} permalink={permalink} classes="text-2xl font-normal" />
             <Bylines article={article} type={BylineType.DancePromo} />
           </div>
           <Excerpt excerpt={article.excerpt} classes={`excerpt`} />
@@ -179,7 +179,7 @@ const LeadPromo = (props: LeadPromoArtProps) => {
       <div className="col-span-4 tablet:col-span-6">
         <div className="flex flex-col space-y-6">
           <div className="space-y-1.5">
-            <Title title={article.title} permalink={permalink} classes="font-light text-3xl" />
+            <Title title={article.title} permalink={permalink} classes="font-light text-4xl" />
             <Bylines article={article} type={BylineType.CollectionDance} />
           </div>
           <Excerpt excerpt={article.excerpt} classes={`excerpt-lg`} />

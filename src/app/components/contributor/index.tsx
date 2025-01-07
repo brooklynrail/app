@@ -1,7 +1,7 @@
 "use client"
 import { ArticlesContributors, Contributors, Homepage } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import Paper, { PaperType } from "../paper"
+import Paper from "../paper"
 import PeopleHead from "./head"
 import Promo from "./promo"
 
@@ -54,7 +54,7 @@ const ContributorPage = (props: ContributorPageProps) => {
   )
 
   return (
-    <Paper pageClass="theme-people" type={PaperType.Default} navData={navData}>
+    <Paper pageClass="theme-people" navData={navData}>
       <main className="divide-y rail-divide">
         <PeopleHead contributorData={contributorData} />
         <div className="bg-indigo-50 dark:bg-zinc-700 px-3 py-6">{allArticles}</div>

@@ -1,12 +1,6 @@
 import { stripHtml } from "string-strip-html"
-import {
-  PageType,
-  getAllIssues,
-  getPermalink,
-  getPreviewIssue,
-  getPreviewPassword,
-  getTributes,
-} from "../../../../../lib/utils"
+import { PageType, getAllIssues, getPermalink, getTributes } from "../../../../../lib/utils"
+import { getPreviewIssue, getPreviewPassword } from "../../../../../lib/utils/preview"
 import { Homepage, Issues, Sections, Tributes } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -27,8 +21,6 @@ export interface IssuePreviewProps {
   previewPassword: string
   directusUrl: string
 }
-
-// export const dynamicParams = true
 
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
   const data = await getData({ params })

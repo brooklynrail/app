@@ -1,4 +1,6 @@
-import { readItems, readSingleton } from "@directus/sdk"
+"use server"
+
+import { readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
 import { Articles, Homepage, HomepageCollections, Issues } from "../types"
@@ -12,17 +14,7 @@ export const getNavData = cache(async () => {
           {
             banners: [
               {
-                collections_id: [
-                  "id",
-                  "type",
-                  "kicker",
-                  "title",
-                  "deck",
-                  "description",
-                  "links",
-                  "limit",
-                  "banner_type",
-                ],
+                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
               },
             ],
           },
@@ -34,7 +26,6 @@ export const getNavData = cache(async () => {
                   "type",
                   "kicker",
                   "title",
-                  "deck",
                   "limit",
                   "links",
                   "banner_type",
@@ -73,11 +64,11 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
                   "type",
                   "kicker",
                   "title",
-                  "deck",
                   "description",
                   "links",
                   "limit",
                   "banner_type",
+                  "show_featured",
                 ],
               },
             ],
@@ -90,7 +81,6 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
                   "type",
                   "kicker",
                   "title",
-                  "deck",
                   "limit",
                   "links",
                   "banner_type",
@@ -139,8 +129,6 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
     const homepage = homepageData as Homepage
 
     const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
-      // Get the articles for this collection
-      // Note: the queries are faster if we fetch the articles this way, as opposed to the homepage query
       if (collection.collections_id && collection.collections_id.section) {
         const thisSectionArticles = getCollectionArticles({
           currentIssueSlug: currentIssue.slug,
@@ -199,6 +187,7 @@ export const getCurrentIssueData = cache(async () => {
               "id",
               "title",
               "slug",
+              "summary",
               "special_issue",
               { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
               { cover_2: ["id", "width", "height", "filename_disk", "caption"] },

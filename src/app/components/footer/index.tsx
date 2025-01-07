@@ -38,12 +38,12 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href="/staff/?f" prefetch={false}>
+              <Link href="/about/staff/?f" prefetch={false}>
                 Staff
               </Link>
             </li>
             <li>
-              <Link href="/our-supporters/?f" prefetch={false}>
+              <Link href="/about/our-supporters/?f" prefetch={false}>
                 Our Supporters
               </Link>
             </li>
@@ -58,17 +58,12 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href="/history/?f" prefetch={false}>
-                History
-              </Link>
-            </li>
-            <li>
               <Link href="/archives/?f" prefetch={false}>
                 Archives
               </Link>
             </li>
             <li>
-              <Link href="/contact/?f" prefetch={false}>
+              <Link href="/about/contact-us/?f" prefetch={false}>
                 Contact Us
               </Link>
             </li>
@@ -88,17 +83,17 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href="https://brooklynrail.org/donate?f" prefetch={false}>
+              <Link href="/donate?f" prefetch={false}>
                 Donate
               </Link>
             </li>
             <li>
-              <Link href="/advertise/?f" prefetch={false}>
+              <Link href="/about/advertise/?f" prefetch={false}>
                 Advertise
               </Link>
             </li>
             <li>
-              <Link href="/submissions/?f" prefetch={false}>
+              <Link href="/about/submissions/?f" prefetch={false}>
                 Submissions
               </Link>
             </li>

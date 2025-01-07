@@ -1,7 +1,7 @@
 "use client"
 
 import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
-import { formatEventDate, formatTime } from "../../../../lib/utils/events/utils"
+import { formatEventDate, formatTime } from "../../../../lib/utils/events"
 
 const Register = (props: EventProps) => {
   const { eventData } = props

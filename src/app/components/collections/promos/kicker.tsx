@@ -16,7 +16,7 @@ const Kicker = (props: KickerProps) => {
 
   const kickerText = (kicker: string) => <span className="">{kicker}</span>
   const issueText = (issue: Issues) => {
-    const issuePermalink = `/issue/${issue.slug}`
+    const issuePermalink = `/issues/${issue.slug}`
     return (
       <Link href={issuePermalink} className="">
         <span>{issue.title}</span>

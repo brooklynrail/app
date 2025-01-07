@@ -1,60 +1,55 @@
 import Link from "next/link"
-import { HomepageBanners, Issues } from "../../../../lib/types"
+import { useEffect, useRef, useState } from "react"
+import { Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import FeaturedBanner from "../homepage/featuredBanner"
 import { PaperType } from "../paper"
+import { useTheme } from "../theme"
 import HeaderDefault from "./default"
 import HomeBanner from "./homeBanner"
 import Subhead from "./subhead"
 import VideoBG from "./videobg"
-import { useRef, useState, useEffect } from "react"
-import { useTheme } from "../theme"
 
 export interface HeaderProps {
   special_issue?: boolean | null
   issue_number?: number
   title?: string
   type: PaperType
-  banners?: HomepageBanners[]
   currentIssue?: Issues
 }
 
 const Header = (props: HeaderProps) => {
-  const { title, type, banners, currentIssue } = props
+  const { title, type, currentIssue } = props
 
   switch (type) {
     case PaperType.Homepage:
-      return <HeaderHomepage title={title} type={type} banners={banners} currentIssue={currentIssue} />
+      return <HeaderHomepage title={title} type={type} currentIssue={currentIssue} />
     default:
       return <HeaderDefault title={title} type={type} />
   }
 }
 
-const getCookie = (name: string): string | null => {
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
-  return match ? match[2] : null
+const getLocalStorageItem = (key: string): string | null => {
+  return localStorage.getItem(key)
 }
 
-const setCookie = (name: string, value: string, hours: number) => {
-  const expires = new Date()
-  expires.setHours(expires.getHours() + hours)
-  document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/`
+const setLocalStorageItem = (key: string, value: string) => {
+  localStorage.setItem(key, value)
 }
 
-const deleteCookie = (name: string) => {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+const removeLocalStorageItem = (key: string) => {
+  localStorage.removeItem(key)
 }
 
 const HeaderHomepage = (props: HeaderProps) => {
-  const { title, type, banners, currentIssue } = props
+  const { title, type, currentIssue } = props
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPaused, setIsPaused] = useState(false)
   const { theme } = useTheme()
   const subheadFill = theme === "dark" ? "fill-white" : "fill-white"
 
   useEffect(() => {
-    // Check if the cookie is already set for video pause
-    const isVideoPaused = getCookie("videoBGPaused")
+    // Check if the localStorage item is already set for video pause
+    const isVideoPaused = getLocalStorageItem("homepageVideoPaused")
     if (isVideoPaused === "true" && videoRef.current) {
       videoRef.current.pause()
       setIsPaused(true)
@@ -65,10 +60,10 @@ const HeaderHomepage = (props: HeaderProps) => {
     if (videoRef.current) {
       if (isPaused) {
         videoRef.current.play()
-        deleteCookie("videoBGPaused")
+        removeLocalStorageItem("homepageVideoPaused")
       } else {
         videoRef.current.pause()
-        setCookie("videoBGPaused", "true", 24) // Set cookie for 1 day
+        setLocalStorageItem("homepageVideoPaused", "true") // Set localStorage item
       }
       setIsPaused(!isPaused)
     }
@@ -86,8 +81,8 @@ const HeaderHomepage = (props: HeaderProps) => {
 
   const pause = (
     <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M6 5H9V19H6V5Z" fill="currentColor" />
-      <path d="M15 5H18V19H15V5Z" fill="currentColor" />
+      <path d="M6 5H9V19H6V5Z" className="fill-zinc-800" />
+      <path d="M15 5H18V19H15V5Z" className="fill-zinc-800" />
     </svg>
   )
 
@@ -110,15 +105,18 @@ const HeaderHomepage = (props: HeaderProps) => {
             </Link>
           </div>
         </div>
-        <button
-          onClick={handleVideoToggle}
-          className="absolute font-sm bottom-3 right-3 bg-zinc-700 w-6 h-6 text-center rounded-full text-white z-10 flex justify-center items-center"
-        >
-          {isPaused ? play : pause}
-        </button>
+        <div className="bg-zinc-900 rounded-tl-sm p-0.5 pl-1.5 py-0.5 absolute bottom-0 right-0 z-10 flex justify-center items-center space-x-3">
+          <p className="text-white text-xs">
+            Shirin Neshat, <em>"Do U Dare!,"</em> 2024–25.
+          </p>
+          <button
+            onClick={handleVideoToggle}
+            className="font-sm bg-zinc-400 w-6 h-6 text-center text-white flex justify-center items-center"
+          >
+            {isPaused ? play : pause}
+          </button>
+        </div>
       </div>
-
-      {banners && currentIssue && <FeaturedBanner banners={banners} currentIssue={currentIssue} />}
     </header>
   )
 }

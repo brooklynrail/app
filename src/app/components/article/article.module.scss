@@ -1,0 +1,28 @@
+.railImage {
+  img {
+    @apply cursor-pointer;
+  }
+  &:hover {
+    svg {
+      @apply opacity-100;
+    }
+  }
+}
+
+.zoomIcon {
+  @apply absolute
+    bottom-3
+    right-3
+    bg-white
+    bg-opacity-60
+    backdrop-blur-sm
+    rounded-full
+    p-2
+    w-9
+    h-9
+    opacity-0
+    transition-opacity
+    duration-200
+    ease-in-out
+    cursor-pointer;
+}
