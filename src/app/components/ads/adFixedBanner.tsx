@@ -140,6 +140,7 @@ const AdFixedBanner = () => {
             <Image
               className="hidden tablet:block"
               src={desktopSrc}
+              priority={true}
               width={desktopDimensions.width}
               height={desktopDimensions.height}
               alt={campaign_title}
@@ -148,6 +149,7 @@ const AdFixedBanner = () => {
             <Image
               className="block tablet:hidden"
               src={mobileSrc}
+              priority={true}
               width={mobileDimensions.width}
               height={mobileDimensions.height}
               alt={campaign_title}
