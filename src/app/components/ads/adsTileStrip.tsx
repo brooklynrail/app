@@ -108,7 +108,7 @@ const AdsTileStrip = ({ collection }: { collection: Collections }) => {
                   height={scaledHeight}
                   sizes="20vw"
                   alt={ad.campaign_title}
-                  onLoadingComplete={() => handleAdEvent("impression", ad, i + 1)}
+                  onLoad={() => handleAdEvent("impression", ad, i + 1)}
                 />
               </Link>
             </li>

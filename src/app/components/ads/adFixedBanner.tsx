@@ -143,7 +143,7 @@ const AdFixedBanner = () => {
               width={desktopDimensions.width}
               height={desktopDimensions.height}
               alt={campaign_title}
-              onLoadingComplete={() => setIsInView(true)}
+              onLoad={() => setIsInView(true)}
             />
             <Image
               className="block tablet:hidden"
@@ -151,7 +151,7 @@ const AdFixedBanner = () => {
               width={mobileDimensions.width}
               height={mobileDimensions.height}
               alt={campaign_title}
-              onLoadingComplete={() => setIsInView(true)}
+              onLoad={() => setIsInView(true)}
             />
           </Link>
         </div>
