@@ -124,13 +124,13 @@ const Covers = (props: CoversProps) => {
           left: shiftleft,
           zIndex: zindex,
           height: containerHeight,
-          width: width,
+          width: "auto",
           boxShadow: "4px 4px 4px 0px rgba(0, 0, 0, 0.25)",
         }}
         id={`cover-${index + 1}`}
         src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`}
-        width={width}
-        height={height}
+        width={cover.width}
+        height={cover.height}
         alt={"alt"}
         sizes="25vw"
         onClick={handleClick}
