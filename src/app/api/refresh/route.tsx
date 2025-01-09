@@ -7,7 +7,7 @@ import {
   RevalidateType,
 } from "../../../../lib/utils/revalidate"
 import { Articles, Contributors, Events } from "../../../../lib/types"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
@@ -42,6 +42,10 @@ export async function GET(request: Request) {
       case RevalidateType.Homepage:
         revalidatePath(`/`, "page")
         return new Response(`Revalidation started for the homepage ${Date.now()}`, { status: 200 })
+
+      case RevalidateType.Ads:
+        revalidateTag("ads")
+        return new Response(`Revalidation started for Ads ${Date.now()}`, { status: 200 })
 
       case RevalidateType.Articles:
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/

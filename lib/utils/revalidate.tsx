@@ -1,7 +1,7 @@
 import { readItem } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
-import { Articles, Contributors, Events, Issues, People, Sections } from "../types"
+import { Ads, Articles, Contributors, Events, Issues, People, Sections } from "../types"
 import { revalidatePath, revalidateTag } from "next/cache"
 import { getPermalink, PageType } from "../utils"
 
@@ -13,6 +13,7 @@ export enum RevalidateType {
   Events = "events",
   Tributes = "tributes",
   Contributors = "contributors",
+  Ads = "ads",
 }
 
 export const revalidateArticle = cache(async (data: Articles) => {
