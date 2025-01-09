@@ -59,7 +59,7 @@ export const getUpcomingEvents = cache(async () => {
     `&filter[youtube_id][_empty]=true` +
     `&filter[status][_eq]=published`
 
-  const res = await fetch(eventsDataAPI)
+  const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
   if (!res.ok) {
     throw new Error("Failed to fetch events data")
   }
@@ -99,7 +99,7 @@ export const getUpcomingEventsBanner = async () => {
     `&filter[youtube_id][_empty]=true` +
     `&filter[status][_eq]=published`
 
-  const res = await fetch(eventsDataAPI)
+  const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
   if (!res.ok) {
     throw new Error("Failed to fetch events data")
   }
@@ -137,7 +137,7 @@ export async function getPastEvents(props: PastEventsParams) {
       `&sort[]=-start_date` +
       `&limit=${limit}`
 
-    const res = await fetch(allEventsDataAPI)
+    const res = await fetch(allEventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
     if (!res.ok) {
       console.error(`Failed to fetch All Events data: ${res.statusText}`)
       return null
@@ -174,7 +174,7 @@ export async function fetchEvents() {
   if (currentEventsArray.length < 4) {
     const timestamp = new Date().getTime()
     featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
-      cache: "no-store",
+      next: { revalidate: 3600, tags: ["events"] },
     }).then((res) => {
       if (!res.ok) throw new Error("Failed to fetch featured events")
       return res.json()
@@ -217,7 +217,7 @@ export const getFeaturedEvents = cache(async () => {
       `&filter[youtube_id][_nempty]=true` +
       `&filter[status][_eq]=published`
 
-    const res = await fetch(eventsDataAPI, { next: { revalidate: 1800 } }) // 30 minutes in seconds
+    const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
     if (!res.ok) {
       console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
       return null
@@ -323,7 +323,7 @@ export const getAllEvents = cache(async () => {
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
-      const res = await fetch(eventsDataAPI)
+      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch allEvents data")

@@ -45,7 +45,7 @@ export async function getArticleOGData(slug: string, status?: string) {
     `&filter[status][_eq]=${status}`
 
   try {
-    const res = await fetch(articleAPI)
+    const res = await fetch(articleAPI, { next: { revalidate: 3600, tags: ["articles"] } })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       console.error(`Failed to fetch Article data: ${res.statusText}`)
@@ -165,7 +165,7 @@ export const getArticlePages = cache(async () => {
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
-      const res = await fetch(articleDataAPI)
+      const res = await fetch(articleDataAPI, { next: { revalidate: 3600, tags: ["articles"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch getArticlePages data")

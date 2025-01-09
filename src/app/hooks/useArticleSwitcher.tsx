@@ -34,7 +34,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
   const preloadAdjacentArticles = useCallback(() => {
     const preloadArticle = async (slug: string) => {
       if (slug && !preloadedArticles[slug]) {
-        const response = await fetch(`/api/article/${slug}`)
+        const response = await fetch(`/api/article/${slug}`, { next: { tags: ["articles"] } })
         if (response.ok) {
           const articleData: Articles = await response.json()
           setPreloadedArticles((prev) => ({ ...prev, [slug]: articleData }))
@@ -83,7 +83,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
         const articleData = preloadedArticles[slug] || currentArticle
 
         if (!articleData || articleData.slug !== slug) {
-          const response = await fetch(`/api/article/${slug}`)
+          const response = await fetch(`/api/article/${slug}`, { next: { tags: ["articles"] } })
           if (response.ok) {
             const fetchedArticleData: Articles = await response.json()
             setPreloadedArticles((prev) => ({ ...prev, [slug]: fetchedArticleData }))

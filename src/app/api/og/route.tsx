@@ -12,9 +12,9 @@ enum PageType {
 
 export default async function getFonts(): Promise<Font[]> {
   const [UntitledSansRegular] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/fonts/untitled-sans/UntitledSansWeb-Medium.ttf`).then((res) =>
-      res.arrayBuffer(),
-    ),
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/fonts/untitled-sans/UntitledSansWeb-Medium.ttf`, {
+      cache: "force-cache",
+    }).then((res) => res.arrayBuffer()),
   ])
 
   return [

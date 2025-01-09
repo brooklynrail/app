@@ -46,20 +46,23 @@ export async function GET(request: Request) {
 
       case RevalidateType.Articles:
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
-        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`, {
+          next: { revalidate: 3600, tags: ["articles"] },
+        })
         if (!response.ok) throw new Error("Failed to fetch article")
         const articleData: Articles = await response.json()
         path = await revalidateArticle(articleData)
-        const homePath = await revalidateHomepage()
         const issuePath = await revalidateIssue(articleData.issue)
         const sectionPath = await revalidateSection(articleData.section)
 
-        return new Response(`Revalidation started for paths: ${homePath}, ${path}, ${sectionPath}, and ${issuePath}`, {
+        return new Response(`Revalidation started for paths:  ${path}, ${sectionPath}, and ${issuePath}`, {
           status: 200,
         })
 
       case RevalidateType.Contributors:
-        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`)
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`, {
+          next: { revalidate: 3600, tags: ["contributors"] },
+        })
         if (!response.ok) throw new Error("Failed to fetch contributor")
         const contributorData: Contributors = await response.json()
         path = await revalidateContributor(contributorData)
@@ -68,7 +71,9 @@ export async function GET(request: Request) {
 
       case RevalidateType.Events:
         // Example path: /event/2024/10/07/event-slug
-        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/event/id/${id}`)
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/event/id/${id}`, {
+          next: { revalidate: 3600, tags: ["events"] },
+        })
         if (!response.ok) throw new Error("Failed to fetch event")
         const eventData: Events = await response.json()
         path = await revalidateEvent(eventData)

@@ -25,7 +25,8 @@ export const revalidateArticle = cache(async (data: Articles) => {
   })
   const url = new URL(permalink)
   revalidatePath(url.pathname)
-  revalidatePath(`/${data.issue.year}/${data.issue.month}/${data.section.slug}`)
+  revalidatePath(`/${data.issue.year}/${data.issue.month}/${data.section.slug}/`)
+  revalidateTag("article")
   return url.pathname
 })
 

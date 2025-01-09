@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
       `&filter[end_date][_gte]=NOW`
 
     try {
-      const res = await fetch(adsAPI)
+      const res = await fetch(adsAPI, { next: { revalidate: 600, tags: ["ads"] } }) //
       if (!res.ok) {
         console.warn(`Ads API returned status ${res.status}: ${res.statusText}`)
         return []

@@ -18,7 +18,7 @@ export const useArticleState = (initialArticle: Articles, articles: Articles[]) 
       if (slug === currentArticle.slug) return // No need to update if the same article
 
       setIsNavigating(true) // Set navigation flag
-      const response = await fetch(`/api/article/${slug}`)
+      const response = await fetch(`/api/article/${slug}`, { next: { revalidate: 3600, tags: ["articles"] } })
       if (!response.ok) throw new Error("Failed to fetch article")
 
       const newArticle: Articles = await response.json()
