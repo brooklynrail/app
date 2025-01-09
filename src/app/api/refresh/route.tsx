@@ -2,7 +2,6 @@ import {
   revalidateArticle,
   revalidateContributor,
   revalidateEvent,
-  revalidateHomepage,
   revalidateIssue,
   revalidateSection,
   RevalidateType,

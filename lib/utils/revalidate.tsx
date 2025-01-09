@@ -1,4 +1,4 @@
-import { readItem, readItems } from "@directus/sdk"
+import { readItem } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
 import { Articles, Contributors, Events, Issues, People, Sections } from "../types"
@@ -26,21 +26,15 @@ export const revalidateArticle = cache(async (data: Articles) => {
   const url = new URL(permalink)
   revalidatePath(url.pathname)
   revalidatePath(`/${data.issue.year}/${data.issue.month}/${data.section.slug}/`)
-  revalidateTag("article")
+  revalidateTag("articles")
   return url.pathname
 })
 
 export const revalidateSection = cache(async (data: Sections) => {
   const sectionPath = `/section/${data.slug}`
   revalidatePath(sectionPath)
-  revalidateTag("homepage")
+  revalidateTag("section")
   return sectionPath
-})
-
-export const revalidateHomepage = cache(async () => {
-  revalidatePath(`/sitemap.xml`)
-  revalidateTag("homepage")
-  return `/`
 })
 
 export const revalidateIssue = cache(async (data: Issues) => {
@@ -52,7 +46,7 @@ export const revalidateIssue = cache(async (data: Issues) => {
   revalidatePath(url.pathname)
   revalidatePath(`/issues/sitemap.xml`)
   revalidatePath(`/archive`)
-  revalidateTag("homepage")
+  revalidateTag("issues")
   return url.pathname
 })
 
@@ -65,6 +59,7 @@ export const revalidateContributor = cache(async (data: Contributors) => {
   revalidatePath(url.pathname)
   revalidatePath("/contributors")
   revalidatePath("/contributors/sitemap.xml")
+  revalidateTag("contributors")
   return url.pathname
 })
 
