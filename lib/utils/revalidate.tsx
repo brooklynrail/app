@@ -85,7 +85,7 @@ export const revalidateEvent = cache(async (data: Events) => {
   revalidatePath(url.pathname)
   revalidatePath("/events")
   revalidatePath("/events/past")
-  revalidateTag("homepage")
+  revalidatePath("/events/sitemap.xml")
   revalidateTag("events")
   return url.pathname
 })

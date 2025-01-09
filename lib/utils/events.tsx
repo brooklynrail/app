@@ -162,7 +162,7 @@ export async function getPastEvents(props: PastEventsParams) {
  */
 export async function fetchEvents() {
   const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/`, {
-    cache: "no-store",
+    next: { tags: ["events"] },
   }).then((res) => {
     if (!res.ok) throw new Error("Failed to fetch current events")
     return res.json()

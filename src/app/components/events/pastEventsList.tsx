@@ -23,6 +23,9 @@ const PastEventsList = (props: PastEventsProps & PastEventsListProps) => {
       const offset = currentPage * limit
       const newEventsResponse = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/events/past?limit=${limit}&offset=${offset}`,
+        {
+          next: { tags: ["events"] },
+        },
       )
       const newEvents = await newEventsResponse.json()
       if (!Array.isArray(newEvents)) {
