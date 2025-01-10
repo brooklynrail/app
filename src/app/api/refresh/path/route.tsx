@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     const path = searchParams.get("path")
 
     // Check if the secret matches the expected secret
-    if (secret !== process.env.REVALIDATION_SECRET) {
+    if (secret !== process.env.NEXT_PUBLIC_REVALIDATION_SECRET) {
       return new Response("Unauthorized", { status: 401 })
     }
 
