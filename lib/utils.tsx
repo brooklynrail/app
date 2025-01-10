@@ -73,7 +73,7 @@ export const getAllIssues = cache(async () => {
         `&limit=100` +
         `&offset=${page * 100 - 100}`
 
-      const res = await fetch(allIssuesDataAPI)
+      const res = await fetch(allIssuesDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         console.error(`Failed to fetch AllIssues data: ${res.statusText}`)
@@ -110,7 +110,7 @@ export const getIssues = cache(async () => {
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
-      const res = await fetch(issuesDataAPI)
+      const res = await fetch(issuesDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch getIssues data")
@@ -269,7 +269,7 @@ export const getIssueData = cache(async (props: IssueDataProps) => {
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
   try {
-    const res = await fetch(issueDataAPI)
+    const res = await fetch(issueDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
 
     if (!res.ok) {
       console.error(`Failed to fetch issue data: ${res.statusText}`)
@@ -374,7 +374,7 @@ export const getArticle = cache(async (slug: string, status?: string) => {
     `&filter[status][_eq]=${status}`
 
   try {
-    const res = await fetch(articleAPI)
+    const res = await fetch(articleAPI, { next: { revalidate: 3600, tags: ["articles"] } })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       console.error(`Failed to fetch Article data: ${res.statusText}`)
@@ -611,7 +611,7 @@ export const getContributor = cache(async (slug: string) => {
     `&deep[articles][issue][_nnull]=true`
 
   try {
-    const res = await fetch(issueDataAPI)
+    const res = await fetch(issueDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       throw new Error("Failed to fetch getContributor data")
@@ -633,7 +633,7 @@ export const getAllContributors = cache(async () => {
     let isMore = true
     while (isMore) {
       const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_nnull]=true&page=${page}&limit=100&offset=${page * 100 - 100}`
-      const res = await fetch(contributorsAPI)
+      const res = await fetch(contributorsAPI, { next: { revalidate: 3600, tags: ["contributors"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch getAllContributors data")

@@ -262,7 +262,7 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
       `&sort[]=-issue.published` +
       `&sort[]=sort`
 
-    const response = await fetch(articlesAPI)
+    const response = await fetch(articlesAPI, { next: { revalidate: 3600, tags: ["articles"] } })
     const articlesData = await response.json()
 
     return articlesData.data as Articles[]

@@ -49,7 +49,7 @@ export const LoadingSkeleton = () => {
 // Data fetching component
 async function EventsData() {
   const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/`, {
-    cache: "no-store",
+    next: { revalidate: 3600, tags: ["events"] },
   }).then((res) => {
     if (!res.ok) throw new Error("Failed to fetch current events")
     return res.json()
@@ -61,7 +61,7 @@ async function EventsData() {
   if (currentEventsArray.length < 4) {
     const timestamp = new Date().getTime()
     featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
-      cache: "no-store",
+      next: { revalidate: 3600, tags: ["events"] },
     }).then((res) => {
       if (!res.ok) throw new Error("Failed to fetch featured events")
       return res.json()

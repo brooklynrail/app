@@ -17,6 +17,7 @@ const Refresh = () => {
 
     try {
       const response = await fetch(apiUrl, {
+        cache: "no-store",
         method: "GET",
         headers: {
           "Content-Type": "application/json",
