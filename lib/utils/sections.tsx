@@ -2,6 +2,7 @@ import { readItems } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../directus"
 import { Articles, Sections } from "../types"
+import { unstable_cache } from "next/cache"
 
 interface ArticlesBySectionProps {
   slug: string
@@ -68,31 +69,34 @@ interface SectionDataProps {
   slug: string
 }
 
-export const getSectionData = cache(async (props: SectionDataProps) => {
-  const { slug } = props
+export const getSectionData = unstable_cache(
+  async (props: SectionDataProps) => {
+    const { slug } = props
 
-  try {
-    const sections = await directus.request(
-      readItems("sections", {
-        fields: ["id", "name", "description", "slug", "sponsor"],
-        filter: {
-          _and: [
-            {
-              status: { _eq: "published" },
-              slug: { _eq: slug },
-              featured: { _eq: true },
-            },
-          ],
-        },
-      }),
-    )
+    try {
+      const sections = await directus.request(
+        readItems("sections", {
+          fields: ["id", "name", "description", "slug", "sponsor"],
+          filter: {
+            _and: [
+              {
+                status: { _eq: "published" },
+                slug: { _eq: slug },
+                featured: { _eq: true },
+              },
+            ],
+          },
+        }),
+      )
 
-    return sections[0] as Sections
-  } catch (error) {
-    console.error("Error fetching section data:", error)
-    return null
-  }
-})
+      return sections[0] as Sections
+    } catch (error) {
+      console.error("Error fetching section data:", error)
+      return null
+    }
+  },
+  ["sectionData"],
+)
 
 // Group articles by issue
 export const groupByIssue = (articles: Articles[]) => {
