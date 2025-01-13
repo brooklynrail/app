@@ -46,6 +46,9 @@ export async function GET(request: Request) {
 
       case RevalidateType.Ads:
         revalidateTag("ads")
+        revalidatePath(`/api/ads/?type=banner`)
+        revalidatePath(`/api/ads/?type=tile`)
+        revalidatePath(`/api/ads/?type=in_article_standard`)
         return new Response(`Revalidation started for Ads ${Date.now()}`, { status: 200 })
 
       case RevalidateType.Articles:

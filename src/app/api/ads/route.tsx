@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server"
 import { AdTypes } from "../../../../lib/utils/ads"
 
-// Revalidates every 30 minutes
-export const revalidate = 1800
+// Revalidates every 24 hours
+export const revalidate = 86400
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
       `&filter[end_date][_gte]=NOW`
 
     try {
-      const res = await fetch(adsAPI, { next: { revalidate: 600, tags: ["ads"] } }) //
+      const res = await fetch(adsAPI, { next: { revalidate: 86400, tags: ["ads"] } }) // Revalidates every 24 hours
       if (!res.ok) {
         console.warn(`Ads API returned status ${res.status}: ${res.statusText}`)
         return []
