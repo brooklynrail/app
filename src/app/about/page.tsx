@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation"
-import { Issues } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
 import { getNavData } from "../../../lib/utils/homepage"
 import { getAllPages, getPageData } from "../../../lib/utils/pages"
 import Page from "../components/page"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
+
+export const revalidate = 86400 // invalidate once a day
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()

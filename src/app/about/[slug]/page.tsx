@@ -7,6 +7,7 @@ import { getAllPages, getPageData } from "../../../../lib/utils/pages"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
 
+export const revalidate = 86400 // invalidate once a day
 export interface PageProps {
   navData: Homepage
   pageData: Pages

@@ -1,7 +1,7 @@
 import { readItem } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
-import { Ads, Articles, Contributors, Events, Issues, People, Sections } from "../types"
+import { Ads, Articles, Contributors, Events, Issues, Pages, People, Sections } from "../types"
 import { revalidatePath, revalidateTag } from "next/cache"
 import { getPermalink, PageType } from "../utils"
 
@@ -14,6 +14,7 @@ export enum RevalidateType {
   Tributes = "tributes",
   Contributors = "contributors",
   Ads = "ads",
+  Pages = "pages",
 }
 
 export const revalidateArticle = cache(async (data: Articles) => {
@@ -87,6 +88,27 @@ export const revalidateEvent = cache(async (data: Events) => {
   return url.pathname
 })
 
+export const revalidatePage = cache(async (data: Pages) => {
+  let permalink
+  if (data.slug == `about`) {
+    // Example path: /about
+    permalink = getPermalink({
+      type: PageType.Page,
+      slug: data.slug,
+    })
+    revalidatePath("/about")
+  } else {
+    permalink = getPermalink({
+      type: PageType.ChildPage,
+      slug: data.slug,
+    })
+    revalidatePath(`/about/${data.slug}`)
+  }
+  revalidateTag("pages")
+  const url = new URL(permalink)
+  return url.pathname
+})
+
 export const getRevalidateData = cache(async (id: string, type: RevalidateType) => {
   switch (type) {
     case RevalidateType.Articles:
@@ -121,6 +143,15 @@ export const getRevalidateData = cache(async (id: string, type: RevalidateType) 
       )
 
       return event as Events
+
+    case RevalidateType.Pages:
+      const page = await directus.request(
+        readItem(type, id, {
+          fields: ["slug"],
+        }),
+      )
+
+      return page as Pages
     default:
       return null
   }

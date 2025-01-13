@@ -1,10 +1,16 @@
 import { NextRequest } from "next/server"
 import { AdTypes } from "../../../../lib/utils/ads"
 
-// Revalidates every 30 minutes
-export const revalidate = 1800
+// Revalidates every hour
+export const revalidate = 3600
 
 export async function GET(request: NextRequest) {
+  // Add cache control headers to prevent browser caching
+  const headers = {
+    "Cache-Control": "no-store, must-revalidate",
+    Pragma: "no-cache",
+  }
+
   const { searchParams } = new URL(request.url)
   const type = searchParams.get("type")
 
@@ -44,7 +50,7 @@ export async function GET(request: NextRequest) {
       `&filter[end_date][_gte]=NOW`
 
     try {
-      const res = await fetch(adsAPI, { next: { revalidate: 600, tags: ["ads"] } }) //
+      const res = await fetch(adsAPI, { next: { revalidate: 3600, tags: ["ads"] } }) // Revalidates every hour
       if (!res.ok) {
         console.warn(`Ads API returned status ${res.status}: ${res.statusText}`)
         return []
@@ -79,5 +85,5 @@ export async function GET(request: NextRequest) {
   }
 
   const ads = await adsData({ adType: type as AdTypes })
-  return Response.json(ads)
+  return Response.json(ads, { headers })
 }
