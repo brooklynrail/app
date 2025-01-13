@@ -23,20 +23,6 @@ interface SectionParams {
 async function getData({ params }: { params: SectionParams }) {
   const slug = params.slug.toString()
 
-  // const navData = await getNavData()
-  // if (!navData) {
-  //   return notFound()
-  // }
-
-  // const sectionData = await getSectionData({ slug: slug })
-  // if (!sectionData) {
-  //   return notFound()
-  // }
-  // const articlesData = await getArticlesBySection({ slug: slug, limit: 32, offset: 0 })
-  // if (!articlesData) {
-  //   return notFound()
-  // }
-
   const [navData, sectionData, articlesData] = await Promise.all([
     getNavData(),
     getSectionData({ slug }),
