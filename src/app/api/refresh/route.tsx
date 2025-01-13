@@ -49,7 +49,7 @@ export async function GET(request: Request) {
         revalidatePath(`/api/ads/?type=banner`)
         revalidatePath(`/api/ads/?type=tile`)
         revalidatePath(`/api/ads/?type=in_article_standard`)
-        return new Response(`Revalidation started for Ads ${Date.now()}`, { status: 200 })
+        return new Response(`Revalidation started for Ads APIs ${Date.now()}`, { status: 200 })
 
       case RevalidateType.Articles:
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
