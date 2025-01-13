@@ -3,10 +3,11 @@ import {
   revalidateContributor,
   revalidateEvent,
   revalidateIssue,
+  revalidatePage,
   revalidateSection,
   RevalidateType,
 } from "../../../../lib/utils/revalidate"
-import { Articles, Contributors, Events } from "../../../../lib/types"
+import { Articles, Contributors, Events, Pages } from "../../../../lib/types"
 import { revalidatePath, revalidateTag } from "next/cache"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
@@ -80,6 +81,18 @@ export async function GET(request: Request) {
         if (!response.ok) throw new Error("Failed to fetch event")
         const eventData: Events = await response.json()
         path = await revalidateEvent(eventData)
+
+        return new Response(`Revalidation started for path: ${path}`, { status: 200 })
+
+      case RevalidateType.Pages:
+        // Example path: /about
+        // Example path: /about/advertise
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/page/id/${id}`, {
+          next: { revalidate: 3600, tags: ["pages"] },
+        })
+        if (!response.ok) throw new Error("Failed to fetch event")
+        const pageData: Pages = await response.json()
+        path = await revalidatePage(pageData)
 
         return new Response(`Revalidation started for path: ${path}`, { status: 200 })
 

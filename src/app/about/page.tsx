@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation"
-import { Issues } from "../../../lib/types"
 import { getPermalink, PageType } from "../../../lib/utils"
 import { getNavData } from "../../../lib/utils/homepage"
 import { getAllPages, getPageData } from "../../../lib/utils/pages"
