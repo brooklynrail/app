@@ -33,10 +33,13 @@ export const revalidateArticle = cache(async (data: Articles) => {
 })
 
 export const revalidateSection = cache(async (data: Sections) => {
-  const sectionPath = `/section/${data.slug}`
-  revalidatePath(sectionPath)
+  const permalink = getPermalink({
+    sectionSlug: data.slug,
+    type: PageType.SuperSection,
+  })
+  revalidatePath(permalink)
   revalidateTag("section")
-  return sectionPath
+  return permalink
 })
 
 export const revalidateIssue = cache(async (data: Issues) => {
