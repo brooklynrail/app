@@ -4,8 +4,9 @@ import { readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
 import { Articles, Homepage, HomepageCollections, Issues } from "../types"
+import { unstable_cache } from "next/cache"
 
-export const getNavData = cache(async () => {
+export const getNavData = unstable_cache(async () => {
   try {
     const navData = await directus.request(
       readSingleton("homepage", {
@@ -48,7 +49,7 @@ export const getNavData = cache(async () => {
     console.error("Error fetching Nav data:", error)
     return null
   }
-})
+}, ["navData"])
 
 export const getHomepageData = cache(async (currentIssue: Issues) => {
   try {
