@@ -3,13 +3,13 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { getPermalink, PageType } from "../../../../lib/utils"
 
-enum CollectionType {
+export enum CollectionType {
   Section = "section",
   Tribute = "tribute",
   Page = "page",
 }
 
-interface NavigationProps {
+export interface NavigationProps {
   id: string
   name: string
   slug: string
@@ -74,18 +74,76 @@ const CurrentNavigation = () => {
     )
   })
 
-  return (
-    <ul className="divide-y rail-divide">
-      {allNav}
-      <li className="text-center">
-        <Link
-          href={`https://intranslation.brooklynrail.org/`}
-          className="py-3 block text-sm font-bold uppercase text-center"
-        >
-          InTranslation
+  const allPages = navigation.map((navItem: NavigationProps, i: number) => {
+    const permalink = (() => {
+      switch (navItem.type) {
+        case CollectionType.Page:
+          if (navItem.slug == `about`) {
+            // Example path: /about
+            return getPermalink({
+              type: PageType.Page,
+              slug: navItem.slug,
+            })
+          } else {
+            // Example path: /about/staff
+            return getPermalink({
+              type: PageType.ChildPage,
+              slug: navItem.slug,
+            })
+          }
+
+        default:
+          return null
+      }
+    })()
+
+    if (!permalink) {
+      return null
+    }
+
+    return (
+      <li key={`menu-${navItem.slug}`} className="">
+        <Link href={permalink} className="block text-sm font-bold">
+          {parse(navItem.name)}
         </Link>
       </li>
-    </ul>
+    )
+  })
+
+  return (
+    <>
+      <ul className="divide-y rail-divide">
+        {allNav}
+        <li className="text-center">
+          <Link
+            href={`https://intranslation.brooklynrail.org/`}
+            className="py-3 block text-sm font-bold uppercase text-center"
+          >
+            InTranslation
+          </Link>
+        </li>
+      </ul>
+      <div className="py-3 bg-slate-100 dark:bg-zinc-700 pb-48">
+        <ul className="py-3 block text-sm font-bold px-9 space-y-3">
+          {allPages}
+          <li className="">
+            <Link className="flex space-x-2 w-full" href={`/subscribe`} prefetch={false}>
+              <span>Sign up for our newsletter</span>
+            </Link>
+          </li>
+          <li className="">
+            <Link className="flex space-x-2 w-full" href={`/instagram`} prefetch={false}>
+              <span>Follow us on Instagram</span>
+            </Link>
+          </li>
+          <li className="">
+            <Link className="flex space-x-2 w-full" href={`/store`} prefetch={false}>
+              <span>Visit our store</span>
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </>
   )
 }
 

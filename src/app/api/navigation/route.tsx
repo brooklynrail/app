@@ -32,6 +32,14 @@ export async function GET() {
       const { data } = await res.json()
       return { ...data, name: data.title, type: "tribute" }
     }
+    if (item.collection === "pages") {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/pages/${item.item}?fields[]=id&fields[]=title&fields[]=slug`,
+        { next: { revalidate: 3600, tags: ["homepage"] } },
+      )
+      const { data } = await res.json()
+      return { ...data, name: data.title, type: "page" }
+    }
   })
 
   const navigationData = await Promise.all(navigationPromises)
