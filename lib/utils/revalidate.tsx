@@ -15,6 +15,7 @@ export enum RevalidateType {
   Contributors = "contributors",
   Ads = "ads",
   Pages = "pages",
+  GlobalSettings = "global_settings",
 }
 
 export const revalidateArticle = cache(async (data: Articles) => {

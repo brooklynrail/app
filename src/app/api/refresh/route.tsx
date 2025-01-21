@@ -42,8 +42,12 @@ export async function GET(request: Request) {
     switch (type) {
       case RevalidateType.Homepage:
         revalidatePath(`/`, "page")
+        revalidateTag("homepage")
         return new Response(`Revalidation started for the homepage ${Date.now()}`, { status: 200 })
 
+      case RevalidateType.GlobalSettings:
+        revalidateTag("homepage")
+        return new Response(`Revalidation started for the Global Settings ${Date.now()}`, { status: 200 })
       case RevalidateType.Ads:
         revalidateTag("ads")
         revalidatePath(`/api/ads/?type=banner`)
