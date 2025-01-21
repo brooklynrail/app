@@ -122,7 +122,6 @@ const EventPageBody = (props: EventProps) => {
             <div className="text-md tablet-lg:text-lg text-center p-description bg-white dark:bg-zinc-700 py-3 tablet:py-6 px-3 tablet:px-6 rounded-xl space-y-1">
               <p>These free events are produced by The Brooklyn Rail.</p>
               <p>
-                Help us raise <span className="font-medium">$200,000</span> by Dec 31.{" "}
                 <Link
                   className="text-violet-600 dark:text-violet-400 block tablet:inline mt-1 tablet:mt-0 hover:no-underline"
                   href={`/donate`}
