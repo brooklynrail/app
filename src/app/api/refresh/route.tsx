@@ -56,10 +56,9 @@ export async function GET(request: Request) {
         return new Response(`Revalidation started for Ads APIs ${Date.now()}`, { status: 200 })
 
       case RevalidateType.Articles:
+        console.log("Revalidating article", id)
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
-        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`, {
-          next: { revalidate: 3600, tags: ["articles"] },
-        })
+        response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch article")
         const articleData: Articles = await response.json()
         path = await revalidateArticle(articleData)
