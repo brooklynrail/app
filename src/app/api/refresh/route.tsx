@@ -9,6 +9,8 @@ import {
 } from "../../../../lib/utils/revalidate"
 import { Articles, Contributors, Events, Pages } from "../../../../lib/types"
 import { revalidatePath, revalidateTag } from "next/cache"
+import { getPermalink } from "../../../../lib/utils"
+import { PageType } from "../../../../lib/utils"
 
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
@@ -61,11 +63,22 @@ export async function GET(request: Request) {
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch article")
         const articleData: Articles = await response.json()
-        path = await revalidateArticle(articleData)
+        // path = await revalidateArticle(articleData)
+        const permalink = getPermalink({
+          year: articleData.issue.year,
+          month: articleData.issue.month,
+          section: articleData.section.slug,
+          slug: articleData.slug,
+          type: PageType.Article,
+        })
+        revalidatePath(permalink)
+        revalidatePath(`/section/${articleData.section.slug}`)
+        revalidatePath(`/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`)
+        revalidateTag("articles")
         const issuePath = await revalidateIssue(articleData.issue)
         const sectionPath = await revalidateSection(articleData.section)
 
-        return new Response(`Revalidation started for paths:  ${path}, ${sectionPath}, and ${issuePath}`, {
+        return new Response(`Revalidation started for paths:  ${permalink}, ${sectionPath}, and ${issuePath}`, {
           status: 200,
         })
 
