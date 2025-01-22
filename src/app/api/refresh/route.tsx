@@ -88,6 +88,7 @@ export async function GET(request: Request) {
         if (!response.ok) throw new Error("Failed to fetch event")
         const eventData: Events = await response.json()
         path = await revalidateEvent(eventData)
+        revalidateTag("events")
 
         return new Response(`Revalidation started for path: ${path}`, { status: 200 })
 
