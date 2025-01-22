@@ -115,7 +115,7 @@ const EventPageBody = (props: EventProps) => {
           </div>
         </div>
 
-        {!isFutureEvent && youtube_id && <EventVideo title={title} youtube_id={youtube_id} />}
+        {youtube_id && <EventVideo title={title} youtube_id={youtube_id} />}
 
         {railProduced && (
           <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 desktop:col-span-6 desktop:col-start-4">
