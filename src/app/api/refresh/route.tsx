@@ -96,7 +96,7 @@ export async function GET(request: Request) {
         revalidatePath(url.pathname, "page")
         // await revalidatePathWithAPI(url.pathname)
         // Revalidate section path
-        revalidatePath(`/section/${articleData.section.slug}/`, "page")
+        revalidatePath(`/section/[slug]`, "page")
         // await revalidatePathWithAPI(`/section/${articleData.section.slug}/`)
         // Revalidate issue path
         revalidatePath(`/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`, "page")
