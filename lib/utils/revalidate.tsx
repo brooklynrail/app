@@ -1,8 +1,8 @@
 import { readItem } from "@directus/sdk"
-import directus from "../directus"
-import { cache } from "react"
-import { Ads, Articles, Contributors, Events, Issues, Pages, People, Sections } from "../types"
 import { revalidatePath, revalidateTag } from "next/cache"
+import { cache } from "react"
+import directus from "../directus"
+import { Articles, Contributors, Events, Issues, Pages, Sections } from "../types"
 import { getPermalink, PageType } from "../utils"
 
 export enum RevalidateType {
@@ -17,21 +17,6 @@ export enum RevalidateType {
   Pages = "pages",
   GlobalSettings = "global_settings",
 }
-
-export const revalidateArticle = cache(async (data: Articles) => {
-  const permalink = getPermalink({
-    year: data.issue.year,
-    month: data.issue.month,
-    section: data.section.slug,
-    slug: data.slug,
-    type: PageType.Article,
-  })
-  const url = new URL(permalink)
-  revalidatePath(url.pathname)
-  revalidatePath(`/${data.issue.year}/${data.issue.month}/${data.section.slug}/`)
-  revalidateTag("articles")
-  return url.pathname
-})
 
 export const revalidateSection = cache(async (data: Sections) => {
   const permalink = getPermalink({

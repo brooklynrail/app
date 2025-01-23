@@ -1,5 +1,4 @@
 import {
-  revalidateArticle,
   revalidateContributor,
   revalidateEvent,
   revalidateIssue,
@@ -20,6 +19,27 @@ export const dynamic = "force-dynamic" // Mark this API as dynamic
 // id: {{$trigger.keys[0]}},
 // secret: "7giV5gQ6",
 // }
+
+// Add this function before the GET handler
+async function revalidatePathWithAPI(path: string) {
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh/path?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&path=${path}`
+  try {
+    const response = await fetch(apiUrl, {
+      cache: "no-store",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    if (response.ok) {
+      console.log("Path revalidated successfully:", path)
+    } else {
+      console.error("Failed to revalidate path:", path, response)
+    }
+  } catch (error) {
+    console.error("Error revalidating path:", path, error)
+  }
+}
 
 export async function GET(request: Request) {
   try {
@@ -58,12 +78,12 @@ export async function GET(request: Request) {
         return new Response(`Revalidation started for Ads APIs ${Date.now()}`, { status: 200 })
 
       case RevalidateType.Articles:
-        console.log("Revalidating article", id)
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch article")
         const articleData: Articles = await response.json()
-        // path = await revalidateArticle(articleData)
+
+        // Get the permalink
         const permalink = getPermalink({
           year: articleData.issue.year,
           month: articleData.issue.month,
@@ -72,10 +92,18 @@ export async function GET(request: Request) {
           type: PageType.Article,
         })
         const url = new URL(permalink)
-        revalidatePath(url.pathname)
-        revalidatePath(`/section/${articleData.section.slug}/`)
-        revalidatePath(`/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`)
+
+        // Revalidate url.pathname
+        await revalidatePathWithAPI(url.pathname)
+        // Revalidate section path
+        await revalidatePathWithAPI(`/section/${articleData.section.slug}/`)
+        // Revalidate issue path
+        await revalidatePathWithAPI(
+          `/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`,
+        )
+        // Revalidate tag
         revalidateTag("articles")
+
         const issuePath = await revalidateIssue(articleData.issue)
         const sectionPath = await revalidateSection(articleData.section)
 
