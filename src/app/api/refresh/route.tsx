@@ -93,13 +93,16 @@ export async function GET(request: Request) {
         const url = new URL(permalink)
 
         // Revalidate url.pathname
-        await revalidatePathWithAPI(url.pathname)
+        revalidatePath(url.pathname, "page")
+        // await revalidatePathWithAPI(url.pathname)
         // Revalidate section path
-        await revalidatePathWithAPI(`/section/${articleData.section.slug}/`)
+        revalidatePath(`/section/${articleData.section.slug}/`, "page")
+        // await revalidatePathWithAPI(`/section/${articleData.section.slug}/`)
         // Revalidate issue path
-        await revalidatePathWithAPI(
-          `/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`,
-        )
+        revalidatePath(`/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`, "page")
+        // await revalidatePathWithAPI(
+        //   `/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`,
+        // )
         // Revalidate tag
         revalidateTag("articles")
 
