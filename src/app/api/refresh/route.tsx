@@ -19,27 +19,6 @@ export const dynamic = "force-dynamic" // Mark this API as dynamic
 // secret: "7giV5gQ6",
 // }
 
-// Add this function before the GET handler
-async function revalidatePathWithAPI(path: string) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh/path?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&path=${path}`
-  try {
-    const response = await fetch(apiUrl, {
-      cache: "no-store",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    if (response.ok) {
-      console.log("Path revalidated successfully:", path)
-    } else {
-      console.error("Failed to revalidate path:", path, response)
-    }
-  } catch (error) {
-    console.error("Error revalidating path:", path, error)
-  }
-}
-
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
@@ -92,11 +71,13 @@ export async function GET(request: Request) {
         })
         const url = new URL(permalink)
 
+        // Revalidate section path
+        revalidatePath(`/section/[slug]`, "page")
+
         // Revalidate url.pathname
         revalidatePath(url.pathname, "page")
         // await revalidatePathWithAPI(url.pathname)
-        // Revalidate section path
-        revalidatePath(`/section/[slug]`, "page")
+
         // await revalidatePathWithAPI(`/section/${articleData.section.slug}/`)
         // Revalidate issue path
         revalidatePath(`/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`, "page")
