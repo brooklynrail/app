@@ -73,7 +73,7 @@ export async function GET(request: Request) {
         })
         const url = new URL(permalink)
         revalidatePath(url.pathname)
-        revalidatePath(`/section/film/`)
+        revalidatePath(`/section/${articleData.section.slug}/`)
         revalidatePath(`/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`)
         revalidateTag("articles")
         const issuePath = await revalidateIssue(articleData.issue)
