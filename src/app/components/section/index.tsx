@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { Articles, Homepage, Sections } from "../../../../lib/types"
 import Paper from "../paper"
 import SectionArt from "./art"
@@ -98,28 +98,34 @@ const Section = (props: SectionProps & NavProps) => {
   return (
     <Paper pageClass={`theme-${sectionData.slug}`} navData={navData}>
       <main className="divide-y rail-divide">
-        <SectionHead
-          title={sectionData.name}
-          description={sectionData.description}
-          sponsor={sectionData.sponsor}
-          permalink={permalink}
-          hasMultipleLayouts={hasMultipleLayouts}
-          layoutMode={layoutMode}
-          setLayoutMode={setLayoutMode}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <SectionHead
+            title={sectionData.name}
+            description={sectionData.description}
+            sponsor={sectionData.sponsor}
+            permalink={permalink}
+            hasMultipleLayouts={hasMultipleLayouts}
+            layoutMode={layoutMode}
+            setLayoutMode={setLayoutMode}
+          />
+        </Suspense>
 
-        <div className="divide-y rail-divide">{allArticles}</div>
+        <Suspense fallback={<div>Loading articles...</div>}>
+          <div className="divide-y rail-divide">{allArticles}</div>
+        </Suspense>
 
-        {hasMore && (
-          <div className="text-center py-6 pb-12">
-            <button
-              onClick={loadMoreArticles}
-              className="bg-indigo-500 text-white text-xl uppercase px-4 py-2 rounded-sm shadow-lg hover:bg-indigo-600 hover:underline hover:underline-offset-2"
-            >
-              Load more
-            </button>
-          </div>
-        )}
+        <Suspense fallback={<div>Loading...</div>}>
+          {hasMore && (
+            <div className="text-center py-6 pb-12">
+              <button
+                onClick={loadMoreArticles}
+                className="bg-indigo-500 text-white text-xl uppercase px-4 py-2 rounded-sm shadow-lg hover:bg-indigo-600 hover:underline hover:underline-offset-2"
+              >
+                Load more
+              </button>
+            </div>
+          )}
+        </Suspense>
       </main>
     </Paper>
   )
