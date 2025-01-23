@@ -3,7 +3,6 @@ import {
   revalidateEvent,
   revalidateIssue,
   revalidatePage,
-  revalidateSection,
   RevalidateType,
 } from "../../../../lib/utils/revalidate"
 import { Articles, Contributors, Events, Pages } from "../../../../lib/types"
@@ -105,11 +104,13 @@ export async function GET(request: Request) {
         revalidateTag("articles")
 
         const issuePath = await revalidateIssue(articleData.issue)
-        const sectionPath = await revalidateSection(articleData.section)
 
-        return new Response(`Revalidation started for paths:  ${permalink}, ${sectionPath}, and ${issuePath}`, {
-          status: 200,
-        })
+        return new Response(
+          `Revalidation started for paths:  ${permalink}, ${`/section/${articleData.section.slug}/`}, and ${issuePath}`,
+          {
+            status: 200,
+          },
+        )
 
       case RevalidateType.Contributors:
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`, {

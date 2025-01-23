@@ -18,16 +18,6 @@ export enum RevalidateType {
   GlobalSettings = "global_settings",
 }
 
-export const revalidateSection = cache(async (data: Sections) => {
-  const permalink = getPermalink({
-    sectionSlug: data.slug,
-    type: PageType.SuperSection,
-  })
-  revalidatePath(permalink)
-  revalidateTag("section")
-  return permalink
-})
-
 export const revalidateIssue = cache(async (data: Issues) => {
   const permalink = getPermalink({
     issueSlug: data.slug,
