@@ -33,7 +33,7 @@ export async function GET(request: Request) {
       })
     }
 
-    if (!id || !type) {
+    if (!type) {
       return new Response("id and type are required", { status: 400 })
     }
 
@@ -56,6 +56,9 @@ export async function GET(request: Request) {
         return new Response(`Revalidation started for Ads APIs ${Date.now()}`, { status: 200 })
 
       case RevalidateType.Articles:
+        if (!id) {
+          return new Response("id is required", { status: 400 })
+        }
         // Example path: /2024/09/architecture/diller-scofidio-renfro-with-abel-nile-new-york/
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
         if (!response.ok) throw new Error("Failed to fetch article")
@@ -70,33 +73,24 @@ export async function GET(request: Request) {
           type: PageType.Article,
         })
         const url = new URL(permalink)
-
-        // Revalidate section path
-        revalidatePath(`/section/[slug]`, "page")
-
         // Revalidate url.pathname
         revalidatePath(url.pathname, "page")
-        // await revalidatePathWithAPI(url.pathname)
-
-        // await revalidatePathWithAPI(`/section/${articleData.section.slug}/`)
-        // Revalidate issue path
-        revalidatePath(`/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`, "page")
-        // await revalidatePathWithAPI(
-        //   `/${articleData.issue.year}/${articleData.issue.month}/${articleData.section.slug}/`,
-        // )
-        // Revalidate tag
         revalidateTag("articles")
 
-        const issuePath = await revalidateIssue(articleData.issue)
+        return new Response(`Revalidation started for: ${permalink}`, {
+          status: 200,
+        })
 
-        return new Response(
-          `Revalidation started for paths:  ${permalink}, ${`/section/${articleData.section.slug}/`}, and ${issuePath}`,
-          {
-            status: 200,
-          },
-        )
+      case RevalidateType.Sections:
+        console.log("Revalidating all sections")
+        revalidatePath(`/section/[slug]`, "page")
+        revalidateTag("sections")
+        return new Response(`Revalidation started for all sections`, { status: 200 })
 
       case RevalidateType.Contributors:
+        if (!id) {
+          return new Response("id is required", { status: 400 })
+        }
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`, {
           next: { revalidate: 3600, tags: ["contributors"] },
         })
@@ -107,6 +101,9 @@ export async function GET(request: Request) {
         return new Response(`Revalidation started for path: ${path}`, { status: 200 })
 
       case RevalidateType.Events:
+        if (!id) {
+          return new Response("id is required", { status: 400 })
+        }
         // Example path: /event/2024/10/07/event-slug
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/event/id/${id}`, {
           next: { revalidate: 3600, tags: ["events"] },
@@ -119,6 +116,9 @@ export async function GET(request: Request) {
         return new Response(`Revalidation started for path: ${path}`, { status: 200 })
 
       case RevalidateType.Pages:
+        if (!id) {
+          return new Response("id is required", { status: 400 })
+        }
         // Example path: /about
         // Example path: /about/advertise
         response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/page/id/${id}`, {
