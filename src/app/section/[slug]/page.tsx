@@ -6,6 +6,8 @@ import { getNavData } from "../../../../lib/utils/homepage"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 
+export const revalidate = 60 * 60 // revalidate at most once an hour
+
 export default async function SectionPage({ params }: { params: SectionParams }) {
   const data = await getData({ params })
 
