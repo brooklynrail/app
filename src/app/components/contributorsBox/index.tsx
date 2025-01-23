@@ -16,7 +16,7 @@ const ContributorsBox = (props: ContributorsProps) => {
     }
 
     const key = `${i}-${contributor.contributors_id.id}`
-    const authorName = `${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name}`
+    const authorName = `${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name ? contributor.contributors_id.last_name : ""}`
     const authorLink = (
       <Link href={`/contributor/${contributor.contributors_id.slug}`}>
         <strong>{authorName}</strong>
