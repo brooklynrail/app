@@ -117,32 +117,30 @@ const AdInArticle = () => {
   const mobileDimensions = getImageDimensions(banner_image_mobile, 640)
 
   return (
-    <div>
-      <div
-        ref={adRef}
-        className="w-full max-w-[120ex] m-0 my-12 pt-1 pb-5 tablet-lg:pt-1 bg-white dark:bg-zinc-700 bg-opacity-80 backdrop-blur-md"
-      >
-        <p className="z-10 text-[10px] leading-4 text-center uppercase text-gray-700 dark:text-slate-100">
-          Advertisement
-        </p>
-        <div className="flex justify-center items-center">
-          <Link href={ad_url} target="_blank" onClick={() => handleAdEvent("click")}>
-            <Image
-              className="hidden tablet:block"
-              src={desktopSrc}
-              width={desktopDimensions.width}
-              height={desktopDimensions.height}
-              alt={campaign_title}
-            />
-            <Image
-              className="block tablet:hidden"
-              src={mobileSrc}
-              width={mobileDimensions.width}
-              height={mobileDimensions.height}
-              alt={campaign_title}
-            />
-          </Link>
-        </div>
+    <div
+      ref={adRef}
+      className="w-full max-w-[120ex] m-0 my-12 pt-1 pb-5 tablet-lg:pt-1 bg-white dark:bg-zinc-700 bg-opacity-80 backdrop-blur-md clear-both"
+    >
+      <p className="z-10 text-[10px] leading-4 text-center uppercase text-gray-700 dark:text-slate-100">
+        Advertisement
+      </p>
+      <div className="flex justify-center items-center">
+        <Link href={ad_url} target="_blank" onClick={() => handleAdEvent("click")}>
+          <Image
+            className="hidden tablet:block"
+            src={desktopSrc}
+            width={desktopDimensions.width}
+            height={desktopDimensions.height}
+            alt={campaign_title}
+          />
+          <Image
+            className="block tablet:hidden"
+            src={mobileSrc}
+            width={mobileDimensions.width}
+            height={mobileDimensions.height}
+            alt={campaign_title}
+          />
+        </Link>
       </div>
     </div>
   )
