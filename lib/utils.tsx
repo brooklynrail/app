@@ -160,7 +160,7 @@ export const getCurrentIssueData = cache(async () => {
 
 export const getGlobalSettings = async () => {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
-  const res = await fetch(globalSettingsAPI)
+  const res = await fetch(globalSettingsAPI, { next: { revalidate: 3600, tags: ["homepage"] } })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch getGlobalSettings data")
