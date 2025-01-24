@@ -158,7 +158,7 @@ export const getCurrentIssueData = cache(async () => {
   }
 })
 
-export const getGlobalSettings = cache(async () => {
+export const getGlobalSettings = async () => {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
   const res = await fetch(globalSettingsAPI)
   if (!res.ok) {
@@ -167,7 +167,7 @@ export const getGlobalSettings = cache(async () => {
   }
   const { data } = await res.json()
   return data as GlobalSettings
-})
+}
 
 // Explore making this get IssueData by ID
 // NOTE: we need to use `readItems` instead of `readItem` because we are querying the `issues` collection

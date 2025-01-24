@@ -1,5 +1,3 @@
-import { getRevalidateData, RevalidateType } from "../../../../../../lib/utils/revalidate"
-
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   const id = params.id
 
@@ -7,11 +5,11 @@ export async function GET(request: Request, { params }: { params: { id: string }
     return new Response("Missing id", { status: 401 })
   }
 
-  const globalSettingsData = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/pages?fields[]=id&fields[]=title&fields[]=slug&filter[id][_eq]=${id}`
-  const res = await fetch(globalSettingsData, { next: { revalidate: 3600, tags: ["pages"] } })
+  const pagesData = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/pages?fields[]=id&fields[]=title&fields[]=slug&filter[id][_eq]=${id}`
+  const res = await fetch(pagesData, { next: { revalidate: 3600, tags: ["pages"] } })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch getGlobalSettings data")
+    throw new Error("Failed to fetch pagesData data")
   }
   const { data } = await res.json()
 
