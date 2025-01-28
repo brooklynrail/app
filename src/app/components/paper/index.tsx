@@ -22,6 +22,7 @@ export interface PaperProps {
   children: React.ReactNode
   type?: PaperType
   previewURL?: string
+  homepageData?: Homepage
 }
 
 export enum PaperType {
@@ -35,7 +36,7 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, navData, type, banners, currentIssue, previewURL } = props
+  const { pageClass, children, navData, type, banners, currentIssue, previewURL, homepageData } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
@@ -47,7 +48,7 @@ const Paper = (props: PaperProps) => {
             <PreviewHeader previewURL={previewURL} />
           ) : (
             <>
-              <Header type={type ? type : PaperType.Default} currentIssue={currentIssue} />
+              <Header type={type ? type : PaperType.Default} currentIssue={currentIssue} homepageData={homepageData} />
               {banners && isHomepage && currentIssue && <Banners currentIssue={currentIssue} banners={banners} />}
               <NavBar navData={navData} isHomepage={isHomepage} />
             </>
