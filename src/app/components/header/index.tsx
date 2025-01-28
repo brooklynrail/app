@@ -51,9 +51,6 @@ const HeaderHomepage = (props: HeaderProps) => {
   const videoCovers = homepageData && homepageData.video_covers
   const videoCoversStills = homepageData && homepageData.video_covers_stills
 
-  console.log(homepageData)
-  console.log(videoCoversStills)
-
   useEffect(() => {
     // Check if the localStorage item is already set for video pause
     const isVideoPaused = getLocalStorageItem("homepageVideoPaused")
