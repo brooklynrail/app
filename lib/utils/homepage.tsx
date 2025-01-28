@@ -51,7 +51,7 @@ export const getNavData = unstable_cache(async () => {
   }
 }, ["navData"])
 
-export const getHomepageData = async (currentIssue: Issues) => {
+export const getHomepageData = cache(async (currentIssue: Issues) => {
   try {
     const homepageData = await directus.request(
       readSingleton("homepage", {
@@ -146,7 +146,7 @@ export const getHomepageData = async (currentIssue: Issues) => {
     console.error("Error fetching Homepage data:", error)
     return null
   }
-}
+})
 
 export const getCurrentIssueSlug = cache(async () => {
   try {
