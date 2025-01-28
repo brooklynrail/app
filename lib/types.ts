@@ -238,6 +238,8 @@ export type DirectusFiles = {
   type?: string | null
   uploaded_by?: string | DirectusUsers | null
   uploaded_on: string
+  video_cover: any[] | VideoCovers[]
+  video_cover_still: any[] | VideoCoversStills[]
   width: number
 }
 
@@ -570,6 +572,8 @@ export type Homepage = {
   id: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+  video_covers?: VideoCovers[] | null
+  video_covers_stills?: VideoCoversStills[] | null
 }
 
 export type HomepageBanners = {
@@ -771,6 +775,20 @@ export type TributesContributors = {
   id: number
 }
 
+export type VideoCovers = {
+  directus_files_id?: DirectusFiles | null
+  homepage_id?: Homepage | null
+  id: number
+  sort?: number | null
+}
+
+export type VideoCoversStills = {
+  directus_files_id?: DirectusFiles | null
+  homepage_id?: Homepage | null
+  id: number
+  sort?: number | null
+}
+
 export type CustomDirectusTypes = {
   ads: Ads[]
   articles: Articles[]
@@ -817,4 +835,6 @@ export type CustomDirectusTypes = {
   sections: Sections[]
   tributes: Tributes[]
   redirects: Redirects[]
+  video_covers: VideoCovers[]
+  video_covers_stills: VideoCoversStills[]
 }

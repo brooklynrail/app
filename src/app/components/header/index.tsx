@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { Issues } from "../../../../lib/types"
+import { Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { PaperType } from "../paper"
 import { useTheme } from "../theme"
@@ -8,6 +8,7 @@ import HeaderDefault from "./default"
 import HomeBanner from "./homeBanner"
 import Subhead from "./subhead"
 import VideoBG from "./videobg"
+import VideoControls from "./videoControls"
 
 export interface HeaderProps {
   special_issue?: boolean | null
@@ -15,14 +16,15 @@ export interface HeaderProps {
   title?: string
   type: PaperType
   currentIssue?: Issues
+  homepageData?: Homepage
 }
 
 const Header = (props: HeaderProps) => {
-  const { title, type, currentIssue } = props
+  const { title, type, currentIssue, homepageData } = props
 
   switch (type) {
     case PaperType.Homepage:
-      return <HeaderHomepage title={title} type={type} currentIssue={currentIssue} />
+      return <HeaderHomepage title={title} type={type} currentIssue={currentIssue} homepageData={homepageData} />
     default:
       return <HeaderDefault title={title} type={type} />
   }
@@ -41,11 +43,16 @@ const removeLocalStorageItem = (key: string) => {
 }
 
 const HeaderHomepage = (props: HeaderProps) => {
-  const { title, type, currentIssue } = props
+  const { title, type, homepageData } = props
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPaused, setIsPaused] = useState(false)
   const { theme } = useTheme()
   const subheadFill = theme === "dark" ? "fill-white" : "fill-white"
+  const videoCovers = homepageData && homepageData.video_covers
+  const videoCoversStills = homepageData && homepageData.video_covers_stills
+
+  console.log(homepageData)
+  console.log(videoCoversStills)
 
   useEffect(() => {
     // Check if the localStorage item is already set for video pause
@@ -73,19 +80,6 @@ const HeaderHomepage = (props: HeaderProps) => {
     type: PageType.Home,
   })
 
-  const play = (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
-    </svg>
-  )
-
-  const pause = (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M6 5H9V19H6V5Z" className="fill-zinc-800" />
-      <path d="M15 5H18V19H15V5Z" className="fill-zinc-800" />
-    </svg>
-  )
-
   return (
     <header className={`tablet:pt-0 relative rail-header-${type}`}>
       <div className="hidden">
@@ -94,28 +88,31 @@ const HeaderHomepage = (props: HeaderProps) => {
         {title && <h3>{title}</h3>}
       </div>
 
-      <div className="relative h-[calc(100vh-26.5rem)] tablet-lg:h-[calc(100vh-20.5rem)]">
-        <div className="absolute inset-0 bg-black bg-opacity-15 z-[1]" />
-        <VideoBG videoRef={videoRef} />
+      <div
+        className={`relative ${videoCovers && videoCoversStills ? "h-[calc(100vh-26.5rem)] tablet-lg:h-[calc(100vh-20.5rem)]" : ""}`}
+      >
+        <div
+          className={`absolute inset-0 bg-zinc-900 z-[1] ${videoCovers && videoCoversStills ? "bg-opacity-10" : ""}`}
+        />
+        {videoCovers && videoCoversStills && (
+          <VideoBG videoRef={videoRef} videoCovers={videoCovers} videoCoversStills={videoCoversStills} />
+        )}
         <div className="sticky top-0 z-[2]">
-          <div className="p-3 pb-9 tablet:px-6">
+          <div className={`${videoCovers && videoCoversStills ? "p-3 pb-9 tablet:px-6" : "p-3"}`}>
             <Link href={permalink} className="w-full space-y-3">
               <HomeBanner />
               <Subhead fill={subheadFill} />
             </Link>
           </div>
         </div>
-        <div className="bg-zinc-900 rounded-tl-sm p-0.5 pl-1.5 py-0.5 absolute bottom-0 right-0 z-10 flex justify-center items-center space-x-3">
-          <p className="text-white text-xs">
-            Shirin Neshat, <em>"Do U Dare!,"</em> 2024–25.
-          </p>
-          <button
-            onClick={handleVideoToggle}
-            className="font-sm bg-zinc-400 w-6 h-6 text-center text-white flex justify-center items-center"
-          >
-            {isPaused ? play : pause}
-          </button>
-        </div>
+        {videoCovers && videoCoversStills && (
+          <VideoControls
+            videoRef={videoRef}
+            videoCovers={videoCovers}
+            isPaused={isPaused}
+            handleVideoToggle={handleVideoToggle}
+          />
+        )}
       </div>
     </header>
   )

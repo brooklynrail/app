@@ -64,6 +64,7 @@ const HomePage = (props: HomePageProps) => {
       banners={banners}
       navData={navData}
       currentIssue={currentIssue}
+      homepageData={homepageData}
     >
       <main className="divide-y rail-divide">{allCollections}</main>
     </Paper>
