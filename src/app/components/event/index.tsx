@@ -10,8 +10,10 @@ const EventPage = (props: EventProps) => {
   const { eventData, navData } = props
   const { end_date, airtable_id } = eventData
 
-  // It is in the future if the end date is greater than the current date
-  const isFutureEvent = new Date(end_date) > new Date()
+  // Convert both dates to UTC for consistent timezone comparison
+  const endDateUTC = new Date(end_date).toISOString()
+  const nowUTC = new Date().toISOString()
+  const isFutureEvent = endDateUTC > nowUTC
 
   return (
     <Paper pageClass="theme-events" navData={navData}>
@@ -45,7 +47,7 @@ export const Poets = ({ poets }: { poets: EventsPeoplePoets[] }) => {
       </div>
       <div className="divide-y rail-divide space-y-6">
         <p className="text-xl tablet-lg:text-3xl py-3">
-          {`The Rail has a tradition of ending our conversations with a poetry reading, and we’re fortunate to have ${poetNames} reading.`}
+          {`The Rail has a tradition of ending our conversations with a poetry reading, and we're fortunate to have ${poetNames} reading.`}
         </p>
         <div className="pt-6">{allPoets}</div>
       </div>

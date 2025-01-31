@@ -33,7 +33,10 @@ const EventPageBody = (props: EventProps) => {
   const eventTypeText = getEventTypeText(type, eventTypes)
 
   const railProduced = type === EventTypes.TheNewSocialEnvironment || type === EventTypes.CommonGround
-  const isFutureEvent = new Date(end_date) > new Date()
+  // Convert both dates to UTC for consistent timezone comparison
+  const endDateUTC = new Date(end_date).toISOString()
+  const nowUTC = new Date().toISOString()
+  const isFutureEvent = endDateUTC > nowUTC
 
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
