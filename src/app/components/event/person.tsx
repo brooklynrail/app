@@ -29,7 +29,7 @@ const Person = (props: PersonProps) => {
           <div className="text-md tablet-lg:text-lg content-bio p-note tablet-lg:flex tablet-lg:flex-row-reverse gap-x-9">
             {portrait ? <PortraitImage image={portrait} title={display_name} /> : null}
             <div className="space-y-3">
-              <p>{parse(bio)}</p>
+              <div>{parse(bio)}</div>
               <ul className="text-sm list-disc space-y-0.5">
                 {website && (
                   <li className="space-x-1 flex items-center">
