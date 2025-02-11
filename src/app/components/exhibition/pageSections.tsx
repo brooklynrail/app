@@ -3,7 +3,7 @@ import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import parse from "html-react-parser"
 import { ExhibitionProps } from "@/app/exhibition/[slug]/page"
-import { ExhibitionSection } from "../../../../lib/types"
+import { Exhibitions, ExhibitionSection, ExhibitionsPeople2 } from "../../../../lib/types"
 
 const ExhibitionSections = (props: ExhibitionProps) => {
   const { exhibitionData } = props
@@ -31,9 +31,11 @@ const ExhibitionSections = (props: ExhibitionProps) => {
         </div>
       </div>
       <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-8">
-        {section.map((block: ExhibitionSection) => (
-          <SectionBlock {...block} key={block.section_nav} />
-        ))}
+        <div className="flex flex-col space-y-3 tablet-lg:space-y-20">
+          {section.map((block: ExhibitionSection) => (
+            <SectionBlock block={block} exhibitionData={exhibitionData} key={block.section_nav} />
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -63,19 +65,84 @@ const SectionNav = (block: ExhibitionSection) => {
   )
 }
 
-const SectionBlock = (block: ExhibitionSection) => {
+interface SectionBlockProps {
+  exhibitionData: Exhibitions
+  block: ExhibitionSection
+}
+const SectionBlock = (props: SectionBlockProps) => {
+  const { block, exhibitionData } = props
   const { section_title, section_body } = block
-  // Use the same ID generation logic as in SectionNav
   const sectionId = section_title.toLowerCase().replace(/[^a-z0-9]/g, "-")
+
+  const processContent = (htmlContent: string) => {
+    const parsed = parse(htmlContent, {
+      replace: (domNode) => {
+        if ("children" in domNode && domNode.children?.[0]?.type === "text") {
+          const text = domNode.children[0].data
+          // Updated regex to capture attributes
+          const match = text.match(/{{(.*?)}}/)
+          if (match) {
+            const [command, ...attributes] = match[1].trim().split(" ")
+            // Replace with appropriate component based on variable
+            switch (command) {
+              case "artists":
+                return (
+                  <ArtistsList
+                    exhibitionData={exhibitionData}
+                    showBio={attributes.includes("bio")}
+                    showLink={attributes.includes("link")}
+                  />
+                )
+              default:
+                return null
+            }
+          }
+        }
+        return domNode
+      },
+    })
+    return parsed
+  }
+
   return (
-    <section id={sectionId} className="h-entry py-6 tablet-lg:py-12">
+    <section id={sectionId} className="h-entry">
       <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
-        <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
-          <h2 className="text-3xl mobile-lg:text-4xl font-normal">{parse(section_title)}</h2>
-          <div className="text-xl font-light content">{parse(section_body)}</div>
+        <div className="flex flex-col space-y-3">
+          <h2 className="text-2xl tablet-lg:text-3xl font-medium">{parse(section_title)}</h2>
+          <div className="text-lg font-light content">{processContent(section_body)}</div>
         </div>
       </div>
     </section>
+  )
+}
+
+interface ArtistsListProps {
+  exhibitionData: Exhibitions
+  showBio?: boolean
+  showLink?: boolean
+}
+
+const ArtistsList = (props: ArtistsListProps) => {
+  const { exhibitionData, showBio = false, showLink = false } = props
+  const { artists } = exhibitionData
+
+  return (
+    <div className="space-y-6 pb-9">
+      {artists.map((artist) => (
+        <div key={artist.people_id.id} className="artist space-y-1.5">
+          <h4 className="">
+            {showLink ? (
+              <Link href={`#`} className="">
+                {artist.people_id.display_name}
+              </Link>
+            ) : (
+              artist.people_id.display_name
+            )}
+          </h4>
+          {showBio && artist.people_id.bio && <p className="bio">{parse(artist.people_id.bio)}</p>}
+        </div>
+      ))}
+    </div>
   )
 }
 
