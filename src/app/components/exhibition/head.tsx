@@ -37,10 +37,12 @@ const Head = (props: ExhibitionProps) => {
               {deck && <p className="text-xl tablet-lg:text-3xl font-normal">{parse(deck)}</p>}
               <div className="max-w-screen-tablet flex flex-col space-y-3 tablet-lg:space-y-6">
                 {show_details && (
-                  <div className="text-lg tablet:text-xl tablet-lg:text-2xl font-light">{parse(show_details)}</div>
+                  <div className="text-lg tablet:text-xl tablet-lg:text-2xl font-light p-summary">
+                    {parse(show_details)}
+                  </div>
                 )}
                 {opening_details && (
-                  <div className="text-lg tablet:text-xl tablet-lg:text-2xl font-light">{parse(opening_details)}</div>
+                  <div className="text-lg tablet:text-xl tablet-lg:text-lg font-light">{parse(opening_details)}</div>
                 )}
               </div>
             </div>
