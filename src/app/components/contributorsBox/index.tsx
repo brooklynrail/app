@@ -22,8 +22,17 @@ const ContributorsBox = (props: ContributorsProps) => {
         <strong>{authorName}</strong>
       </Link>
     )
+
     const bio = contributor.contributors_id.bio
-    const hasAuthorName = bio && bio.includes(authorName)
+
+    // Decode HTML entities in the bio text
+    const decodeHTML = (html: string) => {
+      const txt = document.createElement("textarea")
+      txt.innerHTML = html
+      return txt.value
+    }
+    // Check if the author name is in the bio text
+    const hasAuthorName = bio && decodeHTML(bio).includes(authorName)
 
     return (
       <div rel="author" className={`text-lg max-w-[72ex]`} key={key}>
