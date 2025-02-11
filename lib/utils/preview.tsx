@@ -1,6 +1,6 @@
 import directus from "../directus"
 import { readItems } from "@directus/sdk"
-import { Articles, Events, Issues, Tributes } from "../types"
+import { Articles, Events, Exhibitions, Issues, Tributes } from "../types"
 import { getGlobalSettings } from "../utils"
 
 export async function getPreviewPassword() {
@@ -140,6 +140,23 @@ export async function getPreviewEvent(id: string) {
     return preview[0] as Events
   } catch (error) {
     console.error("error in getPreviewArticle", error)
+    return null
+  }
+}
+
+export const getPreviewExhibition = async (id: string) => {
+  try {
+    const preview = await directus.request(
+      readItems("exhibitions", {
+        fields: ["id", "slug", "title"],
+        filter: {
+          id: { _eq: id },
+        },
+      }),
+    )
+    return preview[0] as Exhibitions
+  } catch (error) {
+    console.error("error in getPreviewExhibition", error)
     return null
   }
 }

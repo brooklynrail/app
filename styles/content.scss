@@ -148,6 +148,17 @@
   }
 }
 
+.theme-exhibitions .content {
+  @extend .content;
+  @apply text-lg tablet-lg:text-xl font-normal font-sans;
+  p,
+  blockquote,
+  li,
+  pre {
+    @apply max-w-none;
+  }
+}
+
 // ==========================================================================
 // Contributors
 
