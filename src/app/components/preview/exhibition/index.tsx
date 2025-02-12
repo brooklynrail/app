@@ -3,9 +3,11 @@ import { useState, useEffect } from "react"
 import Password from "../password"
 import PreviewHeader from "../previewHead"
 import Paper from "../../paper"
-import ExhibitionPageBody from "../../exhibition/exhibitionPageBody"
 import PreviewInfo from "./previewInfo"
 import { ExhibitionPreviewProps } from "@/app/preview/exhibition/[id]/page"
+import ExhibitionPage from "../../exhibition"
+import ExhibitionSections from "../../exhibition/exhibitionSections"
+import Head from "../../exhibition/head"
 
 const ExhibitionPreview = (props: ExhibitionPreviewProps) => {
   const { exhibitionData, isEnabled, previewPassword, directusUrl, navData } = props
@@ -83,7 +85,8 @@ const ExhibitionPreview = (props: ExhibitionPreviewProps) => {
             )}
           </div>
         </div>
-        <ExhibitionPageBody {...props} navData={navData} />
+        <Head exhibitionData={exhibitionData} />
+        <ExhibitionSections exhibitionData={exhibitionData} />
       </main>
     </Paper>
   )

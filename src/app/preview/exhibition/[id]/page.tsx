@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
 
   const { title, summary, title_tag } = data.exhibitionData
   const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
-  const ogdescription = `${stripHtml(summary).result}`
+  const ogdescription = summary && `${stripHtml(summary).result}`
 
   return {
     title: `PREVIEW: ${ogtitle} `,
