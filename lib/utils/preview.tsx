@@ -148,7 +148,61 @@ export const getPreviewExhibition = async (id: string) => {
   try {
     const preview = await directus.request(
       readItems("exhibitions", {
-        fields: ["id", "slug", "title"],
+        fields: [
+          "id",
+          "slug",
+          "kicker",
+          "title",
+          "deck",
+          "summary",
+          "start_date",
+          "end_date",
+          "opening_date",
+          "status",
+          "show_details",
+          "location",
+          "location_map",
+          "opening_details",
+          "section",
+          "title_tag",
+          {
+            featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
+          },
+          {
+            artists: [
+              {
+                people_id: [
+                  "id",
+                  "display_name",
+                  "bio",
+                  "website",
+                  "instagram",
+                  "related_links",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption", "modified_on"],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            curators: [
+              {
+                people_id: [
+                  "id",
+                  "display_name",
+                  "bio",
+                  "website",
+                  "instagram",
+                  "related_links",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
         filter: {
           id: { _eq: id },
         },
