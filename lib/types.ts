@@ -548,8 +548,8 @@ export type EventsPeoplePoets = {
 export type Exhibitions = {
   artists: any[] | ExhibitionsPeople2[]
   curators: any[] | ExhibitionsPeople1[]
-  date_created?: string | null
-  date_updated?: string | null
+  date_created: string
+  date_updated: string
   deck?: string | null
   end_date: string
   featured_image?: string | DirectusFiles | null
