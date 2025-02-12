@@ -2,12 +2,14 @@
 import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import parse from "html-react-parser"
-import { ExhibitionProps } from "@/app/exhibition/[slug]/page"
+import { Exhibitions } from "../../../../lib/types"
+interface ExhibitionHeadProps {
+  exhibitionData: Exhibitions
+}
 
-const Head = (props: ExhibitionProps) => {
-  const { exhibitionData } = props
+const Head = (props: ExhibitionHeadProps) => {
   const { kicker, title, deck, start_date, end_date, summary, show_details, opening_details, location_map } =
-    exhibitionData
+    props.exhibitionData
 
   const isFutureExhibition = new Date(end_date) > new Date()
 

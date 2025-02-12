@@ -2,7 +2,7 @@
 import Paper from "../paper"
 import { ExhibitionProps } from "@/app/exhibition/[slug]/page"
 import Head from "./head"
-import ExhibitionSections from "./pageSections"
+import ExhibitionSections from "./exhibitionSections"
 
 const ExhibitionPage = (props: ExhibitionProps) => {
   const { exhibitionData, navData } = props
@@ -13,7 +13,7 @@ const ExhibitionPage = (props: ExhibitionProps) => {
 
   return (
     <Paper pageClass="theme-exhibitions" navData={navData}>
-      <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
+      <main className="px-3 desktop:max-w-screen-widescreen mx-auto space-y-24 h-event">
         <Head {...props} />
         <ExhibitionSections {...props} />
       </main>
