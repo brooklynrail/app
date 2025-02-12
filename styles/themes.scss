@@ -244,6 +244,8 @@ body * {
 }
 
 .navbar-fade {
+  @apply bg-gradient-to-r from-transparent from-[1%];
+  --tw-gradient-to-position: 15%;
   --tw-gradient-to: var(--navbar-background-color) var(--tw-gradient-to-position);
 }
 

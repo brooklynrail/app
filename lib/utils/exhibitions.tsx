@@ -23,6 +23,10 @@ export const getExhibition = cache(async (slug: string) => {
         "opening_details",
         "section",
         "title_tag",
+        "background_color_primary",
+        "background_color_secondary",
+        "background_color_primary_darkmode",
+        "background_color_secondary_darkmode",
         {
           featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
         },

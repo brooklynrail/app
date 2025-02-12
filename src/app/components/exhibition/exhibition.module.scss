@@ -1,0 +1,52 @@
+.theme-exhibitions {
+  // Set navbar variables
+  --navbar-background-color: var(--exhibition-bg-primary, #fff);
+  // --navbar-text-color: #ffffff;
+
+  // Light mode styles (default)
+  background-color: var(--exhibition-bg-primary);
+  background-image: linear-gradient(
+    160.44deg,
+    var(--exhibition-bg-primary) 44.27%,
+    var(--exhibition-bg-secondary) 86.9%
+  );
+  background-attachment: fixed !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  // Default background with fallback
+  background-color: #fff; // Fallback if variable isn't set
+  background: var(--exhibition-bg-primary, #fff);
+
+  // If both primary and secondary colors are set, use gradient
+  &[style*="--exhibition-bg-secondary"] {
+    background: linear-gradient(
+      160.44deg,
+      var(--exhibition-bg-primary, #fff) 44.27%,
+      var(--exhibition-bg-secondary) 86.9%
+    );
+    --navbar-background-color: var(--exhibition-bg-primary, #fff);
+  }
+
+  --exhibition-bg-primary: var(--color-default-primary, #fff);
+  --exhibition-bg-secondary: var(--color-default-secondary, #fff);
+
+  @media (prefers-color-scheme: dark) {
+    --exhibition-bg-primary: var(--color-default-primary-dark, #333);
+    --exhibition-bg-secondary: var(--color-default-secondary-dark, #333);
+  }
+}
+
+// Dark mode styles using the global .dark class pattern
+:global(.dark) {
+  .theme-exhibitions {
+    --navbar-background-color: var(--exhibition-bg-primary-dark, #0000ff);
+    background-color: var(--exhibition-bg-primary-dark);
+    background-image: linear-gradient(
+      160.44deg,
+      var(--exhibition-bg-primary-dark) 44.27%,
+      var(--exhibition-bg-secondary-dark) 86.9%
+    );
+  }
+}

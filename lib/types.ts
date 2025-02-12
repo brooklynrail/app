@@ -547,6 +547,10 @@ export type EventsPeoplePoets = {
 
 export type Exhibitions = {
   artists: any[] | ExhibitionsPeople2[]
+  background_color_primary?: string | null
+  background_color_secondary?: string | null
+  background_color_primary_darkmode?: string | null
+  background_color_secondary_darkmode?: string | null
   curators: any[] | ExhibitionsPeople1[]
   date_created: string
   date_updated: string
