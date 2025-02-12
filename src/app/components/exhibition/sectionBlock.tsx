@@ -44,7 +44,7 @@ const SectionBlock = (props: SectionBlockProps) => {
     <section id={sectionId} className="h-entry">
       <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
         <div className="flex flex-col space-y-3">
-          <h2 className="text-2xl tablet-lg:text-3xl font-medium">{parse(section_title)}</h2>
+          <h2 className="text-2xl tablet-lg:text-3xl font-bold">{parse(section_title)}</h2>
           <div className="text-lg font-light content">{processContent(section_body)}</div>
         </div>
       </div>

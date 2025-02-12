@@ -23,7 +23,7 @@ const ExhibitionSections = (props: ExhibitionSectionsProps) => {
 
   return (
     <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
-      <div className="col-span-4 tablet-lg:col-span-3 desktop-lg:col-span-2">
+      <div className="col-span-4 tablet-lg:col-span-3 desktop-lg:col-span-2 pt-12">
         <div className="sticky top-16 pt-6">
           <ul className="space-y-3">
             {section.map((block: ExhibitionSection) => (

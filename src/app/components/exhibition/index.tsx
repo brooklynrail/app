@@ -61,7 +61,6 @@ const ExhibitionPage = (props: ExhibitionProps) => {
     } as React.CSSProperties,
   }
 
-  console.log("combinedStyles", combinedStyles)
   return (
     <Paper pageClass={combinedStyles.className} pageStyle={combinedStyles.style} navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto space-y-24 h-event">
