@@ -50,3 +50,17 @@
     );
   }
 }
+
+.content {
+  @extend .content;
+  @apply text-lg font-normal font-sans;
+  p,
+  blockquote,
+  li,
+  pre {
+    @apply max-w-none;
+  }
+  .artist h4 {
+    @apply text-lg font-medium;
+  }
+}

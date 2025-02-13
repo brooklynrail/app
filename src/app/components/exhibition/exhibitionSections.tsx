@@ -2,6 +2,7 @@
 import parse from "html-react-parser"
 import { Exhibitions, ExhibitionSection } from "../../../../lib/types"
 import SectionBlock from "./sectionBlock"
+import styles from "./exhibition.module.scss"
 
 interface ExhibitionSectionsProps {
   exhibitionData: Exhibitions
@@ -9,7 +10,7 @@ interface ExhibitionSectionsProps {
 
 const ExhibitionSections = (props: ExhibitionSectionsProps) => {
   const { exhibitionData } = props
-  const { start_date, end_date, section } = exhibitionData
+  const { start_date, end_date, section, summary } = exhibitionData
 
   const isFutureExhibition = new Date(end_date) > new Date()
 
@@ -22,24 +23,27 @@ const ExhibitionSections = (props: ExhibitionSectionsProps) => {
   }
 
   return (
-    <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
-      <div className="col-span-4 tablet-lg:col-span-3 desktop-lg:col-span-2 pt-12">
-        <div className="sticky top-16 pt-6">
-          <ul className="space-y-3">
+    <>
+      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
+        <div className="col-span-4 tablet-lg:col-span-3 desktop-lg:col-span-2">
+          <div className="sticky top-16 pt-6">
+            <ul className="space-y-3">
+              {section.map((block: ExhibitionSection) => (
+                <SectionNav {...block} key={block.section_nav} />
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-8">
+          <div className={`flex flex-col space-y-14 tablet-lg:space-y-20 pt-6 ${styles.content}`}>
+            <div className={`text-2xl tablet-lg:text-3xl desktop-lg:text-4xl font-light`}>{parse(summary)}</div>
             {section.map((block: ExhibitionSection) => (
-              <SectionNav {...block} key={block.section_nav} />
+              <SectionBlock block={block} exhibitionData={exhibitionData} key={block.section_nav} />
             ))}
-          </ul>
+          </div>
         </div>
       </div>
-      <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-8">
-        <div className="flex flex-col space-y-3 tablet-lg:space-y-20 pt-6">
-          {section.map((block: ExhibitionSection) => (
-            <SectionBlock block={block} exhibitionData={exhibitionData} key={block.section_nav} />
-          ))}
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
 
