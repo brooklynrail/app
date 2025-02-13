@@ -56,7 +56,7 @@ interface IssueParams {
 async function getData({ params }: { params: IssueParams }) {
   const issueSlug = params.issueSlug
 
-  const navResponse = await fetch(`https://${process.env.VERCEL_URL}/api/nav/`)
+  const navResponse = await fetch(`https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}/api/nav/`)
   if (!navResponse.ok) {
     return notFound()
   }

@@ -50,7 +50,7 @@ export default async function EventsController() {
 }
 
 async function getData() {
-  const navResponse = await fetch(`https://${process.env.VERCEL_URL}/api/nav/`)
+  const navResponse = await fetch(`https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}/api/nav/`)
   if (!navResponse.ok) {
     return notFound()
   }
