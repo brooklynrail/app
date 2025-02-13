@@ -56,9 +56,11 @@ interface IssueParams {
 async function getData({ params }: { params: IssueParams }) {
   const issueSlug = params.issueSlug
 
-  const navData = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav/`, {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `https://${process.env.VERCEL_BRANCH_URL}`
+  const navData = await fetch(`${baseUrl}/api/nav/`, {
     cache: "no-store", // Avoids caching issues during SSR
   }).then((res) => res.json())
+  console.log("Nav data", navData)
 
   const thisIssueData = await getIssueData({ slug: issueSlug })
   if (!thisIssueData) {
