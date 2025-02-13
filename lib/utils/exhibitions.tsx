@@ -3,7 +3,7 @@ import { cache } from "react"
 import directus from "../directus"
 import { Exhibitions } from "../types"
 
-export const getExhibition = cache(async (slug: string) => {
+export const getExhibition = async (slug: string) => {
   const exhibition = await directus.request(
     readItems("exhibitions", {
       fields: [
@@ -29,6 +29,9 @@ export const getExhibition = cache(async (slug: string) => {
         "background_color_secondary_darkmode",
         {
           featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
+        },
+        {
+          show_images: ["id", "width", "height", "filename_disk", "alt", "caption"],
         },
         {
           artists: [
@@ -79,4 +82,4 @@ export const getExhibition = cache(async (slug: string) => {
   )
 
   return exhibition[0] as Exhibitions
-})
+}
