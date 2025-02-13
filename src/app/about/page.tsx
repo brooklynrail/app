@@ -51,7 +51,7 @@ export default async function AboutPage() {
 }
 
 async function getData() {
-  const navResponse = await fetch(`${process.env.VERCEL_URL}/api/nav/`)
+  const navResponse = await fetch(`https://${process.env.VERCEL_URL}/api/nav/`)
   if (!navResponse.ok) {
     return notFound()
   }

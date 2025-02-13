@@ -96,7 +96,7 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const id = String(params.id)
 
-  const navResponse = await fetch(`${process.env.VERCEL_URL}/api/nav/`)
+  const navResponse = await fetch(`https://${process.env.VERCEL_URL}/api/nav/`)
   if (!navResponse.ok) {
     return notFound()
   }

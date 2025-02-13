@@ -44,7 +44,7 @@ async function getData({ params }: { params: TributeParams }) {
   const tributeSlug = params.tributeSlug
   const slug = params.slug
 
-  const navResponse = await fetch(`${process.env.VERCEL_URL}/api/nav/`)
+  const navResponse = await fetch(`https://${process.env.VERCEL_URL}/api/nav/`)
   if (!navResponse.ok) {
     return notFound()
   }
