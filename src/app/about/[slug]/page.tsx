@@ -73,7 +73,7 @@ interface PageParams {
 async function getData({ params }: { params: PageParams }) {
   const { slug } = params
 
-  const navResponse = await fetch(`/api/nav/`)
+  const navResponse = await fetch(`${process.env.VERCEL_URL}/api/nav/`)
   if (!navResponse.ok) {
     return notFound()
   }
