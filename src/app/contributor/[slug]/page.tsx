@@ -3,7 +3,6 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { getContributor, getPermalink, PageType } from "../../../../lib/utils"
-import { getNavData } from "../../../../lib/utils/homepage"
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -62,10 +61,11 @@ interface ContributorsParams {
 async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   // Get all contributors
   // NOTE: There are multiple contributors with the same slug

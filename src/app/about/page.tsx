@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation"
 import { getPermalink, PageType } from "../../../lib/utils"
-import { getNavData } from "../../../lib/utils/homepage"
 import { getAllPages, getPageData } from "../../../lib/utils/pages"
 import Page from "../components/page"
 import { Metadata } from "next"
@@ -52,10 +51,11 @@ export default async function AboutPage() {
 }
 
 async function getData() {
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   const pageData = await getPageData("about")
   if (!pageData) {

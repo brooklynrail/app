@@ -7,7 +7,6 @@ import { notFound } from "next/navigation"
 import { getEventTypes } from "../../../../../lib/utils/events"
 import { getPreviewEvent } from "../../../../../lib/utils/preview"
 import EventPreview from "@/app/components/preview/event"
-import { getNavData } from "../../../../../lib/utils/homepage"
 import { getPreviewPassword } from "../../../../../lib/utils/preview"
 export interface EventPreviewProps {
   navData: Homepage
@@ -84,10 +83,11 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const id = String(params.id)
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   const eventData = await getPreviewEvent(id)
   if (!eventData) {

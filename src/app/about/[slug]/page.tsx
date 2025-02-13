@@ -2,7 +2,6 @@ import { notFound } from "next/navigation"
 import { Homepage, Issues, Pages, PagesQuotes } from "../../../../lib/types"
 import Page from "../../components/page"
 import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
-import { getNavData } from "../../../../lib/utils/homepage"
 import { getAllPages, getPageData } from "../../../../lib/utils/pages"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
@@ -72,12 +71,13 @@ interface PageParams {
 }
 
 async function getData({ params }: { params: PageParams }) {
-  const { slug } = await params
+  const { slug } = params
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   const pageData = await getPageData(slug)
   if (!pageData) {

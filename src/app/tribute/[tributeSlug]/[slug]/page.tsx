@@ -3,7 +3,6 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { PageType, getArticle, getOGImage, getPermalink, getTributeData } from "../../../../../lib/utils"
-import { getNavData } from "../../../../../lib/utils/homepage"
 
 export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -45,10 +44,11 @@ async function getData({ params }: { params: TributeParams }) {
   const tributeSlug = params.tributeSlug
   const slug = params.slug
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   const thisTributeData = await getTributeData({ tributeSlug: tributeSlug, slug: slug })
   if (!thisTributeData) {

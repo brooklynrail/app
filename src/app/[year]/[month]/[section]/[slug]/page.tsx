@@ -8,7 +8,6 @@ import { AddRedirect } from "@/app/actions/redirect"
 import { revalidatePath } from "next/cache"
 import { getRedirect, RedirectTypes } from "../../../../../../lib/utils/redirects"
 import { checkYearMonthSection, extractPeopleFromArticle } from "../../../../../../lib/utils/articles"
-import { getNavData } from "../../../../../../lib/utils/homepage"
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -84,10 +83,11 @@ async function getData({ params }: { params: ArticleParams }) {
     return notFound()
   }
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   // Get the article data based on slug
   const articleData = await getArticle(slug, "published")

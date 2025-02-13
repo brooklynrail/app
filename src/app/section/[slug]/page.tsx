@@ -2,7 +2,6 @@ import { notFound } from "next/navigation"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import { getArticlesBySection, getSectionData } from "../../../../lib/utils/sections"
 import Section from "@/app/components/section"
-import { getNavData } from "../../../../lib/utils/homepage"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 
@@ -25,8 +24,13 @@ interface SectionParams {
 async function getData({ params }: { params: SectionParams }) {
   const slug = params.slug.toString()
 
-  const [navData, sectionData, articlesData] = await Promise.all([
-    getNavData(),
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
+    return notFound()
+  }
+  const navData = await navResponse.json()
+
+  const [sectionData, articlesData] = await Promise.all([
     getSectionData({ slug }),
     getArticlesBySection({ slug, limit: 32, offset: 0 }),
   ])

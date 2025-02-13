@@ -5,7 +5,6 @@ import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Articles, Homepage, Tributes } from "../../../../../lib/types"
 import { PageType, getPermalink } from "../../../../../lib/utils"
-import { getNavData } from "../../../../../lib/utils/homepage"
 import { getPreviewPassword, getPreviewTribute } from "../../../../../lib/utils/preview"
 
 export interface TributePreviewProps {
@@ -83,10 +82,11 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const id = params.id
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   const tributeData = await getPreviewTribute(id)
   if (!tributeData) {

@@ -4,7 +4,6 @@ import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
 import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../../lib/utils"
-import { getNavData } from "../../../../../lib/utils/homepage"
 
 export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -55,10 +54,11 @@ async function getData({ params }: { params: SectionParams }) {
   const issueSlug = params.issueSlug
   const section = params.section.toString()
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   const thisIssueData = await getIssueData({
     slug: issueSlug,

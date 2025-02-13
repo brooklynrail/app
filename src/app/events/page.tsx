@@ -4,7 +4,6 @@ import { getPermalink, PageType } from "../../../lib/utils"
 import { getEventTypes, getPastEvents, getUpcomingEvents } from "../../../lib/utils/events"
 import EventsPage from "@/app/components/events"
 import { Metadata } from "next"
-import { getNavData } from "../../../lib/utils/homepage"
 
 export interface EventsProps {
   navData: Homepage
@@ -53,10 +52,11 @@ export default async function EventsController() {
 }
 
 async function getData() {
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   const allEvents = await getUpcomingEvents()
   if (!allEvents) {

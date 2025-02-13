@@ -7,7 +7,6 @@ import EventPage from "@/app/components/event"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 import { AddRedirect } from "@/app/actions/redirect"
-import { getNavData } from "../../../../../../../lib/utils/homepage"
 import { Event, WithContext } from "schema-dts"
 import Script from "next/script"
 
@@ -138,10 +137,11 @@ async function getData({ params }: { params: EventParams }) {
     return notFound()
   }
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   // Get the event data based on slug
   const eventData = await getEvent(slug)

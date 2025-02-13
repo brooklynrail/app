@@ -6,7 +6,6 @@ import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import ArticlePreview from "@/app/components/preview/article"
 import { notFound } from "next/navigation"
-import { getNavData } from "../../../../../lib/utils/homepage"
 
 export interface ArticlePreviewProps {
   navData: Homepage
@@ -97,10 +96,11 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const id = String(params.id)
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   const articleData = await getPreviewArticle(id)
   if (!articleData) {

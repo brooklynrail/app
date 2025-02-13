@@ -4,7 +4,6 @@ import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Homepage, Issues, Sections, Tributes } from "../../../../lib/types"
 import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../lib/utils"
-import { getNavData } from "../../../../lib/utils/homepage"
 
 export interface IssuePageProps {
   navData: Homepage
@@ -57,10 +56,11 @@ interface IssueParams {
 async function getData({ params }: { params: IssueParams }) {
   const issueSlug = params.issueSlug
 
-  const navData = await getNavData()
-  if (!navData) {
+  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  if (!navResponse.ok) {
     return notFound()
   }
+  const navData = await navResponse.json()
 
   const thisIssueData = await getIssueData({ slug: issueSlug })
   if (!thisIssueData) {
