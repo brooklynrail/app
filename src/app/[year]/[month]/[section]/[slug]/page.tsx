@@ -83,11 +83,9 @@ async function getData({ params }: { params: ArticleParams }) {
     return notFound()
   }
 
-  const navResponse = await fetch(`/api/nav/`)
-  if (!navResponse.ok) {
-    return notFound()
-  }
-  const navData = await navResponse.json()
+  const navData = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav/`, {
+    cache: "no-store", // Avoids caching issues during SSR
+  }).then((res) => res.json())
 
   // Get the article data based on slug
   const articleData = await getArticle(slug, "published")
