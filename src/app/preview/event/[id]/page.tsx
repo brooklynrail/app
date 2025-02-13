@@ -83,7 +83,7 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const id = String(params.id)
 
-  const navResponse = await fetch(`https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}/api/nav/`)
+  const navResponse = await fetch(`/api/nav/`)
   if (!navResponse.ok) {
     return notFound()
   }
