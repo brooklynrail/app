@@ -11,7 +11,6 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify(navData), {
       headers: {
         "Content-Type": "application/json",
-        // Cache for 1 hour, stale while revalidate for 24 hours
         "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
       },
     })
