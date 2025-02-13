@@ -44,7 +44,7 @@ async function getData({ params }: { params: TributeParams }) {
   const tributeSlug = params.tributeSlug
   const slug = params.slug
 
-  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  const navResponse = await fetch(`/api/nav/`)
   if (!navResponse.ok) {
     return notFound()
   }

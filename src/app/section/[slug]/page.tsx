@@ -24,7 +24,7 @@ interface SectionParams {
 async function getData({ params }: { params: SectionParams }) {
   const slug = params.slug.toString()
 
-  const navResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav`)
+  const navResponse = await fetch(`/api/nav/`)
   if (!navResponse.ok) {
     return notFound()
   }
