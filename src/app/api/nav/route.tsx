@@ -8,12 +8,7 @@ export async function GET(request: Request) {
       return Response.json({ error: "Navigation data not found" }, { status: 404 })
     }
 
-    return new Response(JSON.stringify(navData), {
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
-      },
-    })
+    return Response.json(navData)
   } catch (error) {
     console.error("Error fetching navigation data:", error)
     return Response.json({ error: "Failed to fetch navigation data" }, { status: 500 })
