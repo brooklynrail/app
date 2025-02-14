@@ -30,7 +30,16 @@ async function getData() {
   console.log("baseUrl ===========================", baseUrl)
   const navData = await fetch(`${baseUrl}/api/nav/`, {
     cache: "no-store", // Avoids caching issues during SSR
-  }).then((res) => res.json())
+  })
+    .then((res) => res.json())
+    .catch((error) => {
+      console.error("Failed to fetch nav data:", error)
+      return null
+    })
+
+  if (!navData) {
+    return notFound()
+  }
 
   const homepageData = await getHomepageData(currentIssue)
   if (!homepageData) {
