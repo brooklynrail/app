@@ -27,6 +27,7 @@ async function getData() {
   }
 
   const baseURL = getBaseUrl()
+  console.log("baseURL===================", baseURL)
   const navData = await fetch(`${baseURL}/api/nav/`, {
     next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
   })
