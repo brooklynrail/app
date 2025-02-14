@@ -75,20 +75,8 @@ async function getData({ params }: { params: PageParams }) {
 
   const baseURL = getBaseUrl()
   const navData = await fetch(`${baseURL}/api/nav/`, {
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  })
-    .then(async (res) => {
-      if (!res.ok) throw new Error(`API returned ${res.status}`)
-      return res.json()
-    })
-    .catch((error) => {
-      console.error("Failed to fetch nav data:", error)
-      return null
-    })
-
-  if (!navData) {
-    return notFound()
-  }
+    next: { revalidate: 86400 }, // 24 hours in seconds (24 * 60 * 60)
+  }).then((res) => res.json())
 
   const pageData = await getPageData(slug)
   if (!pageData) {
