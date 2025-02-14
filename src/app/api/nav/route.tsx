@@ -14,7 +14,11 @@ export async function GET(request: Request) {
       )
     }
 
-    return new Response(JSON.stringify(navData), {})
+    return new Response(JSON.stringify(navData), {
+      headers: {
+        "x-vercel-protection-bypass": process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "",
+      },
+    })
   } catch (error) {
     console.error("Error fetching navigation data:", error)
     return Response.json(
