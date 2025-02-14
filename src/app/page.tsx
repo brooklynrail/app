@@ -28,14 +28,9 @@ async function getData() {
 
   const baseUrl = getBaseUrl()
   console.log("baseUrl ===========================", baseUrl)
-  // const navData = await fetch(`${baseUrl}/api/nav/`, {
-  //   cache: "no-store", // Avoids caching issues during SSR
-  // }).then((res) => res.json())
-
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+  const navData = await fetch(`${baseUrl}/api/nav/`, {
+    cache: "no-store", // Avoids caching issues during SSR
+  }).then((res) => res.json())
 
   const homepageData = await getHomepageData(currentIssue)
   if (!homepageData) {
