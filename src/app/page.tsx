@@ -28,7 +28,6 @@ async function getData() {
 
   const baseUrl = getBaseUrl()
   console.log("baseUrl ===========================", baseUrl)
-  console.log("NEXT_PUBLIC_VERCEL_URL ===========================", `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`)
   // const navData = await fetch(`${baseUrl}/api/nav/`, {
   //   cache: "no-store", // Avoids caching issues during SSR
   // }).then((res) => res.json())
