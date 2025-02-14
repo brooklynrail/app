@@ -7,7 +7,11 @@ import ArticleCriticsPage from "./page/criticsPage"
 import { useArticleSwitcher } from "@/app/hooks/useArticleSwitcher"
 import ArticleBar from "../articleBar"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import SlideShow from "./slideshow"
+import dynamic from "next/dynamic"
+
+const SlideShow = dynamic(() => import("./slideshow"), {
+  ssr: false, // This ensures the component only loads client-side
+})
 
 const Article = (props: ArticleProps) => {
   const { articleData, currentSection, navData, thisIssueData } = props
