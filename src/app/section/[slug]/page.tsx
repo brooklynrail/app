@@ -24,11 +24,9 @@ interface SectionParams {
 async function getData({ params }: { params: SectionParams }) {
   const slug = params.slug.toString()
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `https://${process.env.VERCEL_BRANCH_URL}`
-  const navData = await fetch(`${baseUrl}/api/nav/`, {
+  const navData = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav/`, {
     cache: "no-store", // Avoids caching issues during SSR
   }).then((res) => res.json())
-  console.log("Nav data", navData)
 
   const [sectionData, articlesData] = await Promise.all([
     getSectionData({ slug }),
