@@ -23,7 +23,7 @@ export const getBaseUrl = () => {
     BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
   })
 
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.VERCEL_ENV === "development") {
     return process.env.NEXT_PUBLIC_BASE_URL
   }
   if (process.env.VERCEL_ENV === "preview") {
