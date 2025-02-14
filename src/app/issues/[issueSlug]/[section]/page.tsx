@@ -8,6 +8,7 @@ import {
   getAllIssues,
   getBaseUrl,
   getIssueData,
+  getNavData,
   getOGImage,
   getPermalink,
   getTributes,
@@ -62,13 +63,7 @@ async function getData({ params }: { params: SectionParams }) {
   const issueSlug = params.issueSlug
   const section = params.section.toString()
 
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   const thisIssueData = await getIssueData({
     slug: issueSlug,

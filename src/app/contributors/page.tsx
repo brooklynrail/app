@@ -1,5 +1,12 @@
 import { Contributors, Issues } from "../../../lib/types"
-import { getAllContributors, getBaseUrl, getCurrentIssueData, getPermalink, PageType } from "../../../lib/utils"
+import {
+  getAllContributors,
+  getBaseUrl,
+  getCurrentIssueData,
+  getNavData,
+  getPermalink,
+  PageType,
+} from "../../../lib/utils"
 import { notFound } from "next/navigation"
 import ContributorsPage from "../components/contributors"
 import { Metadata } from "next"
@@ -48,13 +55,7 @@ async function getData() {
     return notFound()
   }
 
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   // filter out contributors with no articles
   allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)

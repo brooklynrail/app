@@ -1,5 +1,13 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getArticle, getBaseUrl, getIssueData, getOGImage, getPermalink } from "../../../../../../lib/utils"
+import {
+  PageType,
+  getArticle,
+  getBaseUrl,
+  getIssueData,
+  getNavData,
+  getOGImage,
+  getPermalink,
+} from "../../../../../../lib/utils"
 import { Articles, Homepage, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
@@ -83,13 +91,7 @@ async function getData({ params }: { params: ArticleParams }) {
     return notFound()
   }
 
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   // Get the article data based on slug
   const articleData = await getArticle(slug, "published")

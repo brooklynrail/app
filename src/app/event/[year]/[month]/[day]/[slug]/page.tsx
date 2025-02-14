@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { Events, EventsTypes, Homepage } from "../../../../../../../lib/types"
-import { getBaseUrl, getOGImage, getPermalink, PageType, share_card } from "../../../../../../../lib/utils"
+import { getBaseUrl, getNavData, getOGImage, getPermalink, PageType, share_card } from "../../../../../../../lib/utils"
 import { checkYearMonthDay, getEvent, getEventTypes } from "../../../../../../../lib/utils/events"
 import { getRedirect, RedirectTypes } from "../../../../../../../lib/utils/redirects"
 import EventPage from "@/app/components/event"
@@ -137,13 +137,7 @@ async function getData({ params }: { params: EventParams }) {
     return notFound()
   }
 
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   // Get the event data based on slug
   const eventData = await getEvent(slug)

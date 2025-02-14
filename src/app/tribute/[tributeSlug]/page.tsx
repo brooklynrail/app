@@ -3,7 +3,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Articles, Homepage, Tributes } from "../../../../lib/types"
-import { PageType, getBaseUrl, getOGImage, getPermalink, getTributeData } from "../../../../lib/utils"
+import { PageType, getBaseUrl, getNavData, getOGImage, getPermalink, getTributeData } from "../../../../lib/utils"
 
 export interface TributePageProps {
   navData: Homepage
@@ -52,13 +52,7 @@ interface TributeParams {
 async function getData({ params }: { params: TributeParams }) {
   const tributeSlug = params.tributeSlug
 
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   const thisTributeData = await getTributeData({ tributeSlug: tributeSlug, slug: "" })
   if (!thisTributeData) {

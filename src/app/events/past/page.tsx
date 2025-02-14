@@ -1,7 +1,7 @@
 import PastEventsPage from "@/app/components/events/past"
 import { notFound } from "next/navigation"
 import { Events, EventsTypes, Homepage } from "../../../../lib/types"
-import { getBaseUrl, getPermalink, PageType } from "../../../../lib/utils"
+import { getBaseUrl, getNavData, getPermalink, PageType } from "../../../../lib/utils"
 import { getEventTypes, getPastEvents } from "../../../../lib/utils/events"
 import { Metadata } from "next/types"
 
@@ -50,13 +50,7 @@ export default async function EventsController() {
 }
 
 async function getData() {
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   const initialEvents = await getPastEvents({ limit: 32, offset: 0 })
   if (!initialEvents) {

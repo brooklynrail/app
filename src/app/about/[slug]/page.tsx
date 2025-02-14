@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { Homepage, Issues, Pages, PagesQuotes } from "../../../../lib/types"
 import Page from "../../components/page"
-import { getBaseUrl, getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
+import { getBaseUrl, getCurrentIssueData, getNavData, getPermalink, PageType } from "../../../../lib/utils"
 import { getAllPages, getPageData } from "../../../../lib/utils/pages"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
@@ -73,13 +73,7 @@ interface PageParams {
 async function getData({ params }: { params: PageParams }) {
   const { slug } = params
 
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   const pageData = await getPageData(slug)
   if (!pageData) {

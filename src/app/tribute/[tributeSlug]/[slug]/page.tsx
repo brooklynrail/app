@@ -2,7 +2,15 @@ import TributePage from "@/app/components/tributePage"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
-import { PageType, getArticle, getBaseUrl, getOGImage, getPermalink, getTributeData } from "../../../../../lib/utils"
+import {
+  PageType,
+  getArticle,
+  getBaseUrl,
+  getNavData,
+  getOGImage,
+  getPermalink,
+  getTributeData,
+} from "../../../../../lib/utils"
 
 export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -44,13 +52,7 @@ async function getData({ params }: { params: TributeParams }) {
   const tributeSlug = params.tributeSlug
   const slug = params.slug
 
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   const thisTributeData = await getTributeData({ tributeSlug: tributeSlug, slug: slug })
   if (!thisTributeData) {

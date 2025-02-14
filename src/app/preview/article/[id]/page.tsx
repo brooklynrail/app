@@ -1,5 +1,5 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getBaseUrl, getOGImage, getPermalink } from "../../../../../lib/utils"
+import { PageType, getBaseUrl, getNavData, getOGImage, getPermalink } from "../../../../../lib/utils"
 import { getPreviewArticle, getPreviewPassword } from "../../../../../lib/utils/preview"
 import { Articles, Homepage, Issues, Sections } from "../../../../../lib/types"
 import { Metadata } from "next"
@@ -96,13 +96,7 @@ interface PreviewParams {
 async function getData({ params }: { params: PreviewParams }) {
   const id = String(params.id)
 
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   const articleData = await getPreviewArticle(id)
   if (!articleData) {

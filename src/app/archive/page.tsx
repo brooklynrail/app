@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { getAllIssues, getBaseUrl, getPermalink, PageType } from "../../../lib/utils"
+import { getAllIssues, getBaseUrl, getNavData, getPermalink, PageType } from "../../../lib/utils"
 import ArchivePage from "../components/archive"
 import { Metadata } from "next"
 
@@ -40,13 +40,7 @@ export default async function Archive() {
 }
 
 async function getData() {
-  const baseURL = getBaseUrl()
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    headers: {
-      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
-    },
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  const navData = await getNavData()
 
   const allIssuesData = await getAllIssues()
   if (!allIssuesData) {
