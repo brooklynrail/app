@@ -54,7 +54,10 @@ export default async function EventsController() {
 async function getData() {
   const baseURL = getBaseUrl()
   const navData = await fetch(`${baseURL}/api/nav/`, {
-    next: { revalidate: 86400 }, // 24 hours in seconds (24 * 60 * 60)
+    headers: {
+      "x-vercel-protection-bypass": `${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
+    },
+    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
   }).then((res) => res.json())
 
   const allEvents = await getUpcomingEvents()
