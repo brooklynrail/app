@@ -31,9 +31,17 @@ async function getData() {
   const navData = await fetch(`${baseUrl}/api/nav/`, {
     cache: "no-store", // Avoids caching issues during SSR
   })
-    .then((res) => res.json())
+    .then(async (res) => {
+      if (!res.ok) {
+        // Log the actual response for debugging
+        const text = await res.text()
+        console.error("API Response:", text)
+        throw new Error(`API returned ${res.status}: ${text}`)
+      }
+      return res.json()
+    })
     .catch((error) => {
-      console.error("Failed to fetch nav data:", error)
+      console.error("Failed to fetch nav data:", error, "baseUrl:", baseUrl)
       return null
     })
 

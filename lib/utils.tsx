@@ -16,14 +16,19 @@ import {
 } from "./types"
 
 export const getBaseUrl = () => {
-  // Check if we're in development
+  console.log("ENV =================================================", {
+    NODE_ENV: process.env.NODE_ENV,
+    VERCEL_ENV: process.env.VERCEL_ENV,
+    VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,
+    BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+  })
+
   if (process.env.NODE_ENV === "development") {
     return process.env.NEXT_PUBLIC_BASE_URL
   }
   if (process.env.VERCEL_ENV === "preview") {
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
   }
-
   return process.env.NEXT_PUBLIC_BASE_URL
 }
 
