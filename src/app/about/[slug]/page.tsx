@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { Homepage, Issues, Pages, PagesQuotes } from "../../../../lib/types"
 import Page from "../../components/page"
-import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
+import { getBaseUrl, getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
 import { getAllPages, getPageData } from "../../../../lib/utils/pages"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
@@ -73,9 +73,22 @@ interface PageParams {
 async function getData({ params }: { params: PageParams }) {
   const { slug } = params
 
-  const navData = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav/`, {
-    cache: "no-store", // Avoids caching issues during SSR
-  }).then((res) => res.json())
+  const baseURL = getBaseUrl()
+  const navData = await fetch(`${baseURL}/api/nav/`, {
+    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
+  })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`API returned ${res.status}`)
+      return res.json()
+    })
+    .catch((error) => {
+      console.error("Failed to fetch nav data:", error)
+      return null
+    })
+
+  if (!navData) {
+    return notFound()
+  }
 
   const pageData = await getPageData(slug)
   if (!pageData) {

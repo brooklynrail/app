@@ -1,5 +1,5 @@
 import { Contributors, Issues } from "../../../lib/types"
-import { getAllContributors, getCurrentIssueData, getPermalink, PageType } from "../../../lib/utils"
+import { getAllContributors, getBaseUrl, getCurrentIssueData, getPermalink, PageType } from "../../../lib/utils"
 import { notFound } from "next/navigation"
 import ContributorsPage from "../components/contributors"
 import { Metadata } from "next"
@@ -48,9 +48,22 @@ async function getData() {
     return notFound()
   }
 
-  const navData = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav/`, {
-    cache: "no-store", // Avoids caching issues during SSR
-  }).then((res) => res.json())
+  const baseURL = getBaseUrl()
+  const navData = await fetch(`${baseURL}/api/nav/`, {
+    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
+  })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`API returned ${res.status}`)
+      return res.json()
+    })
+    .catch((error) => {
+      console.error("Failed to fetch nav data:", error)
+      return null
+    })
+
+  if (!navData) {
+    return notFound()
+  }
 
   // filter out contributors with no articles
   allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { Events, EventsTypes, Homepage } from "../../../lib/types"
-import { getPermalink, PageType } from "../../../lib/utils"
+import { getBaseUrl, getPermalink, PageType } from "../../../lib/utils"
 import { getEventTypes, getPastEvents, getUpcomingEvents } from "../../../lib/utils/events"
 import EventsPage from "@/app/components/events"
 import { Metadata } from "next"
@@ -52,9 +52,22 @@ export default async function EventsController() {
 }
 
 async function getData() {
-  const navData = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav/`, {
-    cache: "no-store", // Avoids caching issues during SSR
-  }).then((res) => res.json())
+  const baseURL = getBaseUrl()
+  const navData = await fetch(`${baseURL}/api/nav/`, {
+    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
+  })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`API returned ${res.status}`)
+      return res.json()
+    })
+    .catch((error) => {
+      console.error("Failed to fetch nav data:", error)
+      return null
+    })
+
+  if (!navData) {
+    return notFound()
+  }
 
   const allEvents = await getUpcomingEvents()
   if (!allEvents) {

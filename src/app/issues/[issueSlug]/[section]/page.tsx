@@ -3,7 +3,15 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../../lib/utils"
+import {
+  PageType,
+  getAllIssues,
+  getBaseUrl,
+  getIssueData,
+  getOGImage,
+  getPermalink,
+  getTributes,
+} from "../../../../../lib/utils"
 
 export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -54,9 +62,22 @@ async function getData({ params }: { params: SectionParams }) {
   const issueSlug = params.issueSlug
   const section = params.section.toString()
 
-  const navData = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav/`, {
-    cache: "no-store", // Avoids caching issues during SSR
-  }).then((res) => res.json())
+  const baseURL = getBaseUrl()
+  const navData = await fetch(`${baseURL}/api/nav/`, {
+    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
+  })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`API returned ${res.status}`)
+      return res.json()
+    })
+    .catch((error) => {
+      console.error("Failed to fetch nav data:", error)
+      return null
+    })
+
+  if (!navData) {
+    return notFound()
+  }
 
   const thisIssueData = await getIssueData({
     slug: issueSlug,

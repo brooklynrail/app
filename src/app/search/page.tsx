@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { getAllIssues, getPermalink, PageType } from "../../../lib/utils"
+import { getAllIssues, getBaseUrl, getPermalink, PageType } from "../../../lib/utils"
 import SearchPage from "../components/search"
 
 export const dynamic = "force-static"
@@ -15,9 +15,22 @@ export default async function Homepage() {
 }
 
 async function getData() {
-  const navData = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nav/`, {
-    cache: "no-store", // Avoids caching issues during SSR
-  }).then((res) => res.json())
+  const baseURL = getBaseUrl()
+  const navData = await fetch(`${baseURL}/api/nav/`, {
+    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
+  })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`API returned ${res.status}`)
+      return res.json()
+    })
+    .catch((error) => {
+      console.error("Failed to fetch nav data:", error)
+      return null
+    })
+
+  if (!navData) {
+    return notFound()
+  }
 
   const allIssuesData = await getAllIssues()
   if (!allIssuesData) {
