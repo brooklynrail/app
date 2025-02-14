@@ -1,4 +1,10 @@
 {
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [{ "key": "x-vercel-protection-bypass", "value": "true" }]
+    }
+  ],
   "redirects": [
     {
       "source": "/:year/:month(\\d{1})/",
