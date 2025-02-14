@@ -1,16 +1,43 @@
 import { getNavData } from "../../../../lib/utils/homepage"
+import { NextResponse } from "next/server"
 
 export async function GET(request: Request) {
   try {
     const navData = await getNavData()
 
     if (!navData) {
-      return Response.json({ error: "Navigation data not found" }, { status: 404 })
+      return NextResponse.json(
+        { error: "Navigation data not found" },
+        {
+          status: 404,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      )
     }
 
-    return Response.json(navData)
+    return NextResponse.json(
+      { data: navData },
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    )
   } catch (error) {
     console.error("Error fetching navigation data:", error)
-    return Response.json({ error: "Failed to fetch navigation data" }, { status: 500 })
+    const errorMessage = error instanceof Error ? error.message : "Failed to fetch navigation data"
+
+    return NextResponse.json(
+      { error: errorMessage },
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    )
   }
 }
