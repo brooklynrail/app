@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "../../lib/types"
-import { getPermalink, PageType } from "../../lib/utils"
+import { getBaseUrl, getPermalink, PageType } from "../../lib/utils"
 import { getCurrentIssueData, getHomepageData, getNavData } from "../../lib/utils/homepage"
 import HomePage from "./components/homepage"
 
@@ -25,6 +25,13 @@ async function getData() {
   if (!currentIssue) {
     return notFound()
   }
+
+  const baseUrl = getBaseUrl()
+  console.log("baseUrl ===========================", `baseUrl`)
+  console.log("NEXT_PUBLIC_VERCEL_URL ===========================", `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`)
+  // const navData = await fetch(`${baseUrl}/api/nav/`, {
+  //   cache: "no-store", // Avoids caching issues during SSR
+  // }).then((res) => res.json())
 
   const navData = await getNavData()
   if (!navData) {
