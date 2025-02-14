@@ -42,7 +42,7 @@ export default async function Archive() {
 async function getData() {
   const baseURL = getBaseUrl()
   const navData = await fetch(`${baseURL}/api/nav/`, {
-    next: { revalidate: 86400 }, // 24 hours in seconds (24 * 60 * 60)
+    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
   }).then((res) => res.json())
 
   const allIssuesData = await getAllIssues()

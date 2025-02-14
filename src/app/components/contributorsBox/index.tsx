@@ -25,12 +25,17 @@ const ContributorsBox = (props: ContributorsProps) => {
 
     const bio = contributor.contributors_id.bio
 
-    // Decode HTML entities in the bio text
+    // Replace the document-based HTML decoding with a simpler approach
     const decodeHTML = (html: string) => {
-      const txt = document.createElement("textarea")
-      txt.innerHTML = html
-      return txt.value
+      return html
+        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'")
+        .replace(/&#39;/g, "'")
     }
+
     // Check if the author name is in the bio text
     const hasAuthorName = bio && decodeHTML(bio).includes(authorName)
 
