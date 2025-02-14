@@ -27,7 +27,7 @@ export const getBaseUrl = () => {
     return process.env.NEXT_PUBLIC_BASE_URL
   }
   if (process.env.VERCEL_ENV === "preview") {
-    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    return process.env.NEXT_PUBLIC_BASE_URL
   }
   return process.env.NEXT_PUBLIC_BASE_URL
 }
