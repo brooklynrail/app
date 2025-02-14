@@ -27,20 +27,9 @@ async function getData() {
   }
 
   const baseUrl = getBaseUrl()
-  console.log("baseUrl ===========================", baseUrl)
 
-  const isPreview = process.env.VERCEL_ENV === "preview"
-  const authHeaders = isPreview
-    ? {
-        Authorization: `Basic ${Buffer.from(`${process.env.VERCEL_AUTH_USER}:${process.env.VERCEL_AUTH_PASS}`).toString(
-          "base64",
-        )}`,
-      }
-    : {}
-
-  const navData = await fetch(`${baseUrl}/api/nav/`, {
+  const navData = await fetch(`https://brooklynrail.org/api/nav/`, {
     cache: "no-store",
-    headers: authHeaders as HeadersInit,
   })
     .then(async (res) => {
       if (!res.ok) {
