@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "../../lib/types"
 import { getBaseUrl, getPermalink, PageType } from "../../lib/utils"
-import { getCurrentIssueData, getHomepageData, getNavData } from "../../lib/utils/homepage"
+import { getCurrentIssueData, getHomepageData } from "../../lib/utils/homepage"
 import HomePage from "./components/homepage"
 
 export interface HomePageProps {
