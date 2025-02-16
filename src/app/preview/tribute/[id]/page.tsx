@@ -4,8 +4,7 @@ import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Articles, Homepage, Tributes } from "../../../../../lib/types"
-import { PageType, getPermalink } from "../../../../../lib/utils"
-import { getNavData } from "../../../../../lib/utils/homepage"
+import { PageType, getBaseUrl, getNavData, getPermalink } from "../../../../../lib/utils"
 import { getPreviewPassword, getPreviewTribute } from "../../../../../lib/utils/preview"
 
 export interface TributePreviewProps {
@@ -84,9 +83,6 @@ async function getData({ params }: { params: PreviewParams }) {
   const id = params.id
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   const tributeData = await getPreviewTribute(id)
   if (!tributeData) {

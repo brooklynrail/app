@@ -1,5 +1,5 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getPermalink } from "../../../../../lib/utils"
+import { PageType, getBaseUrl, getNavData, getPermalink } from "../../../../../lib/utils"
 import { Events, EventsTypes, Homepage } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -7,7 +7,6 @@ import { notFound } from "next/navigation"
 import { getEventTypes } from "../../../../../lib/utils/events"
 import { getPreviewEvent } from "../../../../../lib/utils/preview"
 import EventPreview from "@/app/components/preview/event"
-import { getNavData } from "../../../../../lib/utils/homepage"
 import { getPreviewPassword } from "../../../../../lib/utils/preview"
 export interface EventPreviewProps {
   navData: Homepage
@@ -85,9 +84,6 @@ async function getData({ params }: { params: PreviewParams }) {
   const id = String(params.id)
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   const eventData = await getPreviewEvent(id)
   if (!eventData) {

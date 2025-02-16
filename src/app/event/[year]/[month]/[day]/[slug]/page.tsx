@@ -1,13 +1,12 @@
 import { notFound } from "next/navigation"
 import { Events, EventsTypes, Homepage } from "../../../../../../../lib/types"
-import { getOGImage, getPermalink, PageType, share_card } from "../../../../../../../lib/utils"
+import { getBaseUrl, getNavData, getOGImage, getPermalink, PageType, share_card } from "../../../../../../../lib/utils"
 import { checkYearMonthDay, getEvent, getEventTypes } from "../../../../../../../lib/utils/events"
 import { getRedirect, RedirectTypes } from "../../../../../../../lib/utils/redirects"
 import EventPage from "@/app/components/event"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 import { AddRedirect } from "@/app/actions/redirect"
-import { getNavData } from "../../../../../../../lib/utils/homepage"
 import { Event, WithContext } from "schema-dts"
 import Script from "next/script"
 
@@ -139,9 +138,6 @@ async function getData({ params }: { params: EventParams }) {
   }
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   // Get the event data based on slug
   const eventData = await getEvent(slug)

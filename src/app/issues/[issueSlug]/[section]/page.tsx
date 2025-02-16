@@ -3,8 +3,16 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Sections } from "../../../../../lib/types"
-import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "../../../../../lib/utils"
-import { getNavData } from "../../../../../lib/utils/homepage"
+import {
+  PageType,
+  getAllIssues,
+  getBaseUrl,
+  getIssueData,
+  getNavData,
+  getOGImage,
+  getPermalink,
+  getTributes,
+} from "../../../../../lib/utils"
 
 export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
   const data = await getData({ params })
@@ -56,9 +64,6 @@ async function getData({ params }: { params: SectionParams }) {
   const section = params.section.toString()
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   const thisIssueData = await getIssueData({
     slug: issueSlug,

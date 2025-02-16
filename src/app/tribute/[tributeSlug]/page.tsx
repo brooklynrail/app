@@ -3,8 +3,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Articles, Homepage, Tributes } from "../../../../lib/types"
-import { PageType, getOGImage, getPermalink, getTributeData } from "../../../../lib/utils"
-import { getNavData } from "../../../../lib/utils/homepage"
+import { PageType, getBaseUrl, getNavData, getOGImage, getPermalink, getTributeData } from "../../../../lib/utils"
 
 export interface TributePageProps {
   navData: Homepage
@@ -54,9 +53,6 @@ async function getData({ params }: { params: TributeParams }) {
   const tributeSlug = params.tributeSlug
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   const thisTributeData = await getTributeData({ tributeSlug: tributeSlug, slug: "" })
   if (!thisTributeData) {

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "rm -rf .next && next dev --experimental-https",
+    "vercel": "rm -rf .next && vercel dev",
     "build": "rm -rf .next && next build",
     "start": "next start",
     "lint": "next lint"

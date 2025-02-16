@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
-import { getNavData } from "../../lib/utils/homepage"
 import NotFound from "../app/components/notFound"
+import { getBaseUrl, getNavData } from "../../lib/utils"
 
 export default async function NotFoundPage() {
   const data = await getData()
@@ -10,9 +10,6 @@ export default async function NotFoundPage() {
 
 async function getData() {
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   return {
     navData,

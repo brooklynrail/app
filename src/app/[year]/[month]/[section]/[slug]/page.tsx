@@ -1,5 +1,13 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getArticle, getIssueData, getOGImage, getPermalink } from "../../../../../../lib/utils"
+import {
+  PageType,
+  getArticle,
+  getBaseUrl,
+  getIssueData,
+  getNavData,
+  getOGImage,
+  getPermalink,
+} from "../../../../../../lib/utils"
 import { Articles, Homepage, Issues, Sections } from "../../../../../../lib/types"
 import { Metadata } from "next"
 import Article from "@/app/components/article"
@@ -8,7 +16,6 @@ import { AddRedirect } from "@/app/actions/redirect"
 import { revalidatePath } from "next/cache"
 import { getRedirect, RedirectTypes } from "../../../../../../lib/utils/redirects"
 import { checkYearMonthSection, extractPeopleFromArticle } from "../../../../../../lib/utils/articles"
-import { getNavData } from "../../../../../../lib/utils/homepage"
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -85,9 +92,6 @@ async function getData({ params }: { params: ArticleParams }) {
   }
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   // Get the article data based on slug
   const articleData = await getArticle(slug, "published")

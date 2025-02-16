@@ -1,9 +1,8 @@
 import PastEventsPage from "@/app/components/events/past"
 import { notFound } from "next/navigation"
 import { Events, EventsTypes, Homepage } from "../../../../lib/types"
-import { getPermalink, PageType } from "../../../../lib/utils"
+import { getBaseUrl, getNavData, getPermalink, PageType } from "../../../../lib/utils"
 import { getEventTypes, getPastEvents } from "../../../../lib/utils/events"
-import { getNavData } from "../../../../lib/utils/homepage"
 import { Metadata } from "next/types"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -52,9 +51,6 @@ export default async function EventsController() {
 
 async function getData() {
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   const initialEvents = await getPastEvents({ limit: 32, offset: 0 })
   if (!initialEvents) {

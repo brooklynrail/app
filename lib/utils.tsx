@@ -15,12 +15,42 @@ import {
   Tributes,
 } from "./types"
 
+// ================================================
 export const getBaseUrl = () => {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL
     ? process.env.NEXT_PUBLIC_BASE_URL
     : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
   return baseURL
 }
+
+export async function getNavData() {
+  const baseURL = getBaseUrl()
+
+  console.log("Base URL:", baseURL)
+  console.log("Bypass Secret:", process.env.VERCEL_AUTOMATION_BYPASS_SECRET ? "✅ Defined" : "❌ Not Defined")
+
+  const response = await fetch(`${baseURL}/api/nav/`, {
+    headers: {
+      "x-vercel-protection-bypass": process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "",
+    },
+    next: { revalidate: 86400, tags: ["homepage"] },
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    console.error(`❌ API Error: ${response.status} - ${errorText}`)
+    throw new Error(`Failed to fetch navigation: ${response.status}`)
+  }
+
+  try {
+    const navData = await response.json()
+    return navData
+  } catch (error) {
+    console.error("❌ Failed to parse JSON response:", error)
+    throw error
+  }
+}
+// ================================================
 
 // Used in
 // - Issue Select dropdown

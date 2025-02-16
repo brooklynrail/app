@@ -1,8 +1,14 @@
 import { Contributors, Issues } from "../../../lib/types"
-import { getAllContributors, getCurrentIssueData, getPermalink, PageType } from "../../../lib/utils"
+import {
+  getAllContributors,
+  getBaseUrl,
+  getCurrentIssueData,
+  getNavData,
+  getPermalink,
+  PageType,
+} from "../../../lib/utils"
 import { notFound } from "next/navigation"
 import ContributorsPage from "../components/contributors"
-import { getNavData } from "../../../lib/utils/homepage"
 import { Metadata } from "next"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -48,10 +54,9 @@ async function getData() {
   if (!allContributors || allContributors.length === 0) {
     return notFound()
   }
+
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+
   // filter out contributors with no articles
   allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)
   const thisIssueData = await getCurrentIssueData()

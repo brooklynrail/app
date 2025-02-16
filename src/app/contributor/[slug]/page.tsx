@@ -2,8 +2,7 @@ import ContributorPage from "@/app/components/contributor"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
-import { getContributor, getPermalink, PageType } from "../../../../lib/utils"
-import { getNavData } from "../../../../lib/utils/homepage"
+import { getBaseUrl, getContributor, getNavData, getPermalink, PageType } from "../../../../lib/utils"
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const data = await getData({ params })
@@ -63,9 +62,6 @@ async function getData({ params }: { params: ContributorsParams }) {
   const slug = params.slug
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   // Get all contributors
   // NOTE: There are multiple contributors with the same slug

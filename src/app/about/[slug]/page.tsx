@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation"
 import { Homepage, Issues, Pages, PagesQuotes } from "../../../../lib/types"
 import Page from "../../components/page"
-import { getCurrentIssueData, getPermalink, PageType } from "../../../../lib/utils"
-import { getNavData } from "../../../../lib/utils/homepage"
+import { getBaseUrl, getCurrentIssueData, getNavData, getPermalink, PageType } from "../../../../lib/utils"
 import { getAllPages, getPageData } from "../../../../lib/utils/pages"
 import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
@@ -72,12 +71,9 @@ interface PageParams {
 }
 
 async function getData({ params }: { params: PageParams }) {
-  const { slug } = await params
+  const { slug } = params
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   const pageData = await getPageData(slug)
   if (!pageData) {

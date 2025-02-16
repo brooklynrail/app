@@ -1,12 +1,11 @@
 import { stripHtml } from "string-strip-html"
-import { PageType, getOGImage, getPermalink } from "../../../../../lib/utils"
+import { PageType, getBaseUrl, getNavData, getOGImage, getPermalink } from "../../../../../lib/utils"
 import { getPreviewArticle, getPreviewPassword } from "../../../../../lib/utils/preview"
 import { Articles, Homepage, Issues, Sections } from "../../../../../lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import ArticlePreview from "@/app/components/preview/article"
 import { notFound } from "next/navigation"
-import { getNavData } from "../../../../../lib/utils/homepage"
 
 export interface ArticlePreviewProps {
   navData: Homepage
@@ -98,9 +97,6 @@ async function getData({ params }: { params: PreviewParams }) {
   const id = String(params.id)
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   const articleData = await getPreviewArticle(id)
   if (!articleData) {

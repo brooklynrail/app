@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "../../lib/types"
-import { getPermalink, PageType } from "../../lib/utils"
-import { getCurrentIssueData, getHomepageData, getNavData } from "../../lib/utils/homepage"
+import { getBaseUrl, getNavData, getPermalink, PageType } from "../../lib/utils"
+import { getCurrentIssueData, getHomepageData } from "../../lib/utils/homepage"
 import HomePage from "./components/homepage"
 
 export interface HomePageProps {
@@ -27,9 +27,6 @@ async function getData() {
   }
 
   const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
 
   const homepageData = await getHomepageData(currentIssue)
   if (!homepageData) {
