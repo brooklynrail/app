@@ -1,8 +1,8 @@
-import { readItem, readItems } from "@directus/sdk"
-import directus from "../directus"
+import { readItem } from "@directus/sdk"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { cache } from "react"
-import { Articles, Contributors, Events, Issues, People, Sections } from "../types"
-import { revalidatePath } from "next/cache"
+import directus from "../directus"
+import { Articles, Contributors, Events, Issues, Pages, Sections } from "../types"
 import { getPermalink, PageType } from "../utils"
 
 export enum RevalidateType {
@@ -13,25 +13,10 @@ export enum RevalidateType {
   Events = "events",
   Tributes = "tributes",
   Contributors = "contributors",
+  Ads = "ads",
+  Pages = "pages",
+  GlobalSettings = "global_settings",
 }
-
-export const revalidateArticle = cache(async (data: Articles) => {
-  const permalink = getPermalink({
-    year: data.issue.year,
-    month: data.issue.month,
-    section: data.section.slug,
-    slug: data.slug,
-    type: PageType.Article,
-  })
-  const url = new URL(permalink)
-  revalidatePath(url.pathname)
-  revalidatePath(`/section/${data.section.slug}`)
-  revalidatePath(`/issues/${data.issue.year}-${data.issue.month}/`)
-  revalidatePath(`/${data.issue.year}/${data.issue.month}/${data.section.slug}`)
-  revalidatePath(`/`)
-  revalidatePath(`/sitemap.xml`)
-  return url.pathname
-})
 
 export const revalidateIssue = cache(async (data: Issues) => {
   const permalink = getPermalink({
@@ -42,7 +27,7 @@ export const revalidateIssue = cache(async (data: Issues) => {
   revalidatePath(url.pathname)
   revalidatePath(`/issues/sitemap.xml`)
   revalidatePath(`/archive`)
-  revalidatePath(`/`)
+  revalidateTag("issues")
   return url.pathname
 })
 
@@ -55,6 +40,7 @@ export const revalidateContributor = cache(async (data: Contributors) => {
   revalidatePath(url.pathname)
   revalidatePath("/contributors")
   revalidatePath("/contributors/sitemap.xml")
+  revalidateTag("contributors")
   return url.pathname
 })
 
@@ -76,7 +62,29 @@ export const revalidateEvent = cache(async (data: Events) => {
   revalidatePath(url.pathname)
   revalidatePath("/events")
   revalidatePath("/events/past")
-  revalidatePath(`/`)
+  revalidatePath("/events/sitemap.xml")
+  revalidateTag("events")
+  return url.pathname
+})
+
+export const revalidatePage = cache(async (data: Pages) => {
+  let permalink
+  if (data.slug == `about`) {
+    // Example path: /about
+    permalink = getPermalink({
+      type: PageType.Page,
+      slug: data.slug,
+    })
+    revalidatePath("/about")
+  } else {
+    permalink = getPermalink({
+      type: PageType.ChildPage,
+      slug: data.slug,
+    })
+    revalidatePath(`/about/${data.slug}`)
+  }
+  revalidateTag("pages")
+  const url = new URL(permalink)
   return url.pathname
 })
 
@@ -114,6 +122,15 @@ export const getRevalidateData = cache(async (id: string, type: RevalidateType) 
       )
 
       return event as Events
+
+    case RevalidateType.Pages:
+      const page = await directus.request(
+        readItem(type, id, {
+          fields: ["slug"],
+        }),
+      )
+
+      return page as Pages
     default:
       return null
   }

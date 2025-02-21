@@ -1,30 +1,30 @@
 import Link from "next/link"
-import { HomepageBanners, Issues } from "../../../../lib/types"
+import { useEffect, useRef, useState } from "react"
+import { Homepage, Issues } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import FeaturedBanner from "../banner"
 import { PaperType } from "../paper"
+import { useTheme } from "../theme"
 import HeaderDefault from "./default"
 import HomeBanner from "./homeBanner"
 import Subhead from "./subhead"
 import VideoBG from "./videobg"
-import { useRef, useState, useEffect } from "react"
-import { useTheme } from "../theme"
+import VideoControls from "./videoControls"
 
 export interface HeaderProps {
   special_issue?: boolean | null
   issue_number?: number
   title?: string
   type: PaperType
-  banners?: HomepageBanners[]
   currentIssue?: Issues
+  homepageData?: Homepage
 }
 
 const Header = (props: HeaderProps) => {
-  const { title, type, banners, currentIssue } = props
+  const { title, type, currentIssue, homepageData } = props
 
   switch (type) {
     case PaperType.Homepage:
-      return <HeaderHomepage title={title} type={type} banners={banners} currentIssue={currentIssue} />
+      return <HeaderHomepage title={title} type={type} currentIssue={currentIssue} homepageData={homepageData} />
     default:
       return <HeaderDefault title={title} type={type} />
   }
@@ -43,11 +43,13 @@ const removeLocalStorageItem = (key: string) => {
 }
 
 const HeaderHomepage = (props: HeaderProps) => {
-  const { title, type, banners, currentIssue } = props
+  const { title, type, homepageData } = props
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPaused, setIsPaused] = useState(false)
   const { theme } = useTheme()
   const subheadFill = theme === "dark" ? "fill-white" : "fill-white"
+  const videoCovers = homepageData && homepageData.video_covers
+  const videoCoversStills = homepageData && homepageData.video_covers_stills
 
   useEffect(() => {
     // Check if the localStorage item is already set for video pause
@@ -75,19 +77,6 @@ const HeaderHomepage = (props: HeaderProps) => {
     type: PageType.Home,
   })
 
-  const play = (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
-    </svg>
-  )
-
-  const pause = (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M6 5H9V19H6V5Z" fill="currentColor" />
-      <path d="M15 5H18V19H15V5Z" fill="currentColor" />
-    </svg>
-  )
-
   return (
     <header className={`tablet:pt-0 relative rail-header-${type}`}>
       <div className="hidden">
@@ -96,26 +85,32 @@ const HeaderHomepage = (props: HeaderProps) => {
         {title && <h3>{title}</h3>}
       </div>
 
-      <div className="relative h-[calc(100vh-26.5rem)] tablet-lg:h-[calc(100vh-20.5rem)]">
-        <div className="absolute inset-0 bg-black bg-opacity-15 z-[1]" />
-        <VideoBG videoRef={videoRef} />
+      <div
+        className={`relative ${videoCovers && videoCoversStills ? "h-[calc(100vh-26.5rem)] tablet-lg:h-[calc(100vh-20.5rem)]" : ""}`}
+      >
+        <div
+          className={`absolute inset-0 bg-zinc-900 z-[1] ${videoCovers && videoCoversStills ? "bg-opacity-10" : ""}`}
+        />
+        {videoCovers && videoCoversStills && (
+          <VideoBG videoRef={videoRef} videoCovers={videoCovers} videoCoversStills={videoCoversStills} />
+        )}
         <div className="sticky top-0 z-[2]">
-          <div className="p-3 pb-9 tablet:px-6">
+          <div className={`${videoCovers && videoCoversStills ? "p-3 pb-9 tablet:px-6" : "p-3"}`}>
             <Link href={permalink} className="w-full space-y-3">
               <HomeBanner />
               <Subhead fill={subheadFill} />
             </Link>
           </div>
         </div>
-        <button
-          onClick={handleVideoToggle}
-          className="absolute font-sm bottom-3 right-3 bg-zinc-700 w-6 h-6 text-center rounded-full text-white z-10 flex justify-center items-center"
-        >
-          {isPaused ? play : pause}
-        </button>
+        {videoCovers && videoCoversStills && (
+          <VideoControls
+            videoRef={videoRef}
+            videoCovers={videoCovers}
+            isPaused={isPaused}
+            handleVideoToggle={handleVideoToggle}
+          />
+        )}
       </div>
-
-      {banners && currentIssue && <FeaturedBanner currentIssue={currentIssue} />}
     </header>
   )
 }

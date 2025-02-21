@@ -7,7 +7,11 @@ import ArticleCriticsPage from "./page/criticsPage"
 import { useArticleSwitcher } from "@/app/hooks/useArticleSwitcher"
 import ArticleBar from "../articleBar"
 import { getPermalink, PageType } from "../../../../lib/utils"
-import SlideShow from "./slideshow"
+import dynamic from "next/dynamic"
+
+const SlideShow = dynamic(() => import("./slideshow"), {
+  ssr: false, // This ensures the component only loads client-side
+})
 
 const Article = (props: ArticleProps) => {
   const { articleData, currentSection, navData, thisIssueData } = props
@@ -18,11 +22,7 @@ const Article = (props: ArticleProps) => {
   })
 
   // Use the article switcher hook, which now returns next and previous articles
-  const { currentArticle, swipeHandlers, animationState, goToNextArticle, goToPrevArticle } = useArticleSwitcher(
-    articleData,
-    thisIssueData.articles,
-    issuePermalink,
-  )
+  const { currentArticle } = useArticleSwitcher(articleData, thisIssueData.articles, issuePermalink)
 
   // Scroll to the top when the current article changes
   useEffect(() => {
@@ -32,8 +32,7 @@ const Article = (props: ArticleProps) => {
   return (
     <Paper pageClass={`theme-${currentArticle.section.slug}`} navData={navData}>
       <SlideShow article={articleData} />
-      {/* Container for swipeable articles */}
-      <div className="flex w-screen h-full overflow-hidden" {...swipeHandlers}>
+      <div className="flex w-screen h-full overflow-hidden">
         {/* Current article */}
         <article className={`article-container w-screen h-full overflow-hidden opacity-100 px-3 tablet-lg:px-6`}>
           {currentArticle.section.slug === "criticspage" ? (

@@ -1,9 +1,25 @@
+import { DirectusFiles, VideoCovers, VideoCoversStills } from "../../../../lib/types"
+
 interface VideoBGProps {
   videoRef: React.RefObject<HTMLVideoElement>
+  videoCovers: VideoCovers[]
+  videoCoversStills: VideoCoversStills[]
 }
 
 const VideoBG = (props: VideoBGProps) => {
-  const { videoRef } = props
+  const { videoRef, videoCovers, videoCoversStills } = props
+  const videoCover = videoCovers[0].directus_files_id
+    ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${videoCovers[0].directus_files_id?.filename_disk}`
+    : ""
+
+  const videoCoverStill = videoCoversStills[0].directus_files_id
+    ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${videoCoversStills[0].directus_files_id?.filename_disk}`
+    : ""
+
+  if (!videoCover || !videoCoverStill) {
+    return null
+  }
+
   return (
     <video
       ref={videoRef}
@@ -12,9 +28,12 @@ const VideoBG = (props: VideoBGProps) => {
       loop
       playsInline
       className="absolute top-0 left-0 w-full h-full object-cover transform"
-      poster="/video/loren-munk.png"
+      style={{
+        objectPosition: "center 25%",
+      }}
+      poster={videoCoverStill}
     >
-      <source src="https://studio.brooklynrail.org/assets/e633e239-aa05-40d5-9eac-b5aaa339fe6a.mp4" type="video/mp4" />
+      <source src={videoCover} type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   )

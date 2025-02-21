@@ -93,17 +93,3 @@ async function getData({ params }: { params: IssueParams }) {
     permalink,
   }
 }
-
-// export async function generateStaticParams() {
-//   const allIssues = await getIssues()
-//   if (!allIssues) {
-//     return notFound()
-//   }
-//   return allIssues.map((issue) => {
-//     const month = issue.month < 10 ? String(`0${issue.month}`) : String(issue.month)
-//     return {
-//       year: String(issue.year),
-//       month: month,
-//     }
-//   })
-// }

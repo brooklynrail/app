@@ -20,7 +20,8 @@ const ContributorsBox = (props: ContributorsProps) => {
       <div className="contributor" key={key}>
         <h4>
           <Link href={`/contributor/${contributor.contributors_id.slug}`}>
-            {contributor.contributors_id.first_name} {contributor.contributors_id.last_name}
+            {contributor.contributors_id.first_name}
+            {contributor.contributors_id.last_name && ` ${contributor.contributors_id.last_name}`}
           </Link>
         </h4>
         {contributor.contributors_id.bio && <div className="bio">{parse(contributor.contributors_id.bio)}</div>}

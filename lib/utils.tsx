@@ -3,7 +3,14 @@ import { readItems, readSingleton } from "@directus/sdk"
 import { cache } from "react"
 import { stripHtml } from "string-strip-html"
 import directus from "./directus"
-import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
+import { Articles, Contributors, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
+
+export const getBaseUrl = () => {
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL
+    ? process.env.NEXT_PUBLIC_BASE_URL
+    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  return baseURL
+}
 
 // Used in
 // - Issue Select dropdown
@@ -63,7 +70,7 @@ export const getAllIssues = cache(async () => {
         `&limit=100` +
         `&offset=${page * 100 - 100}`
 
-      const res = await fetch(allIssuesDataAPI)
+      const res = await fetch(allIssuesDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         console.error(`Failed to fetch AllIssues data: ${res.statusText}`)
@@ -100,7 +107,7 @@ export const getIssues = cache(async () => {
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
-      const res = await fetch(issuesDataAPI)
+      const res = await fetch(issuesDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch getIssues data")
@@ -148,16 +155,16 @@ export const getCurrentIssueData = cache(async () => {
   }
 })
 
-export const getGlobalSettings = cache(async () => {
+export const getGlobalSettings = async () => {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
-  const res = await fetch(globalSettingsAPI)
+  const res = await fetch(globalSettingsAPI, { next: { revalidate: 3600, tags: ["homepage"] } })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch getGlobalSettings data")
   }
   const { data } = await res.json()
   return data as GlobalSettings
-})
+}
 
 // Explore making this get IssueData by ID
 // NOTE: we need to use `readItems` instead of `readItem` because we are querying the `issues` collection
@@ -259,7 +266,7 @@ export const getIssueData = cache(async (props: IssueDataProps) => {
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
   try {
-    const res = await fetch(issueDataAPI)
+    const res = await fetch(issueDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
 
     if (!res.ok) {
       console.error(`Failed to fetch issue data: ${res.statusText}`)
@@ -364,7 +371,7 @@ export const getArticle = cache(async (slug: string, status?: string) => {
     `&filter[status][_eq]=${status}`
 
   try {
-    const res = await fetch(articleAPI)
+    const res = await fetch(articleAPI, { next: { revalidate: 3600, tags: ["articles"] } })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       console.error(`Failed to fetch Article data: ${res.statusText}`)
@@ -443,6 +450,7 @@ export enum PageType {
   TributeArticle = "tribute_article",
   Home = "home",
   Contributor = "contributor",
+  Contributors = "contributors",
   Person = "person",
   People = "people",
   Events = "events",
@@ -525,6 +533,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/tribute/${tributeSlug}/${slug}/`
     case PageType.Contributor:
       return `${baseURL}/contributor/${slug}/`
+    case PageType.Contributors:
+      return `${baseURL}/contributors/`
     case PageType.Person:
       return `${baseURL}/people/${personSlug}/`
     case PageType.People:

@@ -1,10 +1,5 @@
 const nextConfig = {
   reactStrictMode: true,
-}
-
-module.exports = nextConfig
-
-module.exports = {
   staticPageGenerationTimeout: 1000,
   productionBrowserSourceMaps: true,
   trailingSlash: true,
@@ -25,6 +20,32 @@ module.exports = {
     fetches: {
       fullUrl: true,
     },
+  },
+
+  // Caching
+  async headers() {
+    return [
+      {
+        // API routes should use Next.js's built-in caching
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store",
+          },
+        ],
+      },
+      {
+        // All other routes (pages)
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, must-revalidate",
+          },
+        ],
+      },
+    ]
   },
   // Redirects
   async redirects() {
@@ -422,26 +443,6 @@ module.exports = {
       },
     ]
   },
-  async headers() {
-    return [
-      {
-        source: "/assets/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000",
-          },
-        ],
-      },
-    ]
-  },
 }
+
+module.exports = nextConfig

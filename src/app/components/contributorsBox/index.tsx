@@ -16,14 +16,28 @@ const ContributorsBox = (props: ContributorsProps) => {
     }
 
     const key = `${i}-${contributor.contributors_id.id}`
-    const authorName = `${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name}`
+    const authorName = `${contributor.contributors_id.first_name} ${contributor.contributors_id.last_name ? contributor.contributors_id.last_name : ""}`
     const authorLink = (
       <Link href={`/contributor/${contributor.contributors_id.slug}`}>
         <strong>{authorName}</strong>
       </Link>
     )
+
     const bio = contributor.contributors_id.bio
-    const hasAuthorName = bio && bio.includes(authorName)
+
+    // Replace the document-based HTML decoding with a simpler approach
+    const decodeHTML = (html: string) => {
+      return html
+        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'")
+        .replace(/&#39;/g, "'")
+    }
+
+    // Check if the author name is in the bio text
+    const hasAuthorName = bio && decodeHTML(bio).includes(authorName)
 
     return (
       <div rel="author" className={`text-lg max-w-[72ex]`} key={key}>
@@ -39,7 +53,7 @@ const ContributorsBox = (props: ContributorsProps) => {
   })
 
   return (
-    <section className="content content-contributors">
+    <section className="content content-contributors clear-both">
       <div className="border-t-[1px] rail-border py-6 font-sans space-y-6">{authors}</div>
     </section>
   )

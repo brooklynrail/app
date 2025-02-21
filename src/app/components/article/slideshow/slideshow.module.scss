@@ -23,7 +23,7 @@
   @apply pb-24; // offset for controls
 }
 .embla__caption {
-  @apply m-0 text-xs tablet:text-sm text-white max-w-screen-tablet-lg diagonal-fractions;
+  @apply m-0 text-xs tablet:text-sm text-white max-w-screen-tablet-lg;
 }
 .embla__slide_active img {
   @apply opacity-100;

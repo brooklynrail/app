@@ -1,11 +1,10 @@
 import Link from "next/link"
 import { HomepageCollections } from "../../../../lib/types"
 import SearchField from "../search/searchField"
-import CurrentCollections from "./currentCollections"
 import CurrentEvents from "./currentEvents"
-import CurrentPages from "./currentPages"
 import Settings from "./settings"
 import { useMenu } from "@/app/hooks/useMenu"
+import CurrentNavigation from "./currentNavigation"
 
 interface MenuProps {
   collections: HomepageCollections[]
@@ -61,8 +60,7 @@ const Menu = (props: MenuProps) => {
           <CurrentEvents />
           <div className="col-span-3">
             <div className="divide-y rail-divide">
-              <CurrentCollections collections={collections} />
-              <CurrentPages />
+              <CurrentNavigation />
             </div>
           </div>
         </div>

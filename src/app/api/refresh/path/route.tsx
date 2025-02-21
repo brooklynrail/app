@@ -1,5 +1,4 @@
-import { revalidatePath } from "next/cache"
-import Link from "next/link"
+import { revalidatePath, revalidateTag } from "next/cache"
 export const dynamic = "force-dynamic" // Mark this API as dynamic
 
 export async function GET(request: Request) {
@@ -9,7 +8,7 @@ export async function GET(request: Request) {
     const path = searchParams.get("path")
 
     // Check if the secret matches the expected secret
-    if (secret !== process.env.REVALIDATION_SECRET) {
+    if (secret !== process.env.NEXT_PUBLIC_REVALIDATION_SECRET) {
       return new Response("Unauthorized", { status: 401 })
     }
 

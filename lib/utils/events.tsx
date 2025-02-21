@@ -59,7 +59,7 @@ export const getUpcomingEvents = cache(async () => {
     `&filter[youtube_id][_empty]=true` +
     `&filter[status][_eq]=published`
 
-  const res = await fetch(eventsDataAPI)
+  const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
   if (!res.ok) {
     throw new Error("Failed to fetch events data")
   }
@@ -68,7 +68,7 @@ export const getUpcomingEvents = cache(async () => {
   return events as Events[]
 })
 
-export const getUpcomingEventsBanner = cache(async () => {
+export const getUpcomingEventsBanner = async () => {
   const eventsDataAPI =
     `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
     `?fields[]=id` +
@@ -99,14 +99,14 @@ export const getUpcomingEventsBanner = cache(async () => {
     `&filter[youtube_id][_empty]=true` +
     `&filter[status][_eq]=published`
 
-  const res = await fetch(eventsDataAPI)
+  const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
   if (!res.ok) {
     throw new Error("Failed to fetch events data")
   }
   const data = await res.json()
   const events = data.data
   return events as Events[]
-})
+}
 
 interface PastEventsParams {
   limit: number
@@ -137,7 +137,7 @@ export async function getPastEvents(props: PastEventsParams) {
       `&sort[]=-start_date` +
       `&limit=${limit}`
 
-    const res = await fetch(allEventsDataAPI)
+    const res = await fetch(allEventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
     if (!res.ok) {
       console.error(`Failed to fetch All Events data: ${res.statusText}`)
       return null
@@ -149,6 +149,86 @@ export async function getPastEvents(props: PastEventsParams) {
     return null
   }
 }
+
+/**
+ * Fetches current and featured events for display
+ *
+ * This function:
+ * 1. Fetches current events from the API with no caching
+ * 2. If fewer than 4 current events exist, also fetches featured events
+ *    to fill out the display
+ * 3. Featured events request includes timestamp to prevent caching
+ *
+ */
+export async function fetchEvents() {
+  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
+    next: { revalidate: 3600, tags: ["events"] },
+  }).then((res) => {
+    if (!res.ok) throw new Error("Failed to fetch current events")
+    return res.json()
+  })
+
+  const currentEventsArray = Array.isArray(currentEvents) ? currentEvents : []
+
+  let featuredEvents = []
+  if (currentEventsArray.length < 4) {
+    const timestamp = new Date().getTime()
+    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
+      next: { revalidate: 3600, tags: ["events"] },
+    }).then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch featured events")
+      return res.json()
+    })
+  }
+
+  return { currentEvents: currentEventsArray, featuredEvents }
+}
+
+export const getFeaturedEvents = cache(async () => {
+  try {
+    const eventsDataAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+      `?fields[]=id` +
+      `&fields[]=slug` +
+      `&fields[]=title` +
+      `&fields[]=series` +
+      `&fields[]=featured_image.id` +
+      `&fields[]=featured_image.caption` +
+      `&fields[]=featured_image.alt` +
+      `&fields[]=featured_image.filename_disk` +
+      `&fields[]=featured_image.width` +
+      `&fields[]=featured_image.height` +
+      `&fields[]=featured_image.type` +
+      `&fields[]=featured_image.modified_on` +
+      `&fields[]=people` +
+      `&fields[]=people.people_id.portrait.id` +
+      `&fields[]=people.people_id.portrait.caption` +
+      `&fields[]=people.people_id.portrait.filename_disk` +
+      `&fields[]=people.people_id.portrait.width` +
+      `&fields[]=people.people_id.portrait.height` +
+      `&fields[]=people.people_id.portrait.alt` +
+      `&fields[]=people.people_id.portrait.modified_on` +
+      `&fields[]=start_date` +
+      `&fields[]=all_day` +
+      `&fields[]=youtube_id` +
+      `&sort=-start_date` +
+      `&filter[end_date][_lte]=$NOW` +
+      `&filter[featured][_eq]=true` +
+      `&filter[youtube_id][_nempty]=true` +
+      `&filter[status][_eq]=published`
+
+    const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+    if (!res.ok) {
+      console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
+      return null
+    }
+    const data = await res.json()
+    return data.data as Events[]
+  } catch (error) {
+    console.error("Error fetching Featured Events data:", error)
+    return null
+  }
+})
 
 export const getEvent = cache(async (slug: string) => {
   const event = await directus.request(
@@ -165,6 +245,8 @@ export const getEvent = cache(async (slug: string) => {
         "body_text",
         "body",
         "series",
+        "soldout",
+        "registration_url",
         "start_date",
         "all_day",
         "end_date",
@@ -241,7 +323,7 @@ export const getAllEvents = cache(async () => {
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
-      const res = await fetch(eventsDataAPI)
+      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch allEvents data")
@@ -455,7 +537,10 @@ export const generateSingleEventNewsletter = ({ eventTypes, event }: SingleNewsl
     const endDate = new Date(event.end_date)
     const isSameDay = startDate.toDateString() === endDate.toDateString()
     const dateString = formatEventDate(startDate, endDate, isSameDay)
-    const isFutureEvent = new Date(event.end_date) > new Date()
+    // Convert both dates to UTC for consistent timezone comparison
+    const endDateUTC = new Date(event.end_date).toISOString()
+    const nowUTC = new Date().toISOString()
+    const isFutureEvent = endDateUTC > nowUTC
 
     // Get the time in both Eastern and Pacific time
     const startTimeET = formatTime(event.start_date, "America/New_York")

@@ -94,6 +94,7 @@ async function getData({ params }: { params: ArticleParams }) {
   if (!articleData) {
     // If the slug is incorrect, but the dates in the URL are correct,
     // check if a redirect exists that includes this slug
+
     // Note: this does not account for changes to the year/month of the URL
     const redirect = await getRedirect(RedirectTypes.Article, slug)
     if (redirect) {
@@ -120,8 +121,8 @@ async function getData({ params }: { params: ArticleParams }) {
     redirect(path) // Navigate to the new article page
   }
 
+  // References -------
   // const references = articleData.body_text && extractPeopleFromArticle(articleData.body_text)
-
   // console.log("==============================")
   // console.log("references", references)
 

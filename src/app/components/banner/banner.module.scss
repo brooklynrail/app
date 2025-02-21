@@ -9,6 +9,12 @@
   }
 }
 
+.summary {
+  a {
+    @apply underline decoration-1 decoration-dotted underline-offset-2;
+  }
+}
+
 .card {
   box-shadow: 0px 0px 12px 0px var(--Indigo-100, #e0e7ff) inset;
   &:hover {

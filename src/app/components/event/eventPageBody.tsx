@@ -13,13 +13,30 @@ import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "../..
 
 const EventPageBody = (props: EventProps) => {
   const { eventData, eventTypes } = props
-  const { title, deck, start_date, end_date, all_day, summary, type, series, body, youtube_id, airtable_id } = eventData
+  const {
+    title,
+    deck,
+    start_date,
+    end_date,
+    soldout,
+    registration_url,
+    all_day,
+    summary,
+    type,
+    series,
+    body,
+    youtube_id,
+    airtable_id,
+  } = eventData
 
   // Get the readable event type text
   const eventTypeText = getEventTypeText(type, eventTypes)
 
   const railProduced = type === EventTypes.TheNewSocialEnvironment || type === EventTypes.CommonGround
-  const isFutureEvent = new Date(end_date) > new Date()
+  // Convert both dates to UTC for consistent timezone comparison
+  const endDateUTC = new Date(end_date).toISOString()
+  const nowUTC = new Date().toISOString()
+  const isFutureEvent = endDateUTC > nowUTC
 
   // get the start date in this format:
   // Wed, Oct 16  at  1 p.m. ET / 10 a.m. PT
@@ -45,11 +62,17 @@ const EventPageBody = (props: EventProps) => {
   })
 
   const handleRegister = () => {
-    const register = document.getElementById("register")
-    if (register) {
-      register.scrollIntoView({ behavior: "smooth" })
+    if (airtable_id) {
+      const register = document.getElementById("register")
+      if (register) {
+        register.scrollIntoView({ behavior: "smooth" })
+      }
+    } else if (registration_url) {
+      window.open(registration_url, "_blank")
     }
   }
+
+  const showRegisterButton = airtable_id || registration_url
 
   return (
     <article className="h-entry py-6 tablet-lg:py-12">
@@ -79,7 +102,7 @@ const EventPageBody = (props: EventProps) => {
                 )}
               </p>
             </div>
-            {isFutureEvent && (
+            {isFutureEvent && !soldout && showRegisterButton && (
               <button
                 onClick={handleRegister}
                 className="py-3 px-6 rounded-sm shadow-lg text-lg uppercase bg-violet-800 text-white hover:underline underline-offset-4"
@@ -87,17 +110,21 @@ const EventPageBody = (props: EventProps) => {
                 Register
               </button>
             )}
+            {isFutureEvent && soldout && (
+              <p className="text-center text-md font-medium py-1.5 px-3 rounded-md uppercase bg-amber-100">
+                Sold out, this event is at capacity
+              </p>
+            )}
           </div>
         </div>
 
-        {!isFutureEvent && youtube_id && <EventVideo title={title} youtube_id={youtube_id} />}
+        {youtube_id && <EventVideo title={title} youtube_id={youtube_id} />}
 
         {railProduced && (
           <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 desktop:col-span-6 desktop:col-start-4">
             <div className="text-md tablet-lg:text-lg text-center p-description bg-white dark:bg-zinc-700 py-3 tablet:py-6 px-3 tablet:px-6 rounded-xl space-y-1">
               <p>These free events are produced by The Brooklyn Rail.</p>
               <p>
-                Help us raise <span className="font-medium">$200,000</span> by Dec 31.{" "}
                 <Link
                   className="text-violet-600 dark:text-violet-400 block tablet:inline mt-1 tablet:mt-0 hover:no-underline"
                   href={`/donate`}

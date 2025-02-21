@@ -71,7 +71,10 @@ const EventPreview = (props: EventPreviewProps) => {
     return <Password {...passwordProps} />
   }
 
-  const isFutureEvent = new Date(eventData.end_date) > new Date()
+  // Convert both dates to UTC for consistent timezone comparison
+  const endDateUTC = new Date(eventData.end_date).toISOString()
+  const nowUTC = new Date().toISOString()
+  const isFutureEvent = endDateUTC > nowUTC
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/event/${eventData.id}/`
   return (

@@ -2,7 +2,7 @@
 import { MenuProvider } from "@/app/hooks/useMenu"
 import { usePathname } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
-import Ad970 from "../ads/ad970"
+import AdFixedBanner from "../ads/adFixedBanner"
 import Footer from "../footer"
 import Menu from "../menu/menu"
 import NavBar from "../navBar"
@@ -11,6 +11,7 @@ import Header from "../header"
 import PreviewHeader from "../preview/previewHead"
 import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
 import ScreenIndicator from "../screenIndicator"
+import Banners from "../banner"
 
 export interface PaperProps {
   pageClass: string
@@ -21,6 +22,7 @@ export interface PaperProps {
   children: React.ReactNode
   type?: PaperType
   previewURL?: string
+  homepageData?: Homepage
 }
 
 export enum PaperType {
@@ -34,7 +36,7 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, navData, type, banners, currentIssue, previewURL } = props
+  const { pageClass, children, navData, type, banners, currentIssue, previewURL, homepageData } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
@@ -46,18 +48,19 @@ const Paper = (props: PaperProps) => {
             <PreviewHeader previewURL={previewURL} />
           ) : (
             <>
-              <Header type={type ? type : PaperType.Default} banners={banners} currentIssue={currentIssue} />
+              <Header type={type ? type : PaperType.Default} currentIssue={currentIssue} homepageData={homepageData} />
+              {banners && isHomepage && currentIssue && <Banners currentIssue={currentIssue} banners={banners} />}
               <NavBar navData={navData} isHomepage={isHomepage} />
             </>
           )}
 
           {children}
-          {!previewURL && <Ad970 />}
+          {!previewURL && <AdFixedBanner />}
           <Footer />
           <ScreenIndicator />
         </div>
         <Menu collections={navData.collections} />
-        {!previewURL && <PopupDonate />}
+        {/* {!previewURL && <PopupDonate />} */}
       </MenuProvider>
     </AdVisibilityProvider>
   )

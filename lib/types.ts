@@ -1,6 +1,8 @@
+import { AdTypes } from "./utils/ads"
+
 /* eslint max-lines: 0 */
 export type Ads = {
-  ad_type: string
+  ad_type: AdTypes
   ad_url?: string | null
   date_created?: string | null
   date_updated?: string | null
@@ -98,7 +100,6 @@ export type ArticlesFiles = {
 export type Collections = {
   date_created?: string | null
   date_updated?: string | null
-  deck?: string | null
   homepage: any[] | HomepageCollections[]
   id: string
   limit?: number | null
@@ -245,6 +246,8 @@ export type DirectusFiles = {
   type?: string | null
   uploaded_by?: string | DirectusUsers | null
   uploaded_on: string
+  video_cover: any[] | VideoCovers[]
+  video_cover_still: any[] | VideoCoversStills[]
   width: number
 }
 
@@ -506,6 +509,7 @@ export type Events = {
   date_created: string
   date_updated: string
   deck?: string | null
+  featured: boolean
   end_date: string
   airtable_id?: string | null
   featured_image?: DirectusFiles
@@ -521,6 +525,7 @@ export type Events = {
   sort?: number | null
   start_date: string
   status: string
+  registration_url?: string | null
   kicker?: string | null
   title: string
   type: string
@@ -575,6 +580,8 @@ export type Homepage = {
   id: string
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+  video_covers?: VideoCovers[] | null
+  video_covers_stills?: VideoCoversStills[] | null
 }
 
 export type HomepageBanners = {
@@ -653,6 +660,7 @@ export type Pages = {
   status: string
   title: string
   body_text?: string | null
+  summary?: string | null
   footnotes?: string | null
   map_key?: string | null
   images: any[] | ArticlesFiles[]
@@ -777,6 +785,20 @@ export type TributesContributors = {
   id: number
 }
 
+export type VideoCovers = {
+  directus_files_id?: DirectusFiles | null
+  homepage_id?: Homepage | null
+  id: number
+  sort?: number | null
+}
+
+export type VideoCoversStills = {
+  directus_files_id?: DirectusFiles | null
+  homepage_id?: Homepage | null
+  id: number
+  sort?: number | null
+}
+
 export type CustomDirectusTypes = {
   ads: Ads[]
   articles: Articles[]
@@ -823,4 +845,6 @@ export type CustomDirectusTypes = {
   sections: Sections[]
   tributes: Tributes[]
   redirects: Redirects[]
+  video_covers: VideoCovers[]
+  video_covers_stills: VideoCoversStills[]
 }

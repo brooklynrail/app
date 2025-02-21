@@ -1,9 +1,12 @@
-import { readItems, readSingleton } from "@directus/sdk"
+"use server"
+
+import { readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
 import { Articles, Homepage, HomepageCollections, Issues } from "../types"
+import { unstable_cache } from "next/cache"
 
-export const getNavData = cache(async () => {
+export const getNavData = unstable_cache(async () => {
   try {
     const navData = await directus.request(
       readSingleton("homepage", {
@@ -12,17 +15,7 @@ export const getNavData = cache(async () => {
           {
             banners: [
               {
-                collections_id: [
-                  "id",
-                  "type",
-                  "kicker",
-                  "title",
-                  "deck",
-                  "description",
-                  "links",
-                  "limit",
-                  "banner_type",
-                ],
+                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
               },
             ],
           },
@@ -34,7 +27,6 @@ export const getNavData = cache(async () => {
                   "type",
                   "kicker",
                   "title",
-                  "deck",
                   "limit",
                   "links",
                   "banner_type",
@@ -57,7 +49,7 @@ export const getNavData = cache(async () => {
     console.error("Error fetching Nav data:", error)
     return null
   }
-})
+}, ["navData"])
 
 export const getHomepageData = cache(async (currentIssue: Issues) => {
   try {
@@ -68,19 +60,15 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
           {
             banners: [
               {
-                collections_id: [
-                  "id",
-                  "type",
-                  "kicker",
-                  "title",
-                  "deck",
-                  "description",
-                  "links",
-                  "limit",
-                  "banner_type",
-                ],
+                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
               },
             ],
+          },
+          {
+            video_covers: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
+          },
+          {
+            video_covers_stills: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
           },
           {
             collections: [
@@ -90,7 +78,6 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
                   "type",
                   "kicker",
                   "title",
-                  "deck",
                   "limit",
                   "links",
                   "banner_type",
@@ -139,8 +126,6 @@ export const getHomepageData = cache(async (currentIssue: Issues) => {
     const homepage = homepageData as Homepage
 
     const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
-      // Get the articles for this collection
-      // Note: the queries are faster if we fetch the articles this way, as opposed to the homepage query
       if (collection.collections_id && collection.collections_id.section) {
         const thisSectionArticles = getCollectionArticles({
           currentIssueSlug: currentIssue.slug,
@@ -199,6 +184,7 @@ export const getCurrentIssueData = cache(async () => {
               "id",
               "title",
               "slug",
+              "summary",
               "special_issue",
               { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
               { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
@@ -283,7 +269,7 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
       `&sort[]=-issue.published` +
       `&sort[]=sort`
 
-    const response = await fetch(articlesAPI)
+    const response = await fetch(articlesAPI, { next: { revalidate: 3600, tags: ["articles"] } })
     const articlesData = await response.json()
 
     return articlesData.data as Articles[]
