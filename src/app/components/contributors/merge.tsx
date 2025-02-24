@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image"
 import Link from "next/link"
 import parse from "html-react-parser"
 import { Contributors, Homepage, Issues, People } from "../../../../lib/types"
@@ -7,13 +6,17 @@ import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper from "../paper"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { mergePeople } from "../../../../lib/utils/people"
+import { mergeContributors } from "../../../../lib/utils/people"
 
 interface ContributorsMergeProps {
   navData: Homepage
 }
 
 interface PersonWithMatches extends People {
+  matches?: Contributors[]
+}
+
+interface ContributorWithMatches extends Contributors {
   matches?: Contributors[]
 }
 
@@ -33,13 +36,11 @@ enum MergeState {
 const ContributorsMerge = (props: ContributorsMergeProps) => {
   const router = useRouter()
   const [selectedContributors, setSelectedContributors] = useState<Contributors[]>([])
-  const [primaryContributor, setPrimaryContributor] = useState<Contributors | null>(null)
   const [selectedPerson, setSelectedPerson] = useState<PersonWithMatches | null>(null)
+  const [selectedContributor, setSelectedContributor] = useState<ContributorWithMatches | null>(null)
   const [showOnlyMatches, setShowOnlyMatches] = useState(true)
-  const [showAllContributors, setShowAllContributors] = useState(false)
   const [message, setMessage] = useState<MergeMessage | null>(null)
   const [mergeState, setMergeState] = useState<MergeState>(MergeState.Ready)
-  const [allPeople, setAllPeople] = useState<People[] | null>(null)
   const [allContributors, setAllContributors] = useState<Contributors[]>([])
   const { navData } = props
 
@@ -51,13 +52,6 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const peopleResponse = await fetch("/api/people")
-        if (!peopleResponse.ok) {
-          throw new Error("Failed to fetch people")
-        }
-        const people = await peopleResponse.json()
-        setAllPeople(people)
-
         const contributorsResponse = await fetch("/api/contributors")
         if (!contributorsResponse.ok) {
           throw new Error("Failed to fetch contributors")
@@ -94,10 +88,6 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
               .map((article) => article.articles_id?.id)
               .filter((id): id is string => id !== undefined)
 
-            console.log("====================")
-            console.log("ID:", contributor.old_id)
-            console.log("Contributor article IDs:", contributorArticleIds)
-            console.log("Person article IDs:", personArticleIds)
             return !contributorArticleIds.some((id) => personArticleIds.includes(id))
           })
 
@@ -111,23 +101,25 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     fetchContributors()
   }, [selectedPerson])
 
-  if (!allPeople || !allContributors) {
+  if (!allContributors) {
     return <></>
   }
 
-  const likelyMatches = allPeople
-    .map((person: People) => {
-      const matches = allContributors.filter((contributor: Contributors) => {
-        return contributor.first_name === person.first_name && contributor.last_name === person.last_name
+  const likelyMatches = allContributors
+    .map((contributor: Contributors) => {
+      const matches = allContributors.filter((otherContributor: Contributors) => {
+        return (
+          otherContributor.first_name === contributor.first_name &&
+          otherContributor.last_name === contributor.last_name &&
+          otherContributor.id !== contributor.id
+        ) // Don't match with self
       })
       if (matches.length > 0) {
-        return { ...person, matches } as PersonWithMatches
+        return { ...contributor, matches } as ContributorWithMatches
       }
       return null
     })
-    .filter((person): person is NonNullable<PersonWithMatches> => person !== null)
-
-  const displayedPeople = showOnlyMatches ? likelyMatches : allPeople
+    .filter((contributor): contributor is NonNullable<ContributorWithMatches> => contributor !== null)
 
   const handleContributorToggle = (contributor: Contributors) => {
     setSelectedContributors((prev) =>
@@ -135,45 +127,24 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     )
   }
 
-  const handlePersonClick = async (person: People) => {
-    if (person === selectedPerson) {
-      setSelectedPerson(null)
-      setPrimaryContributor(null)
+  const handleContributorClick = async (contributor: Contributors) => {
+    setSelectedContributors([])
+    if (contributor.id === selectedContributor?.id) {
+      setSelectedContributor(null)
     } else {
-      try {
-        const response = await fetch(`/api/contributors/merge?id=${person.id}`)
-        if (!response.ok) {
-          throw new Error("Failed to fetch person details")
-        }
-        const personData = await response.json()
-        const matches = (person as PersonWithMatches).matches || []
-        setSelectedPerson({ ...personData, matches })
-
-        if (matches.length > 0) {
-          const primaryContributor = matches.reduce((prev, current) => {
-            const prevOldId = parseInt(String(prev.old_id || "0"))
-            const currentOldId = parseInt(String(current.old_id || "0"))
-            return currentOldId > prevOldId ? current : prev
-          })
-          setPrimaryContributor(primaryContributor)
-        }
-      } catch (error) {
-        console.error("Error fetching person details:", error)
-      }
+      // Find all other contributors with matching names
+      const matches = allContributors.filter(
+        (other) =>
+          other.first_name === contributor.first_name &&
+          other.last_name === contributor.last_name &&
+          other.id !== contributor.id,
+      )
+      setSelectedContributor({ ...contributor, matches })
     }
-  }
-
-  const handlePrimarySelect = (contributor: Contributors) => {
-    if (contributor.id !== primaryContributor?.id) {
-      if (!selectedContributors.includes(contributor)) {
-        handleContributorToggle(contributor)
-      }
-    }
-    setPrimaryContributor(contributor.id === primaryContributor?.id ? null : contributor)
   }
 
   const handleMerge = async () => {
-    if (!selectedPerson || selectedContributors.length === 0 || !primaryContributor) {
+    if (selectedContributors.length === 0 || !selectedContributor) {
       return
     }
     setMessage({
@@ -184,27 +155,26 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     setMergeState(MergeState.Merging)
 
     try {
-      const result = await mergePeople({
-        selectedPerson: selectedPerson,
-        primaryContributor: primaryContributor,
-        allContributors: selectedContributors,
+      const result = await mergeContributors({
+        selectedContributor: selectedContributor,
+        otherContributors: selectedContributors,
       })
+      console.log("result", result)
 
       setMessage({
         status: "success",
         text: "Successfully merged contributors",
-        details: `Merged ${selectedContributors.length} contributors into ${selectedPerson.first_name} ${selectedPerson.last_name}`,
+        details: `Merged ${selectedContributors.length} contributors into ${selectedContributor.first_name} ${selectedContributor.last_name}`,
       })
       setMergeState(MergeState.Merged)
 
-      // Re-fetch the person data
-      const response = await fetch(`/api/contributors/merge?id=${selectedPerson.id}`)
+      // // Re-fetch the person data
+      const response = await fetch(`/api/contributors/merge?id=${selectedContributor.id}`)
       if (!response.ok) {
         throw new Error("Failed to re-fetch person details")
       }
-      const updatedPersonData = await response.json()
-      setSelectedPerson(updatedPersonData)
-
+      const updatedContributorData = await response.json()
+      setSelectedContributor(updatedContributorData)
       router.refresh()
     } catch (error) {
       setMergeState(MergeState.Error)
@@ -217,15 +187,15 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     }
   }
 
-  const allPeopleRecords = (
+  const allContributorsRecords = (
     <>
-      {displayedPeople.map((person: any, i: number) => (
+      {allContributors.map((contributor: any, i: number) => (
         <div
-          key={`${person.id}-${i}`}
-          onClick={() => handlePersonClick(person)}
-          className={`cursor-pointer ${selectedPerson?.id === person.id ? "bg-amber-200 dark:bg-gray-800" : ""}`}
+          key={`${contributor.id}-${i}`}
+          onClick={() => handleContributorClick(contributor)}
+          className={`cursor-pointer ${selectedContributor?.id === contributor.id ? "bg-amber-200 dark:bg-gray-800" : ""}`}
         >
-          <Person {...person} showBio={false} />
+          {contributor.first_name} {contributor.last_name}
         </div>
       ))}
     </>
@@ -233,7 +203,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
 
   const matchedContributors = (
     <>
-      {selectedPerson?.matches
+      {selectedContributor?.matches
         ?.filter(
           (contributor, index, self) =>
             // Remove duplicates by checking if this is the first occurrence of this ID
@@ -253,43 +223,15 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           return (
             <Contributor
               key={`${contributor.id}-${i}`}
-              permalink={permalink}
               contributor={contributor}
               isSelected={selectedContributors.some((c) => c.id === contributor.id)}
-              isPrimary={primaryContributor?.id === contributor.id}
+              isPrimary={false}
               onToggleSelect={() => handleContributorToggle(contributor)}
-              onPrimarySelect={() => handlePrimarySelect(contributor)}
+              onPrimarySelect={() => {}}
             />
           )
         }) || <p className="text-sm text-gray-500">Select a person to see matching contributors</p>}
     </>
-  )
-
-  console.log("selectedPerson", selectedPerson)
-  console.log("selectedPerson.matches", selectedPerson?.matches)
-  console.log("matchedContributors", matchedContributors)
-
-  const description = showOnlyMatches ? (
-    <p className="text-xs">
-      These <strong>{likelyMatches.length} people</strong> have the same first_name and last_name as one or more
-      contributors.
-      <span
-        onClick={() => setShowOnlyMatches(!showOnlyMatches)}
-        className="pl-1 underline decoration-1 underline-offset-4 decoration-dotted cursor-pointer text-blue-600 dark:dark-blue-300"
-      >
-        Show all
-      </span>
-    </p>
-  ) : (
-    <p className="text-xs">
-      These are all <strong>{allPeople.length} people</strong>{" "}
-      <span
-        onClick={() => setShowOnlyMatches(showOnlyMatches)}
-        className="underline decoration-1 underline-offset-4 decoration-dotted cursor-pointer text-blue-600 dark:dark-blue-300"
-      >
-        Show matched
-      </span>
-    </p>
   )
 
   const messageText = (() => {
@@ -297,7 +239,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
       case MergeState.Ready:
         return (
           <p>
-            Merge {selectedContributors.length} {selectedContributors.length === 1 ? "contributor" : "contributors"}
+            Merge {selectedContributors?.length} {selectedContributors?.length === 1 ? "contributor" : "contributors"}
           </p>
         )
       case MergeState.Merging:
@@ -316,20 +258,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9">
             <div className="">
               <header className="py-6">
-                <h1 className="font-light text-5xl">People + Contributors</h1>
+                <h1 className="font-light text-5xl">Merge Contributors</h1>
               </header>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <div className="col-span-4 tablet-lg:col-span-12">
-            <div className="pb-3">
-              <p>
-                Match and merge the <strong>{allContributors.length} Contributors</strong> with the{" "}
-                <strong>{allPeople.length} People</strong>. There are{" "}
-                <strong>{likelyMatches.length} likely matches</strong>.
-              </p>
             </div>
           </div>
         </div>
@@ -337,19 +267,18 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
           <div className="col-span-4 tablet-lg:col-span-4 space-y-3 relative">
             <div className="sticky top-16">
-              <div className="flex flex-col items-start py-1.5">{description}</div>
               <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border">
-                {allPeopleRecords}
+                {allContributorsRecords}
               </div>
             </div>
           </div>
-          {selectedPerson && (
+          {selectedContributor && (
             <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-5 space-y-6">
               <div className="flex justify-end items-center space-x-3">
                 {messageText}
                 <button
                   onClick={handleMerge}
-                  disabled={!primaryContributor || selectedContributors.length === 0}
+                  disabled={!selectedContributor || selectedContributors.length === 0}
                   className="text-md bg-emerald-500 dark:bg-gray-700 text-white dark:text-gray-300 px-3 py-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Merge
@@ -357,18 +286,24 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
               </div>
 
               <div className="space-y-12 border-t rail-border py-3">
-                <Person {...selectedPerson} showBio={true} />
+                <Contributor
+                  contributor={selectedContributor}
+                  isSelected={false}
+                  isPrimary={true}
+                  onToggleSelect={() => {}}
+                  onPrimarySelect={() => {}}
+                />
 
                 {showOnlyMatches && (
                   <div className="space-y-3 border-t rail-border py-3">
                     <p className="text-lg font-light">
                       <strong className="font-medium">
-                        {selectedContributors.length}{" "}
-                        {selectedContributors.length === 1 ? "contributor" : "contributors"}
+                        {selectedContributor.matches?.length}{" "}
+                        {selectedContributor.matches?.length === 1 ? "contributor" : "contributors"}
                       </strong>{" "}
                       matched{" "}
                       <span>
-                        {selectedPerson.first_name} {selectedPerson.last_name}
+                        {selectedContributor.first_name} {selectedContributor.last_name}
                       </span>
                     </p>
                     <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">
@@ -386,22 +321,18 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
 }
 
 interface ContributorProps {
-  permalink: string
   contributor: Contributors
   isSelected: boolean
   isPrimary: boolean
   onToggleSelect: () => void
-  onPrimarySelect: (contributor: Contributors) => void
+  onPrimarySelect: () => void
 }
 
-const Contributor = ({
-  permalink,
-  contributor,
-  isSelected,
-  isPrimary,
-  onToggleSelect,
-  onPrimarySelect,
-}: ContributorProps) => {
+const Contributor = ({ contributor, isSelected, isPrimary, onToggleSelect, onPrimarySelect }: ContributorProps) => {
+  const permalink = getPermalink({
+    slug: contributor.slug,
+    type: PageType.Contributor,
+  })
   return (
     <div className="space-y-1.5 py-3">
       <div className="flex space-x-6 justify-between">
@@ -418,99 +349,45 @@ const Contributor = ({
               </Link>
             </p>
             <p className="text-xs">Old ID: #{contributor.old_id}</p>
-            <p className="text-xs bg-gray-200 dark:bg-gray-700 px-1 rounded-sm text-red-800 dark:text-red-300">
-              {contributor.slug}
+            <p className="text-xs">
+              <span className="">Slug: </span>{" "}
+              <span className="bg-gray-200 dark:bg-gray-700 px-1 rounded-sm text-red-800 dark:text-red-300">
+                {contributor.slug}
+              </span>
             </p>
             <p className="text-xs">{contributor.articles.length} articles</p>
+            <p className="text-xs">{contributor.status}</p>
           </div>
           <div className="text-xs">
             <span className="block">{parse(contributor.bio || "---")}</span>
           </div>
-          <div className="text-xs">{contributor.id}</div>
-          <div className="text-xs">{contributor.status}</div>
-        </div>
-        <div className="flex flex-col">
-          <div className="flex space-x-3 h-full items-start justify-center">
-            <button
-              onClick={() => onPrimarySelect(contributor)}
-              className={`text-xs flex-none px-3 py-1 block rounded-md ${
-                isPrimary
-                  ? "bg-blue-500 text-white dark:bg-blue-500"
-                  : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-300 line-through"
-              }`}
+          <div className="text-xs">
+            <Link
+              className="text-blue-600"
+              target="_blank"
+              href={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/admin/content/contributors/${contributor.id}`}
             >
-              Short Bio
-            </button>
-            <button
-              onClick={onToggleSelect}
-              className={`text-xs flex-none px-3 py-1 block rounded-md ${
-                isSelected
-                  ? "bg-green-500 dark:bg-green-500 text-white"
-                  : "bg-gray-200 dark:bg-gray-800 text-gray-500 line-through"
-              }`}
-            >
-              Match
-            </button>
+              Open in Studio »
+            </Link>
           </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-const Person = (person: People & { showBio: boolean }) => {
-  const src =
-    person.portrait &&
-    `${process.env.NEXT_PUBLIC_IMAGE_PATH}${person.portrait.filename_disk}?fit=cover&width=400&height=400&quality=85&modified_on=${person.portrait.modified_on}`
-  return (
-    <div className="flex flex-col space-y-3">
-      <div className="flex justify-between items-center pr-1">
-        <div className="py-1.5 flex items-center space-x-3">
-          <div className="w-9 h-9 flex-none">
-            {person.portrait && src && (
-              <Image
-                sizes={`10vw`}
-                className="object-cover rounded-full"
-                src={src}
-                width={100}
-                height={100}
-                alt={`${person.first_name} ${person.last_name}`}
-              />
-            )}
-          </div>
-          <div>
-            <p>
-              {person.first_name} {person.last_name}
-            </p>
-          </div>
-        </div>
-        {person.showBio && (
-          <div>
-            <p className="text-xs">
-              {person.articles && (
-                <span>
-                  {person.articles.length} {person.articles.length === 1 ? "article" : "articles"}
-                </span>
-              )}{" "}
-              |{" "}
-              <span>
-                {person.events.length} {person.events.length === 1 ? "event" : "events"}
-              </span>
-            </p>
+        {!isPrimary && (
+          <div className="flex flex-col">
+            <div className="flex space-x-3 h-full items-start justify-center">
+              <button
+                onClick={onToggleSelect}
+                className={`text-xs flex-none px-3 py-1 block rounded-md ${
+                  isSelected
+                    ? "bg-green-500 dark:bg-green-500 text-white"
+                    : "bg-gray-200 dark:bg-gray-800 text-gray-500 line-through"
+                }`}
+              >
+                Match
+              </button>
+            </div>
           </div>
         )}
       </div>
-      {person.showBio && <div className="text-sm">{parse(person.bio || "---")}</div>}
-      {person.showBio && <div className="text-sm">Short Bio: {parse(person.short_bio || "---")}</div>}
-      {person.showBio && (
-        <Link
-          className="text-xs uppercase text-blue-600 dark:text-blue-300"
-          href={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/admin/content/people/${person.id}`}
-          target="_blank"
-        >
-          Edit in Studio
-        </Link>
-      )}
     </div>
   )
 }

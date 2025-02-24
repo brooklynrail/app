@@ -5,62 +5,77 @@ import { Contributors, People } from "../types"
 import { getPermalink } from "../utils"
 import { PageType } from "../utils"
 
-interface MergePeopleProps {
-  selectedPerson: People
-  allContributors: Contributors[]
-  primaryContributor?: Contributors | null
+interface MergeContributorsProps {
+  selectedContributor: Contributors
+  otherContributors: Contributors[]
 }
-export const mergePeople = async (props: MergePeopleProps) => {
-  const { selectedPerson, allContributors, primaryContributor } = props
+
+export const mergeContributors = async (props: MergeContributorsProps) => {
+  const { selectedContributor, otherContributors } = props
 
   try {
-    const allArticleIds = allContributors
+    // Get all unique article IDs from other contributors only
+    const allArticleIds = otherContributors
       .flatMap((contributor) => contributor.articles)
       .map((article) => article.articles_contributors_id?.id)
       .filter((id): id is string => id !== undefined)
+      // Remove duplicates using Array.from(new Set())
+      .filter((id, index, self) => self.indexOf(id) === index)
 
-    if (allArticleIds.length === 0) {
-      return {
-        success: false,
-        error: "No articles found to merge",
-        message: `No articles found to merge for ${selectedPerson.first_name} ${selectedPerson.last_name}`,
+    if (allArticleIds.length > 0) {
+      // Update the selected contributor with all the articles
+      const result = await directus.request(
+        updateItem("contributors", selectedContributor.id, {
+          articles: {
+            create: allArticleIds.map((id) => ({
+              articles_contributors_id: id,
+            })),
+          },
+        }),
+      )
+      console.log("update result =========", result)
+      // remove the articles from the other contributors
+      for (const otherContributor of otherContributors) {
+        console.log(
+          "removing articles from",
+          otherContributor.first_name,
+          otherContributor.last_name,
+          otherContributor.id,
+          otherContributor.articles,
+        )
+        const result = await directus.request(
+          updateItem("contributors", otherContributor.id, {
+            articles: [],
+          }),
+        )
+        console.log("delete result =========", result)
       }
     }
 
-    // update the articles in the person record
-    const result = await updatePersonArticles(selectedPerson.id, allArticleIds, primaryContributor?.bio)
-
-    // update the contributor records
-    // -- archive all but the primary contributor
-    // -- add redirects for all to the primary contributor
-    allContributors.map(async (contributor: Contributors) => {
-      if (primaryContributor && contributor.id !== primaryContributor.id) {
-        await addRedirect(primaryContributor, contributor)
-        await archiveContributor(contributor)
+    // Create redirects for all other contributors that have different slugs
+    for (const otherContributor of otherContributors) {
+      if (selectedContributor.slug !== otherContributor.slug) {
+        await addRedirect(selectedContributor, otherContributor)
       }
-
-      return
-    })
-
-    if (!result) {
-      return {
-        success: false,
-        error: "Failed to update person articles",
-        message: `Failed to merge articles for ${selectedPerson.first_name} ${selectedPerson.last_name}`,
-      }
+      // Archive the other contributor
+      await archiveContributor(otherContributor)
     }
 
     return {
       success: true,
       error: null,
-      message: `Successfully merged ${allArticleIds.length} articles to ${selectedPerson.first_name} ${selectedPerson.last_name}`,
+      message: `Successfully merged ${allArticleIds.length} articles to contributor ${selectedContributor.first_name} ${selectedContributor.last_name}`,
     }
   } catch (error) {
-    console.error("Error in mergePeople:", error)
+    // More detailed error logging
+    console.error("Full error details:", {
+      error,
+      response: error instanceof Error ? (error as any).response : undefined,
+    })
+
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error occurred",
-      message: `Error merging articles for ${selectedPerson.first_name} ${selectedPerson.last_name}`,
     }
   }
 }
@@ -105,26 +120,6 @@ const archiveContributor = async (contributor: Contributors) => {
     )
   } catch (error) {
     console.error("Error updating contributor articles:", error)
-    return null
-  }
-}
-
-const updatePersonArticles = async (personId: string, articleIds: string[], shortBio?: string | null) => {
-  try {
-    const peopleData = await directus.request(
-      updateItem("people", personId, {
-        articles: {
-          create: articleIds.map((id) => ({ articles_id: id })),
-          delete: [], // This ensures we only add new relationships
-        },
-        short_bio: shortBio,
-      }),
-    )
-
-    console.log("People data", peopleData)
-    return true
-  } catch (error) {
-    console.error("Error updating person articles:", error)
     return null
   }
 }
