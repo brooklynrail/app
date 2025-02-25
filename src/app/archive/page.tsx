@@ -43,7 +43,6 @@ export default async function Archive() {
 async function getData() {
   const baseURL = getBaseUrl()
   console.log("baseURL===================", baseURL)
-
   let navData
   try {
     const response = await fetch(`${baseURL}/api/nav/`, {
