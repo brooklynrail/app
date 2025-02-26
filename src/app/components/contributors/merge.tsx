@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import parse from "html-react-parser"
-import { Contributors, Homepage, Issues, People } from "../../../../lib/types"
+import { ArticlesContributors, Contributors, Homepage, Issues, People } from "../../../../lib/types"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import Paper from "../paper"
 import { useState, useEffect } from "react"
@@ -90,7 +90,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
             return !contributorArticleIds.some((id) => personArticleIds.includes(id))
           })
 
-          setSelectedContributors(filteredContributors)
+          // Don't automatically set the filtered contributors
+          // setSelectedContributors(filteredContributors)
         } else {
           console.error("Failed to fetch contributors")
         }
@@ -338,19 +339,51 @@ interface ContributorProps {
   onPrimarySelect: () => void
 }
 
+const ArticlesList = ({ articles }: { articles: ArticlesContributors[] }) => {
+  return (
+    <div className="text-xs">
+      <p className="text-xs font-medium">{articles.length} articles</p>
+
+      {articles.length > 0 && (
+        <ul className="text-xs list-disc pl-4 space-y-0">
+          {articles.map((article, index) => {
+            if (!article.articles_contributors_id) {
+              return null
+            }
+            return (
+              <li key={index}>
+                <span className="font-serif text-xs">{parse(article.articles_contributors_id.title)}</span> —{" "}
+                <span className="">{article.articles_contributors_id.section.name}</span> /{" "}
+                <span className="">{article.articles_contributors_id.issue.title}</span>
+                <Link
+                  className="text-blue-600 pl-3"
+                  target="_blank"
+                  href={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/admin/content/articles/${article.articles_contributors_id.id}`}
+                >
+                  edit
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </div>
+  )
+}
+
 const Contributor = ({ contributor, isSelected, isPrimary, onToggleSelect, onPrimarySelect }: ContributorProps) => {
   const permalink = getPermalink({
     slug: contributor.slug,
     type: PageType.Contributor,
   })
   const articles = contributor.articles.map((article) => article.articles_contributors_id)
-  console.log("articles", articles)
+
   return (
     <div className="space-y-1.5 py-3">
       <div className="flex space-x-6 justify-between">
-        <div className="flex flex-col w-full space-y-1.5">
-          <div className="flex justify-start items-end space-x-3">
-            <p className="font-light text-lg">
+        <div className="flex flex-col w-full space-y-3">
+          <div className="flex justify-start items-center space-x-6">
+            <p className="font-normal text-lg">
               <Link
                 target="_blank"
                 className="underline decoration-1 underline-offset-4 decoration-dotted"
@@ -367,26 +400,22 @@ const Contributor = ({ contributor, isSelected, isPrimary, onToggleSelect, onPri
                 {contributor.slug}
               </span>
             </p>
-            <p className="text-xs">{contributor.articles.length} articles</p>
-            <p className="text-xs">{contributor.status}</p>
+
+            <p className="text-xs">
+              <Link
+                className="text-blue-600"
+                target="_blank"
+                href={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/admin/content/contributors/${contributor.id}`}
+              >
+                Open in Studio
+              </Link>
+            </p>
           </div>
           <div className="text-xs">
             <span className="block">{parse(contributor.bio || "---")}</span>
           </div>
-          <div>
-            <div className="text-xs">
-              <Link href={`/contributors/${contributor.slug}`}>View</Link>
-            </div>
-          </div>
-          <div className="text-xs">
-            <Link
-              className="text-blue-600"
-              target="_blank"
-              href={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/admin/content/contributors/${contributor.id}`}
-            >
-              Open in Studio »
-            </Link>
-          </div>
+
+          <ArticlesList articles={contributor.articles} />
         </div>
         {!isPrimary && (
           <div className="flex flex-col">
