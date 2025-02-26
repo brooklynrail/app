@@ -235,7 +235,31 @@ export const getAllContributorsMerge = cache(
       }
 
       while (isMore) {
-        const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=status&fields[]=first_name&fields[]=old_id&fields[]=last_name&fields[]=bio&fields[]=articles&fields[]=articles.articles_contributors_id.id&sort=first_name&page=${page}&limit=100&offset=${page * 100 - 100}${filterString}`
+        const contributorsAPI =
+          `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?` +
+          // Basic contributor fields
+          `fields[]=id&` +
+          `fields[]=slug&` +
+          `fields[]=status&` +
+          `fields[]=first_name&` +
+          `fields[]=old_id&` +
+          `fields[]=last_name&` +
+          `fields[]=bio&` +
+          `fields[]=articles&` +
+          // Article related fields
+          `fields[]=articles.articles_contributors_id.id&` +
+          `fields[]=articles.articles_contributors_id.title&` +
+          `fields[]=articles.articles_contributors_id.slug&` +
+          `fields[]=articles.articles_contributors_id.issue&` +
+          `fields[]=articles.articles_contributors_id.issue.title&` +
+          `fields[]=articles.articles_contributors_id.issue.slug&` +
+          `fields[]=articles.articles_contributors_id.section&` +
+          `fields[]=articles.articles_contributors_id.section.name&` +
+          // Sorting and pagination
+          `sort=first_name&` +
+          `page=${page}&` +
+          `limit=100&` +
+          `offset=${page * 100 - 100}${filterString}`
         const res = await fetch(contributorsAPI)
         if (!res.ok) {
           throw new Error("Failed to fetch getAllContributors data")
