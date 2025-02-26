@@ -195,6 +195,19 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     }
   }
 
+  const handleSelectAll = () => {
+    // If all are selected, deselect all. Otherwise, select all matches
+    const allAreSelected = matchingContributors.every((contributor) =>
+      selectedContributors.some((selected) => selected.id === contributor.id),
+    )
+
+    if (allAreSelected) {
+      setSelectedContributors([])
+    } else {
+      setSelectedContributors(matchingContributors)
+    }
+  }
+
   const allContributorsRecords = (
     <>
       {likelyMatches.map((match, i) => (
@@ -319,16 +332,31 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
 
                 {showOnlyMatches && (
                   <div className="space-y-3 border-t rail-border py-3">
-                    <p className="text-lg font-light">
-                      <strong className="font-medium">
-                        {matchingContributors.length}{" "}
-                        {matchingContributors.length === 1 ? "contributor" : "contributors"}
-                      </strong>{" "}
-                      matched{" "}
-                      <span>
-                        {selectedContributor.first_name} {selectedContributor.last_name}
-                      </span>
-                    </p>
+                    <div className="flex justify-between items-center">
+                      <p className="text-lg font-light">
+                        <strong className="font-medium">
+                          {matchingContributors.length}{" "}
+                          {matchingContributors.length === 1 ? "contributor" : "contributors"}
+                        </strong>{" "}
+                        matched{" "}
+                        <span>
+                          {selectedContributor.first_name} {selectedContributor.last_name}
+                        </span>
+                      </p>
+                      <div className="flex flex-col">
+                        <div className="flex space-x-3 h-full w-24 items-start justify-end">
+                          <div className="">
+                            <button
+                              onClick={handleSelectAll}
+                              className="text-xs flex-none px-3 py-1 block rounded-md bg-blue-500 dark:bg-blue-500 text-white"
+                            >
+                              Select all
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="py-3 contributors divide-y divide-gray-600 divide-dotted">
                       {matchedContributors}
                     </div>
