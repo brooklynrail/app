@@ -8,7 +8,7 @@ import { Articles, Contributors, DirectusFiles, Events, GlobalSettings, Issues, 
 export const getBaseUrl = () => {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL
     ? process.env.NEXT_PUBLIC_BASE_URL
-    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
   return baseURL
 }
 
