@@ -12,18 +12,23 @@ interface ContributorsMergeProps {
   navData: Homepage
 }
 
-interface PersonWithMatches extends People {
-  matches?: Contributors[]
-}
+// Base type for API interactions
+type ContributorBase = Contributors
 
-interface ContributorWithMatches extends Contributors {
-  matches?: Contributors[]
+// Client-side only type for UI state
+interface ClientContributorWithMatches {
+  contributor: ContributorBase
+  matches: ContributorBase[]
 }
 
 interface MergeMessage {
   status: "success" | "merging" | "error"
   text: string
   details?: string
+  errors?: {
+    message: string
+    field?: string
+  }[]
 }
 
 enum MergeState {
@@ -36,7 +41,8 @@ enum MergeState {
 const ContributorsMerge = (props: ContributorsMergeProps) => {
   const router = useRouter()
   const [selectedContributors, setSelectedContributors] = useState<Contributors[]>([])
-  const [selectedContributor, setSelectedContributor] = useState<ContributorWithMatches | null>(null)
+  const [selectedContributor, setSelectedContributor] = useState<ContributorBase | null>(null)
+  const [matchingContributors, setMatchingContributors] = useState<ContributorBase[]>([])
   const [showOnlyMatches, setShowOnlyMatches] = useState(true)
   const [message, setMessage] = useState<MergeMessage | null>(null)
   const [mergeState, setMergeState] = useState<MergeState>(MergeState.Ready)
@@ -106,20 +112,16 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   }
 
   const likelyMatches = allContributors
-    .map((contributor: Contributors) => {
-      const matches = allContributors.filter((otherContributor: Contributors) => {
-        return (
+    .map((contributor: ContributorBase) => {
+      const matches = allContributors.filter(
+        (otherContributor) =>
           otherContributor.first_name === contributor.first_name &&
           otherContributor.last_name === contributor.last_name &&
-          otherContributor.id !== contributor.id
-        ) // Don't match with self
-      })
-      if (matches.length > 0) {
-        return { ...contributor, matches } as ContributorWithMatches
-      }
-      return null
+          otherContributor.id !== contributor.id,
+      )
+      return matches.length > 0 ? { contributor, matches } : null
     })
-    .filter((contributor): contributor is NonNullable<ContributorWithMatches> => contributor !== null)
+    .filter((match): match is NonNullable<ClientContributorWithMatches> => match !== null)
 
   const handleContributorToggle = (contributor: Contributors) => {
     setSelectedContributors((prev) =>
@@ -139,14 +141,21 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           other.last_name === contributor.last_name &&
           other.id !== contributor.id,
       )
-      setSelectedContributor({ ...contributor, matches })
+      setSelectedContributor(contributor)
+      setMatchingContributors(matches)
     }
   }
 
   const handleMerge = async () => {
     if (selectedContributors.length === 0 || !selectedContributor) {
+      setMessage({
+        status: "error",
+        text: "Invalid merge selection",
+        details: "Please select at least one contributor to merge",
+      })
       return
     }
+
     setMessage({
       status: "merging",
       text: "Merging contributors...",
@@ -159,7 +168,10 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         selectedContributor: selectedContributor,
         otherContributors: selectedContributors,
       })
-      console.log("result", result)
+
+      if (!result.success) {
+        throw new Error(result.message || "Merge failed")
+      }
 
       setMessage({
         status: "success",
@@ -168,44 +180,32 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
       })
       setMergeState(MergeState.Merged)
 
-      // Re-fetch the person data
-      const firstName = selectedContributor.first_name
-      const lastName = selectedContributor.last_name
-      if (firstName && lastName) {
-        const queryParams = new URLSearchParams({
-          firstName: firstName,
-          lastName: lastName,
-        }).toString()
-        const response = await fetch(`/api/contributors?${queryParams}`)
-
-        if (!response.ok) {
-          throw new Error("Failed to re-fetch person details")
-        }
-        const updatedContributorData = await response.json()
-        console.log("updatedContributorData", updatedContributorData)
-        // setSelectedContributor(updatedContributorData)
-      }
       router.refresh()
     } catch (error) {
       setMergeState(MergeState.Error)
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred"
+
       setMessage({
         status: "error",
         text: "Failed to merge contributors",
-        details: error instanceof Error ? error.message : "Unknown error occurred",
+        details: errorMessage,
+        errors: error instanceof Error && "errors" in error ? (error as any).errors : [{ message: errorMessage }],
       })
-      console.error("Error merging people:", error)
+      console.error("Error merging contributors:", error)
     }
   }
 
   const allContributorsRecords = (
     <>
-      {likelyMatches.map((contributor: any, i: number) => (
+      {likelyMatches.map((match, i) => (
         <div
-          key={`${contributor.id}-${i}`}
-          onClick={() => handleContributorClick(contributor)}
-          className={`cursor-pointer ${selectedContributor?.id === contributor.id ? "bg-amber-200 dark:bg-gray-800" : ""}`}
+          key={`${match.contributor.id}-${i}`}
+          onClick={() => handleContributorClick(match.contributor)}
+          className={`cursor-pointer ${
+            selectedContributor?.id === match.contributor.id ? "bg-amber-200 dark:bg-gray-800" : ""
+          }`}
         >
-          {contributor.first_name} {contributor.last_name}
+          {match.contributor.first_name} {match.contributor.last_name}
         </div>
       ))}
     </>
@@ -213,18 +213,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
 
   const matchedContributors = (
     <>
-      {selectedContributor?.matches
-        ?.filter(
-          (contributor, index, self) =>
-            // Remove duplicates by checking if this is the first occurrence of this ID
-            self.findIndex((c) => c.id === contributor.id) === index,
-        )
-        .sort((a, b) => {
-          const aOldId = parseInt(String(a.old_id || "0"))
-          const bOldId = parseInt(String(b.old_id || "0"))
-          return bOldId - aOldId
-        })
-        .map((contributor: Contributors, i: number) => {
+      {selectedContributor &&
+        matchingContributors.map((contributor: ContributorBase, i: number) => {
           const permalink = getPermalink({
             slug: contributor.slug,
             type: PageType.Contributor,
@@ -240,7 +230,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
               onPrimarySelect={() => {}}
             />
           )
-        }) || <p className="text-sm text-gray-500">Select a person to see matching contributors</p>}
+        })}
     </>
   )
 
@@ -253,11 +243,33 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           </p>
         )
       case MergeState.Merging:
-        return <p>{message?.details}</p>
+        return (
+          <div className="text-amber-600 dark:text-amber-400">
+            <p>{message?.details}</p>
+          </div>
+        )
       case MergeState.Merged:
-        return <p>{message?.details}</p>
+        return (
+          <div className="text-green-600 dark:text-green-400">
+            <p>{message?.details}</p>
+          </div>
+        )
       case MergeState.Error:
-        return <p>{message?.details}</p>
+        return (
+          <div className="text-red-600 dark:text-red-400 space-y-1">
+            <p>{message?.details}</p>
+            {message?.errors && (
+              <ul className="text-sm list-disc pl-4">
+                {message.errors.map((error, index) => (
+                  <li key={index}>
+                    {error.field && <span className="font-medium">{error.field}: </span>}
+                    {error.message}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )
     }
   })()
 
@@ -309,8 +321,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
                   <div className="space-y-3 border-t rail-border py-3">
                     <p className="text-lg font-light">
                       <strong className="font-medium">
-                        {selectedContributor.matches?.length}{" "}
-                        {selectedContributor.matches?.length === 1 ? "contributor" : "contributors"}
+                        {matchingContributors.length}{" "}
+                        {matchingContributors.length === 1 ? "contributor" : "contributors"}
                       </strong>{" "}
                       matched{" "}
                       <span>
@@ -350,18 +362,31 @@ const ArticlesList = ({ articles }: { articles: ArticlesContributors[] }) => {
             if (!article.articles_contributors_id) {
               return null
             }
+            const articlePermalink = getPermalink({
+              slug: article.articles_contributors_id.slug,
+              year: article.articles_contributors_id.issue.year,
+              month: article.articles_contributors_id.issue.month,
+              section: article.articles_contributors_id.section.slug,
+              type: PageType.Article,
+            })
             return (
               <li key={index}>
                 <span className="font-serif text-xs">{parse(article.articles_contributors_id.title)}</span> —{" "}
                 <span className="">{article.articles_contributors_id.section.name}</span> /{" "}
                 <span className="">{article.articles_contributors_id.issue.title}</span>
-                <Link
-                  className="text-blue-600 pl-3"
-                  target="_blank"
-                  href={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/admin/content/articles/${article.articles_contributors_id.id}`}
-                >
-                  edit
-                </Link>
+                <span>
+                  <Link className="text-blue-600 pl-3" target="_blank" href={articlePermalink}>
+                    view
+                  </Link>{" "}
+                  /{" "}
+                  <Link
+                    className="text-blue-600"
+                    target="_blank"
+                    href={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/admin/content/articles/${article.articles_contributors_id.id}`}
+                  >
+                    edit
+                  </Link>
+                </span>
               </li>
             )
           })}
@@ -376,7 +401,6 @@ const Contributor = ({ contributor, isSelected, isPrimary, onToggleSelect, onPri
     slug: contributor.slug,
     type: PageType.Contributor,
   })
-  const articles = contributor.articles.map((article) => article.articles_contributors_id)
 
   return (
     <div className="space-y-1.5 py-3">
@@ -417,22 +441,22 @@ const Contributor = ({ contributor, isSelected, isPrimary, onToggleSelect, onPri
 
           <ArticlesList articles={contributor.articles} />
         </div>
-        {!isPrimary && (
-          <div className="flex flex-col">
-            <div className="flex space-x-3 h-full items-start justify-center">
+        <div className="flex flex-col">
+          <div className="flex space-x-3 h-full w-24 items-start justify-end">
+            <div className="">
               <button
                 onClick={onToggleSelect}
                 className={`text-xs flex-none px-3 py-1 block rounded-md ${
-                  isSelected
+                  isSelected || isPrimary
                     ? "bg-emerald-500 dark:bg-green-500 text-white"
                     : "bg-gray-200 dark:bg-gray-800 text-gray-500 line-through"
                 }`}
               >
-                Match
+                {isPrimary ? "Primary" : "Match"}
               </button>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   )

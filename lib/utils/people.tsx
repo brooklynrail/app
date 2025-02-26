@@ -1,4 +1,4 @@
-import { createItem, readItem, readItems, updateItem, updateItems } from "@directus/sdk"
+import { createItem, createItems, readItem, readItems, updateItem } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../directus"
 import { Contributors, People } from "../types"
@@ -64,7 +64,7 @@ export const mergeContributors = async (props: MergeContributorsProps) => {
     return {
       success: true,
       error: null,
-      message: `Successfully merged ${allArticleIds.length} articles to contributor ${selectedContributor.first_name} ${selectedContributor.last_name}`,
+      message: `Successfully merged  articles to contributor ${selectedContributor.first_name} ${selectedContributor.last_name}`,
     }
   } catch (error) {
     // More detailed error logging
@@ -81,6 +81,7 @@ export const mergeContributors = async (props: MergeContributorsProps) => {
 }
 
 const addRedirect = async (primaryContributor: Contributors, contributor: Contributors) => {
+  console.log("adding redirect for", contributor, primaryContributor)
   const permalink = getPermalink({
     slug: contributor.slug,
     type: PageType.Contributor,
@@ -94,30 +95,36 @@ const addRedirect = async (primaryContributor: Contributors, contributor: Contri
       }),
     )
 
+    console.log("existing redirect", redirect)
+
     if (!redirect || redirect.length > 0) {
       return true
     }
 
-    await directus.request(
+    console.log("creating redirect", url.pathname, primaryContributor)
+    const result = await directus.request(
       createItem("redirects", {
         path: url.pathname,
-        contributors: primaryContributor,
+        contributors: primaryContributor.id,
         type: "contributor",
       }),
     )
+    console.log("redirect result =========", result)
   } catch (error) {
-    console.error("Error updating contributor articles:", error)
-    return null
+    console.error("Error creating redirect:", error)
+    throw error // Propagate the error for better error handling
   }
 }
 
 const archiveContributor = async (contributor: Contributors) => {
+  console.log("archiving contributor", contributor)
   try {
-    await directus.request(
+    const result = await directus.request(
       updateItem("contributors", contributor.id, {
         status: "archived",
       }),
     )
+    console.log("archive result =========", result)
   } catch (error) {
     console.error("Error updating contributor articles:", error)
     return null
@@ -253,8 +260,11 @@ export const getAllContributorsMerge = cache(
           `fields[]=articles.articles_contributors_id.issue&` +
           `fields[]=articles.articles_contributors_id.issue.title&` +
           `fields[]=articles.articles_contributors_id.issue.slug&` +
+          `fields[]=articles.articles_contributors_id.issue.year&` +
+          `fields[]=articles.articles_contributors_id.issue.month&` +
           `fields[]=articles.articles_contributors_id.section&` +
           `fields[]=articles.articles_contributors_id.section.name&` +
+          `fields[]=articles.articles_contributors_id.section.slug&` +
           // Sorting and pagination
           `sort=first_name&` +
           `page=${page}&` +

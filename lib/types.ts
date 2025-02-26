@@ -80,9 +80,9 @@ export type ArticlesPeople = {
 export interface Redirects {
   path: string
   type: string
-  articles: Articles
-  events: Events
-  contributors: Contributors
+  articles?: string | null
+  events?: string | null
+  contributors?: string | null
 }
 
 export type ArticlesContributors = {
