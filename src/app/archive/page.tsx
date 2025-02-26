@@ -41,11 +41,9 @@ export default async function Archive() {
 }
 
 async function getData() {
-  const baseURL = getBaseUrl()
-  console.log("baseURL===================", baseURL)
   let navData
   try {
-    const response = await fetch(`${baseURL}/api/nav/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/nav/`, {
       next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
     })
 
