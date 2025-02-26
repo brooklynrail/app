@@ -36,7 +36,6 @@ enum MergeState {
 const ContributorsMerge = (props: ContributorsMergeProps) => {
   const router = useRouter()
   const [selectedContributors, setSelectedContributors] = useState<Contributors[]>([])
-  const [selectedPerson, setSelectedPerson] = useState<PersonWithMatches | null>(null)
   const [selectedContributor, setSelectedContributor] = useState<ContributorWithMatches | null>(null)
   const [showOnlyMatches, setShowOnlyMatches] = useState(true)
   const [message, setMessage] = useState<MergeMessage | null>(null)
@@ -47,7 +46,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   useEffect(() => {
     setMergeState(MergeState.Ready)
     setMessage(null)
-  }, [selectedPerson])
+  }, [selectedContributor])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,10 +67,10 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
 
   useEffect(() => {
     const fetchContributors = async () => {
-      if (selectedPerson && selectedPerson.first_name && selectedPerson.last_name) {
+      if (selectedContributor && selectedContributor.first_name && selectedContributor.last_name) {
         const queryParams = new URLSearchParams({
-          firstName: selectedPerson.first_name,
-          lastName: selectedPerson.last_name,
+          firstName: selectedContributor.first_name,
+          lastName: selectedContributor.last_name,
         }).toString()
 
         const response = await fetch(`/api/contributors?${queryParams}`)
@@ -79,13 +78,13 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           const contributors = await response.json()
           console.log("Fetched contributors from API:", contributors)
 
-          // Filter out contributors whose articles are already in selectedPerson.articles
+          // Filter out contributors whose articles are already in selectedContributor.articles
           const filteredContributors = contributors.filter((contributor: Contributors) => {
             const contributorArticleIds = contributor.articles
               .map((article) => article.articles_contributors_id?.id)
               .filter((id): id is string => id !== undefined)
-            const personArticleIds = selectedPerson.articles
-              .map((article) => article.articles_id?.id)
+            const personArticleIds = selectedContributor.articles
+              .map((article) => article.articles_contributors_id?.id)
               .filter((id): id is string => id !== undefined)
 
             return !contributorArticleIds.some((id) => personArticleIds.includes(id))
@@ -99,7 +98,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     }
 
     fetchContributors()
-  }, [selectedPerson])
+  }, [selectedContributor])
 
   if (!allContributors) {
     return <></>
@@ -168,13 +167,23 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
       })
       setMergeState(MergeState.Merged)
 
-      // // Re-fetch the person data
-      const response = await fetch(`/api/contributors/merge?id=${selectedContributor.id}`)
-      if (!response.ok) {
-        throw new Error("Failed to re-fetch person details")
+      // Re-fetch the person data
+      const firstName = selectedContributor.first_name
+      const lastName = selectedContributor.last_name
+      if (firstName && lastName) {
+        const queryParams = new URLSearchParams({
+          firstName: firstName,
+          lastName: lastName,
+        }).toString()
+        const response = await fetch(`/api/contributors?${queryParams}`)
+
+        if (!response.ok) {
+          throw new Error("Failed to re-fetch person details")
+        }
+        const updatedContributorData = await response.json()
+        console.log("updatedContributorData", updatedContributorData)
+        // setSelectedContributor(updatedContributorData)
       }
-      const updatedContributorData = await response.json()
-      setSelectedContributor(updatedContributorData)
       router.refresh()
     } catch (error) {
       setMergeState(MergeState.Error)
@@ -189,7 +198,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
 
   const allContributorsRecords = (
     <>
-      {allContributors.map((contributor: any, i: number) => (
+      {likelyMatches.map((contributor: any, i: number) => (
         <div
           key={`${contributor.id}-${i}`}
           onClick={() => handleContributorClick(contributor)}
@@ -267,6 +276,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
           <div className="col-span-4 tablet-lg:col-span-4 space-y-3 relative">
             <div className="sticky top-16">
+              <div>{likelyMatches.length} likely matches</div>
               <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border">
                 {allContributorsRecords}
               </div>
@@ -333,6 +343,8 @@ const Contributor = ({ contributor, isSelected, isPrimary, onToggleSelect, onPri
     slug: contributor.slug,
     type: PageType.Contributor,
   })
+  const articles = contributor.articles.map((article) => article.articles_contributors_id)
+  console.log("articles", articles)
   return (
     <div className="space-y-1.5 py-3">
       <div className="flex space-x-6 justify-between">
@@ -361,6 +373,11 @@ const Contributor = ({ contributor, isSelected, isPrimary, onToggleSelect, onPri
           <div className="text-xs">
             <span className="block">{parse(contributor.bio || "---")}</span>
           </div>
+          <div>
+            <div className="text-xs">
+              <Link href={`/contributors/${contributor.slug}`}>View</Link>
+            </div>
+          </div>
           <div className="text-xs">
             <Link
               className="text-blue-600"
@@ -378,7 +395,7 @@ const Contributor = ({ contributor, isSelected, isPrimary, onToggleSelect, onPri
                 onClick={onToggleSelect}
                 className={`text-xs flex-none px-3 py-1 block rounded-md ${
                   isSelected
-                    ? "bg-green-500 dark:bg-green-500 text-white"
+                    ? "bg-emerald-500 dark:bg-green-500 text-white"
                     : "bg-gray-200 dark:bg-gray-800 text-gray-500 line-through"
                 }`}
               >
