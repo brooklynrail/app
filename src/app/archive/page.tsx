@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { getAllIssues, getBaseUrl, getPermalink, PageType } from "../../../lib/utils"
+import { getAllIssues, getPermalink, PageType } from "../../../lib/utils"
 import ArchivePage from "../components/archive"
 import { Metadata } from "next"
 
@@ -40,10 +40,9 @@ export default async function Archive() {
 }
 
 async function getData() {
-  const baseUrl = getBaseUrl()
   let navData
   try {
-    const response = await fetch(`${baseUrl}/api/nav/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/nav/`, {
       next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
     })
 
