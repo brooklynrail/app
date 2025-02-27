@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getNavData } from "../../../../lib/utils/homepage"
 import { getPreviewPassword } from "../../../../lib/utils/preview"
+import { getAllContributors } from "../../../../lib/utils/people"
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -24,12 +25,23 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ContributorsMergeIndex() {
   const data = await getData()
 
-  return <ProtectedContributorsMerge navData={data.navData} previewPassword={data.previewPassword} />
+  return (
+    <ProtectedContributorsMerge
+      navData={data.navData}
+      previewPassword={data.previewPassword}
+      allContributors={data.allContributors}
+    />
+  )
 }
 
 async function getData() {
   const navData = await getNavData()
   if (!navData) {
+    return notFound()
+  }
+
+  let allContributors = await getAllContributors()
+  if (!allContributors || allContributors.length === 0) {
     return notFound()
   }
 
@@ -41,5 +53,6 @@ async function getData() {
   return {
     navData,
     previewPassword,
+    allContributors,
   }
 }
