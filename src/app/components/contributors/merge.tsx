@@ -40,6 +40,30 @@ enum MergeState {
   Error = "error",
 }
 
+const ContributorsSkeleton = () => {
+  return (
+    <div className="col-span-4 tablet-lg:col-span-4 space-y-3 relative">
+      <div className="sticky top-16">
+        <div className="text-md flex justify-between items-center">
+          <div className="h-5 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+          <div className="h-5 w-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+        </div>
+        <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border mt-3">
+          {/* Generate 10 skeleton items */}
+          {[...Array(20)].map((_, i) => (
+            <div key={i} className="py-1">
+              <div className="flex justify-between items-center">
+                <div className="h-6 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                <div className="h-4 w-20 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const ContributorsMerge = (props: ContributorsMergeProps) => {
   const router = useRouter()
   const [selectedContributors, setSelectedContributors] = useState<Contributors[]>([])
@@ -50,6 +74,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   const [mergeState, setMergeState] = useState<MergeState>(MergeState.Ready)
   const [allContributors, setAllContributors] = useState<Contributors[]>([])
   const { navData } = props
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     setMergeState(MergeState.Ready)
@@ -58,6 +83,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true)
       try {
         const contributorsResponse = await fetch("/api/contributors")
         if (!contributorsResponse.ok) {
@@ -67,6 +93,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         setAllContributors(contributors)
       } catch (error) {
         console.error("Error fetching data:", error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -220,7 +248,10 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
             selectedContributor?.id === match.contributor.id ? "bg-amber-200 dark:bg-gray-800" : ""
           }`}
         >
-          {match.contributor.first_name} {match.contributor.last_name}
+          <div className="flex justify-between items-center py-1">
+            {match.contributor.first_name} {match.contributor.last_name}
+            <span className="text-xs text-gray-500">Old ID: #{match.contributor.old_id}</span>
+          </div>
         </div>
       ))}
     </>
@@ -302,14 +333,21 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
         </div>
 
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-x-6 desktop-lg:gap-x-12">
-          <div className="col-span-4 tablet-lg:col-span-4 space-y-3 relative">
-            <div className="sticky top-16">
-              <div>{likelyMatches.length} likely matches</div>
-              <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border">
-                {allContributorsRecords}
+          {isLoading ? (
+            <ContributorsSkeleton />
+          ) : (
+            <div className="col-span-4 tablet-lg:col-span-4 space-y-3 relative">
+              <div className="sticky top-16">
+                <div className="text-md flex justify-between items-center py-1">
+                  <span className="font-medium">{likelyMatches.length} likely matches</span>
+                  <span className="text-gray-500">{allContributors.length} total contributors</span>
+                </div>
+                <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border">
+                  {allContributorsRecords}
+                </div>
               </div>
             </div>
-          </div>
+          )}
           {selectedContributor && (
             <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-5 space-y-6">
               <div className="flex justify-end items-center space-x-3">
