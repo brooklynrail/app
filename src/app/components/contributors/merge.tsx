@@ -1,15 +1,17 @@
 "use client"
-import Link from "next/link"
 import parse from "html-react-parser"
-import { ArticlesContributors, Contributors, Homepage, Issues, People } from "../../../../lib/types"
-import { getPermalink, PageType } from "../../../../lib/utils"
-import Paper from "../paper"
-import { useState, useEffect } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { ArticlesContributors, Contributors, Homepage } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
 import { mergeContributors } from "../../../../lib/utils/people"
+import Paper from "../paper"
+import Password from "../preview/password"
 
 interface ContributorsMergeProps {
   navData: Homepage
+  previewPassword: string
 }
 
 // Base type for API interactions
@@ -490,4 +492,15 @@ const Contributor = ({ contributor, isSelected, isPrimary, onToggleSelect, onPri
   )
 }
 
-export default ContributorsMerge
+const ProtectedContributorsMerge = (props: ContributorsMergeProps) => {
+  const { previewPassword } = props
+  const cookieSlug = "rail_preview_contributors_merge"
+
+  return (
+    <Password previewPassword={previewPassword} cookieSlug={cookieSlug}>
+      <ContributorsMerge {...props} />
+    </Password>
+  )
+}
+
+export default ProtectedContributorsMerge
