@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation"
-import { getAllIssues, getBaseUrl, getPermalink, PageType } from "../../../lib/utils"
-import { getNavData } from "../../../lib/utils/homepage"
+import { getAllIssues, getPermalink, PageType } from "../../../lib/utils"
 import ArchivePage from "../components/archive"
 import { Metadata } from "next"
 
@@ -41,11 +40,22 @@ export default async function Archive() {
 }
 
 async function getData() {
-  const baseURL = getBaseUrl()
-  console.log("baseURL===================", baseURL)
-  const navData = await fetch(`${baseURL}/api/nav/`, {
-    next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
-  }).then((res) => res.json())
+  let navData
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/nav/`, {
+      next: { revalidate: 86400, tags: ["homepage"] }, // 24 hours in seconds (24 * 60 * 60)
+    })
+
+    if (!response.ok) {
+      console.error(`Nav API returned status: ${response.status}`)
+      navData = {} // Provide a fallback value
+    } else {
+      navData = await response.json()
+    }
+  } catch (error) {
+    console.error("Error fetching nav data:", error)
+    navData = {} // Provide a fallback value
+  }
 
   const allIssuesData = await getAllIssues()
   if (!allIssuesData) {

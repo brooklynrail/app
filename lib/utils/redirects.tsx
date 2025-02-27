@@ -6,6 +6,7 @@ import { Redirects } from "../types"
 export enum RedirectTypes {
   Article = "article",
   Event = "event",
+  Contributor = "contributor",
 }
 
 export const getRedirect = cache(async (type: string, slug: string) => {
@@ -30,6 +31,9 @@ export const getRedirect = cache(async (type: string, slug: string) => {
           },
           {
             events: ["slug", "title", "start_date"],
+          },
+          {
+            contributors: ["slug"],
           },
         ],
         filter: {

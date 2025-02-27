@@ -3,22 +3,12 @@ import { readItems, readSingleton } from "@directus/sdk"
 import { cache } from "react"
 import { stripHtml } from "string-strip-html"
 import directus from "./directus"
-import {
-  Articles,
-  Contributors,
-  DirectusFiles,
-  Events,
-  GlobalSettings,
-  Issues,
-  People,
-  Sections,
-  Tributes,
-} from "./types"
+import { Articles, Contributors, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
 
 export const getBaseUrl = () => {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL
     ? process.env.NEXT_PUBLIC_BASE_URL
-    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
   return baseURL
 }
 
@@ -570,95 +560,6 @@ export function getPermalink(props: PermalinkProps) {
   }
 }
 
-// Get contributor
-// NOTE: There are multiple contributors with the same slug
-// This returns all contributors with the same slug, but their specific name and bio information may be different
-export const getContributor = cache(async (slug: string) => {
-  const issueDataAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors` +
-    `?fields[]=id` +
-    `&fields[]=first_name` +
-    `&fields[]=last_name` +
-    `&fields[]=slug` +
-    `&fields[]=bio` +
-    `&fields[]=status` +
-    `&fields[]=old_id` +
-    `&fields[]=date_updated` +
-    `&fields[]=date_created` +
-    // `&fields[]=articles` +
-    `&fields[]=articles.articles_contributors_id.slug` +
-    `&fields[]=articles.articles_contributors_id.title` +
-    `&fields[]=articles.articles_contributors_id.status` +
-    `&fields[]=articles.articles_contributors_id.excerpt` +
-    `&fields[]=articles.articles_contributors_id.kicker` +
-    `&fields[]=articles.articles_contributors_id.featured` +
-    `&fields[]=articles.articles_contributors_id.featured_image.id` +
-    `&fields[]=articles.articles_contributors_id.featured_image.caption` +
-    `&fields[]=articles.articles_contributors_id.featured_image.alt` +
-    `&fields[]=articles.articles_contributors_id.featured_image.filename_disk` +
-    `&fields[]=articles.articles_contributors_id.featured_image.width` +
-    `&fields[]=articles.articles_contributors_id.featured_image.height` +
-    `&fields[]=articles.articles_contributors_id.featured_image.type` +
-    `&fields[]=articles.articles_contributors_id.issue.title` +
-    `&fields[]=articles.articles_contributors_id.issue.year` +
-    `&fields[]=articles.articles_contributors_id.issue.month` +
-    `&fields[]=articles.articles_contributors_id.issue.slug` +
-    `&fields[]=articles.articles_contributors_id.issue.published` +
-    `&fields[]=articles.articles_contributors_id.section.slug` +
-    `&fields[]=articles.articles_contributors_id.section.name` +
-    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.id` +
-    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.first_name` +
-    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.last_name` +
-    `&fields[]=articles.articles_contributors_id.contributors.contributors_id.slug` +
-    `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_eq]=published` +
-    `&filter[articles][_nnull]=true` +
-    `&deep[articles][_filter][articles_contributors_id][status][_eq]=published` +
-    `&deep[articles][_sort]=-articles_contributors_id.issue.year,-articles_contributors_id.issue.month` +
-    `&deep[articles][issue][_nnull]=true`
-
-  try {
-    const res = await fetch(issueDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch getContributor data")
-    }
-
-    const { data } = await res.json()
-    return data as Contributors[]
-  } catch (error) {
-    // Handle the error here
-    console.error("Failed to fetch getContributor data", error)
-    return null
-  }
-})
-
-export const getAllContributors = cache(async () => {
-  try {
-    let contributorPages: Contributors[] = []
-    let page = 1
-    let isMore = true
-    while (isMore) {
-      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_nnull]=true&page=${page}&limit=100&offset=${page * 100 - 100}`
-      const res = await fetch(contributorsAPI, { next: { revalidate: 3600, tags: ["contributors"] } })
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error("Failed to fetch getAllContributors data")
-      }
-      const data = await res.json()
-      contributorPages = contributorPages.concat(data.data)
-      isMore = data.data.length === 100 // assumes there is another page of records
-      page++
-    }
-
-    return contributorPages
-  } catch (error) {
-    // Handle the error here
-    console.error("Failed to fetch getAllContributors data", error)
-    return null
-  }
-})
-
 interface TributesParams {
   thisIssueData: Issues
 }
@@ -774,15 +675,6 @@ export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataPar
     }),
   )
   return tribute[0] as Tributes
-})
-
-export const getAllPeople = cache(async () => {
-  const people = await directus.request(
-    readItems("people", {
-      fields: ["*"],
-    }),
-  )
-  return people as People[]
 })
 
 export const getNavigation = cache(async () => {
