@@ -77,12 +77,18 @@ export type ArticlesPeople = {
   id: number
 }
 
-export interface Redirects {
+export type Redirects = {
+  articles?: string | Articles | null
+  contributors?: string | Contributors | null
+  date_created?: string | null
+  date_updated?: string | null
+  events?: string | Events | null
+  id: string
   path: string
+  status: string
   type: string
-  articles?: string | null
-  events?: string | null
-  contributors?: string | null
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
 }
 
 export type ArticlesContributors = {

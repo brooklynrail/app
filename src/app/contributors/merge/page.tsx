@@ -5,8 +5,6 @@ import { getNavData } from "../../../../lib/utils/homepage"
 import { getPreviewPassword } from "../../../../lib/utils/preview"
 
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await getData()
-
   return {
     title: `MERGE Contributors`,
     description: "",
