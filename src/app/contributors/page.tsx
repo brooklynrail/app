@@ -1,9 +1,10 @@
-import { Contributors, Issues } from "../../../lib/types"
-import { getAllContributors, getCurrentIssueData, getPermalink, PageType } from "../../../lib/utils"
 import { notFound } from "next/navigation"
-import ContributorsPage from "../components/contributors"
+import { Contributors } from "../../../lib/types"
+import { getCurrentIssueData, getPermalink, PageType } from "../../../lib/utils"
 import { getNavData } from "../../../lib/utils/homepage"
 import { Metadata } from "next"
+import ContributorsPage from "../components/contributors"
+import { getAllContributors } from "../../../lib/utils/people"
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()

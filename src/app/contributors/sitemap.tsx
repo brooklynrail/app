@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next"
-import { getAllContributors } from "../../../lib/utils"
+import { getAllContributors } from "../../../lib/utils/people"
 import { Contributors } from "../../../lib/types"
 import { notFound } from "next/navigation"
 

@@ -70,11 +70,25 @@ export type Articles = {
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
 }
-export interface Redirects {
+
+export type ArticlesPeople = {
+  articles_id?: Articles | null
+  people_id?: People | null
+  id: number
+}
+
+export type Redirects = {
+  articles?: string | Articles | null
+  contributors?: string | Contributors | null
+  date_created?: string | null
+  date_updated?: string | null
+  events?: string | Events | null
+  id: string
   path: string
+  status: string
   type: string
-  articles: Articles
-  events: Events
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
 }
 
 export type ArticlesContributors = {
@@ -763,6 +777,7 @@ export type PagesQuotes = {
 export type People = {
   id: string
   bio: string
+  short_bio?: string | null
   date_created: string
   date_updated: string
   email?: string | null
@@ -772,6 +787,7 @@ export type People = {
   pronouns?: string | null
   related_links?: RelatedLinks[] | null
   slug: string
+  articles: ArticlesPeople[]
   events: EventsPeople[]
   poets: EventsPeoplePoets[]
   sort?: number | null

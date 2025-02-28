@@ -7,7 +7,7 @@ interface PeopleHeadProps {
 }
 const PeopleHead = (props: PeopleHeadProps) => {
   const { contributorData } = props
-  const { first_name, last_name, bio } = contributorData
+  const { first_name, last_name, bio, id } = contributorData
 
   return (
     <header className="py-6 px-3">
