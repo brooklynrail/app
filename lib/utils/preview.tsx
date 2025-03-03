@@ -1,7 +1,9 @@
 import directus from "../directus"
-import { readItems } from "@directus/sdk"
-import { Articles, Events, Exhibitions, Issues, Tributes } from "../types"
+import { Articles, Events, Exhibitions, Issues, Tributes, HomepageCollections, Homepage } from "../types"
+import { readItems, readSingleton } from "@directus/sdk"
 import { getGlobalSettings } from "../utils"
+import { cache } from "react"
+import { getCollectionArticles } from "./homepage"
 
 export async function getPreviewPassword() {
   const settings = await getGlobalSettings()
@@ -82,6 +84,103 @@ export const getPreviewIssue = async (id: string) => {
     return preview[0] as Issues
   } catch (error) {
     console.error("error in getPreviewIssue", error)
+    return null
+  }
+}
+
+export const getPreviewHomepageData = async (currentIssue: Issues) => {
+  try {
+    const homepageData = await directus.request(
+      readSingleton("homepage", {
+        fields: [
+          "id",
+          {
+            banners: [
+              {
+                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
+              },
+            ],
+          },
+          {
+            video_covers: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
+          },
+          {
+            video_covers_stills: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
+          },
+          {
+            collections: [
+              {
+                collections_id: [
+                  "id",
+                  "type",
+                  "kicker",
+                  "title",
+                  "limit",
+                  "links",
+                  "banner_type",
+                  {
+                    section: ["slug", "featured", "description"],
+                  },
+                  {
+                    tribute: [
+                      "id",
+                      "title",
+                      "deck",
+                      "blurb",
+                      "summary",
+                      "excerpt",
+                      "slug",
+                      {
+                        editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+                      },
+                      {
+                        articles: [
+                          "id",
+                          "slug",
+                          "title",
+                          "deck",
+                          "excerpt",
+                          "sort",
+                          "status",
+                          {
+                            contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
+                          },
+                        ],
+                      },
+                      {
+                        featured_image: ["id", "width", "height", "filename_disk", "caption"],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      }),
+    )
+
+    const homepage = homepageData as Homepage
+
+    const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
+      if (collection.collections_id && collection.collections_id.section) {
+        const thisSectionArticles = getCollectionArticles({
+          currentIssueSlug: currentIssue.slug,
+          slug: collection.collections_id.section.slug,
+          limit: collection.collections_id.limit,
+        })
+
+        collection.collections_id.section.articles = (await thisSectionArticles) as Articles[]
+        return collection
+      }
+      return collection
+    })
+
+    homepage.collections = await Promise.all(allCollections)
+
+    return homepage as Homepage
+  } catch (error) {
+    console.error("Error fetching Homepage data:", error)
     return null
   }
 }

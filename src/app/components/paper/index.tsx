@@ -47,7 +47,16 @@ const Paper = (props: PaperProps) => {
       <MenuProvider>
         <div className={`relative theme ${pageClass}`} style={pageStyle}>
           {previewURL ? (
-            <PreviewHeader previewURL={previewURL} />
+            <>
+              <PreviewHeader previewURL={previewURL} />
+              {type === PaperType.Homepage && (
+                <>
+                  <Header type={type} currentIssue={currentIssue} homepageData={homepageData} />
+                  {banners && isHomepage && currentIssue && <Banners currentIssue={currentIssue} banners={banners} />}
+                  <NavBar navData={navData} isHomepage={isHomepage} />
+                </>
+              )}
+            </>
           ) : (
             <>
               <Header type={type ? type : PaperType.Default} currentIssue={currentIssue} homepageData={homepageData} />
