@@ -25,13 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ContributorsMergeIndex() {
   const data = await getData()
 
-  return (
-    <ProtectedContributorsMerge
-      navData={data.navData}
-      previewPassword={data.previewPassword}
-      allContributors={data.allContributors}
-    />
-  )
+  return <ProtectedContributorsMerge navData={data.navData} previewPassword={data.previewPassword} />
 }
 
 async function getData() {
@@ -40,10 +34,10 @@ async function getData() {
     return notFound()
   }
 
-  let allContributors = await getAllContributors()
-  if (!allContributors || allContributors.length === 0) {
-    return notFound()
-  }
+  // let allContributors = await getAllContributors()
+  // if (!allContributors || allContributors.length === 0) {
+  //   return notFound()
+  // }
 
   const previewPassword = await getPreviewPassword()
   if (!previewPassword) {
@@ -53,6 +47,5 @@ async function getData() {
   return {
     navData,
     previewPassword,
-    allContributors,
   }
 }

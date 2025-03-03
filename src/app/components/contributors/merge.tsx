@@ -12,7 +12,6 @@ import Password from "../preview/password"
 interface ContributorsMergeProps {
   navData: Homepage
   previewPassword: string
-  allContributors: Contributors[]
 }
 
 // Base type for API interactions
@@ -73,7 +72,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   const [showOnlyMatches, setShowOnlyMatches] = useState(true)
   const [message, setMessage] = useState<MergeMessage | null>(null)
   const [mergeState, setMergeState] = useState<MergeState>(MergeState.Ready)
-  const [allContributors, setAllContributors] = useState<Contributors[]>(props.allContributors)
+  const [allContributors, setAllContributors] = useState<Contributors[]>([])
   const { navData } = props
   const [isLoading, setIsLoading] = useState(true)
 
@@ -82,25 +81,25 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     setMessage(null)
   }, [selectedContributor])
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     setIsLoading(true)
-  //     try {
-  //       const contributorsResponse = await fetch("/api/contributors")
-  //       if (!contributorsResponse.ok) {
-  //         throw new Error("Failed to fetch contributors")
-  //       }
-  //       const contributors = await contributorsResponse.json()
-  //       setAllContributors(contributors)
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error)
-  //     } finally {
-  //       setIsLoading(false)
-  //     }
-  //   }
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true)
+      try {
+        const contributorsResponse = await fetch("/api/contributors")
+        if (!contributorsResponse.ok) {
+          throw new Error("Failed to fetch contributors")
+        }
+        const contributors = await contributorsResponse.json()
+        setAllContributors(contributors)
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
-  //   fetchData()
-  // }, [])
+    fetchData()
+  }, [])
 
   useEffect(() => {
     const fetchContributors = async () => {
