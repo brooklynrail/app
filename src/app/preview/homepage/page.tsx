@@ -4,8 +4,8 @@ import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "../../../../lib/types"
 import { PageType, getCurrentIssueData, getPermalink } from "../../../../lib/utils"
-import { getHomepageData, getNavData } from "../../../../lib/utils/homepage"
-import { getPreviewPassword } from "../../../../lib/utils/preview"
+import { getNavData } from "../../../../lib/utils/homepage"
+import { getPreviewHomepageData, getPreviewPassword } from "../../../../lib/utils/preview"
 
 export interface HomepagePreviewProps {
   navData: Homepage
@@ -75,7 +75,7 @@ async function getData() {
     return notFound()
   }
 
-  const homepageData = await getHomepageData(currentIssue)
+  const homepageData = await getPreviewHomepageData(currentIssue)
   if (!homepageData) {
     return notFound()
   }

@@ -75,6 +75,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
   const [allContributors, setAllContributors] = useState<Contributors[]>([])
   const { navData } = props
   const [isLoading, setIsLoading] = useState(true)
+  const [showLikelyMatches, setShowLikelyMatches] = useState(true)
 
   useEffect(() => {
     setMergeState(MergeState.Ready)
@@ -238,6 +239,10 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     }
   }
 
+  const handleToggleView = () => {
+    setShowLikelyMatches(!showLikelyMatches)
+  }
+
   const allContributorsRecords = (
     <>
       {likelyMatches.map((match, i) => (
@@ -339,11 +344,39 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
             <div className="col-span-4 tablet-lg:col-span-4 space-y-3 relative">
               <div className="sticky top-16">
                 <div className="text-md flex justify-between items-center py-1">
-                  <span className="font-medium">{likelyMatches.length} likely matches</span>
-                  <span className="text-gray-500">{allContributors.length} total contributors</span>
+                  <span className="font-medium">
+                    {showLikelyMatches
+                      ? `${likelyMatches.length} likely matches`
+                      : `${allContributors.length} total contributors`}
+                  </span>
+                  <button
+                    onClick={handleToggleView}
+                    className="text-sm px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                  >
+                    Show {showLikelyMatches ? "all" : "likely matches"}
+                  </button>
                 </div>
                 <div className="contributors divide-y divide-gray-600 divide-dotted h-screen overflow-y-scroll border-t rail-border">
-                  {allContributorsRecords}
+                  {showLikelyMatches ? (
+                    allContributorsRecords
+                  ) : (
+                    <>
+                      {allContributors.map((contributor, i) => (
+                        <div
+                          key={`${contributor.id}-${i}`}
+                          onClick={() => handleContributorClick(contributor)}
+                          className={`cursor-pointer ${
+                            selectedContributor?.id === contributor.id ? "bg-amber-200 dark:bg-gray-800" : ""
+                          }`}
+                        >
+                          <div className="flex justify-between items-center py-1">
+                            {contributor.first_name} {contributor.last_name}
+                            <span className="text-xs text-gray-500">Old ID: #{contributor.old_id}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             </div>

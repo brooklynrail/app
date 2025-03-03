@@ -1,4 +1,4 @@
-import { DirectusFiles, VideoCovers, VideoCoversStills } from "../../../../lib/types"
+import { VideoCovers, VideoCoversStills } from "../../../../lib/types"
 
 interface VideoBGProps {
   videoRef: React.RefObject<HTMLVideoElement>

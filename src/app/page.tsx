@@ -12,6 +12,7 @@ export interface HomePageProps {
   permalink: string
   errorCode?: number
   errorMessage?: string
+  previewURL?: string
 }
 
 export default async function HomepagePage() {
