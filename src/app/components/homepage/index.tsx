@@ -25,7 +25,7 @@ export enum CollectionType {
 }
 
 const HomePage = (props: HomePageProps) => {
-  const { homepageData, currentIssue, banners, navData } = props
+  const { homepageData, currentIssue, banners, navData, previewURL } = props
   const { setCurrentContext } = usePageContext()
 
   useEffect(() => {
@@ -65,6 +65,7 @@ const HomePage = (props: HomePageProps) => {
       navData={navData}
       currentIssue={currentIssue}
       homepageData={homepageData}
+      previewURL={previewURL}
     >
       <main className="divide-y rail-divide">{allCollections}</main>
     </Paper>
