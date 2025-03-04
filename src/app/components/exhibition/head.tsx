@@ -79,15 +79,15 @@ const Head = (props: ExhibitionHeadProps) => {
             loop
             playsInline
             poster={coverImage}
-            className="z-0 absolute top-0 bottom-0 left-0 right-0 w-full h-auto"
-            // style={{
-            //   objectPosition: "center 25%",
-            // }}
+            className="z-0 absolute top-0 bottom-0 left-0 right-0 w-full h-full object-cover transform"
+            style={{
+              objectPosition: "center 25%",
+            }}
           >
             <source src={videoCover} type="video/mp4" />
           </video>
         )}
-        <div className="desktop:max-w-screen-widescreen mx-auto">
+        <div className="desktop:max-w-screen-desktop-lg mx-auto">
           <div className="z-10 relative grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
             <div className="col-span-4 tablet-lg:col-span-12">
               <div className="flex flex-col space-y-3 tablet-lg:space-y-6">

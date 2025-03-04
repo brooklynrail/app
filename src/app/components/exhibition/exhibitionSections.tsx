@@ -23,7 +23,7 @@ const ExhibitionSections = (props: ExhibitionSectionsProps) => {
   }
 
   return (
-    <div className="desktop:max-w-screen-widescreen mx-auto">
+    <div className="desktop:max-w-screen-desktop-lg mx-auto pb-40">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
         <div className="col-span-4 tablet-lg:col-span-3 desktop-lg:col-span-2">
           <div className="sticky top-16 pt-6">
