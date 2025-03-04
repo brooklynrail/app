@@ -87,7 +87,7 @@ const Head = (props: ExhibitionHeadProps) => {
             <source src={videoCover} type="video/mp4" />
           </video>
         )}
-        <div className="desktop:max-w-screen-desktop-lg mx-auto">
+        <div className="desktop:max-w-screen-desktop-lg mx-auto px-3">
           <div className="z-10 relative grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
             <div className="col-span-4 tablet-lg:col-span-12">
               <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
