@@ -2,13 +2,15 @@
 import Link from "next/link"
 import { getPermalink, PageType } from "../../../../lib/utils"
 import parse from "html-react-parser"
-import { Exhibitions } from "../../../../lib/types"
+import { Exhibitions, ExhibitionsPeople1 } from "../../../../lib/types"
+import { Artists, processContent } from "./sectionBlock"
+
 interface ExhibitionHeadProps {
   exhibitionData: Exhibitions
 }
 
 const Head = (props: ExhibitionHeadProps) => {
-  const { kicker, title, deck, start_date, end_date, summary, show_details, opening_details, location_map } =
+  const { kicker, title, deck, start_date, end_date, dedication, show_details, opening_details, curators, artists } =
     props.exhibitionData
 
   const isFutureExhibition = new Date(end_date) > new Date()
@@ -24,6 +26,31 @@ const Head = (props: ExhibitionHeadProps) => {
     type: PageType.Exhibition,
   })
 
+  const currentDate = new Date()
+
+  // Only show opening details if the exhibition hasn't ended yet
+  const showOpeningDetails = endDate && currentDate <= endDate
+
+  // Format curators as a comma-separated string with Oxford comma
+  const formatCurators = () => {
+    if (!curators || curators.length === 0) return null
+
+    const curatorNames = curators
+      .filter((curator) => curator?.people_id?.display_name)
+      .map((curator) => curator.people_id.display_name)
+
+    if (curatorNames.length === 0) return null
+    if (curatorNames.length === 1) return curatorNames[0]
+    if (curatorNames.length === 2) return `${curatorNames[0]} and ${curatorNames[1]}`
+
+    // For 3+ curators, use Oxford comma
+    const allButLast = curatorNames.slice(0, -1)
+    const last = curatorNames[curatorNames.length - 1]
+    return `${allButLast.join(", ")}, and ${last}`
+  }
+
+  const curatorString = formatCurators()
+
   return (
     <article className="h-entry py-6 tablet-lg:py-12">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
@@ -35,17 +62,29 @@ const Head = (props: ExhibitionHeadProps) => {
               </span>
             </p>
             <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
-              <h1 className="text-5xl tablet-lg:text-6xl desktop:text-7xl font-light italic p-name">{parse(title)}</h1>
+              <h1 className="text-5xl tablet-lg:text-6xl desktop:text-7xl font-light p-name">{parse(title)}</h1>
               {deck && <p className="text-xl tablet-lg:text-3xl font-normal">{parse(deck)}</p>}
+              {curatorString && <p className="text-xl tablet-lg:text-2xl font-normal">Curated by {curatorString}</p>}
               <div className="max-w-screen-tablet flex flex-col space-y-3 tablet-lg:space-y-6">
                 {show_details && (
-                  <div className="text-lg tablet:text-xl tablet-lg:text-2xl font-light p-summary">
-                    {parse(show_details)}
+                  <div className="text-lg font-light p-summary">
+                    {processContent(show_details, props.exhibitionData)}
                   </div>
                 )}
-                {opening_details && (
-                  <div className="text-lg tablet:text-xl tablet-lg:text-lg font-light">{parse(opening_details)}</div>
+                {showOpeningDetails && (
+                  <div className="text-lg tablet:text-xl tablet-lg:text-lg font-light">
+                    {processContent(opening_details, props.exhibitionData)}
+                  </div>
                 )}
+                {artists && (
+                  <div className="text-lg tablet:text-xl tablet-lg:text-lg font-light">
+                    <span className="">Featuring work by:</span>
+                    <div className="font-medium">
+                      <Artists {...props.exhibitionData} />
+                    </div>
+                  </div>
+                )}
+                {dedication && <p className="text-lg font-normal">{parse(dedication)}</p>}
               </div>
             </div>
           </div>

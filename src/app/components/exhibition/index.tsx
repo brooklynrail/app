@@ -63,7 +63,7 @@ const ExhibitionPage = (props: ExhibitionProps) => {
 
   return (
     <Paper pageClass={combinedStyles.className} pageStyle={combinedStyles.style} navData={navData}>
-      <main className="px-3 desktop:max-w-screen-widescreen mx-auto space-y-24 h-event">
+      <main className="px-3 desktop:max-w-screen-widescreen mx-auto space-y-16 h-event">
         <Head exhibitionData={exhibitionData} />
         <ExhibitionSections exhibitionData={exhibitionData} />
       </main>

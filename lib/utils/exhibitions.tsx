@@ -12,6 +12,7 @@ export const getExhibition = async (slug: string) => {
         "kicker",
         "title",
         "deck",
+        "dedication",
         "summary",
         "start_date",
         "end_date",

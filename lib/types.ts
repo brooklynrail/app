@@ -569,6 +569,7 @@ export type Exhibitions = {
   date_created: string
   date_updated: string
   deck?: string | null
+  dedication?: string | null
   end_date: string
   featured_image?: string | DirectusFiles | null
   id: string
