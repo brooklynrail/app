@@ -9,6 +9,7 @@ export interface ExhibitionProps {
   navData: Homepage
   exhibitionData: Exhibitions
   permalink: string
+  previewURL: string
 }
 
 interface ExhibitionParams {
@@ -43,9 +44,12 @@ async function getData({ params }: { params: ExhibitionParams }) {
     slug: "test",
   })
 
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/exhibition/${exhibitionData.id}/`
+
   return {
     navData,
     exhibitionData,
     permalink,
+    previewURL,
   }
 }

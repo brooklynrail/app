@@ -17,6 +17,7 @@ export interface ExhibitionPreviewProps {
   isEnabled: boolean
   previewPassword: string
   directusUrl: string
+  previewURL: string
 }
 
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
@@ -57,7 +58,7 @@ export default async function ExhibitionPreviewPage({ params }: { params: Previe
 
   const data = await getData({ params })
 
-  const { exhibitionData, permalink, directusUrl, previewPassword, navData } = data
+  const { exhibitionData, permalink, directusUrl, previewPassword, navData, previewURL } = data
   if (!exhibitionData || !permalink || !previewPassword || !directusUrl || !navData) {
     return { props: { errorCode: 400, errorMessage: "This exhibition does not exist" } }
   }
@@ -69,6 +70,7 @@ export default async function ExhibitionPreviewPage({ params }: { params: Previe
     directusUrl,
     previewPassword,
     isEnabled,
+    previewURL,
   }
 
   return <ExhibitionPreview {...exhibitionPreviewProps} />
@@ -99,11 +101,14 @@ async function getData({ params }: { params: PreviewParams }) {
   const previewPassword = await getPreviewPassword()
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
 
+  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/exhibition/${id}/`
+
   return {
     navData,
     exhibitionData,
     permalink,
     previewPassword,
     directusUrl,
+    previewURL,
   }
 }
