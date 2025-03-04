@@ -468,11 +468,14 @@ export enum PageType {
   PreviewEvent = "preview_event",
   PreviewIssue = "preview_issue",
   PreviewTribute = "preview_tribute",
+  PreviewExhibition = "preview_exhibition",
   SpecialIssue = "special_issue",
   SpecialIssueSection = "special_issue_section",
   SpecialIssueArticle = "special_issue_article",
   Archive = "archive",
   Search = "search",
+  Exhibition = "exhibition",
+  Exhibitions = "exhibitions",
 }
 interface PermalinkProps {
   type: PageType
@@ -563,6 +566,10 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/archive/`
     case PageType.Search:
       return `${baseURL}/search/`
+    case PageType.Exhibition:
+      return `${baseURL}/exhibition/${slug}/`
+    case PageType.Exhibitions:
+      return `${baseURL}/exhibitions/`
     default:
       return `${baseURL}/`
   }

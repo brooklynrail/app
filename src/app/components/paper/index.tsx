@@ -12,6 +12,7 @@ import PreviewHeader from "../preview/previewHead"
 import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
 import ScreenIndicator from "../screenIndicator"
 import Banners from "../banner"
+import { CSSProperties } from "react"
 
 export interface PaperProps {
   pageClass: string
@@ -23,6 +24,7 @@ export interface PaperProps {
   type?: PaperType
   previewURL?: string
   homepageData?: Homepage
+  pageStyle?: CSSProperties
 }
 
 export enum PaperType {
@@ -36,14 +38,14 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, navData, type, banners, currentIssue, previewURL, homepageData } = props
+  const { pageClass, children, navData, pageStyle, type, banners, currentIssue, previewURL, homepageData } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
   return (
     <AdVisibilityProvider>
       <MenuProvider>
-        <div className={`relative theme ${pageClass}`}>
+        <div className={`relative theme ${pageClass}`} style={pageStyle}>
           {previewURL ? (
             <>
               <PreviewHeader previewURL={previewURL} />

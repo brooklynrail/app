@@ -128,7 +128,7 @@ const NavBar = (props: NavBarProps) => {
           <SubscribeButton />
           <DonateButton />
         </div>
-        <div className="navbar-fade hidden tablet:block pl-3 absolute right-0 -z-1 w-[18rem] h-full bg-gradient-to-r from-transparent from-1% to-white dark:to-zinc-800 to-15%"></div>
+        <div className="navbar-fade hidden tablet:block pl-3 absolute right-0 -z-1 w-[18rem] h-full "></div>
       </div>
     </nav>
   )

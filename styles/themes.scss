@@ -23,17 +23,25 @@ body * {
   --navbar-text-color: #18181b; /* zinc-900 */
   --collection-background-color: #f8fafc; /* slate-50 */
   --collection-text-color: #18181b; /* zinc-900 */
+  --logo-text-fill: gray; /* zinc-900 */
+  --logo-path-fill: white; /* zinc-900 */
+  --subhead-fill: #18181b; /* zinc-900 */
   html,
   body {
     @apply bg-slate-100 tablet:bg-[#EF4444];
   }
   .banner {
     .pathfill {
-      @apply fill-none tablet:fill-zinc-800;
+      // @apply fill-none tablet:fill-zinc-800;
+      fill: var(--logo-path-fill);
     }
     .textfill {
-      @apply fill-red-500 tablet:fill-none;
+      // @apply fill-red-500 tablet:fill-none;
+      // fill: var(--logo-text-fill);
     }
+  }
+  .subheadfill {
+    fill: var(--subhead-fill);
   }
   .article-ad {
     @apply bg-zinc-100;
@@ -244,6 +252,8 @@ body * {
 }
 
 .navbar-fade {
+  @apply bg-gradient-to-r from-transparent from-[1%];
+  --tw-gradient-to-position: 15%;
   --tw-gradient-to: var(--navbar-background-color) var(--tw-gradient-to-position);
 }
 

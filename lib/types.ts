@@ -559,6 +559,85 @@ export type EventsPeoplePoets = {
   sort?: number | null
 }
 
+export type Exhibitions = {
+  artists: any[] | ExhibitionsPeople2[]
+  background_color_primary?: string | null
+  background_color_secondary?: string | null
+  background_color_primary_darkmode?: string | null
+  background_color_secondary_darkmode?: string | null
+  text_color_primary?: string | null
+  text_color_primary_darkmode?: string | null
+  curators: any[] | ExhibitionsPeople1[]
+  date_created: string
+  date_updated: string
+  deck?: string | null
+  dedication?: string | null
+  end_date: string
+  featured_image?: DirectusFiles | null
+  id: string
+  kicker?: string | null
+  location?: string | null
+  location_map?: string | null
+  opening_date: string
+  opening_details: string
+  section?: ExhibitionSection[] | null
+  show_details: string
+  show_files: any[] | ExhibitionsFiles1[]
+  show_images: any[] | ExhibitionsFiles2[]
+  slug: string
+  sort?: number | null
+  start_date: string
+  status: string
+  summary: string
+  title: string
+  title_tag?: string | null
+  user_created?: string | DirectusUsers | null
+  user_updated?: string | DirectusUsers | null
+  video_cover?: DirectusFiles | null
+  cover_image?: DirectusFiles | null
+}
+
+export interface ExhibitionSection {
+  section_title: string
+  section_body: string
+  section_nav: string
+}
+
+export type ExhibitionsFiles = {
+  directus_files_id?: string | null
+  exhibitions_id?: string | null
+  id: number
+  sort?: number | null
+}
+
+export type ExhibitionsFiles1 = {
+  directus_files_id?: string | DirectusFiles | null
+  exhibitions_id?: string | Exhibitions | null
+  id: number
+  sort?: number | null
+}
+
+export type ExhibitionsFiles2 = {
+  directus_files_id?: string | DirectusFiles | null
+  exhibitions_id?: string | Exhibitions | null
+  id: number
+  sort?: number | null
+}
+
+export type ExhibitionsPeople1 = {
+  exhibitions_id?: string | Exhibitions | null
+  id: number
+  people_id?: string | People | null
+  sort?: number | null
+}
+
+export type ExhibitionsPeople2 = {
+  exhibitions_id?: string | Exhibitions | null
+  id: number
+  people_id?: string | People | null
+  sort?: number | null
+}
+
 export type GlobalSettings = {
   preview_password: string
   current_issue: Issues
@@ -840,6 +919,12 @@ export type CustomDirectusTypes = {
   events_types: EventsTypes[]
   events_people: EventsPeople[]
   events_people_poets: EventsPeoplePoets[]
+  exhibitions: Exhibitions[]
+  exhibitions_files: ExhibitionsFiles[]
+  exhibitions_files_1: ExhibitionsFiles1[]
+  exhibitions_files_2: ExhibitionsFiles2[]
+  exhibitions_people_1: ExhibitionsPeople1[]
+  exhibitions_people_2: ExhibitionsPeople2[]
   global_settings: GlobalSettings
   homepage: Homepage
   homepage_banner: HomepageBanners[]
