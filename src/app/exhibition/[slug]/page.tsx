@@ -41,7 +41,7 @@ async function getData({ params }: { params: ExhibitionParams }) {
 
   const permalink = getPermalink({
     type: PageType.Exhibition,
-    slug: "test",
+    slug: exhibitionData.slug,
   })
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/exhibition/${exhibitionData.id}/`

@@ -92,3 +92,26 @@ export const getExhibition = async (slug: string) => {
 
   return exhibition[0] as Exhibitions
 }
+
+export const getAllExhibitions = async () => {
+  const exhibitions = await directus.request(
+    readItems("exhibitions", {
+      fields: [
+        "id",
+        "slug",
+        "title",
+        "start_date",
+        "end_date",
+        "status",
+        {
+          featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
+        },
+      ],
+      filter: {
+        _and: [{ status: { _eq: `published` } }],
+      },
+    }),
+  )
+
+  return exhibitions as Exhibitions[]
+}

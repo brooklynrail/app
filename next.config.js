@@ -51,6 +51,13 @@ const nextConfig = {
   async redirects() {
     return [
       // ===================================
+      // EXHIBITIONS REDIRECTS
+      {
+        source: "/exhibition",
+        destination: "/exhibitions",
+        permanent: true,
+      },
+      // ===================================
       // EVENTS REDIRECTS
       // redirect old event paths to new event paths
       {

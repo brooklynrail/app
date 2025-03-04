@@ -7,7 +7,7 @@ import styles from "./exhibition.module.scss"
 import { useMemo } from "react"
 
 const ExhibitionPage = (props: ExhibitionProps) => {
-  const { exhibitionData, navData } = props
+  const { exhibitionData, navData, previewURL } = props
   const { end_date } = exhibitionData
 
   const {
