@@ -12,14 +12,6 @@ export const getBaseUrl = () => {
   return baseURL
 }
 
-export const getBaseUrl = () => {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL
-    ? process.env.NEXT_PUBLIC_BASE_URL
-    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-
-  return baseURL
-}
-
 // Used in
 // - Issue Select dropdown
 // - Archive page
