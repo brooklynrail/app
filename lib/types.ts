@@ -565,6 +565,8 @@ export type Exhibitions = {
   background_color_secondary?: string | null
   background_color_primary_darkmode?: string | null
   background_color_secondary_darkmode?: string | null
+  text_color_primary?: string | null
+  text_color_primary_darkmode?: string | null
   curators: any[] | ExhibitionsPeople1[]
   date_created: string
   date_updated: string
@@ -591,6 +593,8 @@ export type Exhibitions = {
   title_tag?: string | null
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
+  video_cover?: DirectusFiles | null
+  cover_image?: DirectusFiles | null
 }
 
 export interface ExhibitionSection {

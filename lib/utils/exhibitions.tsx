@@ -24,10 +24,18 @@ export const getExhibition = async (slug: string) => {
         "opening_details",
         "section",
         "title_tag",
+        {
+          video_cover: ["id", "width", "height", "filename_disk", "caption"],
+        },
+        {
+          cover_image: ["id", "width", "height", "filename_disk", "caption"],
+        },
         "background_color_primary",
         "background_color_secondary",
         "background_color_primary_darkmode",
         "background_color_secondary_darkmode",
+        "text_color_primary",
+        "text_color_primary_darkmode",
         {
           featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
         },

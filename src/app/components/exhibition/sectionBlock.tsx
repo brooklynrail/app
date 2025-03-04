@@ -42,7 +42,6 @@ const SectionBlock = (props: SectionBlockProps) => {
   const { block, exhibitionData } = props
   const { section_title, section_body } = block
   const sectionId = section_title.toLowerCase().replace(/[^a-z0-9]/g, "-")
-  console.log("section_title", section_title)
   return (
     <section id={sectionId} className="h-entry">
       <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
