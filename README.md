@@ -1,5 +1,7 @@
 # The Brooklyn Rail
 
+https://brooklynrail.org/
+
 ---
 
 The Brooklyn Rail is built with [Next.js](https://nextjs.org/) and [Directus Cloud](https://directus.io/), hosted on [Vercel](https://vercel.com/).
