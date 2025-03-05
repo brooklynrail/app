@@ -5,11 +5,25 @@ import Head from "./head"
 import ExhibitionSections from "./exhibitionSections"
 import styles from "./exhibition.module.scss"
 import { useMemo } from "react"
+import { Exhibitions } from "../../../../lib/types"
 
 const ExhibitionPage = (props: ExhibitionProps) => {
   const { exhibitionData, navData, previewURL } = props
   const { end_date } = exhibitionData
 
+  const combinedStyles = useExhibitionStyles(exhibitionData)
+
+  return (
+    <Paper pageClass={combinedStyles.className} pageStyle={combinedStyles.style} navData={navData}>
+      <main className="space-y-16 h-event">
+        <Head exhibitionData={exhibitionData} />
+        <ExhibitionSections exhibitionData={exhibitionData} />
+      </main>
+    </Paper>
+  )
+}
+
+export const useExhibitionStyles = (exhibitionData: Exhibitions) => {
   const {
     background_color_primary: backgroundColorPrimary,
     background_color_secondary: backgroundColorSecondary,
@@ -69,9 +83,6 @@ const ExhibitionPage = (props: ExhibitionProps) => {
     textColorPrimaryDarkmode,
   ])
 
-  // It is in the future if the end date is greater than the current date
-  const isFutureEvent = new Date(end_date) > new Date()
-
   // Combine the class and style into one object for Paper
   const combinedStyles = {
     className: styles["theme-exhibitions"],
@@ -89,14 +100,10 @@ const ExhibitionPage = (props: ExhibitionProps) => {
     } as React.CSSProperties,
   }
 
-  return (
-    <Paper pageClass={combinedStyles.className} pageStyle={combinedStyles.style} navData={navData}>
-      <main className="space-y-16 h-event">
-        <Head exhibitionData={exhibitionData} />
-        <ExhibitionSections exhibitionData={exhibitionData} />
-      </main>
-    </Paper>
-  )
+  return {
+    className: combinedStyles.className,
+    style: combinedStyles.style,
+  }
 }
 
 export default ExhibitionPage

@@ -1,11 +1,11 @@
 "use client"
 import { ExhibitionPreviewProps } from "@/app/preview/exhibition/[id]/page"
-import { useExhibitionStyles } from "../../exhibition"
 import ExhibitionSections from "../../exhibition/exhibitionSections"
 import Head from "../../exhibition/head"
 import Paper from "../../paper"
 import Password from "../password"
 import PreviewInfo from "./previewInfo"
+import { useExhibitionStyles } from "../../exhibition"
 
 const ExhibitionPreview = (props: ExhibitionPreviewProps) => {
   const { exhibitionData, navData, isEnabled, previewPassword, previewURL, directusUrl } = props
