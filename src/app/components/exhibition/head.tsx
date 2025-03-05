@@ -36,7 +36,7 @@ const Head = (props: ExhibitionHeadProps) => {
   const dateString = `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`
 
   const exhibitionsPermalink = getPermalink({
-    type: PageType.Exhibition,
+    type: PageType.Exhibitions,
   })
 
   const currentDate = new Date()
@@ -96,10 +96,14 @@ const Head = (props: ExhibitionHeadProps) => {
           <div className="z-10 relative grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
             <div className="col-span-4 tablet-lg:col-span-12">
               <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
-                <p className="flex space-x-3 text-sm tablet-lg:text-md">
-                  <span className="uppercase font-normal">
-                    <Link href={exhibitionsPermalink}>{kicker}</Link>
-                  </span>
+                <p className="flex space-x-3 text-sm tablet-lg:text-md uppercase font-normal">
+                  <Link href={exhibitionsPermalink}>Exhibitions</Link>
+                  {kicker && (
+                    <>
+                      <span className="border-l rail-border"></span>
+                      <Link href={exhibitionsPermalink}>{kicker}</Link>
+                    </>
+                  )}
                 </p>
                 <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
                   <h1 className="text-5xl tablet-lg:text-6xl desktop:text-7xl font-light p-name">{parse(title)}</h1>
@@ -126,7 +130,7 @@ const Head = (props: ExhibitionHeadProps) => {
                         </div>
                       </div>
                     )}
-                    {dedication && <p className="text-lg font-normal">{parse(dedication)}</p>}
+                    {dedication && <p className="pt-9 text-lg font-light">{parse(dedication)}</p>}
                   </div>
                 </div>
               </div>
