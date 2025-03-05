@@ -43,21 +43,26 @@
   @media (prefers-color-scheme: dark) {
     --exhibition-bg-primary: var(--color-default-primary-dark, #333);
     --exhibition-bg-secondary: var(--color-default-secondary-dark, #333);
+    background-color: var(--exhibition-bg-primary-dark, var(--exhibition-bg-primary));
   }
 }
 
 // Dark mode styles using the global .dark class pattern
 :global(.dark) {
   .theme-exhibitions {
-    --navbar-background-color: var(--exhibition-bg-primary-dark, #0000ff);
-    --navbar-text-color: var(--exhibition-text-primary-dark, #000);
-    background-color: var(--exhibition-bg-primary-dark);
-    background-image: linear-gradient(
-      160.44deg,
-      var(--exhibition-bg-primary-dark) 44.27%,
-      var(--exhibition-bg-secondary-dark) 86.9%
-    );
-    color: var(--exhibition-text-primary-dark, #000);
+    --navbar-background-color: var(--exhibition-bg-primary-dark, --navbar-background-color);
+    --navbar-text-color: var(--exhibition-text-primary-dark, --navbar-text-color);
+
+    background-color: var(--exhibition-bg-primary-dark, var(--exhibition-bg-primary));
+
+    &[style*="--exhibition-bg-primary-dark"][style*="--exhibition-bg-secondary-dark"] {
+      background-image: linear-gradient(
+        160.44deg,
+        var(--exhibition-bg-primary-dark) 44.27%,
+        var(--exhibition-bg-secondary-dark) 86.9%
+      );
+      color: var(--exhibition-text-primary-dark, #000);
+    }
   }
 }
 

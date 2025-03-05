@@ -82,8 +82,10 @@ const ExhibitionPage = (props: ExhibitionProps) => {
       "--exhibition-bg-secondary-dark": cleanValue(backgroundColorSecondaryDarkmode),
       "--exhibition-text-primary": cleanValue(textColorPrimary),
       "--exhibition-text-primary-dark": cleanValue(textColorPrimaryDarkmode),
+      "--logo-path-fill": cleanValue(textColorPrimary),
       "--subhead-fill": cleanValue(textColorPrimary),
       "--subhead-fill-dark": cleanValue(textColorPrimaryDarkmode),
+      "--background-color": "red",
     } as React.CSSProperties,
   }
 
