@@ -1,9 +1,9 @@
 "use client"
-import Link from "next/link"
-import { getPermalink, PageType } from "../../../../lib/utils"
 import parse from "html-react-parser"
-import { Exhibitions, ExhibitionsPeople1 } from "../../../../lib/types"
-import { Artists, processContent } from "./sectionBlock"
+import Link from "next/link"
+import { Exhibitions } from "../../../../lib/types"
+import { getPermalink, PageType } from "../../../../lib/utils"
+import { Artists } from "./sectionBlock"
 
 interface ExhibitionHeadProps {
   exhibitionData: Exhibitions
@@ -24,6 +24,7 @@ const Head = (props: ExhibitionHeadProps) => {
     show_artists_list,
     video_cover,
     cover_image,
+    location_map,
   } = props.exhibitionData
 
   const isFutureExhibition = new Date(end_date) > new Date()
@@ -68,8 +69,6 @@ const Head = (props: ExhibitionHeadProps) => {
 
   const coverImage = cover_image ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${cover_image?.filename_disk}` : ""
 
-  console.log("videoCover", videoCover)
-
   const headclasses = videoCover
     ? "h-entry py-6 tablet-lg:py-12 relative w-full grid min-h-[100vh]"
     : "h-entry py-6 tablet-lg:py-12 relative w-full grid min-h-[fit-content]"
@@ -102,12 +101,14 @@ const Head = (props: ExhibitionHeadProps) => {
                   {kicker && (
                     <>
                       <span className="border-l rail-border"></span>
-                      <Link href={exhibitionsPermalink}>{kicker}</Link>
+                      <span>{kicker}</span>
                     </>
                   )}
                 </p>
                 <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
-                  <h1 className="text-5xl tablet-lg:text-6xl desktop:text-7xl font-light p-name">{parse(title)}</h1>
+                  <h1 className="-ml-[3px] tablet:-ml-[5px] text-5xl tablet-lg:text-6xl desktop:text-7xl font-light p-name">
+                    {parse(title)}
+                  </h1>
                   {deck && <p className="text-xl tablet-lg:text-3xl font-normal">{parse(deck)}</p>}
                   {curatorString && (
                     <p className="text-xl tablet-lg:text-2xl font-normal">Curated by {curatorString}</p>
@@ -115,12 +116,20 @@ const Head = (props: ExhibitionHeadProps) => {
                   <div className="max-w-screen-tablet flex flex-col space-y-3 tablet-lg:space-y-6">
                     {show_details && (
                       <div className="text-lg font-light p-summary">
-                        {processContent(show_details, props.exhibitionData)}
+                        {parse(show_details)}
+                        {location_map && (
+                          <>
+                            <Link className="underline" href={location_map}>
+                              Map
+                            </Link>
+                          </>
+                        )}
                       </div>
                     )}
+
                     {showOpeningDetails && (
                       <div className="text-lg tablet:text-xl tablet-lg:text-lg font-light">
-                        {processContent(opening_details, props.exhibitionData)}
+                        {parse(opening_details)}
                       </div>
                     )}
                     {show_artists_list && artists && (
@@ -131,7 +140,7 @@ const Head = (props: ExhibitionHeadProps) => {
                         </div>
                       </div>
                     )}
-                    {dedication && <p className="pt-9 text-lg font-light">{parse(dedication)}</p>}
+                    {dedication && <p className="pt-6 text-lg font-light">{parse(dedication)}</p>}
                   </div>
                 </div>
               </div>

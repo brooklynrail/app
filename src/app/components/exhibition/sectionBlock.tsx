@@ -63,7 +63,7 @@ export const Artists = (exhibitionData: Exhibitions) => {
   const { artists } = exhibitionData
 
   return (
-    <div className="space-y-6 pb-9">
+    <div className="">
       {artists.map((artist, index) => (
         <span key={artist.people_id.id}>
           {artist.people_id.display_name}

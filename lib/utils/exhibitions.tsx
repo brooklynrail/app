@@ -104,6 +104,27 @@ export const getAllExhibitions = async () => {
         "start_date",
         "end_date",
         "status",
+        "opening_date",
+        "opening_details",
+        "show_artists_list",
+        "kicker",
+        {
+          artists: [
+            {
+              people_id: [
+                "id",
+                "display_name",
+                "bio",
+                "website",
+                "instagram",
+                "related_links",
+                {
+                  portrait: ["id", "width", "height", "filename_disk", "alt", "caption", "modified_on"],
+                },
+              ],
+            },
+          ],
+        },
         {
           featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
         },
