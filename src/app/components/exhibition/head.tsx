@@ -69,9 +69,13 @@ const Head = (props: ExhibitionHeadProps) => {
 
   console.log("videoCover", videoCover)
 
+  const headclasses = videoCover
+    ? "h-entry py-6 tablet-lg:py-12 relative w-full h-screen"
+    : "h-entry py-6 tablet-lg:py-12 relative w-full"
+
   return (
     <>
-      <section className="h-entry py-6 tablet-lg:py-12 relative w-full h-screen">
+      <section className={headclasses}>
         {videoCover && (
           <video
             autoPlay
