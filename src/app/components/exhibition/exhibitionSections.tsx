@@ -3,24 +3,20 @@ import parse from "html-react-parser"
 import { Exhibitions, ExhibitionSection } from "../../../../lib/types"
 import SectionBlock from "./sectionBlock"
 import styles from "./exhibition.module.scss"
-
+import Image from "next/image"
 interface ExhibitionSectionsProps {
   exhibitionData: Exhibitions
 }
 
 const ExhibitionSections = (props: ExhibitionSectionsProps) => {
   const { exhibitionData } = props
-  const { start_date, end_date, section, summary } = exhibitionData
-
-  const isFutureExhibition = new Date(end_date) > new Date()
-
-  // Format dates for exhibition
-  const startDate = new Date(start_date)
-  const endDate = new Date(end_date)
+  const { section, summary, featured_image, title } = exhibitionData
 
   if (!section) {
     return null
   }
+
+  const featured = featured_image && `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${featured_image.filename_disk}`
 
   return (
     <div className="desktop:max-w-screen-desktop-lg mx-auto pb-40 px-3">
@@ -37,6 +33,7 @@ const ExhibitionSections = (props: ExhibitionSectionsProps) => {
         <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-8">
           <div className={`flex flex-col space-y-14 tablet-lg:space-y-20 pt-6 ${styles.content}`}>
             <div className={`text-2xl tablet-lg:text-3xl desktop-lg:text-4xl font-light`}>{parse(summary)}</div>
+            {featured && <Image src={featured} alt={title} width={1000} height={1000} />}
             {section.map((block: ExhibitionSection) => (
               <SectionBlock block={block} exhibitionData={exhibitionData} key={block.section_nav} />
             ))}

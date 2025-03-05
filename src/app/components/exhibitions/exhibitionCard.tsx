@@ -58,7 +58,7 @@ const ExhibitionCard = (props: ExhibitionCardProps) => {
                 {showOpeningDetails && <div className="text-xl font-light">{parse(opening_details)}</div>}
 
                 {show_artists_list && artists && (
-                  <div className="text-lg tablet:text-xl font-light tablet:pr-12">
+                  <div className="text-md font-light tablet:pr-12">
                     <span className="">Featuring work by:</span>
                     <div className="font-light">
                       <Artists {...props.exhibition} />
