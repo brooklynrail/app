@@ -30,14 +30,16 @@ body * {
   body {
     @apply bg-slate-100 tablet:bg-[#EF4444];
   }
-  .banner {
-    .pathfill {
-      // @apply fill-none tablet:fill-zinc-800;
+  .pathfill {
+    @apply fill-none;
+    @media screen and (min-width: theme("screens.tablet")) {
       fill: var(--logo-path-fill);
     }
-    .textfill {
-      // @apply fill-red-500 tablet:fill-none;
-      // fill: var(--logo-text-fill);
+  }
+  .textfill {
+    @apply fill-red-500 tablet:fill-none;
+    @media screen and (max-width: theme("screens.tablet")) {
+      @apply fill-red-500;
     }
   }
   .subheadfill {
@@ -56,21 +58,44 @@ body * {
   --navbar-text-color: #eef2ff; /* indigo-50 */
   --collection-background-color: #27272a; /* zinc-800 */
   --collection-text-color: #eef2ff; /* indigo-50 */
+  --subhead-fill: #eef2ff; /* indigo-50 */
   html,
   body {
     @apply bg-indigo-800;
   }
-  .banner {
-    .pathfill {
-      @apply fill-none tablet:fill-indigo-50;
-    }
-    .textfill {
-      @apply fill-indigo-50 tablet:fill-none;
-    }
+
+  .pathfill {
+    @apply fill-none tablet:fill-indigo-50;
+  }
+  .textfill {
+    @apply fill-indigo-50 tablet:fill-none;
+  }
+
+  .subheadfill {
+    fill: var(--subhead-fill);
   }
   .article-ad {
     @apply bg-zinc-700;
   }
+}
+
+// HOMEPAGE ==========================================
+.theme-homepage {
+  --logo-text-fill: #f8fafc; /* zinc-900 */
+  --subhead-fill: #f8fafc; /* zinc-900 */
+  .pathfill {
+    // @apply fill-none tablet:fill-zinc-800;
+    fill: none;
+  }
+  .textfill {
+    fill: var(--logo-text-fill);
+  }
+  .subheadfill {
+    fill: var(--subhead-fill);
+  }
+}
+.dark .theme-homepage {
+  --logo-path-fill: #f8fafc; /* zinc-900 */
 }
 
 // EVENTS ==========================================

@@ -54,7 +54,7 @@ const NavBar = (props: NavBarProps) => {
       </li>
       <li>
         <Link
-          href={`https://singing-in-unison.brooklynrail.org/`}
+          href={`/exhibitions`}
           className="py-2 px-3 text-nowrap inline-block text-xs font-bold uppercase hover:underline-offset-4 hover:decoration-solid"
           onClick={() => handleNavClick("Exhibitions", "collection")}
         >
