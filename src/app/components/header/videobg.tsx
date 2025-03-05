@@ -20,8 +20,6 @@ const VideoBG = (props: VideoBGProps) => {
     return null
   }
 
-  console.log("videoCover", videoCover)
-
   return (
     <video
       ref={videoRef}
