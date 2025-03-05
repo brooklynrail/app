@@ -1,6 +1,6 @@
 import directus from "../directus"
+import { Articles, Events, Exhibitions, Issues, Tributes, HomepageCollections, Homepage } from "../types"
 import { readItems, readSingleton } from "@directus/sdk"
-import { Articles, Events, Issues, Tributes, Homepage, HomepageCollections } from "../types"
 import { getGlobalSettings } from "../utils"
 import { cache } from "react"
 import { getCollectionArticles } from "./homepage"
@@ -239,6 +239,77 @@ export async function getPreviewEvent(id: string) {
     return preview[0] as Events
   } catch (error) {
     console.error("error in getPreviewArticle", error)
+    return null
+  }
+}
+
+export const getPreviewExhibition = async (id: string) => {
+  try {
+    const preview = await directus.request(
+      readItems("exhibitions", {
+        fields: [
+          "id",
+          "slug",
+          "kicker",
+          "title",
+          "deck",
+          "summary",
+          "start_date",
+          "end_date",
+          "opening_date",
+          "status",
+          "show_details",
+          "location",
+          "location_map",
+          "opening_details",
+          "section",
+          "title_tag",
+          {
+            featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
+          },
+          {
+            artists: [
+              {
+                people_id: [
+                  "id",
+                  "display_name",
+                  "bio",
+                  "website",
+                  "instagram",
+                  "related_links",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption", "modified_on"],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            curators: [
+              {
+                people_id: [
+                  "id",
+                  "display_name",
+                  "bio",
+                  "website",
+                  "instagram",
+                  "related_links",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        filter: {
+          id: { _eq: id },
+        },
+      }),
+    )
+    return preview[0] as Exhibitions
+  } catch (error) {
+    console.error("error in getPreviewExhibition", error)
     return null
   }
 }

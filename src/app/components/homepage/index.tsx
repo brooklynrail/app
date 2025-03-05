@@ -59,7 +59,7 @@ const HomePage = (props: HomePageProps) => {
 
   return (
     <Paper
-      pageClass="paper-homepage"
+      pageClass={`theme-homepage`}
       type={PaperType.Homepage}
       banners={banners}
       navData={navData}
