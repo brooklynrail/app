@@ -253,6 +253,7 @@ export const getPreviewExhibition = async (id: string) => {
           "kicker",
           "title",
           "deck",
+          "dedication",
           "summary",
           "start_date",
           "end_date",
@@ -264,8 +265,24 @@ export const getPreviewExhibition = async (id: string) => {
           "opening_details",
           "section",
           "title_tag",
+          "show_artists_list",
+          {
+            video_cover: ["id", "width", "height", "filename_disk", "caption"],
+          },
+          {
+            cover_image: ["id", "width", "height", "filename_disk", "caption"],
+          },
+          "background_color_primary",
+          "background_color_secondary",
+          "background_color_primary_darkmode",
+          "background_color_secondary_darkmode",
+          "text_color_primary",
+          "text_color_primary_darkmode",
           {
             featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
+          },
+          {
+            show_images: ["id", "width", "height", "filename_disk", "alt", "caption"],
           },
           {
             artists: [
