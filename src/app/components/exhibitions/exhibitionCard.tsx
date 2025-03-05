@@ -31,14 +31,14 @@ const ExhibitionCard = (props: ExhibitionCardProps) => {
   const featured = featured_image && `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${featured_image.filename_disk}`
 
   return (
-    <section className="relative py-4 tablet:py-8 cursor-pointer">
-      <div className="desktop:max-w-screen-desktop-lg mx-auto pb-40 px-3">
+    <section className="relative py-6 tablet:py-12 cursor-pointer">
+      <div className="">
         <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 gap-y-9 tablet-lg:gap-y-16 desktop:gap-y-20">
           <div className="col-span-12 tablet-lg:col-span-6">
-            <div className="space-y-9">
+            <div className="space-y-6">
               <div className="space-y-0.5">
                 {kicker && <p className="text-sm tablet-lg:text-lg font-medium">{kicker}</p>}
-                <h2 className="py-3 text-xl tablet-lg:text-6xl font-light">
+                <h2 className="py-3 text-xl tablet-lg:text-5xl font-light">
                   <Link href={permalink} title={title}>
                     {title}
                   </Link>
