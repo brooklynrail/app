@@ -1,15 +1,14 @@
 "use client"
-import Paper from "../paper"
 import { ExhibitionProps } from "@/app/exhibition/[slug]/page"
-import Head from "./head"
-import ExhibitionSections from "./exhibitionSections"
-import styles from "./exhibition.module.scss"
 import { useMemo } from "react"
 import { Exhibitions } from "../../../../lib/types"
+import Paper from "../paper"
+import styles from "./exhibition.module.scss"
+import ExhibitionSections from "./exhibitionSections"
+import Head from "./head"
 
 const ExhibitionPage = (props: ExhibitionProps) => {
-  const { exhibitionData, navData, previewURL } = props
-  const { end_date } = exhibitionData
+  const { exhibitionData, navData } = props
 
   const combinedStyles = useExhibitionStyles(exhibitionData)
 

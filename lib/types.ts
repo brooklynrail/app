@@ -573,7 +573,7 @@ export type Exhibitions = {
   deck?: string | null
   dedication?: string | null
   end_date: string
-  featured_image?: DirectusFiles | null
+  featured_image?: DirectusFiles
   id: string
   kicker?: string | null
   location?: string | null
@@ -612,14 +612,14 @@ export type ExhibitionsFiles = {
 }
 
 export type ExhibitionsFiles1 = {
-  directus_files_id?: string | DirectusFiles | null
+  directus_files_id?: DirectusFiles | null
   exhibitions_id?: string | Exhibitions | null
   id: number
   sort?: number | null
 }
 
 export type ExhibitionsFiles2 = {
-  directus_files_id?: string | DirectusFiles | null
+  directus_files_id?: DirectusFiles | null
   exhibitions_id?: string | Exhibitions | null
   id: number
   sort?: number | null
