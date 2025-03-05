@@ -21,6 +21,7 @@ const Head = (props: ExhibitionHeadProps) => {
     opening_details,
     curators,
     artists,
+    show_artists_list,
     video_cover,
     cover_image,
   } = props.exhibitionData
@@ -117,7 +118,7 @@ const Head = (props: ExhibitionHeadProps) => {
                         {processContent(opening_details, props.exhibitionData)}
                       </div>
                     )}
-                    {artists && (
+                    {show_artists_list && artists && (
                       <div className="text-lg tablet:text-xl tablet-lg:text-lg font-light">
                         <span className="">Featuring work by:</span>
                         <div className="font-medium">

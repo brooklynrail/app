@@ -24,6 +24,7 @@ export const getExhibition = async (slug: string) => {
         "opening_details",
         "section",
         "title_tag",
+        "show_artists_list",
         {
           video_cover: ["id", "width", "height", "filename_disk", "caption"],
         },

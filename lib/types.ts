@@ -584,6 +584,7 @@ export type Exhibitions = {
   show_details: string
   show_files: any[] | ExhibitionsFiles1[]
   show_images: any[] | ExhibitionsFiles2[]
+  show_artists_list: boolean
   slug: string
   sort?: number | null
   start_date: string
