@@ -1,13 +1,5 @@
-import { useEffect, useRef, useState } from "react"
-import { Events, EventsTypes, Exhibitions } from "../../../../../lib/types"
+import { Exhibitions } from "../../../../../lib/types"
 import { getPermalink, PageType } from "../../../../../lib/utils"
-import {
-  generateFullNewsletter,
-  generateSingleEventNewsletter,
-  generateYouTubeCopy,
-  generateYouTubeTags,
-  getUpcomingEvents,
-} from "../../../../../lib/utils/events"
 import { EditorInfo } from "../article/previewInfo"
 
 interface PreviewInfoProps {
