@@ -39,7 +39,7 @@ const ExhibitionSlideshow = (props: ExhibitionHeadProps) => {
     })
   }, [emblaApi])
 
-  if (!exhibition_images) {
+  if (!exhibition_images || exhibition_images.length === 0) {
     return null
   }
 
