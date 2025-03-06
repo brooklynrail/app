@@ -6,6 +6,7 @@ import Paper from "../paper"
 import styles from "./exhibition.module.scss"
 import ExhibitionSections from "./exhibitionSections"
 import Head from "./head"
+import ExhibitionSlideshow from "./ExhibitionSlideshow"
 
 const ExhibitionPage = (props: ExhibitionProps) => {
   const { exhibitionData, navData } = props
@@ -16,6 +17,7 @@ const ExhibitionPage = (props: ExhibitionProps) => {
     <Paper pageClass={combinedStyles.className} pageStyle={combinedStyles.style} navData={navData}>
       <main className="space-y-16 h-event">
         <Head exhibitionData={exhibitionData} />
+        <ExhibitionSlideshow exhibitionData={exhibitionData} />
         <ExhibitionSections exhibitionData={exhibitionData} />
       </main>
     </Paper>

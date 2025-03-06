@@ -582,8 +582,8 @@ export type Exhibitions = {
   opening_details: string
   section?: ExhibitionSection[] | null
   show_details: string
-  show_files: any[] | ExhibitionsFiles1[]
-  show_images: any[] | ExhibitionsFiles2[]
+  exhibition_files?: ExhibitionsFiles[]
+  exhibition_images?: ExhibitionsImages[]
   show_artists_list: boolean
   slug: string
   sort?: number | null
@@ -605,22 +605,15 @@ export interface ExhibitionSection {
 }
 
 export type ExhibitionsFiles = {
-  directus_files_id?: string | null
-  exhibitions_id?: string | null
+  directus_files_id?: DirectusFiles | null
+  exhibitions_id?: Exhibitions | null
   id: number
   sort?: number | null
 }
 
-export type ExhibitionsFiles1 = {
+export type ExhibitionsImages = {
   directus_files_id?: DirectusFiles | null
-  exhibitions_id?: string | Exhibitions | null
-  id: number
-  sort?: number | null
-}
-
-export type ExhibitionsFiles2 = {
-  directus_files_id?: DirectusFiles | null
-  exhibitions_id?: string | Exhibitions | null
+  exhibitions_id?: Exhibitions | null
   id: number
   sort?: number | null
 }
@@ -922,8 +915,7 @@ export type CustomDirectusTypes = {
   events_people_poets: EventsPeoplePoets[]
   exhibitions: Exhibitions[]
   exhibitions_files: ExhibitionsFiles[]
-  exhibitions_files_1: ExhibitionsFiles1[]
-  exhibitions_files_2: ExhibitionsFiles2[]
+  exhibitions_images: ExhibitionsImages[]
   exhibitions_people_1: ExhibitionsPeople1[]
   exhibitions_people_2: ExhibitionsPeople2[]
   global_settings: GlobalSettings

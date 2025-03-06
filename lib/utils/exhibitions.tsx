@@ -41,7 +41,11 @@ export const getExhibition = async (slug: string) => {
           featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
         },
         {
-          show_images: ["id", "width", "height", "filename_disk", "alt", "caption"],
+          exhibition_images: [
+            {
+              directus_files_id: ["id", "width", "height", "filename_disk", "alt", "caption"],
+            },
+          ],
         },
         {
           artists: [
