@@ -6,6 +6,7 @@ import Paper from "../../paper"
 import Password from "../password"
 import PreviewInfo from "./previewInfo"
 import { useExhibitionStyles } from "../../exhibition"
+import styles from "../../exhibition/exhibition.module.scss"
 
 const ExhibitionPreview = (props: ExhibitionPreviewProps) => {
   const { exhibitionData, navData, isEnabled, previewPassword, previewURL, directusUrl } = props
@@ -19,7 +20,7 @@ const ExhibitionPreview = (props: ExhibitionPreviewProps) => {
     <Password previewPassword={previewPassword} cookieSlug={cookieSlug} isEnabled={isEnabled}>
       <Paper
         previewURL={previewURL}
-        pageClass={combinedStyles.className}
+        pageClass={styles["theme-exhibition"]}
         pageStyle={combinedStyles.style}
         navData={navData}
       >
