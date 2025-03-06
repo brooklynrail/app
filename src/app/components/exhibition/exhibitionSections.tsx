@@ -10,7 +10,7 @@ interface ExhibitionSectionsProps {
 
 const ExhibitionSections = (props: ExhibitionSectionsProps) => {
   const { exhibitionData } = props
-  const { section, summary, featured_image, title } = exhibitionData
+  const { section, summary, featured_image, title, exhibition_images } = exhibitionData
 
   if (!section) {
     return null
@@ -33,7 +33,9 @@ const ExhibitionSections = (props: ExhibitionSectionsProps) => {
         <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-8">
           <div className={`flex flex-col space-y-14 tablet-lg:space-y-20 pt-6 ${styles.content}`}>
             <div className={`text-2xl tablet-lg:text-3xl desktop-lg:text-4xl font-light`}>{parse(summary)}</div>
-            {featured && <Image src={featured} alt={title} width={1000} height={1000} />}
+            {exhibition_images && exhibition_images.length === 0 && featured && (
+              <Image src={featured} alt={title} width={1000} height={1000} />
+            )}
             {section.map((block: ExhibitionSection) => (
               <SectionBlock block={block} exhibitionData={exhibitionData} key={block.section_nav} />
             ))}

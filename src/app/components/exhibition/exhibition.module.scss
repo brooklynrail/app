@@ -1,68 +1,64 @@
-.theme-exhibitions {
-  --header-text-color: var(--exhibition-text-primary, #18181b);
-  // Set navbar variables
-  --navbar-background-color: var(--exhibition-bg-primary, #fff);
-  --navbar-text-color: var(--exhibition-text-primary, #18181b);
-  --subhead-fill: var(--exhibition-text-primary, #18181b);
-  --subhead-fill-dark: var(--exhibition-text-primary-dark, #18181b);
-  // --navbar-text-color: #ffffff;
+.theme-exhibition {
+  --background-color: #eef2ff; /* indigo-50 */
 
-  // Light mode styles (default)
-  background-color: var(--exhibition-bg-primary);
-  background-image: linear-gradient(
-    160.44deg,
-    var(--exhibition-bg-primary) 44.27%,
-    var(--exhibition-bg-secondary) 86.9%
-  );
-  background-attachment: fixed !important;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  // Default background with fallback
-  background-color: #fff; // Fallback if variable isn't set
-  background: var(--exhibition-bg-primary, #fff);
-
-  color: var(--exhibition-text-primary, #18181b);
-  --subhead-fill: var(--exhibition-text-primary, #18181b);
-
-  // If both primary and secondary colors are set, use gradient
-  &[style*="--exhibition-bg-secondary"] {
-    background: linear-gradient(
-      160.44deg,
-      var(--exhibition-bg-primary, #fff) 44.27%,
-      var(--exhibition-bg-secondary) 86.9%
-    );
-    --navbar-background-color: var(--exhibition-bg-primary, #fff);
-    --subhead-fill: var(--exhibition-text-primary, #000);
+  &[style*="--exhibition-bg-primary"] {
+    --background-color: var(--exhibition-bg-primary,);
+    --navbar-background-color: var(--exhibition-bg-primary);
+    --background-color: var(--exhibition-bg-primary);
   }
 
-  --exhibition-bg-primary: var(--color-default-primary, #fff);
-  --exhibition-bg-secondary: var(--color-default-secondary, #fff);
+  &[style*="--exhibition-bg-primary"][style*="--exhibition-bg-secondary"] {
+    background-image: linear-gradient(
+      160.44deg,
+      var(--exhibition-bg-primary) 44.27%,
+      var(--exhibition-bg-secondary) 86.9%
+    );
+    background-attachment: fixed !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 
-  @media (prefers-color-scheme: dark) {
-    --exhibition-bg-primary: var(--color-default-primary-dark, #333);
-    --exhibition-bg-secondary: var(--color-default-secondary-dark, #333);
-    background-color: var(--exhibition-bg-primary-dark, var(--exhibition-bg-primary));
+  &[style*="--exhibition-text-primary"] {
+    --navbar-text-color: var(--exhibition-text-primary);
+    --logo-path-fill: var(--exhibition-text-primary);
+    --subhead-fill: var(--exhibition-text-primary);
+    --text-color: var(--exhibition-text-primary);
   }
 }
 
 // Dark mode styles using the global .dark class pattern
 :global(.dark) {
-  .theme-exhibitions {
-    --navbar-background-color: var(--exhibition-bg-primary-dark, --navbar-background-color);
-    --navbar-text-color: var(--exhibition-text-primary-dark, --navbar-text-color);
+  .theme-exhibition {
+    --background-color: #27272a; /* zinc-800 */
 
-    background-color: var(--exhibition-bg-primary-dark, var(--exhibition-bg-primary));
+    &:not([style*="--exhibition-bg-primary-dark"]) {
+      background-image: none;
+      --navbar-background-color: var(--background-color);
+    }
 
+    &[style*="--exhibition-bg-primary-dark"] {
+      --navbar-background-color: var(--exhibition-bg-primary-dark);
+      --navbar-text-color: var(--exhibition-text-primary-dark);
+    }
+
+    &[style*="--exhibition-bg-primary-dark"] {
+      --background-color: var(--exhibition-bg-primary-dark);
+    }
     &[style*="--exhibition-bg-primary-dark"][style*="--exhibition-bg-secondary-dark"] {
       background-image: linear-gradient(
         160.44deg,
         var(--exhibition-bg-primary-dark) 44.27%,
         var(--exhibition-bg-secondary-dark) 86.9%
       );
+      background-attachment: fixed !important;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
-    color: var(--exhibition-text-primary-dark, #000);
+    &[style*="--exhibition-text-primary-dark"] {
+      --text-color: var(--exhibition-text-primary-dark);
+    }
   }
 }
 

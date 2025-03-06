@@ -14,7 +14,7 @@ const ExhibitionPage = (props: ExhibitionProps) => {
   const combinedStyles = useExhibitionStyles(exhibitionData)
 
   return (
-    <Paper pageClass={combinedStyles.className} pageStyle={combinedStyles.style} navData={navData}>
+    <Paper pageClass={styles["theme-exhibition"]} pageStyle={combinedStyles.style} navData={navData}>
       <main className="space-y-16 h-event">
         <Head exhibitionData={exhibitionData} />
         <ExhibitionSlideshow exhibitionData={exhibitionData} />
@@ -86,7 +86,6 @@ export const useExhibitionStyles = (exhibitionData: Exhibitions) => {
 
   // Combine the class and style into one object for Paper
   const combinedStyles = {
-    className: styles["theme-exhibitions"],
     style: {
       "--exhibition-bg-primary": cleanValue(backgroundColorPrimary),
       "--exhibition-bg-secondary": cleanValue(backgroundColorSecondary),
@@ -94,15 +93,10 @@ export const useExhibitionStyles = (exhibitionData: Exhibitions) => {
       "--exhibition-bg-secondary-dark": cleanValue(backgroundColorSecondaryDarkmode),
       "--exhibition-text-primary": cleanValue(textColorPrimary),
       "--exhibition-text-primary-dark": cleanValue(textColorPrimaryDarkmode),
-      "--logo-path-fill": cleanValue(textColorPrimary),
-      "--subhead-fill": cleanValue(textColorPrimary),
-      "--subhead-fill-dark": cleanValue(textColorPrimaryDarkmode),
-      "--background-color": "red",
     } as React.CSSProperties,
   }
 
   return {
-    className: combinedStyles.className,
     style: combinedStyles.style,
   }
 }
