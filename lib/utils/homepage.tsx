@@ -150,38 +150,17 @@ export const getCurrentIssueSlug = cache(async () => {
 
 export const getCurrentIssueData = cache(async () => {
   try {
-    const settings = await directus.request(
-      readSingleton("global_settings", {
-        fields: [
-          {
-            current_issue: [
-              "id",
-              "title",
-              "slug",
-              "summary",
-              "special_issue",
-              { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
-              { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
-              { cover_3: ["id", "width", "height", "filename_disk", "caption"] },
-              { cover_4: ["id", "width", "height", "filename_disk", "caption"] },
-              { cover_5: ["id", "width", "height", "filename_disk", "caption"] },
-              { cover_6: ["id", "width", "height", "filename_disk", "caption"] },
-            ],
-          },
-        ],
-      }),
-    )
+    const res = await fetch(`${baseUrl}/api/currentIssue/`)
 
-    const curruentIssueData = settings.current_issue
-    if (!curruentIssueData) {
-      // throw an error if there is no current issue
-      console.error("There is no current issue set", curruentIssueData)
-      return
+    if (!res.ok) {
+      const text = await res.text()
+      console.error("API Response:", text)
+      throw new Error(`API returned ${res.status}: ${text}`)
     }
 
-    return settings.current_issue as Issues
+    return res.json()
   } catch (error) {
-    console.error("Error fetching CurrentIssueData data:", error)
+    console.error("Failed to fetch nav data:", error, `${baseUrl}/api/nav/`)
     return null
   }
 })

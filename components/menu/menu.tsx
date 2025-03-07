@@ -11,7 +11,6 @@ interface MenuProps {
 }
 
 const Menu = (props: MenuProps) => {
-  const { collections } = props
   const { isMenuOpen, toggleMenu } = useMenu()
 
   const arrow = (

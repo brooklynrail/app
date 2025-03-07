@@ -647,7 +647,7 @@ export type GlobalSettingsNavigation = {
   collection?: string | null
   global_settings_id?: string | GlobalSettings | null
   id: number
-  item?: string | any | null
+  item?: string | number | null
   sort?: number | null
 }
 
@@ -732,6 +732,7 @@ export type Organizations = {
 }
 
 export type Pages = {
+  id: string
   date_created?: string | null
   date_updated?: string | null
   slug: string
