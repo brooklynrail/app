@@ -18,7 +18,6 @@ const Person = (props: PersonProps) => {
   const { bio, instagram, portrait, display_name, website, related_links } = person
 
   if (!bio) {
-    console.log("No bio for", display_name)
     return null
   }
 
@@ -31,7 +30,7 @@ const Person = (props: PersonProps) => {
       <div className="space-y-3">
         <div className="space-y-6">
           <h3 className="font-bold text-xl p-name">{display_name}</h3>
-          <div className="text-md tablet-lg:text-lg content-bio p-note tablet-lg:flex tablet-lg:flex-row-reverse gap-x-9">
+          <div className="text-md tablet-lg:text-lg content-bio p-note tablet-lg:flex tablet-lg:flex-row-reverse justify-between gap-x-9">
             {portrait ? <PortraitImage image={portrait} title={display_name} /> : null}
             <div className="space-y-3">
               <div>{parse(bio)}</div>
