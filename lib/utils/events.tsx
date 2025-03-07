@@ -446,7 +446,11 @@ export const generateYouTubeCopy = (eventData: Events) => {
   // People Info
   people.forEach((personObj: any) => {
     const person = personObj.people_id
+    if (!person.bio) {
+      return
+    }
     const bio = encodeHtmlEntities(stripHtml(person.bio).result)
+
     youtubeCopy += `🚩 ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
 
     // Include website, Instagram, etc.
@@ -469,7 +473,11 @@ export const generateYouTubeCopy = (eventData: Events) => {
     // Poets Info
     poets.forEach((personObj: any) => {
       const person = personObj.people_id
+      if (!person.bio) {
+        return
+      }
       const bio = encodeHtmlEntities(stripHtml(person.bio).result)
+
       youtubeCopy += `🚩 ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
 
       // Include website, Instagram, etc.

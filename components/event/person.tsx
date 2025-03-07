@@ -17,6 +17,11 @@ const Person = (props: PersonProps) => {
   const { person, index } = props
   const { bio, instagram, portrait, display_name, website, related_links } = person
 
+  if (!bio) {
+    console.log("No bio for", display_name)
+    return null
+  }
+
   // If instagram is present, remove any leading @ and trim any spaces before or after the string
   const cleanedInstagram = instagram ? instagram.replace(/^@/, "").trim() : ""
   const instagram_url = `https://www.instagram.com/${cleanedInstagram}`
