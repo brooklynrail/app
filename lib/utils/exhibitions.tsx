@@ -2,6 +2,7 @@ import { readItems } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../directus"
 import { Exhibitions } from "../types"
+import { getBaseUrl } from "../utils"
 
 export const getExhibition = async (slug: string) => {
   const exhibition = await directus.request(
@@ -98,46 +99,21 @@ export const getExhibition = async (slug: string) => {
   return exhibition[0] as Exhibitions
 }
 
-export const getAllExhibitions = async () => {
-  const exhibitions = await directus.request(
-    readItems("exhibitions", {
-      fields: [
-        "id",
-        "slug",
-        "title",
-        "start_date",
-        "end_date",
-        "status",
-        "opening_date",
-        "opening_details",
-        "show_artists_list",
-        "kicker",
-        {
-          artists: [
-            {
-              people_id: [
-                "id",
-                "display_name",
-                "bio",
-                "website",
-                "instagram",
-                "related_links",
-                {
-                  portrait: ["id", "width", "height", "filename_disk", "alt", "caption", "modified_on"],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
-        },
-      ],
-      filter: {
-        _and: [{ status: { _eq: `published` } }],
-      },
-    }),
-  )
+const baseUrl = getBaseUrl()
 
-  return exhibitions as Exhibitions[]
+export const getAllExhibitions = async (): Promise<Exhibitions[] | null> => {
+  try {
+    const res = await fetch(`${baseUrl}/api/exhibitions/`)
+
+    if (!res.ok) {
+      const text = await res.text()
+      console.error("API Response:", text)
+      throw new Error(`API returned ${res.status}: ${text}`)
+    }
+
+    return res.json()
+  } catch (error) {
+    console.error("Failed to fetch exhibitions data:", error, `${baseUrl}/api/exhibitions/`)
+    return null
+  }
 }

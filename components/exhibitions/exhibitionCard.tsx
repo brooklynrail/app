@@ -55,7 +55,7 @@ const ExhibitionCard = (props: ExhibitionCardProps) => {
 
               <p className="text-xl font-light">{showDates}</p>
               <div className="space-y-6">
-                {showOpeningDetails && <div className="text-xl font-light">{parse(opening_details)}</div>}
+                {showOpeningDetails && <div className="text-xl font-light tablet:pr-12">{parse(opening_details)}</div>}
 
                 {show_artists_list && artists && (
                   <div className="text-md font-light tablet:pr-12">
