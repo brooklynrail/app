@@ -25,99 +25,19 @@ export const getNavData = async (): Promise<Homepage | null> => {
   }
 }
 
-export const getHomepageData = cache(async (currentIssue: Issues) => {
+export const getHomepageData = cache(async (currentIssue: string) => {
   try {
-    const homepageData = await directus.request(
-      readSingleton("homepage", {
-        fields: [
-          "id",
-          {
-            banners: [
-              {
-                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
-              },
-            ],
-          },
-          {
-            video_covers: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
-          },
-          {
-            video_covers_stills: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
-          },
-          {
-            collections: [
-              {
-                collections_id: [
-                  "id",
-                  "type",
-                  "kicker",
-                  "title",
-                  "limit",
-                  "links",
-                  "banner_type",
-                  {
-                    section: ["slug", "featured", "description"],
-                  },
-                  {
-                    tribute: [
-                      "id",
-                      "title",
-                      "deck",
-                      "blurb",
-                      "summary",
-                      "excerpt",
-                      "slug",
-                      {
-                        editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-                      },
-                      {
-                        articles: [
-                          "id",
-                          "slug",
-                          "title",
-                          "deck",
-                          "excerpt",
-                          "sort",
-                          "status",
-                          {
-                            contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
-                          },
-                        ],
-                      },
-                      {
-                        featured_image: ["id", "width", "height", "filename_disk", "caption"],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      }),
-    )
+    const res = await fetch(`${baseUrl}/api/homepage?currentIssue=${currentIssue}`)
 
-    const homepage = homepageData as Homepage
+    if (!res.ok) {
+      const text = await res.text()
+      console.error("API Response:", text)
+      throw new Error(`API returned ${res.status}: ${text}`)
+    }
 
-    const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
-      if (collection.collections_id && collection.collections_id.section) {
-        const thisSectionArticles = getCollectionArticles({
-          currentIssueSlug: currentIssue.slug,
-          slug: collection.collections_id.section.slug,
-          limit: collection.collections_id.limit,
-        })
-
-        collection.collections_id.section.articles = (await thisSectionArticles) as Articles[]
-        return collection
-      }
-      return collection
-    })
-
-    homepage.collections = await Promise.all(allCollections)
-
-    return homepage as Homepage
+    return res.json()
   } catch (error) {
-    console.error("Error fetching Homepage data:", error)
+    console.error("Failed to fetch homepage data:", error, `${baseUrl}/api/homepage?currentIssue=${currentIssue}`)
     return null
   }
 })
@@ -158,7 +78,7 @@ export const getCurrentIssueData = cache(async () => {
       throw new Error(`API returned ${res.status}: ${text}`)
     }
 
-    return res.json()
+    return res.json() as Promise<Issues>
   } catch (error) {
     console.error("Failed to fetch nav data:", error, `${baseUrl}/api/nav/`)
     return null
