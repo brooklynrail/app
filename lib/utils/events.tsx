@@ -4,7 +4,9 @@ import { cache } from "react"
 import directus from "../directus"
 import { Events, EventsTypes } from "../types"
 import { stripHtml } from "string-strip-html"
-import { getPermalink, PageType } from "../utils"
+import { getBaseUrl, getPermalink, PageType } from "../utils"
+
+const baseUrl = getBaseUrl()
 
 export enum EventTypes {
   TheNewSocialEnvironment = "the-new-social-environment",
@@ -40,32 +42,18 @@ export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) =
 }
 
 export const getUpcomingEvents = cache(async () => {
-  const eventsDataAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
-    `?fields[]=id` +
-    `&fields[]=slug` +
-    `&fields[]=type` +
-    `&fields[]=kicker` +
-    `&fields[]=title` +
-    `&fields[]=deck` +
-    `&fields[]=summary` +
-    `&fields[]=series` +
-    `&fields[]=start_date` +
-    `&fields[]=end_date` +
-    `&fields[]=all_day` +
-    `&fields[]=youtube_id` +
-    `&sort=start_date` +
-    `&filter[end_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
-    `&filter[youtube_id][_empty]=true` +
-    `&filter[status][_eq]=published`
-
-  const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
-  if (!res.ok) {
-    throw new Error("Failed to fetch events data")
+  try {
+    const res = await fetch(`${baseUrl}/api/events`)
+    if (!res.ok) {
+      const text = await res.text()
+      console.error("API Response:", text)
+      throw new Error(`API returned ${res.status}: ${text}`)
+    }
+    return res.json()
+  } catch (error) {
+    console.error("Failed to fetch events data:", error, `${baseUrl}/api/events`)
+    return null
   }
-  const data = await res.json()
-  const events = data.data
-  return events as Events[]
 })
 
 export const getUpcomingEventsBanner = async () => {
