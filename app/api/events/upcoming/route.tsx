@@ -1,7 +1,6 @@
-import { NextRequest } from "next/server"
-import { getUpcomingEventsBanner } from "@/lib/utils/events"
+export const revalidate = 3600 // 1 hour cache
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
     const eventsDataAPI =
       `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
@@ -33,7 +32,7 @@ export async function GET(request: NextRequest) {
       `&filter[youtube_id][_empty]=true` +
       `&filter[status][_eq]=published`
 
-    const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+    const res = await fetch(eventsDataAPI, { next: { revalidate: revalidate, tags: ["events"] } })
     if (!res.ok) {
       throw new Error("Failed to fetch events data")
     }
@@ -46,7 +45,7 @@ export async function GET(request: NextRequest) {
     // Set cache headers for 30 minutes
     return Response.json(upcomingEvents, {
       headers: {
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate",
+        "Content-Type": "application/json",
       },
     })
   } catch (error) {

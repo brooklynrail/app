@@ -47,7 +47,7 @@ export const LoadingSkeleton = () => {
 }
 
 // Data fetching component
-async function EventsData() {
+const EventsData = async () => {
   const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
     next: { revalidate: 3600, tags: ["events"] },
   }).then((res) => {
