@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "@/lib/types"
-import { getBaseUrl, getPermalink, PageType } from "@/lib/utils"
-import { getCurrentIssueData, getHomepageData } from "@/lib/utils/homepage"
+import { getPermalink, PageType } from "@/lib/utils"
+import { getCurrentIssueData, getHomepageData, getNavData } from "@/lib/utils/homepage"
 import HomePage from "@/components/homepage"
 
 export interface HomePageProps {
@@ -27,25 +27,7 @@ async function getData() {
     return notFound()
   }
 
-  const baseUrl = getBaseUrl()
-
-  const navData = await fetch(`https://brooklynrail.org/api/nav/`, {
-    cache: "no-store",
-  })
-    .then(async (res) => {
-      if (!res.ok) {
-        // Log the actual response for debugging
-        const text = await res.text()
-        console.error("API Response:", text)
-        throw new Error(`API returned ${res.status}: ${text}`)
-      }
-      return res.json()
-    })
-    .catch((error) => {
-      console.error("Failed to fetch nav data:", error, "baseUrl:", baseUrl)
-      return null
-    })
-
+  const navData = await getNavData()
   if (!navData) {
     return notFound()
   }

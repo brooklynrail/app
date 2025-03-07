@@ -1,14 +1,57 @@
-import { getNavData } from "@/lib/utils/homepage"
+import directus from "@/lib/directus"
+import { readSingleton } from "@directus/sdk"
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const navData = await getNavData()
+    try {
+      const navData = await directus.request(
+        readSingleton("homepage", {
+          fields: [
+            "id",
+            {
+              banners: [
+                {
+                  collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
+                },
+              ],
+            },
+            {
+              collections: [
+                {
+                  collections_id: [
+                    "id",
+                    "type",
+                    "kicker",
+                    "title",
+                    "limit",
+                    "links",
+                    "banner_type",
+                    {
+                      section: ["slug", "featured"],
+                    },
+                    {
+                      tribute: ["slug"],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        }),
+      )
 
-    if (!navData) {
+      const cleanedData = JSON.parse(JSON.stringify(navData))
+
+      // Add cache-control header
+      return Response.json(cleanedData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    } catch (error) {
+      console.error("Error fetching Nav data:", error)
       return Response.json({ error: "Navigation data not found" }, { status: 404 })
     }
-
-    return Response.json(navData)
   } catch (error) {
     console.error("Error fetching navigation data:", error)
     return Response.json({ error: "Failed to fetch navigation data" }, { status: 500 })

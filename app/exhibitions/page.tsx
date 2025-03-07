@@ -1,13 +1,10 @@
-import EventsPage from "@/components/events"
-import { Metadata } from "next"
-import { notFound } from "next/navigation"
+import ExhibitionsPage from "@/components/exhibitions"
 import { Exhibitions, Homepage } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
-import { getEventTypes, getPastEvents, getUpcomingEvents } from "@/lib/utils/events"
-import { getNavData } from "@/lib/utils/homepage"
-import { get } from "http"
 import { getAllExhibitions } from "@/lib/utils/exhibitions"
-import ExhibitionsPage from "@/components/exhibitions"
+import { getNavData } from "@/lib/utils/homepage"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 export interface ExhibitionsProps {
   navData: Homepage
@@ -24,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
-  const ogtitle = "Exhibitions - The Brooklyn Rail"
+  const ogtitle = "Exhibitions"
 
   return {
     title: `${ogtitle}`,

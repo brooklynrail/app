@@ -16,7 +16,7 @@ const ExhibitionsPage = (props: ExhibitionsProps) => {
           <div className="divide-y rail-divide">
             {allExhibitions.map((exhibition) => {
               if (!exhibition.featured_image) {
-                // return null
+                return null
               }
               return <ExhibitionCard key={exhibition.id} exhibition={exhibition} />
             })}

@@ -4,52 +4,26 @@ import { readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { cache } from "react"
 import { Articles, Homepage, HomepageCollections, Issues } from "../types"
-import { unstable_cache } from "next/cache"
+import { getBaseUrl } from "../utils"
 
-export const getNavData = unstable_cache(async () => {
+const baseUrl = getBaseUrl()
+
+export const getNavData = async (): Promise<Homepage | null> => {
   try {
-    const navData = await directus.request(
-      readSingleton("homepage", {
-        fields: [
-          "id",
-          {
-            banners: [
-              {
-                collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
-              },
-            ],
-          },
-          {
-            collections: [
-              {
-                collections_id: [
-                  "id",
-                  "type",
-                  "kicker",
-                  "title",
-                  "limit",
-                  "links",
-                  "banner_type",
-                  {
-                    section: ["slug", "featured"],
-                  },
-                  {
-                    tribute: ["slug"],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      }),
-    )
+    const res = await fetch(`${baseUrl}/api/nav/`)
 
-    return navData as Homepage
+    if (!res.ok) {
+      const text = await res.text()
+      console.error("API Response:", text)
+      throw new Error(`API returned ${res.status}: ${text}`)
+    }
+
+    return res.json()
   } catch (error) {
-    console.error("Error fetching Nav data:", error)
+    console.error("Failed to fetch nav data:", error, `${baseUrl}/api/nav/`)
     return null
   }
-}, ["navData"])
+}
 
 export const getHomepageData = cache(async (currentIssue: Issues) => {
   try {
