@@ -1,3 +1,4 @@
+/* eslint max-lines: 0 */
 import { createItem, readItem, readItems, updateItem } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../directus"

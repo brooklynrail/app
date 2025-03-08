@@ -1,3 +1,4 @@
+/* eslint max-lines: 0 */
 import { readItems, readSingleton } from "@directus/sdk"
 import { cache } from "react"
 import { stripHtml } from "string-strip-html"

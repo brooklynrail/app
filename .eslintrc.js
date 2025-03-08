@@ -49,24 +49,24 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
-        varsIgnorePattern: "_|tw|React|_",
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^(React|_|tw)$",
+        caughtErrorsIgnorePattern: "^_",
       },
     ],
     "@typescript-eslint/naming-convention": [
-      "warn",
-      {
-        selector: "default",
-        format: ["camelCase", "snake_case", "PascalCase"],
-        leadingUnderscore: "allow",
-      },
+      "error",
       {
         selector: "variable",
-        format: ["camelCase", "UPPER_CASE"],
-        leadingUnderscore: "allow",
+        format: ["camelCase", "PascalCase", "UPPER_CASE", "snake_case"],
       },
       {
-        selector: ["typeLike", "enumMember"],
+        selector: "typeLike",
         format: ["PascalCase"],
+      },
+      {
+        selector: "property",
+        format: ["camelCase", "snake_case", "PascalCase"],
       },
     ],
   },

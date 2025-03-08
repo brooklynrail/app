@@ -1,5 +1,4 @@
 import { readItems } from "@directus/sdk"
-import { cache } from "react"
 import directus from "../directus"
 import { Exhibitions } from "../types"
 import { getBaseUrl } from "../utils"
