@@ -1,5 +1,4 @@
 import { readItem } from "@directus/sdk"
-import { revalidatePath, revalidateTag } from "next/cache"
 import { cache } from "react"
 import directus from "../directus"
 import { Articles, Contributors, Events, Issues, Pages, Sections } from "../types"
@@ -18,33 +17,46 @@ export enum RevalidateType {
   GlobalSettings = "global_settings",
 }
 
+async function revalidatePages(paths: string[]) {
+  try {
+    await Promise.all(
+      paths.map(async (path) => {
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/revalidate?path=${path}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+      }),
+    )
+  } catch (error) {
+    console.error("Error revalidating:", error)
+  }
+}
+
 export const revalidateIssue = cache(async (data: Issues) => {
   const permalink = getPermalink({
     issueSlug: data.slug,
     type: PageType.Issue,
   })
   const url = new URL(permalink)
-  revalidatePath(url.pathname)
-  revalidatePath(`/issues/sitemap.xml`)
-  revalidatePath(`/archive`)
-  revalidateTag("issues")
+  await revalidatePages([url.pathname, "/issues/sitemap.xml", "/archive"])
   return url.pathname
 })
 
-export const revalidateContributor = cache(async (data: Contributors) => {
+export function getContributorRevalidationPaths(data: Contributors) {
   const permalink = getPermalink({
     slug: data.slug,
     type: PageType.Contributor,
   })
   const url = new URL(permalink)
-  revalidatePath(url.pathname)
-  revalidatePath("/contributors")
-  revalidatePath("/contributors/sitemap.xml")
-  revalidateTag("contributors")
-  return url.pathname
-})
+  return {
+    mainPath: url.pathname,
+    additionalPaths: ["/contributors", "/contributors/sitemap.xml"],
+  }
+}
 
-export const revalidateEvent = cache(async (data: Events) => {
+export function getEventRevalidationPaths(data: Events) {
   const eventDate = new Date(data.start_date)
   const eventyear = eventDate.getFullYear()
   const eventmonth = eventDate.getMonth() + 1
@@ -59,34 +71,24 @@ export const revalidateEvent = cache(async (data: Events) => {
   })
 
   const url = new URL(permalink)
-  revalidatePath(url.pathname)
-  revalidatePath("/events")
-  revalidatePath("/events/past")
-  revalidatePath("/events/sitemap.xml")
-  revalidateTag("events")
-  return url.pathname
-})
-
-export const revalidatePage = cache(async (data: Pages) => {
-  let permalink
-  if (data.slug == `about`) {
-    // Example path: /about
-    permalink = getPermalink({
-      type: PageType.Page,
-      slug: data.slug,
-    })
-    revalidatePath("/about")
-  } else {
-    permalink = getPermalink({
-      type: PageType.ChildPage,
-      slug: data.slug,
-    })
-    revalidatePath(`/about/${data.slug}`)
+  return {
+    mainPath: url.pathname,
+    additionalPaths: ["/events", "/events/past", "/events/sitemap.xml"],
   }
-  revalidateTag("pages")
+}
+
+export function getPageRevalidationPaths(data: Pages) {
+  const permalink =
+    data.slug === "about"
+      ? getPermalink({ type: PageType.Page, slug: data.slug })
+      : getPermalink({ type: PageType.ChildPage, slug: data.slug })
+
   const url = new URL(permalink)
-  return url.pathname
-})
+  return {
+    mainPath: url.pathname,
+    additionalPaths: data.slug === "about" ? ["/about"] : [],
+  }
+}
 
 export const getRevalidateData = cache(async (id: string, type: RevalidateType) => {
   switch (type) {
