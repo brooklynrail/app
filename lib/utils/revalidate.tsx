@@ -1,7 +1,7 @@
 import { readItem } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../directus"
-import { Articles, Contributors, Events, Issues, Pages, Sections } from "../types"
+import { Articles, Contributors, Events, Issues, Pages } from "../types"
 import { getPermalink, PageType } from "../utils"
 
 export enum RevalidateType {

@@ -1,9 +1,8 @@
-/* eslint max-lines: 0 */
 import { readItems, readSingleton } from "@directus/sdk"
 import { cache } from "react"
 import { stripHtml } from "string-strip-html"
 import directus from "./directus"
-import { Articles, Contributors, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
+import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
 
 export const getBaseUrl = () => {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL
