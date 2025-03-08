@@ -21,9 +21,7 @@ export async function GET(request: Request) {
     return new Response("Invalid slug", { status: 401 })
   }
 
-  draftMode().enable()
-
-  const { isEnabled } = draftMode()
+  const { isEnabled } = await draftMode()
 
   // Redirect to the path
   const path = `/preview/article/${article.id}?draftMode=true`

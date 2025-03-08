@@ -1,31 +1,21 @@
-import HomepagePreview from "@/components/preview/homepage"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "@/lib/types"
 import { PageType, getCurrentIssueData, getPermalink } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
 import { getPreviewHomepageData, getPreviewPassword } from "@/lib/utils/preview"
+import HomepagePreview from "@/components/preview/homepage"
+import { HomepagePreviewProps } from "@/lib/railTypes"
 
-export interface HomepagePreviewProps {
-  navData: Homepage
-  homepageData: Homepage
-  banners: HomepageBanners[]
-  currentIssue: Issues
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  isEnabled: boolean
-  previewPassword: string
-  directusUrl: string
-}
+// Force dynamic rendering, no caching
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
+// Metadata Generation
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await getData()
-
   return {
-    title: `PREVIEW: Homepage `,
-
+    title: "PREVIEW: Homepage",
     robots: {
       index: false,
       follow: false,
@@ -39,66 +29,64 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+// Main Page Component
 export default async function HomepagePreviewPage() {
-  const { isEnabled } = draftMode()
-  console.log("Draft mode enabled: ", isEnabled)
+  const isEnabled = await draftMode()
+
+  // Verify draft mode is enabled
+  if (!isEnabled) {
+    redirect("/")
+  }
 
   const data = await getData()
 
-  const { homepageData, banners, currentIssue, permalink, previewPassword, directusUrl, navData } = data
-  if (!homepageData || !banners || !currentIssue || !permalink || !previewPassword || !directusUrl) {
-    return notFound()
+  if (!data?.homepageData || !data.previewPassword) {
+    notFound()
   }
 
-  const homepagePreviewProps = {
-    homepageData,
-    banners,
-    currentIssue,
-    permalink,
-    directusUrl,
-    previewPassword,
-    isEnabled,
-    navData,
-  }
-
-  return <HomepagePreview {...homepagePreviewProps} />
+  return <HomepagePreview {...data} />
 }
 
-async function getData() {
-  const currentIssue = await getCurrentIssueData()
-  if (!currentIssue) {
-    return notFound()
-  }
+// Data Fetching
+async function getData(): Promise<HomepagePreviewProps | undefined> {
+  try {
+    // Parallel fetch of initial data
+    const [currentIssue, navData, previewPassword] = await Promise.all([
+      getCurrentIssueData(),
+      getNavData(),
+      getPreviewPassword(),
+    ])
 
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+    if (!currentIssue || !navData || !previewPassword) {
+      return undefined
+    }
 
-  const homepageData = await getPreviewHomepageData(currentIssue)
-  if (!homepageData) {
-    return notFound()
-  }
+    const homepageData = await getPreviewHomepageData(currentIssue)
+    if (!homepageData || !homepageData.banners) {
+      return undefined
+    }
 
-  const banners = homepageData.banners
-  if (!banners) {
-    return notFound()
-  }
+    const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+    if (!directusUrl) {
+      throw new Error("Missing DIRECTUS_URL environment variable")
+    }
 
-  const permalink = getPermalink({
-    type: PageType.Home,
-  })
+    const permalink = getPermalink({
+      type: PageType.Home,
+    })
 
-  const previewPassword = await getPreviewPassword()
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-
-  return {
-    navData,
-    homepageData,
-    banners,
-    currentIssue,
-    permalink,
-    previewPassword,
-    directusUrl,
+    return {
+      navData,
+      homepageData,
+      banners: homepageData.banners,
+      currentIssue,
+      permalink,
+      previewPassword,
+      directusUrl,
+      isEnabled: true,
+    }
+  } catch (error) {
+    console.error("Error fetching preview homepage data:", error)
+    return undefined
   }
 }

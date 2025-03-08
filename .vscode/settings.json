@@ -8,5 +8,26 @@
   "eslint.lintTask.enable": true,
   "eslint.validate": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
   "scss.lint.unknownAtRules": "ignore",
-  "css.lint.unknownAtRules": "ignore"
+  "css.lint.unknownAtRules": "ignore",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.surveys.enabled": false,
+  "typescript.tsc.autoDetect": "on",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsserver.watchOptions": {
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriorityPolling"
+  },
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "typescript.tsserver.log": "verbose",
+  "typescript.suggest.enabled": true,
+  "typescript.validate.enable": true,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  "files.associations": {
+    "*.tsx": "typescriptreact"
+  }
 }

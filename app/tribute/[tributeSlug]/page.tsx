@@ -1,81 +1,88 @@
 import TributePage from "@/components/tributePage"
+import { TributePageProps } from "@/lib/railTypes"
+import { PageType, getOGImage, getPermalink, getTributeData } from "@/lib/utils"
+import { getNavData } from "@/lib/utils/homepage"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
-import { Articles, Homepage, Tributes } from "@/lib/types"
-import { PageType, getOGImage, getPermalink, getTributeData } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
-
-export interface TributePageProps {
-  navData: Homepage
-  thisTributeData: Tributes
-  articleData: Articles
-  permalink: string
-  previewURL?: string
-  currentArticleSlug?: string
-}
-
-export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
-  const data = await getData({ params })
-
-  const { title, excerpt, featured_image } = data.props.thisTributeData
-  const ogtitle = `${stripHtml(title).result}`
-  const ogdescription = excerpt
-  const ogimageprops = { ogimage: featured_image, title }
-  const ogimages = getOGImage(ogimageprops)
-
-  return {
-    title: `${ogtitle}`,
-    description: ogdescription,
-    alternates: {
-      canonical: `${data.props.permalink}`,
-    },
-    openGraph: {
-      title: `${ogtitle}`,
-      description: ogdescription,
-      url: data.props.permalink,
-      images: ogimages,
-      type: `website`,
-    },
-  }
-}
-
-export default async function Tribute({ params }: { params: TributeParams }) {
-  const data = await getData({ params })
-
-  return <TributePage {...data.props} />
-}
 
 interface TributeParams {
   tributeSlug: string
 }
 
-async function getData({ params }: { params: TributeParams }) {
-  const tributeSlug = params.tributeSlug
+// Page Configuration
+export const revalidate = 3600 // revalidate every hour
 
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
+// Metadata Generation
+export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
+  const data = await getData(params)
+
+  if (!data?.thisTributeData) {
+    return {}
   }
 
-  const thisTributeData = await getTributeData({ tributeSlug: tributeSlug, slug: "" })
-  if (!thisTributeData) {
-    return notFound()
-  }
-
-  const articleData = thisTributeData.articles[0]
-
-  const permalink = getPermalink({
-    tributeSlug: tributeSlug,
-    type: PageType.Tribute,
-  })
+  const { title, excerpt, featured_image } = data.thisTributeData
+  const ogtitle = stripHtml(title).result
+  const ogdescription = excerpt
+  const ogimages = getOGImage({ ogimage: featured_image, title })
 
   return {
-    props: {
+    title: ogtitle,
+    description: ogdescription,
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: ogtitle,
+      description: ogdescription,
+      url: data.permalink,
+      images: ogimages,
+      type: "website",
+    },
+  }
+}
+
+// Main Page Component
+export default async function Tribute({ params }: { params: TributeParams }) {
+  const data = await getData(params)
+
+  if (!data) {
+    notFound()
+  }
+
+  return <TributePage {...data} />
+}
+
+// Data Fetching
+async function getData(params: TributeParams): Promise<TributePageProps | undefined> {
+  try {
+    const { tributeSlug } = params
+
+    // Parallel fetch of initial data
+    const [navData, thisTributeData] = await Promise.all([getNavData(), getTributeData({ tributeSlug, slug: "" })])
+
+    if (!navData || !thisTributeData) {
+      return undefined
+    }
+
+    const articleData = thisTributeData.articles[0]
+    if (!articleData) {
+      return undefined
+    }
+
+    const permalink = getPermalink({
+      tributeSlug,
+      type: PageType.Tribute,
+    })
+
+    return {
       navData,
       thisTributeData,
       articleData,
       permalink,
-    },
+    }
+  } catch (error) {
+    console.error("Error fetching tribute data:", error)
+    return undefined
   }
 }

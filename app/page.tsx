@@ -1,19 +1,7 @@
-import { notFound } from "next/navigation"
-import { Homepage, HomepageBanners, Issues } from "@/lib/types"
+import HomePage from "@/components/homepage"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getCurrentIssueData, getHomepageData, getNavData } from "@/lib/utils/homepage"
-import HomePage from "@/components/homepage"
-
-export interface HomePageProps {
-  navData: Homepage
-  homepageData: Homepage
-  currentIssue: Issues
-  banners: HomepageBanners[]
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  previewURL?: string
-}
+import { notFound } from "next/navigation"
 
 export default async function HomepagePage() {
   const data = await getData()

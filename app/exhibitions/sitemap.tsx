@@ -2,18 +2,12 @@ import { MetadataRoute } from "next"
 import { Exhibitions } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getAllExhibitions } from "@/lib/utils/exhibitions"
-
-interface SiteLinksProps {
-  url: string
-  lastModified: string
-  changeFrequency: "daily" | "weekly"
-  priority: number
-}
+import { SiteMapProps } from "@/lib/railTypes"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allExhibitions = await getAllExhibitions()
 
-  let exhibitions: SiteLinksProps[] = []
+  let exhibitions: SiteMapProps[] = []
   if (allExhibitions) {
     exhibitions = allExhibitions.map((exhibition: Exhibitions, i: number) => {
       const permalink = getPermalink({

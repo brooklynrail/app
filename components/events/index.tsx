@@ -1,13 +1,12 @@
 "use client"
 
-import { EventsProps } from "@/app/events/page"
 import Link from "next/link"
 import { Events } from "@/lib/types"
 import Paper from "../paper"
 import EventCard from "./eventCard"
 import PastEventsList from "./pastEventsList"
 import Sponsor from "./sponsor"
-import BreakNotice from "./breakNotice"
+import { EventsProps } from "@/lib/railTypes"
 
 const EventsPage = (props: EventsProps) => {
   const { navData } = props

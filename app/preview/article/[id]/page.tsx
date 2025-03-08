@@ -1,45 +1,38 @@
-import { stripHtml } from "string-strip-html"
+import ArticlePreview from "@/components/preview/article"
+import { ArticlePreviewProps } from "@/lib/railTypes"
 import { PageType, getOGImage, getPermalink } from "@/lib/utils"
+import { getNavData } from "@/lib/utils/homepage"
 import { getPreviewArticle, getPreviewPassword } from "@/lib/utils/preview"
-import { Articles, Homepage, Issues, Sections } from "@/lib/types"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
-import ArticlePreview from "@/components/preview/article"
-import { notFound } from "next/navigation"
-import { getNavData } from "@/lib/utils/homepage"
+import { notFound, redirect } from "next/navigation"
+import { stripHtml } from "string-strip-html"
 
-export interface ArticlePreviewProps {
-  navData: Homepage
-  articleData: Articles
-  thisIssueData: Issues
-  currentSection: Sections
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  isEnabled: boolean
-  previewPassword: string
-  directusUrl: string
+interface PreviewParams {
+  id: string
 }
 
+// Force dynamic rendering, no caching
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
+// Metadata Generation
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
-  const data = await getData({ params })
+  const data = await getData(params)
+
+  if (!data?.articleData) {
+    return {}
+  }
 
   const { title, excerpt, featured_image, date_created, date_updated, contributors, title_tag } = data.articleData
-  const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
-  const ogdescription = `${stripHtml(excerpt).result}`
-  const ogimageprops = { ogimage: featured_image, title }
-  const ogimages = getOGImage(ogimageprops)
-
-  const authors = contributors.map((contributor: any) => {
-    const contribPermalink = getPermalink({ type: PageType.Contributor, slug: contributor.slug })
-    return contribPermalink
-  })
+  const ogtitle = `PREVIEW: ${title_tag ? stripHtml(title_tag).result : stripHtml(title).result}`
+  const ogdescription = stripHtml(excerpt).result
 
   return {
-    title: `PREVIEW: ${ogtitle} `,
+    title: ogtitle,
     description: ogdescription,
     alternates: {
-      canonical: `${data.permalink}`,
+      canonical: data.permalink,
     },
     robots: {
       index: false,
@@ -52,79 +45,77 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
       },
     },
     openGraph: {
-      title: `${ogtitle}`,
+      title: ogtitle,
       description: ogdescription,
       url: data.permalink,
-      images: ogimages,
-      type: `article`,
+      images: getOGImage({ ogimage: featured_image, title }),
+      type: "article",
       publishedTime: date_created,
       modifiedTime: date_updated,
-      section: data.currentSection && data.currentSection.name,
-      authors: authors,
+      section: data.currentSection?.name,
     },
   }
 }
 
+// Main Page Component
 export default async function ArticlePreviewPage({ params }: { params: PreviewParams }) {
-  const { isEnabled } = draftMode()
-  console.log("Draft mode enabled: ", isEnabled)
+  const isEnabled = await draftMode()
 
-  const data = await getData({ params })
-
-  const { articleData, thisIssueData, permalink, currentSection, directusUrl, previewPassword, navData } = data
-  if (!articleData || !permalink || !previewPassword || !directusUrl) {
-    return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
+  // Verify draft mode is enabled
+  if (!isEnabled) {
+    redirect("/")
   }
 
-  const articlePreviewProps = {
-    navData,
-    articleData,
-    thisIssueData,
-    permalink,
-    currentSection,
-    directusUrl,
-    previewPassword,
-    isEnabled,
+  const data = await getData(params)
+
+  if (!data?.articleData || !data.previewPassword) {
+    notFound()
   }
 
-  return <ArticlePreview {...articlePreviewProps} />
+  return <ArticlePreview {...data} />
 }
 
-interface PreviewParams {
-  id: string
-}
+// Data Fetching
+async function getData(params: PreviewParams): Promise<ArticlePreviewProps | undefined> {
+  try {
+    const id = String(params.id)
 
-async function getData({ params }: { params: PreviewParams }) {
-  const id = String(params.id)
+    // Parallel fetch of initial data
+    const [navData, articleData, previewPassword] = await Promise.all([
+      getNavData(),
+      getPreviewArticle(id),
+      getPreviewPassword(),
+    ])
 
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+    if (!navData || !articleData || !previewPassword) {
+      return undefined
+    }
 
-  const articleData = await getPreviewArticle(id)
-  if (!articleData) {
-    return notFound()
-  }
+    const thisIssueData = articleData.issue
+    const currentSection = articleData.section
+    const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
 
-  const thisIssueData = articleData.issue
-  const currentSection = articleData.section
+    if (!directusUrl) {
+      throw new Error("Missing DIRECTUS_URL environment variable")
+    }
 
-  const permalink = getPermalink({
-    articleId: articleData.id,
-    type: PageType.PreviewArticle,
-  })
+    const permalink = getPermalink({
+      articleId: articleData.id,
+      type: PageType.PreviewArticle,
+    })
 
-  const previewPassword = await getPreviewPassword()
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-
-  return {
-    navData,
-    articleData,
-    currentSection,
-    thisIssueData,
-    permalink,
-    previewPassword,
-    directusUrl,
+    return {
+      navData,
+      articleData,
+      currentSection,
+      thisIssueData,
+      permalink,
+      previewPassword,
+      directusUrl,
+      isEnabled: true,
+    }
+  } catch (error) {
+    console.error("Error fetching preview article data:", error)
+    return undefined
   }
 }
