@@ -10,8 +10,8 @@ const PastEventsPage = (props: PastEventsProps) => {
   return (
     <Paper pageClass="theme-events" navData={navData}>
       <main className="px-3 tablet-lg:px-6 pb-12 desktop:max-w-screen-widescreen mx-auto">
-        <div className="space-y-9 divide-y rail-divide">
-          <div className="">
+        <div className="space-y-6 divide-y rail-divide">
+          <div className="pt-9">
             <div className="flex justify-between items-center">
               <div className="space-y-3">
                 <h1 className="font-bold text-4xl tablet-lg:text-5xl">Past Events</h1>
