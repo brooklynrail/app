@@ -1,10 +1,9 @@
 "use client"
-import { useEffect, useState } from "react"
+import { PastEventsProps } from "@/lib/railTypes"
 import { Events } from "@/lib/types"
-import PastEventCard from "./pastEventCard"
-import { useBreakpoints } from "@/app/hooks/useBreakpoints"
-import { PastEventsProps } from "@/app/events/past/page"
 import Link from "next/link"
+import { useState } from "react"
+import PastEventCard from "./pastEventCard"
 
 interface PastEventsListProps {
   limit?: number

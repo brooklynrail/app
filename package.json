@@ -6,7 +6,10 @@
     "dev": "rm -rf .next && next dev --experimental-https",
     "build": "rm -rf .next && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
+    "validate": "npm run lint && npm run type-check"
   },
   "dependencies": {
     "@directus/sdk": "^18.0.3",
@@ -56,23 +59,6 @@
     "prettier": "^3.3.3",
     "sass": "^1.77.8",
     "tailwindcss": "^3.4.16",
-    "typescript": "^5.6.2"
-  },
-  "tasks": [
-    {
-      "type": "typescript",
-      "tsconfig": "tsconfig.json",
-      "option": "watch",
-      "problemMatcher": [
-        "$tsc-watch"
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "runOptions": {
-        "runOn": "folderOpen"
-      }
-    }
-  ]
+    "typescript": "^5.8.2"
+  }
 }

@@ -6,7 +6,7 @@ import Paper from "../../paper"
 import EventPageBody from "../../event/eventPageBody"
 import Register from "../../event/register"
 import PreviewInfo from "./previewInfo"
-import { EventPreviewProps } from "@/app/preview/event/[id]/page"
+import { EventPreviewProps } from "@/lib/railTypes"
 
 const EventPreview = (props: EventPreviewProps) => {
   const { eventData, isEnabled, previewPassword, directusUrl, navData } = props

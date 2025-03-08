@@ -70,6 +70,8 @@ async function getData(params: TributeParams): Promise<TributePageProps | undefi
       return undefined
     }
 
+    const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/tribute/${tributeSlug}/`
+
     const permalink = getPermalink({
       tributeSlug,
       type: PageType.Tribute,
@@ -80,6 +82,7 @@ async function getData(params: TributeParams): Promise<TributePageProps | undefi
       thisTributeData,
       articleData,
       permalink,
+      previewURL,
     }
   } catch (error) {
     console.error("Error fetching tribute data:", error)

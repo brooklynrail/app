@@ -1,5 +1,5 @@
 "use client"
-import { ExhibitionsProps } from "@/app/exhibitions/page"
+import { ExhibitionsProps } from "@/lib/railTypes"
 import Paper from "../paper"
 import ExhibitionCard from "./exhibitionCard"
 

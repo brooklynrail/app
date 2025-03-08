@@ -1,5 +1,5 @@
 "use client"
-import { ArticlePreviewProps } from "@/app/preview/article/[id]/page"
+import { ArticlePreviewProps } from "@/lib/railTypes"
 import { useEffect, useState } from "react"
 import ArticleHead from "../../article/articleHead"
 import ArticleBody from "../../article/articleBody"

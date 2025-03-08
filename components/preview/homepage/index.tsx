@@ -1,5 +1,5 @@
 "use client"
-import { HomepagePreviewProps } from "@/app/preview/homepage/page"
+import { HomepagePreviewProps } from "@/lib/railTypes"
 import { useEffect, useState } from "react"
 import HomePage from "../../homepage"
 import Password from "../password"

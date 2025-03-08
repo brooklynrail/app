@@ -1,5 +1,5 @@
 "use client"
-import { ExhibitionProps } from "@/app/exhibition/[slug]/page"
+import { ExhibitionProps } from "@/lib/railTypes"
 import { useMemo } from "react"
 import { Exhibitions } from "@/lib/types"
 import Paper from "../paper"

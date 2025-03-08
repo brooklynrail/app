@@ -82,6 +82,8 @@ async function getData(params: IssueParams): Promise<IssuePageProps | undefined>
       type: PageType.Issue,
     })
 
+    const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${issueSlug}/`
+
     return {
       navData,
       thisIssueData,
@@ -89,6 +91,8 @@ async function getData(params: IssueParams): Promise<IssuePageProps | undefined>
       tributesData,
       allIssues,
       permalink,
+      previewURL,
+      currentSection: null,
     }
   } catch (error) {
     console.error("Error fetching issue data:", error)

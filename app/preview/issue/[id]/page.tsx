@@ -99,6 +99,8 @@ async function getData(params: PreviewParams): Promise<IssuePreviewProps | undef
       type: PageType.PreviewIssue,
     })
 
+    const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${thisIssueData.id}/`
+
     return {
       navData,
       thisIssueData,
@@ -108,7 +110,9 @@ async function getData(params: PreviewParams): Promise<IssuePreviewProps | undef
       permalink,
       previewPassword,
       directusUrl,
+      currentSection: issueSections[0],
       isEnabled: true,
+      previewURL,
     }
   } catch (error) {
     console.error("Error fetching preview issue data:", error)

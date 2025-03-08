@@ -79,7 +79,7 @@ export interface ExhibitionProps {
   navData: Homepage
   exhibitionData: Exhibitions
   permalink: string
-  previewURL: string
+  previewURL?: string
 }
 
 export interface ExhibitionsProps {
@@ -95,6 +95,8 @@ export interface IssuePageProps {
   allIssues: Issues[]
   issueSections: Sections[]
   permalink: string
+  previewURL?: string
+  currentSection?: Sections | null
 }
 
 export interface IssueSectionPageProps {
@@ -104,6 +106,7 @@ export interface IssueSectionPageProps {
   tributesData: Tributes[]
   currentSection: Sections
   allIssues: Issues[]
+  previewURL?: string
   permalink: string
 }
 
@@ -178,6 +181,8 @@ export interface IssuePreviewProps {
   isEnabled: boolean
   previewPassword: string
   directusUrl: string
+  currentSection: Sections
+  previewURL: string
 }
 
 export interface NotFoundProps {
@@ -217,6 +222,7 @@ export interface TributeArticleProps {
   articleData: Articles
   permalink: string
   currentArticleSlug: string
+  previewURL?: string
 }
 
 export interface TributePageProps {
@@ -224,6 +230,7 @@ export interface TributePageProps {
   thisTributeData: Tributes
   articleData: Articles
   permalink: string
+  previewURL?: string
 }
 
 export interface SiteMapProps {

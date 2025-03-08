@@ -93,6 +93,8 @@ async function getData(params: SectionParams): Promise<IssueSectionPageProps | u
       type: PageType.Section,
     })
 
+    const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${issueSlug}/section/${section}/`
+
     return {
       navData,
       thisIssueData,
@@ -101,6 +103,7 @@ async function getData(params: SectionParams): Promise<IssueSectionPageProps | u
       currentSection,
       allIssues,
       permalink,
+      previewURL,
     }
   } catch (error) {
     console.error("Error fetching section data:", error)

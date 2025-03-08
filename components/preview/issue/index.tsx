@@ -2,10 +2,10 @@
 import { useState, useEffect } from "react"
 import Password from "../password"
 import IssuePage from "../../issuePage"
-import { IssuePreviewProps } from "@/app/preview/issue/[id]/page"
+import { IssuePreviewProps } from "@/lib/railTypes"
 
 const IssuePreview = (props: IssuePreviewProps) => {
-  const { thisIssueData, isEnabled, previewPassword, navData } = props
+  const { thisIssueData, isEnabled, previewPassword, navData, currentSection } = props
   const [isStudioPreview, setIsStudioPreview] = useState(false)
   const cookieSlug = `rail_preview_${thisIssueData.slug}`
 

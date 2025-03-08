@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import Password from "../password"
 import TributePage from "../../tributePage"
-import { TributePreviewProps } from "@/app/preview/tribute/[id]/page"
+import { TributePreviewProps } from "@/lib/railTypes"
 import { getPermalink, PageType } from "@/lib/utils"
 
 const TributePreview = (props: TributePreviewProps) => {
