@@ -56,7 +56,7 @@ module.exports = {
       "warn",
       {
         selector: "default",
-        format: ["camelCase", "PascalCase", "UPPER_CASE", "snake_case"],
+        format: ["camelCase"],
         leadingUnderscore: "allow",
       },
       {
