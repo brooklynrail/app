@@ -25,55 +25,6 @@ export async function GET() {
             {
               video_covers_stills: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
             },
-            {
-              collections: [
-                {
-                  collections_id: [
-                    "id",
-                    "type",
-                    "kicker",
-                    "title",
-                    "limit",
-                    "links",
-                    "banner_type",
-                    {
-                      section: ["slug", "featured", "description"],
-                    },
-                    {
-                      tribute: [
-                        "id",
-                        "title",
-                        "deck",
-                        "blurb",
-                        "summary",
-                        "excerpt",
-                        "slug",
-                        {
-                          editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-                        },
-                        {
-                          articles: [
-                            "id",
-                            "slug",
-                            "title",
-                            "deck",
-                            "excerpt",
-                            "sort",
-                            "status",
-                            {
-                              contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
-                            },
-                          ],
-                        },
-                        {
-                          featured_image: ["id", "width", "height", "filename_disk", "caption"],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
           ],
         }),
       )
