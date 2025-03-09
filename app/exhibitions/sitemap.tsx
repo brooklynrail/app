@@ -1,8 +1,8 @@
-import { MetadataRoute } from "next"
+import { SiteMapProps } from "@/lib/railTypes"
 import { Exhibitions } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getAllExhibitions } from "@/lib/utils/exhibitions"
-import { SiteMapProps } from "@/lib/railTypes"
+import { MetadataRoute } from "next"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allExhibitions = await getAllExhibitions()

@@ -1,12 +1,11 @@
 "use client"
-import { useState, useEffect } from "react"
-import Password from "../password"
-import PreviewHeader from "../previewHead"
-import Paper from "../../paper"
+import { EventPreviewProps } from "@/lib/railTypes"
+import { useEffect, useState } from "react"
 import EventPageBody from "../../event/eventPageBody"
 import Register from "../../event/register"
+import Paper from "../../paper"
+import Password from "../password"
 import PreviewInfo from "./previewInfo"
-import { EventPreviewProps } from "@/lib/railTypes"
 
 const EventPreview = (props: EventPreviewProps) => {
   const { eventData, isEnabled, previewPassword, directusUrl, navData } = props
