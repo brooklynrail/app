@@ -42,6 +42,23 @@ export const getHomepageData = cache(async () => {
   }
 })
 
+export const getHomepageHeaderData = cache(async () => {
+  try {
+    const res = await fetch(`${baseUrl}/api/homepage/header/`)
+
+    if (!res.ok) {
+      const text = await res.text()
+      console.error("API Response:", text)
+      throw new Error(`API returned ${res.status}: ${text}`)
+    }
+
+    return res.json()
+  } catch (error) {
+    console.error("Failed to fetch homepage header data:", error, `${baseUrl}/api/homepage/header/`)
+    return null
+  }
+})
+
 export const getCurrentIssueSlug = cache(async () => {
   try {
     const settings = await directus.request(
