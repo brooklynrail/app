@@ -4,12 +4,21 @@ import { readSingleton } from "@directus/sdk"
 import { Articles } from "@/lib/types"
 import { Homepage } from "@/lib/types"
 import { HomepageCollections } from "@/lib/types"
-import { getCollectionArticles, getCurrentIssueData } from "@/lib/utils/homepage"
+import { getCollectionArticles } from "@/lib/utils/homepage"
 
 export const revalidate = 3600 // 1 hour cache
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Get currentIssue from URL parameters
+    // /api/homepage?currentIssue=2025-03
+    const { searchParams } = new URL(request.url)
+    const currentIssue = searchParams.get("currentIssue")
+
+    if (!currentIssue) {
+      return notFound()
+    }
+
     let homepageData
     try {
       homepageData = await directus.request(
@@ -88,22 +97,10 @@ export async function GET() {
 
     const homepage = homepageData as Homepage
 
-    const currentIssue = await getCurrentIssueData()
-    if (!currentIssue) {
-      // Instead of using notFound(), return a proper error response
-      return Response.json(
-        {
-          error: "Current issue data not found",
-          details: "Unable to fetch current issue data",
-        },
-        { status: 404 },
-      )
-    }
-
     const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
       if (collection.collections_id && collection.collections_id.section) {
         const thisSectionArticles = getCollectionArticles({
-          currentIssueSlug: currentIssue.slug,
+          currentIssueSlug: currentIssue,
           slug: collection.collections_id.section.slug,
           limit: collection.collections_id.limit,
         })
@@ -119,7 +116,7 @@ export async function GET() {
     // Simply include the currentIssue string in the response
     const responseData = {
       ...homepage,
-      currentIssue: currentIssue.slug,
+      currentIssue,
     }
 
     const cleanedData = JSON.parse(JSON.stringify(responseData))
