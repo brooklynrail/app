@@ -77,7 +77,7 @@ async function getData(): Promise<HomepagePreviewProps | undefined> {
     return {
       navData,
       homepageData,
-      banners: homepageData.banners,
+      homepageHeaderData: homepageData.banners,
       currentIssue,
       permalink,
       previewPassword,
