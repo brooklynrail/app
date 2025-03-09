@@ -30,13 +30,17 @@ const SectionCriticsPage = (props: SectionProps) => {
         // Get all valid contributors
         const contributors = featuredArticle.contributors
           .map(({ contributors_id }) => {
-            if (!contributors_id) return null
+            if (!contributors_id) {
+              return null
+            }
             return `${contributors_id.first_name} ${contributors_id.last_name}`
           })
           .filter(Boolean)
         // Format the contributors list with appropriate separators
         const guestCritics = contributors.reduce((acc: string, name: string | null, i: number) => {
-          if (i === 0) return name || ""
+          if (i === 0) {
+            return name || ""
+          }
 
           let separator = ", "
           if (contributors.length === 2) {

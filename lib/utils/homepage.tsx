@@ -1,9 +1,9 @@
 "use server"
 
 import { readSingleton } from "@directus/sdk"
-import directus from "../directus"
 import { cache } from "react"
-import { Articles, Homepage, HomepageCollections, Issues } from "../types"
+import directus from "../directus"
+import { Articles, Homepage, Issues } from "../types"
 import { getBaseUrl } from "../utils"
 
 const baseUrl = getBaseUrl()

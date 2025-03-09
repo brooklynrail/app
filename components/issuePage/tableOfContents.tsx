@@ -32,14 +32,16 @@ const IssueSection = (props: IssueSectionProps) => {
     type: PageType.Section,
   })
 
-  let tributes: string[] = []
+  const tributes: string[] = []
   if (section.slug === "in-memoriam") {
     const inMemoriamArticles = articles.filter((article: Articles) => {
       if (article.tribute && !tributes.includes(article.tribute.slug)) {
         tributes.push(article.tribute.slug)
         return article
       }
-      if (!article.tribute) return article
+      if (!article.tribute) {
+        return article
+      }
     })
     articles.length = 0
     articles.push(...inMemoriamArticles)

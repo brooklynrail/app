@@ -1,11 +1,11 @@
 "use client"
 import { ArticleProps } from "@/lib/railTypes"
-import parse from "html-react-parser"
-import Link from "next/link"
-import { useEffect, useState } from "react"
 import { Articles } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getCurrentIssueSection } from "@/lib/utils/articles"
+import parse from "html-react-parser"
+import Link from "next/link"
+import { useEffect, useState } from "react"
 import Bylines, { BylineType } from "../../collections/promos/bylines"
 import Title from "../../collections/promos/title"
 import NextPrev, { NextPrevType } from "../../nextPrev"
@@ -24,7 +24,9 @@ const ArticleCriticsPage = (props: ArticleProps) => {
         // Fetch all the data in parallel
         const [fetchedSection] = await Promise.all([sectionData])
         // Update the state with the fetched data as it becomes available
-        fetchedSection && setThisSection(fetchedSection)
+        if (fetchedSection) {
+          setThisSection(fetchedSection)
+        }
       }
     }
     // Call the fetchData function and handle any errors

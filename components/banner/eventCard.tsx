@@ -1,11 +1,11 @@
 "use client"
-import style from "./banner.module.scss"
-import Link from "next/link"
-import parse from "html-react-parser"
-import { Suspense } from "react"
-import Image from "next/image"
 import { Events, HomepageBanners } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import parse from "html-react-parser"
+import Image from "next/image"
+import Link from "next/link"
+import { Suspense } from "react"
+import style from "./banner.module.scss"
 
 interface NewSocialEnvironmentProps {
   banner: HomepageBanners
@@ -51,7 +51,9 @@ const EventsData = async () => {
   const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
     next: { revalidate: 3600, tags: ["events"] },
   }).then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch current events")
+    if (!res.ok) {
+      throw new Error("Failed to fetch current events")
+    }
     return res.json()
   })
 
@@ -63,7 +65,9 @@ const EventsData = async () => {
     featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
       next: { revalidate: 3600, tags: ["events"] },
     }).then((res) => {
-      if (!res.ok) throw new Error("Failed to fetch featured events")
+      if (!res.ok) {
+        throw new Error("Failed to fetch featured events")
+      }
       return res.json()
     })
   }
@@ -74,7 +78,9 @@ const EventsData = async () => {
 // Content Component
 const EventsContent = async ({ banner }: { banner: HomepageBanners }) => {
   const { collections_id } = banner
-  if (!collections_id) return null
+  if (!collections_id) {
+    return null
+  }
 
   const { currentEvents, featuredEvents } = await EventsData()
   const bannerTitle = collections_id.title

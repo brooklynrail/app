@@ -1,5 +1,5 @@
 "use client"
-import { ExhibitionPreviewProps } from "@/app/preview/exhibition/[id]/page"
+import { ExhibitionPreviewProps } from "@/lib/railTypes"
 import ExhibitionSections from "../../exhibition/exhibitionSections"
 import Head from "../../exhibition/head"
 import Paper from "../../paper"

@@ -1,16 +1,9 @@
 import ExhibitionsPage from "@/components/exhibitions"
-import { Exhibitions, Homepage } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getAllExhibitions } from "@/lib/utils/exhibitions"
 import { getNavData } from "@/lib/utils/homepage"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-
-export interface ExhibitionsProps {
-  navData: Homepage
-  allExhibitions: Exhibitions[]
-  permalink: string
-}
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()
@@ -39,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function EventsController() {
+export default async function ExhibitionsController() {
   const data = await getData()
   if (!data.allExhibitions || !data.permalink) {
     return notFound()

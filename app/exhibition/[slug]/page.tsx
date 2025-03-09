@@ -1,45 +1,45 @@
-import { notFound } from "next/navigation"
-import { getOGImage, getPermalink, PageType } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
-import { getExhibition } from "@/lib/utils/exhibitions"
 import ExhibitionPage from "@/components/exhibition"
-import { Exhibitions, Homepage } from "@/lib/types"
+import { ExhibitionProps } from "@/lib/railTypes"
+import { getOGImage, getPermalink, PageType } from "@/lib/utils"
+import { getExhibition } from "@/lib/utils/exhibitions"
+import { getNavData } from "@/lib/utils/homepage"
 import { Metadata } from "next"
+import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 
-export interface ExhibitionProps {
-  navData: Homepage
-  exhibitionData: Exhibitions
-  permalink: string
-  previewURL: string
+interface ExhibitionParams {
+  slug: string
 }
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const data = await getData({ params })
+// Page Configuration
+export const revalidate = 3600 // revalidate every hour
 
-  if (!data.exhibitionData || !data.permalink) {
+// Metadata Generation
+export async function generateMetadata({ params }: { params: ExhibitionParams }): Promise<Metadata> {
+  const data = await getData(params)
+
+  if (!data?.exhibitionData) {
     return {}
   }
 
   const { title, summary, date_created, date_updated, title_tag, featured_image } = data.exhibitionData
-  const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
-  const ogdescription = `${stripHtml(summary).result}`
 
-  const ogimageprops = { ogimage: featured_image, title }
-  const ogimages = getOGImage(ogimageprops)
+  const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
+  const ogdescription = stripHtml(summary).result
+  const ogimages = getOGImage({ ogimage: featured_image, title })
 
   return {
-    title: `${ogtitle}`,
+    title: ogtitle,
     description: ogdescription,
     alternates: {
-      canonical: `${data.permalink}`,
+      canonical: data.permalink,
     },
     openGraph: {
-      title: `${ogtitle}`,
+      title: ogtitle,
       description: ogdescription,
       url: data.permalink,
       images: ogimages,
-      type: `article`,
+      type: "article",
       publishedTime: date_created,
       modifiedTime: date_updated,
     },
@@ -49,44 +49,43 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   }
 }
 
-interface ExhibitionParams {
-  slug: string
-}
-
+// Main Page Component
 export default async function Exhibition({ params }: { params: ExhibitionParams }) {
-  const data = await getData({ params })
+  const data = await getData(params)
 
-  if (!data.exhibitionData || !data.permalink) {
-    return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
+  if (!data?.exhibitionData) {
+    notFound()
   }
 
   return <ExhibitionPage {...data} />
 }
 
-async function getData({ params }: { params: ExhibitionParams }) {
-  const slug: string = params.slug.toString()
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+// Data Fetching
+async function getData(params: ExhibitionParams): Promise<ExhibitionProps | undefined> {
+  try {
+    const slug = params.slug.toString()
 
-  const exhibitionData = await getExhibition(slug)
+    const [navData, exhibitionData] = await Promise.all([getNavData(), getExhibition(slug)])
 
-  if (!exhibitionData) {
-    return notFound()
-  }
+    if (!navData || !exhibitionData) {
+      return undefined
+    }
 
-  const permalink = getPermalink({
-    type: PageType.Exhibition,
-    slug: exhibitionData.slug,
-  })
+    const permalink = getPermalink({
+      type: PageType.Exhibition,
+      slug: exhibitionData.slug,
+    })
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/exhibition/${exhibitionData.id}/`
+    const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/exhibition/${exhibitionData.id}/`
 
-  return {
-    navData,
-    exhibitionData,
-    permalink,
-    previewURL,
+    return {
+      navData,
+      exhibitionData,
+      permalink,
+      previewURL,
+    }
+  } catch (error) {
+    console.error("Error fetching exhibition data:", error)
+    return undefined
   }
 }

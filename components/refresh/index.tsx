@@ -1,8 +1,7 @@
 "use client"
+import { RevalidateType } from "@/lib/utils/revalidate"
 import Link from "next/link"
 import { useState } from "react"
-import { PageType } from "@/lib/utils"
-import { RevalidateType } from "@/lib/utils/revalidate"
 
 const Refresh = () => {
   const [url, setUrl] = useState("")
@@ -23,7 +22,7 @@ const Refresh = () => {
         cache: "no-store",
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          ContentType: "application/json",
         },
       })
 
@@ -47,7 +46,9 @@ const Refresh = () => {
   }
 
   const handleRevalidateSections = async () => {
-    if (isLoading) return
+    if (isLoading) {
+      return
+    }
 
     setIsLoading(true)
     setMessage("Revalidation started for all sections")
@@ -58,7 +59,7 @@ const Refresh = () => {
         cache: "no-store",
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          ContentType: "application/json",
         },
       })
 

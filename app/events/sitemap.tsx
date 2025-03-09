@@ -2,18 +2,12 @@ import { MetadataRoute } from "next"
 import { Events } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getAllEvents } from "@/lib/utils/events"
-
-interface SiteLinksProps {
-  url: string
-  lastModified: string
-  changeFrequency: "daily" | "weekly"
-  priority: number
-}
+import { SiteMapProps } from "@/lib/railTypes"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allEvents = await getAllEvents()
 
-  let events: SiteLinksProps[] = []
+  let events: SiteMapProps[] = []
   if (allEvents) {
     events = allEvents.map((event: Events, i: number) => {
       const eventDate = new Date(event.start_date)

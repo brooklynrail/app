@@ -3,12 +3,10 @@ import { readItems, readSingleton } from "@directus/sdk"
 import { cache } from "react"
 import { stripHtml } from "string-strip-html"
 import directus from "./directus"
-import { Articles, Contributors, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
+import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
 
 export const getBaseUrl = () => {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL
-    ? process.env.NEXT_PUBLIC_BASE_URL
-    : `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : `https://brooklynrail.org`
   return baseURL
 }
 
@@ -626,7 +624,7 @@ interface TributeDataParams {
   slug: string
 }
 
-export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataParams) => {
+export const getTributeData = cache(async ({ tributeSlug }: TributeDataParams) => {
   const tribute = await directus.request(
     readItems("tributes", {
       fields: [
@@ -710,7 +708,7 @@ export const getNavigation = cache(async () => {
 
 export const cleanup = (str: string) => {
   // Replace non-breaking spaces
-  var reNbsp = new RegExp(String.fromCharCode(160), "g")
+  const reNbsp = new RegExp(String.fromCharCode(160), "g")
   str = str.replace(reNbsp, " ")
 
   // Remove <br/> tags

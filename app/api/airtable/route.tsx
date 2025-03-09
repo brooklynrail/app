@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+        ContentType: "application/json",
       },
       cache: "no-cache",
     })

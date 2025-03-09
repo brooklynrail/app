@@ -1,7 +1,7 @@
-import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
 import { Homepage, Issues } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import Link from "next/link"
+import { useEffect, useRef, useState } from "react"
 import { PaperType } from "../paper"
 import { useTheme } from "../theme"
 import HeaderDefault from "./default"
@@ -30,18 +30,6 @@ const Header = (props: HeaderProps) => {
   }
 }
 
-const getLocalStorageItem = (key: string): string | null => {
-  return localStorage.getItem(key)
-}
-
-const setLocalStorageItem = (key: string, value: string) => {
-  localStorage.setItem(key, value)
-}
-
-const removeLocalStorageItem = (key: string) => {
-  localStorage.removeItem(key)
-}
-
 const HeaderHomepage = (props: HeaderProps) => {
   const { title, type, homepageData } = props
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -52,22 +40,25 @@ const HeaderHomepage = (props: HeaderProps) => {
   const videoCoversStills = homepageData && homepageData.video_covers_stills
 
   useEffect(() => {
-    // Check if the localStorage item is already set for video pause
-    const isVideoPaused = getLocalStorageItem("homepageVideoPaused")
+    const isVideoPaused = localStorage.getItem("homepageVideoPaused")
     if (isVideoPaused === "true" && videoRef.current) {
       videoRef.current.pause()
       setIsPaused(true)
     }
   }, [])
 
-  const handleVideoToggle = () => {
+  const handleVideoToggle = async () => {
     if (videoRef.current) {
       if (isPaused) {
-        videoRef.current.play()
-        removeLocalStorageItem("homepageVideoPaused")
+        try {
+          await videoRef.current.play()
+          localStorage.removeItem("homepageVideoPaused")
+        } catch (error) {
+          console.error("Error playing video:", error)
+        }
       } else {
         videoRef.current.pause()
-        setLocalStorageItem("homepageVideoPaused", "true") // Set localStorage item
+        localStorage.setItem("homepageVideoPaused", "true")
       }
       setIsPaused(!isPaused)
     }

@@ -11,7 +11,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
 
   return new Response(JSON.stringify(exhibitionData), {
     headers: {
-      "Content-Type": "application/json",
+      ContentType: "application/json",
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
     },
   })

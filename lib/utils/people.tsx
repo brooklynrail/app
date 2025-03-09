@@ -1,9 +1,9 @@
-import { createItem, createItems, readItem, readItems, updateItem } from "@directus/sdk"
+/* eslint max-lines: 0 */
+import { createItem, readItem, readItems, updateItem } from "@directus/sdk"
 import { cache } from "react"
 import directus from "../directus"
 import { Contributors, People } from "../types"
-import { getPermalink } from "../utils"
-import { PageType } from "../utils"
+import { getPermalink, PageType } from "../utils"
 
 interface MergeContributorsProps {
   selectedContributor: Contributors

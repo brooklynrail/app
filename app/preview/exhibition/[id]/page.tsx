@@ -1,37 +1,37 @@
 import ExhibitionPreview from "@/components/preview/exhibition"
-import { Metadata } from "next"
-import { draftMode } from "next/headers"
-import { notFound } from "next/navigation"
-import { stripHtml } from "string-strip-html"
-import { Exhibitions, Homepage } from "@/lib/types"
+import { ExhibitionPreviewProps } from "@/lib/railTypes"
 import { PageType, getPermalink } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
 import { getPreviewExhibition, getPreviewPassword } from "@/lib/utils/preview"
+import { Metadata } from "next"
+import { draftMode } from "next/headers"
+import { notFound, redirect } from "next/navigation"
+import { stripHtml } from "string-strip-html"
 
-export interface ExhibitionPreviewProps {
-  navData: Homepage
-  exhibitionData: Exhibitions
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  isEnabled: boolean
-  previewPassword: string
-  directusUrl: string
-  previewURL: string
+interface PreviewParams {
+  id: string
 }
 
+// Force dynamic rendering, no caching
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
-  const data = await getData({ params })
+  const data = await getData(params)
+
+  if (!data?.exhibitionData) {
+    return {}
+  }
 
   const { title, summary, title_tag } = data.exhibitionData
-  const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
-  const ogdescription = summary && `${stripHtml(summary).result}`
+  const ogtitle = `PREVIEW: ${title_tag ? stripHtml(title_tag).result : stripHtml(title).result}`
+  const ogdescription = summary ? stripHtml(summary).result : ""
 
   return {
-    title: `PREVIEW: ${ogtitle} `,
+    title: ogtitle,
     description: ogdescription,
     alternates: {
-      canonical: `${data.permalink}`,
+      canonical: data.permalink,
     },
     robots: {
       index: false,
@@ -44,71 +44,71 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
       },
     },
     openGraph: {
-      title: `${ogtitle}`,
+      title: ogtitle,
       description: ogdescription,
       url: data.permalink,
-      type: `article`,
+      type: "article",
     },
   }
 }
 
 export default async function ExhibitionPreviewPage({ params }: { params: PreviewParams }) {
-  const { isEnabled } = draftMode()
-  console.log("Draft mode enabled: ", isEnabled)
+  const isEnabled = await draftMode()
 
-  const data = await getData({ params })
-
-  const { exhibitionData, permalink, directusUrl, previewPassword, navData, previewURL } = data
-  if (!exhibitionData || !permalink || !previewPassword || !directusUrl || !navData) {
-    return { props: { errorCode: 400, errorMessage: "This exhibition does not exist" } }
+  // Verify draft mode is enabled
+  if (!isEnabled) {
+    redirect("/")
   }
 
-  const exhibitionPreviewProps = {
-    navData,
-    exhibitionData,
-    permalink,
-    directusUrl,
-    previewPassword,
-    isEnabled,
-    previewURL,
+  const data = await getData(params)
+
+  if (!data?.exhibitionData || !data.previewPassword) {
+    notFound()
   }
 
-  return <ExhibitionPreview {...exhibitionPreviewProps} />
+  return <ExhibitionPreview {...data} />
 }
 
-interface PreviewParams {
-  id: string
-}
+async function getData(params: PreviewParams): Promise<ExhibitionPreviewProps | undefined> {
+  try {
+    const id = String(params.id)
 
-async function getData({ params }: { params: PreviewParams }) {
-  const id = String(params.id)
+    // Parallel fetch of initial data
+    const [navData, exhibitionData, previewPassword] = await Promise.all([
+      getNavData(),
+      getPreviewExhibition(id),
+      getPreviewPassword(),
+    ])
 
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+    if (!navData || !exhibitionData || !previewPassword) {
+      return undefined
+    }
 
-  const exhibitionData = await getPreviewExhibition(id)
-  if (!exhibitionData) {
-    return notFound()
-  }
+    const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
-  const permalink = getPermalink({
-    slug: exhibitionData.slug,
-    type: PageType.PreviewExhibition,
-  })
+    if (!directusUrl || !baseUrl) {
+      throw new Error("Missing required environment variables")
+    }
 
-  const previewPassword = await getPreviewPassword()
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+    const permalink = getPermalink({
+      slug: exhibitionData.slug,
+      type: PageType.PreviewExhibition,
+    })
 
-  const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/exhibition/${id}/`
+    const previewURL = `${baseUrl}/preview/exhibition/${id}/`
 
-  return {
-    navData,
-    exhibitionData,
-    permalink,
-    previewPassword,
-    directusUrl,
-    previewURL,
+    return {
+      navData,
+      exhibitionData,
+      permalink,
+      previewPassword,
+      directusUrl,
+      previewURL,
+      isEnabled: true,
+    }
+  } catch (error) {
+    console.error("Error fetching preview exhibition data:", error)
+    return undefined
   }
 }

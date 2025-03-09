@@ -99,7 +99,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, [])
 
   useEffect(() => {
@@ -115,17 +115,17 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           const contributors = await response.json()
           console.log("Fetched contributors from API:", contributors)
 
-          // Filter out contributors whose articles are already in selectedContributor.articles
-          const filteredContributors = contributors.filter((contributor: Contributors) => {
-            const contributorArticleIds = contributor.articles
-              .map((article) => article.articles_contributors_id?.id)
-              .filter((id): id is string => id !== undefined)
-            const personArticleIds = selectedContributor.articles
-              .map((article) => article.articles_contributors_id?.id)
-              .filter((id): id is string => id !== undefined)
+          // // Filter out contributors whose articles are already in selectedContributor.articles
+          // const filteredContributors = contributors.filter((contributor: Contributors) => {
+          //   const contributorArticleIds = contributor.articles
+          //     .map((article) => article.articles_contributors_id?.id)
+          //     .filter((id): id is string => id !== undefined)
+          //   const personArticleIds = selectedContributor.articles
+          //     .map((article) => article.articles_contributors_id?.id)
+          //     .filter((id): id is string => id !== undefined)
 
-            return !contributorArticleIds.some((id) => personArticleIds.includes(id))
-          })
+          //   return !contributorArticleIds.some((id) => personArticleIds.includes(id))
+          // })
 
           // Don't automatically set the filtered contributors
           // setSelectedContributors(filteredContributors)
@@ -135,7 +135,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
       }
     }
 
-    fetchContributors()
+    void fetchContributors()
   }, [selectedContributor])
 
   if (!allContributors) {
@@ -278,7 +278,9 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
               isSelected={selectedContributors.some((c) => c.id === contributor.id)}
               isPrimary={false}
               onToggleSelect={() => handleContributorToggle(contributor)}
-              onPrimarySelect={() => {}}
+              onPrimarySelect={() => {
+                // Intentionally empty
+              }}
             />
           )
         })}
@@ -321,6 +323,8 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
             )}
           </div>
         )
+      default:
+        return
     }
   })()
 
@@ -399,8 +403,12 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
                   contributor={selectedContributor}
                   isSelected={false}
                   isPrimary={true}
-                  onToggleSelect={() => {}}
-                  onPrimarySelect={() => {}}
+                  onToggleSelect={() => {
+                    // Intentionally empty
+                  }}
+                  onPrimarySelect={() => {
+                    // Intentionally empty
+                  }}
                 />
 
                 {showOnlyMatches && (

@@ -6,9 +6,9 @@ export enum BylineType {
   Option = "option",
   None = "not-italic",
   Default = "text-sm not-italic",
-  DancePromo = "text-sm not-italic",
-  TOC = "text-sm not-italic inline",
-  ArticleHeadDiptych = "text-md tablet-lg:text-lg font-sans not-italic",
+  DancePromo = "not-italic text-sm",
+  TOC = "not-italic inline text-sm",
+  ArticleHeadDiptych = "tablet-lg:text-lg font-sans not-italic text-md",
   ArticleHead = "text-md tablet-lg:text-lg font-sans not-italic",
   SectionPromo = "font-sans text-sm not-italic",
   CollectionArtSeen = "text-sm font-sans not-italic",
@@ -21,7 +21,7 @@ export enum BylineType {
   TributeWritersList = "text-sm not-italic inline",
   CriticsPage = "text-2xl font-bold",
   CriticsPagePromos = "text-2xl tablet-lg:text-3xl font-normal bold font-serif",
-  CollectionCriticsPage = "text-3xl font-normal font-serif",
+  CollectionCriticsPage = "font-normal font-serif text-3xl",
   CriticsPageList = "text-3xl font-normal font-serif",
 }
 

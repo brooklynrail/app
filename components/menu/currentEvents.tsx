@@ -27,7 +27,7 @@ const CurrentEvents = () => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, []) // Empty dependency array to ensure the fetch only runs once
 
   if (loading || !currentEvents || currentEvents.length === 0) {

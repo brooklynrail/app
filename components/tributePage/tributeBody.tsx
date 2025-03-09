@@ -1,5 +1,5 @@
 "use client"
-import { TributePageProps } from "@/app/tribute/[tributeSlug]/page"
+import { TributeArticleProps, TributePageProps } from "@/lib/railTypes"
 import parse from "html-react-parser"
 import TributeBody, { BodyTypes } from "../article/tributeBody"
 import TributeWriters from "./writers"
@@ -8,7 +8,7 @@ import { getPermalink, PageType } from "@/lib/utils"
 import { useArticleState } from "@/app/hooks/useArticleState"
 import NextPrev, { NextPrevType } from "../nextPrev"
 
-const TributeBodyBlock = (props: TributePageProps) => {
+const TributeBodyBlock = (props: TributeArticleProps) => {
   const { thisTributeData, articleData, currentArticleSlug } = props
   const { summary } = thisTributeData
   const { currentArticle, switchArticle } = useArticleState(articleData, thisTributeData.articles)

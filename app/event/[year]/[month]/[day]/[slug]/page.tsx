@@ -1,18 +1,24 @@
-import { notFound } from "next/navigation"
-import { Events, EventsTypes, Homepage } from "@/lib/types"
+import { AddRedirect } from "@/app/actions/redirect"
+import EventPage from "@/components/event"
+import { EventProps } from "@/lib/railTypes"
 import { getOGImage, getPermalink, PageType, share_card } from "@/lib/utils"
 import { checkYearMonthDay, getEvent, getEventTypes } from "@/lib/utils/events"
-import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
-import EventPage from "@/components/event"
-import { Metadata } from "next"
-import { stripHtml } from "string-strip-html"
-import { AddRedirect } from "@/app/actions/redirect"
 import { getNavData } from "@/lib/utils/homepage"
-import { Event, WithContext } from "schema-dts"
+import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
 import Script from "next/script"
+import { Event, WithContext } from "schema-dts"
+import { stripHtml } from "string-strip-html"
+interface EventParams {
+  year: string
+  month: string
+  day: string
+  slug: string
+}
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const data = await getData({ params })
+export async function generateMetadata(props: { params: EventParams }): Promise<Metadata> {
+  const data = await getData({ params: props.params })
 
   if (!data.eventData || !data.permalink) {
     return {}
@@ -57,52 +63,13 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   }
 }
 
-export interface EventProps {
-  navData: Homepage
-  eventData: Events
-  eventTypes: EventsTypes[]
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-}
-
-interface EventParams {
-  year: string
-  month: string
-  day: string
-  slug: string
-  id: string
-}
-export default async function EventPageController({ params }: { params: EventParams }) {
-  const data = await getData({ params })
+export default async function EventPageController(props: { params: EventParams }) {
+  const data = await getData({ params: props.params })
   if (!data.eventData || !data.permalink) {
     return notFound()
   }
 
-  const event = data.eventData
-  const firstPerson = event.people[0] && event.people[0].people_id ? event.people[0].people_id.portrait : undefined
-  const image = event.featured_image
-    ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${event.featured_image.filename_disk}`
-    : firstPerson
-      ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${firstPerson.filename_disk}`
-      : share_card
-
-  const jsonLd: WithContext<Event> = {
-    "@context": "https://schema.org",
-    "@type": "Event",
-    name: data.eventData.title,
-    startDate: data.eventData.start_date,
-    endDate: data.eventData.end_date,
-    eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-    eventStatus: "https://schema.org/EventScheduled",
-    image: image,
-    description: stripHtml(data.eventData.summary).result,
-    organizer: {
-      "@type": "Organization",
-      name: "The Brooklyn Rail",
-      url: "https://brooklynrail.org",
-    },
-  }
+  const jsonLd = generateEventJsonLd(data)
 
   return (
     <>
@@ -112,17 +79,39 @@ export default async function EventPageController({ params }: { params: EventPar
           __html: JSON.stringify(jsonLd),
         }}
       />
-      <EventPage
-        navData={data.navData}
-        eventData={data.eventData}
-        eventTypes={data.eventTypes}
-        permalink={data.permalink}
-      />
+      <EventPage {...data} />
     </>
   )
 }
 
-async function getData({ params }: { params: EventParams }) {
+function generateEventJsonLd(data: EventProps): WithContext<Event> {
+  const event = data.eventData
+  const firstPerson = event.people[0]?.people_id?.portrait
+  const image = event.featured_image
+    ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${event.featured_image.filename_disk}`
+    : firstPerson
+      ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${firstPerson.filename_disk}`
+      : share_card
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.title,
+    startDate: event.start_date,
+    endDate: event.end_date,
+    eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    image,
+    description: stripHtml(event.summary).result,
+    organizer: {
+      "@type": "Organization",
+      name: "The Brooklyn Rail",
+      url: "https://brooklynrail.org",
+    },
+  }
+}
+
+async function getData({ params }: { params: EventParams }): Promise<EventProps> {
   const year: string = params.year
   const month: string = params.month
   const day: string = params.day

@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react"
-import styles from "./themeToggle.module.scss"
-
 const ScreenIndicator = () => {
   const isDevOrPreview =
     process.env.NEXT_PUBLIC_VERCEL_ENV === "development" ||

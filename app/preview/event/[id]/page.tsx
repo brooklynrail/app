@@ -1,38 +1,39 @@
-import { stripHtml } from "string-strip-html"
+import EventPreview from "@/components/preview/event"
+import { EventPreviewProps } from "@/lib/railTypes"
 import { PageType, getPermalink } from "@/lib/utils"
-import { Events, EventsTypes, Homepage } from "@/lib/types"
+import { getEventTypes } from "@/lib/utils/events"
+import { getNavData } from "@/lib/utils/homepage"
+import { getPreviewEvent, getPreviewPassword } from "@/lib/utils/preview"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
-import { notFound } from "next/navigation"
-import { getEventTypes } from "@/lib/utils/events"
-import { getPreviewEvent } from "@/lib/utils/preview"
-import EventPreview from "@/components/preview/event"
-import { getNavData } from "@/lib/utils/homepage"
-import { getPreviewPassword } from "@/lib/utils/preview"
-export interface EventPreviewProps {
-  navData: Homepage
-  eventData: Events
-  eventTypes: EventsTypes[]
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  isEnabled: boolean
-  previewPassword: string
-  directusUrl: string
+import { notFound, redirect } from "next/navigation"
+import { stripHtml } from "string-strip-html"
+
+interface PreviewParams {
+  id: string
 }
 
+// Force dynamic rendering, no caching
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
+// Metadata Generation
 export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
-  const data = await getData({ params })
+  const data = await getData(params)
+
+  if (!data?.eventData) {
+    return {}
+  }
 
   const { title, summary, title_tag } = data.eventData
-  const ogtitle = title_tag ? stripHtml(title_tag).result : stripHtml(title).result
-  const ogdescription = `${stripHtml(summary).result}`
+  const ogtitle = `PREVIEW: ${title_tag ? stripHtml(title_tag).result : stripHtml(title).result}`
+  const ogdescription = stripHtml(summary).result
 
   return {
-    title: `PREVIEW: ${ogtitle} `,
+    title: ogtitle,
     description: ogdescription,
     alternates: {
-      canonical: `${data.permalink}`,
+      canonical: data.permalink,
     },
     robots: {
       index: false,
@@ -45,74 +46,70 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
       },
     },
     openGraph: {
-      title: `${ogtitle}`,
+      title: ogtitle,
       description: ogdescription,
       url: data.permalink,
-      type: `article`,
+      type: "article",
     },
   }
 }
 
+// Main Page Component
 export default async function EventPreviewPage({ params }: { params: PreviewParams }) {
-  const { isEnabled } = draftMode()
-  console.log("Draft mode enabled: ", isEnabled)
+  const isEnabled = await draftMode()
 
-  const data = await getData({ params })
-
-  const { eventData, permalink, directusUrl, previewPassword, eventTypes, navData } = data
-  if (!eventData || !permalink || !previewPassword || !directusUrl || !navData) {
-    return { props: { errorCode: 400, errorMessage: "This article does not exist" } }
+  // Verify draft mode is enabled
+  if (!isEnabled) {
+    redirect("/")
   }
 
-  const eventPreviewProps = {
-    navData,
-    eventData,
-    eventTypes,
-    permalink,
-    directusUrl,
-    previewPassword,
-    isEnabled,
+  const data = await getData(params)
+
+  if (!data?.eventData || !data.previewPassword) {
+    notFound()
   }
 
-  return <EventPreview {...eventPreviewProps} />
+  return <EventPreview {...data} />
 }
 
-interface PreviewParams {
-  id: string
-}
+// Data Fetching
+async function getData(params: PreviewParams): Promise<EventPreviewProps | undefined> {
+  try {
+    const id = String(params.id)
 
-async function getData({ params }: { params: PreviewParams }) {
-  const id = String(params.id)
+    // Parallel fetch of initial data
+    const [navData, eventData, eventTypes, previewPassword] = await Promise.all([
+      getNavData(),
+      getPreviewEvent(id),
+      getEventTypes(),
+      getPreviewPassword(),
+    ])
 
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+    if (!navData || !eventData || !eventTypes || !previewPassword) {
+      return undefined
+    }
 
-  const eventData = await getPreviewEvent(id)
-  if (!eventData) {
-    return notFound()
-  }
+    const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+    if (!directusUrl) {
+      throw new Error("Missing DIRECTUS_URL environment variable")
+    }
 
-  const eventTypes = await getEventTypes()
-  if (!eventTypes) {
-    return notFound()
-  }
+    const permalink = getPermalink({
+      eventId: eventData.id,
+      type: PageType.PreviewEvent,
+    })
 
-  const permalink = getPermalink({
-    eventId: eventData.id,
-    type: PageType.PreviewEvent,
-  })
-
-  const previewPassword = await getPreviewPassword()
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-
-  return {
-    navData,
-    eventData,
-    eventTypes,
-    permalink,
-    previewPassword,
-    directusUrl,
+    return {
+      navData,
+      eventData,
+      eventTypes,
+      permalink,
+      previewPassword,
+      directusUrl,
+      isEnabled: true,
+    }
+  } catch (error) {
+    console.error("Error fetching preview event data:", error)
+    return undefined
   }
 }
