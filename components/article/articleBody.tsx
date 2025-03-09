@@ -1,13 +1,12 @@
 "use client"
+import { Articles } from "@/lib/types"
 import parse from "html-react-parser"
 import { useMemo } from "react"
-import { Articles } from "@/lib/types"
+import AdInArticle from "../ads/adInArticle"
 import ContributorsBox from "../contributorsBox"
 import BookshopWidget from "./bookshop"
 import RailImage from "./railImage"
 import replaceShortcodes from "./shortcodes"
-import AdInArticle from "../ads/adInArticle"
-import DonationAd from "../ads/donationAd"
 
 interface ArticleBodyProps {
   articleData: Articles
@@ -26,8 +25,6 @@ function splitContent(paragraphs: string[], totalWordCount: number, sectionSlug:
   }
 
   const sections: ContentSection[] = []
-  let currentIndex = 0
-  let currentWordCount = 0
 
   // Helper function to find next split point
   const findNextSplit = (startIndex: number, targetWords: number) => {

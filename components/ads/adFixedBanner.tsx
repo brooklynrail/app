@@ -42,7 +42,7 @@ const AdFixedBanner = () => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, [])
 
   // Memoized function to handle GA and PostHog events

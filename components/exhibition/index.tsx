@@ -1,12 +1,12 @@
 "use client"
 import { ExhibitionProps } from "@/lib/railTypes"
-import { useMemo } from "react"
 import { Exhibitions } from "@/lib/types"
+import { useMemo } from "react"
 import Paper from "../paper"
 import styles from "./exhibition.module.scss"
 import ExhibitionSections from "./exhibitionSections"
-import Head from "./head"
 import ExhibitionSlideshow from "./ExhibitionSlideshow"
+import Head from "./head"
 
 const ExhibitionPage = (props: ExhibitionProps) => {
   const { exhibitionData, navData } = props
@@ -36,7 +36,9 @@ export const useExhibitionStyles = (exhibitionData: Exhibitions) => {
 
   // Clean the values by removing any quotes, with proper type checking
   const cleanValue = (value: string | null | undefined): string => {
-    if (!value) return ""
+    if (!value) {
+      return ""
+    }
     return value.replace(/['"]/g, "")
   }
 

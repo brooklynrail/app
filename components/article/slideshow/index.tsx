@@ -1,15 +1,14 @@
 "use client"
+import { Articles, ArticlesFiles } from "@/lib/types"
 import useEmblaCarousel from "embla-carousel-react"
 import parse from "html-react-parser"
+import posthog from "posthog-js"
 import { useEffect, useMemo, useState } from "react"
-import { Articles, ArticlesFiles } from "@/lib/types"
 import { usePopup } from "../../popupProvider"
 import { NextButton, PrevButton, usePrevNextButtons } from "./arrowButtons"
 import { useDotButton } from "./dotButtons"
-import styles from "./slideshow.module.scss"
 import Slide from "./slide"
-import posthog from "posthog-js"
-import Link from "next/link"
+import styles from "./slideshow.module.scss"
 
 interface SlideShowProps {
   article: Articles
@@ -19,7 +18,9 @@ const SlideShow = ({ article }: SlideShowProps) => {
   const { body_text } = article
   const { showArticleSlideShow, slideId, toggleArticleSlideShow } = usePopup()
 
-  if (!body_text) return null
+  if (!body_text) {
+    return null
+  }
 
   // Build filteredImages array based on order in body text
   const filteredImages: ArticlesFiles[] = useMemo(() => {
@@ -32,7 +33,9 @@ const SlideShow = ({ article }: SlideShowProps) => {
       .map((match) => {
         const shortcodeName = match[1]
         return article.images.find((image) => {
-          if (!image.directus_files_id) return false
+          if (!image.directus_files_id) {
+            return false
+          }
           const imageName = image.directus_files_id.shortcode_key || `img${article.images.indexOf(image) + 1}`
           return imageName === shortcodeName
         })
@@ -42,7 +45,9 @@ const SlideShow = ({ article }: SlideShowProps) => {
 
   // Find the index of the clicked image in filteredImages
   const currentSlideId = useMemo(() => {
-    if (!slideId) return 0
+    if (!slideId) {
+      return 0
+    }
     const index = filteredImages.findIndex((image) => image.directus_files_id?.id === slideId)
     return index >= 0 ? index : 0
   }, [slideId, filteredImages])
@@ -56,7 +61,9 @@ const SlideShow = ({ article }: SlideShowProps) => {
   const [isCaptionExpanded, setIsCaptionExpanded] = useState(false)
   const [slidesViewed, setSlidesViewed] = useState(new Set<number>([currentSlideId]))
 
-  if (!body_text) return null
+  if (!body_text) {
+    return null
+  }
 
   const { selectedIndex } = useDotButton(emblaApi)
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi)
@@ -74,20 +81,24 @@ const SlideShow = ({ article }: SlideShowProps) => {
   // Handle keyboard navigation (left/right arrows) and escape to close
   useEffect(() => {
     // Only add keyboard listeners if slideshow is visible
-    if (!showArticleSlideShow || !emblaApi) return
+    if (!showArticleSlideShow || !emblaApi) {
+      return
+    }
 
     const handleKeyDown = (event: KeyboardEvent) => {
       // Prevent event propagation to stop article navigation from triggering
       event.stopPropagation()
 
       const keyActions = {
-        ArrowRight: () => emblaApi.scrollNext(),
-        ArrowLeft: () => emblaApi.scrollPrev(),
-        Escape: toggleArticleSlideShow,
+        arrowRight: () => emblaApi.scrollNext(),
+        arrowLeft: () => emblaApi.scrollPrev(),
+        escape: toggleArticleSlideShow,
       }
 
-      const action = keyActions[event.key as keyof typeof keyActions]
-      if (action) action()
+      const action = keyActions[event.key.toLowerCase() as keyof typeof keyActions]
+      if (action) {
+        action()
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown)
@@ -109,12 +120,14 @@ const SlideShow = ({ article }: SlideShowProps) => {
 
   // Update caption and track analytics when slides change
   useEffect(() => {
-    if (!emblaApi) return
+    if (!emblaApi) {
+      return
+    }
 
     const updateCaption = () => {
       const currentIndex = emblaApi.selectedScrollSnap()
       // Track this slide as viewed
-      setSlidesViewed((prev) => new Set(prev.add(currentIndex)))
+      void setSlidesViewed((prev) => new Set(prev.add(currentIndex)))
 
       // Existing caption logic
       const currentImage = filteredImages[currentIndex]
@@ -123,7 +136,7 @@ const SlideShow = ({ article }: SlideShowProps) => {
       setIsCaptionExpanded(false)
 
       // Track slide change event
-      posthog.capture("advanced_slideshow", {
+      void posthog.capture("advanced_slideshow", {
         article_slug: article.slug,
         slide_index: currentIndex,
         total_unique_slides_viewed: slidesViewed.size,
@@ -297,7 +310,7 @@ const Close = ({ ariaLabel }: { ariaLabel: string }) => {
     <div className="absolute top-0 right-0 p-3 z-40">
       <button
         className="border border-zinc-200 text-zinc-700 text-center shadow-lg rounded-full bg-white w-8 tablet:w-9 h-8 tablet:h-9 flex items-center justify-center"
-        onClick={(e) => toggleArticleSlideShow()}
+        onClick={() => toggleArticleSlideShow()}
         title="Close"
         aria-label={ariaLabel}
       >

@@ -1,13 +1,15 @@
-import { notFound } from "next/navigation"
-import { getAllIssues, getPermalink, PageType } from "@/lib/utils"
 import ArchivePage from "@/components/archive"
-import { Metadata } from "next"
-import { getNavData } from "@/lib/utils/homepage"
 import { ArchivePageProps } from "@/lib/railTypes"
+import { getAllIssues, getPermalink, PageType } from "@/lib/utils"
+import { getNavData } from "@/lib/utils/homepage"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()
-  if (!data) return {}
+  if (!data) {
+    return {}
+  }
 
   const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
   const ogtitle = "All Issues"

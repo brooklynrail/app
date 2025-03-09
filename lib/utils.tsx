@@ -626,7 +626,7 @@ interface TributeDataParams {
   slug: string
 }
 
-export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataParams) => {
+export const getTributeData = cache(async ({ tributeSlug }: TributeDataParams) => {
   const tribute = await directus.request(
     readItems("tributes", {
       fields: [
@@ -710,7 +710,7 @@ export const getNavigation = cache(async () => {
 
 export const cleanup = (str: string) => {
   // Replace non-breaking spaces
-  var reNbsp = new RegExp(String.fromCharCode(160), "g")
+  const reNbsp = new RegExp(String.fromCharCode(160), "g")
   str = str.replace(reNbsp, " ")
 
   // Remove <br/> tags

@@ -27,14 +27,8 @@ const Head = (props: ExhibitionHeadProps) => {
     location_map,
   } = props.exhibitionData
 
-  const isFutureExhibition = new Date(end_date) > new Date()
-
   // Format dates for exhibition
-  const startDate = new Date(start_date)
   const endDate = new Date(end_date)
-
-  // Simple date formatting - you may want to create a specific exhibition date formatter
-  const dateString = `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`
 
   const exhibitionsPermalink = getPermalink({
     type: PageType.Exhibitions,
@@ -47,15 +41,23 @@ const Head = (props: ExhibitionHeadProps) => {
 
   // Format curators as a comma-separated string with Oxford comma
   const formatCurators = () => {
-    if (!curators || curators.length === 0) return null
+    if (!curators || curators.length === 0) {
+      return null
+    }
 
     const curatorNames = curators
       .filter((curator) => curator?.people_id?.display_name)
       .map((curator) => curator.people_id.display_name)
 
-    if (curatorNames.length === 0) return null
-    if (curatorNames.length === 1) return curatorNames[0]
-    if (curatorNames.length === 2) return `${curatorNames[0]} and ${curatorNames[1]}`
+    if (curatorNames.length === 0) {
+      return null
+    }
+    if (curatorNames.length === 1) {
+      return curatorNames[0]
+    }
+    if (curatorNames.length === 2) {
+      return `${curatorNames[0]} and ${curatorNames[1]}`
+    }
 
     // For 3+ curators, use Oxford comma
     const allButLast = curatorNames.slice(0, -1)

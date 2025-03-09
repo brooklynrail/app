@@ -152,7 +152,9 @@ export async function fetchEvents() {
   const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
     next: { revalidate: 3600, tags: ["events"] },
   }).then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch current events")
+    if (!res.ok) {
+      throw new Error("Failed to fetch current events")
+    }
     return res.json()
   })
 
@@ -164,7 +166,9 @@ export async function fetchEvents() {
     featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
       next: { revalidate: 3600, tags: ["events"] },
     }).then((res) => {
-      if (!res.ok) throw new Error("Failed to fetch featured events")
+      if (!res.ok) {
+        throw new Error("Failed to fetch featured events")
+      }
       return res.json()
     })
   }

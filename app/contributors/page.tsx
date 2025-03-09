@@ -1,15 +1,17 @@
-import { notFound } from "next/navigation"
-import { Contributors, Homepage, Issues } from "@/lib/types"
+import ContributorsPage from "@/components/contributors"
+import { ContributorsPageProps } from "@/lib/railTypes"
+import { Contributors } from "@/lib/types"
 import { getCurrentIssueData, getPermalink, PageType } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
-import { Metadata } from "next"
-import ContributorsPage from "@/components/contributors"
 import { getAllContributors } from "@/lib/utils/people"
-import { ContributorsPageProps } from "@/lib/railTypes"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()
-  if (!data) return {}
+  if (!data) {
+    return {}
+  }
 
   const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
   const ogtitle = "All Contributors"

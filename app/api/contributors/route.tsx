@@ -13,6 +13,6 @@ export async function GET(request: Request) {
   }
 
   return new Response(JSON.stringify(allContributors), {
-    headers: { "Content-Type": "application/json" },
+    headers: { ContentType: "application/json" },
   })
 }

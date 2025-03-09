@@ -24,7 +24,7 @@ async function revalidatePages(paths: string[]) {
         await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/revalidate?path=${path}`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            contentType: "application/json",
           },
         })
       }),
@@ -92,7 +92,7 @@ export function getPageRevalidationPaths(data: Pages) {
 
 export const getRevalidateData = cache(async (id: string, type: RevalidateType) => {
   switch (type) {
-    case RevalidateType.Articles:
+    case RevalidateType.Articles: {
       const article = await directus.request(
         readItem(type, id, {
           fields: [
@@ -107,32 +107,35 @@ export const getRevalidateData = cache(async (id: string, type: RevalidateType) 
         }),
       )
       return article as Articles
+    }
 
-    case RevalidateType.Contributors:
+    case RevalidateType.Contributors: {
       const contributor = await directus.request(
         readItem(type, id, {
           fields: ["slug"],
         }),
       )
       return contributor as Contributors
+    }
 
-    case RevalidateType.Events:
+    case RevalidateType.Events: {
       const event = await directus.request(
         readItem(type, id, {
           fields: ["slug", "start_date"],
         }),
       )
-
       return event as Events
+    }
 
-    case RevalidateType.Pages:
+    case RevalidateType.Pages: {
       const page = await directus.request(
         readItem(type, id, {
           fields: ["slug"],
         }),
       )
-
       return page as Pages
+    }
+
     default:
       return null
   }

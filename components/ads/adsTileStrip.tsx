@@ -38,7 +38,7 @@ const AdsTileStrip = ({ collection }: { collection: Collections }) => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, [])
 
   const handleAdEvent = useCallback(

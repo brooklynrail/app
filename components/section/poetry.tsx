@@ -42,7 +42,7 @@ const SectionPoetry = (props: SectionProps) => {
   }
 
   const articleGroups = groupArray(articlesData, groupCount).map((group, i) => (
-    <div className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide py-3 px-3">
+    <div className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide py-3 px-3" key={i}>
       <Promos articles={group} />
     </div>
   ))

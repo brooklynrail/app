@@ -1,13 +1,12 @@
+import TributePreview from "@/components/preview/tribute"
+import { TributePreviewProps } from "@/lib/railTypes"
+import { PageType, getPermalink } from "@/lib/utils"
+import { getNavData } from "@/lib/utils/homepage"
+import { getPreviewPassword, getPreviewTribute } from "@/lib/utils/preview"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound, redirect } from "next/navigation"
 import { stripHtml } from "string-strip-html"
-import { Articles, Homepage, Tributes } from "@/lib/types"
-import { PageType, getPermalink } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
-import { getPreviewPassword, getPreviewTribute } from "@/lib/utils/preview"
-import TributePreview from "@/components/preview/tribute"
-import { TributePreviewProps } from "@/lib/railTypes"
 
 interface PreviewParams {
   id: string

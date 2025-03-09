@@ -1,13 +1,13 @@
 "use client"
-import Link from "next/link"
 import { Articles, Collections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import Link from "next/link"
 import FeaturedImage from "../featuredImage"
 import Frame from "../frames/frame"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
 import Excerpt from "./promos/excerpt"
-import Title, { TitleType } from "./promos/title"
+import Title from "./promos/title"
 
 const CollectionCriticsPage = (collection: Collections) => {
   const { section } = collection
@@ -29,13 +29,17 @@ const CollectionCriticsPage = (collection: Collections) => {
   // Get all valid contributors
   const contributors = leadArticle.contributors
     .map(({ contributors_id }) => {
-      if (!contributors_id) return null
+      if (!contributors_id) {
+        return null
+      }
       return `${contributors_id.first_name} ${contributors_id.last_name}`
     })
     .filter(Boolean)
   // Format the contributors list with appropriate separators
   const guestCritics = contributors.reduce((acc: string, name: string | null, i: number) => {
-    if (i === 0) return name || ""
+    if (i === 0) {
+      return name || ""
+    }
 
     let separator = ", "
     if (contributors.length === 2) {

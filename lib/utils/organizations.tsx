@@ -3,7 +3,7 @@ import { Organizations } from "../types"
 import { createDirectus, rest, readItems } from "@directus/sdk"
 
 interface GetOrganizationsProps {
-  onlySponsors: Boolean
+  onlySponsors: boolean
 }
 
 export const getOrganizations = cache(async (props: GetOrganizationsProps): Promise<Organizations[]> => {

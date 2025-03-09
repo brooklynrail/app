@@ -22,7 +22,7 @@ const DonationAd = () => {
       }
     }
 
-    fetchDonateData()
+    void fetchDonateData()
   }, []) // Dependencies: re-fetch data if showPopup or popupType changes
 
   // Calculate the progress based on fetched data

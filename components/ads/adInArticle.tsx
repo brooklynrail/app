@@ -1,11 +1,10 @@
+import { Ads } from "@/lib/types"
+import { AdTypes } from "@/lib/utils/ads"
 import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState, useCallback, useRef } from "react"
-import { Ads } from "@/lib/types"
-import { AdTypes } from "@/lib/utils/ads"
 import { usePostHog } from "posthog-js/react"
-import DonationAd from "./donationAd"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 const AdInArticle = () => {
   const [currentAd, setCurrentAd] = useState<Ads | null>(null)
@@ -34,7 +33,7 @@ const AdInArticle = () => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, [])
 
   // Memoized function to handle GA and PostHog events

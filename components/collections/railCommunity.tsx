@@ -1,4 +1,5 @@
 "use client"
+
 import { useCallback, useEffect } from "react"
 import { useState } from "react"
 import { Collections, Organizations } from "@/lib/types"
@@ -40,7 +41,7 @@ const CollectionRailCommunity = (collection: Collections) => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, [])
 
   const handleOrgEvent = useCallback(

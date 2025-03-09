@@ -1,12 +1,7 @@
-import {
-  RevalidateType,
-  getContributorRevalidationPaths,
-  getEventRevalidationPaths,
-  getPageRevalidationPaths,
-} from "@/lib/utils/revalidate"
-import { Articles, Contributors, Events, Pages } from "@/lib/types"
-import { revalidatePath, revalidateTag } from "next/cache"
+import { Articles, Contributors } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import { getContributorRevalidationPaths, RevalidateType } from "@/lib/utils/revalidate"
+import { revalidatePath, revalidateTag } from "next/cache"
 
 export const dynamic = "force-dynamic"
 

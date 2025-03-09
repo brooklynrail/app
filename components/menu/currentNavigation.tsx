@@ -38,10 +38,12 @@ const CurrentNavigation = () => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, []) // Empty dependency array to ensure the fetch only runs once
 
-  if (loading || !navigation) return <div>Loading...</div>
+  if (loading || !navigation) {
+    return <div>Loading...</div>
+  }
 
   const allNav = navigation.map((navItem: NavigationProps, i: number) => {
     const permalink = (() => {

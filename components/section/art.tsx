@@ -27,7 +27,7 @@ const SectionArt = (props: SectionProps) => {
     const restOfArticles = group.slice(1)
     const priority = index === 0 ? true : false
     return (
-      <div className="">
+      <div className="" key={index}>
         <Frame
           key={index}
           LeadPromo={<LeadPromoArt priority={priority} article={leadArticle} />}

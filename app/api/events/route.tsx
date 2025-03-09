@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     // Set cache headers for 30 minutes
     return Response.json(upcomingEvents, {
       headers: {
-        "Content-Type": "application/json",
+        ContentType: "application/json",
       },
     })
   } catch (error) {

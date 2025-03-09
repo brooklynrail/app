@@ -28,7 +28,7 @@ const PopupDonate = () => {
     }
 
     if (showPopup && popupType === "donate") {
-      fetchDonateData()
+      void fetchDonateData()
     }
   }, [showPopup, popupType]) // Dependencies: re-fetch data if showPopup or popupType changes
 

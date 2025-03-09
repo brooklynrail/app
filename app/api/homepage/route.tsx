@@ -123,7 +123,7 @@ export async function GET(request: Request) {
 
     return Response.json(cleanedData, {
       headers: {
-        "Content-Type": "application/json",
+        ContentType: "application/json",
       },
     })
   } catch (error) {
