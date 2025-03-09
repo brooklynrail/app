@@ -64,7 +64,7 @@ const PopupDonate = () => {
             <p className="hidden uppercase text-md tablet-lg:text-2xl text-center text-zinc-800 dark:text-slate-100">
               Help us raise $200,000 by December 31
             </p>
-            <div className="hidden bg-indigo-100 h-9 w-auto max-w-screen-tablet-lg mx-auto flex justify-start items-center">
+            <div className=" bg-indigo-100 h-9 w-auto max-w-screen-tablet-lg mx-auto flex justify-start items-center">
               {currentAmount && (
                 <div className="bg-lime-500 h-9 flex justify-end items-center" style={{ width: `${progressPercent}%` }}>
                   <span
