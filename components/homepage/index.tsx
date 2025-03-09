@@ -24,7 +24,7 @@ export enum CollectionType {
 }
 
 const HomePage = (props: HomePageProps) => {
-  const { homepageData, currentIssue, banners, navData, previewURL } = props
+  const { homepageData, currentIssue, homepageHeaderData, navData, previewURL } = props
   const { setCurrentContext } = usePageContext()
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const HomePage = (props: HomePageProps) => {
     <Paper
       pageClass={`theme-homepage`}
       type={PaperType.Homepage}
-      banners={banners}
+      homepageHeaderData={homepageHeaderData}
       navData={navData}
       currentIssue={currentIssue}
       homepageData={homepageData}
