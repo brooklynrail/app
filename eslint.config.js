@@ -63,7 +63,7 @@ module.exports = tseslint.config(
         "warn",
         {
           selector: "default",
-          format: ["camelCase", "snake_case"],
+          format: ["camelCase", "snake_case", "UPPER_CASE", "PascalCase"],
           leadingUnderscore: "allow",
         },
         {
