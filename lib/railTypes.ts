@@ -153,7 +153,7 @@ export interface HomePageProps {
   navData: Homepage
   homepageData: Homepage
   currentIssue: Issues
-  banners: HomepageBanners[]
+  homepageHeaderData: HomepageBanners[]
   permalink: string
   errorCode?: number
   errorMessage?: string
