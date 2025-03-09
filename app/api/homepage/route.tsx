@@ -1,19 +1,24 @@
+import { notFound } from "next/navigation"
 import directus from "@/lib/directus"
-import { Articles, Homepage, HomepageCollections } from "@/lib/types"
-import { getCollectionArticles, getCurrentIssueData } from "@/lib/utils/homepage"
 import { readSingleton } from "@directus/sdk"
+import { Articles } from "@/lib/types"
+import { Homepage } from "@/lib/types"
+import { HomepageCollections } from "@/lib/types"
+import { getCollectionArticles } from "@/lib/utils/homepage"
 
-// Use auto instead of force-dynamic to allow caching
-export const dynamic = "auto"
-
-// Keep the revalidation
 export const revalidate = 3600 // 1 hour cache
 
-// Modify the function to use NextRequest which is better supported with caching
-import { type NextRequest } from "next/server"
-
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
+    // Get currentIssue from URL parameters
+    // /api/homepage?currentIssue=2025-03
+    const { searchParams } = new URL(request.url)
+    const currentIssue = searchParams.get("currentIssue")
+
+    if (!currentIssue) {
+      return notFound()
+    }
+
     let homepageData
     try {
       homepageData = await directus.request(
@@ -87,86 +92,42 @@ export async function GET(request: NextRequest) {
       )
     } catch (error) {
       console.error("Error fetching homepage singleton:", error)
-      return Response.json(
-        {
-          error: "Homepage data not found",
-          details: error instanceof Error ? error.message : "Unknown error occurred",
-        },
-        { status: 500 },
-      )
-    }
-
-    if (!homepageData || Object.keys(homepageData).length === 0) {
-      return Response.json(
-        {
-          error: "Invalid homepage data",
-          details: "Homepage data is empty or invalid",
-        },
-        { status: 500 },
-      )
+      homepageData = {} // Provide empty default if singleton not found
     }
 
     const homepage = homepageData as Homepage
 
-    const currentIssue = await getCurrentIssueData()
-    if (!currentIssue) {
-      // Instead of using notFound(), return a proper error response
-      return Response.json(
-        {
-          error: "Current issue data not found",
-          details: "Unable to fetch current issue data",
-        },
-        { status: 404 },
-      )
-    }
+    const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
+      if (collection.collections_id && collection.collections_id.section) {
+        const thisSectionArticles = getCollectionArticles({
+          currentIssueSlug: currentIssue,
+          slug: collection.collections_id.section.slug,
+          limit: collection.collections_id.limit,
+        })
 
-    try {
-      const allCollections = homepage.collections.map(async (collection: HomepageCollections) => {
-        if (collection.collections_id && collection.collections_id.section) {
-          const thisSectionArticles = await getCollectionArticles({
-            currentIssueSlug: currentIssue.slug,
-            slug: collection.collections_id.section.slug,
-            limit: collection.collections_id.limit,
-          })
-
-          collection.collections_id.section.articles = thisSectionArticles as Articles[]
-          return collection
-        }
+        collection.collections_id.section.articles = (await thisSectionArticles) as Articles[]
         return collection
-      })
-
-      homepage.collections = await Promise.all(allCollections)
-
-      const responseData = {
-        ...homepage,
-        currentIssue: currentIssue.slug,
       }
+      return collection
+    })
 
-      const cleanedData = JSON.parse(JSON.stringify(responseData))
+    homepage.collections = await Promise.all(allCollections)
 
-      return Response.json(cleanedData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-    } catch (error) {
-      console.error("Error processing collections:", error)
-      return Response.json(
-        {
-          error: "Failed to process collections",
-          details: error instanceof Error ? error.message : "Unknown error occurred",
-        },
-        { status: 500 },
-      )
+    // Simply include the currentIssue string in the response
+    const responseData = {
+      ...homepage,
+      currentIssue,
     }
+
+    const cleanedData = JSON.parse(JSON.stringify(responseData))
+
+    return Response.json(cleanedData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
   } catch (error) {
     console.error("Error in homepage API:", error)
-    return Response.json(
-      {
-        error: "Failed to fetch homepage data",
-        details: error instanceof Error ? error.message : "Unknown error occurred",
-      },
-      { status: 500 },
-    )
+    return Response.json({ error: "Failed to fetch homepage data", details: (error as Error).message }, { status: 500 })
   }
 }
