@@ -74,7 +74,9 @@ const SlideShow = ({ article }: SlideShowProps) => {
       // Update caption for initial slide
       const currentImage = filteredImages[currentSlideId]
       const caption = currentImage && currentImage.directus_files_id ? currentImage.directus_files_id.caption : ""
-      caption && setCurrentCaption(caption)
+      if (caption) {
+        setCurrentCaption(caption)
+      }
     }
   }, [emblaApi, currentSlideId, filteredImages, article.title])
 

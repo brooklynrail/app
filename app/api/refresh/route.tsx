@@ -21,26 +21,35 @@ export async function GET(request: Request) {
     }
 
     switch (type) {
-      case RevalidateType.Homepage:
+      case RevalidateType.Homepage: {
         revalidatePath(`/`, "page")
         revalidateTag("homepage")
         return new Response(`Revalidated homepage`, { status: 200 })
+      }
 
-      case RevalidateType.GlobalSettings:
+      case RevalidateType.GlobalSettings: {
         revalidateTag("homepage")
         return new Response(`Revalidated Global Settings`, { status: 200 })
+      }
 
-      case RevalidateType.Ads:
+      case RevalidateType.Ads: {
         revalidateTag("ads")
         const adTypes = ["banner", "tile", "in_article_standard"]
-        adTypes.forEach((type) => revalidatePath(`/api/ads/?type=${type}`))
+        adTypes.forEach((type) => {
+          revalidatePath(`/api/ads/?type=${type}`)
+        })
         return new Response(`Revalidated Ads APIs`, { status: 200 })
+      }
 
-      case RevalidateType.Articles:
-        if (!id) return new Response("id is required", { status: 400 })
+      case RevalidateType.Articles: {
+        if (!id) {
+          return new Response("id is required", { status: 400 })
+        }
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
-        if (!response.ok) throw new Error("Failed to fetch article")
+        if (!response.ok) {
+          throw new Error("Failed to fetch article")
+        }
         const articleData: Articles = await response.json()
 
         const permalink = getPermalink({
@@ -54,23 +63,31 @@ export async function GET(request: Request) {
         revalidatePath(new URL(permalink).pathname, "page")
         revalidateTag("articles")
         return new Response(`Revalidated: ${permalink}`, { status: 200 })
+      }
 
-      case RevalidateType.Contributors:
-        if (!id) return new Response("id is required", { status: 400 })
+      case RevalidateType.Contributors: {
+        if (!id) {
+          return new Response("id is required", { status: 400 })
+        }
 
         const contributorResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`, {
           next: { revalidate: 3600, tags: ["contributors"] },
         })
-        if (!contributorResponse.ok) throw new Error("Failed to fetch contributor")
+        if (!contributorResponse.ok) {
+          throw new Error("Failed to fetch contributor")
+        }
 
         const contributorData: Contributors = await contributorResponse.json()
         const { mainPath, additionalPaths } = getContributorRevalidationPaths(contributorData)
 
         revalidatePath(mainPath, "page")
-        additionalPaths.forEach((path) => revalidatePath(path, "page"))
+        additionalPaths.forEach((path) => {
+          revalidatePath(path, "page")
+        })
         revalidateTag("contributors")
 
         return new Response(`Revalidated: ${mainPath}`, { status: 200 })
+      }
 
       // Similar pattern for Events and Pages...
 
