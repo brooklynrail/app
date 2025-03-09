@@ -1,14 +1,14 @@
-import { notFound } from "next/navigation"
+import HomePage from "@/components/homepage"
 import { Homepage, HomepageBanners, Issues } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
-import { getCurrentIssueData, getHomepageData, getNavData } from "@/lib/utils/homepage"
-import HomePage from "@/components/homepage"
+import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
+import { notFound } from "next/navigation"
 
 export interface HomePageProps {
   navData: Homepage
   homepageData: Homepage
   currentIssue: Issues
-  banners: HomepageBanners[]
+  homepageHeaderData: HomepageBanners[]
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -32,13 +32,13 @@ async function getData() {
     return notFound()
   }
 
-  const homepageData = await getHomepageData()
+  const homepageData = await getHomepageCollectionData()
   if (!homepageData) {
     return notFound()
   }
 
-  const banners = homepageData.banners
-  if (!banners) {
+  const homepageHeaderData = await getHomepageHeaderData()
+  if (!homepageHeaderData || !homepageHeaderData.banners) {
     return notFound()
   }
 
@@ -49,7 +49,7 @@ async function getData() {
   return {
     navData,
     homepageData,
-    banners,
+    homepageHeaderData,
     currentIssue,
     permalink,
   }

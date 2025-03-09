@@ -1,12 +1,11 @@
 "use client"
 import { HomepageBanners, Issues } from "@/lib/types"
 import CurrentIssue from "./currentIssue"
-import Exhibitions from "./exhibitions"
 import NewSocialEnvironment from "./newSocialEnvironment"
 
 interface BannerProps {
   currentIssue: Issues
-  banners: HomepageBanners[]
+  homepageHeaderData: HomepageBanners[]
 }
 
 enum BannerType {
@@ -15,21 +14,27 @@ enum BannerType {
 }
 
 const Banners = (props: BannerProps) => {
-  const { currentIssue, banners } = props
+  const { currentIssue, homepageHeaderData } = props
 
-  const allBanners = banners.map((banner, index) => {
-    if (!banner.collections_id) {
-      return null
-    }
-    switch (banner.collections_id.banner_type) {
-      case BannerType.CurrentIssue:
-        return <CurrentIssue key={`current-issue-${index}`} currentIssue={currentIssue} banner={banner} />
-      case BannerType.NewSocialEnvironment:
-        return <NewSocialEnvironment key={`social-env-${index}`} banner={banner} />
-      default:
-        return <></>
-    }
-  })
+  if (!homepageHeaderData || !Array.isArray(homepageHeaderData)) {
+    return null
+  }
+
+  const allBanners = homepageHeaderData
+    .map((banner, index) => {
+      if (!banner.collections_id) {
+        return null
+      }
+      switch (banner.collections_id.banner_type) {
+        case BannerType.CurrentIssue:
+          return <CurrentIssue key={`current-issue-${index}`} currentIssue={currentIssue} banner={banner} />
+        case BannerType.NewSocialEnvironment:
+          return <NewSocialEnvironment key={`social-env-${index}`} banner={banner} />
+        default:
+          return null
+      }
+    })
+    .filter(Boolean)
 
   if (allBanners.length === 0) {
     return null

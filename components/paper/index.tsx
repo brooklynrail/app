@@ -19,7 +19,7 @@ export interface PaperProps {
   hidePopup?: boolean
   navData: Homepage
   currentIssue?: Issues
-  banners?: HomepageBanners[]
+  homepageHeaderData?: HomepageBanners[]
   children: React.ReactNode
   type?: PaperType
   previewURL?: string
@@ -38,7 +38,8 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, navData, pageStyle, type, banners, currentIssue, previewURL, homepageData } = props
+  const { pageClass, children, navData, pageStyle, type, homepageHeaderData, currentIssue, previewURL, homepageData } =
+    props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
@@ -52,7 +53,9 @@ const Paper = (props: PaperProps) => {
               {type === PaperType.Homepage && (
                 <>
                   <Header type={type} currentIssue={currentIssue} homepageData={homepageData} />
-                  {banners && isHomepage && currentIssue && <Banners currentIssue={currentIssue} banners={banners} />}
+                  {homepageHeaderData && isHomepage && currentIssue && (
+                    <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
+                  )}
                   <NavBar navData={navData} isHomepage={isHomepage} />
                 </>
               )}
@@ -60,7 +63,9 @@ const Paper = (props: PaperProps) => {
           ) : (
             <>
               <Header type={type ? type : PaperType.Default} currentIssue={currentIssue} homepageData={homepageData} />
-              {banners && isHomepage && currentIssue && <Banners currentIssue={currentIssue} banners={banners} />}
+              {homepageHeaderData && isHomepage && currentIssue && (
+                <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
+              )}
               <NavBar navData={navData} isHomepage={isHomepage} />
             </>
           )}

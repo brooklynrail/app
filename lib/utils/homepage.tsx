@@ -25,7 +25,7 @@ export const getNavData = async (): Promise<Homepage | null> => {
   }
 }
 
-export const getHomepageData = cache(async () => {
+export const getHomepageCollectionData = cache(async () => {
   try {
     const res = await fetch(`${baseUrl}/api/homepage/collections`)
 
