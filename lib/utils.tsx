@@ -6,7 +6,7 @@ import directus from "./directus"
 import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
 
 export const getBaseUrl = () => {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : `https://brooklynrail.org`
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : `https://localhost:3000`
   return baseURL
 }
 

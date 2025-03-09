@@ -151,9 +151,9 @@ export interface ExhibitionPreviewProps {
 
 export interface HomePageProps {
   navData: Homepage
-  homepageData: Homepage
   currentIssue: Issues
-  homepageHeaderData: HomepageBanners[]
+  collectionsData: Homepage
+  homepageHeaderData: Homepage
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -163,7 +163,7 @@ export interface HomePageProps {
 export interface HomepagePreviewProps {
   navData: Homepage
   homepageData: Homepage
-  homepageHeaderData: HomepageBanners[]
+  homepageHeaderData: Homepage
   currentIssue: Issues
   permalink: string
   isEnabled: boolean

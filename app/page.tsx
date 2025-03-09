@@ -6,9 +6,9 @@ import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData, 
 
 export interface HomePageProps {
   navData: Homepage
-  homepageData: Homepage
   currentIssue: Issues
-  homepageHeaderData: HomepageBanners[]
+  collectionsData: Homepage
+  homepageHeaderData: Homepage
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -32,8 +32,8 @@ async function getData() {
     return notFound()
   }
 
-  const homepageData = await getHomepageCollectionData()
-  if (!homepageData) {
+  const collectionsData = await getHomepageCollectionData()
+  if (!collectionsData) {
     return notFound()
   }
 
@@ -48,7 +48,7 @@ async function getData() {
 
   return {
     navData,
-    homepageData,
+    collectionsData,
     homepageHeaderData,
     currentIssue,
     permalink,

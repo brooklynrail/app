@@ -16,28 +16,37 @@ export interface HeaderProps {
   title?: string
   type: PaperType
   currentIssue?: Issues
-  homepageData?: Homepage
+  collectionsData?: Homepage
+  homepageHeaderData?: Homepage
 }
 
 const Header = (props: HeaderProps) => {
-  const { title, type, currentIssue, homepageData } = props
+  const { title, type, currentIssue, collectionsData, homepageHeaderData } = props
 
   switch (type) {
     case PaperType.Homepage:
-      return <HeaderHomepage title={title} type={type} currentIssue={currentIssue} homepageData={homepageData} />
+      return (
+        <HeaderHomepage
+          title={title}
+          type={type}
+          currentIssue={currentIssue}
+          collectionsData={collectionsData}
+          homepageHeaderData={homepageHeaderData}
+        />
+      )
     default:
       return <HeaderDefault title={title} type={type} />
   }
 }
 
 const HeaderHomepage = (props: HeaderProps) => {
-  const { title, type, homepageData } = props
+  const { title, type, homepageHeaderData } = props
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPaused, setIsPaused] = useState(false)
   const { theme } = useTheme()
   const subheadFill = theme === "dark" ? "fill-white" : "fill-white"
-  const videoCovers = homepageData && homepageData.video_covers
-  const videoCoversStills = homepageData && homepageData.video_covers_stills
+  const videoCovers = homepageHeaderData && homepageHeaderData.video_covers
+  const videoCoversStills = homepageHeaderData && homepageHeaderData.video_covers_stills
 
   useEffect(() => {
     const isVideoPaused = localStorage.getItem("homepageVideoPaused")

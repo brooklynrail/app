@@ -1,29 +1,28 @@
 "use client"
+import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
 import { MenuProvider } from "@/app/hooks/useMenu"
+import { Homepage, Issues } from "@/lib/types"
 import { usePathname } from "next/navigation"
-import { Homepage, HomepageBanners, Issues } from "@/lib/types"
+import { CSSProperties } from "react"
 import AdFixedBanner from "../ads/adFixedBanner"
+import Banners from "../banner"
 import Footer from "../footer"
+import Header from "../header"
 import Menu from "../menu/menu"
 import NavBar from "../navBar"
-import PopupDonate from "../popupDonate"
-import Header from "../header"
 import PreviewHeader from "../preview/previewHead"
-import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
 import ScreenIndicator from "../screenIndicator"
-import Banners from "../banner"
-import { CSSProperties } from "react"
 
 export interface PaperProps {
   pageClass: string
   hidePopup?: boolean
   navData: Homepage
   currentIssue?: Issues
-  homepageHeaderData?: HomepageBanners[]
+  homepageHeaderData?: Homepage
   children: React.ReactNode
   type?: PaperType
   previewURL?: string
-  homepageData?: Homepage
+  collectionsData?: Homepage
   pageStyle?: CSSProperties
 }
 
@@ -38,8 +37,17 @@ export enum PaperType {
 }
 
 const Paper = (props: PaperProps) => {
-  const { pageClass, children, navData, pageStyle, type, homepageHeaderData, currentIssue, previewURL, homepageData } =
-    props
+  const {
+    pageClass,
+    children,
+    navData,
+    pageStyle,
+    type,
+    homepageHeaderData,
+    currentIssue,
+    previewURL,
+    collectionsData,
+  } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
@@ -52,7 +60,7 @@ const Paper = (props: PaperProps) => {
               <PreviewHeader previewURL={previewURL} />
               {type === PaperType.Homepage && (
                 <>
-                  <Header type={type} currentIssue={currentIssue} homepageData={homepageData} />
+                  <Header type={type} currentIssue={currentIssue} collectionsData={collectionsData} />
                   {homepageHeaderData && isHomepage && currentIssue && (
                     <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
                   )}
@@ -62,7 +70,12 @@ const Paper = (props: PaperProps) => {
             </>
           ) : (
             <>
-              <Header type={type ? type : PaperType.Default} currentIssue={currentIssue} homepageData={homepageData} />
+              <Header
+                type={type ? type : PaperType.Default}
+                currentIssue={currentIssue}
+                collectionsData={collectionsData}
+                homepageHeaderData={homepageHeaderData}
+              />
               {homepageHeaderData && isHomepage && currentIssue && (
                 <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
               )}

@@ -1,11 +1,11 @@
 "use client"
-import { HomepageBanners, Issues } from "@/lib/types"
+import { Homepage, HomepageBanners, Issues } from "@/lib/types"
 import CurrentIssue from "./currentIssue"
 import NewSocialEnvironment from "./newSocialEnvironment"
 
 interface BannerProps {
   currentIssue: Issues
-  homepageHeaderData: HomepageBanners[]
+  homepageHeaderData: Homepage
 }
 
 enum BannerType {
@@ -16,11 +16,11 @@ enum BannerType {
 const Banners = (props: BannerProps) => {
   const { currentIssue, homepageHeaderData } = props
 
-  if (!homepageHeaderData || !Array.isArray(homepageHeaderData)) {
+  if (!homepageHeaderData || !Array.isArray(homepageHeaderData.banners)) {
     return null
   }
 
-  const allBanners = homepageHeaderData
+  const allBanners = homepageHeaderData.banners
     .map((banner, index) => {
       if (!banner.collections_id) {
         return null
