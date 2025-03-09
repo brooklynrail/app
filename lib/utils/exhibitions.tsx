@@ -101,6 +101,7 @@ export const getExhibition = async (slug: string) => {
 const baseUrl = getBaseUrl()
 
 export const getAllExhibitions = async (): Promise<Exhibitions[]> => {
+  console.log("getAllExhibitions baseUrl", baseUrl)
   try {
     // Remove trailing slash to prevent routing issues
     const url = `${baseUrl}/api/exhibitions`
