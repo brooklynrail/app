@@ -32,7 +32,7 @@ async function getData() {
     return notFound()
   }
 
-  const homepageData = await getHomepageData(currentIssue.slug)
+  const homepageData = await getHomepageData()
   if (!homepageData) {
     return notFound()
   }
