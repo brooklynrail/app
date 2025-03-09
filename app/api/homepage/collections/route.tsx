@@ -14,19 +14,6 @@ export async function GET() {
           fields: [
             "id",
             {
-              banners: [
-                {
-                  collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
-                },
-              ],
-            },
-            {
-              video_covers: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
-            },
-            {
-              video_covers_stills: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
-            },
-            {
               collections: [
                 {
                   collections_id: [
