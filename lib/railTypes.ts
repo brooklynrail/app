@@ -163,7 +163,7 @@ export interface HomePageProps {
 export interface HomepagePreviewProps {
   navData: Homepage
   homepageData: Homepage
-  banners: HomepageBanners[]
+  homepageHeaderData: HomepageBanners[]
   currentIssue: Issues
   permalink: string
   isEnabled: boolean
