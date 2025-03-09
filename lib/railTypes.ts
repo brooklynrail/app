@@ -162,7 +162,7 @@ export interface HomePageProps {
 
 export interface HomepagePreviewProps {
   navData: Homepage
-  homepageData: Homepage
+  collectionsData: Homepage
   homepageHeaderData: Homepage
   currentIssue: Issues
   permalink: string

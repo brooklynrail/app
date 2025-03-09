@@ -1,7 +1,7 @@
 import HomepagePreview from "@/components/preview/homepage"
 import { HomepagePreviewProps } from "@/lib/railTypes"
 import { PageType, getCurrentIssueData, getPermalink } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
 import { getPreviewHomepageData, getPreviewPassword } from "@/lib/utils/preview"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -39,7 +39,7 @@ export default async function HomepagePreviewPage() {
 
   const data = await getData()
 
-  if (!data?.homepageData || !data.previewPassword) {
+  if (!data?.collectionsData || !data.previewPassword) {
     notFound()
   }
 
@@ -60,8 +60,13 @@ async function getData(): Promise<HomepagePreviewProps | undefined> {
       return undefined
     }
 
-    const homepageData = await getPreviewHomepageData(currentIssue)
-    if (!homepageData || !homepageData.banners) {
+    const collectionsData = await getPreviewHomepageData(currentIssue)
+    if (!collectionsData) {
+      return undefined
+    }
+
+    const homepageHeaderData = await getHomepageHeaderData()
+    if (!homepageHeaderData) {
       return undefined
     }
 
@@ -76,9 +81,9 @@ async function getData(): Promise<HomepagePreviewProps | undefined> {
 
     return {
       navData,
-      homepageData,
-      homepageHeaderData: homepageData.banners,
+      collectionsData,
       currentIssue,
+      homepageHeaderData,
       permalink,
       previewPassword,
       directusUrl,
