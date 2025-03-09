@@ -25,9 +25,9 @@ export const getNavData = async (): Promise<Homepage | null> => {
   }
 }
 
-export const getHomepageData = cache(async (currentIssue: string) => {
+export const getHomepageData = cache(async () => {
   try {
-    const res = await fetch(`${baseUrl}/api/homepage?currentIssue=${currentIssue}`)
+    const res = await fetch(`${baseUrl}/api/homepage/collections`)
 
     if (!res.ok) {
       const text = await res.text()
@@ -37,7 +37,7 @@ export const getHomepageData = cache(async (currentIssue: string) => {
 
     return res.json()
   } catch (error) {
-    console.error("Failed to fetch homepage data:", error, `${baseUrl}/api/homepage?currentIssue=${currentIssue}`)
+    console.error("Failed to fetch homepage data:", error, `${baseUrl}/api/homepage/collections`)
     return null
   }
 })
