@@ -100,19 +100,42 @@ export const getExhibition = async (slug: string) => {
 
 const baseUrl = getBaseUrl()
 
-export const getAllExhibitions = async (): Promise<Exhibitions[] | null> => {
+export const getAllExhibitions = async (): Promise<Exhibitions[]> => {
   try {
-    const res = await fetch(`${baseUrl}/api/exhibitions/`)
+    // Remove trailing slash to prevent routing issues
+    const url = `${baseUrl}/api/exhibitions`
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // Add cache and revalidation options
+      next: {
+        revalidate: 3600, // Cache for 1 hour
+        tags: ["exhibitions"],
+      },
+    })
 
     if (!res.ok) {
+      // Log the full response for debugging
       const text = await res.text()
-      console.error("API Response:", text)
-      throw new Error(`API returned ${res.status}: ${text}`)
+      console.error(`API error (${res.status}):`, text)
+      console.error("Request URL:", url)
+      throw new Error(`API returned ${res.status}`)
     }
 
-    return res.json()
+    const data = await res.json()
+
+    if (!Array.isArray(data)) {
+      console.error("Invalid data structure received:", data)
+      return []
+    }
+
+    return data
   } catch (error) {
-    console.error("Failed to fetch exhibitions data:", error, `${baseUrl}/api/exhibitions/`)
-    return null
+    console.error("Failed to fetch exhibitions data:", error)
+    // Return empty array instead of null to maintain consistent return type
+    return []
   }
 }
