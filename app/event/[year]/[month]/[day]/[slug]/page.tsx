@@ -18,7 +18,7 @@ interface EventParams {
 }
 
 export async function generateMetadata(props: { params: Promise<EventParams> }): Promise<Metadata> {
-  const data = await getData({ params: (await props.params) })
+  const data = await getData({ params: await props.params })
 
   if (!data.eventData || !data.permalink) {
     return {}
@@ -64,7 +64,7 @@ export async function generateMetadata(props: { params: Promise<EventParams> }):
 }
 
 export default async function EventPageController(props: { params: Promise<EventParams> }) {
-  const data = await getData({ params: (await props.params) })
+  const data = await getData({ params: await props.params })
   if (!data.eventData || !data.permalink) {
     return notFound()
   }

@@ -1,5 +1,4 @@
 import directus from "@/lib/directus"
-import { Issues } from "@/lib/types"
 import { readSingleton } from "@directus/sdk"
 
 export async function GET() {

@@ -75,11 +75,6 @@ module.exports = tseslint.config(
           selector: ["typeLike", "enumMember"],
           format: ["PascalCase"],
         },
-        {
-          selector: "property",
-          format: ["camelCase", "snake_case", "PascalCase"],
-          leadingUnderscore: "allow",
-        },
       ],
     },
   },
