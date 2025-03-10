@@ -1,12 +1,12 @@
 "use client"
-import style from "./banner.module.scss"
-import Link from "next/link"
-import parse from "html-react-parser"
-import { useEffect, useState } from "react"
-import Image from "next/image"
 import { Events, HomepageBanners } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { fetchEvents } from "@/lib/utils/events"
+import parse from "html-react-parser"
+import Image from "next/image"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import style from "./banner.module.scss"
 
 interface NewSocialEnvironmentProps {
   banner: HomepageBanners
@@ -66,13 +66,17 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         setLoading(false)
       }
     }
-    loadEvents()
+    void loadEvents()
   }, [])
 
   const { collections_id } = banner
-  if (!collections_id) return null
+  if (!collections_id) {
+    return null
+  }
 
-  if (loading) return <LoadingSkeleton />
+  if (loading) {
+    return <LoadingSkeleton />
+  }
 
   const bannerTitle = collections_id.title
   const bannerDescription = collections_id.description
@@ -172,14 +176,8 @@ const EventCard = (props: EventCardProps) => {
 }
 
 const FeaturedEventCard = (props: EventCardProps) => {
-  const { title, slug, start_date, people, series, featured_image, youtube_id } = props.event
+  const { title, slug, start_date, youtube_id } = props.event
   const startDate = new Date(start_date)
-
-  const today = new Date()
-  const fullDay =
-    startDate.toDateString() === today.toDateString()
-      ? "Today"
-      : new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(startDate)
 
   const eventYear = startDate.getFullYear()
   const eventMonth = startDate.getMonth() + 1

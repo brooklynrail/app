@@ -1,8 +1,7 @@
 "use client"
+import { RevalidateType } from "@/lib/utils/revalidate"
 import Link from "next/link"
 import { useState } from "react"
-import { PageType } from "@/lib/utils"
-import { RevalidateType } from "@/lib/utils/revalidate"
 
 const Refresh = () => {
   const [url, setUrl] = useState("")
@@ -16,14 +15,14 @@ const Refresh = () => {
     const parsedUrl = new URL(url, window.location.origin)
     const path = parsedUrl.pathname + parsedUrl.search
 
-    const pathAPIUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh/path?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&path=${path}`
+    const pathAPIUrl = `${process.env.NEXT_PUBLIC_API_URL}/refresh/path?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&path=${path}`
 
     try {
       const response = await fetch(pathAPIUrl, {
         cache: "no-store",
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          ContentType: "application/json",
         },
       })
 
@@ -47,18 +46,20 @@ const Refresh = () => {
   }
 
   const handleRevalidateSections = async () => {
-    if (isLoading) return
+    if (isLoading) {
+      return
+    }
 
     setIsLoading(true)
     setMessage("Revalidation started for all sections")
-    const pageAPIUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&type=${RevalidateType.Sections}`
+    const pageAPIUrl = `${process.env.NEXT_PUBLIC_API_URL}/refresh?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&type=${RevalidateType.Sections}`
 
     try {
       const response = await fetch(pageAPIUrl, {
         cache: "no-store",
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          ContentType: "application/json",
         },
       })
 

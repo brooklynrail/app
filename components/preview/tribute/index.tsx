@@ -1,20 +1,12 @@
 "use client"
-import { useState, useEffect } from "react"
-import Password from "../password"
-import TributePage from "../../tributePage"
-import { TributePreviewProps } from "@/app/preview/tribute/[id]/page"
+import { TributePreviewProps } from "@/lib/railTypes"
 import { getPermalink, PageType } from "@/lib/utils"
+import TributePage from "../../tributePage"
+import Password from "../password"
 
 const TributePreview = (props: TributePreviewProps) => {
   const { tributeData, isEnabled, previewPassword, articleData, navData } = props
-  const [isStudioPreview, setIsStudioPreview] = useState(false)
   const cookieSlug = `rail_preview_${tributeData.slug}`
-
-  useEffect(() => {
-    if (window.location.href.includes("draftMode")) {
-      setIsStudioPreview(true)
-    }
-  }, [])
 
   const permalink = getPermalink({
     tributeSlug: tributeData.slug,

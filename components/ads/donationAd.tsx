@@ -10,7 +10,7 @@ const DonationAd = () => {
   useEffect(() => {
     const fetchDonateData = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/airtable/`)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/airtable/`)
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`)
         }
@@ -22,7 +22,7 @@ const DonationAd = () => {
       }
     }
 
-    fetchDonateData()
+    void fetchDonateData()
   }, []) // Dependencies: re-fetch data if showPopup or popupType changes
 
   // Calculate the progress based on fetched data

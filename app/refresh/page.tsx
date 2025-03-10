@@ -1,14 +1,15 @@
 import { Metadata } from "next"
 import Refresh from "@/components/refresh"
 
-export default function RefreshController() {
-  return <Refresh />
-}
+// Force dynamic rendering, no caching
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
+// Metadata Generation
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `Refresh`,
-    description: `Bust the cache on any page on the site.`,
+    title: "Refresh Controller",
+    description: "Bust the cache on any page on the site.",
     robots: {
       index: false,
       follow: false,
@@ -20,4 +21,9 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     },
   }
+}
+
+// Main Page Component
+export default async function RefreshController() {
+  return <Refresh />
 }

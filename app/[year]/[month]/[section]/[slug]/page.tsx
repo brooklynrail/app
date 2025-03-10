@@ -9,8 +9,15 @@ import { getArticle, getIssueData, getOGImage, getPermalink, PageType } from "@/
 import { getNavData } from "@/lib/utils/homepage"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const data = await getData({ params })
+interface ArticleParams {
+  year: string
+  month: string
+  section: string
+  slug: string
+}
+
+export async function generateMetadata(props: { params: Promise<ArticleParams> }): Promise<Metadata> {
+  const data = await getData({ params: (await props.params) })
 
   if (!data.props.articleData || !data.props.currentSection || !data.props.permalink) {
     return {}
@@ -49,13 +56,6 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       images: ogimages,
     },
   }
-}
-
-interface ArticleParams {
-  year: string
-  month: string
-  section: string
-  slug: string
 }
 
 async function getData({ params }: { params: ArticleParams }) {
@@ -142,8 +142,8 @@ async function getData({ params }: { params: ArticleParams }) {
   }
 }
 
-export default async function ArticlePageController({ params }: { params: ArticleParams }) {
-  const data = await getData({ params })
+export default async function ArticlePageController(props: { params: Promise<ArticleParams> }) {
+  const data = await getData({ params: (await props.params) })
 
   if (!data.props.articleData) {
     return notFound()

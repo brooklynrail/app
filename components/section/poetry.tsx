@@ -1,13 +1,13 @@
 "use client"
 import { useBreakpoints } from "@/app/hooks/useBreakpoints"
-import { useEffect, useState } from "react"
-import { SectionProps } from "."
 import { Articles } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { SectionProps } from "."
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import PoetryCard from "../collections/promos/poetryCard"
 import Title from "../collections/promos/title"
-import Link from "next/link"
 
 const SectionPoetry = (props: SectionProps) => {
   const { articlesData } = props
@@ -42,7 +42,7 @@ const SectionPoetry = (props: SectionProps) => {
   }
 
   const articleGroups = groupArray(articlesData, groupCount).map((group, i) => (
-    <div className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide py-3 px-3">
+    <div className="grid grid-cols-4 tablet:grid-cols-12 divide-x rail-divide py-3 px-3" key={i}>
       <Promos articles={group} />
     </div>
   ))
@@ -55,7 +55,7 @@ interface PromoProps {
 }
 
 const Promos = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
+  const articles = props.articles.map((article) => {
     const { issue, section } = article
     const permalink = getPermalink({
       year: issue.year,

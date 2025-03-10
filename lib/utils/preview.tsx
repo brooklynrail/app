@@ -1,8 +1,7 @@
-import directus from "../directus"
-import { Articles, Events, Exhibitions, Issues, Tributes, HomepageCollections, Homepage } from "../types"
 import { readItems, readSingleton } from "@directus/sdk"
+import directus from "../directus"
+import { Articles, Events, Exhibitions, Homepage, HomepageCollections, Issues, Tributes } from "../types"
 import { getGlobalSettings } from "../utils"
-import { cache } from "react"
 import { getCollectionArticles } from "./homepage"
 
 export async function getPreviewPassword() {

@@ -1,7 +1,7 @@
 "use client"
-import Link from "next/link"
 import { Articles, Collections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import Link from "next/link"
 import FrameScrollable from "../frames/frameScrollable"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
@@ -36,9 +36,9 @@ interface PromoProps {
 }
 
 const Promos = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, excerpt, featured_artwork, featured_image, kicker } = article
-    const artwork = featured_artwork ? featured_artwork : featured_image
+  const articles = props.articles.map((article) => {
+    const { issue, section } = article
+
     const permalink = getPermalink({
       year: issue.year,
       month: issue.month,

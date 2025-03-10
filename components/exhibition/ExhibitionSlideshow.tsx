@@ -23,16 +23,22 @@ const ExhibitionSlideshow = (props: ExhibitionHeadProps) => {
   })
 
   const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev()
+    if (emblaApi) {
+      emblaApi.scrollPrev()
+    }
   }, [emblaApi])
 
   const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext()
+    if (emblaApi) {
+      emblaApi.scrollNext()
+    }
   }, [emblaApi])
 
   // Update current slide index
   useEffect(() => {
-    if (!emblaApi) return
+    if (!emblaApi) {
+      return
+    }
 
     emblaApi.on("select", () => {
       setCurrentIndex(emblaApi.selectedScrollSnap())
@@ -84,7 +90,9 @@ const ExhibitionSlideshow = (props: ExhibitionHeadProps) => {
           <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
             <div className="flex -ml-4 select-none">
               {exhibition_images.map((image: ExhibitionsImages, index: number) => {
-                if (!image.directus_files_id) return null
+                if (!image.directus_files_id) {
+                  return null
+                }
 
                 const src = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${image.directus_files_id.filename_disk}`
                 const alt = image.directus_files_id.alt || ""

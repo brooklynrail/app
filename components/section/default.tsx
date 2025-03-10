@@ -1,15 +1,15 @@
 "use client"
-import { useEffect, useRef, useState } from "react"
-import { SectionProps } from "."
 import { Articles } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import { groupByIssue } from "@/lib/utils/sections"
+import { useEffect, useRef, useState } from "react"
+import { SectionProps } from "."
 import Bylines, { BylineType } from "../collections/promos/bylines"
-import Title from "../collections/promos/title"
-import FeaturedImage from "../featuredImage"
 import Excerpt from "../collections/promos/excerpt"
 import Kicker from "../collections/promos/kicker"
+import Title from "../collections/promos/title"
+import FeaturedImage from "../featuredImage"
 import styles from "./section.module.scss"
-import { groupByIssue } from "@/lib/utils/sections"
 
 export enum LayoutMode {
   Grid = "grid",
@@ -104,7 +104,7 @@ interface PromoProps {
 }
 
 const Promo = ({ article, layoutMode, priority, framedImage }: PromoProps) => {
-  const { issue, section, title, featured_image, featured_artwork, slug, excerpt } = article
+  const { issue, section, title, featured_image, featured_artwork, slug } = article
   const [divWidth, setDivWidth] = useState(0)
   const divRef = useRef<HTMLDivElement>(null)
 

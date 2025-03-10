@@ -1,9 +1,8 @@
 import PastEventsPage from "@/components/events/past"
-import { notFound } from "next/navigation"
-import { Events, EventsTypes, Homepage } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getEventTypes, getPastEvents } from "@/lib/utils/events"
 import { getNavData } from "@/lib/utils/homepage"
+import { notFound } from "next/navigation"
 import { Metadata } from "next/types"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -30,15 +29,6 @@ export async function generateMetadata(): Promise<Metadata> {
       images: share_card,
     },
   }
-}
-
-export interface PastEventsProps {
-  navData: Homepage
-  initialEvents: Events[]
-  eventTypes: EventsTypes[]
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
 }
 
 export default async function EventsController() {

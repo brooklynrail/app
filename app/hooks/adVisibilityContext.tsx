@@ -1,12 +1,14 @@
 "use client"
 import { usePathname } from "next/navigation"
-import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react"
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react"
 
 // Utility functions for cookies
 const getCookie = (name: string) => {
   const value = `; ${document.cookie}`
   const parts = value.split(`; ${name}=`)
-  if (parts.length === 2) return parts.pop()?.split(";").shift() || null
+  if (parts.length === 2) {
+    return parts.pop()?.split(";").shift() || null
+  }
   return null
 }
 

@@ -1,5 +1,5 @@
 "use client"
-import { IssuePageProps } from "@/app/issues/[issueSlug]/page"
+import { IssuePageProps } from "@/lib/railTypes"
 import parse from "html-react-parser"
 import { Articles, Issues } from "@/lib/types"
 import Paper from "../paper"

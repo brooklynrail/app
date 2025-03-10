@@ -1,21 +1,20 @@
 import { notFound } from "next/navigation"
 import { getAllIssues, getPermalink, PageType } from "@/lib/utils"
-import SearchPage from "@/components/search"
 import { getNavData } from "@/lib/utils/homepage"
+import { SearchProps } from "@/lib/railTypes"
+import SearchPage from "@/components/search"
 
 export const dynamic = "force-static"
 
-export default async function Homepage() {
+export default async function SearchController() {
   const data = await getData()
-
   if (!data.issues || !data.permalink) {
     return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
   }
-
   return <SearchPage {...data} />
 }
 
-async function getData() {
+async function getData(): Promise<SearchProps> {
   const navData = await getNavData()
   if (!navData) {
     return notFound()

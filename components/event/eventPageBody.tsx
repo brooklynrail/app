@@ -8,8 +8,8 @@ import Sponsor from "../events/sponsor"
 import { Poets, SoundWaves } from "."
 import ReactMarkdown from "react-markdown"
 import Person from "./person"
-import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
 import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "@/lib/utils/events"
+import { EventProps } from "@/lib/railTypes"
 
 const EventPageBody = (props: EventProps) => {
   const { eventData, eventTypes } = props

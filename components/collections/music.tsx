@@ -49,8 +49,8 @@ interface PromoProps {
 }
 
 const PromosMobile = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, excerpt, featured_artwork, featured_image, kicker } = article
+  const articles = props.articles.map((article) => {
+    const { issue, section, title, featured_artwork, featured_image } = article
     const artwork = featured_artwork ? featured_artwork : featured_image
     const permalink = getPermalink({
       year: issue.year,
@@ -87,8 +87,8 @@ const PromosMobile = (props: PromoProps) => {
 }
 
 const PromosMusic = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, excerpt, featured_artwork, featured_image, kicker } = article
+  const articles = props.articles.map((article) => {
+    const { issue, section, title, featured_artwork, featured_image } = article
     const artwork = featured_artwork ? featured_artwork : featured_image
     const permalink = getPermalink({
       year: issue.year,

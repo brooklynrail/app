@@ -2,18 +2,11 @@ import { MetadataRoute } from "next"
 import { getPermalink, PageType } from "@/lib/utils"
 import { Articles } from "@/lib/types"
 import { getArticlePages } from "@/lib/utils/articles"
-
-interface SiteLinksProps {
-  url: string
-  lastModified: string
-  changeFrequency: "monthly" | "weekly" | "daily"
-  priority: number
-}
-
+import { SiteMapProps } from "@/lib/railTypes"
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articlePages = await getArticlePages()
 
-  let articles: SiteLinksProps[] = []
+  let articles: SiteMapProps[] = []
   if (articlePages) {
     articles = articlePages
       .filter((article: Articles) => article.issue)

@@ -1,7 +1,7 @@
 "use client"
-import { useEffect, useRef, useState } from "react"
 import { Articles, Collections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import { useEffect, useRef, useState } from "react"
 import FeaturedImage from "../featuredImage"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
@@ -9,7 +9,8 @@ import Excerpt from "./promos/excerpt"
 import Title from "./promos/title"
 
 const CollectionDefault = (collection: Collections) => {
-  const { section } = collection
+  const id = collection.id
+  const { section, title } = collection
   if (!section) {
     return null
   }
@@ -22,9 +23,9 @@ const CollectionDefault = (collection: Collections) => {
   })
 
   return (
-    <div key={collection.id} className={`collection theme theme-${section.slug}`}>
+    <div key={id} className={`collection theme theme-${section.slug}`}>
       <CollectionHead
-        title={collection.title}
+        title={title}
         permalink={section.featured ? sectionPermalink : null}
         description={section.description}
       />
@@ -43,7 +44,7 @@ const Promos = (props: PromosProps) => {
   const { articles } = props
   return (
     <>
-      {articles.map((article, index) => (
+      {articles.map((article) => (
         <Promo key={article.id} article={article} />
       ))}
     </>

@@ -38,9 +38,15 @@ const Kicker = (props: KickerProps) => {
   // Create an array of elements in the specified order, filtering out any undefined ones
   const elements = order
     .map((key) => {
-      if (key === "issue" && issue) return issueText(issue)
-      if (key === "section" && section) return sectionText(section)
-      if (key === "kicker" && kicker) return kickerText(kicker)
+      if (key === "issue" && issue) {
+        return issueText(issue)
+      }
+      if (key === "section" && section) {
+        return sectionText(section)
+      }
+      if (key === "kicker" && kicker) {
+        return kickerText(kicker)
+      }
       return null
     })
     .filter(Boolean) // Remove any null or undefined elements

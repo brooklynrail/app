@@ -1,3 +1,7 @@
+// @ts-check
+
+/** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: true,
   staticPageGenerationTimeout: 1000,
@@ -88,6 +92,14 @@ const nextConfig = {
         destination: "/issues/:issueSlug/",
         permanent: true,
       },
+
+      // Redirect /issues/ to /archive/
+      {
+        source: "/issues/",
+        destination: "/archive/",
+        permanent: false,
+      },
+
       // Redirect /issue/ to /issues/
       {
         source: "/issue/:issueSlug/",

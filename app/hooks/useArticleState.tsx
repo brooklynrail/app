@@ -1,8 +1,8 @@
 "use client"
-import { useState, useEffect } from "react"
-import { useRouter, usePathname } from "next/navigation"
 import { Articles } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import { usePathname, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 // Create a hook to manage article switching
 export const useArticleState = (initialArticle: Articles, articles: Articles[]) => {
@@ -15,11 +15,17 @@ export const useArticleState = (initialArticle: Articles, articles: Articles[]) 
   // Function to fetch article data by slug and update the current article state
   const handleArticleChange = async (slug: string) => {
     try {
-      if (slug === currentArticle.slug) return // No need to update if the same article
+      if (slug === currentArticle.slug) {
+        return
+      }
 
       setIsNavigating(true) // Set navigation flag
-      const response = await fetch(`/api/article/${slug}`, { next: { revalidate: 3600, tags: ["articles"] } })
-      if (!response.ok) throw new Error("Failed to fetch article")
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/article/${slug}`, {
+        next: { revalidate: 3600, tags: ["articles"] },
+      })
+      if (!response.ok) {
+        throw new Error("Failed to fetch article")
+      }
 
       const newArticle: Articles = await response.json()
       setCurrentArticle(newArticle)
@@ -54,8 +60,10 @@ export const useArticleState = (initialArticle: Articles, articles: Articles[]) 
 
   // Function to switch articles by updating the URL based on the new slug
   const switchArticle = async (slug: string) => {
-    if (isNavigating) return // Prevent multiple simultaneous navigations
-    handleArticleChange(slug)
+    if (isNavigating) {
+      return
+    }
+    void handleArticleChange(slug)
   }
 
   // Effect to handle `pathname` changes and update article state accordingly
