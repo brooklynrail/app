@@ -30,5 +30,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".eslintrc.js", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "public", ".next"]
+  "exclude": ["node_modules", ".next", "dist", "build", "public"]
 }
