@@ -1,7 +1,7 @@
 "use client"
-import { useEffect, useRef, useState, use } from "react"
 import { Articles, Collections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import { useEffect, useRef, useState } from "react"
 import FeaturedImage from "../featuredImage"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
@@ -44,7 +44,7 @@ const Promos = (props: PromosProps) => {
   const { articles } = props
   return (
     <>
-      {articles.map((article, index) => (
+      {articles.map((article) => (
         <Promo key={article.id} article={article} />
       ))}
     </>

@@ -81,7 +81,7 @@ interface PromoProps {
 }
 
 const Promos = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
+  const articles = props.articles.map((article) => {
     const { issue, section } = article
     const permalink = getPermalink({
       year: issue.year,

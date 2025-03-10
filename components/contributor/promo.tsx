@@ -1,11 +1,11 @@
+import { Articles } from "@/lib/types"
 import parse from "html-react-parser"
-import { Articles, ArticlesContributors, DirectusFiles } from "@/lib/types"
-import { stripHtml } from "string-strip-html"
 import Link from "next/link"
+import { stripHtml } from "string-strip-html"
 import Bylines, { BylineType } from "../collections/promos/bylines"
+import Kicker from "../collections/promos/kicker"
 import Title, { TitleType } from "../collections/promos/title"
 import FeaturedImage from "../featuredImage"
-import Kicker from "../collections/promos/kicker"
 
 interface PromoProps {
   article: Articles

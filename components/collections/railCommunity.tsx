@@ -1,11 +1,10 @@
 "use client"
 
-import { useCallback, useEffect } from "react"
-import { useState } from "react"
 import { Collections, Organizations } from "@/lib/types"
-import { usePostHog } from "posthog-js/react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePostHog } from "posthog-js/react"
+import { useCallback, useEffect, useState } from "react"
 import styles from "./collection.module.scss"
 
 const CollectionRailCommunity = (collection: Collections) => {
@@ -45,7 +44,7 @@ const CollectionRailCommunity = (collection: Collections) => {
   }, [])
 
   const handleOrgEvent = useCallback(
-    (action: "impression" | "click", org: Organizations, position: number) => {
+    (action: "impression" | "click", org: Organizations) => {
       const { slug, name } = org
 
       // PostHog tracking
@@ -110,7 +109,7 @@ const CollectionRailCommunity = (collection: Collections) => {
         <Link
           href={org.url}
           target="_blank"
-          onClick={() => !isDuplicate && handleOrgEvent("click", org, i + 1)}
+          onClick={() => !isDuplicate && handleOrgEvent("click", org)}
           tabIndex={isDuplicate ? -1 : undefined}
         >
           <Image
@@ -119,7 +118,7 @@ const CollectionRailCommunity = (collection: Collections) => {
             height={scaledHeight}
             sizes="20vw"
             alt={org.name}
-            onLoad={() => !isDuplicate && handleOrgEvent("impression", org, i + 1)}
+            onLoad={() => !isDuplicate && handleOrgEvent("impression", org)}
           />
         </Link>
       </li>
