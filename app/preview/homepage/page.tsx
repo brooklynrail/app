@@ -4,13 +4,13 @@ import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "@/lib/types"
 import { PageType, getCurrentIssueData, getPermalink } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
 import { getPreviewHomepageData, getPreviewPassword } from "@/lib/utils/preview"
 
 export interface HomepagePreviewProps {
   navData: Homepage
   homepageData: Homepage
-  banners: HomepageBanners[]
+  homepageHeaderData: Homepage
   currentIssue: Issues
   permalink: string
   errorCode?: number
@@ -45,14 +45,14 @@ export default async function HomepagePreviewPage() {
 
   const data = await getData()
 
-  const { homepageData, banners, currentIssue, permalink, previewPassword, directusUrl, navData } = data
-  if (!homepageData || !banners || !currentIssue || !permalink || !previewPassword || !directusUrl) {
+  const { homepageData, homepageHeaderData, currentIssue, permalink, previewPassword, directusUrl, navData } = data
+  if (!homepageData || !homepageHeaderData || !currentIssue || !permalink || !previewPassword || !directusUrl) {
     return notFound()
   }
 
   const homepagePreviewProps = {
     homepageData,
-    banners,
+    homepageHeaderData,
     currentIssue,
     permalink,
     directusUrl,
@@ -80,8 +80,8 @@ async function getData() {
     return notFound()
   }
 
-  const banners = homepageData.banners
-  if (!banners) {
+  const homepageHeaderData = await getHomepageHeaderData()
+  if (!homepageHeaderData || !homepageHeaderData.banners) {
     return notFound()
   }
 
@@ -95,7 +95,7 @@ async function getData() {
   return {
     navData,
     homepageData,
-    banners,
+    homepageHeaderData,
     currentIssue,
     permalink,
     previewPassword,
