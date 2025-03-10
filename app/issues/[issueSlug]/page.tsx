@@ -15,7 +15,7 @@ export const revalidate = 3600 // revalidate every hour
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<IssueParams> }): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data?.thisIssueData) {
@@ -45,7 +45,7 @@ export async function generateMetadata(props: { params: Promise<IssueParams> }):
 
 // Main Page Component
 export default async function Issue(props: { params: Promise<IssueParams> }) {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data) {
@@ -84,8 +84,6 @@ async function getData(params: IssueParams): Promise<IssuePageProps | undefined>
       type: PageType.Issue,
     })
 
-    const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${issueSlug}/`
-
     return {
       navData,
       thisIssueData,
@@ -93,7 +91,6 @@ async function getData(params: IssueParams): Promise<IssuePageProps | undefined>
       tributesData,
       allIssues,
       permalink,
-      previewURL,
       currentSection: null,
     }
   } catch (error) {
