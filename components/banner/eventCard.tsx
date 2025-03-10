@@ -4,11 +4,11 @@ import Link from "next/link"
 import parse from "html-react-parser"
 import { Suspense } from "react"
 import Image from "next/image"
-import { Events, HomepageBanners } from "@/lib/types"
+import { Events, Homepage, HomepageBanners } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 
 interface NewSocialEnvironmentProps {
-  banner: HomepageBanners
+  banner: Homepage
 }
 
 // Loading Skeleton Component

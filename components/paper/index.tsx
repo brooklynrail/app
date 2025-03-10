@@ -19,7 +19,7 @@ export interface PaperProps {
   hidePopup?: boolean
   navData: Homepage
   currentIssue?: Issues
-  homepageHeaderData?: HomepageBanners[]
+  homepageHeaderData?: Homepage
   children: React.ReactNode
   type?: PaperType
   previewURL?: string
@@ -52,7 +52,7 @@ const Paper = (props: PaperProps) => {
               <PreviewHeader previewURL={previewURL} />
               {type === PaperType.Homepage && (
                 <>
-                  <Header type={type} currentIssue={currentIssue} homepageData={homepageData} />
+                  <Header type={type} currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
                   {homepageHeaderData && isHomepage && currentIssue && (
                     <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
                   )}
@@ -62,7 +62,11 @@ const Paper = (props: PaperProps) => {
             </>
           ) : (
             <>
-              <Header type={type ? type : PaperType.Default} currentIssue={currentIssue} homepageData={homepageData} />
+              <Header
+                type={type ? type : PaperType.Default}
+                currentIssue={currentIssue}
+                homepageHeaderData={homepageHeaderData}
+              />
               {homepageHeaderData && isHomepage && currentIssue && (
                 <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
               )}

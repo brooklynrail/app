@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { Homepage, Issues } from "@/lib/types"
+import { Homepage, HomepageBanners, Issues } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { PaperType } from "../paper"
 import { useTheme } from "../theme"
@@ -17,14 +17,17 @@ export interface HeaderProps {
   type: PaperType
   currentIssue?: Issues
   homepageData?: Homepage
+  homepageHeaderData?: Homepage
 }
 
 const Header = (props: HeaderProps) => {
-  const { title, type, currentIssue, homepageData } = props
+  const { title, type, currentIssue, homepageData, homepageHeaderData } = props
 
   switch (type) {
     case PaperType.Homepage:
-      return <HeaderHomepage title={title} type={type} currentIssue={currentIssue} homepageData={homepageData} />
+      return (
+        <HeaderHomepage title={title} type={type} currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
+      )
     default:
       return <HeaderDefault title={title} type={type} />
   }
@@ -43,13 +46,13 @@ const removeLocalStorageItem = (key: string) => {
 }
 
 const HeaderHomepage = (props: HeaderProps) => {
-  const { title, type, homepageData } = props
+  const { title, type, homepageHeaderData } = props
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPaused, setIsPaused] = useState(false)
   const { theme } = useTheme()
   const subheadFill = theme === "dark" ? "fill-white" : "fill-white"
-  const videoCovers = homepageData && homepageData.video_covers
-  const videoCoversStills = homepageData && homepageData.video_covers_stills
+  const videoCovers = homepageHeaderData && homepageHeaderData.video_covers
+  const videoCoversStills = homepageHeaderData && homepageHeaderData.video_covers_stills
 
   useEffect(() => {
     // Check if the localStorage item is already set for video pause

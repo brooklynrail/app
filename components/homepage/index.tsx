@@ -2,7 +2,6 @@
 import { HomePageProps } from "@/app/page"
 import { useEffect } from "react"
 import { Articles, HomepageCollections } from "@/lib/types"
-import FeaturedBanner from "../banner"
 import CollectionRailCommunity from "../collections/railCommunity"
 import CollectionTileAds from "../collections/tileAds"
 import CollectionTribute from "../collections/tribute"
