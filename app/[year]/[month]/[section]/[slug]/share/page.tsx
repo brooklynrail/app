@@ -10,7 +10,7 @@ interface ArticleParams {
 }
 
 interface SharePageProps {
-  params: ArticleParams
+  params: Promise<ArticleParams>
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -28,7 +28,8 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function SharePage({ params }: SharePageProps) {
+export default async function SharePage(props: SharePageProps) {
+  const params = await props.params;
   if (!params.slug) {
     return notFound()
   }

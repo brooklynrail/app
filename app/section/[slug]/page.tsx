@@ -15,7 +15,8 @@ interface SectionParams {
 export const revalidate = 3600 // revalidate every hour
 
 // Metadata Generation
-export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<SectionParams> }): Promise<Metadata> {
+  const params = await props.params;
   const data = await getData(params)
 
   if (!data?.sectionData) {
@@ -48,7 +49,8 @@ export async function generateMetadata({ params }: { params: SectionParams }): P
 }
 
 // Main Page Component
-export default async function SectionPage({ params }: { params: SectionParams }) {
+export default async function SectionPage(props: { params: Promise<SectionParams> }) {
+  const params = await props.params;
   const data = await getData(params)
 
   if (!data?.sectionData) {

@@ -16,7 +16,8 @@ interface PreviewParams {
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
-export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<PreviewParams> }): Promise<Metadata> {
+  const params = await props.params;
   const data = await getData(params)
 
   if (!data?.exhibitionData) {
@@ -52,7 +53,8 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
   }
 }
 
-export default async function ExhibitionPreviewPage({ params }: { params: PreviewParams }) {
+export default async function ExhibitionPreviewPage(props: { params: Promise<PreviewParams> }) {
+  const params = await props.params;
   const isEnabled = await draftMode()
 
   // Verify draft mode is enabled

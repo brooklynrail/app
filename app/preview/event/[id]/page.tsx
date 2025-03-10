@@ -18,7 +18,8 @@ export const dynamic = "force-dynamic"
 export const revalidate = 0
 
 // Metadata Generation
-export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<PreviewParams> }): Promise<Metadata> {
+  const params = await props.params;
   const data = await getData(params)
 
   if (!data?.eventData) {
@@ -55,7 +56,8 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
 }
 
 // Main Page Component
-export default async function EventPreviewPage({ params }: { params: PreviewParams }) {
+export default async function EventPreviewPage(props: { params: Promise<PreviewParams> }) {
+  const params = await props.params;
   const isEnabled = await draftMode()
 
   // Verify draft mode is enabled

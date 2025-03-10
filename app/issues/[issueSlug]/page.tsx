@@ -14,7 +14,8 @@ interface IssueParams {
 export const revalidate = 3600 // revalidate every hour
 
 // Metadata Generation
-export async function generateMetadata({ params }: { params: IssueParams }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<IssueParams> }): Promise<Metadata> {
+  const params = await props.params;
   const data = await getData(params)
 
   if (!data?.thisIssueData) {
@@ -43,7 +44,8 @@ export async function generateMetadata({ params }: { params: IssueParams }): Pro
 }
 
 // Main Page Component
-export default async function Issue({ params }: { params: IssueParams }) {
+export default async function Issue(props: { params: Promise<IssueParams> }) {
+  const params = await props.params;
   const data = await getData(params)
 
   if (!data) {

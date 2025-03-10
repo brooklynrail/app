@@ -16,8 +16,8 @@ interface ArticleParams {
   slug: string
 }
 
-export async function generateMetadata(props: { params: ArticleParams }): Promise<Metadata> {
-  const data = await getData({ params: props.params })
+export async function generateMetadata(props: { params: Promise<ArticleParams> }): Promise<Metadata> {
+  const data = await getData({ params: (await props.params) })
 
   if (!data.props.articleData || !data.props.currentSection || !data.props.permalink) {
     return {}
@@ -142,8 +142,8 @@ async function getData({ params }: { params: ArticleParams }) {
   }
 }
 
-export default async function ArticlePageController(props: { params: ArticleParams }) {
-  const data = await getData({ params: props.params })
+export default async function ArticlePageController(props: { params: Promise<ArticleParams> }) {
+  const data = await getData({ params: (await props.params) })
 
   if (!data.props.articleData) {
     return notFound()

@@ -15,7 +15,8 @@ interface TributeParams {
 export const revalidate = 3600 // revalidate every hour
 
 // Metadata Generation
-export async function generateMetadata({ params }: { params: TributeParams }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<TributeParams> }): Promise<Metadata> {
+  const params = await props.params;
   const data = await getData(params)
 
   if (!data?.thisTributeData) {
@@ -44,7 +45,8 @@ export async function generateMetadata({ params }: { params: TributeParams }): P
 }
 
 // Main Page Component
-export default async function TributeArticle({ params }: { params: TributeParams }) {
+export default async function TributeArticle(props: { params: Promise<TributeParams> }) {
+  const params = await props.params;
   const data = await getData(params)
 
   if (!data) {

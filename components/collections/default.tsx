@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, use } from "react";
 import { Articles, Collections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import FeaturedImage from "../featuredImage"
@@ -9,6 +9,7 @@ import Excerpt from "./promos/excerpt"
 import Title from "./promos/title"
 
 const CollectionDefault = (collection: Collections) => {
+  const id = use(collection.id);
   const { section } = collection
   if (!section) {
     return null
@@ -22,9 +23,9 @@ const CollectionDefault = (collection: Collections) => {
   })
 
   return (
-    <div key={collection.id} className={`collection theme theme-${section.slug}`}>
+    <div key={id} className={`collection theme theme-${section.slug}`}>
       <CollectionHead
-        title={collection.title}
+        title={title}
         permalink={section.featured ? sectionPermalink : null}
         description={section.description}
       />
@@ -32,7 +33,7 @@ const CollectionDefault = (collection: Collections) => {
         <Promos articles={articles} />
       </div>
     </div>
-  )
+  );
 }
 
 interface PromosProps {
