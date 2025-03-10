@@ -36,7 +36,7 @@ export async function GET(request: Request) {
         revalidateTag("ads")
         const adTypes = ["banner", "tile", "in_article_standard"]
         adTypes.forEach((type) => {
-          revalidatePath(`/api/ads/?type=${type}`)
+          revalidatePath(`${process.env.NEXT_PUBLIC_API_URL}/ads/?type=${type}`)
         })
         return new Response(`Revalidated Ads APIs`, { status: 200 })
       }
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
           return new Response("id is required", { status: 400 })
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/article/id/${id}`)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/article/id/${id}`)
         if (!response.ok) {
           throw new Error("Failed to fetch article")
         }
@@ -70,7 +70,7 @@ export async function GET(request: Request) {
           return new Response("id is required", { status: 400 })
         }
 
-        const contributorResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contributor/id/${id}`, {
+        const contributorResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contributor/id/${id}`, {
           next: { revalidate: 3600, tags: ["contributors"] },
         })
         if (!contributorResponse.ok) {

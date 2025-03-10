@@ -33,7 +33,7 @@ export default async function SharePage({ params }: SharePageProps) {
     return notFound()
   }
 
-  const ogImage = `${process.env.NEXT_PUBLIC_BASE_URL}/api/og/?type=article&slug=${params.slug}`
+  const ogImage = `${process.env.NEXT_PUBLIC_API_URL}/og/?type=article&slug=${params.slug}`
 
   return (
     <div className="w-full h-full min-h-screen bg-zinc-800 p-6">

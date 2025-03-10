@@ -15,7 +15,7 @@ const Refresh = () => {
     const parsedUrl = new URL(url, window.location.origin)
     const path = parsedUrl.pathname + parsedUrl.search
 
-    const pathAPIUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh/path?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&path=${path}`
+    const pathAPIUrl = `${process.env.NEXT_PUBLIC_API_URL}/refresh/path?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&path=${path}`
 
     try {
       const response = await fetch(pathAPIUrl, {
@@ -52,7 +52,7 @@ const Refresh = () => {
 
     setIsLoading(true)
     setMessage("Revalidation started for all sections")
-    const pageAPIUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&type=${RevalidateType.Sections}`
+    const pageAPIUrl = `${process.env.NEXT_PUBLIC_API_URL}/refresh?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&type=${RevalidateType.Sections}`
 
     try {
       const response = await fetch(pageAPIUrl, {

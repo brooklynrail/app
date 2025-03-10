@@ -23,7 +23,7 @@ const CurrentNavigation = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const navigationResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/navigation/`, {
+        const navigationResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/navigation/`, {
           next: { revalidate: 3600, tags: ["homepage"] },
         })
         const navigationData = await navigationResponse.json()

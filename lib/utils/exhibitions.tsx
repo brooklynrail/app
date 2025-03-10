@@ -1,7 +1,6 @@
 import { readItems } from "@directus/sdk"
 import directus from "../directus"
 import { Exhibitions } from "../types"
-import { getBaseUrl } from "../utils"
 
 export const getExhibition = async (slug: string) => {
   const exhibition = await directus.request(
@@ -98,13 +97,11 @@ export const getExhibition = async (slug: string) => {
   return exhibition[0] as Exhibitions
 }
 
-const baseUrl = getBaseUrl()
-
 export const getAllExhibitions = async (): Promise<Exhibitions[]> => {
-  console.log("getAllExhibitions baseUrl", baseUrl)
+  console.log("getAllExhibitions baseUrl", process.env.NEXT_PUBLIC_API_URL)
   try {
     // Remove trailing slash to prevent routing issues
-    const url = `${baseUrl}/api/exhibitions`
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/exhibitions`
 
     const res = await fetch(url, {
       method: "GET",

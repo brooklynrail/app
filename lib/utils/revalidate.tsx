@@ -21,7 +21,7 @@ async function revalidatePages(paths: string[]) {
   try {
     await Promise.all(
       paths.map(async (path) => {
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/revalidate?path=${path}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/revalidate?path=${path}`, {
           method: "POST",
           headers: {
             contentType: "application/json",

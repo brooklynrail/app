@@ -20,7 +20,9 @@ export const useArticleState = (initialArticle: Articles, articles: Articles[]) 
       }
 
       setIsNavigating(true) // Set navigation flag
-      const response = await fetch(`/api/article/${slug}`, { next: { revalidate: 3600, tags: ["articles"] } })
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/article/${slug}`, {
+        next: { revalidate: 3600, tags: ["articles"] },
+      })
       if (!response.ok) {
         throw new Error("Failed to fetch article")
       }

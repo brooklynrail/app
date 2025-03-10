@@ -5,11 +5,6 @@ import { stripHtml } from "string-strip-html"
 import directus from "./directus"
 import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
 
-export const getBaseUrl = () => {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : `https://localhost:3000`
-  return baseURL
-}
-
 // Used in
 // - Issue Select dropdown
 // - Archive page

@@ -48,7 +48,7 @@ export const LoadingSkeleton = () => {
 
 // Data fetching component
 const EventsData = async () => {
-  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
+  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/upcoming/`, {
     next: { revalidate: 3600, tags: ["events"] },
   }).then((res) => {
     if (!res.ok) {
@@ -62,7 +62,7 @@ const EventsData = async () => {
   let featuredEvents = []
   if (currentEventsArray.length < 4) {
     const timestamp = new Date().getTime()
-    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
+    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/featured?t=${timestamp}`, {
       next: { revalidate: 3600, tags: ["events"] },
     }).then((res) => {
       if (!res.ok) {
