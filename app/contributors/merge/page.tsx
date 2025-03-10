@@ -1,5 +1,5 @@
 import ProtectedContributorsMerge from "@/components/contributors/merge"
-import Metadata from "next"
+import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getNavData } from "@/lib/utils/homepage"
 import { getPreviewPassword } from "@/lib/utils/preview"

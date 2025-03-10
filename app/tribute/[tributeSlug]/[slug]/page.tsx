@@ -1,5 +1,5 @@
 import TributePage from "@/components/tributePage"
-import Metadata from "next"
+import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { PageType, getArticle, getOGImage, getPermalink, getTributeData } from "@/lib/utils"

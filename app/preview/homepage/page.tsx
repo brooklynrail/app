@@ -1,5 +1,5 @@
 import HomepagePreview from "@/components/preview/homepage"
-import Metadata from "next"
+import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { Homepage, HomepageBanners, Issues } from "@/lib/types"

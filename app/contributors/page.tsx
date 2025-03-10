@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import { Contributors } from "@/lib/types"
 import { getCurrentIssueData, getPermalink, PageType } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
-import Metadata from "next"
+import { Metadata } from "next"
 import ContributorsPage from "@/components/contributors"
 import { getAllContributors } from "@/lib/utils/people"
 

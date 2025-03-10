@@ -3,7 +3,7 @@ import { getPermalink, PageType } from "@/lib/utils"
 import { getArticlesBySection, getSectionData } from "@/lib/utils/sections"
 import Section from "@/components/section"
 import { getNavData } from "@/lib/utils/homepage"
-import Metadata from "next"
+import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
 
 export const revalidate = 60 * 60 // revalidate at most once an hour

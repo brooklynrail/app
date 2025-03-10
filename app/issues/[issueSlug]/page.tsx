@@ -1,5 +1,5 @@
 import IssuePage from "@/components/issuePage"
-import Metadata from "next"
+import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { Homepage, Issues, Sections, Tributes } from "@/lib/types"
