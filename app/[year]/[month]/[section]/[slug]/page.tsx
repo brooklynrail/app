@@ -1,7 +1,7 @@
 import { AddRedirect } from "@/app/actions/redirect"
 import Article from "@/components/article"
 import { checkYearMonthSection } from "@/lib/utils/articles"
-import { Metadata } from "next"
+import Metadata from "next"
 import { revalidatePath } from "next/cache"
 import { notFound, redirect } from "next/navigation"
 import { stripHtml } from "string-strip-html"

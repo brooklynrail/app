@@ -1,4 +1,4 @@
-import { Metadata } from "next"
+import Metadata from "next"
 import Refresh from "@/components/refresh"
 
 export default function RefreshController() {

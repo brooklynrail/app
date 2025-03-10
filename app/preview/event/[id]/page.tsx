@@ -1,7 +1,7 @@
 import { stripHtml } from "string-strip-html"
 import { PageType, getPermalink } from "@/lib/utils"
 import { Events, EventsTypes, Homepage } from "@/lib/types"
-import { Metadata } from "next"
+import Metadata from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { getEventTypes } from "@/lib/utils/events"

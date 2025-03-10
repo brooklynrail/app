@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { getAllIssues, getPermalink, PageType } from "@/lib/utils"
 import ArchivePage from "@/components/archive"
-import { Metadata } from "next"
+import Metadata from "next"
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()

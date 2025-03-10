@@ -1,5 +1,5 @@
 import ContributorPage from "@/components/contributor"
-import { Metadata } from "next"
+import Metadata from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { getPermalink, PageType } from "@/lib/utils"

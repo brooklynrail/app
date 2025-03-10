@@ -4,7 +4,7 @@ import { getNavData } from "@/lib/utils/homepage"
 import { getExhibition } from "@/lib/utils/exhibitions"
 import ExhibitionPage from "@/components/exhibition"
 import { Exhibitions, Homepage } from "@/lib/types"
-import { Metadata } from "next"
+import Metadata from "next"
 import { stripHtml } from "string-strip-html"
 
 export interface ExhibitionProps {

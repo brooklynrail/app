@@ -1,5 +1,5 @@
 import ExhibitionPreview from "@/components/preview/exhibition"
-import { Metadata } from "next"
+import Metadata from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
