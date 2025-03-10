@@ -1,5 +1,5 @@
-import styles from "./articleBar.module.scss"
 import Link from "next/link"
+import styles from "./articleBar.module.scss"
 interface ArticleBarProps {
   goToNextArticle: () => void
   goToPrevArticle: () => void
@@ -7,7 +7,7 @@ interface ArticleBarProps {
 }
 
 const ArticleBar = (props: ArticleBarProps) => {
-  const { goToNextArticle, goToPrevArticle, collectionPermalink } = props
+  const { goToNextArticle, goToPrevArticle } = props
 
   const marqueeText = `Get notified when our next issue drops`
   const renderMarqueeItems = () => {
