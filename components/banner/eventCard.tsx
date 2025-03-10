@@ -1,14 +1,14 @@
 "use client"
-import style from "./banner.module.scss"
-import Link from "next/link"
-import parse from "html-react-parser"
-import { Suspense } from "react"
-import Image from "next/image"
-import { Events, Homepage, HomepageBanners } from "@/lib/types"
+import { Events, HomepageBanners } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import parse from "html-react-parser"
+import Image from "next/image"
+import Link from "next/link"
+import { Suspense, useEffect, useState } from "react"
+import style from "./banner.module.scss"
 
 interface NewSocialEnvironmentProps {
-  banner: Homepage
+  banner: HomepageBanners
 }
 
 // Loading Skeleton Component
@@ -46,37 +46,46 @@ export const LoadingSkeleton = () => {
   )
 }
 
-// Data fetching component
-const EventsData = async () => {
-  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
-    next: { revalidate: 3600, tags: ["events"] },
-  }).then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch current events")
-    return res.json()
+// Change to a regular component that uses useEffect/useState for data fetching
+const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
+  const [data, setData] = useState<{ currentEvents: Events[]; featuredEvents: Events[] }>({
+    currentEvents: [],
+    featuredEvents: [],
   })
 
-  const currentEventsArray = Array.isArray(currentEvents) ? currentEvents : []
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const currentEventsRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
+          next: { revalidate: 3600, tags: ["events"] },
+        })
+        const currentEvents = await currentEventsRes.json()
+        const currentEventsArray = Array.isArray(currentEvents) ? currentEvents : []
 
-  let featuredEvents = []
-  if (currentEventsArray.length < 4) {
-    const timestamp = new Date().getTime()
-    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
-      next: { revalidate: 3600, tags: ["events"] },
-    }).then((res) => {
-      if (!res.ok) throw new Error("Failed to fetch featured events")
-      return res.json()
-    })
-  }
+        let featuredEvents = []
+        if (currentEventsArray.length < 4) {
+          const timestamp = new Date().getTime()
+          const featuredEventsRes = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`,
+            {
+              next: { revalidate: 3600, tags: ["events"] },
+            },
+          )
+          featuredEvents = await featuredEventsRes.json()
+        }
 
-  return { currentEvents: currentEventsArray, featuredEvents }
-}
+        setData({ currentEvents: currentEventsArray, featuredEvents })
+      } catch (error) {
+        console.error("Error fetching events:", error)
+      }
+    }
 
-// Content Component
-const EventsContent = async ({ banner }: { banner: HomepageBanners }) => {
+    void fetchData()
+  }, [])
+
   const { collections_id } = banner
   if (!collections_id) return null
 
-  const { currentEvents, featuredEvents } = await EventsData()
   const bannerTitle = collections_id.title
   const bannerDescription = collections_id.description
 
@@ -91,10 +100,10 @@ const EventsContent = async ({ banner }: { banner: HomepageBanners }) => {
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {currentEvents.map((event: Events) => (
+            {data.currentEvents.map((event: Events) => (
               <EventCard key={event.id} event={event} />
             ))}
-            {featuredEvents.map((event: Events) => (
+            {data.featuredEvents.map((event: Events) => (
               <FeaturedEventCard key={event.id} event={event} />
             ))}
             <AllEventsCard type="past" />
