@@ -43,7 +43,12 @@ export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) =
 
 export const getUpcomingEvents = cache(async () => {
   try {
-    const res = await fetch(`${baseUrl}/api/events`)
+    const res = await fetch(`${baseUrl}/api/events`, {
+      next: {
+        revalidate: 3600,
+        tags: ["events"],
+      },
+    })
     if (!res.ok) {
       const text = await res.text()
       console.error("API Response:", text)

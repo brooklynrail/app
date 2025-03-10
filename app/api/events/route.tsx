@@ -1,3 +1,5 @@
+import { revalidateTag } from "next/cache"
+
 export const revalidate = 3600 // 1 hour cache
 
 export async function GET(request: Request) {
@@ -31,14 +33,27 @@ export async function GET(request: Request) {
     if (!upcomingEvents) {
       return new Response("Invalid event data", { status: 401 })
     }
-    // Set cache headers for 30 minutes
+
+    // Revalidate the events tag
+    revalidateTag("events")
+
+    // Set cache headers with stale-while-revalidate
     return Response.json(upcomingEvents, {
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": `s-maxage=${revalidate}, stale-while-revalidate=${revalidate * 2}`,
       },
     })
   } catch (error) {
     console.error("Error fetching upcoming events:", error)
-    return Response.json({ error: error }, { status: 500 })
+    return Response.json(
+      { error: error },
+      {
+        status: 500,
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+        },
+      },
+    )
   }
 }
