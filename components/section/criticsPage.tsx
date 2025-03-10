@@ -1,15 +1,15 @@
 "use client"
-import Link from "next/link"
-import { SectionProps } from "."
 import { Articles } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import { groupByIssue } from "@/lib/utils/sections"
+import Link from "next/link"
+import { SectionProps } from "."
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Excerpt from "../collections/promos/excerpt"
 import Kicker from "../collections/promos/kicker"
 import Title from "../collections/promos/title"
 import FeaturedImage from "../featuredImage"
 import Frame from "../frames/frame"
-import { groupByIssue } from "@/lib/utils/sections"
 
 const SectionCriticsPage = (props: SectionProps) => {
   const { articlesData } = props
@@ -130,9 +130,9 @@ interface PromoProps {
 }
 
 const Promos = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, featured_artwork, featured_image } = article
-    const artwork = featured_artwork ? featured_artwork : featured_image
+  const articles = props.articles.map((article) => {
+    const { issue, section } = article
+
     const permalink = getPermalink({
       year: issue.year,
       month: issue.month,

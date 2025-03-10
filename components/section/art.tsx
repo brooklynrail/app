@@ -1,7 +1,7 @@
 "use client"
-import { SectionProps } from "."
 import { Articles } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import { SectionProps } from "."
 import Bylines, { BylineType } from "../collections/promos/bylines"
 import Excerpt from "../collections/promos/excerpt"
 import Kicker from "../collections/promos/kicker"
@@ -47,7 +47,7 @@ interface PromoProps {
 
 const PromosArt = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, featured_artwork, featured_image, kicker } = article
+    const { issue, section, title, featured_artwork, featured_image } = article
     const artwork = featured_artwork ? featured_artwork : featured_image
     const permalink = getPermalink({
       year: issue.year,

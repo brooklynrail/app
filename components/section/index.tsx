@@ -1,13 +1,13 @@
 "use client"
-import { Suspense, useEffect, useState } from "react"
 import { Articles, Homepage, Sections } from "@/lib/types"
+import { Suspense, useEffect, useState } from "react"
+import { usePageContext } from "../pageContext"
 import Paper from "../paper"
 import SectionArt from "./art"
 import SectionCriticsPage from "./criticsPage"
 import SectionDefault, { LayoutMode } from "./default"
 import SectionHead from "./head"
 import SectionPoetry from "./poetry"
-import { usePageContext } from "../pageContext"
 
 interface NavProps {
   navData: Homepage

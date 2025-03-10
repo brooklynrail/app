@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react"
-import { usePopup } from "../popupProvider"
-import NewsLetterSignUpForm from "../newsletterForm"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { usePopup } from "../popupProvider"
 
 const PopupDonate = () => {
   const { showPopup, popupType, setShowPopup } = usePopup()
