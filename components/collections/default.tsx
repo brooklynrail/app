@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef, useState, use } from "react";
+import { useEffect, useRef, useState, use } from "react"
 import { Articles, Collections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import FeaturedImage from "../featuredImage"
@@ -9,8 +9,8 @@ import Excerpt from "./promos/excerpt"
 import Title from "./promos/title"
 
 const CollectionDefault = (collection: Collections) => {
-  const id = use(collection.id);
-  const { section } = collection
+  const id = collection.id
+  const { section, title } = collection
   if (!section) {
     return null
   }
@@ -33,7 +33,7 @@ const CollectionDefault = (collection: Collections) => {
         <Promos articles={articles} />
       </div>
     </div>
-  );
+  )
 }
 
 interface PromosProps {
