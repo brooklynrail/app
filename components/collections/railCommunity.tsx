@@ -20,7 +20,7 @@ const CollectionRailCommunity = (collection: Collections) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const orgsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/organizations/?onlySponsors=true`, {
+        const orgsResponse = await fetch(`/api/organizations/?onlySponsors=true`, {
           next: { revalidate: 36000, tags: ["organizations"] },
         })
         const orgs = await orgsResponse.json()

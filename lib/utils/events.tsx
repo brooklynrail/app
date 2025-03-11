@@ -152,7 +152,7 @@ export async function getPastEvents(props: PastEventsParams) {
  *
  */
 export async function fetchEvents() {
-  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/upcoming/`, {
+  const currentEvents = await fetch(`/api/events/upcoming/`, {
     next: { revalidate: 3600, tags: ["events"] },
   }).then((res) => {
     if (!res.ok) {
