@@ -1,43 +1,44 @@
 import HomePage from "@/components/homepage"
 import { notFound } from "next/navigation"
-
+import { Homepage, Issues } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
-import { HomePageProps } from "@/lib/railTypes"
+
+export interface HomePageProps {
+  navData: Homepage
+  currentIssue: Issues
+  collectionsData: Homepage
+  homepageHeaderData: Homepage
+  permalink: string
+  errorCode?: number
+  errorMessage?: string
+  previewURL?: string
+}
 
 export default async function HomepagePage() {
   const data = await getData()
-  if (!data) {
-    return notFound()
-  }
 
   return <HomePage {...data} />
 }
 
-async function getData(): Promise<HomePageProps | undefined> {
-  // Fetch all data in parallel
-  const [currentIssue, navData, collectionsData, homepageHeaderData] = await Promise.all([
-    getCurrentIssueData(),
-    getNavData(),
-    getHomepageCollectionData(),
-    getHomepageHeaderData(),
-  ])
-  if (!currentIssue || !navData || !collectionsData || !homepageHeaderData) {
+async function getData() {
+  const currentIssue = await getCurrentIssueData()
+  if (!currentIssue) {
     return notFound()
   }
 
-  if (!navData?.collections) {
-    console.error("Missing or invalid navData")
+  const navData = await getNavData()
+  if (!navData) {
     return notFound()
   }
 
-  if (!collectionsData?.collections) {
-    console.error("Missing or invalid collectionsData")
+  const collectionsData = await getHomepageCollectionData()
+  if (!collectionsData) {
     return notFound()
   }
 
-  if (!homepageHeaderData?.banners || !Array.isArray(homepageHeaderData.banners)) {
-    console.error("Missing or invalid homepageHeaderData")
+  const homepageHeaderData = await getHomepageHeaderData()
+  if (!homepageHeaderData || !homepageHeaderData.banners) {
     return notFound()
   }
 
