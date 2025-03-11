@@ -45,7 +45,8 @@ export async function GET(request: Request) {
     // Set cache headers for 30 minutes
     return Response.json(upcomingEvents, {
       headers: {
-        ContentType: "application/json",
+        "Content-Type": "application/json",
+        "Cache-Control": `s-maxage=${revalidate}, stale-while-revalidate=${revalidate * 2}`,
       },
     })
   } catch (error) {
