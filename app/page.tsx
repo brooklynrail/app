@@ -1,44 +1,49 @@
 import HomePage from "@/components/homepage"
 import { notFound } from "next/navigation"
-import { Homepage, Issues } from "@/lib/types"
+
 import { getPermalink, PageType } from "@/lib/utils"
 import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
-
-export interface HomePageProps {
-  navData: Homepage
-  currentIssue: Issues
-  collectionsData: Homepage
-  homepageHeaderData: Homepage
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  previewURL?: string
-}
+import { HomePageProps } from "@/lib/railTypes"
 
 export default async function HomepagePage() {
   const data = await getData()
+  if (!data) {
+    return notFound()
+  }
 
   return <HomePage {...data} />
 }
 
-async function getData() {
-  const currentIssue = await getCurrentIssueData()
-  if (!currentIssue) {
+async function getData(): Promise<HomePageProps | undefined> {
+  // Fetch all data in parallel
+  const [currentIssue, navData, collectionsData, homepageHeaderData] = await Promise.all([
+    getCurrentIssueData(),
+    getNavData(),
+    getHomepageCollectionData(),
+    getHomepageHeaderData(),
+  ])
+  if (!currentIssue || !navData || !collectionsData || !homepageHeaderData) {
     return notFound()
   }
 
-  const navData = await getNavData()
-  if (!navData) {
+  // Validate all required data and their nested properties
+  if (!currentIssue?.articles) {
+    console.error("Missing or invalid currentIssue data")
     return notFound()
   }
 
-  const collectionsData = await getHomepageCollectionData()
-  if (!collectionsData) {
+  if (!navData?.collections) {
+    console.error("Missing or invalid navData")
     return notFound()
   }
 
-  const homepageHeaderData = await getHomepageHeaderData()
-  if (!homepageHeaderData || !homepageHeaderData.banners) {
+  if (!collectionsData?.collections) {
+    console.error("Missing or invalid collectionsData")
+    return notFound()
+  }
+
+  if (!homepageHeaderData?.banners || !Array.isArray(homepageHeaderData.banners)) {
+    console.error("Missing or invalid homepageHeaderData")
     return notFound()
   }
 
