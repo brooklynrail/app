@@ -11,7 +11,7 @@ const CurrentEvents = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const upcomingEventsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/upcoming/`, {
+        const upcomingEventsResponse = await fetch(`/api/events/upcoming/`, {
           next: { revalidate: 3600, tags: ["events"] },
         })
         const upcomingEvents = await upcomingEventsResponse.json()

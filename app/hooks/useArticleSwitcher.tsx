@@ -35,7 +35,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
     const preloadArticle = async (slug: string) => {
       if (slug && !preloadedArticles[slug]) {
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/article/${slug}`, {
+          const response = await fetch(`/api/article/${slug}`, {
             next: { tags: ["articles"] },
           })
           if (response.ok) {
@@ -93,7 +93,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
           const articleData = preloadedArticles[slug] || currentArticle
 
           if (!articleData || articleData.slug !== slug) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/article/${slug}`, {
+            const response = await fetch(`/api/article/${slug}`, {
               next: { tags: ["articles"] },
             })
             if (response.ok) {
