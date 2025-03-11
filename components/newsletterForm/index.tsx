@@ -9,10 +9,10 @@ export default function NewsLetterSignUpForm() {
       return null
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/subscribe`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/subscribe`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        ContentType: "application/json",
       },
       body: JSON.stringify({
         email_address: inputRef.current.value,

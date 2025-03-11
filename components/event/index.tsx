@@ -1,6 +1,6 @@
 "use client"
 import Paper from "../paper"
-import { EventProps } from "@/app/event/[year]/[month]/[day]/[slug]/page"
+import { EventProps } from "@/lib/railTypes"
 import { EventsPeople, EventsPeoplePoets } from "@/lib/types"
 import Register from "./register"
 import EventPageBody from "./eventPageBody"

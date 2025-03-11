@@ -4,7 +4,7 @@ import { getPermalink, PageType } from "@/lib/utils"
 import FeaturedImage from "../featuredImage"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
-import Title, { TitleType } from "./promos/title"
+import Title from "./promos/title"
 
 const CollectionBooks = (collection: Collections) => {
   const { section } = collection
@@ -35,7 +35,7 @@ interface PromoProps {
 
 export const PromosBooks = (props: PromoProps) => {
   const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, excerpt, featured_image, kicker } = article
+    const { issue, section, title, featured_image } = article
 
     const permalink = getPermalink({
       year: issue.year,

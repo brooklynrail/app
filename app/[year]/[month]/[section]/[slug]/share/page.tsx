@@ -9,18 +9,8 @@ interface ArticleParams {
   slug: string
 }
 
-export default async function ArticlePageController({ params }: { params: ArticleParams }) {
-  const ogImage = `${process.env.NEXT_PUBLIC_BASE_URL}/api/og/?type=article&slug=${params.slug}`
-
-  if (!ogImage) {
-    return notFound()
-  }
-
-  return (
-    <div className="w-full h-full min-h-screen bg-zinc-800 p-6">
-      <Image src={ogImage} alt={``} width="600" height="600" />
-    </div>
-  )
+interface SharePageProps {
+  params: Promise<ArticleParams>
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -36,4 +26,25 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     },
   }
+}
+
+export default async function SharePage(props: SharePageProps) {
+  const params = await props.params;
+  if (!params.slug) {
+    return notFound()
+  }
+
+  const ogImage = `${process.env.NEXT_PUBLIC_API_URL}/og/?type=article&slug=${params.slug}`
+
+  return (
+    <div className="w-full h-full min-h-screen bg-zinc-800 p-6">
+      <Image
+        src={ogImage}
+        alt="Article share preview"
+        width={600}
+        height={600}
+        priority // Add priority since this is the main content
+      />
+    </div>
+  )
 }

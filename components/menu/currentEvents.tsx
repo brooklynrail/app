@@ -11,7 +11,7 @@ const CurrentEvents = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const upcomingEventsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
+        const upcomingEventsResponse = await fetch(`/api/events/upcoming/`, {
           next: { revalidate: 3600, tags: ["events"] },
         })
         const upcomingEvents = await upcomingEventsResponse.json()
@@ -27,7 +27,7 @@ const CurrentEvents = () => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, []) // Empty dependency array to ensure the fetch only runs once
 
   if (loading || !currentEvents || currentEvents.length === 0) {

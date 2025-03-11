@@ -1,38 +1,35 @@
 import TributePreview from "@/components/preview/tribute"
-import { Metadata } from "next"
-import { draftMode } from "next/headers"
-import { notFound } from "next/navigation"
-import { stripHtml } from "string-strip-html"
-import { Articles, Homepage, Tributes } from "@/lib/types"
+import { TributePreviewProps } from "@/lib/railTypes"
 import { PageType, getPermalink } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
 import { getPreviewPassword, getPreviewTribute } from "@/lib/utils/preview"
+import { Metadata } from "next"
+import { draftMode } from "next/headers"
+import { notFound, redirect } from "next/navigation"
+import { stripHtml } from "string-strip-html"
 
-export interface TributePreviewProps {
-  navData: Homepage
-  tributeData: Tributes
-  articleData: Articles
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-  isEnabled: boolean
-  previewPassword: string
-  directusUrl: string
+interface PreviewParams {
+  id: string
 }
 
-export async function generateMetadata({ params }: { params: PreviewParams }): Promise<Metadata> {
-  const data = await getData({ params })
+// Force dynamic rendering, no caching
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
+// Metadata Generation
+export async function generateMetadata(props: { params: Promise<PreviewParams> }): Promise<Metadata> {
+  const params = await props.params;
+  const data = await getData(params)
+
+  if (!data?.tributeData) {
+    return {}
+  }
 
   const { title } = data.tributeData
-  const ogtitle = stripHtml(title).result
-  const ogdescription = ""
+  const ogtitle = `PREVIEW: ${stripHtml(title).result}`
 
   return {
-    title: `PREVIEW: ${ogtitle} `,
-    description: ogdescription,
-    alternates: {
-      canonical: `${data.permalink}`,
-    },
+    title: ogtitle,
     robots: {
       index: false,
       follow: false,
@@ -44,71 +41,74 @@ export async function generateMetadata({ params }: { params: PreviewParams }): P
       },
     },
     openGraph: {
-      title: `${ogtitle}`,
-      description: ogdescription,
+      title: ogtitle,
       url: data.permalink,
-      type: `website`,
+      type: "website",
     },
   }
 }
 
-export default async function TributePreviewPage({ params }: { params: PreviewParams }) {
-  const { isEnabled } = draftMode()
-  console.log("Draft mode enabled: ", isEnabled)
+// Main Page Component
+export default async function TributePreviewPage(props: { params: Promise<PreviewParams> }) {
+  const params = await props.params;
+  const isEnabled = await draftMode()
 
-  const data = await getData({ params })
-
-  const { tributeData, articleData, permalink, directusUrl, previewPassword, navData } = data
-  if (!permalink || !previewPassword || !directusUrl) {
-    return notFound()
+  // Verify draft mode is enabled
+  if (!isEnabled) {
+    redirect("/")
   }
 
-  const tributePreviewProps = {
-    navData,
-    tributeData,
-    articleData,
-    permalink,
-    directusUrl,
-    previewPassword,
-    isEnabled,
+  const data = await getData(params)
+
+  if (!data?.tributeData || !data.previewPassword) {
+    notFound()
   }
 
-  return <TributePreview {...tributePreviewProps} isEnabled={isEnabled} />
+  return <TributePreview {...data} />
 }
 
-interface PreviewParams {
-  id: string
-}
+// Data Fetching
+async function getData(params: PreviewParams): Promise<TributePreviewProps | undefined> {
+  try {
+    const id = String(params.id)
 
-async function getData({ params }: { params: PreviewParams }) {
-  const id = params.id
+    // Parallel fetch of initial data
+    const [navData, tributeData, previewPassword] = await Promise.all([
+      getNavData(),
+      getPreviewTribute(id),
+      getPreviewPassword(),
+    ])
 
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+    if (!navData || !tributeData || !previewPassword) {
+      return undefined
+    }
 
-  const tributeData = await getPreviewTribute(id)
-  if (!tributeData) {
-    return notFound()
-  }
+    const articleData = tributeData.articles[0]
+    if (!articleData) {
+      return undefined
+    }
 
-  const articleData = tributeData.articles[0]
+    const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+    if (!directusUrl) {
+      throw new Error("Missing DIRECTUS_URL environment variable")
+    }
 
-  const permalink = getPermalink({
-    tributeId: tributeData.id,
-    type: PageType.PreviewTribute,
-  })
+    const permalink = getPermalink({
+      tributeId: tributeData.id,
+      type: PageType.PreviewTribute,
+    })
 
-  const previewPassword = await getPreviewPassword()
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-
-  return {
-    navData,
-    tributeData,
-    articleData,
-    permalink,
-    previewPassword,
-    directusUrl,
+    return {
+      navData,
+      tributeData,
+      articleData,
+      permalink,
+      previewPassword,
+      directusUrl,
+      isEnabled: true,
+    }
+  } catch (error) {
+    console.error("Error fetching preview tribute data:", error)
+    return undefined
   }
 }

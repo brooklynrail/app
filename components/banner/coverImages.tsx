@@ -1,8 +1,8 @@
+import { Issues } from "@/lib/types"
+import { getPermalink, PageType } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { Issues } from "@/lib/types"
-import { getPermalink, PageType } from "@/lib/utils"
 import { usePopup } from "../popupProvider"
 
 interface CoverImagesProps {
@@ -105,7 +105,6 @@ const Covers = (props: CoversProps) => {
     }
     const zindex = covers.length * 1 - index * 1
 
-    const height = containerHeight
     const width = (containerHeight * cover.width) / cover.height
 
     // in order to caculate how far to space out the stack of cover images, we need to know

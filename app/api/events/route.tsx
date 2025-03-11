@@ -1,5 +1,3 @@
-import { revalidateTag } from "next/cache"
-
 export const revalidate = 3600 // 1 hour cache
 
 export async function GET(request: Request) {
@@ -33,9 +31,6 @@ export async function GET(request: Request) {
     if (!upcomingEvents) {
       return new Response("Invalid event data", { status: 401 })
     }
-
-    // Revalidate the events tag
-    revalidateTag("events")
 
     // Set cache headers with stale-while-revalidate
     return Response.json(upcomingEvents, {

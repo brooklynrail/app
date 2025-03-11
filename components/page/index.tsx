@@ -1,5 +1,5 @@
 "use client"
-import { PageProps } from "@/app/about/[slug]/page"
+import { AboutPageProps } from "@/lib/railTypes"
 import Paper from "../paper"
 import MapEmbed from "./map"
 import PageBody from "./pageBody"
@@ -7,7 +7,7 @@ import PageHead from "./pageHead"
 import PageNav from "./pageNav"
 import Quotes from "./quotes"
 
-const Page = (props: PageProps) => {
+const Page = (props: AboutPageProps) => {
   const { navData, allPagesData, pageData, quotes } = props
 
   return (

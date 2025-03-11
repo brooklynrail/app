@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Articles, Collections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import { useEffect, useRef, useState } from "react"
 import FeaturedImage from "../featuredImage"
 import Frame633 from "../frames/frame633"
 import FrameScrollable from "../frames/frameScrollable"
@@ -53,8 +53,8 @@ const CollectionDanceFilm = (collection: Collections) => {
 }
 
 const PromosMobile = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
-    const { issue, section, title, excerpt, featured_artwork, featured_image, kicker } = article
+  const articles = props.articles.map((article) => {
+    const { issue, section, title, featured_artwork, featured_image } = article
     const artwork = featured_artwork ? featured_artwork : featured_image
     const permalink = getPermalink({
       year: issue.year,

@@ -23,7 +23,7 @@ const CurrentNavigation = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const navigationResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/navigation/`, {
+        const navigationResponse = await fetch(`/api/navigation/`, {
           next: { revalidate: 3600, tags: ["homepage"] },
         })
         const navigationData = await navigationResponse.json()
@@ -38,10 +38,12 @@ const CurrentNavigation = () => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, []) // Empty dependency array to ensure the fetch only runs once
 
-  if (loading || !navigation) return <div>Loading...</div>
+  if (loading || !navigation) {
+    return <div>Loading...</div>
+  }
 
   const allNav = navigation.map((navItem: NavigationProps, i: number) => {
     const permalink = (() => {

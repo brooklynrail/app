@@ -4,9 +4,7 @@ import { cache } from "react"
 import directus from "../directus"
 import { Events, EventsTypes } from "../types"
 import { stripHtml } from "string-strip-html"
-import { getBaseUrl, getPermalink, PageType } from "../utils"
-
-const baseUrl = getBaseUrl()
+import { getPermalink, PageType } from "../utils"
 
 export enum EventTypes {
   TheNewSocialEnvironment = "the-new-social-environment",
@@ -43,7 +41,7 @@ export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) =
 
 export const getUpcomingEvents = cache(async () => {
   try {
-    const res = await fetch(`${baseUrl}/api/events`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
       next: {
         revalidate: 3600,
         tags: ["events"],
@@ -56,7 +54,7 @@ export const getUpcomingEvents = cache(async () => {
     }
     return res.json()
   } catch (error) {
-    console.error("Failed to fetch events data:", error, `${baseUrl}/api/events`)
+    console.error("Failed to fetch events data:", error, `${process.env.NEXT_PUBLIC_API_URL}/events`)
     return null
   }
 })
@@ -154,10 +152,12 @@ export async function getPastEvents(props: PastEventsParams) {
  *
  */
 export async function fetchEvents() {
-  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
+  const currentEvents = await fetch(`/api/events/upcoming/`, {
     next: { revalidate: 3600, tags: ["events"] },
   }).then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch current events")
+    if (!res.ok) {
+      throw new Error("Failed to fetch current events")
+    }
     return res.json()
   })
 
@@ -166,10 +166,12 @@ export async function fetchEvents() {
   let featuredEvents = []
   if (currentEventsArray.length < 4) {
     const timestamp = new Date().getTime()
-    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
+    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/featured?t=${timestamp}`, {
       next: { revalidate: 3600, tags: ["events"] },
     }).then((res) => {
-      if (!res.ok) throw new Error("Failed to fetch featured events")
+      if (!res.ok) {
+        throw new Error("Failed to fetch featured events")
+      }
       return res.json()
     })
   }

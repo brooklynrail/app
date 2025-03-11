@@ -1,7 +1,7 @@
 "use client"
-import { HomePageProps } from "@/app/page"
-import { useEffect } from "react"
+import { HomePageProps } from "@/lib/railTypes"
 import { Articles, HomepageCollections } from "@/lib/types"
+import { useEffect } from "react"
 import CollectionRailCommunity from "../collections/railCommunity"
 import CollectionTileAds from "../collections/tileAds"
 import CollectionTribute from "../collections/tribute"
@@ -24,7 +24,7 @@ export enum CollectionType {
 }
 
 const HomePage = (props: HomePageProps) => {
-  const { homepageData, currentIssue, homepageHeaderData, navData, previewURL } = props
+  const { collectionsData, currentIssue, homepageHeaderData, navData, previewURL } = props
   const { setCurrentContext } = usePageContext()
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const HomePage = (props: HomePageProps) => {
     return () => setCurrentContext(null) // Clear context on unmount if needed
   }, [setCurrentContext])
 
-  const allCollections = homepageData.collections.map((collection: HomepageCollections, i: number) => {
+  const allCollections = collectionsData.collections.map((collection: HomepageCollections, i: number) => {
     const thisCollection = collection.collections_id
     if (!thisCollection) {
       return null
@@ -60,10 +60,10 @@ const HomePage = (props: HomePageProps) => {
     <Paper
       pageClass={`theme-homepage`}
       type={PaperType.Homepage}
-      homepageHeaderData={homepageHeaderData}
       navData={navData}
       currentIssue={currentIssue}
-      homepageData={homepageData}
+      homepageHeaderData={homepageHeaderData}
+      collectionsData={collectionsData}
       previewURL={previewURL}
     >
       <main className="divide-y rail-divide">{allCollections}</main>

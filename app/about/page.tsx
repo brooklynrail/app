@@ -5,6 +5,7 @@ import { getAllPages, getPageData } from "@/lib/utils/pages"
 import Page from "@/components/page"
 import { Metadata } from "next"
 import { stripHtml } from "string-strip-html"
+import { AboutPageProps } from "@/lib/railTypes"
 
 export const revalidate = 86400 // invalidate once a day
 
@@ -51,7 +52,7 @@ export default async function AboutPage() {
   return <Page {...data} />
 }
 
-async function getData() {
+async function getData(): Promise<AboutPageProps> {
   const navData = await getNavData()
   if (!navData) {
     return notFound()

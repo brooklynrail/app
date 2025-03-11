@@ -45,7 +45,7 @@ export async function GET() {
       // Add cache-control header
       return Response.json(cleanedData, {
         headers: {
-          "Content-Type": "application/json",
+          ContentType: "application/json",
         },
       })
     } catch (error) {

@@ -1,5 +1,5 @@
 "use client"
-import { PastEventsProps } from "@/app/events/past/page"
+import { PastEventsProps } from "@/lib/railTypes"
 import Link from "next/link"
 import Paper from "../paper"
 import PastEventsList from "./pastEventsList"

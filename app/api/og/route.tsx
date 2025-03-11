@@ -115,14 +115,13 @@ export async function GET(request: Request) {
               width="100%"
               height="400"
               alt=""
-              tw="flex-1 w-full h-full"
+              className="flex-1 w-full h-full"
               style={{ objectFit: "contain", objectPosition: "center", maxWidth: "100%", height: "400px" }}
             />
           )}
         </div>
 
         <div
-          tw=""
           style={{
             marginTop: 30,
             marginBottom: 40,

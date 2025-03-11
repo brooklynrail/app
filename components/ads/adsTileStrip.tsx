@@ -21,7 +21,7 @@ const AdsTileStrip = ({ collection }: { collection: Collections }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.Tile}`)
+        const adsResponse = await fetch(`/api/ads/?type=${AdTypes.Tile}`)
         const ads = await adsResponse.json()
 
         if (Array.isArray(ads) && ads.length > 0) {
@@ -38,7 +38,7 @@ const AdsTileStrip = ({ collection }: { collection: Collections }) => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, [])
 
   const handleAdEvent = useCallback(

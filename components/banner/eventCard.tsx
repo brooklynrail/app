@@ -84,7 +84,9 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
   }, [])
 
   const { collections_id } = banner
-  if (!collections_id) return null
+  if (!collections_id) {
+    return null
+  }
 
   const bannerTitle = collections_id.title
   const bannerDescription = collections_id.description
@@ -188,7 +190,7 @@ const EventCard = (props: EventCardProps) => {
 }
 
 const FeaturedEventCard = (props: EventCardProps) => {
-  const { title, slug, start_date, people, series, featured_image, youtube_id } = props.event
+  const { title, slug, start_date, youtube_id } = props.event
   const startDate = new Date(start_date)
 
   const today = new Date()

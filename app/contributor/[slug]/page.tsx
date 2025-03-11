@@ -8,8 +8,12 @@ import { getContributor } from "@/lib/utils/people"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 import { AddRedirect } from "@/app/actions/redirect"
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const data = await getData({ params })
+interface ContributorParams {
+  slug: string
+}
+
+export async function generateMetadata(props: { params: Promise<ContributorParams> }): Promise<Metadata> {
+  const data = await getData({ params: (await props.params) })
 
   if (!data.contributorData || !data.permalink) {
     return {}
@@ -46,8 +50,8 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   }
 }
 
-export default async function Contributor({ params }: { params: ContributorsParams }) {
-  const data = await getData({ params })
+export default async function Contributor(props: { params: Promise<ContributorParams> }) {
+  const data = await getData({ params: (await props.params) })
   const contributorData = data.contributorData
   const currentArticles = data.articles
 
@@ -58,11 +62,7 @@ export default async function Contributor({ params }: { params: ContributorsPara
   return <ContributorPage contributorData={contributorData} currentArticles={currentArticles} navData={data.navData} />
 }
 
-interface ContributorsParams {
-  slug: string
-}
-
-async function getData({ params }: { params: ContributorsParams }) {
+async function getData({ params }: { params: ContributorParams }) {
   const slug = params.slug
 
   const navData = await getNavData()

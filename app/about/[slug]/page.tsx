@@ -1,30 +1,20 @@
-import { notFound } from "next/navigation"
-import { Homepage, Issues, Pages, PagesQuotes } from "@/lib/types"
 import Page from "@/components/page"
-import { getCurrentIssueData, getPermalink, PageType } from "@/lib/utils"
+import { AboutPageProps } from "@/lib/railTypes"
+import { getPermalink, PageType } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
 import { getAllPages, getPageData } from "@/lib/utils/pages"
-import { stripHtml } from "string-strip-html"
 import { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { stripHtml } from "string-strip-html"
 
 export const revalidate = 86400 // invalidate once a day
-export interface PageProps {
-  navData: Homepage
-  pageData: Pages
-  quotes?: PagesQuotes[] | null
-  allPagesData: Pages[]
-  permalink: string
-  errorCode?: number
-  errorMessage?: string
-}
 
 interface PageParams {
   slug: string
-  thisIssueData: Issues
 }
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const data = await getData({ params })
+export async function generateMetadata(props: { params: Promise<PageParams> }): Promise<Metadata> {
+  const data = await getData({ params: (await props.params) })
 
   if (!data.pageData || !data.permalink) {
     return {}
@@ -32,10 +22,8 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 
   const { title, body_text, summary } = data.pageData
   const ogtitle = stripHtml(title).result
-  // get the first 240 characters of the summary or body_text
   const bodySummary = body_text ? stripHtml(body_text).result.slice(0, 240) : ""
   const ogdescription = summary ? stripHtml(summary).result.slice(0, 240) : bodySummary
-
   const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
   return {
@@ -57,22 +45,18 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   }
 }
 
-export default async function ChildPage({ params }: { params: PageParams }) {
-  const data = await getData({ params })
+export default async function ChildPage(props: { params: Promise<PageParams> }) {
+  const data = await getData({ params: (await props.params) })
 
-  if (!data.thisIssueData || !data.pageData || !data.permalink) {
+  if (!data.pageData || !data.permalink) {
     return notFound()
   }
 
   return <Page {...data} />
 }
 
-interface PageParams {
-  slug: string
-}
-
-async function getData({ params }: { params: PageParams }) {
-  const { slug } = await params
+async function getData({ params }: { params: PageParams }): Promise<AboutPageProps> {
+  const { slug } = params
 
   const navData = await getNavData()
   if (!navData) {
@@ -96,11 +80,6 @@ async function getData({ params }: { params: PageParams }) {
     return notFound()
   }
 
-  const thisIssueData = await getCurrentIssueData()
-  if (!thisIssueData) {
-    return notFound()
-  }
-
   const permalink = getPermalink({
     slug: pageData.slug,
     type: PageType.ChildPage,
@@ -111,7 +90,6 @@ async function getData({ params }: { params: PageParams }) {
     pageData,
     quotes,
     allPagesData,
-    thisIssueData,
     permalink,
   }
 }

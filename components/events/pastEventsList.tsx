@@ -1,10 +1,9 @@
 "use client"
-import { useEffect, useState } from "react"
+import { PastEventsProps } from "@/lib/railTypes"
 import { Events } from "@/lib/types"
-import PastEventCard from "./pastEventCard"
-import { useBreakpoints } from "@/app/hooks/useBreakpoints"
-import { PastEventsProps } from "@/app/events/past/page"
 import Link from "next/link"
+import { useState } from "react"
+import PastEventCard from "./pastEventCard"
 
 interface PastEventsListProps {
   limit?: number
@@ -22,7 +21,7 @@ const PastEventsList = (props: PastEventsProps & PastEventsListProps) => {
       const limit = props.limit || 32
       const offset = currentPage * limit
       const newEventsResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/events/past?limit=${limit}&offset=${offset}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/events/past?limit=${limit}&offset=${offset}`,
         { next: { revalidate: 3600, tags: ["events"] } },
       )
       const newEvents = await newEventsResponse.json()

@@ -1,16 +1,13 @@
 "use server"
 
 import { readSingleton } from "@directus/sdk"
-import directus from "../directus"
 import { cache } from "react"
-import { Articles, Homepage, HomepageCollections, Issues } from "../types"
-import { getBaseUrl } from "../utils"
-
-const baseUrl = getBaseUrl()
+import directus from "../directus"
+import { Articles, Homepage, Issues } from "../types"
 
 export const getNavData = async (): Promise<Homepage | null> => {
   try {
-    const res = await fetch(`${baseUrl}/api/nav/`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/nav/`)
 
     if (!res.ok) {
       const text = await res.text()
@@ -20,14 +17,14 @@ export const getNavData = async (): Promise<Homepage | null> => {
 
     return res.json()
   } catch (error) {
-    console.error("Failed to fetch nav data:", error, `${baseUrl}/api/nav/`)
+    console.error("Failed to fetch nav data:", error, `${process.env.NEXT_PUBLIC_API_URL}/nav/`)
     return null
   }
 }
 
 export const getHomepageCollectionData = cache(async () => {
   try {
-    const res = await fetch(`${baseUrl}/api/homepage/collections`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/homepage/collections`)
 
     if (!res.ok) {
       const text = await res.text()
@@ -37,14 +34,14 @@ export const getHomepageCollectionData = cache(async () => {
 
     return res.json()
   } catch (error) {
-    console.error("Failed to fetch homepage data:", error, `${baseUrl}/api/homepage/collections`)
+    console.error("Failed to fetch homepage data:", error, `${process.env.NEXT_PUBLIC_API_URL}/homepage/collections`)
     return null
   }
 })
 
 export const getHomepageHeaderData = cache(async () => {
   try {
-    const res = await fetch(`${baseUrl}/api/homepage/header/`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/homepage/header/`)
 
     if (!res.ok) {
       const text = await res.text()
@@ -54,7 +51,7 @@ export const getHomepageHeaderData = cache(async () => {
 
     return res.json()
   } catch (error) {
-    console.error("Failed to fetch homepage header data:", error, `${baseUrl}/api/homepage/header/`)
+    console.error("Failed to fetch homepage header data:", error, `${process.env.NEXT_PUBLIC_API_URL}/homepage/header/`)
     return null
   }
 })
@@ -87,7 +84,7 @@ export const getCurrentIssueSlug = cache(async () => {
 
 export const getCurrentIssueData = cache(async () => {
   try {
-    const res = await fetch(`${baseUrl}/api/currentIssue/`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/currentIssue/`)
 
     if (!res.ok) {
       const text = await res.text()
@@ -97,7 +94,7 @@ export const getCurrentIssueData = cache(async () => {
 
     return res.json() as Promise<Issues>
   } catch (error) {
-    console.error("Failed to fetch nav data:", error, `${baseUrl}/api/nav/`)
+    console.error("Failed to fetch nav data:", error, `${process.env.NEXT_PUBLIC_API_URL}/currentIssue/`)
     return null
   }
 })

@@ -1,15 +1,10 @@
 "use client"
-import { ArticlesContributors, Contributors, Homepage } from "@/lib/types"
+import { ContributorPageProps } from "@/lib/railTypes"
+import { ArticlesContributors } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import Paper from "../paper"
 import PeopleHead from "./head"
 import Promo from "./promo"
-
-interface ContributorPageProps {
-  navData: Homepage
-  currentArticles: ArticlesContributors[]
-  contributorData: Contributors
-}
 
 const ContributorPage = (props: ContributorPageProps) => {
   const { currentArticles, contributorData, navData } = props

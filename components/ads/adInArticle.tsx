@@ -1,11 +1,10 @@
+import { Ads } from "@/lib/types"
+import { AdTypes } from "@/lib/utils/ads"
 import { sendGAEvent } from "@next/third-parties/google"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState, useCallback, useRef } from "react"
-import { Ads } from "@/lib/types"
-import { AdTypes } from "@/lib/utils/ads"
 import { usePostHog } from "posthog-js/react"
-import DonationAd from "./donationAd"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 const AdInArticle = () => {
   const [currentAd, setCurrentAd] = useState<Ads | null>(null)
@@ -18,9 +17,7 @@ const AdInArticle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adsResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.InArticleStandard}`,
-        )
+        const adsResponse = await fetch(`/api/ads/?type=${AdTypes.InArticleStandard}`)
         const ads = await adsResponse.json()
 
         if (Array.isArray(ads) && ads.length > 0) {
@@ -34,7 +31,7 @@ const AdInArticle = () => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, [])
 
   // Memoized function to handle GA and PostHog events

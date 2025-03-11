@@ -3,12 +3,11 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getNavData } from "@/lib/utils/homepage"
 import { getPreviewPassword } from "@/lib/utils/preview"
-import { getAllContributors } from "@/lib/utils/people"
+import { MergePageProps } from "@/lib/railTypes"
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `MERGE Contributors`,
-    description: "",
+    title: "MERGE Contributors",
     robots: {
       index: false,
       follow: false,
@@ -22,25 +21,15 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function ContributorsMergeIndex() {
+export default async function ContributorsMergePage() {
   const data = await getData()
-
-  return <ProtectedContributorsMerge navData={data.navData} previewPassword={data.previewPassword} />
+  return <ProtectedContributorsMerge {...data} />
 }
 
-async function getData() {
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+async function getData(): Promise<MergePageProps> {
+  const [navData, previewPassword] = await Promise.all([getNavData(), getPreviewPassword()])
 
-  // let allContributors = await getAllContributors()
-  // if (!allContributors || allContributors.length === 0) {
-  //   return notFound()
-  // }
-
-  const previewPassword = await getPreviewPassword()
-  if (!previewPassword) {
+  if (!navData || !previewPassword) {
     return notFound()
   }
 

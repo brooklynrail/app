@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react"
-import { usePopup } from "../popupProvider"
-import NewsLetterSignUpForm from "../newsletterForm"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { usePopup } from "../popupProvider"
 
 const PopupDonate = () => {
   const { showPopup, popupType, setShowPopup } = usePopup()
@@ -15,7 +14,7 @@ const PopupDonate = () => {
   useEffect(() => {
     const fetchDonateData = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/airtable/`)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/airtable/`)
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`)
         }
@@ -28,7 +27,7 @@ const PopupDonate = () => {
     }
 
     if (showPopup && popupType === "donate") {
-      fetchDonateData()
+      void fetchDonateData()
     }
   }, [showPopup, popupType]) // Dependencies: re-fetch data if showPopup or popupType changes
 
@@ -64,7 +63,7 @@ const PopupDonate = () => {
             <p className="hidden uppercase text-md tablet-lg:text-2xl text-center text-zinc-800 dark:text-slate-100">
               Help us raise $200,000 by December 31
             </p>
-            <div className="hidden bg-indigo-100 h-9 w-auto max-w-screen-tablet-lg mx-auto flex justify-start items-center">
+            <div className=" bg-indigo-100 h-9 w-auto max-w-screen-tablet-lg mx-auto flex justify-start items-center">
               {currentAmount && (
                 <div className="bg-lime-500 h-9 flex justify-end items-center" style={{ width: `${progressPercent}%` }}>
                   <span

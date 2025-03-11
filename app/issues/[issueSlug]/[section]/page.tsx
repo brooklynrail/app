@@ -1,99 +1,101 @@
 import IssuePage from "@/components/issuePage"
-import { Metadata } from "next"
-import { notFound } from "next/navigation"
-import { stripHtml } from "string-strip-html"
+import { IssueSectionPageProps } from "@/lib/railTypes"
 import { Sections } from "@/lib/types"
 import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
-
-export async function generateMetadata({ params }: { params: SectionParams }): Promise<Metadata> {
-  const data = await getData({ params })
-
-  if (!data.props.currentSection) {
-    return {}
-  }
-
-  const { name } = data.props.currentSection
-  const { title, cover_1, issue_number } = data.props.thisIssueData
-  const ogtitle = `${name} – ${stripHtml(title).result}`
-  const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
-  const ogimageprops = { ogimage: cover_1, title }
-  const ogimages = getOGImage(ogimageprops)
-
-  return {
-    title: `${ogtitle}`,
-    description: ogdescription,
-    alternates: {
-      canonical: `${data.props.permalink}`,
-    },
-    openGraph: {
-      title: `${ogtitle}`,
-      description: ogdescription,
-      url: data.props.permalink,
-      images: ogimages,
-      type: `website`,
-    },
-  }
-}
-
-export default async function SectionPage({ params }: { params: SectionParams }) {
-  const data = await getData({ params })
-
-  if (!data.props.currentSection) {
-    return { props: { errorCode: 400, errorMessage: "This issue does not exist" } }
-  }
-
-  return <IssuePage {...data.props} />
-}
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { stripHtml } from "string-strip-html"
 
 interface SectionParams {
   issueSlug: string
   section: string
 }
 
-async function getData({ params }: { params: SectionParams }) {
-  const issueSlug = params.issueSlug
-  const section = params.section.toString()
+// Page Configuration
+export const revalidate = 3600 // revalidate every hour
 
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
+// Metadata Generation
+export async function generateMetadata(props: { params: Promise<SectionParams> }): Promise<Metadata> {
+  const params = await props.params
+  const data = await getData(params)
+
+  if (!data?.currentSection || !data?.thisIssueData) {
+    return {}
   }
 
-  const thisIssueData = await getIssueData({
-    slug: issueSlug,
-  })
-  if (!thisIssueData) {
-    return notFound()
-  }
+  const { name } = data.currentSection
+  const { title, cover_1, issue_number } = data.thisIssueData
 
-  const tributesData = await getTributes({ thisIssueData: thisIssueData })
-
-  const allIssues = await getAllIssues()
-  if (!allIssues) {
-    return notFound()
-  }
-
-  // make an array of all the sections used in thisIssueData.articles and remove any duplicates
-  const issueSections = thisIssueData.articles
-    .map((article) => article.section)
-    .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
-
-  const currentSection = issueSections.find((s: Sections) => s.slug === section)
-
-  // If `section` does not exist, set errorCode to a string
-  if (!currentSection) {
-    return { props: { errorCode: 404, errorMessage: "This section does not exist" } }
-  }
-
-  const permalink = getPermalink({
-    issueSlug: issueSlug,
-    section: currentSection.slug,
-    type: PageType.Section,
-  })
+  const ogtitle = `${name} – ${stripHtml(title).result}`
+  const ogdescription = `The ${name} section of issue #${issue_number} of The Brooklyn Rail`
+  const ogimages = getOGImage({ ogimage: cover_1, title })
 
   return {
-    props: {
+    title: ogtitle,
+    description: ogdescription,
+    alternates: {
+      canonical: data.permalink,
+    },
+    openGraph: {
+      title: ogtitle,
+      description: ogdescription,
+      url: data.permalink,
+      images: ogimages,
+      type: "website",
+    },
+  }
+}
+
+// Main Page Component
+export default async function SectionPage(props: { params: Promise<SectionParams> }) {
+  const params = await props.params
+  const data = await getData(params)
+
+  if (!data) {
+    notFound()
+  }
+
+  return <IssuePage {...data} />
+}
+
+// Data Fetching
+async function getData(params: SectionParams): Promise<IssueSectionPageProps | undefined> {
+  try {
+    const { issueSlug, section } = params
+
+    // Parallel fetch of initial data
+    const [navData, thisIssueData, allIssues] = await Promise.all([
+      getNavData(),
+      getIssueData({ slug: issueSlug }),
+      getAllIssues(),
+    ])
+
+    if (!navData || !thisIssueData || !allIssues) {
+      return undefined
+    }
+
+    // Get tributes data after we have issue data
+    const tributesData = await getTributes({ thisIssueData })
+
+    // Process sections - extract unique sections from articles
+    const issueSections = thisIssueData.articles
+      .map((article) => article.section)
+      .filter((section, index, self) => self.findIndex((s) => s.id === section.id) === index)
+
+    const currentSection = issueSections.find((s: Sections) => s.slug === section)
+
+    if (!currentSection) {
+      return undefined
+    }
+
+    const permalink = getPermalink({
+      issueSlug,
+      section: currentSection.slug,
+      type: PageType.Section,
+    })
+
+    return {
       navData,
       thisIssueData,
       issueSections,
@@ -101,6 +103,9 @@ async function getData({ params }: { params: SectionParams }) {
       currentSection,
       allIssues,
       permalink,
-    },
+    }
+  } catch (error) {
+    console.error("Error fetching section data:", error)
+    return undefined
   }
 }

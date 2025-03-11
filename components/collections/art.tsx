@@ -1,15 +1,15 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Articles, Collections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
+import { useEffect, useRef, useState } from "react"
 import FeaturedImage from "../featuredImage"
 import Frame from "../frames/frame"
 import FrameScrollable from "../frames/frameScrollable"
 import CollectionHead from "./head"
 import Bylines, { BylineType } from "./promos/bylines"
 import Excerpt from "./promos/excerpt"
-import Title, { TitleType } from "./promos/title"
+import Title from "./promos/title"
 
 const CollectionArt = (collection: Collections) => {
   const { section } = collection
@@ -47,7 +47,7 @@ const CollectionArt = (collection: Collections) => {
 }
 
 const PromosMobile = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
+  const articles = props.articles.map((article) => {
     const { issue, section, title, featured_artwork, featured_image } = article
     const [divWidth, setDivWidth] = useState(0)
     const divRef = useRef<HTMLDivElement>(null)
@@ -108,7 +108,7 @@ interface PromoProps {
 }
 
 const PromosArt = (props: PromoProps) => {
-  const articles = props.articles.map((article, i = 1) => {
+  const articles = props.articles.map((article) => {
     const { issue, section, title, featured_artwork, featured_image, kicker } = article
     const artwork = featured_artwork ? featured_artwork : featured_image
     const permalink = getPermalink({

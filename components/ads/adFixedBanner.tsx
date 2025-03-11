@@ -18,7 +18,7 @@ const AdFixedBanner = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adsResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ads/?type=${AdTypes.FixedBanner}`)
+        const adsResponse = await fetch(`/api/ads/?type=${AdTypes.FixedBanner}`)
         const ads = await adsResponse.json()
 
         // More explicit handling of empty ads
@@ -42,7 +42,7 @@ const AdFixedBanner = () => {
       }
     }
 
-    fetchData()
+    void fetchData()
   }, [])
 
   // Memoized function to handle GA and PostHog events

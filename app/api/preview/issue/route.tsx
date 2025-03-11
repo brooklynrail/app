@@ -20,8 +20,6 @@ export async function GET(request: Request) {
     return new Response("Invalid ID", { status: 401 })
   }
 
-  draftMode().enable()
-
   return new Response(null, {
     status: 307,
     headers: {
