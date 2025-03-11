@@ -98,7 +98,6 @@ export const getExhibition = async (slug: string) => {
 }
 
 export const getAllExhibitions = async (): Promise<Exhibitions[]> => {
-  console.log("getAllExhibitions baseUrl", process.env.NEXT_PUBLIC_API_URL)
   try {
     // Remove trailing slash to prevent routing issues
     const url = `${process.env.NEXT_PUBLIC_API_URL}/exhibitions`
