@@ -1,12 +1,11 @@
-import { MetadataRoute } from "next"
 import { Issues } from "@/lib/types"
 import { getIssues, getPermalink, PageType } from "@/lib/utils"
-import { SiteMapProps } from "@/lib/railTypes"
+import { MetadataRoute } from "next"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allIssues = await getIssues()
 
-  let issues: SiteMapProps[] = []
+  let issues: MetadataRoute.Sitemap = []
   if (allIssues) {
     issues = allIssues.map((issue: Issues, i: number) => {
       const issueSlug = issue.slug

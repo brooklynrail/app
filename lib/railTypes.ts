@@ -231,10 +231,3 @@ export interface TributePageProps {
   permalink: string
   previewURL?: string
 }
-
-export interface SiteMapProps {
-  url: string
-  lastModified: string
-  changeFrequency: "monthly" | "weekly" | "daily"
-  priority: number
-}

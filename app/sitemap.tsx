@@ -1,12 +1,11 @@
-import { MetadataRoute } from "next"
-import { getPermalink, PageType } from "@/lib/utils"
 import { Articles } from "@/lib/types"
+import { getPermalink, PageType } from "@/lib/utils"
 import { getArticlePages } from "@/lib/utils/articles"
-import { SiteMapProps } from "@/lib/railTypes"
+import { MetadataRoute } from "next"
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articlePages = await getArticlePages()
 
-  let articles: SiteMapProps[] = []
+  let articles: MetadataRoute.Sitemap = []
   if (articlePages) {
     articles = articlePages
       .filter((article: Articles) => article.issue)
