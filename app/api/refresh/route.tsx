@@ -27,6 +27,11 @@ export async function GET(request: Request) {
         return new Response(`Revalidated homepage`, { status: 200 })
       }
 
+      case RevalidateType.Events: {
+        revalidateTag("events")
+        return new Response(`Revalidated Events`, { status: 200 })
+      }
+
       case RevalidateType.GlobalSettings: {
         revalidateTag("homepage")
         return new Response(`Revalidated Global Settings`, { status: 200 })
