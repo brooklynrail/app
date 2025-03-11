@@ -4,6 +4,7 @@ import { cache } from "react"
 import { stripHtml } from "string-strip-html"
 import directus from "./directus"
 import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
+import { unstable_cache } from "next/cache"
 
 // Used in
 // - Issue Select dropdown
@@ -305,80 +306,90 @@ export const getSectionsByIssueId = cache(async (issueId: string, status: string
   }
 })
 
-export const getArticle = cache(async (slug: string, status?: string) => {
-  const articleAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
-    `?fields[]=slug` +
-    `&fields[]=byline_override` +
-    `&fields[]=title` +
-    `&fields[]=deck` +
-    `&fields[]=excerpt` +
-    `&fields[]=kicker` +
-    `&fields[]=featured` +
-    `&fields[]=sort` +
-    `&fields[]=body_text` +
-    `&fields[]=body_type` +
-    `&fields[]=header_type` +
-    `&fields[]=in_print` +
-    `&fields[]=status` +
-    `&fields[]=isbn` +
-    `&fields[]=date_created` +
-    `&fields[]=date_updated` +
-    `&fields[]=title_tag` +
-    `&fields[]=user_updated` +
-    `&fields[]=date_updated` +
-    `&fields[]=hide_bylines` +
-    `&fields[]=hide_bylines_downstream` +
-    `&fields[]=tags` +
-    `&fields[]=endnote` +
-    `&fields[]=featured_image.id` +
-    `&fields[]=featured_image.caption` +
-    `&fields[]=featured_image.filename_disk` +
-    `&fields[]=featured_image.width` +
-    `&fields[]=featured_image.height` +
-    `&fields[]=featured_image.type` +
-    `&fields[]=contributors.contributors_id.first_name` +
-    `&fields[]=contributors.contributors_id.last_name` +
-    `&fields[]=contributors.contributors_id.slug` +
-    `&fields[]=contributors.contributors_id.bio` +
-    `&fields[]=issue.title` +
-    `&fields[]=issue.slug` +
-    `&fields[]=issue.year` +
-    `&fields[]=issue.month` +
-    `&fields[]=section.slug` +
-    `&fields[]=section.name` +
-    `&fields[]=section.featured` +
-    `&fields[]=images.sort` +
-    `&fields[]=images.directus_files_id.id` +
-    `&fields[]=images.directus_files_id.caption` +
-    `&fields[]=images.directus_files_id.filename_disk` +
-    `&fields[]=images.directus_files_id.width` +
-    `&fields[]=images.directus_files_id.height` +
-    `&fields[]=images.directus_files_id.type` +
-    `&fields[]=images.directus_files_id.shortcode_key` +
-    `&fields[]=tribute` +
-    `&fields[]=tribute.title` +
-    `&fields[]=tribute.slug` +
-    `&fields[]=hide_title` +
-    `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_eq]=${status}`
+export const getArticle = unstable_cache(
+  async (slug: string, status?: string) => {
+    const articleAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
+      `?fields[]=slug` +
+      `&fields[]=byline_override` +
+      `&fields[]=title` +
+      `&fields[]=deck` +
+      `&fields[]=excerpt` +
+      `&fields[]=kicker` +
+      `&fields[]=featured` +
+      `&fields[]=sort` +
+      `&fields[]=body_text` +
+      `&fields[]=body_type` +
+      `&fields[]=header_type` +
+      `&fields[]=in_print` +
+      `&fields[]=status` +
+      `&fields[]=isbn` +
+      `&fields[]=date_created` +
+      `&fields[]=date_updated` +
+      `&fields[]=title_tag` +
+      `&fields[]=user_updated` +
+      `&fields[]=date_updated` +
+      `&fields[]=hide_bylines` +
+      `&fields[]=hide_bylines_downstream` +
+      `&fields[]=tags` +
+      `&fields[]=endnote` +
+      `&fields[]=featured_image.id` +
+      `&fields[]=featured_image.caption` +
+      `&fields[]=featured_image.filename_disk` +
+      `&fields[]=featured_image.width` +
+      `&fields[]=featured_image.height` +
+      `&fields[]=featured_image.type` +
+      `&fields[]=contributors.contributors_id.first_name` +
+      `&fields[]=contributors.contributors_id.last_name` +
+      `&fields[]=contributors.contributors_id.slug` +
+      `&fields[]=contributors.contributors_id.bio` +
+      `&fields[]=issue.title` +
+      `&fields[]=issue.slug` +
+      `&fields[]=issue.year` +
+      `&fields[]=issue.month` +
+      `&fields[]=section.slug` +
+      `&fields[]=section.name` +
+      `&fields[]=section.featured` +
+      `&fields[]=images.sort` +
+      `&fields[]=images.directus_files_id.id` +
+      `&fields[]=images.directus_files_id.caption` +
+      `&fields[]=images.directus_files_id.filename_disk` +
+      `&fields[]=images.directus_files_id.width` +
+      `&fields[]=images.directus_files_id.height` +
+      `&fields[]=images.directus_files_id.type` +
+      `&fields[]=images.directus_files_id.shortcode_key` +
+      `&fields[]=tribute` +
+      `&fields[]=tribute.title` +
+      `&fields[]=tribute.slug` +
+      `&fields[]=hide_title` +
+      `&filter[slug][_eq]=${slug}` +
+      `&filter[status][_eq]=${status}`
 
-  try {
-    const res = await fetch(articleAPI, { next: { revalidate: 3600, tags: ["articles"] } })
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      console.error(`Failed to fetch Article data: ${res.statusText}`)
+    try {
+      const res = await fetch(articleAPI, {
+        next: {
+          tags: ["articles"],
+        },
+      })
+      if (!res.ok) {
+        // This will activate the closest `error.js` Error Boundary
+        console.error(`Failed to fetch Article data: ${res.statusText}`)
+        return null
+      }
+
+      const { data } = await res.json()
+
+      return data[0] as Articles
+    } catch (error) {
+      console.error(error)
       return null
     }
-
-    const { data } = await res.json()
-
-    return data[0] as Articles
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-})
+  },
+  ["article"], // cache key
+  {
+    tags: ["articles"], // same tags as fetch
+  },
+)
 
 export const getEvent = cache(async (slug: string) => {
   const events = await directus.request(
