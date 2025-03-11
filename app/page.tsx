@@ -26,12 +26,6 @@ async function getData(): Promise<HomePageProps | undefined> {
     return notFound()
   }
 
-  // Validate all required data and their nested properties
-  if (!currentIssue?.articles) {
-    console.error("Missing or invalid currentIssue data")
-    return notFound()
-  }
-
   if (!navData?.collections) {
     console.error("Missing or invalid navData")
     return notFound()
