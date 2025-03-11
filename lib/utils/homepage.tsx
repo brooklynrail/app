@@ -7,7 +7,11 @@ import { Articles, Homepage, Issues } from "../types"
 
 export const getNavData = async (): Promise<Homepage | null> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/nav/`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/nav/`, {
+      next: {
+        tags: ["homepage"],
+      },
+    })
 
     if (!res.ok) {
       const text = await res.text()
@@ -24,7 +28,11 @@ export const getNavData = async (): Promise<Homepage | null> => {
 
 export const getHomepageCollectionData = cache(async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/homepage/collections`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/homepage/collections`, {
+      next: {
+        tags: ["homepage"],
+      },
+    })
 
     if (!res.ok) {
       const text = await res.text()
@@ -41,7 +49,11 @@ export const getHomepageCollectionData = cache(async () => {
 
 export const getHomepageHeaderData = cache(async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/homepage/header/`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/homepage/header/`, {
+      next: {
+        tags: ["homepage"],
+      },
+    })
 
     if (!res.ok) {
       const text = await res.text()
@@ -84,7 +96,11 @@ export const getCurrentIssueSlug = cache(async () => {
 
 export const getCurrentIssueData = cache(async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/currentIssue/`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/currentIssue/`, {
+      next: {
+        tags: ["homepage"],
+      },
+    })
 
     if (!res.ok) {
       const text = await res.text()
@@ -156,7 +172,7 @@ export const getCollectionArticles = cache(async (props: CollectionArticlesProps
       `&sort[]=-issue.published` +
       `&sort[]=sort`
 
-    const response = await fetch(articlesAPI, { next: { revalidate: 3600, tags: ["articles"] } })
+    const response = await fetch(articlesAPI, { next: { tags: ["articles"] } })
     const articlesData = await response.json()
 
     return articlesData.data as Articles[]
