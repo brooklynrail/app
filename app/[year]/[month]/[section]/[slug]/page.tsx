@@ -2,7 +2,6 @@ import { AddRedirect } from "@/app/actions/redirect"
 import Article from "@/components/article"
 import { checkYearMonthSection } from "@/lib/utils/articles"
 import { Metadata } from "next"
-import { revalidatePath } from "next/cache"
 import { notFound, redirect } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { getArticle, getIssueData, getOGImage, getPermalink, PageType } from "@/lib/utils"
@@ -107,7 +106,6 @@ async function getData({ params }: { params: ArticleParams }) {
   // If the article is part of a tribute, redirect to the tribute page for that article
   if (articleData.tribute) {
     const path = `/tribute/${articleData.tribute.slug}/${articleData.slug}/`
-    revalidatePath(path) // Update cached special issue
     redirect(path) // Navigate to the new article page
   }
 
