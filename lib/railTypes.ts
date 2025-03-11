@@ -46,7 +46,6 @@ export interface ContributorPageProps {
 
 export interface ContributorsPageProps {
   navData: Homepage
-  thisIssueData: Issues
   allContributors: Contributors[]
   permalink: string
 }

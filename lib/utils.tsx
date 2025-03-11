@@ -118,37 +118,6 @@ export const getIssues = cache(async () => {
   }
 })
 
-export const getCurrentIssueData = cache(async () => {
-  try {
-    const settings = await directus.request(
-      readSingleton("global_settings", {
-        fields: [
-          {
-            current_issue: ["id", "title", "slug", "year", "month", "status", "special_issue"],
-          },
-        ],
-      }),
-    )
-
-    const curruentIssueData = settings.current_issue
-    if (!curruentIssueData) {
-      // throw an error if there is no current issue
-      console.error("There is no current issue set", curruentIssueData)
-      return
-    }
-
-    // 802-522-0165
-    const issueData = await getIssueData({
-      slug: curruentIssueData.slug,
-    })
-
-    return issueData as Issues
-  } catch (error) {
-    console.error("Error fetching CurrentIssueData data:", error)
-    return null
-  }
-})
-
 export const getGlobalSettings = async () => {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`
   const res = await fetch(globalSettingsAPI, { next: { revalidate: 3600, tags: ["homepage"] } })

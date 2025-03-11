@@ -1,7 +1,7 @@
 import ContributorsPage from "@/components/contributors"
 import { ContributorsPageProps } from "@/lib/railTypes"
 import { Contributors } from "@/lib/types"
-import { getCurrentIssueData, getPermalink, PageType } from "@/lib/utils"
+import { getPermalink, PageType } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
 import { getAllContributors } from "@/lib/utils/people"
 import { Metadata } from "next"
@@ -39,13 +39,9 @@ export default async function ContributorsController() {
 }
 
 async function getData(): Promise<ContributorsPageProps> {
-  const [navData, allContributors, thisIssueData] = await Promise.all([
-    getNavData(),
-    getAllContributors(),
-    getCurrentIssueData(),
-  ])
+  const [navData, allContributors] = await Promise.all([getNavData(), getAllContributors()])
 
-  if (!navData || !allContributors || !thisIssueData) {
+  if (!navData || !allContributors) {
     return notFound()
   }
 
@@ -54,7 +50,6 @@ async function getData(): Promise<ContributorsPageProps> {
 
   return {
     navData,
-    thisIssueData,
     allContributors: filteredContributors,
     permalink: getPermalink({ type: PageType.Contributors }),
   }

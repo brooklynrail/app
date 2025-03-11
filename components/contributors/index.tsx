@@ -1,11 +1,10 @@
 "use client"
 import Link from "next/link"
-import { Contributors, Homepage, Issues } from "@/lib/types"
+import { Contributors, Homepage } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import Paper from "../paper"
 
 interface ContributorsPageProps {
-  thisIssueData: Issues
   allContributors: Contributors[]
   navData: Homepage
 }

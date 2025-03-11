@@ -1,20 +1,19 @@
 "use client"
-import { useEffect } from "react"
+import { useArticleSwitcher } from "@/app/hooks/useArticleSwitcher"
 import { ArticleProps } from "@/lib/railTypes"
+import { getPermalink, PageType } from "@/lib/utils"
+import dynamic from "next/dynamic"
+import { useEffect } from "react"
 import Paper from "../paper"
 import ArticlePage from "./page/article"
 import ArticleCriticsPage from "./page/criticsPage"
-import { useArticleSwitcher } from "@/app/hooks/useArticleSwitcher"
-import ArticleBar from "../articleBar"
-import { getPermalink, PageType } from "@/lib/utils"
-import dynamic from "next/dynamic"
 
 const SlideShow = dynamic(() => import("./slideshow"), {
   ssr: false, // This ensures the component only loads client-side
 })
 
 const Article = (props: ArticleProps) => {
-  const { articleData, currentSection, navData, thisIssueData } = props
+  const { articleData, navData, thisIssueData } = props
 
   const issuePermalink = getPermalink({
     issueSlug: thisIssueData.slug,

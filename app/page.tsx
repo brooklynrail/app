@@ -1,6 +1,6 @@
 import HomePage from "@/components/homepage"
 import { notFound } from "next/navigation"
-import { Homepage, HomepageBanners, Issues } from "@/lib/types"
+import { Homepage, Issues } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
 
