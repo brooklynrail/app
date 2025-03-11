@@ -79,7 +79,7 @@ const Section = (props: SectionProps & NavProps) => {
   const loadMoreArticles = async () => {
     try {
       const newArticlesResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/sections/?slug=${sectionData.slug}&limit=${limit}&offset=${currentPage * limit}`,
+        `/api/sections/?slug=${sectionData.slug}&limit=${limit}&offset=${currentPage * limit}`,
       )
       const newArticles = await newArticlesResponse.json()
       if (!Array.isArray(newArticles)) {
