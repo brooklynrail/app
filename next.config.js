@@ -55,6 +55,14 @@ const nextConfig = {
   async redirects() {
     return [
       // ===================================
+      // CONTRIBUTORS REDIRECTS
+      {
+        source: "/contributor",
+        destination: "/contributors",
+        permanent: true,
+      },
+
+      // ===================================
       // EXHIBITIONS REDIRECTS
       {
         source: "/exhibition",
