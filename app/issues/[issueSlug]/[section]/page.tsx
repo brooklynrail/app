@@ -17,7 +17,7 @@ export const revalidate = 3600 // revalidate every hour
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<SectionParams> }): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data?.currentSection || !data?.thisIssueData) {
@@ -49,7 +49,7 @@ export async function generateMetadata(props: { params: Promise<SectionParams> }
 
 // Main Page Component
 export default async function SectionPage(props: { params: Promise<SectionParams> }) {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data) {
@@ -95,8 +95,6 @@ async function getData(params: SectionParams): Promise<IssueSectionPageProps | u
       type: PageType.Section,
     })
 
-    const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/issue/${issueSlug}/section/${section}/`
-
     return {
       navData,
       thisIssueData,
@@ -105,7 +103,6 @@ async function getData(params: SectionParams): Promise<IssueSectionPageProps | u
       currentSection,
       allIssues,
       permalink,
-      previewURL,
     }
   } catch (error) {
     console.error("Error fetching section data:", error)
