@@ -175,21 +175,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${untitledSans.variable} ${untitledSerif.variable}`}>
       <meta name="theme-color" content="#EF4444" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-      <PopupProvider hidePopup={false}>
-        <RailPostHogProvider>
-          <body>
-            <Suspense fallback={null}>
-              <PostHogPageView />
-            </Suspense>
-            <ThemeProvider>
-              <PageContextProvider>{children}</PageContextProvider>
-            </ThemeProvider>
-            <GoogleAnalytics gaId="G-P4BEY1BZ04" />
-            <Analytics />
-            <SpeedInsights />
-          </body>
-        </RailPostHogProvider>
-      </PopupProvider>
+      <PageContextProvider>
+        <PopupProvider hidePopup={false}>
+          <RailPostHogProvider>
+            <body>
+              <Suspense fallback={null}>
+                <PostHogPageView />
+              </Suspense>
+              <ThemeProvider>{children}</ThemeProvider>
+              <GoogleAnalytics gaId="G-P4BEY1BZ04" />
+              <Analytics />
+              <SpeedInsights />
+            </body>
+          </RailPostHogProvider>
+        </PopupProvider>
+      </PageContextProvider>
     </html>
   )
 }
