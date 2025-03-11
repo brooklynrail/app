@@ -1,11 +1,10 @@
 "use server"
 
 import { Redirects } from "@/lib/types"
-import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
 export async function AddRedirect(props: Redirects) {
-  const { articles, events, contributors, type } = props
+  const { articles, events, contributors, issues, type } = props
   let redirectPath = ""
 
   switch (type) {
@@ -15,7 +14,6 @@ export async function AddRedirect(props: Redirects) {
       }
       const articleMonth = articles.issue.month.toString().padStart(2, "0")
       redirectPath = `/${articles.issue.year}/${articleMonth}/${articles.section.slug}/${articles.slug}`
-      revalidatePath(redirectPath)
       redirect(redirectPath)
       break
     }
@@ -28,7 +26,6 @@ export async function AddRedirect(props: Redirects) {
       const month = (startDate.getMonth() + 1).toString().padStart(2, "0")
       const day = startDate.getDate().toString().padStart(2, "0")
       redirectPath = `/event/${year}/${month}/${day}/${events.slug}`
-      revalidatePath(redirectPath)
       redirect(redirectPath)
       break
     }
@@ -37,7 +34,14 @@ export async function AddRedirect(props: Redirects) {
         throw new Error("Contributor data is required for contributor redirects")
       }
       redirectPath = `/contributor/${contributors.slug}`
-      revalidatePath(redirectPath)
+      redirect(redirectPath)
+      break
+    }
+    case "issue": {
+      if (!issues || typeof issues === "string") {
+        throw new Error("Issue data is required for issue redirects")
+      }
+      redirectPath = `/issues/${issues.slug}`
       redirect(redirectPath)
       break
     }

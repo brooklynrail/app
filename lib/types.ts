@@ -84,6 +84,7 @@ export type Redirects = {
   date_updated?: string | null
   events?: string | Events | null
   id: string
+  issues?: string | Issues | null
   path: string
   status: string
   type: string

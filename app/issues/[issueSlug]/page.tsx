@@ -1,7 +1,10 @@
+import { AddRedirect } from "@/app/actions/redirect"
 import IssuePage from "@/components/issuePage"
 import { IssuePageProps } from "@/lib/railTypes"
 import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink, getTributes } from "@/lib/utils"
+import { getRedirect } from "@/lib/utils/redirects"
 import { getNavData } from "@/lib/utils/homepage"
+import { RedirectTypes } from "@/lib/utils/redirects"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
@@ -19,6 +22,11 @@ export async function generateMetadata(props: { params: Promise<IssueParams> }):
   const data = await getData(params)
 
   if (!data?.thisIssueData) {
+    // Check for redirect before returning empty metadata
+    const redirect = await getRedirect(RedirectTypes.Issue, params.issueSlug)
+    if (redirect) {
+      await AddRedirect(redirect)
+    }
     return {}
   }
 
@@ -48,7 +56,11 @@ export default async function Issue(props: { params: Promise<IssueParams> }) {
   const params = await props.params
   const data = await getData(params)
 
-  if (!data) {
+  if (!data?.thisIssueData) {
+    const redirect = await getRedirect(RedirectTypes.Issue, params.issueSlug)
+    if (redirect) {
+      await AddRedirect(redirect)
+    }
     notFound()
   }
 
