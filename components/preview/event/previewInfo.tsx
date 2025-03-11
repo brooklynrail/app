@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useRef, useState } from "react"
 import { Events, EventsTypes } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
@@ -6,7 +7,6 @@ import {
   generateSingleEventNewsletter,
   generateYouTubeCopy,
   generateYouTubeTags,
-  getUpcomingEvents,
 } from "@/lib/utils/events"
 import { EditorInfo } from "../article/previewInfo"
 
@@ -23,6 +23,9 @@ const PreviewInfo = (props: PreviewInfoProps) => {
   const [showSingleEventNewsletter, setShowSingleEventNewsletter] = useState(false)
   const [showYouTubeCopy, setShowYouTubeCopy] = useState(false)
   const [showYouTubeTags, setShowYouTubeTags] = useState(false)
+  const [currentEvents, setCurrentEvents] = useState<Events[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const youtube_copy = generateYouTubeCopy(props.eventData)
   const youtube_tags = generateYouTubeTags(props.eventData)
@@ -36,18 +39,32 @@ const PreviewInfo = (props: PreviewInfoProps) => {
   const eventMonth = startDate.getMonth() + 1
   const eventDay = startDate.getDate()
 
-  const [currentEvents, setCurrentEvents] = useState<Events[] | undefined>(undefined)
-
   useEffect(() => {
-    const fetchData = async () => {
-      if (!currentEvents) {
-        const allEvents = await getUpcomingEvents()
-        const [fetchedEvents] = await Promise.all([allEvents])
-        setCurrentEvents(fetchedEvents)
+    const fetchEvents = async () => {
+      setIsLoading(true)
+      try {
+        const res = await fetch("/api/events", {
+          next: {
+            tags: ["events"],
+          },
+        })
+
+        if (!res.ok) {
+          throw new Error(`API returned ${res.status}`)
+        }
+
+        const data = await res.json()
+        setCurrentEvents(data)
+      } catch (error) {
+        console.error("Failed to fetch events:", error)
+        setError(error instanceof Error ? error.message : "Failed to fetch events")
+      } finally {
+        setIsLoading(false)
       }
     }
-    fetchData().catch((error) => console.error("Failed to fetch all events data on the preview page:", error))
-  }, [currentEvents])
+
+    void fetchEvents()
+  }, [])
 
   const permalink =
     status === "published"
@@ -115,12 +132,17 @@ const PreviewInfo = (props: PreviewInfoProps) => {
           </button>
         </div>
       </div>
-      {showFullNewsletter && currentEvents && (
+      {isLoading && <div>Loading events...</div>}
+      {error && <div className="text-red-500">Error: {error}</div>}
+      {showFullNewsletter && currentEvents.length > 0 && (
         <pre
           className="bg-white rounded-md outline-dotted outline-indigo-500 p-6 max-h-96 text-xs overflow-auto"
           ref={preRef}
         >
-          {generateFullNewsletter({ allEvents: currentEvents, eventTypes: props.eventTypes })}
+          {generateFullNewsletter({
+            allEvents: currentEvents,
+            eventTypes: props.eventTypes,
+          })}
         </pre>
       )}
       {showSingleEventNewsletter && (
