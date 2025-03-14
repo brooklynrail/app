@@ -35,6 +35,10 @@ const LoadingSkeleton = () => {
   // Number of skeleton cards to show while loading
   const SKELETON_COUNT = 4
 
+  const skeletonCards = Array.from({ length: SKELETON_COUNT }, (_, index) => <AllEventsCardSkeleton key={index} />)
+
+  console.log("🔍 skeletonCards ------", skeletonCards)
+
   return (
     <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
       <div className="flex flex-col space-y-3 h-full">
@@ -47,9 +51,7 @@ const LoadingSkeleton = () => {
         {/* Events cards skeleton */}
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-              <EventCardSkeleton key={`skeleton-${index}`} />
-            ))}
+            {skeletonCards}
             <AllEventsCardSkeleton />
           </div>
         </div>
