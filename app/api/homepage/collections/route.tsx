@@ -101,6 +101,8 @@ export async function GET() {
     })
 
     homepage.collections = await Promise.all(allCollections)
+    console.log("🏠 Homepage collections:", homepage.collections)
+    console.log("🏠 Homepage collection:", homepage.collections[0])
 
     // Simply include the currentIssue string in the response
     const responseData = {
