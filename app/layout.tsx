@@ -9,9 +9,8 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "@/components/theme"
 import { PageContextProvider } from "@/components/pageContext"
 import { RailPostHogProvider } from "./providers/posthog"
-import PostHogPageView from "./providers/postHogPageView"
-import { Suspense } from "react"
 import { PopupProvider } from "@/components/popupProvider"
+import SuspendedPostHogPageView from "./providers/postHogPageView"
 
 const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
@@ -179,9 +178,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <PopupProvider hidePopup={false}>
           <RailPostHogProvider>
             <body>
-              <Suspense fallback={null}>
-                <PostHogPageView />
-              </Suspense>
+              <SuspendedPostHogPageView />
               <ThemeProvider>{children}</ThemeProvider>
               <GoogleAnalytics gaId="G-P4BEY1BZ04" />
               <Analytics />

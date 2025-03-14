@@ -24,12 +24,6 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
 
   useEffect(() => {
     const loadEvents = async () => {
-      // const isRevalidation = !window // Check if we're in a revalidation context
-      // console.log("🎬 Starting to load events...", {
-      //   time: new Date().toLocaleTimeString(),
-      //   context: isRevalidation ? "revalidation" : "client",
-      // })
-
       try {
         const data = await fetch(`/api/events/upcoming/`, {
           next: { revalidate: 3600, tags: ["events"] },
