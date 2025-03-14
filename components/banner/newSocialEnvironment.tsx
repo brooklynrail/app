@@ -69,71 +69,70 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
 
   useEffect(() => {
     const loadEvents = async () => {
-      console.log("🎬 Starting to load events...", new Date().toLocaleTimeString())
+      const isRevalidation = !window // Check if we're in a revalidation context
+      console.log("🎬 Starting to load events...", {
+        time: new Date().toLocaleTimeString(),
+        context: isRevalidation ? "revalidation" : "client",
+      })
+
       try {
-        console.log("📦 Banner data:", {
-          id: banner.id,
-          collection: banner.collections_id?.title,
-        })
-
-        const data = await fetchEvents()
-        console.log("📥 Raw events data received:", data) // Log the raw data
-
-        // Validate data structure before setting state
-        if (!data) {
-          console.error("❌ Received null data from fetchEvents")
-          setError(new Error("No data received"))
+        if (!banner || !banner.collections_id) {
+          console.error("❌ Invalid banner data during", isRevalidation ? "revalidation" : "client load")
+          setError(new Error("Invalid banner data"))
           setEvents({ currentEvents: [], featuredEvents: [] })
           return
+        }
+
+        const data = await fetchEvents()
+        console.log("📥 Events data received:", {
+          context: isRevalidation ? "revalidation" : "client",
+          hasData: !!data,
+          currentEventsLength: data?.currentEvents?.length,
+          featuredEventsLength: data?.featuredEvents?.length,
+        })
+
+        // Extra defensive checks for revalidation
+        if (!data || typeof data !== "object") {
+          throw new Error("Invalid data structure received")
         }
 
         // Ensure we have arrays, even if empty
         const safeData = {
           currentEvents: Array.isArray(data.currentEvents)
-            ? data.currentEvents
-                .map((event) => {
-                  if (!event || typeof event !== "object") {
-                    console.error("❌ Invalid event in currentEvents:", event)
-                    return null
-                  }
-                  return event
-                })
-                .filter(Boolean)
+            ? data.currentEvents.filter(
+                (event) =>
+                  event && typeof event === "object" && "id" in event && "title" in event && "start_date" in event,
+              )
             : [],
           featuredEvents: Array.isArray(data.featuredEvents)
-            ? data.featuredEvents
-                .map((event) => {
-                  if (!event || typeof event !== "object") {
-                    console.error("❌ Invalid event in featuredEvents:", event)
-                    return null
-                  }
-                  return event
-                })
-                .filter(Boolean)
+            ? data.featuredEvents.filter(
+                (event) =>
+                  event && typeof event === "object" && "id" in event && "title" in event && "start_date" in event,
+              )
             : [],
         }
 
-        console.log("🔍 Safe data structure:", {
-          currentEvents: safeData.currentEvents.map((e) => ({
-            id: e?.id,
-            hasTitle: !!e?.title,
-            hasPeople: Array.isArray(e?.people),
-            peopleLength: e?.people?.length,
-          })),
+        console.log("✅ Processed events data:", {
+          context: isRevalidation ? "revalidation" : "client",
+          currentEventsCount: safeData.currentEvents.length,
+          featuredEventsCount: safeData.featuredEvents.length,
         })
 
-        console.log("🔍 Safe data -=-=-=-=-=:", safeData)
         setEvents(safeData)
-        console.log("✅ Successfully set events state")
       } catch (error) {
-        console.error("❌ Failed to fetch events:", error)
+        console.error("❌ Error in loadEvents:", {
+          context: isRevalidation ? "revalidation" : "client",
+          error: error instanceof Error ? error.message : "Unknown error",
+          stack: error instanceof Error ? error.stack : undefined,
+        })
         setError(error instanceof Error ? error : new Error("Failed to fetch events"))
-        setEvents({ currentEvents: [], featuredEvents: [] }) // Set empty arrays on error
+        // Ensure we set empty arrays on error
+        setEvents({ currentEvents: [], featuredEvents: [] })
       } finally {
         setLoading(false)
-        console.log("🏁 Finished loading events")
       }
     }
+
     void loadEvents()
   }, [banner])
 

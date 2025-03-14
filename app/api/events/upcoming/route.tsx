@@ -1,7 +1,14 @@
 export const revalidate = 3600 // 1 hour cache
 
 export async function GET(request: Request) {
+  const isRevalidation = request.headers.get("x-nextjs-revalidate") === "1"
+
   try {
+    console.log("📡 API Route called:", {
+      context: isRevalidation ? "revalidation" : "normal request",
+      timestamp: new Date().toISOString(),
+    })
+
     const eventsDataAPI =
       `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
       `?fields[]=id` +
@@ -40,9 +47,17 @@ export async function GET(request: Request) {
     const upcomingEvents = data.data
 
     if (!upcomingEvents) {
-      return new Response("Invalid event data", { status: 401 })
+      console.error("❌ No events data:", {
+        context: isRevalidation ? "revalidation" : "normal request",
+      })
+      return new Response(JSON.stringify({ currentEvents: [], featuredEvents: [] }), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
     }
-    // Set cache headers for 30 minutes
+
     return Response.json(upcomingEvents, {
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +65,17 @@ export async function GET(request: Request) {
       },
     })
   } catch (error) {
-    console.error("Error fetching upcoming events:", error)
-    return Response.json({ error: error }, { status: 500 })
+    console.error("❌ Error in events API:", {
+      context: isRevalidation ? "revalidation" : "normal request",
+      error: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+    })
+
+    // During revalidation, return empty arrays instead of error
+    if (isRevalidation) {
+      return Response.json({ currentEvents: [], featuredEvents: [] })
+    }
+
+    return Response.json({ error: "Failed to fetch events" }, { status: 500 })
   }
 }
