@@ -1,5 +1,5 @@
 "use client"
-import { Homepage, HomepageBanners, Issues } from "@/lib/types"
+import { Homepage, Issues } from "@/lib/types"
 import CurrentIssue from "./currentIssue"
 import NewSocialEnvironment from "./newSocialEnvironment"
 
@@ -16,28 +16,31 @@ enum BannerType {
 const Banners = (props: BannerProps) => {
   const { currentIssue, homepageHeaderData } = props
 
-  if (!homepageHeaderData || !Array.isArray(homepageHeaderData.banners)) {
-    return null
+  console.log("🔍 homepageHeaderData ------", homepageHeaderData)
+
+  if (!homepageHeaderData.banners) {
+    return <></>
   }
 
   const allBanners = homepageHeaderData.banners
     .map((banner, index) => {
       if (!banner.collections_id) {
-        return null
+        return <></>
       }
+      console.log("🔍 banner ------", banner)
       switch (banner.collections_id.banner_type) {
         case BannerType.CurrentIssue:
           return <CurrentIssue key={`current-issue-${index}`} currentIssue={currentIssue} banner={banner} />
         case BannerType.NewSocialEnvironment:
           return <NewSocialEnvironment key={`social-env-${index}`} banner={banner} />
         default:
-          return null
+          return <></>
       }
     })
     .filter(Boolean)
 
   if (allBanners.length === 0) {
-    return null
+    return <></>
   }
 
   return (
