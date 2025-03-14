@@ -1,17 +1,17 @@
+import { PageContextProvider } from "@/components/pageContext"
+import { PopupProvider } from "@/components/popupProvider"
+import { ThemeProvider } from "@/components/theme"
 import "@/styles/globals.scss"
-import localFont from "next/font/local"
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
-config.autoAddCss = false
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/react"
 import { GoogleAnalytics } from "@next/third-parties/google"
-import { ThemeProvider } from "@/components/theme"
-import { PageContextProvider } from "@/components/pageContext"
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import localFont from "next/font/local"
+import { Suspense } from "react"
 import { RailPostHogProvider } from "./providers/posthog"
 import PostHogPageView from "./providers/postHogPageView"
-import { Suspense } from "react"
-import { PopupProvider } from "@/components/popupProvider"
+config.autoAddCss = false
 
 const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
 
