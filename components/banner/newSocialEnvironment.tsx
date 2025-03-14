@@ -54,6 +54,7 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
     featuredEvents: [],
   })
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -65,32 +66,33 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         })
 
         const data = await fetchEvents()
-        console.log("📥 Received events data:", {
-          currentEventsCount: data?.currentEvents?.length || 0,
-          featuredEventsCount: data?.featuredEvents?.length || 0,
-          currentEvents: data?.currentEvents ? "exists" : "null",
-          featuredEvents: data?.featuredEvents ? "exists" : "null",
-        })
+        console.log("📥 Raw events data received:", data) // Log the raw data
 
+        // Validate data structure before setting state
         if (!data) {
           console.error("❌ Received null data from fetchEvents")
+          setError(new Error("No data received"))
+          setEvents({ currentEvents: [], featuredEvents: [] })
           return
         }
 
-        if (!Array.isArray(data.currentEvents)) {
-          console.error("❌ currentEvents is not an array:", data.currentEvents)
-          return
+        // Ensure we have arrays, even if empty
+        const safeData = {
+          currentEvents: Array.isArray(data.currentEvents) ? data.currentEvents : [],
+          featuredEvents: Array.isArray(data.featuredEvents) ? data.featuredEvents : [],
         }
 
-        if (!Array.isArray(data.featuredEvents)) {
-          console.error("❌ featuredEvents is not an array:", data.featuredEvents)
-          return
-        }
+        console.log("🔍 Sanitized events data:", {
+          currentEventsCount: safeData.currentEvents.length,
+          featuredEventsCount: safeData.featuredEvents.length,
+        })
 
-        setEvents(data)
+        setEvents(safeData)
         console.log("✅ Successfully set events state")
       } catch (error) {
         console.error("❌ Failed to fetch events:", error)
+        setError(error instanceof Error ? error : new Error("Failed to fetch events"))
+        setEvents({ currentEvents: [], featuredEvents: [] }) // Set empty arrays on error
       } finally {
         setLoading(false)
         console.log("🏁 Finished loading events")
@@ -110,6 +112,17 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
     return <LoadingSkeleton />
   }
 
+  if (error) {
+    console.log("❌ Rendering error state")
+    return <LoadingSkeleton /> // Or a proper error UI component
+  }
+
+  // Defensive check before rendering
+  if (!Array.isArray(events.currentEvents) || !Array.isArray(events.featuredEvents)) {
+    console.error("❌ Events arrays are not valid:", events)
+    return <LoadingSkeleton />
+  }
+
   console.log("🎨 Rendering events content:", {
     currentEventsCount: events.currentEvents.length,
     featuredEventsCount: events.featuredEvents.length,
@@ -126,12 +139,12 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {events.currentEvents?.map((event: Events) => {
-              console.log("🎯 Rendering current event:", { id: event.id, title: event.title })
+            {(events.currentEvents || []).map((event: Events) => {
+              console.log("🎯 Rendering current event:", { id: event?.id, title: event?.title })
               return <EventCard key={event.id} event={event} />
             })}
-            {events.featuredEvents?.map((event: Events) => {
-              console.log("⭐ Rendering featured event:", { id: event.id, title: event.title })
+            {(events.featuredEvents || []).map((event: Events) => {
+              console.log("⭐ Rendering featured event:", { id: event?.id, title: event?.title })
               return <FeaturedEventCard key={event.id} event={event} />
             })}
             <AllEventsCard type="past" />
@@ -272,8 +285,8 @@ const AllEventsCard = ({ type = "current" }: AllEventsCardProps) => (
   <div className="px-1.5 last:pr-0">
     <div className="bg-zinc-800 bg-opacity-20 rounded-xl w-32 h-24 px-3 flex flex-col justify-center items-center">
       <p className="text-xs uppercase">
-        <Link href={type === "current" ? "/events" : "/events/past"}>
-          {type === "current" ? "Current events" : "Past events"} »
+        <Link href={type === "current" ? "/events" : "/events"}>
+          {type === "current" ? "Current events" : "More events"} »
         </Link>
       </p>
     </div>
