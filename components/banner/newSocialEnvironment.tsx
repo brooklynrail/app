@@ -1,7 +1,6 @@
 "use client"
 import { Events, HomepageBanners } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
-import { fetchEvents } from "@/lib/utils/events"
 import parse from "html-react-parser"
 import Image from "next/image"
 import Link from "next/link"
