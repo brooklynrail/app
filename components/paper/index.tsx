@@ -61,7 +61,9 @@ const Paper = (props: PaperProps) => {
               {type === PaperType.Homepage && (
                 <>
                   <Header type={type} currentIssue={currentIssue} collectionsData={collectionsData} />
-
+                  {homepageHeaderData && isHomepage && currentIssue && (
+                    <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
+                  )}
                   <NavBar navData={navData} isHomepage={isHomepage} />
                 </>
               )}
@@ -74,7 +76,9 @@ const Paper = (props: PaperProps) => {
                 collectionsData={collectionsData}
                 homepageHeaderData={homepageHeaderData}
               />
-
+              {homepageHeaderData && isHomepage && currentIssue && (
+                <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
+              )}
               <NavBar navData={navData} isHomepage={isHomepage} />
             </>
           )}
