@@ -1,8 +1,7 @@
-import directus from "../directus"
-import { Articles, Events, Exhibitions, Issues, Tributes, HomepageCollections, Homepage } from "../types"
 import { readItems, readSingleton } from "@directus/sdk"
+import directus from "../directus"
+import { Articles, Events, Exhibitions, Homepage, HomepageCollections, Issues, Tributes } from "../types"
 import { getGlobalSettings } from "../utils"
-import { cache } from "react"
 import { getCollectionArticles } from "./homepage"
 
 export async function getPreviewPassword() {
@@ -253,6 +252,7 @@ export const getPreviewExhibition = async (id: string) => {
           "kicker",
           "title",
           "deck",
+          "dedication",
           "summary",
           "start_date",
           "end_date",
@@ -264,8 +264,28 @@ export const getPreviewExhibition = async (id: string) => {
           "opening_details",
           "section",
           "title_tag",
+          "show_artists_list",
+          {
+            video_cover: ["id", "width", "height", "filename_disk", "caption"],
+          },
+          {
+            cover_image: ["id", "width", "height", "filename_disk", "caption"],
+          },
+          "background_color_primary",
+          "background_color_secondary",
+          "background_color_primary_darkmode",
+          "background_color_secondary_darkmode",
+          "text_color_primary",
+          "text_color_primary_darkmode",
           {
             featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
+          },
+          {
+            exhibition_images: [
+              {
+                directus_files_id: ["id", "width", "height", "filename_disk", "alt", "caption"],
+              },
+            ],
           },
           {
             artists: [

@@ -3,14 +3,8 @@ import { readItems, readSingleton } from "@directus/sdk"
 import { cache } from "react"
 import { stripHtml } from "string-strip-html"
 import directus from "./directus"
-import { Articles, Contributors, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
-
-export const getBaseUrl = () => {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL
-    ? process.env.NEXT_PUBLIC_BASE_URL
-    : `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
-  return baseURL
-}
+import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
+import { unstable_cache } from "next/cache"
 
 // Used in
 // - Issue Select dropdown
@@ -120,37 +114,6 @@ export const getIssues = cache(async () => {
     return allIssues as Issues[]
   } catch (error) {
     console.error("Error fetching getIssues:", error)
-    return null
-  }
-})
-
-export const getCurrentIssueData = cache(async () => {
-  try {
-    const settings = await directus.request(
-      readSingleton("global_settings", {
-        fields: [
-          {
-            current_issue: ["id", "title", "slug", "year", "month", "status", "special_issue"],
-          },
-        ],
-      }),
-    )
-
-    const curruentIssueData = settings.current_issue
-    if (!curruentIssueData) {
-      // throw an error if there is no current issue
-      console.error("There is no current issue set", curruentIssueData)
-      return
-    }
-
-    // 802-522-0165
-    const issueData = await getIssueData({
-      slug: curruentIssueData.slug,
-    })
-
-    return issueData as Issues
-  } catch (error) {
-    console.error("Error fetching CurrentIssueData data:", error)
     return null
   }
 })
@@ -312,80 +275,90 @@ export const getSectionsByIssueId = cache(async (issueId: string, status: string
   }
 })
 
-export const getArticle = cache(async (slug: string, status?: string) => {
-  const articleAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
-    `?fields[]=slug` +
-    `&fields[]=byline_override` +
-    `&fields[]=title` +
-    `&fields[]=deck` +
-    `&fields[]=excerpt` +
-    `&fields[]=kicker` +
-    `&fields[]=featured` +
-    `&fields[]=sort` +
-    `&fields[]=body_text` +
-    `&fields[]=body_type` +
-    `&fields[]=header_type` +
-    `&fields[]=in_print` +
-    `&fields[]=status` +
-    `&fields[]=isbn` +
-    `&fields[]=date_created` +
-    `&fields[]=date_updated` +
-    `&fields[]=title_tag` +
-    `&fields[]=user_updated` +
-    `&fields[]=date_updated` +
-    `&fields[]=hide_bylines` +
-    `&fields[]=hide_bylines_downstream` +
-    `&fields[]=tags` +
-    `&fields[]=endnote` +
-    `&fields[]=featured_image.id` +
-    `&fields[]=featured_image.caption` +
-    `&fields[]=featured_image.filename_disk` +
-    `&fields[]=featured_image.width` +
-    `&fields[]=featured_image.height` +
-    `&fields[]=featured_image.type` +
-    `&fields[]=contributors.contributors_id.first_name` +
-    `&fields[]=contributors.contributors_id.last_name` +
-    `&fields[]=contributors.contributors_id.slug` +
-    `&fields[]=contributors.contributors_id.bio` +
-    `&fields[]=issue.title` +
-    `&fields[]=issue.slug` +
-    `&fields[]=issue.year` +
-    `&fields[]=issue.month` +
-    `&fields[]=section.slug` +
-    `&fields[]=section.name` +
-    `&fields[]=section.featured` +
-    `&fields[]=images.sort` +
-    `&fields[]=images.directus_files_id.id` +
-    `&fields[]=images.directus_files_id.caption` +
-    `&fields[]=images.directus_files_id.filename_disk` +
-    `&fields[]=images.directus_files_id.width` +
-    `&fields[]=images.directus_files_id.height` +
-    `&fields[]=images.directus_files_id.type` +
-    `&fields[]=images.directus_files_id.shortcode_key` +
-    `&fields[]=tribute` +
-    `&fields[]=tribute.title` +
-    `&fields[]=tribute.slug` +
-    `&fields[]=hide_title` +
-    `&filter[slug][_eq]=${slug}` +
-    `&filter[status][_eq]=${status}`
+export const getArticle = unstable_cache(
+  async (slug: string, status?: string) => {
+    const articleAPI =
+      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
+      `?fields[]=slug` +
+      `&fields[]=byline_override` +
+      `&fields[]=title` +
+      `&fields[]=deck` +
+      `&fields[]=excerpt` +
+      `&fields[]=kicker` +
+      `&fields[]=featured` +
+      `&fields[]=sort` +
+      `&fields[]=body_text` +
+      `&fields[]=body_type` +
+      `&fields[]=header_type` +
+      `&fields[]=in_print` +
+      `&fields[]=status` +
+      `&fields[]=isbn` +
+      `&fields[]=date_created` +
+      `&fields[]=date_updated` +
+      `&fields[]=title_tag` +
+      `&fields[]=user_updated` +
+      `&fields[]=date_updated` +
+      `&fields[]=hide_bylines` +
+      `&fields[]=hide_bylines_downstream` +
+      `&fields[]=tags` +
+      `&fields[]=endnote` +
+      `&fields[]=featured_image.id` +
+      `&fields[]=featured_image.caption` +
+      `&fields[]=featured_image.filename_disk` +
+      `&fields[]=featured_image.width` +
+      `&fields[]=featured_image.height` +
+      `&fields[]=featured_image.type` +
+      `&fields[]=contributors.contributors_id.first_name` +
+      `&fields[]=contributors.contributors_id.last_name` +
+      `&fields[]=contributors.contributors_id.slug` +
+      `&fields[]=contributors.contributors_id.bio` +
+      `&fields[]=issue.title` +
+      `&fields[]=issue.slug` +
+      `&fields[]=issue.year` +
+      `&fields[]=issue.month` +
+      `&fields[]=section.slug` +
+      `&fields[]=section.name` +
+      `&fields[]=section.featured` +
+      `&fields[]=images.sort` +
+      `&fields[]=images.directus_files_id.id` +
+      `&fields[]=images.directus_files_id.caption` +
+      `&fields[]=images.directus_files_id.filename_disk` +
+      `&fields[]=images.directus_files_id.width` +
+      `&fields[]=images.directus_files_id.height` +
+      `&fields[]=images.directus_files_id.type` +
+      `&fields[]=images.directus_files_id.shortcode_key` +
+      `&fields[]=tribute` +
+      `&fields[]=tribute.title` +
+      `&fields[]=tribute.slug` +
+      `&fields[]=hide_title` +
+      `&filter[slug][_eq]=${slug}` +
+      `&filter[status][_eq]=${status}`
 
-  try {
-    const res = await fetch(articleAPI, { next: { revalidate: 3600, tags: ["articles"] } })
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      console.error(`Failed to fetch Article data: ${res.statusText}`)
+    try {
+      const res = await fetch(articleAPI, {
+        next: {
+          tags: ["articles"],
+        },
+      })
+      if (!res.ok) {
+        // This will activate the closest `error.js` Error Boundary
+        console.error(`Failed to fetch Article data: ${res.statusText}`)
+        return null
+      }
+
+      const { data } = await res.json()
+
+      return data[0] as Articles
+    } catch (error) {
+      console.error(error)
       return null
     }
-
-    const { data } = await res.json()
-
-    return data[0] as Articles
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-})
+  },
+  ["articles"], // cache key
+  {
+    tags: ["articles"], // same tags as fetch
+  },
+)
 
 export const getEvent = cache(async (slug: string) => {
   const events = await directus.request(
@@ -626,7 +599,7 @@ interface TributeDataParams {
   slug: string
 }
 
-export const getTributeData = cache(async ({ tributeSlug, slug }: TributeDataParams) => {
+export const getTributeData = cache(async ({ tributeSlug }: TributeDataParams) => {
   const tribute = await directus.request(
     readItems("tributes", {
       fields: [
@@ -710,7 +683,7 @@ export const getNavigation = cache(async () => {
 
 export const cleanup = (str: string) => {
   // Replace non-breaking spaces
-  var reNbsp = new RegExp(String.fromCharCode(160), "g")
+  const reNbsp = new RegExp(String.fromCharCode(160), "g")
   str = str.replace(reNbsp, " ")
 
   // Remove <br/> tags

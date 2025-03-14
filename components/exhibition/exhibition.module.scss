@@ -1,0 +1,77 @@
+.theme-exhibition {
+  --background-color: #eef2ff; /* indigo-50 */
+
+  &[style*="--exhibition-bg-primary"] {
+    --background-color: var(--exhibition-bg-primary,);
+    --navbar-background-color: var(--exhibition-bg-primary);
+    --background-color: var(--exhibition-bg-primary);
+  }
+
+  &[style*="--exhibition-bg-primary"][style*="--exhibition-bg-secondary"] {
+    background-image: linear-gradient(
+      160.44deg,
+      var(--exhibition-bg-primary) 44.27%,
+      var(--exhibition-bg-secondary) 86.9%
+    );
+    background-attachment: fixed !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  &[style*="--exhibition-text-primary"] {
+    --navbar-text-color: var(--exhibition-text-primary);
+    --logo-path-fill: var(--exhibition-text-primary);
+    --subhead-fill: var(--exhibition-text-primary);
+    --text-color: var(--exhibition-text-primary);
+  }
+}
+
+// Dark mode styles using the global .dark class pattern
+:global(.dark) {
+  .theme-exhibition {
+    --background-color: #27272a; /* zinc-800 */
+
+    &:not([style*="--exhibition-bg-primary-dark"]) {
+      background-image: none;
+      --navbar-background-color: var(--background-color);
+    }
+
+    &[style*="--exhibition-bg-primary-dark"] {
+      --navbar-background-color: var(--exhibition-bg-primary-dark);
+      --navbar-text-color: var(--exhibition-text-primary-dark);
+    }
+
+    &[style*="--exhibition-bg-primary-dark"] {
+      --background-color: var(--exhibition-bg-primary-dark);
+    }
+    &[style*="--exhibition-bg-primary-dark"][style*="--exhibition-bg-secondary-dark"] {
+      background-image: linear-gradient(
+        160.44deg,
+        var(--exhibition-bg-primary-dark) 44.27%,
+        var(--exhibition-bg-secondary-dark) 86.9%
+      );
+      background-attachment: fixed !important;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    &[style*="--exhibition-text-primary-dark"] {
+      --text-color: var(--exhibition-text-primary-dark);
+    }
+  }
+}
+
+.content {
+  @extend .content;
+  @apply text-lg font-normal font-sans;
+  p,
+  blockquote,
+  li,
+  pre {
+    @apply max-w-none;
+  }
+  .artist h4 {
+    @apply text-lg font-medium;
+  }
+}

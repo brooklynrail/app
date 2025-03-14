@@ -40,32 +40,23 @@ export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) =
 }
 
 export const getUpcomingEvents = cache(async () => {
-  const eventsDataAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
-    `?fields[]=id` +
-    `&fields[]=slug` +
-    `&fields[]=type` +
-    `&fields[]=kicker` +
-    `&fields[]=title` +
-    `&fields[]=deck` +
-    `&fields[]=summary` +
-    `&fields[]=series` +
-    `&fields[]=start_date` +
-    `&fields[]=end_date` +
-    `&fields[]=all_day` +
-    `&fields[]=youtube_id` +
-    `&sort=start_date` +
-    `&filter[end_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
-    `&filter[youtube_id][_empty]=true` +
-    `&filter[status][_eq]=published`
-
-  const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
-  if (!res.ok) {
-    throw new Error("Failed to fetch events data")
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
+      next: {
+        revalidate: 3600,
+        tags: ["events"],
+      },
+    })
+    if (!res.ok) {
+      const text = await res.text()
+      console.error("API Response:", text)
+      throw new Error(`API returned ${res.status}: ${text}`)
+    }
+    return res.json()
+  } catch (error) {
+    console.error("Failed to fetch events data:", error, `${process.env.NEXT_PUBLIC_API_URL}/events`)
+    return null
   }
-  const data = await res.json()
-  const events = data.data
-  return events as Events[]
 })
 
 export const getUpcomingEventsBanner = async () => {
@@ -161,10 +152,12 @@ export async function getPastEvents(props: PastEventsParams) {
  *
  */
 export async function fetchEvents() {
-  const currentEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/upcoming/`, {
+  const currentEvents = await fetch(`/api/events/upcoming/`, {
     next: { revalidate: 3600, tags: ["events"] },
   }).then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch current events")
+    if (!res.ok) {
+      throw new Error("Failed to fetch current events")
+    }
     return res.json()
   })
 
@@ -173,10 +166,12 @@ export async function fetchEvents() {
   let featuredEvents = []
   if (currentEventsArray.length < 4) {
     const timestamp = new Date().getTime()
-    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/featured?t=${timestamp}`, {
+    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/featured?t=${timestamp}`, {
       next: { revalidate: 3600, tags: ["events"] },
     }).then((res) => {
-      if (!res.ok) throw new Error("Failed to fetch featured events")
+      if (!res.ok) {
+        throw new Error("Failed to fetch featured events")
+      }
       return res.json()
     })
   }
@@ -446,7 +441,11 @@ export const generateYouTubeCopy = (eventData: Events) => {
   // People Info
   people.forEach((personObj: any) => {
     const person = personObj.people_id
+    if (!person.bio) {
+      return
+    }
     const bio = encodeHtmlEntities(stripHtml(person.bio).result)
+
     youtubeCopy += `🚩 ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
 
     // Include website, Instagram, etc.
@@ -469,7 +468,11 @@ export const generateYouTubeCopy = (eventData: Events) => {
     // Poets Info
     poets.forEach((personObj: any) => {
       const person = personObj.people_id
+      if (!person.bio) {
+        return
+      }
       const bio = encodeHtmlEntities(stripHtml(person.bio).result)
+
       youtubeCopy += `🚩 ${encodeHtmlEntities(person.display_name)} —— ${bio}\n`
 
       // Include website, Instagram, etc.

@@ -84,6 +84,7 @@ export type Redirects = {
   date_updated?: string | null
   events?: string | Events | null
   id: string
+  issues?: string | Issues | null
   path: string
   status: string
   type: string
@@ -573,7 +574,7 @@ export type Exhibitions = {
   deck?: string | null
   dedication?: string | null
   end_date: string
-  featured_image?: DirectusFiles | null
+  featured_image?: DirectusFiles
   id: string
   kicker?: string | null
   location?: string | null
@@ -582,8 +583,8 @@ export type Exhibitions = {
   opening_details: string
   section?: ExhibitionSection[] | null
   show_details: string
-  show_files: any[] | ExhibitionsFiles1[]
-  show_images: any[] | ExhibitionsFiles2[]
+  exhibition_files?: ExhibitionsFiles[]
+  exhibition_images?: ExhibitionsImages[]
   show_artists_list: boolean
   slug: string
   sort?: number | null
@@ -605,22 +606,15 @@ export interface ExhibitionSection {
 }
 
 export type ExhibitionsFiles = {
-  directus_files_id?: string | null
-  exhibitions_id?: string | null
+  directus_files_id?: DirectusFiles | null
+  exhibitions_id?: Exhibitions | null
   id: number
   sort?: number | null
 }
 
-export type ExhibitionsFiles1 = {
-  directus_files_id?: string | DirectusFiles | null
-  exhibitions_id?: string | Exhibitions | null
-  id: number
-  sort?: number | null
-}
-
-export type ExhibitionsFiles2 = {
-  directus_files_id?: string | DirectusFiles | null
-  exhibitions_id?: string | Exhibitions | null
+export type ExhibitionsImages = {
+  directus_files_id?: DirectusFiles | null
+  exhibitions_id?: Exhibitions | null
   id: number
   sort?: number | null
 }
@@ -654,7 +648,7 @@ export type GlobalSettingsNavigation = {
   collection?: string | null
   global_settings_id?: string | GlobalSettings | null
   id: number
-  item?: string | any | null
+  item?: string | number | null
   sort?: number | null
 }
 
@@ -739,6 +733,7 @@ export type Organizations = {
 }
 
 export type Pages = {
+  id: string
   date_created?: string | null
   date_updated?: string | null
   slug: string
@@ -922,8 +917,7 @@ export type CustomDirectusTypes = {
   events_people_poets: EventsPeoplePoets[]
   exhibitions: Exhibitions[]
   exhibitions_files: ExhibitionsFiles[]
-  exhibitions_files_1: ExhibitionsFiles1[]
-  exhibitions_files_2: ExhibitionsFiles2[]
+  exhibitions_images: ExhibitionsImages[]
   exhibitions_people_1: ExhibitionsPeople1[]
   exhibitions_people_2: ExhibitionsPeople2[]
   global_settings: GlobalSettings
