@@ -38,14 +38,6 @@ async function getData(): Promise<HomePageProps> {
     }),
   ])
 
-  // Log what we received
-  console.log("📦 Homepage data fetched:", {
-    hasCurrentIssue: !!currentIssue,
-    hasNavData: !!navData,
-    hasCollections: !!collectionsData,
-    hasHeaderData: !!homepageHeaderData,
-  })
-
   if (!currentIssue || !navData || !collectionsData || !homepageHeaderData) {
     console.error("❌ Critical data missing:", {
       currentIssue: !currentIssue,

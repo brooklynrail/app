@@ -14,9 +14,7 @@ interface NewSocialEnvironmentProps {
 
 // Content Component
 const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
-  const [events, setEvents] = useState<{ currentEvents: Events[] }>({
-    currentEvents: [],
-  })
+  const [events, setEvents] = useState<Events[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
@@ -41,8 +39,7 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         setEvents(data)
       } catch (error) {
         setError(error instanceof Error ? error : new Error("Failed to fetch events"))
-        // Ensure we set empty arrays on error
-        setEvents({ currentEvents: [] })
+        setEvents(null)
       } finally {
         setLoading(false)
       }
@@ -95,13 +92,6 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
                 console.error("❌ Invalid event data:", event)
                 return null
               }
-
-              console.log("🎯 Rendering current event:", {
-                id: event.id,
-                title: event.title,
-                hasStartDate: !!event.start_date,
-                hasPeople: Array.isArray(event.people),
-              })
 
               return <EventCard key={event.id} event={event} />
             })}
