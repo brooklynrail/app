@@ -16,8 +16,6 @@ enum BannerType {
 const Banners = (props: BannerProps) => {
   const { currentIssue, homepageHeaderData } = props
 
-  console.log("🔍 homepageHeaderData ------", homepageHeaderData)
-
   if (!homepageHeaderData.banners) {
     return <></>
   }
@@ -27,7 +25,6 @@ const Banners = (props: BannerProps) => {
       if (!banner.collections_id) {
         return <></>
       }
-      console.log("🔍 banner ------", banner)
       switch (banner.collections_id.banner_type) {
         case BannerType.CurrentIssue:
           return <CurrentIssue key={`current-issue-${index}`} currentIssue={currentIssue} banner={banner} />
