@@ -84,6 +84,8 @@ export async function GET() {
       )
     }
 
+    console.log("🏠 Homepage data:", homepage)
+
     const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
       if (collection.collections_id && collection.collections_id.section) {
         const thisSectionArticles = getCollectionArticles({

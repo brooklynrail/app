@@ -1,7 +1,5 @@
 "use server"
-
 import { readSingleton } from "@directus/sdk"
-import { cache } from "react"
 import directus from "../directus"
 import { Articles, Homepage, Issues } from "../types"
 import { unstable_cache } from "next/cache"
