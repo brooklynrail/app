@@ -57,47 +57,83 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
 
   useEffect(() => {
     const loadEvents = async () => {
+      console.log("🎬 Starting to load events...", new Date().toLocaleTimeString())
       try {
+        console.log("📦 Banner data:", {
+          id: banner.id,
+          collection: banner.collections_id?.title,
+        })
+
         const data = await fetchEvents()
+        console.log("📥 Received events data:", {
+          currentEventsCount: data?.currentEvents?.length || 0,
+          featuredEventsCount: data?.featuredEvents?.length || 0,
+          currentEvents: data?.currentEvents ? "exists" : "null",
+          featuredEvents: data?.featuredEvents ? "exists" : "null",
+        })
+
+        if (!data) {
+          console.error("❌ Received null data from fetchEvents")
+          return
+        }
+
+        if (!Array.isArray(data.currentEvents)) {
+          console.error("❌ currentEvents is not an array:", data.currentEvents)
+          return
+        }
+
+        if (!Array.isArray(data.featuredEvents)) {
+          console.error("❌ featuredEvents is not an array:", data.featuredEvents)
+          return
+        }
+
         setEvents(data)
+        console.log("✅ Successfully set events state")
       } catch (error) {
-        console.error("Failed to fetch events:", error)
+        console.error("❌ Failed to fetch events:", error)
       } finally {
         setLoading(false)
+        console.log("🏁 Finished loading events")
       }
     }
     void loadEvents()
-  }, [])
+  }, [banner])
 
   const { collections_id } = banner
   if (!collections_id) {
+    console.log("⚠️ No collections_id in banner")
     return null
   }
 
   if (loading) {
+    console.log("⏳ Showing loading skeleton")
     return <LoadingSkeleton />
   }
 
-  const bannerTitle = collections_id.title
-  const bannerDescription = collections_id.description
+  console.log("🎨 Rendering events content:", {
+    currentEventsCount: events.currentEvents.length,
+    featuredEventsCount: events.featuredEvents.length,
+  })
 
   return (
     <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
       <div className="flex flex-col space-y-3 h-full">
         <div className="w-full">
           <h3 className="text-sm tablet-lg:text-lg font-medium">
-            <Link href="/events">{bannerTitle}</Link>
+            <Link href="/events">{collections_id.title}</Link>
           </h3>
-          {bannerDescription && <div className="text-xs">{parse(bannerDescription)}</div>}
+          {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {events.currentEvents.map((event: Events) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-            {events.featuredEvents.map((event: Events) => (
-              <FeaturedEventCard key={event.id} event={event} />
-            ))}
+            {events.currentEvents?.map((event: Events) => {
+              console.log("🎯 Rendering current event:", { id: event.id, title: event.title })
+              return <EventCard key={event.id} event={event} />
+            })}
+            {events.featuredEvents?.map((event: Events) => {
+              console.log("⭐ Rendering featured event:", { id: event.id, title: event.title })
+              return <FeaturedEventCard key={event.id} event={event} />
+            })}
             <AllEventsCard type="past" />
           </div>
         </div>
@@ -110,7 +146,13 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
 const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
   const { banner } = props
 
+  console.log("🏗️ NewSocialEnvironment mounting:", {
+    hasBanner: !!banner,
+    hasCollections: !!banner?.collections_id,
+  })
+
   if (!banner.collections_id) {
+    console.log("⚠️ No collections_id in banner, returning null")
     return null
   }
 
