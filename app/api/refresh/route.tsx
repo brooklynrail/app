@@ -65,8 +65,9 @@ export async function GET(request: Request) {
           type: PageType.Article,
         })
 
-        revalidatePath(new URL(permalink).pathname, "page")
+        revalidatePath(new URL(permalink).pathname, "layout")
         revalidateTag("articles")
+
         return new Response(`Revalidated: ${permalink}`, { status: 200 })
       }
 

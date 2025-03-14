@@ -354,7 +354,7 @@ export const getArticle = unstable_cache(
       return null
     }
   },
-  ["article"], // cache key
+  ["articles"], // cache key
   {
     tags: ["articles"], // same tags as fetch
   },

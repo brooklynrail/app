@@ -8,6 +8,7 @@ import { getArticle, getIssueData, getOGImage, getPermalink, PageType } from "@/
 import { getNavData } from "@/lib/utils/homepage"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 
+export const revalidate = 3600 // 1 hour
 interface ArticleParams {
   year: string
   month: string
