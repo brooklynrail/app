@@ -12,8 +12,29 @@ interface NewSocialEnvironmentProps {
   banner: HomepageBanners
 }
 
-// Loading Skeleton Component
+// Loading Skeleton Components
+const EventCardSkeleton = () => (
+  <div className="px-1.5 w-36 flex-none first:pl-0">
+    <div className="rounded-xl h-24 bg-gray-200 animate-pulse overflow-hidden">
+      <div className="w-full h-full bg-gray-300" />
+    </div>
+    <div className="mt-2">
+      <div className="h-3 w-20 bg-gray-200 animate-pulse rounded" />
+      <div className="h-3 w-24 bg-gray-200 animate-pulse rounded mt-1.5" />
+    </div>
+  </div>
+)
+
+const AllEventsCardSkeleton = () => (
+  <div className="px-1.5 last:pr-0">
+    <div className="bg-gray-200 animate-pulse rounded-xl w-32 h-24" />
+  </div>
+)
+
 const LoadingSkeleton = () => {
+  // Number of skeleton cards to show while loading
+  const SKELETON_COUNT = 4
+
   return (
     <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
       <div className="flex flex-col space-y-3 h-full">
@@ -26,20 +47,10 @@ const LoadingSkeleton = () => {
         {/* Events cards skeleton */}
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {[...Array(4)].map((_, index) => (
-              <div key={index} className="px-1.5 w-36 flex-none first:pl-0">
-                <div className="rounded-xl h-24 bg-gray-200 animate-pulse overflow-hidden">
-                  <div className="w-full h-full bg-gray-300" />
-                </div>
-                <div className="mt-2">
-                  <div className="h-3 w-20 bg-gray-200 animate-pulse rounded" />
-                  <div className="h-3 w-24 bg-gray-200 animate-pulse rounded mt-1.5" />
-                </div>
-              </div>
+            {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+              <EventCardSkeleton key={`skeleton-${index}`} />
             ))}
-            <div className="px-1.5 last:pr-0">
-              <div className="bg-gray-200 animate-pulse rounded-xl w-32 h-24" />
-            </div>
+            <AllEventsCardSkeleton />
           </div>
         </div>
       </div>
@@ -78,15 +89,40 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
 
         // Ensure we have arrays, even if empty
         const safeData = {
-          currentEvents: Array.isArray(data.currentEvents) ? data.currentEvents : [],
-          featuredEvents: Array.isArray(data.featuredEvents) ? data.featuredEvents : [],
+          currentEvents: Array.isArray(data.currentEvents)
+            ? data.currentEvents
+                .map((event) => {
+                  if (!event || typeof event !== "object") {
+                    console.error("❌ Invalid event in currentEvents:", event)
+                    return null
+                  }
+                  return event
+                })
+                .filter(Boolean)
+            : [],
+          featuredEvents: Array.isArray(data.featuredEvents)
+            ? data.featuredEvents
+                .map((event) => {
+                  if (!event || typeof event !== "object") {
+                    console.error("❌ Invalid event in featuredEvents:", event)
+                    return null
+                  }
+                  return event
+                })
+                .filter(Boolean)
+            : [],
         }
 
-        console.log("🔍 Sanitized events data:", {
-          currentEventsCount: safeData.currentEvents.length,
-          featuredEventsCount: safeData.featuredEvents.length,
+        console.log("🔍 Safe data structure:", {
+          currentEvents: safeData.currentEvents.map((e) => ({
+            id: e?.id,
+            hasTitle: !!e?.title,
+            hasPeople: Array.isArray(e?.people),
+            peopleLength: e?.people?.length,
+          })),
         })
 
+        console.log("🔍 Safe data -=-=-=-=-=:", safeData)
         setEvents(safeData)
         console.log("✅ Successfully set events state")
       } catch (error) {
@@ -108,7 +144,7 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
   }
 
   if (loading) {
-    console.log("⏳ Showing loading skeleton")
+    console.log("⏳ Showing loading skeleton....")
     return <LoadingSkeleton />
   }
 
@@ -140,7 +176,24 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
             {(events.currentEvents || []).map((event: Events) => {
-              console.log("🎯 Rendering current event:", { id: event?.id, title: event?.title })
+              if (!event) {
+                console.error("❌ Null event in currentEvents array")
+                return null
+              }
+
+              // Validate required properties
+              if (!event.id || !event.title || !event.start_date) {
+                console.error("❌ Invalid event data:", event)
+                return null
+              }
+
+              console.log("🎯 Rendering current event:", {
+                id: event.id,
+                title: event.title,
+                hasStartDate: !!event.start_date,
+                hasPeople: Array.isArray(event.people),
+              })
+
               return <EventCard key={event.id} event={event} />
             })}
             {(events.featuredEvents || []).map((event: Events) => {
@@ -177,7 +230,9 @@ interface EventCardProps {
 }
 
 const EventCard = (props: EventCardProps) => {
-  const { title, slug, start_date, people, featured_image } = props.event
+  const { title, slug, start_date, people = [], featured_image } = props.event
+  console.log("🎴 EventCard data:", { title, slug, peopleLength: people?.length ?? "null" })
+
   const startDate = new Date(start_date)
 
   const today = new Date()
