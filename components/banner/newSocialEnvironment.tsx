@@ -14,9 +14,8 @@ interface NewSocialEnvironmentProps {
 
 // Content Component
 const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
-  const [events, setEvents] = useState<{ currentEvents: Events[]; featuredEvents: Events[] }>({
+  const [events, setEvents] = useState<{ currentEvents: Events[] }>({
     currentEvents: [],
-    featuredEvents: [],
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
@@ -39,19 +38,11 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
           throw new Error("Invalid data structure received")
         }
 
-        console.log("✅ Processed events data:", {
-          eventsCount: data.length,
-        })
-
         setEvents(data)
       } catch (error) {
-        console.error("❌ Error in loadEvents:", {
-          error: error instanceof Error ? error.message : "Unknown error",
-          stack: error instanceof Error ? error.stack : undefined,
-        })
         setError(error instanceof Error ? error : new Error("Failed to fetch events"))
         // Ensure we set empty arrays on error
-        setEvents({ currentEvents: [], featuredEvents: [] })
+        setEvents({ currentEvents: [] })
       } finally {
         setLoading(false)
       }
@@ -141,7 +132,6 @@ interface EventCardProps {
 
 const EventCard = (props: EventCardProps) => {
   const { title, slug, start_date, people = [], featured_image } = props.event
-  console.log("🎴 EventCard data:", { title, slug, peopleLength: people?.length ?? "null" })
 
   const startDate = new Date(start_date)
 
