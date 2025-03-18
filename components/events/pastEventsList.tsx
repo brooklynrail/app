@@ -20,19 +20,18 @@ const PastEventsList = (props: PastEventsProps & PastEventsListProps) => {
     try {
       const limit = props.limit || 32
       const offset = currentPage * limit
-      const newEventsResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/events/past?limit=${limit}&offset=${offset}`,
-        { next: { revalidate: 3600, tags: ["events"] } },
-      )
-      const newEvents = await newEventsResponse.json()
-      if (!Array.isArray(newEvents)) {
+      const moreEventsResponse = await fetch(`/api/events/past?limit=${limit}&offset=${offset}`, {
+        next: { revalidate: 3600, tags: ["events"] },
+      })
+      const moreEvents = await moreEventsResponse.json()
+      if (!Array.isArray(moreEvents)) {
         throw new Error("Fetched data is not an array")
       }
 
-      if (newEvents.length < limit) {
+      if (moreEvents.length < limit) {
         setHasMore(false)
       }
-      setAllEvents((prev) => [...prev, ...newEvents])
+      setAllEvents((prev) => [...prev, ...moreEvents])
       setCurrentPage((prev) => prev + 1)
     } catch (error) {
       console.error("Failed to load more events:", error)
