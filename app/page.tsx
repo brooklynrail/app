@@ -18,25 +18,25 @@ export interface HomePageProps {
 }
 
 async function getData(): Promise<HomePageProps> {
-  // Fetch all data in parallel for better performance
-  const [currentIssue, navData, collectionsData, homepageHeaderData] = await Promise.all([
-    getCurrentIssueData().catch((error) => {
-      console.error("❌ Error fetching current issue:", error)
-      return null
-    }),
-    getNavData().catch((error) => {
-      console.error("❌ Error fetching nav data:", error)
-      return null
-    }),
-    getHomepageCollectionData().catch((error) => {
-      console.error("❌ Error fetching collections data:", error)
-      return null
-    }),
-    getHomepageHeaderData().catch((error) => {
-      console.error("❌ Error fetching header data:", error)
-      return null
-    }),
-  ])
+  const currentIssue = await getCurrentIssueData()
+  if (!currentIssue) {
+    return notFound()
+  }
+
+  const navData = await getNavData()
+  if (!navData) {
+    return notFound()
+  }
+
+  const collectionsData = await getHomepageCollectionData()
+  if (!collectionsData) {
+    return notFound()
+  }
+
+  const homepageHeaderData = await getHomepageHeaderData()
+  if (!homepageHeaderData) {
+    return notFound()
+  }
 
   if (!currentIssue || !navData || !collectionsData || !homepageHeaderData) {
     console.error("❌ Critical data missing:", {

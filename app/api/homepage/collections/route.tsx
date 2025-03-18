@@ -72,13 +72,28 @@ export async function GET() {
 
     const homepage = homepageData as Homepage
 
-    const currentIssue = await getCurrentIssueData()
-    if (!currentIssue) {
-      // Instead of using notFound(), return a proper error response
+    const currentIssueResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/currentIssue/`, {
+      next: {
+        tags: ["homepage"],
+      },
+    })
+
+    if (!currentIssueResponse.ok) {
       return Response.json(
         {
           error: "Current issue data not found",
           details: "Unable to fetch current issue data",
+        },
+        { status: 404 },
+      )
+    }
+
+    const currentIssue = await currentIssueResponse.json()
+    if (!currentIssue) {
+      return Response.json(
+        {
+          error: "Current issue data is empty",
+          details: "Current issue data was null or undefined",
         },
         { status: 404 },
       )
