@@ -337,7 +337,8 @@ export const getArticle = unstable_cache(
     try {
       const res = await fetch(articleAPI, {
         next: {
-          tags: ["articles"],
+          tags: ["sections"],
+          revalidate: 3600,
         },
       })
       if (!res.ok) {
@@ -354,9 +355,10 @@ export const getArticle = unstable_cache(
       return null
     }
   },
-  ["articles"], // cache key
+  ["sections"], // cache key
   {
-    tags: ["articles"], // same tags as fetch
+    tags: ["sections"], // same tags as fetch
+    revalidate: 3600,
   },
 )
 
