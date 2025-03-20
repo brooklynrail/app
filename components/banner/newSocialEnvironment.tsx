@@ -17,12 +17,14 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
   const [events, setEvents] = useState<Events[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
+  const now = new Date()
+  const today = now.toISOString().split("T")[0]
 
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const data = await fetch(`/api/events/upcoming/`, {
-          next: { revalidate: 3600, tags: ["events"] },
+        const data = await fetch(`/api/events/upcoming/?cache=${today}`, {
+          cache: "no-store",
         }).then((res) => {
           if (!res.ok) {
             throw new Error("Failed to fetch current events")
