@@ -98,7 +98,7 @@ export const getSectionData = unstable_cache(
   ["sections"],
   {
     tags: ["sections"],
-    revalidate: 3600,
+    revalidate: 3600, // 1 hour
   },
 )
 
