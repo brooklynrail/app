@@ -34,6 +34,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
     event: props.eventData,
   })
 
+  const now = new Date()
   const startDate = new Date(start_date)
   const eventYear = startDate.getFullYear()
   const eventMonth = startDate.getMonth() + 1
@@ -43,7 +44,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
     const fetchEvents = async () => {
       setIsLoading(true)
       try {
-        const res = await fetch("/api/events", {
+        const res = await fetch(`/api/events?date=${now.toISOString()}`, {
           next: {
             tags: ["events"],
           },
