@@ -71,7 +71,6 @@ export async function GET(request: Request) {
         })
 
         revalidatePath(new URL(permalink).pathname, "layout")
-        revalidateTag("articles")
 
         return new Response(`Revalidated: ${permalink}`, { status: 200 })
       }
