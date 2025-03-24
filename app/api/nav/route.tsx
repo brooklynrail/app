@@ -1,52 +1,17 @@
-import directus from "@/lib/directus"
-import { readSingleton } from "@directus/sdk"
+import { getNavData } from "@/lib/utils/homepage"
 
 export async function GET() {
   try {
     try {
-      const navData = await directus.request(
-        readSingleton("homepage", {
-          fields: [
-            "id",
-            {
-              banners: [
-                {
-                  collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
-                },
-              ],
-            },
-            {
-              collections: [
-                {
-                  collections_id: [
-                    "id",
-                    "type",
-                    "kicker",
-                    "title",
-                    "limit",
-                    "links",
-                    "banner_type",
-                    {
-                      section: ["slug", "featured"],
-                    },
-                    {
-                      tribute: ["slug"],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        }),
-      )
-
+      const navData = await getNavData()
+      if (!navData) {
+        return Response.json({ error: "Navigation data not found" }, { status: 404 })
+      }
       const cleanedData = JSON.parse(JSON.stringify(navData))
-
-      // Add cache-control header
       return Response.json(cleanedData, {
         headers: {
           ContentType: "application/json",
-          CacheControl: "s-maxage=3600, stale-while-revalidate=7200",
+          CacheControl: `s-maxage=86400, stale-while-revalidate=86400`,
         },
       })
     } catch (error) {
