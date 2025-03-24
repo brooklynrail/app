@@ -1,11 +1,11 @@
+import { readField, readItems } from "@directus/sdk"
 import { DateTime } from "luxon"
-import { aggregate, readItems, readField } from "@directus/sdk"
+import { unstable_cache } from "next/cache"
 import { cache } from "react"
+import { stripHtml } from "string-strip-html"
 import directus from "../directus"
 import { Events, EventsTypes } from "../types"
-import { stripHtml } from "string-strip-html"
 import { getPermalink, PageType } from "../utils"
-import { unstable_cache } from "next/cache"
 
 export enum EventTypes {
   TheNewSocialEnvironment = "the-new-social-environment",
@@ -147,7 +147,7 @@ export const getPastEvents = unstable_cache(
  * Fetches current and featured events for display
  *
  * This function:
- * 1. Fetches current events from the API with no caching
+ * 1. Fetches current events from the API
  * 2. If fewer than 4 current events exist, also fetches featured events
  *    to fill out the display
  * 3. Featured events request includes timestamp to prevent caching
@@ -181,51 +181,55 @@ export async function fetchEvents() {
   return { currentEvents: currentEventsArray, featuredEvents }
 }
 
-export const getFeaturedEvents = cache(async () => {
-  try {
-    const eventsDataAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
-      `?fields[]=id` +
-      `&fields[]=slug` +
-      `&fields[]=title` +
-      `&fields[]=series` +
-      `&fields[]=featured_image.id` +
-      `&fields[]=featured_image.caption` +
-      `&fields[]=featured_image.alt` +
-      `&fields[]=featured_image.filename_disk` +
-      `&fields[]=featured_image.width` +
-      `&fields[]=featured_image.height` +
-      `&fields[]=featured_image.type` +
-      `&fields[]=featured_image.modified_on` +
-      `&fields[]=people` +
-      `&fields[]=people.people_id.portrait.id` +
-      `&fields[]=people.people_id.portrait.caption` +
-      `&fields[]=people.people_id.portrait.filename_disk` +
-      `&fields[]=people.people_id.portrait.width` +
-      `&fields[]=people.people_id.portrait.height` +
-      `&fields[]=people.people_id.portrait.alt` +
-      `&fields[]=people.people_id.portrait.modified_on` +
-      `&fields[]=start_date` +
-      `&fields[]=all_day` +
-      `&fields[]=youtube_id` +
-      `&sort=-start_date` +
-      `&filter[end_date][_lte]=$NOW` +
-      `&filter[featured][_eq]=true` +
-      `&filter[youtube_id][_nempty]=true` +
-      `&filter[status][_eq]=published`
+export const getFeaturedEvents = unstable_cache(
+  async () => {
+    try {
+      const eventsDataAPI =
+        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+        `?fields[]=id` +
+        `&fields[]=slug` +
+        `&fields[]=title` +
+        `&fields[]=series` +
+        `&fields[]=featured_image.id` +
+        `&fields[]=featured_image.caption` +
+        `&fields[]=featured_image.alt` +
+        `&fields[]=featured_image.filename_disk` +
+        `&fields[]=featured_image.width` +
+        `&fields[]=featured_image.height` +
+        `&fields[]=featured_image.type` +
+        `&fields[]=featured_image.modified_on` +
+        `&fields[]=people` +
+        `&fields[]=people.people_id.portrait.id` +
+        `&fields[]=people.people_id.portrait.caption` +
+        `&fields[]=people.people_id.portrait.filename_disk` +
+        `&fields[]=people.people_id.portrait.width` +
+        `&fields[]=people.people_id.portrait.height` +
+        `&fields[]=people.people_id.portrait.alt` +
+        `&fields[]=people.people_id.portrait.modified_on` +
+        `&fields[]=start_date` +
+        `&fields[]=all_day` +
+        `&fields[]=youtube_id` +
+        `&sort=-start_date` +
+        `&filter[end_date][_lte]=$NOW` +
+        `&filter[featured][_eq]=true` +
+        `&filter[youtube_id][_nempty]=true` +
+        `&filter[status][_eq]=published`
 
-    const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
-    if (!res.ok) {
-      console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
+      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      if (!res.ok) {
+        console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
+        return null
+      }
+      const data = await res.json()
+      return data.data as Events[]
+    } catch (error) {
+      console.error("Error fetching Featured Events data:", error)
       return null
     }
-    const data = await res.json()
-    return data.data as Events[]
-  } catch (error) {
-    console.error("Error fetching Featured Events data:", error)
-    return null
-  }
-})
+  },
+  ["events"],
+  { revalidate: 3600, tags: ["events"] },
+)
 
 export const getEvent = cache(async (slug: string) => {
   const event = await directus.request(
@@ -304,48 +308,42 @@ export const getEvent = cache(async (slug: string) => {
   return event[0] as Events
 })
 
-export const getAllEvents = cache(async () => {
-  try {
-    let allEvents: Events[] = []
-    let page = 1
-    let isMore = true
-    while (isMore) {
-      const eventsDataAPI =
-        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
-        `?fields[]=id` +
-        `&fields[]=slug` +
-        `&fields[]=start_date` +
-        `&fields[]=all_day` +
-        `&filter[status][_eq]=published` +
-        `&page=${page}` +
-        `&limit=100` +
-        `&offset=${page * 100 - 100}`
-      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error("Failed to fetch allEvents data")
+export const getAllEvents = unstable_cache(
+  async () => {
+    try {
+      let allEvents: Events[] = []
+      let page = 1
+      let isMore = true
+      while (isMore) {
+        const eventsDataAPI =
+          `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+          `?fields[]=id` +
+          `&fields[]=slug` +
+          `&fields[]=start_date` +
+          `&fields[]=all_day` +
+          `&filter[status][_eq]=published` +
+          `&page=${page}` +
+          `&limit=100` +
+          `&offset=${page * 100 - 100}`
+        const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+        if (!res.ok) {
+          // This will activate the closest `error.js` Error Boundary
+          throw new Error("Failed to fetch allEvents data")
+        }
+        const data = await res.json()
+        allEvents = allEvents.concat(data.data)
+        isMore = data.data.length === 100 // assumes there is another page of records
+        page++
       }
-      const data = await res.json()
-      allEvents = allEvents.concat(data.data)
-      isMore = data.data.length === 100 // assumes there is another page of records
-      page++
+      return allEvents as Events[]
+    } catch (error) {
+      console.error("Error fetching allEvents:", error)
+      return null
     }
-    return allEvents as Events[]
-  } catch (error) {
-    console.error("Error fetching allEvents:", error)
-    return null
-  }
-})
-
-export const getTotalEventsCount = cache(async () => {
-  const totalCount = await directus.request(
-    aggregate("events", {
-      aggregate: { count: "*" },
-    }),
-  )
-  const count = Number(totalCount[0].count)
-  return count ? count : 0
-})
+  },
+  ["events"],
+  { revalidate: 3600, tags: ["events"] },
+)
 
 export const generateYouTubeTags = (eventData: Events) => {
   const tags = []
