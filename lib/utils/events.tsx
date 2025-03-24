@@ -97,87 +97,51 @@ export const getUpcomingEvents = unstable_cache(
   { revalidate: 3600, tags: ["events"] },
 )
 
-export const getUpcomingEventsBanner = async () => {
-  const eventsDataAPI =
-    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
-    `?fields[]=id` +
-    `&fields[]=slug` +
-    `&fields[]=title` +
-    `&fields[]=series` +
-    `&fields[]=featured_image.id` +
-    `&fields[]=featured_image.caption` +
-    `&fields[]=featured_image.alt` +
-    `&fields[]=featured_image.filename_disk` +
-    `&fields[]=featured_image.width` +
-    `&fields[]=featured_image.height` +
-    `&fields[]=featured_image.type` +
-    `&fields[]=featured_image.modified_on` +
-    `&fields[]=people.people_id.portrait.id` +
-    `&fields[]=people.people_id.portrait.caption` +
-    `&fields[]=people.people_id.portrait.filename_disk` +
-    `&fields[]=people.people_id.portrait.width` +
-    `&fields[]=people.people_id.portrait.height` +
-    `&fields[]=people.people_id.portrait.alt` +
-    `&fields[]=people.people_id.portrait.modified_on` +
-    `&fields[]=start_date` +
-    `&fields[]=all_day` +
-    `&sort=start_date` +
-    `&limit=6` +
-    `&deep[people][_limit]=1` +
-    `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
-    `&filter[youtube_id][_empty]=true` +
-    `&filter[status][_eq]=published`
-
-  const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
-  if (!res.ok) {
-    throw new Error("Failed to fetch events data")
-  }
-  const data = await res.json()
-  const events = data.data
-  return events as Events[]
-}
-
 interface PastEventsParams {
   limit: number
   offset: number
 }
 
-export async function getPastEvents(props: PastEventsParams) {
-  const { limit, offset } = props
-  try {
-    const allEventsDataAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
-      `?fields[]=id` +
-      `&fields[]=slug` +
-      `&fields[]=type` +
-      `&fields[]=kicker` +
-      `&fields[]=title` +
-      `&fields[]=deck` +
-      `&fields[]=series` +
-      `&fields[]=start_date` +
-      `&fields[]=all_day` +
-      `&fields[]=end_date` +
-      `&fields[]=youtube_id` +
-      `&filter[start_date][_lte]=$NOW` +
-      `&filter[type][_in]=the-new-social-environment,common-ground` +
-      `&filter[youtube_id][_nempty]=true` +
-      `&filter[status][_eq]=published` +
-      `&page=${Math.floor(offset / limit) + 1}` +
-      `&sort[]=-start_date` +
-      `&limit=${limit}`
+export const getPastEvents = unstable_cache(
+  async (props: PastEventsParams) => {
+    const { limit, offset } = props
+    try {
+      const allEventsDataAPI =
+        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+        `?fields[]=id` +
+        `&fields[]=slug` +
+        `&fields[]=type` +
+        `&fields[]=kicker` +
+        `&fields[]=title` +
+        `&fields[]=deck` +
+        `&fields[]=series` +
+        `&fields[]=start_date` +
+        `&fields[]=all_day` +
+        `&fields[]=end_date` +
+        `&fields[]=youtube_id` +
+        `&filter[start_date][_lte]=$NOW` +
+        `&filter[type][_in]=the-new-social-environment,common-ground` +
+        `&filter[youtube_id][_nempty]=true` +
+        `&filter[status][_eq]=published` +
+        `&page=${Math.floor(offset / limit) + 1}` +
+        `&sort[]=-start_date` +
+        `&limit=${limit}`
 
-    const res = await fetch(allEventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
-    if (!res.ok) {
-      console.error(`Failed to fetch All Events data: ${res.statusText}`)
+      const res = await fetch(allEventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      if (!res.ok) {
+        console.error(`Failed to fetch All Events data: ${res.statusText}`)
+        return null
+      }
+      const data = await res.json()
+      return data.data as Events[]
+    } catch (error) {
+      console.error("Error fetching All Events data:", error)
       return null
     }
-    const data = await res.json()
-    return data.data as Events[]
-  } catch (error) {
-    console.error("Error fetching All Events data:", error)
-    return null
-  }
-}
+  },
+  ["events"],
+  { revalidate: 3600, tags: ["events"] },
+)
 
 /**
  * Fetches current and featured events for display
