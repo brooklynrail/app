@@ -204,7 +204,7 @@ export async function fetchEvents() {
   let featuredEvents = []
   if (currentEventsArray.length < 4) {
     const timestamp = new Date().getTime()
-    featuredEvents = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/featured?t=${timestamp}`, {
+    featuredEvents = await fetch(`/api/events/featured?t=${timestamp}`, {
       next: { revalidate: 3600, tags: ["events"] },
     }).then((res) => {
       if (!res.ok) {
