@@ -5,6 +5,7 @@ import directus from "../directus"
 import { Events, EventsTypes } from "../types"
 import { stripHtml } from "string-strip-html"
 import { getPermalink, PageType } from "../utils"
+import { unstable_cache } from "next/cache"
 
 export enum EventTypes {
   TheNewSocialEnvironment = "the-new-social-environment",
@@ -39,25 +40,48 @@ export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) =
   return type ? type.text : typeValue // Return readable text or fallback to value
 }
 
-export const getUpcomingEvents = cache(async () => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
-      next: {
-        revalidate: 3600,
-        tags: ["events"],
-      },
-    })
-    if (!res.ok) {
-      const text = await res.text()
-      console.error("API Response:", text)
-      throw new Error(`API returned ${res.status}: ${text}`)
+export const getUpcomingEvents = unstable_cache(
+  async () => {
+    try {
+      const eventsDataAPI =
+        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+        `?fields[]=id` +
+        `&fields[]=slug` +
+        `&fields[]=type` +
+        `&fields[]=kicker` +
+        `&fields[]=title` +
+        `&fields[]=deck` +
+        `&fields[]=summary` +
+        `&fields[]=series` +
+        `&fields[]=start_date` +
+        `&fields[]=end_date` +
+        `&fields[]=all_day` +
+        `&fields[]=youtube_id` +
+        `&sort=start_date` +
+        `&filter[end_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
+        `&filter[youtube_id][_empty]=true` +
+        `&filter[status][_eq]=published`
+
+      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      if (!res.ok) {
+        throw new Error("Failed to fetch events data")
+      }
+
+      const data = await res.json()
+      console.log("data", data.data)
+      return data.data
+    } catch (error) {
+      console.error("❌ Error getting upcoming events:", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined,
+      })
+
+      return null
     }
-    return res.json()
-  } catch (error) {
-    console.error("Failed to fetch events data:", error, `${process.env.NEXT_PUBLIC_API_URL}/events`)
-    return null
-  }
-})
+  },
+  ["events"],
+  { revalidate: 3600, tags: ["events"] },
+)
 
 export const getUpcomingEventsBanner = async () => {
   const eventsDataAPI =
