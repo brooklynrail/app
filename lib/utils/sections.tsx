@@ -55,7 +55,7 @@ export const getArticlesBySection = cache(async (props: ArticlesBySectionProps) 
       `&sort[]=-issue.published` +
       `&sort[]=sort`
 
-    const response = await fetch(articlesAPI, { next: { revalidate: 3600, tags: ["articles"] } })
+    const response = await fetch(articlesAPI, { next: { revalidate: 3600, tags: ["sections"] } })
     const articlesData = await response.json()
 
     return articlesData.data as Articles[]
@@ -95,7 +95,11 @@ export const getSectionData = unstable_cache(
       return null
     }
   },
-  ["sectionData"],
+  ["sections"],
+  {
+    tags: ["sections"],
+    revalidate: 3600, // 1 hour
+  },
 )
 
 // Group articles by issue

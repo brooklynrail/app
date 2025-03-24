@@ -1,14 +1,7 @@
 export const revalidate = 3600 // 1 hour cache
 
 export async function GET(request: Request) {
-  const isRevalidation = request.headers.get("x-nextjs-revalidate") === "1"
-
   try {
-    console.log("📡 API Route called:", {
-      context: isRevalidation ? "revalidation" : "normal request",
-      timestamp: new Date().toISOString(),
-    })
-
     const eventsDataAPI =
       `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
       `?fields[]=id` +
@@ -35,7 +28,7 @@ export async function GET(request: Request) {
       `&sort=start_date` +
       `&limit=6` +
       `&deep[people][_limit]=1` +
-      `&filter[start_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
+      `&filter[start_date][_gte]=$NOW(-1+days)` +
       `&filter[youtube_id][_empty]=true` +
       `&filter[status][_eq]=published`
 
@@ -43,20 +36,9 @@ export async function GET(request: Request) {
     if (!res.ok) {
       throw new Error("Failed to fetch events data")
     }
-    const data = await res.json()
-    const upcomingEvents = data.data
 
-    if (!upcomingEvents) {
-      console.error("❌ No events data:", {
-        context: isRevalidation ? "revalidation" : "normal request",
-      })
-      return new Response(JSON.stringify({ currentEvents: [], featuredEvents: [] }), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-    }
+    const data = await res.json()
+    const upcomingEvents = data.data || null
 
     return Response.json(upcomingEvents, {
       headers: {
@@ -66,16 +48,10 @@ export async function GET(request: Request) {
     })
   } catch (error) {
     console.error("❌ Error in events API:", {
-      context: isRevalidation ? "revalidation" : "normal request",
       error: error instanceof Error ? error.message : "Unknown error",
       stack: error instanceof Error ? error.stack : undefined,
     })
 
-    // During revalidation, return empty arrays instead of error
-    if (isRevalidation) {
-      return Response.json({ currentEvents: [], featuredEvents: [] })
-    }
-
-    return Response.json({ error: "Failed to fetch events" }, { status: 500 })
+    return Response.json(null, { status: 200 })
   }
 }

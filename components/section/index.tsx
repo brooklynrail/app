@@ -80,6 +80,12 @@ const Section = (props: SectionProps & NavProps) => {
     try {
       const newArticlesResponse = await fetch(
         `/api/sections/?slug=${sectionData.slug}&limit=${limit}&offset=${currentPage * limit}`,
+        {
+          next: {
+            tags: ["sections"],
+            revalidate: 3600,
+          },
+        },
       )
       const newArticles = await newArticlesResponse.json()
       if (!Array.isArray(newArticles)) {

@@ -72,9 +72,13 @@ export async function GET() {
 
     const homepage = homepageData as Homepage
 
-    const currentIssue = await getCurrentIssueData()
-    if (!currentIssue) {
-      // Instead of using notFound(), return a proper error response
+    const currentIssueResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/currentIssue/`, {
+      next: {
+        tags: ["homepage"],
+      },
+    })
+
+    if (!currentIssueResponse.ok) {
       return Response.json(
         {
           error: "Current issue data not found",
@@ -83,6 +87,19 @@ export async function GET() {
         { status: 404 },
       )
     }
+
+    const currentIssue = await currentIssueResponse.json()
+    if (!currentIssue) {
+      return Response.json(
+        {
+          error: "Current issue data is empty",
+          details: "Current issue data was null or undefined",
+        },
+        { status: 404 },
+      )
+    }
+
+    console.log("🏠 Homepage data:", homepage)
 
     const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
       if (collection.collections_id && collection.collections_id.section) {
@@ -99,6 +116,8 @@ export async function GET() {
     })
 
     homepage.collections = await Promise.all(allCollections)
+    console.log("🏠 Homepage collections:", homepage.collections)
+    console.log("🏠 Homepage collection:", homepage.collections[0])
 
     // Simply include the currentIssue string in the response
     const responseData = {

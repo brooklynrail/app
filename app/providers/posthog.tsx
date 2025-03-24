@@ -2,7 +2,7 @@
 "use client"
 import posthog from "posthog-js"
 import { PostHogProvider } from "posthog-js/react"
-import { ReactNode, useEffect } from "react"
+import { ReactNode, Suspense, useEffect } from "react"
 
 export function RailPostHogProvider({ children }: { children: ReactNode }) {
   const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
@@ -22,5 +22,9 @@ export function RailPostHogProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  return <PostHogProvider client={posthog}>{children}</PostHogProvider>
+  return (
+    <Suspense fallback={null}>
+      <PostHogProvider client={posthog}>{children}</PostHogProvider>
+    </Suspense>
+  )
 }
