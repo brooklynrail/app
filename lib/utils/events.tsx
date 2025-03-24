@@ -57,6 +57,21 @@ export const getUpcomingEvents = unstable_cache(
         `&fields[]=end_date` +
         `&fields[]=all_day` +
         `&fields[]=youtube_id` +
+        `&fields[]=featured_image.id` +
+        `&fields[]=featured_image.caption` +
+        `&fields[]=featured_image.alt` +
+        `&fields[]=featured_image.filename_disk` +
+        `&fields[]=featured_image.width` +
+        `&fields[]=featured_image.height` +
+        `&fields[]=featured_image.type` +
+        `&fields[]=featured_image.modified_on` +
+        `&fields[]=people.people_id.portrait.id` +
+        `&fields[]=people.people_id.portrait.caption` +
+        `&fields[]=people.people_id.portrait.filename_disk` +
+        `&fields[]=people.people_id.portrait.width` +
+        `&fields[]=people.people_id.portrait.height` +
+        `&fields[]=people.people_id.portrait.alt` +
+        `&fields[]=people.people_id.portrait.modified_on` +
         `&sort=start_date` +
         `&filter[end_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
         `&filter[youtube_id][_empty]=true` +
@@ -68,7 +83,6 @@ export const getUpcomingEvents = unstable_cache(
       }
 
       const data = await res.json()
-      console.log("data", data.data)
       return data.data
     } catch (error) {
       console.error("❌ Error getting upcoming events:", {
