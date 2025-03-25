@@ -26,7 +26,6 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
           cache: "no-store",
         })
         const events = await eventsData.json()
-        console.log("📥 Events data received:", events)
 
         if (!events || !Array.isArray(events)) {
           setEvents(null)
