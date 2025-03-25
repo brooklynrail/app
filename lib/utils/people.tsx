@@ -203,8 +203,6 @@ export const getAllContributors = unstable_cache(
       let hasMorePages = true
 
       while (hasMorePages) {
-        console.log(`📚 Fetching contributors page ${page}...`)
-
         const contributors = await directus.request(
           readItems("contributors", {
             fields: ["id", "slug", "first_name", "last_name", "articles"],

@@ -72,6 +72,8 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
     return <Loading />
   }
 
+  console.log("Homepage Events ================", events)
+
   return (
     <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
       <div className="flex flex-col space-y-3 h-full">
