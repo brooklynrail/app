@@ -3,8 +3,8 @@ import { getPermalink, PageType } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { usePopup } from "../popupProvider"
 import { stripHtml } from "string-strip-html"
+import { usePopup } from "../popupProvider"
 interface CoverImagesProps {
   currentIssue: Issues
   clickToIssue: boolean
@@ -13,6 +13,10 @@ interface CoverImagesProps {
 
 export const CoverImages = (props: CoverImagesProps) => {
   const { currentIssue, clickToIssue, priority } = props
+
+  // NOTE: clickToIssue is TRUE all places except for the Issue page where it is FALSE
+  // This is so that the cover images dont link to itself on the Issue page
+
   const coversRef = useRef<HTMLDivElement | null>(null)
   const [containerHeight, setContainerHeight] = useState<number | null>(null)
   const [containerWidth, setContainerWidth] = useState<number | null>(null)
@@ -38,7 +42,7 @@ export const CoverImages = (props: CoverImagesProps) => {
 
   if (clickToIssue) {
     return (
-      <div className="w-full h-full bg-zinc-700 bg-opacity-10 min-h-28 relative" ref={coversRef}>
+      <div className="w-full h-full min-h-48 relative" ref={coversRef}>
         {containerHeight && containerWidth && (
           <Link href={issuePermalink}>
             <Covers
@@ -105,15 +109,21 @@ const Covers = (props: CoversProps) => {
     }
     const zindex = covers.length * 1 - index * 1
 
-    const width = (containerHeight * cover.width) / cover.height
+    // Calculate the aspect ratio of the cover
+    const aspectRatio = cover.width / cover.height
+
+    // Start with the available width and calculate height based on aspect ratio
+    const width = containerWidth
+    const height = width / aspectRatio
+
+    // If calculated height is greater than container height, scale down proportionally
+    const finalHeight = height > containerHeight ? containerHeight : height
+    const finalWidth = finalHeight * aspectRatio
 
     const alt = cover.caption ? `${stripHtml(cover.caption).result}` : `Cover image for ${currentIssue.title}`
 
-    // in order to caculate how far to space out the stack of cover images, we need to know
-    // - the average width of all the covers
-    // - the available width of the container
-    const diff = containerWidth - width
-
+    // Calculate spacing between covers
+    const diff = containerWidth - finalWidth > 0 ? containerWidth - finalWidth : 0
     const shiftleft = index === 0 ? 0 : (diff / (numCovers - 1)) * index
 
     return (
@@ -124,14 +134,14 @@ const Covers = (props: CoversProps) => {
         style={{
           left: shiftleft,
           zIndex: zindex,
-          height: containerHeight,
-          width: "auto",
+          height: `${finalHeight}px`,
+          width: `${finalWidth}px`,
           boxShadow: "4px 4px 4px 0px rgba(0, 0, 0, 0.25)",
         }}
         id={`cover-${index + 1}`}
         src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`}
-        width={cover.width}
-        height={cover.height}
+        width={finalWidth}
+        height={finalHeight}
         alt={alt}
         sizes="25vw"
         onClick={handleClick}

@@ -50,34 +50,30 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
   }
 
   const allEvents = events && events.length > 0 && (
-    <div className="flex space-x-6 h-full pb-3">
-      <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-        {events.map((event: Events) => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </div>
-    </div>
+    <>
+      {events.map((event: Events) => (
+        <EventCard key={event.id} event={event} />
+      ))}
+    </>
   )
 
   return (
-    <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
-      <div className="flex flex-col space-y-3 h-full">
-        <div className="w-full">
-          <h3 className="text-sm tablet-lg:text-lg font-medium">
-            <Link href="/events">{collections_id.title}</Link>
-          </h3>
-          {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
-        </div>
-        <div className="flex space-x-6 h-full pb-3">
-          <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {loading || !events ? (
-              <Loading />
-            ) : (
-              <>
-                {allEvents} <AllEventsCard type="past" />
-              </>
-            )}
-          </div>
+    <div className="flex flex-col space-y-3 h-full">
+      <div className="w-full">
+        <h3 className="text-sm tablet-lg:text-lg font-medium">
+          <Link href="/events">{collections_id.title}</Link>
+        </h3>
+        {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
+      </div>
+      <div className="flex space-x-6 h-full pb-3">
+        <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
+          {loading || !events ? (
+            <Loading />
+          ) : (
+            <>
+              {allEvents} <AllEventsCard type="past" />
+            </>
+          )}
         </div>
       </div>
     </div>
