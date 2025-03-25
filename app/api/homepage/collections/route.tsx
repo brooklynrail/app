@@ -23,6 +23,7 @@ export async function GET() {
                     "title",
                     "limit",
                     "links",
+                    "status",
                     "banner_type",
                     {
                       section: ["slug", "featured", "description"],
@@ -63,6 +64,17 @@ export async function GET() {
               ],
             },
           ],
+          filter: {
+            _and: [
+              {
+                collections: {
+                  collections_id: {
+                    status: { _eq: `published` },
+                  },
+                },
+              },
+            ],
+          },
         }),
       )
     } catch (error) {

@@ -15,7 +15,17 @@ export async function GET() {
             {
               banners: [
                 {
-                  collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
+                  collections_id: [
+                    "id",
+                    "type",
+                    "kicker",
+                    "title",
+                    "description",
+                    "links",
+                    "limit",
+                    "status",
+                    "banner_type",
+                  ],
                 },
               ],
             },
@@ -26,6 +36,17 @@ export async function GET() {
               video_covers_stills: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
             },
           ],
+          filter: {
+            _and: [
+              {
+                banners: {
+                  collections_id: {
+                    status: { _eq: `published` },
+                  },
+                },
+              },
+            ],
+          },
         }),
       )
     } catch (error) {
