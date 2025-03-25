@@ -16,7 +16,6 @@ interface NewSocialEnvironmentProps {
 const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
   const [events, setEvents] = useState<Events[] | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
   const now = new Date()
   const today = now.toISOString().split("T")[0]
 
@@ -37,8 +36,6 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         setEvents(events)
       } catch (error) {
         console.error("❌ Error in loadEvents:", error)
-        // Keep existing events state on error
-        setError(error instanceof Error ? error : new Error("Failed to fetch events"))
       } finally {
         setLoading(false)
       }
@@ -53,11 +50,15 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
     return <></>
   }
 
-  // Only show loading on initial mount
-  if (loading && !events) {
-    console.log("⏳ Initial load, showing loading skeleton....")
-    return <Loading />
-  }
+  const allEvents = events && events.length > 0 && (
+    <div className="flex space-x-6 h-full pb-3">
+      <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
+        {events.map((event: Events) => (
+          <EventCard key={event.id} event={event} />
+        ))}
+      </div>
+    </div>
+  )
 
   return (
     <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
@@ -70,12 +71,13 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {events && events.length > 0 ? (
-              events.map((event: Events) => <EventCard key={event.id} event={event} />)
-            ) : (
+            {loading || !events ? (
               <Loading />
+            ) : (
+              <>
+                {allEvents} <AllEventsCard type="past" />
+              </>
             )}
-            <AllEventsCard type="past" />
           </div>
         </div>
       </div>
