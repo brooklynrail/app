@@ -12,6 +12,7 @@ export async function GET() {
           "start_date",
           "end_date",
           "status",
+          "show_details",
           "opening_date",
           "opening_details",
           "show_artists_list",
