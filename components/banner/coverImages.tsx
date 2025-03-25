@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { usePopup } from "../popupProvider"
-
+import { stripHtml } from "string-strip-html"
 interface CoverImagesProps {
   currentIssue: Issues
   clickToIssue: boolean
@@ -107,6 +107,8 @@ const Covers = (props: CoversProps) => {
 
     const width = (containerHeight * cover.width) / cover.height
 
+    const alt = cover.caption ? `${stripHtml(cover.caption).result}` : `Cover image for ${currentIssue.title}`
+
     // in order to caculate how far to space out the stack of cover images, we need to know
     // - the average width of all the covers
     // - the available width of the container
@@ -130,7 +132,7 @@ const Covers = (props: CoversProps) => {
         src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`}
         width={cover.width}
         height={cover.height}
-        alt={"alt"}
+        alt={alt}
         sizes="25vw"
         onClick={handleClick}
       />
