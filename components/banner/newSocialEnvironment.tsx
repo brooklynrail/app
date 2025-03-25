@@ -33,15 +33,15 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         })
         console.log("📥 Events data received:", data)
 
-        // Extra defensive checks for revalidation
         if (!data) {
           throw new Error("Invalid data structure received")
         }
 
         setEvents(data)
       } catch (error) {
+        console.error("❌ Error in loadEvents:", error)
+        // Keep existing events state on error
         setError(error instanceof Error ? error : new Error("Failed to fetch events"))
-        setEvents(null)
       } finally {
         setLoading(false)
       }
@@ -56,23 +56,17 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
     return null
   }
 
-  if (loading) {
-    console.log("⏳ Showing loading skeleton....")
+  // Only show loading on initial mount
+  if (loading && !events) {
+    console.log("⏳ Initial load, showing loading skeleton....")
     return <Loading />
   }
 
-  if (error) {
-    console.log("❌ Rendering error state")
-    return <Loading /> // Or a proper error UI component
-  }
-
-  // Defensive check before rendering
-  if (!Array.isArray(events)) {
-    console.error("❌ Events arrays are not valid:", events)
+  // If we have no events and we're not loading, show loading state
+  if (!events || !Array.isArray(events)) {
+    console.error("❌ No valid events data", error)
     return <Loading />
   }
-
-  console.log("Homepage Events ================", events)
 
   return (
     <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last">
@@ -85,21 +79,9 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {events.map((event: Events) => {
-              if (!event) {
-                console.error("❌ Null event in currentEvents array")
-                return null
-              }
-
-              // Validate required properties
-              if (!event.id || !event.title || !event.start_date) {
-                console.error("❌ Invalid event data:", event)
-                return null
-              }
-
-              return <EventCard key={event.id} event={event} />
-            })}
-
+            {events.map((event: Events) => (
+              <EventCard key={event.id} event={event} />
+            ))}
             <AllEventsCard type="past" />
           </div>
         </div>
