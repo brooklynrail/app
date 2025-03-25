@@ -4,7 +4,7 @@ import Paper from "../paper"
 import ExhibitionCard from "./exhibitionCard"
 
 const ExhibitionsPage = (props: ExhibitionsProps) => {
-  const { allExhibitions, navData, permalink } = props
+  const { allExhibitions, navData } = props
 
   return (
     <Paper pageClass={`theme-exhibitions`} navData={navData}>
