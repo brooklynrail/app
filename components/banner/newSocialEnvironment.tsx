@@ -50,18 +50,12 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
   const { collections_id } = banner
   if (!collections_id) {
     console.log("⚠️ No collections_id in banner")
-    return null
+    return <></>
   }
 
   // Only show loading on initial mount
   if (loading && !events) {
     console.log("⏳ Initial load, showing loading skeleton....")
-    return <Loading />
-  }
-
-  // If we have no events and we're not loading, show loading state
-  if (!events || !Array.isArray(events)) {
-    console.error("❌ No valid events data", error)
     return <Loading />
   }
 
@@ -76,9 +70,11 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {events.map((event: Events) => (
-              <EventCard key={event.id} event={event} />
-            ))}
+            {events && events.length > 0 ? (
+              events.map((event: Events) => <EventCard key={event.id} event={event} />)
+            ) : (
+              <Loading />
+            )}
             <AllEventsCard type="past" />
           </div>
         </div>
@@ -92,8 +88,8 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
   const { banner } = props
 
   if (!banner.collections_id) {
-    console.log("⚠️ No collections_id in banner, returning null")
-    return null
+    console.log("No collections_id in banner, returning null")
+    return <></>
   }
 
   return <EventsContent banner={banner} />
