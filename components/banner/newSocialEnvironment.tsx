@@ -23,21 +23,18 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const data = await fetch(`/api/events/upcoming/?cache=${today}`, {
+        const eventsData = await fetch(`/api/events/upcoming/?cache=${today}`, {
           cache: "no-store",
-        }).then((res) => {
-          if (!res.ok) {
-            throw new Error("Failed to fetch current events")
-          }
-          return res.json()
         })
-        console.log("📥 Events data received:", data)
+        const events = await eventsData.json()
+        console.log("📥 Events data received:", events)
 
-        if (!data) {
+        if (!events || !Array.isArray(events)) {
+          setEvents(null)
           throw new Error("Invalid data structure received")
         }
 
-        setEvents(data)
+        setEvents(events)
       } catch (error) {
         console.error("❌ Error in loadEvents:", error)
         // Keep existing events state on error

@@ -231,7 +231,6 @@ export const getAllContributors = unstable_cache(
         page++
       }
 
-      console.log(`✅ Fetched ${allContributors.length} total contributors`)
       return allContributors
     } catch (error) {
       console.error("❌ Error fetching all contributors:", {
