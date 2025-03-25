@@ -86,7 +86,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
     const fetchData = async () => {
       setIsLoading(true)
       try {
-        const contributorsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contributors`)
+        const contributorsResponse = await fetch(`/api/contributors`)
         if (!contributorsResponse.ok) {
           throw new Error("Failed to fetch contributors")
         }
@@ -110,7 +110,7 @@ const ContributorsMerge = (props: ContributorsMergeProps) => {
           lastName: selectedContributor.last_name,
         }).toString()
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contributors?${queryParams}`)
+        const response = await fetch(`/api/contributors?${queryParams}`)
         if (response.ok) {
           const contributors = await response.json()
           console.log("Fetched contributors from API:", contributors)

@@ -1,6 +1,6 @@
 import directus from "@/lib/directus"
 import { Articles, Homepage, HomepageCollections } from "@/lib/types"
-import { getCollectionArticles, getCurrentIssueData } from "@/lib/utils/homepage"
+import { getCollectionArticles } from "@/lib/utils/homepage"
 import { readSingleton } from "@directus/sdk"
 
 export const revalidate = 3600 // 1 hour cache
@@ -99,8 +99,6 @@ export async function GET() {
       )
     }
 
-    console.log("🏠 Homepage data:", homepage)
-
     const allCollections = homepage.collections.map(async (collection: HomepageCollections, i: number) => {
       if (collection.collections_id && collection.collections_id.section) {
         const thisSectionArticles = getCollectionArticles({
@@ -116,8 +114,6 @@ export async function GET() {
     })
 
     homepage.collections = await Promise.all(allCollections)
-    console.log("🏠 Homepage collections:", homepage.collections)
-    console.log("🏠 Homepage collection:", homepage.collections[0])
 
     // Simply include the currentIssue string in the response
     const responseData = {

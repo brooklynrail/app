@@ -3,30 +3,58 @@ import { readSingleton } from "@directus/sdk"
 import directus from "../directus"
 import { Articles, Homepage, Issues } from "../types"
 import { unstable_cache } from "next/cache"
+import { notFound } from "next/navigation"
 
 export const getNavData = unstable_cache(
   async (): Promise<Homepage | null> => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/nav/`, {
-        next: {
-          tags: ["homepage"],
-        },
-      })
+      const navData = await directus.request(
+        readSingleton("homepage", {
+          fields: [
+            "id",
+            {
+              banners: [
+                {
+                  collections_id: ["id", "type", "kicker", "title", "description", "links", "limit", "banner_type"],
+                },
+              ],
+            },
+            {
+              collections: [
+                {
+                  collections_id: [
+                    "id",
+                    "type",
+                    "kicker",
+                    "title",
+                    "limit",
+                    "links",
+                    "banner_type",
+                    {
+                      section: ["slug", "featured"],
+                    },
+                    {
+                      tribute: ["slug"],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        }),
+      )
 
-      if (!res.ok) {
-        const text = await res.text()
-        console.error("API Response:", text)
-        throw new Error(`API returned ${res.status}: ${text}`)
-      }
+      const cleanedData = JSON.parse(JSON.stringify(navData))
 
-      return res.json()
+      // Add cache-control header
+      return cleanedData
     } catch (error) {
-      console.error("Failed to fetch nav data:", error, `${process.env.NEXT_PUBLIC_API_URL}/nav/`)
+      console.error("Failed to get nav data:", error)
       return null
     }
   },
   ["homepage"],
-  { revalidate: 3600, tags: ["homepage"] },
+  { revalidate: 86400, tags: ["homepage"] },
 )
 
 export const getHomepageCollectionData = unstable_cache(
@@ -51,7 +79,7 @@ export const getHomepageCollectionData = unstable_cache(
     }
   },
   ["homepage"],
-  { revalidate: 3600, tags: ["homepage"] },
+  { revalidate: 86400, tags: ["homepage"] },
 )
 
 export const getHomepageHeaderData = unstable_cache(
@@ -80,7 +108,7 @@ export const getHomepageHeaderData = unstable_cache(
     }
   },
   ["homepage"],
-  { revalidate: 3600, tags: ["homepage"] },
+  { revalidate: 86400, tags: ["homepage"] },
 )
 
 export const getCurrentIssueSlug = unstable_cache(
@@ -110,32 +138,48 @@ export const getCurrentIssueSlug = unstable_cache(
     }
   },
   ["homepage"],
-  { revalidate: 3600, tags: ["homepage"] },
+  { revalidate: 86400, tags: ["homepage"] },
 )
 
 export const getCurrentIssueData = unstable_cache(
   async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/currentIssue/`, {
-        next: {
-          tags: ["homepage"],
-        },
-      })
+      const data = await directus.request(
+        readSingleton("global_settings", {
+          fields: [
+            {
+              current_issue: [
+                "id",
+                "title",
+                "slug",
+                "summary",
+                "special_issue",
+                { cover_1: ["id", "width", "height", "filename_disk", "caption"] },
+                { cover_2: ["id", "width", "height", "filename_disk", "caption"] },
+                { cover_3: ["id", "width", "height", "filename_disk", "caption"] },
+                { cover_4: ["id", "width", "height", "filename_disk", "caption"] },
+                { cover_5: ["id", "width", "height", "filename_disk", "caption"] },
+                { cover_6: ["id", "width", "height", "filename_disk", "caption"] },
+              ],
+            },
+          ],
+        }),
+      )
 
-      if (!res.ok) {
-        const text = await res.text()
-        console.error("API Response:", text)
-        throw new Error(`API returned ${res.status}: ${text}`)
+      if (!data) {
+        return notFound()
       }
 
-      return res.json() as Promise<Issues>
+      const currentIssue = data.current_issue as Issues
+
+      return currentIssue
     } catch (error) {
-      console.error("Failed to fetch nav data:", error, `${process.env.NEXT_PUBLIC_API_URL}/currentIssue/`)
+      console.error("Failed to get current issue data:", error)
       return null
     }
   },
   ["homepage"],
-  { revalidate: 3600, tags: ["homepage"] },
+  { revalidate: 86400, tags: ["homepage"] },
 )
 
 interface CollectionArticlesProps {
@@ -206,5 +250,5 @@ export const getCollectionArticles = unstable_cache(
     }
   },
   ["homepage"],
-  { revalidate: 3600, tags: ["homepage"] },
+  { revalidate: 86400, tags: ["homepage"] },
 )

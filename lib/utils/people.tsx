@@ -4,6 +4,7 @@ import { cache } from "react"
 import directus from "../directus"
 import { Contributors, People } from "../types"
 import { getPermalink, PageType } from "../utils"
+import { unstable_cache } from "next/cache"
 
 interface MergeContributorsProps {
   selectedContributor: Contributors
@@ -194,31 +195,57 @@ export const getPersonMerge = cache(async (personId: string) => {
   }
 })
 
-export const getAllContributors = cache(async () => {
-  try {
-    let contributorPages: Contributors[] = []
-    let page = 1
-    let isMore = true
-    while (isMore) {
-      const contributorsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/contributors?fields[]=id&fields[]=slug&fields[]=first_name&fields[]=last_name&fields[]=articles&sort=sort,first_name&filter[status][_eq]=published&filter[articles][_nnull]=true&page=${page}&limit=100&offset=${page * 100 - 100}`
-      const res = await fetch(contributorsAPI)
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error("Failed to fetch getAllContributors data")
-      }
-      const data = await res.json()
-      contributorPages = contributorPages.concat(data.data)
-      isMore = data.data.length === 100 // assumes there is another page of records
-      page++
-    }
+export const getAllContributors = unstable_cache(
+  async () => {
+    try {
+      let allContributors: Contributors[] = []
+      let page = 1
+      let hasMorePages = true
 
-    return contributorPages
-  } catch (error) {
-    // Handle the error here
-    console.error("Failed to fetch getAllContributors data", error)
-    return null
-  }
-})
+      while (hasMorePages) {
+        const contributors = await directus.request(
+          readItems("contributors", {
+            fields: ["id", "slug", "first_name", "last_name", "articles"],
+            sort: ["sort", "first_name"],
+            filter: {
+              status: {
+                _eq: "published",
+              },
+              articles: {
+                _nnull: true,
+              },
+            },
+            page: page,
+            limit: 100,
+            offset: (page - 1) * 100,
+          }),
+        )
+
+        if (!contributors || contributors.length === 0) {
+          hasMorePages = false
+          break
+        }
+
+        allContributors = allContributors.concat(contributors as Contributors[])
+        hasMorePages = contributors.length === 100 // Check if we got a full page
+        page++
+      }
+
+      return allContributors
+    } catch (error) {
+      console.error("❌ Error fetching all contributors:", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined,
+      })
+      return null
+    }
+  },
+  ["contributors"],
+  {
+    revalidate: 86400, // 24 hours
+    tags: ["contributors"],
+  },
+)
 
 interface ContributorFilterParams {
   firstName?: string

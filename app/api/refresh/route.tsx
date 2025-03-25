@@ -37,6 +37,11 @@ export async function GET(request: Request) {
         return new Response(`Revalidated Sections`, { status: 200 })
       }
 
+      case RevalidateType.Contributors: {
+        revalidateTag("contributors")
+        return new Response(`Revalidated: contributors`, { status: 200 })
+      }
+
       case RevalidateType.GlobalSettings: {
         revalidateTag("homepage")
         return new Response(`Revalidated Global Settings`, { status: 200 })
@@ -74,32 +79,6 @@ export async function GET(request: Request) {
 
         return new Response(`Revalidated: ${permalink}`, { status: 200 })
       }
-
-      case RevalidateType.Contributors: {
-        if (!id) {
-          return new Response("id is required", { status: 400 })
-        }
-
-        const contributorResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contributor/id/${id}`, {
-          next: { revalidate: 3600, tags: ["contributors"] },
-        })
-        if (!contributorResponse.ok) {
-          throw new Error("Failed to fetch contributor")
-        }
-
-        const contributorData: Contributors = await contributorResponse.json()
-        const { mainPath, additionalPaths } = getContributorRevalidationPaths(contributorData)
-
-        revalidatePath(mainPath, "page")
-        additionalPaths.forEach((path) => {
-          revalidatePath(path, "page")
-        })
-        revalidateTag("contributors")
-
-        return new Response(`Revalidated: ${mainPath}`, { status: 200 })
-      }
-
-      // Similar pattern for Events and Pages...
 
       default:
         return new Response("Content type not supported", { status: 400 })

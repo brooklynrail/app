@@ -23,25 +23,22 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const data = await fetch(`/api/events/upcoming/?cache=${today}`, {
+        const eventsData = await fetch(`/api/events/upcoming/?cache=${today}`, {
           cache: "no-store",
-        }).then((res) => {
-          if (!res.ok) {
-            throw new Error("Failed to fetch current events")
-          }
-          return res.json()
         })
-        console.log("📥 Events data received:", data)
+        const events = await eventsData.json()
+        console.log("📥 Events data received:", events)
 
-        // Extra defensive checks for revalidation
-        if (!data) {
+        if (!events || !Array.isArray(events)) {
+          setEvents(null)
           throw new Error("Invalid data structure received")
         }
 
-        setEvents(data)
+        setEvents(events)
       } catch (error) {
+        console.error("❌ Error in loadEvents:", error)
+        // Keep existing events state on error
         setError(error instanceof Error ? error : new Error("Failed to fetch events"))
-        setEvents(null)
       } finally {
         setLoading(false)
       }
@@ -53,22 +50,12 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
   const { collections_id } = banner
   if (!collections_id) {
     console.log("⚠️ No collections_id in banner")
-    return null
+    return <></>
   }
 
-  if (loading) {
-    console.log("⏳ Showing loading skeleton....")
-    return <Loading />
-  }
-
-  if (error) {
-    console.log("❌ Rendering error state")
-    return <Loading /> // Or a proper error UI component
-  }
-
-  // Defensive check before rendering
-  if (!Array.isArray(events)) {
-    console.error("❌ Events arrays are not valid:", events)
+  // Only show loading on initial mount
+  if (loading && !events) {
+    console.log("⏳ Initial load, showing loading skeleton....")
     return <Loading />
   }
 
@@ -83,21 +70,11 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
         </div>
         <div className="flex space-x-6 h-full pb-3">
           <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
-            {events.map((event: Events) => {
-              if (!event) {
-                console.error("❌ Null event in currentEvents array")
-                return null
-              }
-
-              // Validate required properties
-              if (!event.id || !event.title || !event.start_date) {
-                console.error("❌ Invalid event data:", event)
-                return null
-              }
-
-              return <EventCard key={event.id} event={event} />
-            })}
-
+            {events && events.length > 0 ? (
+              events.map((event: Events) => <EventCard key={event.id} event={event} />)
+            ) : (
+              <Loading />
+            )}
             <AllEventsCard type="past" />
           </div>
         </div>
@@ -111,8 +88,8 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
   const { banner } = props
 
   if (!banner.collections_id) {
-    console.log("⚠️ No collections_id in banner, returning null")
-    return null
+    console.log("No collections_id in banner, returning null")
+    return <></>
   }
 
   return <EventsContent banner={banner} />
