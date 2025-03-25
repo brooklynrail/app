@@ -15,10 +15,11 @@ export function RailPostHogProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     posthog.init(posthogKey, {
       api_host: posthogHost,
-      person_profiles: "always",
+      // autocapture: false,
+      person_profiles: "identified_only",
       capture_pageview: false, // Disable automatic pageview capture, as we capture manually
       persistence: "localStorage", // or 'cookie' if you prefer
-      capture_pageleave: true, // Enable pageleave capture
+      capture_pageleave: false, // Enable pageleave capture
     })
   }, [])
 
