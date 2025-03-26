@@ -1,6 +1,6 @@
-import { Articles, Contributors } from "@/lib/types"
+import { Articles } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
-import { getContributorRevalidationPaths, RevalidateType } from "@/lib/utils/revalidate"
+import { RevalidateType } from "@/lib/utils/revalidate"
 import { revalidatePath, revalidateTag } from "next/cache"
 
 export const dynamic = "force-dynamic"
@@ -40,6 +40,11 @@ export async function GET(request: Request) {
       case RevalidateType.Contributors: {
         revalidateTag("contributors")
         return new Response(`Revalidated: contributors`, { status: 200 })
+      }
+
+      case RevalidateType.Tributes: {
+        revalidateTag("tributes")
+        return new Response(`Revalidated: tributes`, { status: 200 })
       }
 
       case RevalidateType.GlobalSettings: {
