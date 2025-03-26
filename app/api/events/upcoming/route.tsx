@@ -7,7 +7,13 @@ export async function GET(request: Request) {
     const eventsData = await getUpcomingEvents()
 
     if (!eventsData) {
-      return Response.json(null, { status: 200 })
+      return Response.json(
+        {
+          error: "Events data not found",
+          details: "Unable to fetch events data",
+        },
+        { status: 404 },
+      )
     }
 
     return Response.json(eventsData, { status: 200 })
