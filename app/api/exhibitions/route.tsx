@@ -16,7 +16,15 @@ export async function GET() {
           "opening_date",
           "opening_details",
           "show_artists_list",
+          "summary",
           "kicker",
+          {
+            exhibition_images: [
+              {
+                directus_files_id: ["id", "width", "height", "filename_disk", "alt", "caption"],
+              },
+            ],
+          },
           {
             artists: [
               {
