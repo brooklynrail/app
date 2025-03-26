@@ -43,6 +43,23 @@ export async function GET() {
             ],
           },
           {
+            curators: [
+              {
+                people_id: [
+                  "id",
+                  "display_name",
+                  "bio",
+                  "website",
+                  "instagram",
+                  "related_links",
+                  {
+                    portrait: ["id", "width", "height", "filename_disk", "alt", "caption"],
+                  },
+                ],
+              },
+            ],
+          },
+          {
             featured_image: ["id", "width", "height", "filename_disk", "alt", "caption"],
           },
         ],
