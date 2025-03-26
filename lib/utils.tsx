@@ -601,63 +601,70 @@ interface TributeDataParams {
   slug: string
 }
 
-export const getTributeData = cache(async ({ tributeSlug }: TributeDataParams) => {
-  const tribute = await directus.request(
-    readItems("tributes", {
-      fields: [
-        "title",
-        "deck",
-        "slug",
-        "blurb",
-        "summary",
-        "excerpt",
-        "published",
-        "title_tag",
-        {
-          editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+export const getTributeData = unstable_cache(
+  async ({ tributeSlug }: TributeDataParams) => {
+    const tribute = await directus.request(
+      readItems("tributes", {
+        fields: [
+          "title",
+          "deck",
+          "slug",
+          "blurb",
+          "summary",
+          "excerpt",
+          "published",
+          "title_tag",
+          {
+            editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+          },
+          {
+            featured_image: ["id", "width", "height", "filename_disk", "caption"],
+          },
+          {
+            articles: [
+              "slug",
+              "title",
+              "excerpt",
+              "body_text",
+              "sort",
+              "hide_title",
+              "status",
+              {
+                tribute: ["slug"],
+              },
+              {
+                images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
+              },
+              {
+                section: ["name", "slug"],
+              },
+              {
+                issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
+              },
+              {
+                contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
+              },
+              {
+                featured_image: ["id", "width", "height", "filename_disk", "caption"],
+              },
+            ],
+          },
+        ],
+        filter: {
+          slug: {
+            _eq: tributeSlug,
+          },
         },
-        {
-          featured_image: ["id", "width", "height", "filename_disk", "caption"],
-        },
-        {
-          articles: [
-            "slug",
-            "title",
-            "excerpt",
-            "body_text",
-            "sort",
-            "hide_title",
-            "status",
-            {
-              tribute: ["slug"],
-            },
-            {
-              images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
-            },
-            {
-              section: ["name", "slug"],
-            },
-            {
-              issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
-            },
-            {
-              contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
-            },
-            {
-              featured_image: ["id", "width", "height", "filename_disk", "caption"],
-            },
-          ],
-        },
-      ],
-      filter: {
-        slug: {
-          _eq: tributeSlug,
-        },
-      },
-    }),
-  )
-  return tribute[0] as Tributes
-})
+      }),
+    )
+    return tribute[0] as Tributes
+  },
+  ["tributes"],
+  {
+    tags: ["tributes"],
+    revalidate: 3600,
+  },
+)
 
 export const getNavigation = cache(async () => {
   const global_settings = await directus.request(
