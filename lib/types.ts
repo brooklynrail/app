@@ -56,6 +56,7 @@ export type Articles = {
   hide_bylines: boolean
   hide_bylines_downstream: boolean
   hide_title?: boolean | null
+  hide_in_article_ad: boolean
   isbn?: number
   old_id?: number | null
   section: Sections

@@ -20,6 +20,7 @@ export const getPreviewArticle = async (id: string) => {
           "*",
           "tribute",
           "hide_title",
+          "hide_in_article_ad",
           { section: ["id", "name", "slug"] },
           { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
@@ -362,6 +363,7 @@ export const getPreviewTribute = async (id: string) => {
               "body_text",
               "sort",
               "hide_title",
+              "hide_in_article_ad",
               "status",
               {
                 tribute: ["slug"],

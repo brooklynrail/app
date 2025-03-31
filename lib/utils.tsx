@@ -331,6 +331,7 @@ export const getArticle = unstable_cache(
       `&fields[]=tribute.title` +
       `&fields[]=tribute.slug` +
       `&fields[]=hide_title` +
+      `&fields[]=hide_in_article_ad` +
       `&filter[slug][_eq]=${slug}` +
       `&filter[status][_eq]=${status}`
 
@@ -580,6 +581,7 @@ export const getTributes = cache(async (props: TributesParams) => {
               tribute: ["slug"],
             },
             "hide_title",
+            "hide_in_article_ad",
             {
               contributors: [{ contributors_id: ["id", "slug", "first_name", "last_name"] }],
             },
@@ -628,6 +630,7 @@ export const getTributeData = unstable_cache(
               "body_text",
               "sort",
               "hide_title",
+              "hide_in_article_ad",
               "status",
               {
                 tribute: ["slug"],

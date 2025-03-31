@@ -113,6 +113,7 @@ export const getCurrentIssueSection = cache(async (props: CurrentIssueSectionPro
           "hide_title",
           "hide_bylines",
           "hide_bylines_downstream",
+          "hide_in_article_ad",
           { section: ["id", "name", "slug"] },
           { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
           { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
