@@ -21,7 +21,6 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
   }, [])
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/article/${articleData.id}/`
-  const showAd = isStudioPreview
   const isTribute = articleData.tribute
 
   return (
@@ -47,7 +46,7 @@ const ArticlePreview = (props: ArticlePreviewProps) => {
                 )}
                 <div className="grid grid-cols-4 tablet-lg:grid-cols-8 desktop-lg:grid-cols-9 gap-3">
                   <div className="col-span-4 tablet-lg:col-span-8 desktop-lg:col-span-9 space-y-12">
-                    <ArticleBody articleData={articleData} showAd={showAd} />
+                    <ArticleBody articleData={articleData} />
                   </div>
                 </div>
               </article>

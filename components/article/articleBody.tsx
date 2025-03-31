@@ -10,7 +10,6 @@ import replaceShortcodes from "./shortcodes"
 
 interface ArticleBodyProps {
   articleData: Articles
-  showAd: boolean
 }
 
 interface ContentSection {
@@ -18,12 +17,7 @@ interface ContentSection {
   showAd: boolean
 }
 
-function splitContent(paragraphs: string[], totalWordCount: number, sectionSlug: string): ContentSection[] {
-  // Poetry articles don't get split
-  if (sectionSlug === "poetry") {
-    return [{ content: paragraphs.join(""), showAd: false }]
-  }
-
+function splitContent(paragraphs: string[], totalWordCount: number): ContentSection[] {
   const sections: ContentSection[] = []
 
   // Helper function to find next split point
@@ -77,9 +71,10 @@ function splitContent(paragraphs: string[], totalWordCount: number, sectionSlug:
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
-  const { articleData, showAd } = props
-  const { body_text, images, endnote, contributors } = articleData
+  const { articleData } = props
+  const { body_text, images, endnote, contributors, hide_in_article_ad } = articleData
 
+  const showAd = !hide_in_article_ad
   const fullBodyText = body_text && replaceShortcodes({ html: body_text, images: images })
   if (!body_text || !fullBodyText) {
     return <></>
@@ -121,11 +116,13 @@ const ArticleBody = (props: ArticleBodyProps) => {
   // Calculate total word count
   const totalWordCount = paragraphs.reduce((count, para) => count + para.split(/\s+/).filter(Boolean).length, 0)
 
-  const sectionSlug = articleData.section.slug
-
   const contentSections = useMemo(() => {
-    return splitContent(paragraphs, totalWordCount, sectionSlug)
-  }, [paragraphs, totalWordCount, sectionSlug])
+    // If hide_in_article_ad is true, don't split the content
+    if (hide_in_article_ad) {
+      return [{ content: paragraphs.join(""), showAd: false }]
+    }
+    return splitContent(paragraphs, totalWordCount)
+  }, [paragraphs, totalWordCount])
 
   // ================================================
 

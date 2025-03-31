@@ -20,7 +20,7 @@ const ArticlePage = (props: ArticleProps) => {
           <ArticleHead {...{ permalink, thisIssueData, currentSection, articleData }} />
         </div>
         <div className="col-span-4 tablet-lg:col-span-10 tablet-lg:col-start-2 space-y-6">
-          <ArticleBody articleData={articleData} showAd={true} />
+          <ArticleBody articleData={articleData} />
         </div>
       </div>
 

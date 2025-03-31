@@ -21,9 +21,9 @@ interface ArticleBodyProps {
 }
 
 const TributeBody = (props: ArticleBodyProps) => {
-  const { articleData, preview, thisIssueData, currentSection, permalink, articles, type, switchArticle } = props
+  const { articleData, thisIssueData, currentSection, permalink, articles, type, switchArticle } = props
 
-  const { body_text, images } = articleData
+  const { body_text } = articleData
   if (!body_text) {
     return <></>
   }
@@ -49,8 +49,7 @@ const TributeBody = (props: ArticleBodyProps) => {
         )}
         <div className="grid grid-cols-4 tablet-lg:grid-cols-10 gap-3">
           <div className="col-span-4 tablet-lg:col-span-8 tablet-lg:col-start-2">
-            {/* dont show article ads on Tribute pages */}
-            <ArticleBody articleData={articleData} showAd={false} />
+            <ArticleBody articleData={articleData} />
           </div>
         </div>
       </div>
