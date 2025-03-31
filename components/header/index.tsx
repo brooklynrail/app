@@ -1,14 +1,13 @@
 import { Homepage, Issues } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useRef } from "react"
 import { PaperType } from "../paper"
 import { useTheme } from "../theme"
 import HeaderDefault from "./default"
 import HomeBanner from "./homeBanner"
 import Subhead from "./subhead"
 import VideoBG from "./videobg"
-import VideoControls from "./videoControls"
 
 export interface HeaderProps {
   special_issue?: boolean | null
@@ -42,36 +41,11 @@ const Header = (props: HeaderProps) => {
 const HeaderHomepage = (props: HeaderProps) => {
   const { title, type, homepageHeaderData } = props
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [isPaused, setIsPaused] = useState(false)
   const { theme } = useTheme()
   const subheadFill = theme === "dark" ? "fill-white" : "fill-white"
   const videoCovers = homepageHeaderData && homepageHeaderData.video_covers
   const videoCoversStills = homepageHeaderData && homepageHeaderData.video_covers_stills
-
-  useEffect(() => {
-    const isVideoPaused = localStorage.getItem("homepageVideoPaused")
-    if (isVideoPaused === "true" && videoRef.current) {
-      videoRef.current.pause()
-      setIsPaused(true)
-    }
-  }, [])
-
-  const handleVideoToggle = async () => {
-    if (videoRef.current) {
-      if (isPaused) {
-        try {
-          await videoRef.current.play()
-          localStorage.removeItem("homepageVideoPaused")
-        } catch (error) {
-          console.error("Error playing video:", error)
-        }
-      } else {
-        videoRef.current.pause()
-        localStorage.setItem("homepageVideoPaused", "true")
-      }
-      setIsPaused(!isPaused)
-    }
-  }
+  const videoCoversVerticalPosition = homepageHeaderData && homepageHeaderData.video_covers_vertical_position
 
   const permalink = getPermalink({
     type: PageType.Home,
@@ -91,8 +65,13 @@ const HeaderHomepage = (props: HeaderProps) => {
         <div
           className={`absolute inset-0 bg-zinc-900 z-[1] ${videoCovers && videoCoversStills ? "bg-opacity-10" : ""}`}
         />
-        {videoCovers && videoCoversStills && (
-          <VideoBG videoRef={videoRef} videoCovers={videoCovers} videoCoversStills={videoCoversStills} />
+        {videoCovers && videoCoversStills && videoCoversVerticalPosition && (
+          <VideoBG
+            videoRef={videoRef}
+            videoCovers={videoCovers}
+            videoCoversStills={videoCoversStills}
+            videoCoversVerticalPosition={videoCoversVerticalPosition}
+          />
         )}
         <div className="sticky top-0 z-[2]">
           <div className={`${videoCovers && videoCoversStills ? "p-3 pb-9 tablet:px-6" : "p-3"}`}>
@@ -102,14 +81,6 @@ const HeaderHomepage = (props: HeaderProps) => {
             </Link>
           </div>
         </div>
-        {videoCovers && videoCoversStills && (
-          <VideoControls
-            videoRef={videoRef}
-            videoCovers={videoCovers}
-            isPaused={isPaused}
-            handleVideoToggle={handleVideoToggle}
-          />
-        )}
       </div>
     </header>
   )
