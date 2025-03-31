@@ -662,6 +662,7 @@ export type Homepage = {
   user_updated?: string | DirectusUsers | null
   video_covers?: VideoCovers[] | null
   video_covers_stills?: VideoCoversStills[] | null
+  video_covers_vertical_position: number
 }
 
 export type HomepageBanners = {
@@ -871,6 +872,7 @@ export type VideoCovers = {
   homepage_id?: Homepage | null
   id: number
   sort?: number | null
+  video_covers_vertical_position: number
 }
 
 export type VideoCoversStills = {
@@ -878,6 +880,7 @@ export type VideoCoversStills = {
   homepage_id?: Homepage | null
   id: number
   sort?: number | null
+  video_covers_vertical_position: number
 }
 
 export type CustomDirectusTypes = {

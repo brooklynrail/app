@@ -35,6 +35,7 @@ export async function GET() {
             {
               video_covers_stills: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
             },
+            "video_covers_vertical_position",
           ],
           filter: {
             _and: [
