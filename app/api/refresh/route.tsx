@@ -22,7 +22,6 @@ export async function GET(request: Request) {
 
     switch (type) {
       case RevalidateType.Homepage: {
-        revalidatePath(`/`, "page")
         revalidateTag("homepage")
         return new Response(`Revalidated homepage`, { status: 200 })
       }
