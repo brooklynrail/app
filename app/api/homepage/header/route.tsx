@@ -1,7 +1,5 @@
 import { getHomepageHeaderData } from "@/lib/utils/homepage"
 
-export const revalidate = 3600 // 1 hour cache
-
 export async function GET() {
   try {
     const homepageHeaderData = await getHomepageHeaderData()

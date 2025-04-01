@@ -1,7 +1,7 @@
 "use server"
 import { readSingleton } from "@directus/sdk"
 import directus from "../directus"
-import { Articles, Homepage, Issues } from "../types"
+import { Articles, Homepage, HomepageCollections, Issues } from "../types"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 
@@ -60,21 +60,122 @@ export const getNavData = unstable_cache(
 export const getHomepageCollectionData = unstable_cache(
   async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/homepage/collections`, {
-        next: {
-          tags: ["homepage"],
-        },
-      })
+      // 1. Get homepage data
+      const homepageData = await directus.request(
+        readSingleton("homepage", {
+          fields: [
+            "id",
+            {
+              collections: [
+                {
+                  collections_id: [
+                    "id",
+                    "type",
+                    "kicker",
+                    "title",
+                    "limit",
+                    "links",
+                    "status",
+                    "banner_type",
+                    {
+                      section: ["slug", "featured", "description"],
+                    },
+                    {
+                      tribute: [
+                        "id",
+                        "title",
+                        "deck",
+                        "blurb",
+                        "summary",
+                        "excerpt",
+                        "slug",
+                        {
+                          editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
+                        },
+                        {
+                          articles: [
+                            "id",
+                            "slug",
+                            "title",
+                            "deck",
+                            "excerpt",
+                            "sort",
+                            "status",
+                            {
+                              contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
+                            },
+                          ],
+                        },
+                        {
+                          featured_image: ["id", "width", "height", "filename_disk", "caption"],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          filter: {
+            _and: [
+              {
+                collections: {
+                  collections_id: {
+                    status: { _eq: `published` },
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      )
 
-      if (!res.ok) {
-        const text = await res.text()
-        console.error("API Response:", text)
-        throw new Error(`API returned ${res.status}: ${text}`)
+      if (!homepageData) {
+        console.error("No homepage data found")
+        return null
       }
 
-      return res.json()
+      // 2. Get current issue
+      const currentIssueSlug = await getCurrentIssueSlug()
+      if (!currentIssueSlug) {
+        console.error("No current issue found")
+        return null
+      }
+
+      // 3. Enhance collections with articles
+      const homepage = homepageData as Homepage
+      const enhancedCollections = await Promise.all(
+        homepage.collections.map(async (collection: HomepageCollections) => {
+          if (collection.collections_id?.section) {
+            const articles = await getCollectionArticles({
+              currentIssueSlug,
+              slug: collection.collections_id.section.slug,
+              limit: collection.collections_id.limit,
+            })
+
+            return {
+              ...collection,
+              collections_id: {
+                ...collection.collections_id,
+                section: {
+                  ...collection.collections_id.section,
+                  articles: articles || [],
+                },
+              },
+            }
+          }
+          return collection
+        }),
+      )
+
+      // 4. Return enhanced homepage data
+      return {
+        ...homepage,
+        collections: enhancedCollections,
+        currentIssue: currentIssueSlug,
+      }
     } catch (error) {
-      console.error("Failed to fetch homepage data:", error, `${process.env.NEXT_PUBLIC_API_URL}/homepage/collections`)
+      console.error("Error fetching homepage collection data:", error)
       return null
     }
   },
@@ -85,59 +186,65 @@ export const getHomepageCollectionData = unstable_cache(
 export const getHomepageHeaderData = unstable_cache(
   async () => {
     try {
-      let homepageData
-      try {
-        homepageData = await directus.request(
-          readSingleton("homepage", {
-            fields: [
-              "id",
-              {
-                banners: [
-                  {
-                    collections_id: [
-                      "id",
-                      "type",
-                      "kicker",
-                      "title",
-                      "description",
-                      "links",
-                      "limit",
-                      "status",
-                      "banner_type",
-                    ],
-                  },
-                ],
-              },
-              {
-                video_covers: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
-              },
-              {
-                video_covers_stills: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
-              },
-              "video_covers_vertical_position",
-            ],
-            filter: {
-              _and: [
+      const homepageData = await directus.request(
+        readSingleton("homepage", {
+          fields: [
+            "id",
+            {
+              banners: [
                 {
-                  banners: {
-                    collections_id: {
-                      status: { _eq: `published` },
-                    },
-                  },
+                  collections_id: [
+                    "id",
+                    "type",
+                    "kicker",
+                    "title",
+                    "description",
+                    "links",
+                    "limit",
+                    "status",
+                    "banner_type",
+                  ],
                 },
               ],
             },
-          }),
-        )
-      } catch (error) {
-        console.error("Error fetching homepage singleton:", error)
+            {
+              video_covers: [
+                {
+                  directus_files_id: ["id", "width", "height", "filename_disk", "caption"],
+                },
+              ],
+            },
+            {
+              video_covers_stills: [
+                {
+                  directus_files_id: ["id", "width", "height", "filename_disk", "caption"],
+                },
+              ],
+            },
+            "video_covers_vertical_position",
+          ],
+          filter: {
+            _and: [
+              {
+                banners: {
+                  collections_id: {
+                    status: { _eq: "published" },
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      )
+
+      if (!homepageData) {
+        console.error("No homepage header data found")
         return null
       }
 
-      const homepage = homepageData as Homepage
-      return homepage // Return the data directly instead of wrapping in Response
+      return homepageData as Homepage
     } catch (error) {
-      console.error("Error in homepage API:", error)
+      console.error("Error fetching homepage header data:", error)
       return null
     }
   },
