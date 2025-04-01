@@ -9,7 +9,6 @@ import { notFound, redirect } from "next/navigation"
 
 // Force dynamic rendering, no caching
 export const dynamic = "force-dynamic"
-export const revalidate = 0
 
 // Metadata Generation
 export async function generateMetadata(): Promise<Metadata> {

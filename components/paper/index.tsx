@@ -60,7 +60,12 @@ const Paper = (props: PaperProps) => {
               <PreviewHeader previewURL={previewURL} />
               {type === PaperType.Homepage && (
                 <>
-                  <Header type={type} currentIssue={currentIssue} collectionsData={collectionsData} />
+                  <Header
+                    type={type}
+                    currentIssue={currentIssue}
+                    collectionsData={collectionsData}
+                    homepageHeaderData={homepageHeaderData}
+                  />
                   {homepageHeaderData && isHomepage && currentIssue && (
                     <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
                   )}
