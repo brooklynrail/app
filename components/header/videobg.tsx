@@ -27,8 +27,6 @@ const VideoBG = (props: VideoBGProps) => {
     return 0
   }
 
-  console.log("videoCovers", videoCovers)
-
   // Get position from URL params, prop value, or default to 50
   const getVerticalPosition = () => {
     // First check URL parameter
