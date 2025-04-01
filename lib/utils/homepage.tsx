@@ -85,25 +85,59 @@ export const getHomepageCollectionData = unstable_cache(
 export const getHomepageHeaderData = unstable_cache(
   async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/homepage/header/`, {
-        next: {
-          tags: ["homepage"],
-        },
-      })
-
-      if (!res.ok) {
-        const text = await res.text()
-        console.error("API Response:", text)
-        throw new Error(`API returned ${res.status}: ${text}`)
+      let homepageData
+      try {
+        homepageData = await directus.request(
+          readSingleton("homepage", {
+            fields: [
+              "id",
+              {
+                banners: [
+                  {
+                    collections_id: [
+                      "id",
+                      "type",
+                      "kicker",
+                      "title",
+                      "description",
+                      "links",
+                      "limit",
+                      "status",
+                      "banner_type",
+                    ],
+                  },
+                ],
+              },
+              {
+                video_covers: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
+              },
+              {
+                video_covers_stills: [{ directus_files_id: ["id", "width", "height", "filename_disk", "caption"] }],
+              },
+              "video_covers_vertical_position",
+            ],
+            filter: {
+              _and: [
+                {
+                  banners: {
+                    collections_id: {
+                      status: { _eq: `published` },
+                    },
+                  },
+                },
+              ],
+            },
+          }),
+        )
+      } catch (error) {
+        console.error("Error fetching homepage singleton:", error)
+        return null
       }
 
-      return res.json()
+      const homepage = homepageData as Homepage
+      return homepage // Return the data directly instead of wrapping in Response
     } catch (error) {
-      console.error(
-        "Failed to fetch homepage header data:",
-        error,
-        `${process.env.NEXT_PUBLIC_API_URL}/homepage/header/`,
-      )
+      console.error("Error in homepage API:", error)
       return null
     }
   },
