@@ -179,7 +179,7 @@ export const getHomepageCollectionData = unstable_cache(
       return null
     }
   },
-  ["homepage"],
+  ["homepage_cache"],
   { revalidate: 86400, tags: ["homepage"] },
 )
 
