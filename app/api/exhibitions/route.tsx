@@ -15,6 +15,8 @@ export async function GET() {
           "show_details",
           "opening_date",
           "opening_details",
+          "location",
+          "location_map",
           "show_artists_list",
           "summary",
           "kicker",
