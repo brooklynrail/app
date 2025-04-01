@@ -27,14 +27,18 @@ const VideoControls = (props: VideoControlsProps) => {
   const videoCoverCaption = videoCover.directus_files_id ? videoCover.directus_files_id.caption : ""
 
   return (
-    <div className="bg-zinc-900 rounded-tl-sm px-1.5 py-0.5 absolute bottom-0 right-0 z-10 flex justify-center items-center space-x-2">
+    <div className="bg-zinc-900 rounded-tl-sm px-1 py-0.5 absolute bottom-0 right-0 z-10 flex justify-center items-center space-x-2">
       <button
         onClick={handleVideoToggle}
         className="font-sm bg-zinc-200 w-4 h-4 text-center text-black flex justify-center items-center rounded-sm"
       >
         {isPaused ? play : pause}
       </button>
-      {videoCoverCaption && <div className="text-white text-[10px]">{parse(videoCoverCaption)}</div>}
+      {videoCoverCaption && (
+        <div className="text-white text-[10px]" style={{ lineHeight: "1.2" }}>
+          {parse(videoCoverCaption)}
+        </div>
+      )}
     </div>
   )
 }
