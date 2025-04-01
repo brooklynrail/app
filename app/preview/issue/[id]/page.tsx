@@ -18,7 +18,7 @@ export const revalidate = 0
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<PreviewParams> }): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data?.thisIssueData) {
@@ -50,7 +50,7 @@ export async function generateMetadata(props: { params: Promise<PreviewParams> }
 
 // Main Page Component
 export default async function IssuePreviewPage(props: { params: Promise<PreviewParams> }) {
-  const params = await props.params;
+  const params = await props.params
   const isEnabled = await draftMode()
 
   // Verify draft mode is enabled
@@ -112,7 +112,7 @@ async function getData(params: PreviewParams): Promise<IssuePreviewProps | undef
       permalink,
       previewPassword,
       directusUrl,
-      currentSection: issueSections[0],
+      currentSection: null,
       isEnabled: true,
       previewURL,
     }

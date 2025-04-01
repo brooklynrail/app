@@ -180,7 +180,7 @@ export interface IssuePreviewProps {
   isEnabled: boolean
   previewPassword: string
   directusUrl: string
-  currentSection: Sections
+  currentSection: Sections | null
   previewURL: string
 }
 
