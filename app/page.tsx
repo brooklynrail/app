@@ -1,4 +1,5 @@
 import HomePage from "@/components/homepage"
+import AppLoader from "@/components/appLoader"
 import { Homepage, Issues } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
@@ -62,11 +63,10 @@ async function getData(): Promise<HomePageProps> {
   }
 }
 
-// Update the main component to handle errors gracefully
 export default async function HomepagePage() {
   const data = await getData()
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<AppLoader />}>
       <HomePage {...data} />
     </Suspense>
   )
