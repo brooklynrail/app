@@ -106,42 +106,44 @@ const Exhibition = () => {
         <h3 className="text-sm tablet-lg:text-lg font-medium text-nowrap">
           <Link href="/exhibitions">Current Exhibition:</Link>
         </h3>
-        <div className="relative flex overflow-x-hidden">
-          <div
-            className="whitespace-nowrap text-sm tablet-lg:text-lg font-light"
-            style={{
-              animation: "marquee 15s linear infinite",
-            }}
-          >
-            <span className="px-1.5">{`"${title}"`}</span>
-            <span className="px-1.5">{curators}</span>
-            <span className="px-1.5">{exhibitionDate}</span>
-            {location && <span className="px-1.5">{location}</span>}
-          </div>
+        <Link href="/exhibitions" className="block">
+          <div className="relative flex overflow-x-hidden">
+            <div
+              className="whitespace-nowrap text-sm tablet-lg:text-lg font-light"
+              style={{
+                animation: "marquee 15s linear infinite",
+              }}
+            >
+              <span className="px-3 italic">{title}</span>
+              <span className="px-3">{curators}</span>
+              <span className="px-3">{exhibitionDate}</span>
+              {location && <span className="px-1.5">{location}</span>}
+            </div>
 
-          <div
-            className="absolute top-0 whitespace-nowrap text-sm tablet-lg:text-lg font-light"
-            style={{
-              animation: "marquee2 15s linear infinite",
-            }}
-          >
-            <span className="px-1.5">{`"${title}"`}</span>
-            <span className="px-1.5">{curators}</span>
-            <span className="px-1.5">{exhibitionDate}</span>
-            {location && <span className="px-1.5">{location}</span>}
-          </div>
+            <div
+              className="absolute top-0 whitespace-nowrap text-sm tablet-lg:text-lg font-light"
+              style={{
+                animation: "marquee2 15s linear infinite",
+              }}
+            >
+              <span className="px-3 italic">{title}</span>
+              <span className="px-3">{curators}</span>
+              <span className="px-3">{exhibitionDate}</span>
+              {location && <span className="px-1.5">{location}</span>}
+            </div>
 
-          <style>{`
-          @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-100%); }
-          }
-          @keyframes marquee2 {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(0%); }
-          }
-        `}</style>
-        </div>
+            <style>{`
+              @keyframes marquee {
+                0% { transform: translateX(0%); }
+                100% { transform: translateX(-100%); }
+              }
+              @keyframes marquee2 {
+                0% { transform: translateX(100%); }
+                100% { transform: translateX(0%); }
+              }
+            `}</style>
+          </div>
+        </Link>
       </div>
 
       <div className="hidden tablet-lg:flex flex-col space-y-3 px-3 tablet-lg:px-6 z-10">
@@ -152,7 +154,7 @@ const Exhibition = () => {
 
           <div className="flex space-x-6">
             <div className={`w-full h-full flex flex-col space-y-3`}>
-              <h3 className={`text-xl tablet-lg:text-4xl font-light hover:underline`}>
+              <h3 className={`text-xl tablet-lg:text-4xl font-light italic hover:underline`}>
                 <Link href={permalink}>{title}</Link>
               </h3>
               {curatorString && <p className="text-sm tablet-lg:text-lg font-normal">Curated by {curatorString}</p>}

@@ -61,7 +61,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
 
   if (layout === "wide") {
     return (
-      <div className={`flex flex-col tablet-lg:flex-row divide-x rail-divide`}>
+      <div className={`flex flex-col tablet-lg:flex-row tablet-lg:divide-x rail-divide`}>
         <div className="px-3 tablet-lg:px-6 py-1.5 w-full tablet-lg:w-mobile desktop:w-mobile-lg flex-none">
           <h3 className="text-sm tablet-lg:text-lg font-medium">
             <Link href="/events">{collections_id.title}</Link>
@@ -79,7 +79,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
             </Link>
           </div>
         </div>
-        <div className="flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pl-3 tablet-lg:pl-6 pr-3 py-1.5 bg-opacity-60">
+        <div className="flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pl-3 pr-3 py-1.5 bg-opacity-60">
           {loading || !events ? (
             <Loading />
           ) : (
