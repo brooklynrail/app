@@ -17,6 +17,15 @@ interface ContentSection {
   showAd: boolean
 }
 
+// ================================================
+// Content splitting rules:
+// For articles under 300 words, do not split (no AD)
+// For articles between 300-1500 words, split once in the middle
+// For articles between 1500-2000 words, split at 800 words
+// For articles between 2000-3000 words, split at 800, 1600, and remaining
+// For articles over 3000 words, split at 800, 1600, 2400, and remaining
+// ================================================
+
 function splitContent(paragraphs: string[], totalWordCount: number): ContentSection[] {
   const sections: ContentSection[] = []
 
@@ -118,9 +127,10 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
   const contentSections = useMemo(() => {
     // If hide_in_article_ad is true, don't split the content
-    if (hide_in_article_ad) {
+    if (hide_in_article_ad || totalWordCount < 300) {
       return [{ content: paragraphs.join(""), showAd: false }]
     }
+
     return splitContent(paragraphs, totalWordCount)
   }, [paragraphs, totalWordCount])
 
