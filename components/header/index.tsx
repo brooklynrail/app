@@ -60,7 +60,7 @@ const HeaderHomepage = (props: HeaderProps) => {
       </div>
 
       <div
-        className={`relative ${videoCovers && videoCoversStills ? "h-[calc(100vh-26.5rem)] tablet-lg:h-[calc(100vh-20.5rem)]" : ""}`}
+        className={`relative ${videoCovers && videoCoversStills ? "h-[calc(100vh-26.5rem)] tablet-lg:h-[calc(100vh-20.5rem)] min-h-[270px]" : ""}`}
       >
         <div
           className={`absolute inset-0 bg-zinc-900 z-[1] ${videoCovers && videoCoversStills ? "bg-opacity-10" : ""}`}
