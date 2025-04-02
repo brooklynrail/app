@@ -15,49 +15,57 @@ enum BannerType {
   Exhibition = "Exhibition",
 }
 
-const Banners = (props: BannerProps) => {
-  const { currentIssue, homepageHeaderData } = props
+const Banners = ({ currentIssue, homepageHeaderData }: BannerProps) => {
+  // Early return if no banners
+  if (!homepageHeaderData.banners?.length) {
+    return null
+  }
 
-  if (!homepageHeaderData.banners) {
+  // Get valid banners
+  const validBanners = homepageHeaderData.banners.filter((banner) => banner.collections_id?.banner_type)
+
+  const currentIssueBanner = validBanners.find(
+    (banner) => banner.collections_id?.banner_type === BannerType.CurrentIssue,
+  )
+  const newSocialEnvironmentBanner = validBanners.find(
+    (banner) => banner.collections_id?.banner_type === BannerType.NewSocialEnvironment,
+  )
+  const exhibitionBanner = validBanners.find((banner) => banner.collections_id?.banner_type === BannerType.Exhibition)
+
+  // If validBanners is empty
+  // or if validBanners does not contain Current Issue
+  // or if validBanners does not contain New Social Environment
+  // then return null
+  if (validBanners.length === 0 || !currentIssueBanner || !newSocialEnvironmentBanner || !exhibitionBanner) {
     return <></>
   }
 
-  // Find each banner by type
-  const currentIssueBanner = homepageHeaderData.banners.find(
-    (banner) => banner.collections_id?.banner_type === BannerType.CurrentIssue,
-  )
-
-  const NSEBanner = homepageHeaderData.banners.find(
-    (banner) => banner.collections_id?.banner_type === BannerType.NewSocialEnvironment,
-  )
-
-  const exhibitionBanner = homepageHeaderData.banners.find(
-    (banner) => banner.collections_id?.banner_type === BannerType.Exhibition,
-  )
-
-  const rows = exhibitionBanner ? "grid-rows-1" : ""
-  const rowspan = exhibitionBanner ? "row-span-1" : ""
-
+  // Render layout
   return (
     <div className="bg-white dark:bg-zinc-700 border-b rail-border">
-      <div className={`grid grid-cols-4 tablet-lg:grid-cols-12 tablet-lg:divide-x rail-divide ${rows}`}>
-        <div
-          className={`col-span-4 tablet-lg:col-span-6 pt-3 px-3 pb-6 tablet-lg:px-6 ${rowspan} border-t rail-border tablet-lg:border-t-0 tablet-lg:order-first`}
-        >
-          {currentIssueBanner && <CurrentIssue currentIssue={currentIssue} banner={currentIssueBanner} />}
-        </div>
-
-        {/* <div className="banner-card col-span-4 tablet-lg:col-span-6 pb-3 pl-3 tablet-lg:pl-6 tablet-lg:pb-0 order-first tablet-lg:order-last"></div> */}
-        {NSEBanner && (
-          <div className="col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-7 pt-3 pb-3 pl-3 tablet-lg:pl-6 border-t-1 border-dotted border-zinc-800 tablet-lg:border-t-0 order-first tablet-lg:order-last">
-            <NewSocialEnvironment banner={NSEBanner} />
+      <div className="grid grid-cols-4 tablet-lg:grid-cols-12 auto-rows-auto divide-y rail-divide">
+        {/* Top banner */}
+        {exhibitionBanner && newSocialEnvironmentBanner && (
+          <div className="col-span-12 h-auto py-1.5">
+            <NewSocialEnvironment banner={newSocialEnvironmentBanner} layout="wide" />
           </div>
         )}
-        {/* {exhibitionBanner && (
-          <div className="col-span-4 tablet-lg:col-span-6 tablet-lg:col-start-7 row-start-2 pb-3 px-3 tablet-lg:px-6 tablet-lg:pb-0">
-            <Exhibition />
+
+        {/* Bottom row */}
+        <div className="col-span-12 h-auto">
+          <div className="grid grid-cols-4 tablet-lg:grid-cols-12 auto-rows-auto tablet-lg:divide-x rail-divide">
+            <div className="col-span-4 tablet-lg:col-span-6 py-3 order-last tablet-lg:order-first">
+              <CurrentIssue currentIssue={currentIssue} banner={currentIssueBanner} />
+            </div>
+            <div className="col-span-4 tablet-lg:col-span-6 py-3 order-first tablet-lg:order-last border-b tablet-lg:border-b-0 rail-border">
+              {exhibitionBanner ? (
+                <Exhibition />
+              ) : (
+                <NewSocialEnvironment banner={newSocialEnvironmentBanner} layout="narrow" />
+              )}
+            </div>
           </div>
-        )} */}
+        </div>
       </div>
     </div>
   )
