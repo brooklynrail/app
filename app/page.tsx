@@ -19,47 +19,49 @@ export interface HomePageProps {
 }
 
 async function getData(): Promise<HomePageProps> {
-  const currentIssue = await getCurrentIssueData()
-  if (!currentIssue) {
-    return notFound()
-  }
+  try {
+    const currentIssue = await getCurrentIssueData()
+    if (!currentIssue) {
+      console.error("Failed to fetch currentIssue data")
+      throw new Error("Failed to fetch currentIssue data")
+    }
 
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+    const navData = await getNavData()
+    if (!navData) {
+      console.error("Failed to fetch navData")
+      throw new Error("Failed to fetch navData")
+    }
 
-  const collectionsData = await getHomepageCollectionData()
-  if (!collectionsData) {
-    return notFound()
-  }
+    const collectionsData = await getHomepageCollectionData()
+    if (!collectionsData) {
+      console.error("Failed to fetch collectionsData")
+      throw new Error("Failed to fetch collectionsData")
+    }
 
-  const homepageHeaderData = await getHomepageHeaderData()
-  if (!homepageHeaderData) {
-    return notFound()
-  }
+    const homepageHeaderData = await getHomepageHeaderData()
+    if (!homepageHeaderData) {
+      console.error("Failed to fetch homepageHeaderData")
+      throw new Error("Failed to fetch homepageHeaderData")
+    }
 
-  if (!currentIssue || !navData || !collectionsData || !homepageHeaderData) {
-    console.error("❌ Critical data missing:", {
-      currentIssue: !currentIssue,
-      navData: !navData,
-      collectionsData: !collectionsData,
-      homepageHeaderData: !homepageHeaderData,
+    const permalink = getPermalink({
+      type: PageType.Home,
     })
-    return notFound()
-  }
 
-  const permalink = getPermalink({
-    type: PageType.Home,
-  })
-
-  // Return data with safe fallbacks
-  return {
-    navData,
-    collectionsData,
-    homepageHeaderData,
-    currentIssue,
-    permalink,
+    return {
+      navData,
+      collectionsData,
+      homepageHeaderData,
+      currentIssue,
+      permalink,
+    }
+  } catch (error) {
+    console.error("❌ getData error:", {
+      env: process.env.NODE_ENV,
+      phase: process.env.NEXT_PHASE,
+      error: error instanceof Error ? error.message : "Unknown error",
+    })
+    throw error
   }
 }
 

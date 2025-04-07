@@ -8,11 +8,15 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   const router = useRouter()
 
   useEffect(() => {
-    console.error("Error boundary caught:", {
+    // More detailed logging
+    const errorDetails = {
       message: error.message,
       digest: error.digest,
       stack: error.stack,
-    })
+      url: window.location.href,
+      timestamp: new Date().toISOString(),
+    }
+    console.error("Error boundary caught:", errorDetails)
   }, [error])
 
   const handleReset = () => {

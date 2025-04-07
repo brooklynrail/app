@@ -3,6 +3,7 @@ import nlp from "compromise"
 import { cache } from "react"
 import directus from "../directus"
 import { Articles, Issues, OGArticle, Sections } from "../types"
+import { unstable_cache } from "next/cache"
 
 export const extractPeopleFromArticle = cache(async (text: string) => {
   const doc = nlp(text)
@@ -100,85 +101,99 @@ interface CurrentIssueSectionProps {
   issueSlug: string
   sectionSlug: string
 }
-export const getCurrentIssueSection = cache(async (props: CurrentIssueSectionProps) => {
-  const { issueSlug, sectionSlug } = props
-  try {
-    const articles = await directus.request(
-      readItems("articles", {
-        fields: [
-          "title",
-          "featured",
-          "excerpt",
-          "slug",
-          "hide_title",
-          "hide_bylines",
-          "hide_bylines_downstream",
-          "hide_in_article_ad",
-          { section: ["id", "name", "slug"] },
-          { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
-          { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
-          { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
-          { user_updated: ["id", "first_name", "last_name", "avatar"] },
-        ],
-        filter: {
-          _and: [
-            {
-              issue: {
-                slug: { _eq: issueSlug },
-              },
-              section: {
-                slug: { _eq: sectionSlug },
-              },
-              status: { _eq: `published` },
-            },
+export const getCurrentIssueSection = unstable_cache(
+  async (props: CurrentIssueSectionProps) => {
+    const { issueSlug, sectionSlug } = props
+    try {
+      const articles = await directus.request(
+        readItems("articles", {
+          fields: [
+            "title",
+            "featured",
+            "excerpt",
+            "slug",
+            "hide_title",
+            "hide_bylines",
+            "hide_bylines_downstream",
+            "hide_in_article_ad",
+            { section: ["id", "name", "slug"] },
+            { issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"] },
+            { contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }] },
+            { images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }] },
+            { user_updated: ["id", "first_name", "last_name", "avatar"] },
           ],
-        },
-      }),
-    )
-    return articles as Articles[]
-  } catch (error) {
-    console.error("Error fetching CurrentIssueData data:", error)
-    return null
-  }
-})
+          filter: {
+            _and: [
+              {
+                issue: {
+                  slug: { _eq: issueSlug },
+                },
+                section: {
+                  slug: { _eq: sectionSlug },
+                },
+                status: { _eq: `published` },
+              },
+            ],
+          },
+        }),
+      )
+      return articles as Articles[]
+    } catch (error) {
+      console.error("Error fetching CurrentIssueData data:", error)
+      return null
+    }
+  },
+  ["current_issue_section"],
+  {
+    revalidate: 3600,
+    tags: ["sections"],
+  },
+)
 
 // =================================================================================================
 // Used in sitemap.tsx
-export const getArticlePages = cache(async () => {
-  try {
-    let articlePages: Articles[] = []
-    let page = 1
-    let isMore = true
-    while (isMore) {
-      const articleDataAPI =
-        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
-        `?fields[]=slug` +
-        `&fields[]=section.slug` +
-        `&fields[]=issue.year` +
-        `&fields[]=issue.month` +
-        `&fields[]=issue.slug` +
-        `&fields[]=issue.special_issue` +
-        `&fields[]=issue.status` +
-        `&filter[status][_eq]=published` +
-        `&filter[slug][_nempty]=true` +
-        `&filter[issue][_nnull]=true` +
-        `&sort[]=-date_updated` +
-        `&page=${page}` +
-        `&limit=100` +
-        `&offset=${page * 100 - 100}`
-      const res = await fetch(articleDataAPI, { next: { revalidate: 3600, tags: ["articles"] } })
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error("Failed to fetch getArticlePages data")
+export const getArticlePages = unstable_cache(
+  async () => {
+    try {
+      let articlePages: Articles[] = []
+      let page = 1
+      let isMore = true
+      while (isMore) {
+        const articleDataAPI =
+          `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
+          `?fields[]=slug` +
+          `&fields[]=section.slug` +
+          `&fields[]=issue.year` +
+          `&fields[]=issue.month` +
+          `&fields[]=issue.slug` +
+          `&fields[]=issue.special_issue` +
+          `&fields[]=issue.status` +
+          `&filter[status][_eq]=published` +
+          `&filter[slug][_nempty]=true` +
+          `&filter[issue][_nnull]=true` +
+          `&sort[]=-date_updated` +
+          `&page=${page}` +
+          `&limit=100` +
+          `&offset=${page * 100 - 100}`
+        const res = await fetch(articleDataAPI, { next: { revalidate: 3600, tags: ["articles"] } })
+        if (!res.ok) {
+          // This will activate the closest `error.js` Error Boundary
+          throw new Error("Failed to fetch getArticlePages data")
+        }
+        const data = await res.json()
+        articlePages = articlePages.concat(data.data)
+        isMore = data.data.length === 100 // assumes there is another page of records
+        page++
       }
-      const data = await res.json()
-      articlePages = articlePages.concat(data.data)
-      isMore = data.data.length === 100 // assumes there is another page of records
-      page++
+      return articlePages as Articles[]
+    } catch (error) {
+      console.error("Error in getArticlePages", error)
+      return null
     }
-    return articlePages as Articles[]
-  } catch (error) {
-    console.error("Error in getArticlePages", error)
-    return null
-  }
-})
+  },
+  ["articles_sitemap"],
+  {
+    revalidate: 3600,
+    tags: ["homepage"],
+  },
+)
