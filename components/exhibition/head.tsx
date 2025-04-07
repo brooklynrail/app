@@ -1,7 +1,7 @@
 "use client"
 import parse from "html-react-parser"
 import Link from "next/link"
-import { Exhibitions } from "@/lib/types"
+import { Exhibitions, ExhibitionsPeople1, People } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { Artists } from "./sectionBlock"
 
@@ -9,12 +9,37 @@ interface ExhibitionHeadProps {
   exhibitionData: Exhibitions
 }
 
+// Format curators as a comma-separated string with Oxford comma
+export const formatCurators = (curators: ExhibitionsPeople1[] | any[]) => {
+  if (!curators || curators.length === 0) {
+    return null
+  }
+
+  const curatorNames = curators
+    .filter((curator) => curator?.people_id?.display_name)
+    .map((curator) => curator.people_id.display_name)
+
+  if (curatorNames.length === 0) {
+    return null
+  }
+  if (curatorNames.length === 1) {
+    return curatorNames[0]
+  }
+  if (curatorNames.length === 2) {
+    return `${curatorNames[0]} and ${curatorNames[1]}`
+  }
+
+  // For 3+ curators, use Oxford comma
+  const allButLast = curatorNames.slice(0, -1)
+  const last = curatorNames[curatorNames.length - 1]
+  return `${allButLast.join(", ")}, and ${last}`
+}
+
 const Head = (props: ExhibitionHeadProps) => {
   const {
     kicker,
     title,
     deck,
-    start_date,
     end_date,
     dedication,
     show_details,
@@ -39,33 +64,7 @@ const Head = (props: ExhibitionHeadProps) => {
   // Only show opening details if the exhibition hasn't ended yet
   const showOpeningDetails = endDate && currentDate <= endDate
 
-  // Format curators as a comma-separated string with Oxford comma
-  const formatCurators = () => {
-    if (!curators || curators.length === 0) {
-      return null
-    }
-
-    const curatorNames = curators
-      .filter((curator) => curator?.people_id?.display_name)
-      .map((curator) => curator.people_id.display_name)
-
-    if (curatorNames.length === 0) {
-      return null
-    }
-    if (curatorNames.length === 1) {
-      return curatorNames[0]
-    }
-    if (curatorNames.length === 2) {
-      return `${curatorNames[0]} and ${curatorNames[1]}`
-    }
-
-    // For 3+ curators, use Oxford comma
-    const allButLast = curatorNames.slice(0, -1)
-    const last = curatorNames[curatorNames.length - 1]
-    return `${allButLast.join(", ")}, and ${last}`
-  }
-
-  const curatorString = formatCurators()
+  const curatorString = formatCurators(curators)
 
   const videoCover = video_cover ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${video_cover?.filename_disk}` : ""
 

@@ -26,10 +26,10 @@ const CurrentIssue = (props: BannerCurrentIssueProps) => {
   const bannerDescription = banner.collections_id.description
 
   return (
-    <div id="current-issue" className="flex flex-col space-y-3 h-full">
+    <div id="current-issue" className="flex flex-col space-y-3 h-full px-3 tablet-lg:px-6">
       <div className="w-full">
         <h3 className="text-sm tablet-lg:text-lg font-medium">
-          <Link href={issuePermalink}>{bannerTitle}</Link>
+          <Link href={issuePermalink}>Current Issue: {bannerTitle}</Link>
         </h3>
         {bannerDescription && <div className="text-xs">{parse(bannerDescription)}</div>}
       </div>
@@ -37,7 +37,7 @@ const CurrentIssue = (props: BannerCurrentIssueProps) => {
       <div className="grid grid-cols-6 gap-6">
         <div className="col-span-6">
           <div className="flex space-x-6">
-            <div className="w-[10rem] desktop:w-[12.5rem] max-h-[12rem] desktop-lg:max-h-full flex-none h-full pb-3">
+            <div className="w-[10rem] desktop:w-[12.5rem] desktop-lg:w-[15.5rem] max-h-[12rem] desktop-lg:max-h-full flex-none h-full pb-3">
               <CoverImages currentIssue={currentIssue} clickToIssue={true} priority={true} />
             </div>
 
@@ -47,7 +47,7 @@ const CurrentIssue = (props: BannerCurrentIssueProps) => {
               >
                 {parse(currentIssue.summary)}
               </div>
-              <div className="hidden tablet:flex flex-wrap gap-x-3 gap-y-1.5 w-full">
+              <div className="hidden tablet:flex flex-wrap gap-x-1.5 w-full">
                 <Link
                   href={`/about/where-to-find-us/`}
                   className={`p-1.5 rounded-sm text-center uppercase font-medium text-xs border rail-border`}

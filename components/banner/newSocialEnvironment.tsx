@@ -10,10 +10,12 @@ import Loading from "./loading"
 
 interface NewSocialEnvironmentProps {
   banner: HomepageBanners
+  layout: "wide" | "narrow"
 }
 
 // Content Component
-const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
+const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
+  const { banner, layout } = props
   const [events, setEvents] = useState<Events[] | null>(null)
   const [loading, setLoading] = useState(true)
   const now = new Date()
@@ -57,16 +59,27 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
     </>
   )
 
-  return (
-    <div className="flex flex-col space-y-3 h-full">
-      <div className="w-full">
-        <h3 className="text-sm tablet-lg:text-lg font-medium">
-          <Link href="/events">{collections_id.title}</Link>
-        </h3>
-        {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
-      </div>
-      <div className="flex space-x-6 h-full pb-3">
-        <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pr-3">
+  if (layout === "wide") {
+    return (
+      <div className={`flex flex-col tablet-lg:flex-row tablet-lg:divide-x rail-divide`}>
+        <div className="px-3 tablet-lg:px-6 py-1.5 w-full tablet-lg:w-mobile desktop:w-mobile-lg flex-none">
+          <h3 className="text-sm tablet-lg:text-lg font-medium">
+            <Link href="/events">{collections_id.title}</Link>
+          </h3>
+          {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
+          <div className="hidden tablet:flex flex-wrap gap-x-3 gap-y-1.5 w-full pt-3">
+            <Link
+              href={`/events`}
+              className={`p-1.5 rounded-sm text-center uppercase font-medium text-xs border rail-border`}
+            >
+              Current events
+            </Link>
+            <Link href={`/events/past`} className={`p-1.5 text-center uppercase font-medium text-xs`}>
+              Past events
+            </Link>
+          </div>
+        </div>
+        <div className="flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pl-3 pr-3 py-1.5 bg-opacity-60">
           {loading || !events ? (
             <Loading />
           ) : (
@@ -76,20 +89,41 @@ const EventsContent = ({ banner }: { banner: HomepageBanners }) => {
           )}
         </div>
       </div>
-    </div>
-  )
-}
-
-// Main Component
-const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
-  const { banner } = props
-
-  if (!banner.collections_id) {
-    console.log("No collections_id in banner, returning null")
-    return <></>
+    )
   }
 
-  return <EventsContent banner={banner} />
+  return (
+    <div className={`flex space-y-3 flex-col`}>
+      <div className="w-full px-6">
+        <h3 className="text-sm tablet-lg:text-lg font-medium">
+          <Link href="/events">{collections_id.title}</Link>
+        </h3>
+        {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
+      </div>
+      <div className="flex space-x-6">
+        <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pl-6 pr-3">
+          {loading || !events ? (
+            <Loading />
+          ) : (
+            <>
+              {allEvents} <AllEventsCard type="past" />
+            </>
+          )}
+        </div>
+      </div>
+      <div className="hidden tablet:flex flex-wrap gap-x-3 gap-y-1.5 w-full pt-3 pl-6">
+        <Link
+          href={`/events`}
+          className={`p-1.5 rounded-sm text-center uppercase font-medium text-xs border rail-border`}
+        >
+          Current events
+        </Link>
+        <Link href={`/events/past`} className={`p-1.5 text-center uppercase font-medium text-xs`}>
+          Past events
+        </Link>
+      </div>
+    </div>
+  )
 }
 
 interface EventCardProps {
