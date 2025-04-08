@@ -10,6 +10,7 @@ import PreviewInfo from "./previewInfo"
 const EventPreview = (props: EventPreviewProps) => {
   const { eventData, isEnabled, previewPassword, directusUrl, navData } = props
   const [isStudioPreview, setIsStudioPreview] = useState(false)
+  const [showRegistration, setShowRegistration] = useState(false)
   const cookieSlug = `rail_preview_${eventData.slug}`
 
   useEffect(() => {
@@ -37,9 +38,16 @@ const EventPreview = (props: EventPreviewProps) => {
               )}
             </div>
           </div>
-          <EventPageBody {...props} navData={navData} />
+          <EventPageBody
+            {...props}
+            navData={navData}
+            showRegistration={showRegistration}
+            setShowRegistration={setShowRegistration}
+          />
         </main>
-        {isFutureEvent && <Register {...props} />}
+        {isFutureEvent && eventData.airtable_id && showRegistration && (
+          <Register {...props} showRegistration={showRegistration} setShowRegistration={setShowRegistration} />
+        )}
       </Paper>
     </Password>
   )

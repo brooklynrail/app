@@ -62,6 +62,19 @@ const nextConfig = {
         permanent: true,
       },
 
+      // redirect old event site paths the contributors page
+      // https://brooklynrail.org/media/2020/10/15/ama-birch/
+      {
+        source: "/media/:path*",
+        destination: "/contributors",
+        permanent: true,
+      },
+      {
+        source: "/media",
+        destination: "/contributors",
+        permanent: true,
+      },
+
       // ===================================
       // EXHIBITIONS REDIRECTS
       {

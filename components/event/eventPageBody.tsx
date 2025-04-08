@@ -10,9 +10,10 @@ import ReactMarkdown from "react-markdown"
 import Person from "./person"
 import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "@/lib/utils/events"
 import { EventProps } from "@/lib/railTypes"
+import { RegisterProps } from "./register"
 
-const EventPageBody = (props: EventProps) => {
-  const { eventData, eventTypes } = props
+const EventPageBody = (props: EventProps & RegisterProps) => {
+  const { eventData, eventTypes, setShowRegistration } = props
   const {
     title,
     deck,
@@ -63,10 +64,10 @@ const EventPageBody = (props: EventProps) => {
 
   const handleRegister = () => {
     if (airtable_id) {
-      const register = document.getElementById("register")
-      if (register) {
-        register.scrollIntoView({ behavior: "smooth" })
-      }
+      // scroll to the top of the page
+      window.scrollTo(0, 0)
+
+      setShowRegistration(true)
     } else if (registration_url) {
       window.open(registration_url, "_blank")
     }
@@ -88,12 +89,14 @@ const EventPageBody = (props: EventProps) => {
               {series && <span className="border-l rail-border"></span>}
               {series && <span className="">#{series}</span>}
             </p>
-            <div className="flex flex-col space-y-3 tablet-lg:space-y-6">
-              <h1 className="text-3xl mobile-lg:text-4xl tablet-lg:text-5xl font-bold text-center p-name">
-                {parse(title)}
-              </h1>
-              {deck && <p className="text-center text-2xl tablet-lg:text-4xl font-light p-summary">{parse(deck)}</p>}
-              <p className="text-xl text-center font-light space-x-3">
+            <div className="flex flex-col space-y-9 tablet-lg:space-y-6">
+              <div className="space-y-3 tablet-lg:space-y-6">
+                <h1 className="text-3xl mobile-lg:text-4xl tablet-lg:text-5xl font-bold text-center p-name">
+                  {parse(title)}
+                </h1>
+                {deck && <p className="text-center text-2xl tablet-lg:text-4xl font-light p-summary">{parse(deck)}</p>}
+              </div>
+              <p className="text-lg text-center font-light space-x-3 flex flex-col tablet-lg:flex-row items-center justify-center">
                 <strong>{dateString}</strong>{" "}
                 {isSameDay && !all_day && (
                   <span>
