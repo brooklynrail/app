@@ -64,6 +64,9 @@ const EventPageBody = (props: EventProps & RegisterProps) => {
 
   const handleRegister = () => {
     if (airtable_id) {
+      // scroll to the top of the page
+      window.scrollTo(0, 0)
+
       setShowRegistration(true)
     } else if (registration_url) {
       window.open(registration_url, "_blank")
