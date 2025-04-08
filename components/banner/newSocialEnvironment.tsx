@@ -24,7 +24,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const eventsData = await fetch(`/api/events/upcoming/?cache=${today}`, {
+        const eventsData = await fetch(`/api/events/upcoming-nse/?cache=${today}`, {
           cache: "no-store",
         })
         const events = await eventsData.json()

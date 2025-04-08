@@ -27,6 +27,10 @@ export default function Loading() {
             <EventCardSkeleton />
             <EventCardSkeleton />
             <EventCardSkeleton />
+            <EventCardSkeleton />
+            <EventCardSkeleton />
+            <EventCardSkeleton />
+            <EventCardSkeleton />
             <AllEventsCardSkeleton />
           </div>
         </div>
