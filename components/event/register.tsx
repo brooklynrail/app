@@ -10,7 +10,7 @@ export interface RegisterProps extends EventProps {
 }
 
 const Register = (props: EventProps & RegisterProps) => {
-  const { eventData, showRegistration, setShowRegistration } = props
+  const { eventData, setShowRegistration } = props
   const { title, deck, start_date, end_date, airtable_id, all_day } = eventData
   const [isClient, setIsClient] = useState(false)
 
@@ -46,7 +46,7 @@ const Register = (props: EventProps & RegisterProps) => {
 
       <aside
         id="register"
-        className="h-entry py-6 tablet-lg:py-12 bg-orange-100 dark:bg-indigo-800 absolute top-6 left-1/2 -translate-x-1/2 w-[95%] tablet-lg:w-tablet z-40 rounded-md"
+        className="h-entry py-6 tablet-lg:py-12 bg-orange-100 dark:bg-indigo-800 absolute top-3 left-1/2 -translate-x-1/2 w-[95%] tablet-lg:w-tablet z-40 rounded-md"
         onClick={(e) => e.stopPropagation()} // Prevent clicks on modal from closing it
       >
         {/* Close button */}
@@ -57,8 +57,8 @@ const Register = (props: EventProps & RegisterProps) => {
           <span className="text-lg tablet:text-xl font-bold">&#x2715;</span>
         </button>
 
-        <div className="px-6 desktop:max-w-screen-widescreen mx-auto">
-          <div className="flex flex-col space-y-3">
+        <div className="px-3 desktop:max-w-screen-widescreen mx-auto space-y-6">
+          <div className="flex flex-col space-y-3 px-3">
             <h2 className="text-4xl font-bold">Register</h2>
             <div className="flex flex-col space-y-3">
               <div className="">
@@ -80,18 +80,11 @@ const Register = (props: EventProps & RegisterProps) => {
             {isClient && (
               <div className="relative w-full" style={{ minHeight: "1300px" }}>
                 <iframe
-                  className="airtable-embed airtable-dynamic-height my-12"
+                  className="airtable-embed airtable-dynamic-height"
                   src={`https://airtable.com/embed/shrZwZHHxdeEANeeT?backgroundColor=orangeLight&prefill_Event+IDs=${airtable_id}`}
                   frameBorder="0"
                   width="100%"
                   height="1300"
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                  }}
                 />
               </div>
             )}
