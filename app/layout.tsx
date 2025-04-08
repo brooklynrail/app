@@ -172,7 +172,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${untitledSans.variable} ${untitledSerif.variable}`}>
-      <meta name="theme-color" content="#EF4444" />
+      <meta name="theme-color" content="#18181b" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <PageContextProvider>
         <PopupProvider hidePopup={false}>
