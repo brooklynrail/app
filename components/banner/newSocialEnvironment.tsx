@@ -59,6 +59,11 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
     </>
   )
 
+  // check if the first event in the events array is happening in the next 15 minutes or has already started
+  const isEventLive = isLive(events)
+
+  console.log("isLive", isEventLive)
+
   if (layout === "wide") {
     return (
       <div className={`flex flex-col tablet-lg:flex-row tablet-lg:divide-x rail-divide`}>
@@ -247,5 +252,25 @@ const AllEventsCard = ({ type = "current" }: AllEventsCardProps) => (
     </div>
   </div>
 )
+
+const isLive = (events: Events[] | null) => {
+  if (!events || events.length === 0) {
+    return false
+  }
+
+  const now = new Date()
+  const eventStart = new Date(events[0].start_date)
+  const eventEnd = new Date(events[0].end_date)
+
+  // Calculate 15 minutes from now
+  const fifteenMinutesFromNow = new Date(now.getTime() + 15 * 60 * 1000)
+
+  return (
+    // Event has started but not ended
+    (eventStart <= now && now <= eventEnd) ||
+    // Event starts within next 15 minutes
+    (eventStart > now && eventStart <= fifteenMinutesFromNow)
+  )
+}
 
 export default NewSocialEnvironment
