@@ -59,17 +59,13 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
     </>
   )
 
-  // check if the first event in the events array is happening in the next 15 minutes or has already started
-  const isEventLive = isLive(events)
-
-  console.log("isLive", isEventLive)
-
   if (layout === "wide") {
     return (
       <div className={`flex flex-col tablet-lg:flex-row tablet-lg:divide-x rail-divide`}>
         <div className="px-3 tablet-lg:px-6 py-1.5 w-full tablet-lg:w-mobile desktop:w-mobile-lg flex-none">
           <h3 className="text-sm tablet-lg:text-lg font-medium">
             <Link href="/events">{collections_id.title}</Link>
+            <LiveIndicator events={events} />
           </h3>
           {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
           <div className="hidden tablet:flex flex-wrap gap-x-3 gap-y-1.5 w-full pt-3">
@@ -102,6 +98,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
       <div className="w-full px-6">
         <h3 className="text-sm tablet-lg:text-lg font-medium">
           <Link href="/events">{collections_id.title}</Link>
+          <LiveIndicator events={events} />
         </h3>
         {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
       </div>
@@ -253,23 +250,35 @@ const AllEventsCard = ({ type = "current" }: AllEventsCardProps) => (
   </div>
 )
 
-const isLive = (events: Events[] | null) => {
-  if (!events || events.length === 0) {
-    return false
+interface LiveIndicatorProps {
+  events: Events[] | null
+}
+
+export const LiveIndicator = ({ events }: LiveIndicatorProps) => {
+  const isLive = (events: Events[] | null) => {
+    if (!events || events.length === 0) {
+      return false
+    }
+
+    const now = new Date()
+    const eventStart = new Date(events[0].start_date)
+    const eventEnd = new Date(events[0].end_date)
+    const fifteenMinutesFromNow = new Date(now.getTime() + 15 * 60 * 1000)
+
+    const isCurrentlyLive = eventStart <= now && now <= eventEnd
+    const isStartingSoon = eventStart > now && eventStart <= fifteenMinutesFromNow
+
+    return isCurrentlyLive || isStartingSoon
   }
 
-  const now = new Date()
-  const eventStart = new Date(events[0].start_date)
-  const eventEnd = new Date(events[0].end_date)
-
-  // Calculate 15 minutes from now
-  const fifteenMinutesFromNow = new Date(now.getTime() + 15 * 60 * 1000)
+  if (!isLive(events)) {
+    return null
+  }
 
   return (
-    // Event has started but not ended
-    (eventStart <= now && now <= eventEnd) ||
-    // Event starts within next 15 minutes
-    (eventStart > now && eventStart <= fifteenMinutesFromNow)
+    <span className={`ml-1.5 px-1.5 text-xs text-slate-600 bg-lime-400 dark:bg-lime-300 rounded-full uppercase`}>
+      Live
+    </span>
   )
 }
 
