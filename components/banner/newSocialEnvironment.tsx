@@ -63,9 +63,9 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
     return (
       <div className={`flex flex-col tablet-lg:flex-row tablet-lg:divide-x rail-divide`}>
         <div className="px-3 tablet-lg:px-6 py-1.5 w-full tablet-lg:w-mobile desktop:w-mobile-lg flex-none">
-          <h3 className="text-sm tablet-lg:text-lg font-medium">
+          <h3 className="text-sm tablet-lg:text-lg font-medium space-x-1.5">
             <Link href="/events">{collections_id.title}</Link>
-            <LiveIndicator events={events} />
+            {events && events.length > 0 && <LiveIndicator event={events[0]} />}
           </h3>
           {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
           <div className="hidden tablet:flex flex-wrap gap-x-3 gap-y-1.5 w-full pt-3">
@@ -96,9 +96,9 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
   return (
     <div className={`flex space-y-3 flex-col`}>
       <div className="w-full px-6">
-        <h3 className="text-sm tablet-lg:text-lg font-medium">
+        <h3 className="text-sm tablet-lg:text-lg font-medium space-x-1.5">
           <Link href="/events">{collections_id.title}</Link>
-          <LiveIndicator events={events} />
+          {events && events.length > 0 && <LiveIndicator event={events[0]} />}
         </h3>
         {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
       </div>
@@ -251,18 +251,18 @@ const AllEventsCard = ({ type = "current" }: AllEventsCardProps) => (
 )
 
 interface LiveIndicatorProps {
-  events: Events[] | null
+  event: Events
 }
 
-export const LiveIndicator = ({ events }: LiveIndicatorProps) => {
-  const isLive = (events: Events[] | null) => {
-    if (!events || events.length === 0) {
+export const LiveIndicator = ({ event }: LiveIndicatorProps) => {
+  const isLive = (event: Events) => {
+    if (!event) {
       return false
     }
 
     const now = new Date()
-    const eventStart = new Date(events[0].start_date)
-    const eventEnd = new Date(events[0].end_date)
+    const eventStart = new Date(event.start_date)
+    const eventEnd = new Date(event.end_date)
     const fifteenMinutesFromNow = new Date(now.getTime() + 15 * 60 * 1000)
 
     const isCurrentlyLive = eventStart <= now && now <= eventEnd
@@ -271,14 +271,12 @@ export const LiveIndicator = ({ events }: LiveIndicatorProps) => {
     return isCurrentlyLive || isStartingSoon
   }
 
-  if (!isLive(events)) {
+  if (!isLive(event)) {
     return null
   }
 
   return (
-    <span className={`ml-1.5 px-1.5 text-xs text-slate-600 bg-lime-400 dark:bg-lime-300 rounded-full uppercase`}>
-      Live
-    </span>
+    <span className={`px-1.5 text-xs text-slate-600 bg-lime-400 dark:bg-lime-300 rounded-full uppercase`}>Live</span>
   )
 }
 

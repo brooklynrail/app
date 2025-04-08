@@ -4,6 +4,7 @@ import { getPermalink, PageType } from "@/lib/utils"
 import { Events, EventsTypes } from "@/lib/types"
 import Link from "next/link"
 import { formatEventDate, formatTime, getEventTypeText } from "@/lib/utils/events"
+import { LiveIndicator } from "../banner/newSocialEnvironment"
 
 export interface EventCardProps {
   event: Events
@@ -50,6 +51,7 @@ const EventCard = (props: EventCardProps) => {
             {startTimeET} ET / {startTimePT} PT
           </p>
         )}
+        <LiveIndicator event={event} />
       </div>
       <div className="order-first tablet-lg:order-none col-span-4 tablet-lg:col-span-6">
         <div className="flex flex-col space-y-1">
