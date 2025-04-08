@@ -12,6 +12,7 @@ export interface RegisterProps extends EventProps {
 const Register = (props: EventProps & RegisterProps) => {
   const { eventData, setShowRegistration } = props
   const { title, deck, start_date, end_date, airtable_id, all_day } = eventData
+  const [isLoading, setIsLoading] = useState(true)
   const [isClient, setIsClient] = useState(false)
 
   // get the start date in this format:
@@ -24,19 +25,30 @@ const Register = (props: EventProps & RegisterProps) => {
   const startTimeET = formatTime(start_date, "America/New_York")
   const startTimePT = formatTime(start_date, "America/Los_Angeles")
 
-  // Use useEffect to load Airtable script after hydration
+  // Preload Airtable script when component mounts
   useEffect(() => {
-    setIsClient(true)
+    const loadAirtableScript = () => {
+      return new Promise((resolve, reject) => {
+        if (document.querySelector('script[src*="airtable"]')) {
+          resolve(true)
+          return
+        }
 
-    // Load Airtable script
-    const script = document.createElement("script")
-    script.src = "https://static.airtable.com/js/embed/embed_snippet_v1.js"
-    script.async = true
-    document.body.appendChild(script)
+        const script = document.createElement("script")
+        script.src = "https://static.airtable.com/js/embed/embed_snippet_v1.js"
+        script.async = true
+        script.onload = () => resolve(true)
+        script.onerror = () => reject()
+        document.body.appendChild(script)
+      })
+    }
+
+    loadAirtableScript()
+      .then(() => setIsClient(true))
+      .catch((error) => console.error("Failed to load Airtable script:", error))
 
     return () => {
-      // Cleanup script on unmount
-      document.body.removeChild(script)
+      // Script cleanup is handled automatically by the browser
     }
   }, [])
 
@@ -76,15 +88,23 @@ const Register = (props: EventProps & RegisterProps) => {
             </div>
           </div>
           <div className="event-register">
-            {/* Only render iframe after client-side hydration */}
             {isClient && (
               <div className="relative w-full" style={{ minHeight: "1300px" }}>
+                {isLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-orange-50 dark:bg-indigo-900">
+                    <div className="flex flex-col items-center space-y-4">
+                      <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                      <p className="text-sm text-orange-800 dark:text-orange-200">Loading registration form...</p>
+                    </div>
+                  </div>
+                )}
                 <iframe
                   className="airtable-embed airtable-dynamic-height"
                   src={`https://airtable.com/embed/shrZwZHHxdeEANeeT?backgroundColor=orangeLight&prefill_Event+IDs=${airtable_id}`}
                   frameBorder="0"
                   width="100%"
                   height="1300"
+                  onLoad={() => setIsLoading(false)}
                 />
               </div>
             )}
