@@ -265,6 +265,13 @@ export const LiveIndicator = ({ event }: LiveIndicatorProps) => {
     const eventEnd = new Date(event.end_date)
     const fifteenMinutesFromNow = new Date(now.getTime() + 15 * 60 * 1000)
 
+    // Check if event is today
+    const isToday = now.toDateString() === eventStart.toDateString()
+
+    if (!isToday) {
+      return false
+    }
+
     const isCurrentlyLive = eventStart <= now && now <= eventEnd
     const isStartingSoon = eventStart > now && eventStart <= fifteenMinutesFromNow
 
