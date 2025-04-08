@@ -102,7 +102,7 @@ const Exhibition = () => {
 
   return (
     <div className="">
-      <div className="pl-3 tablet-lg:px-6 flex space-x-3 tablet-lg:hidden">
+      <div className="pl-3 tablet-lg:px-6 flex space-x-3 tablet-lg:hidden overflow-x-hidden">
         <h3 className="text-sm tablet-lg:text-lg font-medium text-nowrap">
           <Link href="/exhibitions">Current Exhibition:</Link>
         </h3>
