@@ -10,9 +10,10 @@ import ReactMarkdown from "react-markdown"
 import Person from "./person"
 import { formatEventDate, EventTypes, formatTime, getEventTypeText } from "@/lib/utils/events"
 import { EventProps } from "@/lib/railTypes"
+import { RegisterProps } from "./register"
 
-const EventPageBody = (props: EventProps) => {
-  const { eventData, eventTypes } = props
+const EventPageBody = (props: EventProps & RegisterProps) => {
+  const { eventData, eventTypes, showRegistration, setShowRegistration } = props
   const {
     title,
     deck,
@@ -63,10 +64,7 @@ const EventPageBody = (props: EventProps) => {
 
   const handleRegister = () => {
     if (airtable_id) {
-      const register = document.getElementById("register")
-      if (register) {
-        register.scrollIntoView({ behavior: "smooth" })
-      }
+      setShowRegistration(true)
     } else if (registration_url) {
       window.open(registration_url, "_blank")
     }

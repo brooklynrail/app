@@ -5,10 +5,12 @@ import { EventsPeople, EventsPeoplePoets } from "@/lib/types"
 import Register from "./register"
 import EventPageBody from "./eventPageBody"
 import Person from "./person"
+import { useState } from "react"
 
 const EventPage = (props: EventProps) => {
   const { eventData, navData } = props
   const { end_date, airtable_id } = eventData
+  const [showRegistration, setShowRegistration] = useState(false)
 
   // Convert both dates to UTC for consistent timezone comparison
   const endDateUTC = new Date(end_date).toISOString()
@@ -18,10 +20,12 @@ const EventPage = (props: EventProps) => {
   return (
     <Paper pageClass="theme-events" navData={navData}>
       <main className="px-3 desktop:max-w-screen-widescreen mx-auto h-event">
-        <EventPageBody {...props} />
+        <EventPageBody {...props} showRegistration={showRegistration} setShowRegistration={setShowRegistration} />
       </main>
 
-      {isFutureEvent && airtable_id && <Register {...props} />}
+      {isFutureEvent && airtable_id && showRegistration && (
+        <Register {...props} showRegistration={showRegistration} setShowRegistration={setShowRegistration} />
+      )}
     </Paper>
   )
 }
