@@ -105,9 +105,9 @@ const Exhibition = () => {
     <div className="">
       <div className="pl-3 tablet-lg:px-6 flex space-x-3 tablet-lg:hidden overflow-x-hidden">
         <h3 className="text-sm tablet-lg:text-lg font-medium text-nowrap">
-          <Link href="/exhibitions">Current Exhibition:</Link>
+          <Link href={permalink}>Current Exhibition:</Link>
         </h3>
-        <Link href="/exhibitions" className="block">
+        <Link href={permalink} className="block">
           <div className="relative flex overflow-x-hidden">
             <div
               className="whitespace-nowrap text-sm tablet-lg:text-lg font-light"
@@ -150,7 +150,7 @@ const Exhibition = () => {
       <div className="hidden tablet-lg:flex flex-col space-y-3 px-3 tablet-lg:px-6 z-10">
         <div className="flex flex-col space-y-3 h-full">
           <h3 className="w-full text-sm tablet-lg:text-lg font-medium">
-            <Link href="/exhibitions">Current Exhibition: {kicker}</Link>
+            <Link href={permalink}>Current Exhibition: {kicker}</Link>
           </h3>
 
           <div className="flex space-x-6">
