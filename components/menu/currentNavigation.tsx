@@ -24,7 +24,7 @@ const CurrentNavigation = () => {
     const fetchData = async () => {
       try {
         const navigationResponse = await fetch(`/api/navigation/`, {
-          next: { revalidate: 3600, tags: ["homepage"] },
+          next: { revalidate: 86400, tags: ["homepage"] },
         })
         const navigationData = await navigationResponse.json()
         if (navigationData) {
