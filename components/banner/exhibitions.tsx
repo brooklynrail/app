@@ -54,6 +54,7 @@ const Exhibition = () => {
   }
 
   const title = exhibition.title
+  const kicker = exhibition.kicker
   const exhibition_images = exhibition.exhibition_images
   const opening_details = exhibition.opening_details
   const opening_date = exhibition.opening_date
@@ -149,7 +150,7 @@ const Exhibition = () => {
       <div className="hidden tablet-lg:flex flex-col space-y-3 px-3 tablet-lg:px-6 z-10">
         <div className="flex flex-col space-y-3 h-full">
           <h3 className="w-full text-sm tablet-lg:text-lg font-medium">
-            <Link href="/exhibitions">Current Exhibition</Link>
+            <Link href="/exhibitions">Current Exhibition: {kicker}</Link>
           </h3>
 
           <div className="flex space-x-6">
