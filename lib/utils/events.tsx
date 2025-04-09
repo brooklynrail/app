@@ -77,7 +77,7 @@ export const getUpcomingEvents = unstable_cache(
         `&filter[youtube_id][_empty]=true` +
         `&filter[status][_eq]=published`
 
-      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      const res = await fetch(eventsDataAPI)
       if (!res.ok) {
         throw new Error("Failed to fetch events data")
       }
@@ -135,7 +135,7 @@ export const getUpcomingNSE = unstable_cache(
         `&filter[youtube_id][_empty]=true` +
         `&filter[status][_eq]=published`
 
-      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      const res = await fetch(eventsDataAPI)
       if (!res.ok) {
         throw new Error("Failed to fetch events data")
       }
@@ -185,7 +185,7 @@ export const getPastEvents = unstable_cache(
         `&sort[]=-start_date` +
         `&limit=${limit}`
 
-      const res = await fetch(allEventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      const res = await fetch(allEventsDataAPI)
       if (!res.ok) {
         console.error(`Failed to fetch All Events data: ${res.statusText}`)
         return null
@@ -273,7 +273,7 @@ export const getFeaturedEvents = unstable_cache(
         `&filter[youtube_id][_nempty]=true` +
         `&filter[status][_eq]=published`
 
-      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      const res = await fetch(eventsDataAPI)
       if (!res.ok) {
         console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
         return null
@@ -383,7 +383,7 @@ export const getAllEvents = unstable_cache(
           `&page=${page}` +
           `&limit=100` +
           `&offset=${page * 100 - 100}`
-        const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+        const res = await fetch(eventsDataAPI)
         if (!res.ok) {
           // This will activate the closest `error.js` Error Boundary
           throw new Error("Failed to fetch allEvents data")
