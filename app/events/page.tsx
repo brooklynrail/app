@@ -6,6 +6,8 @@ import { Metadata } from "next"
 import { getNavData } from "@/lib/utils/homepage"
 import { EventsProps } from "@/lib/railTypes"
 
+export const revalidate = 3600 // revalidate every hour
+
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()
 
@@ -35,32 +37,24 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function EventsController() {
   const data = await getData()
-  if (!data.allEvents || !data.permalink) {
+  if (!data) {
     return notFound()
   }
 
   return <EventsPage {...data} />
 }
 
-async function getData(): Promise<EventsProps> {
-  const navData = await getNavData()
-  if (!navData) {
-    return notFound()
-  }
+async function getData(): Promise<EventsProps | undefined> {
+  // Parallel fetch of initial data
+  const [navData, allEvents, initialEvents, eventTypes] = await Promise.all([
+    getNavData(),
+    getUpcomingEvents(),
+    getPastEvents({ limit: 32, offset: 0 }),
+    getEventTypes(),
+  ])
 
-  const allEvents = await getUpcomingEvents()
-  if (!allEvents) {
-    return notFound()
-  }
-
-  const initialEvents = await getPastEvents({ limit: 32, offset: 0 })
-  if (!initialEvents) {
-    return notFound()
-  }
-
-  const eventTypes = await getEventTypes()
-  if (!eventTypes) {
-    return notFound()
+  if (!navData || !allEvents || !initialEvents || !eventTypes) {
+    return undefined
   }
 
   const permalink = getPermalink({

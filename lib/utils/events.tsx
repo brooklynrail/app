@@ -79,15 +79,23 @@ export const getUpcomingEvents = unstable_cache(
 
       const res = await fetch(eventsDataAPI)
       if (!res.ok) {
-        throw new Error("Failed to fetch events data")
+        console.error(`Failed to fetch upcoming events: ${res.status} ${res.statusText}`)
+        throw new Error(`Failed to fetch events data: ${res.status} ${res.statusText}`)
       }
 
       const data = await res.json()
+
+      if (!data || !data.data) {
+        console.error("Invalid response format from events API:", data)
+        throw new Error("Invalid response format from events API")
+      }
+
       return data.data
     } catch (error) {
       console.error("❌ Error getting upcoming events:", {
         error: error instanceof Error ? error.message : "Unknown error",
         stack: error instanceof Error ? error.stack : undefined,
+        url: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events`,
       })
 
       return null
@@ -137,15 +145,23 @@ export const getUpcomingNSE = unstable_cache(
 
       const res = await fetch(eventsDataAPI)
       if (!res.ok) {
-        throw new Error("Failed to fetch events data")
+        console.error(`Failed to fetch upcoming NSE events: ${res.status} ${res.statusText}`)
+        throw new Error(`Failed to fetch NSE events data: ${res.status} ${res.statusText}`)
       }
 
       const data = await res.json()
+
+      if (!data || !data.data) {
+        console.error("Invalid response format from NSE events API:", data)
+        throw new Error("Invalid response format from NSE events API")
+      }
+
       return data.data
     } catch (error) {
-      console.error("❌ Error getting upcoming events:", {
+      console.error("❌ Error getting upcoming NSE events:", {
         error: error instanceof Error ? error.message : "Unknown error",
         stack: error instanceof Error ? error.stack : undefined,
+        url: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events`,
       })
 
       return null
@@ -275,13 +291,25 @@ export const getFeaturedEvents = unstable_cache(
 
       const res = await fetch(eventsDataAPI)
       if (!res.ok) {
-        console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
-        return null
+        console.error(`Failed to fetch featured events: ${res.status} ${res.statusText}`)
+        throw new Error(`Failed to fetch featured events data: ${res.status} ${res.statusText}`)
       }
+
       const data = await res.json()
+
+      if (!data || !data.data) {
+        console.error("Invalid response format from featured events API:", data)
+        throw new Error("Invalid response format from featured events API")
+      }
+
       return data.data as Events[]
     } catch (error) {
-      console.error("Error fetching Featured Events data:", error)
+      console.error("❌ Error getting featured events:", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined,
+        url: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events`,
+      })
+
       return null
     }
   },
