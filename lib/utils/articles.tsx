@@ -1,3 +1,5 @@
+"use server"
+
 import { readItems } from "@directus/sdk"
 import nlp from "compromise"
 import { cache } from "react"
@@ -11,7 +13,7 @@ export const extractPeopleFromArticle = cache(async (text: string) => {
   return people
 })
 
-export const checkYearMonthSection = (
+export const checkYearMonthSection = async (
   section: Sections,
   issue: Issues,
   year: string,
@@ -175,7 +177,7 @@ export const getArticlePages = unstable_cache(
           `&page=${page}` +
           `&limit=100` +
           `&offset=${page * 100 - 100}`
-        const res = await fetch(articleDataAPI, { next: { revalidate: 3600, tags: ["articles"] } })
+        const res = await fetch(articleDataAPI)
         if (!res.ok) {
           // This will activate the closest `error.js` Error Boundary
           throw new Error("Failed to fetch getArticlePages data")
@@ -193,7 +195,7 @@ export const getArticlePages = unstable_cache(
   },
   ["articles_sitemap"],
   {
-    revalidate: 3600,
+    revalidate: 86400,
     tags: ["homepage"],
   },
 )

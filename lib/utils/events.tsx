@@ -77,17 +77,91 @@ export const getUpcomingEvents = unstable_cache(
         `&filter[youtube_id][_empty]=true` +
         `&filter[status][_eq]=published`
 
-      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      const res = await fetch(eventsDataAPI)
       if (!res.ok) {
-        throw new Error("Failed to fetch events data")
+        console.error(`Failed to fetch upcoming events: ${res.status} ${res.statusText}`)
+        throw new Error(`Failed to fetch events data: ${res.status} ${res.statusText}`)
       }
 
       const data = await res.json()
+
+      if (!data || !data.data) {
+        console.error("Invalid response format from events API:", data)
+        throw new Error("Invalid response format from events API")
+      }
+
       return data.data
     } catch (error) {
       console.error("❌ Error getting upcoming events:", {
         error: error instanceof Error ? error.message : "Unknown error",
         stack: error instanceof Error ? error.stack : undefined,
+        url: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events`,
+      })
+
+      return null
+    }
+  },
+  ["events"],
+  { revalidate: 3600, tags: ["events"] },
+)
+
+export const getUpcomingNSE = unstable_cache(
+  async () => {
+    try {
+      const eventsDataAPI =
+        `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
+        `?fields[]=id` +
+        `&fields[]=slug` +
+        `&fields[]=type` +
+        `&fields[]=kicker` +
+        `&fields[]=title` +
+        `&fields[]=deck` +
+        `&fields[]=summary` +
+        `&fields[]=series` +
+        `&fields[]=start_date` +
+        `&fields[]=end_date` +
+        `&fields[]=all_day` +
+        `&fields[]=youtube_id` +
+        `&fields[]=featured_image.id` +
+        `&fields[]=featured_image.caption` +
+        `&fields[]=featured_image.alt` +
+        `&fields[]=featured_image.filename_disk` +
+        `&fields[]=featured_image.width` +
+        `&fields[]=featured_image.height` +
+        `&fields[]=featured_image.type` +
+        `&fields[]=featured_image.modified_on` +
+        `&fields[]=people.people_id.portrait.id` +
+        `&fields[]=people.people_id.portrait.caption` +
+        `&fields[]=people.people_id.portrait.filename_disk` +
+        `&fields[]=people.people_id.portrait.width` +
+        `&fields[]=people.people_id.portrait.height` +
+        `&fields[]=people.people_id.portrait.alt` +
+        `&fields[]=people.people_id.portrait.modified_on` +
+        `&sort=start_date` +
+        `&filter[type][_neq]=irl` +
+        `&filter[end_date][_gte]=$NOW(-1+days)` + // Now minus 1 day (timezone math applies, so it may not be exactly 24 hours)
+        `&filter[youtube_id][_empty]=true` +
+        `&filter[status][_eq]=published`
+
+      const res = await fetch(eventsDataAPI)
+      if (!res.ok) {
+        console.error(`Failed to fetch upcoming NSE events: ${res.status} ${res.statusText}`)
+        throw new Error(`Failed to fetch NSE events data: ${res.status} ${res.statusText}`)
+      }
+
+      const data = await res.json()
+
+      if (!data || !data.data) {
+        console.error("Invalid response format from NSE events API:", data)
+        throw new Error("Invalid response format from NSE events API")
+      }
+
+      return data.data
+    } catch (error) {
+      console.error("❌ Error getting upcoming NSE events:", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined,
+        url: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events`,
       })
 
       return null
@@ -127,7 +201,7 @@ export const getPastEvents = unstable_cache(
         `&sort[]=-start_date` +
         `&limit=${limit}`
 
-      const res = await fetch(allEventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      const res = await fetch(allEventsDataAPI)
       if (!res.ok) {
         console.error(`Failed to fetch All Events data: ${res.statusText}`)
         return null
@@ -215,15 +289,27 @@ export const getFeaturedEvents = unstable_cache(
         `&filter[youtube_id][_nempty]=true` +
         `&filter[status][_eq]=published`
 
-      const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+      const res = await fetch(eventsDataAPI)
       if (!res.ok) {
-        console.error(`Failed to fetch Featured Events data: ${res.statusText}`)
-        return null
+        console.error(`Failed to fetch featured events: ${res.status} ${res.statusText}`)
+        throw new Error(`Failed to fetch featured events data: ${res.status} ${res.statusText}`)
       }
+
       const data = await res.json()
+
+      if (!data || !data.data) {
+        console.error("Invalid response format from featured events API:", data)
+        throw new Error("Invalid response format from featured events API")
+      }
+
       return data.data as Events[]
     } catch (error) {
-      console.error("Error fetching Featured Events data:", error)
+      console.error("❌ Error getting featured events:", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined,
+        url: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events`,
+      })
+
       return null
     }
   },
@@ -325,7 +411,7 @@ export const getAllEvents = unstable_cache(
           `&page=${page}` +
           `&limit=100` +
           `&offset=${page * 100 - 100}`
-        const res = await fetch(eventsDataAPI, { next: { revalidate: 3600, tags: ["events"] } })
+        const res = await fetch(eventsDataAPI)
         if (!res.ok) {
           // This will activate the closest `error.js` Error Boundary
           throw new Error("Failed to fetch allEvents data")

@@ -24,7 +24,7 @@ const CurrentNavigation = () => {
     const fetchData = async () => {
       try {
         const navigationResponse = await fetch(`/api/navigation/`, {
-          next: { revalidate: 3600, tags: ["homepage"] },
+          next: { revalidate: 86400, tags: ["homepage"] },
         })
         const navigationData = await navigationResponse.json()
         if (navigationData) {
@@ -45,7 +45,7 @@ const CurrentNavigation = () => {
     return <div>Loading...</div>
   }
 
-  const allNav = navigation.map((navItem: NavigationProps, i: number) => {
+  const allNav = navigation.map((navItem: NavigationProps) => {
     const permalink = (() => {
       switch (navItem.type) {
         case CollectionType.Section:
@@ -129,7 +129,7 @@ const CurrentNavigation = () => {
         <ul className="py-3 block text-sm font-bold px-9 space-y-3">
           {allPages}
           <li className="">
-            <Link className="flex space-x-2 w-full" href={`/subscribe`} prefetch={false}>
+            <Link className="flex space-x-2 w-full" href={`/newsletter`} prefetch={false}>
               <span>Sign up for our newsletter</span>
             </Link>
           </li>

@@ -2,6 +2,9 @@ import { Articles } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getArticlePages } from "@/lib/utils/articles"
 import { MetadataRoute } from "next"
+
+export const revalidate = 86400 // revalidate every day
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articlePages = await getArticlePages()
 
