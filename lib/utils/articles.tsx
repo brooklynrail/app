@@ -147,7 +147,7 @@ export const getCurrentIssueSection = unstable_cache(
   },
   ["current_issue_section"],
   {
-    revalidate: 3600,
+    revalidate: 86400,
     tags: ["sections"],
   },
 )
