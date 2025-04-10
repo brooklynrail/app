@@ -9,7 +9,7 @@ const ScreenIndicator = () => {
   }
 
   return (
-    <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-50">
+    <div className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50">
       <p className="text-xs px-1.5 bg-slate-200 dark:bg-slate-800 dark:text-white rounded">
         <span className={`hidden widescreen:block`}>widescreen</span>
         <span className={`hidden desktop-lg:max-widescreen:block`}>desktop-lg</span>

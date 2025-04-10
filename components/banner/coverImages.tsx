@@ -9,10 +9,11 @@ interface CoverImagesProps {
   currentIssue: Issues
   clickToIssue: boolean
   priority: boolean
+  tiny?: boolean
 }
 
 export const CoverImages = (props: CoverImagesProps) => {
-  const { currentIssue, clickToIssue, priority } = props
+  const { currentIssue, clickToIssue, priority, tiny } = props
 
   // NOTE: clickToIssue is TRUE all places except for the Issue page where it is FALSE
   // This is so that the cover images dont link to itself on the Issue page
@@ -46,6 +47,7 @@ export const CoverImages = (props: CoverImagesProps) => {
         {containerHeight && containerWidth && (
           <Link href={issuePermalink}>
             <Covers
+              tiny={tiny ? tiny : false}
               currentIssue={currentIssue}
               containerHeight={containerHeight}
               containerWidth={containerWidth}
@@ -58,9 +60,10 @@ export const CoverImages = (props: CoverImagesProps) => {
     )
   }
   return (
-    <div className="w-full h-full bg-zinc-700 bg-opacity-10 min-h-28 relative" ref={coversRef}>
+    <div className="w-full h-full bg-zinc-700 bg-opacity-10 min-h-[30px] relative" ref={coversRef}>
       {containerHeight && containerWidth && (
         <Covers
+          tiny={tiny ? tiny : false}
           clickToIssue={clickToIssue}
           currentIssue={currentIssue}
           containerHeight={containerHeight}
@@ -78,9 +81,10 @@ interface CoversProps {
   containerWidth: number
   clickToIssue: boolean
   priority: boolean
+  tiny: boolean
 }
 const Covers = (props: CoversProps) => {
-  const { currentIssue, containerHeight, containerWidth, clickToIssue, priority } = props
+  const { currentIssue, containerHeight, containerWidth, clickToIssue, priority, tiny } = props
   const { setImages, togglePopup } = usePopup()
 
   const covers = [
@@ -126,6 +130,13 @@ const Covers = (props: CoversProps) => {
     const diff = containerWidth - finalWidth > 0 ? containerWidth - finalWidth : 0
     const shiftleft = index === 0 ? 0 : (diff / (numCovers - 1)) * index
 
+    // Calculate rotation for each cover
+    // The first cover is rotated -25 degrees, and the last cover is rotated 25 degrees
+    // All the covers in between are rotated in between these two
+    const rotate = tiny ? (index === 0 ? -25 : -25 + index * (50 / (numCovers - 1))) : 0
+    // the middle cover should be higher up than the others
+    const position = tiny ? (index === Math.floor(numCovers / 2) ? "top-1" : "top-0") : "top-0"
+
     return (
       <Image
         key={index}
@@ -138,13 +149,15 @@ const Covers = (props: CoversProps) => {
           width: `auto`,
           maxWidth: `${finalWidth}px`,
           boxShadow: "4px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+          rotate: `${rotate}deg`,
+          top: `${position}`,
         }}
         id={`cover-${index + 1}`}
         src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}${cover.filename_disk}`}
         width={cover.width}
         height={cover.height}
         alt={alt}
-        sizes="25vw"
+        sizes="15vw"
         onClick={handleClick}
       />
     )

@@ -7,6 +7,7 @@ import { useEffect } from "react"
 import Paper from "../paper"
 import ArticlePage from "./page/article"
 import ArticleCriticsPage from "./page/criticsPage"
+import ArticleBar from "../articleBar"
 
 const SlideShow = dynamic(() => import("./slideshow"), {
   ssr: false, // This ensures the component only loads client-side
@@ -21,7 +22,11 @@ const Article = (props: ArticleProps) => {
   })
 
   // Use the article switcher hook, which now returns next and previous articles
-  const { currentArticle } = useArticleSwitcher(articleData, thisIssueData.articles, issuePermalink)
+  const { currentArticle, goToNextArticle, goToPrevArticle } = useArticleSwitcher(
+    articleData,
+    thisIssueData.articles,
+    issuePermalink,
+  )
 
   // Scroll to the top when the current article changes
   useEffect(() => {
@@ -40,11 +45,12 @@ const Article = (props: ArticleProps) => {
             <ArticlePage {...props} articleData={currentArticle} />
           )}
 
-          {/* <ArticleBar
+          <ArticleBar
             goToNextArticle={goToNextArticle}
             goToPrevArticle={goToPrevArticle}
             collectionPermalink={issuePermalink}
-          /> */}
+            currentIssue={thisIssueData}
+          />
         </article>
       </div>
     </Paper>
