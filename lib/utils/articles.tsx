@@ -1,3 +1,5 @@
+"use server"
+
 import { readItems } from "@directus/sdk"
 import nlp from "compromise"
 import { cache } from "react"
@@ -11,7 +13,7 @@ export const extractPeopleFromArticle = cache(async (text: string) => {
   return people
 })
 
-export const checkYearMonthSection = (
+export const checkYearMonthSection = async (
   section: Sections,
   issue: Issues,
   year: string,
