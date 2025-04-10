@@ -8,7 +8,7 @@ import { getArticle, getIssueData, getOGImage, getPermalink, PageType } from "@/
 import { getNavData } from "@/lib/utils/homepage"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 
-export const revalidate = 3600 // 1 hour
+export const revalidate = 86400 // 1 day
 interface ArticleParams {
   year: string
   month: string
@@ -67,27 +67,34 @@ async function getData({ params }: { params: ArticleParams }) {
   // Month & Day —— Both need to have a leading zero if they are less than 10
   // otherwise it should go to a 404 page
   if (month.length === 1 || section.length === 1) {
+    console.error(`[404] Invalid month/section format: year=${year}, month=${month}, section=${section}, slug=${slug}`)
     return notFound()
   }
 
   if (!year || !month || !section || !slug) {
+    console.error(`[404] Missing required params: year=${year}, month=${month}, section=${section}, slug=${slug}`)
     return notFound()
   }
 
   const navData = await getNavData()
   if (!navData) {
+    console.error(
+      `[404] Navigation data not found for article: year=${year}, month=${month}, section=${section}, slug=${slug}`,
+    )
     return notFound()
   }
 
   // Get the article data based on slug
   const articleData = await getArticle(slug, "published")
   if (!articleData) {
+    console.error(`[404] Article not found: year=${year}, month=${month}, section=${section}, slug=${slug}`)
     // If the slug is incorrect, but the dates in the URL are correct,
     // check if a redirect exists that includes this slug
 
     // Note: this does not account for changes to the year/month of the URL
     const redirect = await getRedirect(RedirectTypes.Article, slug)
     if (redirect) {
+      console.log(`[Redirect] Found redirect for article: ${slug} -> ${redirect.path}`)
       await AddRedirect(redirect)
     }
     return notFound()
@@ -96,9 +103,11 @@ async function getData({ params }: { params: ArticleParams }) {
   // This checks to see that the year, month, day in the URL is the same as the start_date for this event
   // This prevents URLs with the correct slug + wrong date
   if (!checkYearMonthSection(articleData.section, articleData.issue, year, month, section)) {
+    console.error(`[404] URL date mismatch: year=${year}, month=${month}, section=${section}, slug=${slug}`)
     // check if a redirect exists that includes this slug
     const redirect = await getRedirect(RedirectTypes.Article, slug)
     if (redirect) {
+      console.log(`[Redirect] Found redirect for article with date mismatch: ${slug} -> ${redirect.path}`)
       await AddRedirect(redirect)
     }
     return notFound()
@@ -106,6 +115,9 @@ async function getData({ params }: { params: ArticleParams }) {
 
   // If the article is part of a tribute, redirect to the tribute page for that article
   if (articleData.tribute) {
+    console.log(
+      `[Redirect] Article is part of tribute, redirecting: ${slug} -> /tribute/${articleData.tribute.slug}/${articleData.slug}/`,
+    )
     const path = `/tribute/${articleData.tribute.slug}/${articleData.slug}/`
     redirect(path) // Navigate to the new article page
   }
@@ -117,6 +129,9 @@ async function getData({ params }: { params: ArticleParams }) {
 
   const thisIssueData = await getIssueData({ slug: articleData.issue.slug })
   if (!thisIssueData) {
+    console.error(
+      `[404] Issue data not found for article: year=${year}, month=${month}, section=${section}, slug=${slug}`,
+    )
     return notFound()
   }
 

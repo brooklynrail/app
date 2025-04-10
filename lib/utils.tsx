@@ -64,7 +64,7 @@ export const getAllIssues = cache(async () => {
         `&limit=100` +
         `&offset=${page * 100 - 100}`
 
-      const res = await fetch(allIssuesDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
+      const res = await fetch(allIssuesDataAPI, { next: { revalidate: 86400, tags: ["issues"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         console.error(`Failed to fetch AllIssues data: ${res.statusText}`)
@@ -101,7 +101,7 @@ export const getIssues = cache(async () => {
         `&page=${page}` +
         `&limit=100` +
         `&offset=${page * 100 - 100}`
-      const res = await fetch(issuesDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
+      const res = await fetch(issuesDataAPI, { next: { revalidate: 86400, tags: ["issues"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error("Failed to fetch getIssues data")
@@ -229,7 +229,7 @@ export const getIssueData = cache(async (props: IssueDataProps) => {
     `&deep[articles][_sort]=sort` +
     `&deep[articles][_limit]=-1`
   try {
-    const res = await fetch(issueDataAPI, { next: { revalidate: 3600, tags: ["issues"] } })
+    const res = await fetch(issueDataAPI, { next: { revalidate: 86400, tags: ["issues"] } })
 
     if (!res.ok) {
       console.error(`Failed to fetch issue data: ${res.statusText}`)
@@ -336,12 +336,7 @@ export const getArticle = unstable_cache(
       `&filter[status][_eq]=${status}`
 
     try {
-      const res = await fetch(articleAPI, {
-        next: {
-          tags: ["sections"],
-          revalidate: 3600,
-        },
-      })
+      const res = await fetch(articleAPI)
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         console.error(`Failed to fetch Article data: ${res.statusText}`)
@@ -356,10 +351,10 @@ export const getArticle = unstable_cache(
       return null
     }
   },
-  ["sections"], // cache key
+  ["sections_articles"], // cache key
   {
     tags: ["sections"], // same tags as fetch
-    revalidate: 3600,
+    revalidate: 86400,
   },
 )
 
@@ -665,7 +660,7 @@ export const getTributeData = unstable_cache(
   ["tributes"],
   {
     tags: ["tributes"],
-    revalidate: 3600,
+    revalidate: 86400,
   },
 )
 
