@@ -272,11 +272,13 @@ body * {
 
 .article-bar {
   color: var(--navbar-text-color);
-  background-color: rgba(var(--background-color-rgb), 0.6);
-  @apply backdrop-blur-md;
+  @apply bg-opacity-60 backdrop-blur-md;
+  background-color: var(--background-color);
+
   .message-bar,
   .next,
   .prev {
+    @apply bg-opacity-100;
     background-color: var(--background-color);
   }
 }

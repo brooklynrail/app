@@ -1,5 +1,4 @@
 import Link from "next/link"
-import styles from "./articleBar.module.scss"
 import { CoverImages } from "../banner/coverImages"
 import { Issues } from "@/lib/types"
 interface ArticleBarProps {
