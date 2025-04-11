@@ -30,9 +30,26 @@ export const checkYearMonthDay = (start_date: string, year: string, month: strin
 }
 
 export const getEventTypes = cache(async () => {
-  const data = await directus.request(readField("events", "type"))
-  const types: Array<{ text: string; value: string }> = data.meta.options && data.meta.options.choices
-  return types
+  console.log("🔄 Fetching event types")
+  try {
+    console.log("📡 Requesting event types from Directus")
+    const data = await directus.request(readField("events", "type"))
+
+    if (!data || !data.meta || !data.meta.options || !data.meta.options.choices) {
+      console.error("❌ Invalid response format from event types API:", JSON.stringify(data))
+      return null
+    }
+
+    const types: Array<{ text: string; value: string }> = data.meta.options.choices
+    console.log(`✅ Successfully fetched ${types.length} event types`)
+    return types
+  } catch (error) {
+    console.error("❌ Error fetching event types:", {
+      error: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+    })
+    return null
+  }
 })
 
 export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) => {
@@ -42,6 +59,7 @@ export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) =
 
 export const getUpcomingEvents = unstable_cache(
   async () => {
+    console.log("🔄 Fetching upcoming events")
     try {
       const eventsDataAPI =
         `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
@@ -79,19 +97,22 @@ export const getUpcomingEvents = unstable_cache(
         `&filter[youtube_id][_empty]=true` +
         `&filter[status][_eq]=published`
 
+      console.log(`📡 Fetching from: ${eventsDataAPI}`)
       const res = await fetch(eventsDataAPI)
       if (!res.ok) {
-        console.error(`Failed to fetch upcoming events: ${res.status} ${res.statusText}`)
+        console.error(`❌ Failed to fetch upcoming events: ${res.status} ${res.statusText}`)
+        console.error(`❌ Response headers:`, JSON.stringify(Object.fromEntries(res.headers.entries())))
         throw new Error(`Failed to fetch events data: ${res.status} ${res.statusText}`)
       }
 
       const data = await res.json()
 
       if (!data || !data.data) {
-        console.error("Invalid response format from events API:", data)
+        console.error("❌ Invalid response format from events API:", JSON.stringify(data))
         throw new Error("Invalid response format from events API")
       }
 
+      console.log(`✅ Successfully fetched ${data.data.length} upcoming events`)
       return data.data
     } catch (error) {
       console.error("❌ Error getting upcoming events:", {
@@ -99,7 +120,6 @@ export const getUpcomingEvents = unstable_cache(
         stack: error instanceof Error ? error.stack : undefined,
         url: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events`,
       })
-
       return null
     }
   },
@@ -181,6 +201,7 @@ interface PastEventsParams {
 export const getPastEvents = unstable_cache(
   async (props: PastEventsParams) => {
     const { limit, offset } = props
+    console.log(`🔄 Fetching past events (limit: ${limit}, offset: ${offset})`)
     try {
       const allEventsDataAPI =
         `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
@@ -203,15 +224,28 @@ export const getPastEvents = unstable_cache(
         `&sort[]=-start_date` +
         `&limit=${limit}`
 
+      console.log(`📡 Fetching from: ${allEventsDataAPI}`)
       const res = await fetch(allEventsDataAPI)
       if (!res.ok) {
-        console.error(`Failed to fetch All Events data: ${res.statusText}`)
+        console.error(`❌ Failed to fetch past events: ${res.status} ${res.statusText}`)
+        console.error(`❌ Response headers:`, JSON.stringify(Object.fromEntries(res.headers.entries())))
         return null
       }
       const data = await res.json()
+
+      if (!data || !data.data) {
+        console.error("❌ Invalid response format from past events API:", JSON.stringify(data))
+        return null
+      }
+
+      console.log(`✅ Successfully fetched ${data.data.length} past events`)
       return data.data as Events[]
     } catch (error) {
-      console.error("Error fetching All Events data:", error)
+      console.error("❌ Error fetching past events:", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined,
+        url: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events`,
+      })
       return null
     }
   },
