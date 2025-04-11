@@ -29,35 +29,28 @@ export const checkYearMonthDay = (start_date: string, year: string, month: strin
   return true
 }
 
-export const getEventTypes = cache(async () => {
-  console.log("🔄 Fetching event types")
-  try {
-    console.log("📡 Requesting event types from Directus")
-    console.log("🔍 Directus URL:", process.env.NEXT_PUBLIC_DIRECTUS_URL)
+export const getEventTypes = unstable_cache(
+  async () => {
+    try {
+      const data = await directus.request(readField("events", "type"))
 
-    // Log the request details
-    const requestDetails = readField("events", "type")
-    console.log("🔍 Request details:", JSON.stringify(requestDetails))
-
-    const data = await directus.request(readField("events", "type"))
-    console.log("📦 Raw response:", JSON.stringify(data))
-
-    if (!data || !data.meta || !data.meta.options || !data.meta.options.choices) {
-      console.error("❌ Invalid response format from event types API:", JSON.stringify(data))
+      if (!data || !data.meta || !data.meta.options || !data.meta.options.choices) {
+        console.error("❌ Invalid response format from event types API:", JSON.stringify(data))
+        return null
+      }
+      const types: EventsTypes[] = data.meta.options.choices
+      return types
+    } catch (error) {
+      console.error("❌ Error fetching event types:", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined,
+      })
       return null
     }
-
-    const types: Array<{ text: string; value: string }> = data.meta.options.choices
-    console.log(`✅ Successfully fetched ${types.length} event types:`, JSON.stringify(types))
-    return types
-  } catch (error) {
-    console.error("❌ Error fetching event types:", {
-      error: error instanceof Error ? error.message : "Unknown error",
-      stack: error instanceof Error ? error.stack : undefined,
-    })
-    return null
-  }
-})
+  },
+  ["eventTypes"],
+  { revalidate: 86400, tags: ["events"] },
+)
 
 export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) => {
   const type = eventTypes.find((eventType) => eventType.value === typeValue)
