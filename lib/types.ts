@@ -511,6 +511,13 @@ export type DirectusWebhooks = {
   url: string
 }
 
+export type EventsExhibitions = {
+  events_id?: string | Events | null
+  exhibitions_id?: string | Exhibitions | null
+  id: number
+  sort?: number | null
+}
+
 export type Events = {
   body?: string | null
   body_text?: string | null
@@ -534,6 +541,8 @@ export type Events = {
   start_date: string
   status: string
   registration_url?: string | null
+  related_exhibitions: EventsExhibitions[]
+  location?: string | null
   kicker?: string | null
   title: string
   type: string
@@ -587,6 +596,7 @@ export type Exhibitions = {
   exhibition_files?: ExhibitionsFiles[]
   exhibition_images?: ExhibitionsImages[]
   show_artists_list: boolean
+  related_events: EventsExhibitions[]
   slug: string
   sort?: number | null
   start_date: string
