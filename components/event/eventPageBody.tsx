@@ -96,7 +96,7 @@ const EventPageBody = (props: EventProps & RegisterProps) => {
                 </h1>
                 {deck && <p className="text-center text-2xl tablet-lg:text-4xl font-light p-summary">{parse(deck)}</p>}
               </div>
-              <p className="text-lg text-center font-light space-x-3 flex flex-col tablet-lg:flex-row items-center justify-center">
+              <p className="text-lg text-center font-light space-x-3 flex flex-col tablet-lg:flex-row items-center justify-center whitespace-nowrap">
                 <strong>{dateString}</strong>{" "}
                 {isSameDay && !all_day && (
                   <span>
