@@ -259,9 +259,21 @@ const nextConfig = {
         permanent: true,
       },
 
-      // Redirect the old admin page to the homepage
+      // Redirect the old admin page to the homepage (this is a legacy path)
       {
         source: "/admin",
+        destination: "/",
+        permanent: false,
+      },
+      // Redirect any paths under /admin/ to the homepage (this is a legacy path)
+      {
+        source: "/admin/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      // Redirect any paths under /article_image/ to the homepage (this is a legacy path)
+      {
+        source: "/article_image/:path*",
         destination: "/",
         permanent: false,
       },
