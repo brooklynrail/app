@@ -337,6 +337,8 @@ export const getEvent = cache(async (slug: string) => {
         "soldout",
         "registration_url",
         "start_date",
+        "location",
+        "related_exhibitions",
         "all_day",
         "end_date",
         "youtube_id",
