@@ -136,6 +136,7 @@ export const getUpcomingEvents = unstable_cache(
 
 export const getUpcomingNSE = unstable_cache(
   async () => {
+    console.log("🔄 Fetching upcoming NSE events")
     try {
       const eventsDataAPI =
         `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/events` +
@@ -271,7 +272,7 @@ export const getPastEvents = unstable_cache(
  *
  */
 export async function fetchEvents() {
-  const currentEvents = await fetch(`/api/events/upcoming/`, {
+  const currentEvents = await fetch(`/api/events/upcoming-nse/`, {
     next: { revalidate: 3600, tags: ["events"] },
   }).then((res) => {
     if (!res.ok) {

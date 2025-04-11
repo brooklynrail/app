@@ -44,7 +44,7 @@ const PreviewInfo = (props: PreviewInfoProps) => {
     const fetchEvents = async () => {
       setIsLoading(true)
       try {
-        const res = await fetch(`/api/events/upcoming/?date=${now.toISOString()}`, {
+        const res = await fetch(`/api/events/upcoming-nse/?date=${now.toISOString()}`, {
           next: {
             tags: ["events"],
           },

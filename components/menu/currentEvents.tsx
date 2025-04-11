@@ -11,7 +11,7 @@ const CurrentEvents = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const upcomingEventsResponse = await fetch(`/api/events/upcoming/`, {
+        const upcomingEventsResponse = await fetch(`/api/events/upcoming-nse/`, {
           next: { revalidate: 3600, tags: ["events"] },
         })
         const upcomingEvents = await upcomingEventsResponse.json()
