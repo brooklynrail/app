@@ -259,13 +259,7 @@ const Refresh = () => {
           <button
             onClick={() =>
               handleRevalidateAPIRoutes(
-                [
-                  "/api/events",
-                  "/api/events/past",
-                  "/api/events/upcoming",
-                  "/api/events/upcoming-nse",
-                  "/api/events/featured",
-                ],
+                ["/api/events/past", "/api/events/upcoming-nse", "/api/events/featured"],
                 "Events",
               )
             }
