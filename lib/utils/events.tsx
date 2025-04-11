@@ -33,7 +33,14 @@ export const getEventTypes = cache(async () => {
   console.log("🔄 Fetching event types")
   try {
     console.log("📡 Requesting event types from Directus")
+    console.log("🔍 Directus URL:", process.env.NEXT_PUBLIC_DIRECTUS_URL)
+
+    // Log the request details
+    const requestDetails = readField("events", "type")
+    console.log("🔍 Request details:", JSON.stringify(requestDetails))
+
     const data = await directus.request(readField("events", "type"))
+    console.log("📦 Raw response:", JSON.stringify(data))
 
     if (!data || !data.meta || !data.meta.options || !data.meta.options.choices) {
       console.error("❌ Invalid response format from event types API:", JSON.stringify(data))
@@ -41,7 +48,7 @@ export const getEventTypes = cache(async () => {
     }
 
     const types: Array<{ text: string; value: string }> = data.meta.options.choices
-    console.log(`✅ Successfully fetched ${types.length} event types`)
+    console.log(`✅ Successfully fetched ${types.length} event types:`, JSON.stringify(types))
     return types
   } catch (error) {
     console.error("❌ Error fetching event types:", {

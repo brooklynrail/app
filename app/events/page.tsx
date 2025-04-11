@@ -13,7 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
   if (!data || !data.permalink) {
     console.error("❌ Events page metadata generation failed: No data or permalink")
-    return {}
+    // Return basic metadata even if data fetching fails
+    return {
+      title: "Events - The Brooklyn Rail",
+      description: "Upcoming and past events from The Brooklyn Rail",
+    }
   }
 
   const share_card = `${process.env.NEXT_PUBLIC_BASE_URL}/images/share-cards/brooklynrail-card.png`
@@ -41,7 +45,13 @@ export default async function EventsController() {
   const data = await getData()
   if (!data) {
     console.error("❌ Events page render failed: No data returned from getData()")
-    return notFound()
+    // Instead of showing a 404, we'll render a basic events page with a message
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-4">Events</h1>
+        <p className="text-lg mb-4">We're having trouble loading the events at the moment. Please try again later.</p>
+      </div>
+    )
   }
 
   console.log("✅ EventsController render successful")
@@ -51,21 +61,23 @@ export default async function EventsController() {
 async function getData(): Promise<EventsProps | undefined> {
   console.log("🔄 Starting getData for events page")
   try {
-    // Parallel fetch of initial data
-    console.log("📡 Fetching navData, allEvents, initialEvents, eventTypes")
-    const [navData, allEvents, initialEvents, eventTypes] = await Promise.all([
-      getNavData(),
-      getUpcomingEvents(),
-      getPastEvents({ limit: 32, offset: 0 }),
-      getEventTypes(),
-    ])
-
-    // Log the results of each fetch
+    // Fetch each data source individually to identify which one fails
+    console.log("📡 Fetching navData...")
+    const navData = await getNavData()
     console.log(`📊 getNavData result: ${navData ? "✅ Success" : "❌ Failed"}`)
+
+    console.log("📡 Fetching allEvents...")
+    const allEvents = await getUpcomingEvents()
     console.log(`📊 getUpcomingEvents result: ${allEvents ? `✅ Success (${allEvents.length} events)` : "❌ Failed"}`)
+
+    console.log("📡 Fetching initialEvents...")
+    const initialEvents = await getPastEvents({ limit: 32, offset: 0 })
     console.log(
       `📊 getPastEvents result: ${initialEvents ? `✅ Success (${initialEvents.length} events)` : "❌ Failed"}`,
     )
+
+    console.log("📡 Fetching eventTypes...")
+    const eventTypes = await getEventTypes()
     console.log(`📊 getEventTypes result: ${eventTypes ? `✅ Success (${eventTypes.length} types)` : "❌ Failed"}`)
 
     if (!navData || !allEvents || !initialEvents || !eventTypes) {
