@@ -16,7 +16,12 @@ export async function GET(request: Request) {
       )
     }
 
-    return Response.json(eventsData, { status: 200 })
+    // Add cache control headers to prevent browser caching
+    return Response.json(eventsData, {
+      headers: {
+        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate",
+      },
+    })
   } catch (error) {
     console.error("❌ Error in events API:", {
       error: error instanceof Error ? error.message : "Unknown error",

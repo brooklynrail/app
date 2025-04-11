@@ -86,27 +86,18 @@ const Refresh = () => {
     }
   }
 
-  const handleRevalidateEventsAPI = async () => {
+  const handleRevalidateAPIRoutes = async (routes: string[], name: string) => {
     if (isLoading) {
       return
     }
 
     setIsLoading(true)
-    setMessage("🔄 Revalidating all events API routes...")
+    setMessage(`🔄 Revalidating all ${name} API routes...`)
 
     try {
-      // List of all events API routes to revalidate
-      const eventsAPIRoutes = [
-        "/api/events",
-        "/api/events/past",
-        "/api/events/upcoming",
-        "/api/events/upcoming-nse",
-        "/api/events/featured",
-      ]
-
       // Revalidate each route
       await Promise.all(
-        eventsAPIRoutes.map(async (route) => {
+        routes.map(async (route) => {
           const pathAPIUrl = `/api/refresh/path?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}&path=${route}`
           const response = await fetch(pathAPIUrl, {
             cache: "no-store",
@@ -122,16 +113,16 @@ const Refresh = () => {
         }),
       )
 
-      setMessage(<p className="text-green-400">✅ Successfully revalidated all events API routes</p>)
+      setMessage(<p className="text-green-400">✅ Successfully revalidated all {name} API routes</p>)
       setTimeout(() => {
         setMessage((currentMessage) =>
-          currentMessage === "Successfully revalidated all events API routes" ? "" : currentMessage,
+          currentMessage === `Successfully revalidated all ${name} API routes` ? "" : currentMessage,
         )
       }, 5000)
     } catch (error) {
-      console.error("Failed to revalidate events API routes:", error)
+      console.error(`Failed to revalidate ${name} API routes:`, error)
       setMessage(
-        <p className="text-red-400">❌ An error occurred while revalidating events API routes. Please try again.</p>,
+        <p className="text-red-400">❌ An error occurred while revalidating {name} API routes. Please try again.</p>,
       )
     } finally {
       setIsLoading(false)
@@ -266,11 +257,31 @@ const Refresh = () => {
         <h2 className="text-lg font-normal text-white">Revalidate API routes</h2>
         <div className="grid grid-cols-1 tablet-lg:grid-cols-2 gap-3">
           <button
-            onClick={handleRevalidateEventsAPI}
+            onClick={() =>
+              handleRevalidateAPIRoutes(
+                [
+                  "/api/events",
+                  "/api/events/past",
+                  "/api/events/upcoming",
+                  "/api/events/upcoming-nse",
+                  "/api/events/featured",
+                ],
+                "Events",
+              )
+            }
             disabled={isLoading}
             className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Revalidating..." : "Revalidate Events API Routes"}
+          </button>
+          <button
+            onClick={() =>
+              handleRevalidateAPIRoutes(["/api/article", "/api/article/[slug]", "/api/article/id/[id]"], "Article")
+            }
+            disabled={isLoading}
+            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? "Revalidating..." : "Revalidate Article API Routes"}
           </button>
         </div>
       </div>
