@@ -846,6 +846,7 @@ export type Sections = {
   old_id: number
   featured: boolean
   slug: string
+  status: string
   sponsor?: string | null
   sort?: number | null
   user_created?: string | DirectusUsers | null
