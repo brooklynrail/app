@@ -20,14 +20,10 @@ export async function generateStaticParams() {
   }))
 }
 
-interface SectionParams {
-  slug: string
-}
-
 // Metadata Generation
-export async function generateMetadata(props: { params: Promise<SectionParams> }): Promise<Metadata> {
-  const params = await props.params
-  const data = await getData(params)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const slug = (await params).slug
+  const data = await getData(slug)
 
   if (!data?.sectionData) {
     return {}
@@ -59,11 +55,11 @@ export async function generateMetadata(props: { params: Promise<SectionParams> }
 }
 
 // Main Page Component
-export default async function SectionPage(props: { params: Promise<SectionParams> }) {
-  const params = await props.params
-  const data = await getData(params)
+export default async function SectionPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const data = await getData(slug)
 
-  if (!data?.sectionData) {
+  if (!data) {
     notFound()
   }
 
@@ -71,10 +67,8 @@ export default async function SectionPage(props: { params: Promise<SectionParams
 }
 
 // Data Fetching
-async function getData(params: SectionParams): Promise<SectionPageProps | undefined> {
+async function getData(slug: string) {
   try {
-    const slug = params.slug.toString()
-
     // Parallel fetch of initial data
     const [navData, sectionData, articlesData] = await Promise.all([
       getNavData(),
@@ -83,7 +77,7 @@ async function getData(params: SectionParams): Promise<SectionPageProps | undefi
     ])
 
     if (!navData || !sectionData || !articlesData) {
-      return undefined
+      return notFound()
     }
 
     const permalink = getPermalink({
