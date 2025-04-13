@@ -166,7 +166,12 @@ export const getUpcomingNSE = unstable_cache(
         `&filter[youtube_id][_empty]=true` +
         `&filter[status][_eq]=published`
 
-      const res = await fetch(eventsDataAPI)
+      const res = await fetch(eventsDataAPI, {
+        next: {
+          revalidate: 86400, // 1 day
+          tags: ["events"],
+        },
+      })
       if (!res.ok) {
         console.error(`Failed to fetch upcoming NSE events: ${res.status} ${res.statusText}`)
         throw new Error(`Failed to fetch NSE events data: ${res.status} ${res.statusText}`)
@@ -190,8 +195,8 @@ export const getUpcomingNSE = unstable_cache(
       return null
     }
   },
-  ["events"],
-  { revalidate: 3600, tags: ["events"] },
+  ["upcomingNSEdata"],
+  { revalidate: 86400, tags: ["events"] },
 )
 
 interface PastEventsParams {
