@@ -107,7 +107,7 @@ export const getSections = unstable_cache(
     try {
       const sections = await directus.request(
         readItems("sections", {
-          fields: ["id", "status", "name", "description", "slug", "sponsor"],
+          fields: ["id", "status", "slug"],
           filter: {
             _and: [
               {

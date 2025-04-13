@@ -8,9 +8,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 
-interface SectionParams {
-  slug: string
-}
+export const dynamicParams = true
 
 export async function generateStaticParams() {
   const sections: Sections[] | null = await getSections()
@@ -20,6 +18,10 @@ export async function generateStaticParams() {
   return sections.map((section) => ({
     slug: section.slug,
   }))
+}
+
+interface SectionParams {
+  slug: string
 }
 
 // Metadata Generation
