@@ -1,8 +1,9 @@
 import Section from "@/components/section"
 import { SectionPageProps } from "@/lib/railTypes"
+import { Sections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
-import { getArticlesBySection, getSectionData } from "@/lib/utils/sections"
+import { getArticlesBySection, getSectionData, getSections } from "@/lib/utils/sections"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
@@ -11,12 +12,19 @@ interface SectionParams {
   slug: string
 }
 
-// Page Configuration
-export const revalidate = 3600 // revalidate every hour
+export async function generateStaticParams() {
+  const sections: Sections[] | null = await getSections()
+  if (!sections) {
+    return []
+  }
+  return sections.map((section) => ({
+    slug: section.slug,
+  }))
+}
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<SectionParams> }): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data?.sectionData) {
@@ -50,7 +58,7 @@ export async function generateMetadata(props: { params: Promise<SectionParams> }
 
 // Main Page Component
 export default async function SectionPage(props: { params: Promise<SectionParams> }) {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data?.sectionData) {
