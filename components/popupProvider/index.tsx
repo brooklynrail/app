@@ -1,14 +1,20 @@
 "use client"
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react"
 
+export enum PopupType {
+  Donate = "donate",
+  Newsletter = "newsletter",
+  Covers = "covers",
+}
+
 interface PopupContextType {
   showPopup: boolean
   setShowPopup: (show: boolean) => void
-  popupType: string | null
-  setPopupType: (type: string | null) => void
+  popupType: PopupType | null
+  setPopupType: (type: PopupType | null) => void
   images: any[]
   setImages: (images: any[]) => void
-  togglePopup: (type: string) => void
+  togglePopup: (type: PopupType) => void
   showArticleSlideShow: boolean
   setShowArticleSlideShow: (show: boolean) => void
   toggleArticleSlideShow: (id?: string) => void
@@ -45,40 +51,40 @@ interface PopupProviderProps {
 
 export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
   const [showPopup, setShowPopup] = useState(true)
-  const [popupType, setPopupType] = useState<string | null>(null)
+  const [popupType, setPopupType] = useState<PopupType | null>(null)
   const [images, setImages] = useState<any[]>([])
-  // const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
+  const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
   const [showArticleSlideShow, setShowArticleSlideShow] = useState(false)
   const [slideId, setSlideId] = useState<string | null>(null)
 
   // Initialize viewedDonateCount and handle expiration logic
-  // useEffect(() => {
-  //   const storedCount = parseInt(getLocalStorageItem("donatePopup") || "0", 10) || 0
-  //   const storedTimestamp = parseInt(getLocalStorageItem("donatePopupTimestamp") || "0", 10)
+  useEffect(() => {
+    const storedCount = parseInt(getLocalStorageItem("donatePopup") || "0", 10) || 0
+    const storedTimestamp = parseInt(getLocalStorageItem("donatePopupTimestamp") || "0", 10)
 
-  //   const currentTime = Date.now()
-  //   if (storedTimestamp && currentTime - storedTimestamp < ONE_HOUR) {
-  //     setViewedDonateCount(storedCount)
-  //   } else {
-  //     setViewedDonateCount(0)
-  //     setLocalStorageItem("donatePopup", "0")
-  //     setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
-  //   }
-  // }, [])
+    const currentTime = Date.now()
+    if (storedTimestamp && currentTime - storedTimestamp < ONE_HOUR) {
+      setViewedDonateCount(storedCount)
+    } else {
+      setViewedDonateCount(0)
+      setLocalStorageItem("donatePopup", "0")
+      setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
+    }
+  }, [])
 
-  // useEffect(() => {
-  //   setPopupType("donate")
-  //   setShowPopup(true)
-  //   // if (viewedDonateCount !== null && viewedDonateCount < 2) {
-  //   //   const newCount = viewedDonateCount + 1
-  //   //   const currentTime = Date.now()
-  //   //   setViewedDonateCount(newCount)
-  //   //   setLocalStorageItem("donatePopup", newCount.toString())
-  //   //   setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
-  //   // }
-  // }, [viewedDonateCount])
+  useEffect(() => {
+    setPopupType(PopupType.Newsletter)
+    setShowPopup(true)
+    if (viewedDonateCount !== null && viewedDonateCount < 2) {
+      const newCount = viewedDonateCount + 1
+      const currentTime = Date.now()
+      setViewedDonateCount(newCount)
+      setLocalStorageItem("donatePopup", newCount.toString())
+      setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
+    }
+  }, [viewedDonateCount])
 
-  const togglePopup = (type: string) => {
+  const togglePopup = (type: PopupType) => {
     setPopupType(type)
     setShowPopup((prev) => !prev)
   }

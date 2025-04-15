@@ -12,6 +12,8 @@ import Menu from "../menu/menu"
 import NavBar from "../navBar"
 import PreviewHeader from "../preview/previewHead"
 import ScreenIndicator from "../screenIndicator"
+import PopupDonate from "../popups/donate"
+import PopupNewsletter from "../popups/newsletter"
 
 export interface PaperProps {
   pageClass: string
@@ -95,6 +97,7 @@ const Paper = (props: PaperProps) => {
         </div>
         <Menu collections={navData.collections} />
         {/* {!previewURL && <PopupDonate />} */}
+        {!previewURL && <PopupNewsletter />}
       </MenuProvider>
     </AdVisibilityProvider>
   )
