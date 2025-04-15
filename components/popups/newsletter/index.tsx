@@ -1,4 +1,4 @@
-import { usePopup } from "@/components/popupProvider"
+import { usePopup, PopupType } from "@/components/popupProvider"
 import PopupFrameCenter from "../center"
 import NewsLetterSignUpForm from "@/components/newsletterForm"
 import { useCallback, useState, useEffect, useRef } from "react"
@@ -6,18 +6,57 @@ import { usePostHog } from "posthog-js/react"
 import { sendGAEvent } from "@next/third-parties/google"
 
 const PopupNewsletter = () => {
-  const { showPopup, popupType, setShowPopup } = usePopup()
+  // Get the context values but don't rely on them for visibility control
+  const { setShowPopup, setPopupType } = usePopup()
   const posthog = usePostHog()
+
+  // Use local state for everything
+  const [isVisible, setIsVisible] = useState(false)
   const [formInteracted, setFormInteracted] = useState(false)
   const [impressionTracked, setImpressionTracked] = useState(false)
   const popupRef = useRef<HTMLDivElement>(null)
 
-  // Track newsletter popup events
-  const handleNewsletterEvent = useCallback(
+  // Set up the popup type and start the timer when the component mounts
+  useEffect(() => {
+    console.log("Newsletter popup mounted")
+
+    // Set the popup type to newsletter
+    setPopupType(PopupType.Newsletter)
+
+    // Start with popup hidden
+    setIsVisible(false)
+
+    // Set a timer to show the popup after 5 seconds
+    const timer = setTimeout(() => {
+      console.log("Timer completed, showing newsletter popup")
+      setIsVisible(true)
+      setShowPopup(true)
+    }, 5000)
+
+    // Clean up the timer when the component unmounts
+    return () => {
+      console.log("Cleaning up newsletter popup timer")
+      clearTimeout(timer)
+    }
+  }, [setPopupType, setShowPopup])
+
+  // Track impression when popup becomes visible
+  useEffect(() => {
+    if (isVisible && !impressionTracked) {
+      console.log("Tracking newsletter popup impression")
+      trackNewsletterEvent("impression")
+      setImpressionTracked(true)
+    }
+  }, [isVisible, impressionTracked])
+
+  // Function to track newsletter events
+  const trackNewsletterEvent = useCallback(
     (
       action: "impression" | "close" | "form_interaction" | "form_submit" | "form_success" | "form_error",
       details?: any,
     ) => {
+      console.log("Newsletter event:", action, details)
+
       // Send PostHog event
       if (posthog) {
         posthog.capture(`${action}_newsletter_popup`, {
@@ -34,54 +73,41 @@ const PopupNewsletter = () => {
     [posthog],
   )
 
-  // Track impression when popup is visible
-  useEffect(() => {
-    if (showPopup && popupType === "newsletter" && !impressionTracked) {
-      handleNewsletterEvent("impression")
-      setImpressionTracked(true)
-    }
-  }, [showPopup, popupType, impressionTracked, handleNewsletterEvent])
-
-  // Handle newsletter popup close
-  const handleNewsletterClose = useCallback(() => {
-    handleNewsletterEvent("close")
-    setShowPopup(false)
-  }, [handleNewsletterEvent, setShowPopup])
-
   // Handle form interaction
   const handleFormInteraction = useCallback(() => {
     if (!formInteracted) {
       setFormInteracted(true)
-      handleNewsletterEvent("form_interaction")
+      trackNewsletterEvent("form_interaction")
     }
-  }, [formInteracted, handleNewsletterEvent])
+  }, [formInteracted, trackNewsletterEvent])
 
   // Handle form submission
   const handleFormSubmit = useCallback(() => {
-    handleNewsletterEvent("form_submit")
-  }, [handleNewsletterEvent])
+    trackNewsletterEvent("form_submit")
+  }, [trackNewsletterEvent])
 
   // Handle form success
   const handleFormSuccess = useCallback(
     (data: any) => {
-      handleNewsletterEvent("form_success", { email: data.email })
+      trackNewsletterEvent("form_success", { email: data.email })
     },
-    [handleNewsletterEvent],
+    [trackNewsletterEvent],
   )
 
   // Handle form error
   const handleFormError = useCallback(
     (error: any) => {
-      handleNewsletterEvent("form_error", { error: error.message || "Unknown error" })
+      trackNewsletterEvent("form_error", { error: error.message || "Unknown error" })
     },
-    [handleNewsletterEvent],
+    [trackNewsletterEvent],
   )
 
-  // Early return after all hooks are defined
-  if (!showPopup || popupType !== "newsletter") {
+  // If the popup is not visible, don't render anything
+  if (!isVisible) {
     return null
   }
 
+  // Render the popup
   return (
     <PopupFrameCenter>
       <div ref={popupRef} className="space-y-3 tablet:space-y-6 py-20">
