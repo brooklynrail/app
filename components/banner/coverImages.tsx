@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { stripHtml } from "string-strip-html"
-import { usePopup } from "../popupProvider"
+import { PopupType, usePopup } from "../popupProvider"
 interface CoverImagesProps {
   currentIssue: Issues
   clickToIssue: boolean
@@ -100,7 +100,7 @@ const Covers = (props: CoversProps) => {
     if (!clickToIssue) {
       e.preventDefault()
       setImages(covers)
-      togglePopup("covers")
+      togglePopup(PopupType.Covers)
     }
   }
 
