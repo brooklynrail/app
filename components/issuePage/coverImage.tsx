@@ -1,7 +1,7 @@
 import { stripHtml } from "string-strip-html"
 import { Issues } from "@/lib/types"
 import Image from "next/image"
-import { usePopup } from "../popupProvider"
+import { PopupType, usePopup } from "../popupProvider"
 import CoversPopup from "./coversPopup"
 
 interface CoverImagesProps {
@@ -32,7 +32,7 @@ export const CoverImage = (props: CoverImagesProps) => {
 
   const handleClick = () => {
     setImages(covers)
-    togglePopup("covers")
+    togglePopup(PopupType.Covers)
   }
 
   const alt = thisIssueData.cover_1.caption
