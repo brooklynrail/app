@@ -3,7 +3,7 @@ import parse from "html-react-parser"
 import { getPermalink, PageType } from "@/lib/utils"
 import { Events, EventsTypes } from "@/lib/types"
 import Link from "next/link"
-import { formatEventDate, formatTime, getEventTypeText } from "@/lib/utils/events"
+import { EventTypes, formatEventDate, formatTime, getEventTypeText } from "@/lib/utils/events"
 import { LiveIndicator } from "../banner/newSocialEnvironment"
 
 export interface EventCardProps {
@@ -42,6 +42,8 @@ const EventCard = (props: EventCardProps) => {
   const startTimeET = formatTime(start_date, "America/New_York")
   const startTimePT = formatTime(start_date, "America/Los_Angeles")
 
+  const subTitle = event.location ? `${event.location}` : deck
+
   return (
     <div className="grid grid-cols-4 tablet-lg:grid-cols-12 gap-3 tablet-lg:gap-y-12 py-6">
       <div className="col-span-4 tablet-lg:col-span-3">
@@ -56,7 +58,7 @@ const EventCard = (props: EventCardProps) => {
       <div className="order-first tablet-lg:order-none col-span-4 tablet-lg:col-span-6">
         <div className="flex flex-col space-y-1">
           <p className="flex space-x-3 text-sm">
-            {type && <span className="uppercase text-nowrap font-normal">{parse(eventTypeText)}</span>}
+            {type && type != "irl" && <span className="uppercase text-nowrap font-normal">{parse(eventTypeText)}</span>}
             {series && <span className="border-l rail-border"></span>}
             {series && <span className="">#{series}</span>}
           </p>
@@ -64,7 +66,7 @@ const EventCard = (props: EventCardProps) => {
             <h2 className="text-3xl font-bold">
               <Link href={permalink}>{title}</Link>
             </h2>
-            {deck && <p className="text-lg font-normal">{parse(deck)}</p>}
+            {subTitle && <p className="text-lg font-normal">{parse(subTitle)}</p>}
           </div>
         </div>
       </div>

@@ -6,13 +6,13 @@ import TributeHead from "./tributeHead"
 import TributeBodyBlock from "./tributeBody"
 
 const TributePage = (props: TributePageProps) => {
-  const { thisTributeData, navData } = props
+  const { thisTributeData, navData, previewURL } = props
 
   const { slug } = thisTributeData
   const tributeClass = `tribute-${slug.toLowerCase()}`
 
   return (
-    <Paper pageClass={`theme-tribute ${tributeClass}`} navData={navData}>
+    <Paper pageClass={`theme-tribute ${tributeClass}`} navData={navData} previewURL={previewURL}>
       <div className="rail-divide divide-y">
         <section id="main" className={`${styles.main}`}>
           <div className="rail-divide divide-y">

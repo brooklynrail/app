@@ -102,6 +102,35 @@ export const getSectionData = unstable_cache(
   },
 )
 
+export const getSections = unstable_cache(
+  async () => {
+    try {
+      const sections = await directus.request(
+        readItems("sections", {
+          fields: ["id", "status", "slug"],
+          filter: {
+            _and: [
+              {
+                status: { _eq: "published" },
+              },
+            ],
+          },
+        }),
+      )
+
+      return sections as Sections[]
+    } catch (error) {
+      console.error("Error fetching section data:", error)
+      return null
+    }
+  },
+  ["sections"],
+  {
+    tags: ["sections"],
+    revalidate: 3600, // 1 hour
+  },
+)
+
 // Group articles by issue
 export const groupByIssue = (articles: Articles[]) => {
   return articles.reduce((acc: Record<string, Articles[]>, article) => {

@@ -87,7 +87,7 @@ async function getData({ params }: { params: ArticleParams }) {
   // Get the article data based on slug
   const articleData = await getArticle(slug, "published")
   if (!articleData) {
-    console.error(`[404] Article not found: year=${year}, month=${month}, section=${section}, slug=${slug}`)
+    // console.error(`[404] Article not found: year=${year}, month=${month}, section=${section}, slug=${slug}`)
     // If the slug is incorrect, but the dates in the URL are correct,
     // check if a redirect exists that includes this slug
 

@@ -26,31 +26,6 @@ const nextConfig = {
     },
   },
 
-  // Caching
-  async headers() {
-    return [
-      {
-        // API routes should use Next.js's built-in caching
-        source: "/api/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "no-cache, no-store",
-          },
-        ],
-      },
-      {
-        // All other routes (pages)
-        source: "/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, must-revalidate",
-          },
-        ],
-      },
-    ]
-  },
   // Redirects
   async redirects() {
     return [
@@ -259,9 +234,21 @@ const nextConfig = {
         permanent: true,
       },
 
-      // Redirect the old admin page to the homepage
+      // Redirect the old admin page to the homepage (this is a legacy path)
       {
         source: "/admin",
+        destination: "/",
+        permanent: false,
+      },
+      // Redirect any paths under /admin/ to the homepage (this is a legacy path)
+      {
+        source: "/admin/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      // Redirect any paths under /article_image/ to the homepage (this is a legacy path)
+      {
+        source: "/article_image/:path*",
         destination: "/",
         permanent: false,
       },

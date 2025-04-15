@@ -1,7 +1,9 @@
 import { getArticle } from "@/lib/utils"
 
+export const revalidate = 86400 // 1 day
+
 export async function GET(request: Request, props: { params: Promise<{ slug: string }> }) {
-  const params = await props.params;
+  const params = await props.params
   try {
     const slug = params.slug
 
@@ -15,7 +17,12 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
       return new Response("Article not found", { status: 404 })
     }
 
-    return Response.json(articleData)
+    // Add cache control headers to prevent browser caching
+    return Response.json(articleData, {
+      headers: {
+        "Cache-Control": "public, s-maxage=86400, stale-while-revalidate",
+      },
+    })
   } catch (error) {
     console.error("Error fetching article:", error)
     return new Response("Error fetching article", { status: 500 })
