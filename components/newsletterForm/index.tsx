@@ -7,7 +7,12 @@ interface NewsletterFormProps {
   onError?: (error: any) => void
 }
 
-export default function NewsLetterSignUpForm({ onInteraction, onSubmit, onSuccess, onError }: NewsletterFormProps) {
+export default function NewsLetterSignUpForm({
+  onInteraction,
+  onSubmit,
+  onSuccess,
+  onError,
+}: NewsletterFormProps = {}) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [message, setMessage] = useState("")

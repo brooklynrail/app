@@ -1,31 +1,23 @@
-import { useCallback, useState } from "react"
+import { usePopup } from "@/components/popupProvider"
+import PopupFrameCenter from "../center"
+import NewsLetterSignUpForm from "@/components/newsletterForm"
+import { useCallback, useState, useEffect, useRef } from "react"
 import { usePostHog } from "posthog-js/react"
 import { sendGAEvent } from "@next/third-parties/google"
-import NewsLetterSignUpForm from "@/components/newsletterForm"
 
-interface NewsletterPopupProps {
-  isOpen: boolean
-  onClose: () => void
-  onFormInteraction?: () => void
-  onFormSubmit?: () => void
-  onFormSuccess?: (data: any) => void
-  onFormError?: (error: any) => void
-}
-
-export default function NewsletterPopup({
-  isOpen,
-  onClose,
-  onFormInteraction,
-  onFormSubmit,
-  onFormSuccess,
-  onFormError,
-}: NewsletterPopupProps) {
+const PopupNewsletter = () => {
+  const { showPopup, popupType, setShowPopup } = usePopup()
   const posthog = usePostHog()
-  const [isNewsletterOpen, setIsNewsletterOpen] = useState(isOpen)
+  const [formInteracted, setFormInteracted] = useState(false)
+  const [impressionTracked, setImpressionTracked] = useState(false)
+  const popupRef = useRef<HTMLDivElement>(null)
 
   // Track newsletter popup events
-  const trackNewsletterEvent = useCallback(
-    (action: "close" | "form_interaction" | "form_submit" | "form_success" | "form_error", details?: any) => {
+  const handleNewsletterEvent = useCallback(
+    (
+      action: "impression" | "close" | "form_interaction" | "form_submit" | "form_success" | "form_error",
+      details?: any,
+    ) => {
       // Send PostHog event
       if (posthog) {
         posthog.capture(`${action}_newsletter_popup`, {
@@ -35,46 +27,79 @@ export default function NewsletterPopup({
 
       // Send GA event
       sendGAEvent("event", action, {
-        event_category: "newsletter",
+        event_category: "newsletter_popup",
         ...details,
       })
     },
     [posthog],
   )
 
+  // Track impression when popup is visible
+  useEffect(() => {
+    if (showPopup && popupType === "newsletter" && !impressionTracked) {
+      handleNewsletterEvent("impression")
+      setImpressionTracked(true)
+    }
+  }, [showPopup, popupType, impressionTracked, handleNewsletterEvent])
+
   // Handle newsletter popup close
   const handleNewsletterClose = useCallback(() => {
-    trackNewsletterEvent("close")
-    setIsNewsletterOpen(false)
-    onClose()
-  }, [trackNewsletterEvent, onClose])
+    handleNewsletterEvent("close")
+    setShowPopup(false)
+  }, [handleNewsletterEvent, setShowPopup])
 
-  if (!isNewsletterOpen) {
+  // Handle form interaction
+  const handleFormInteraction = useCallback(() => {
+    if (!formInteracted) {
+      setFormInteracted(true)
+      handleNewsletterEvent("form_interaction")
+    }
+  }, [formInteracted, handleNewsletterEvent])
+
+  // Handle form submission
+  const handleFormSubmit = useCallback(() => {
+    handleNewsletterEvent("form_submit")
+  }, [handleNewsletterEvent])
+
+  // Handle form success
+  const handleFormSuccess = useCallback(
+    (data: any) => {
+      handleNewsletterEvent("form_success", { email: data.email })
+    },
+    [handleNewsletterEvent],
+  )
+
+  // Handle form error
+  const handleFormError = useCallback(
+    (error: any) => {
+      handleNewsletterEvent("form_error", { error: error.message || "Unknown error" })
+    },
+    [handleNewsletterEvent],
+  )
+
+  // Early return after all hooks are defined
+  if (!showPopup || popupType !== "newsletter") {
     return null
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="relative w-full max-w-md p-6 bg-white rounded-lg shadow-xl dark:bg-gray-800">
-        <button
-          onClick={handleNewsletterClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-
-        <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Subscribe to Our Newsletter</h2>
-        <p className="mb-6 text-gray-600 dark:text-gray-300">Stay updated with our latest news and updates.</p>
-
+    <PopupFrameCenter>
+      <div ref={popupRef} className="space-y-3 tablet:space-y-6 py-20">
+        <h2 className="text-4xl tablet-lg:text-6xl text-center font-light text-zinc-800 dark:text-slate-100">
+          Subscribe to our newsletter
+        </h2>
+        <p className="text-center text-sm tablet-lg:text-lg text-zinc-800 dark:text-slate-100">
+          Receive the latest news and updates from The Brooklyn Rail
+        </p>
         <NewsLetterSignUpForm
-          onInteraction={onFormInteraction}
-          onSubmit={onFormSubmit}
-          onSuccess={onFormSuccess}
-          onError={onFormError}
+          onInteraction={handleFormInteraction}
+          onSubmit={handleFormSubmit}
+          onSuccess={handleFormSuccess}
+          onError={handleFormError}
         />
       </div>
-    </div>
+    </PopupFrameCenter>
   )
 }
+
+export default PopupNewsletter
