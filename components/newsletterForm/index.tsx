@@ -51,7 +51,7 @@ export default function NewsLetterSignUpForm() {
       if (res.ok) {
         // Handle success
         const data = await res.json()
-        console.log("Subscription successful:", data)
+        console.log("You are now subscribed and should be receiving an email from us shortly.", data)
         setStatus("success")
         setMessage(data.message || "Thank you for subscribing!")
         if (inputRef.current) {
@@ -72,42 +72,43 @@ export default function NewsLetterSignUpForm() {
   }
 
   return (
-    <form onSubmit={subscribeUser} className="w-full max-w-md mx-auto">
-      <div className="mb-4">
-        <label htmlFor="email-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Your Best Email
-        </label>
+    <div className="w-full max-w-screen-mobile-lg mx-auto flex flex-col items-center space-y-3">
+      <form onSubmit={subscribeUser} className="w-full flex items-start gap-2">
+        <div className="flex-grow">
+          <label htmlFor="email-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Your Email
+          </label>
 
-        <input
-          type="email"
-          id="email-input"
-          name="email"
-          placeholder="your best email"
-          ref={inputRef}
-          required
-          autoCapitalize="off"
-          autoCorrect="off"
-          className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            status === "error" ? "border-red-500" : "border-gray-300 dark:border-gray-600"
-          } bg-white dark:bg-gray-800 text-gray-900 dark:text-white`}
-        />
-      </div>
+          <input
+            type="email"
+            id="email-input"
+            name="email"
+            placeholder=""
+            ref={inputRef}
+            required
+            autoCapitalize="off"
+            autoCorrect="off"
+            className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              status === "error" ? "border-red-500" : "border-gray-300 dark:border-gray-600"
+            } bg-white dark:bg-gray-800 text-gray-900 dark:text-white`}
+          />
+        </div>
 
-      <button
-        type="submit"
-        value=""
-        name="subscribe"
-        disabled={status === "loading"}
-        className={`w-full py-2 px-4 rounded-md text-white font-medium transition-colors ${
-          status === "loading" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-        }`}
-      >
-        {status === "loading" ? "Subscribing..." : "Subscribe"}
-      </button>
-
+        <button
+          type="submit"
+          value=""
+          name="subscribe"
+          disabled={status === "loading"}
+          className={`self-end py-2 px-3 border border-blue-600 rounded text-white font-medium transition-colors ${
+            status === "loading" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+          }`}
+        >
+          {status === "loading" ? "Subscribing..." : "Subscribe"}
+        </button>
+      </form>
       {status !== "idle" && (
         <div
-          className={`mt-3 p-3 rounded-md text-sm ${
+          className={`w-full p-3 rounded-md text-sm ${
             status === "success"
               ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
               : status === "error"
@@ -118,6 +119,6 @@ export default function NewsLetterSignUpForm() {
           {message}
         </div>
       )}
-    </form>
+    </div>
   )
 }

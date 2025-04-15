@@ -2,7 +2,6 @@ import { stripHtml } from "string-strip-html"
 import { Issues } from "@/lib/types"
 import Image from "next/image"
 import { PopupType, usePopup } from "../popupProvider"
-import CoversPopup from "./coversPopup"
 
 interface CoverImagesProps {
   thisIssueData: Issues

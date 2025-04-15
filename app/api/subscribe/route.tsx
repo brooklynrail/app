@@ -81,11 +81,11 @@ export async function POST(request: NextRequest) {
 
       // Return a success response
       return NextResponse.json(
-        { success: true, message: "Subscription successful" },
+        { success: true, message: "Success! You will receive an email from us shortly." },
         {
           status: 200,
           headers: {
-            "Content-Type": "application/json",
+            ContentType: "application/json",
           },
         },
       )

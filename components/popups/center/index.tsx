@@ -13,10 +13,10 @@ const PopupFrameCenter = ({ children }: { children: React.ReactNode }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute top-3 right-3 text-white font-medium text-xl tablet:text-3xl rounded-full hover:bg-white hover:bg-opacity-30 px-3 py-1"
+          className="border border-zinc-200 text-zinc-700 text-center shadow-lg absolute top-3.5 right-3 rounded-full bg-white w-8 tablet:w-9 h-8 tablet:h-9 flex items-center justify-center"
           onClick={() => setShowPopup(false)}
         >
-          &#x2715;
+          <span className="text-lg tablet:text-xl font-bold">&#x2715;</span>
         </button>
         {children}
       </div>
