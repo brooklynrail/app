@@ -1,6 +1,13 @@
 import { useRef, useState } from "react"
 
-export default function NewsLetterSignUpForm() {
+interface NewsletterFormProps {
+  onInteraction?: () => void
+  onSubmit?: () => void
+  onSuccess?: (data: any) => void
+  onError?: (error: any) => void
+}
+
+export default function NewsLetterSignUpForm({ onInteraction, onSubmit, onSuccess, onError }: NewsletterFormProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [message, setMessage] = useState("")
@@ -32,13 +39,18 @@ export default function NewsLetterSignUpForm() {
     setStatus("loading")
     setMessage("Subscribing...")
 
+    // Call onSubmit callback if provided
+    if (onSubmit) {
+      onSubmit()
+    }
+
     try {
       console.log("Sending subscription request for:", email)
 
       const res = await fetch(`/api/subscribe`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          ContentType: "application/json",
         },
         body: JSON.stringify({
           email: email,
@@ -57,17 +69,39 @@ export default function NewsLetterSignUpForm() {
         if (inputRef.current) {
           inputRef.current.value = ""
         }
+
+        // Call onSuccess callback if provided
+        if (onSuccess) {
+          onSuccess(data)
+        }
       } else {
         // Handle error
         const data = await res.json()
         console.error("Subscription failed:", data)
         setStatus("error")
         setMessage(data.error || "Subscription failed. Please try again.")
+
+        // Call onError callback if provided
+        if (onError) {
+          onError(data)
+        }
       }
     } catch (error) {
       console.error("Error during subscription:", error)
       setStatus("error")
       setMessage("An error occurred. Please try again later.")
+
+      // Call onError callback if provided
+      if (onError) {
+        onError(error)
+      }
+    }
+  }
+
+  // Handle input interaction
+  const handleInputInteraction = () => {
+    if (onInteraction) {
+      onInteraction()
     }
   }
 
@@ -88,6 +122,8 @@ export default function NewsLetterSignUpForm() {
             required
             autoCapitalize="off"
             autoCorrect="off"
+            onFocus={handleInputInteraction}
+            onChange={handleInputInteraction}
             className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               status === "error" ? "border-red-500" : "border-gray-300 dark:border-gray-600"
             } bg-white dark:bg-gray-800 text-gray-900 dark:text-white`}
@@ -108,7 +144,7 @@ export default function NewsLetterSignUpForm() {
       </form>
       {status !== "idle" && (
         <div
-          className={`w-full p-3 rounded-md text-sm ${
+          className={`w-full p-3 rounded text-sm ${
             status === "success"
               ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
               : status === "error"
