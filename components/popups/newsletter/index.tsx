@@ -7,14 +7,19 @@ import { sendGAEvent } from "@next/third-parties/google"
 
 const PopupNewsletter = () => {
   // Get the context values but don't rely on them for visibility control
-  const { setShowPopup, setPopupType } = usePopup()
+  const { setShowPopup, setPopupType, showPopup } = usePopup()
   const posthog = usePostHog()
 
   // Use local state for everything
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(showPopup)
   const [formInteracted, setFormInteracted] = useState(false)
   const [impressionTracked, setImpressionTracked] = useState(false)
   const popupRef = useRef<HTMLDivElement>(null)
+
+  // Update isVisible when showPopup changes
+  useEffect(() => {
+    setIsVisible(showPopup)
+  }, [showPopup])
 
   // Set up the popup type and start the timer when the component mounts
   useEffect(() => {
@@ -31,7 +36,7 @@ const PopupNewsletter = () => {
       console.log("Timer completed, showing newsletter popup")
       setIsVisible(true)
       setShowPopup(true)
-    }, 5000)
+    }, 2500)
 
     // Clean up the timer when the component unmounts
     return () => {

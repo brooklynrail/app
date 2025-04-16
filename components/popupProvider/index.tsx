@@ -50,7 +50,7 @@ interface PopupProviderProps {
 }
 
 export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
-  const [showPopup, setShowPopup] = useState(true)
+  const [showPopup, setShowPopup] = useState(false)
   const [popupType, setPopupType] = useState<PopupType | null>(null)
   const [images, setImages] = useState<any[]>([])
   const [viewedDonateCount, setViewedDonateCount] = useState<number | null>(null)
