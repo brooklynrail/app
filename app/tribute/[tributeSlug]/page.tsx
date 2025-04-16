@@ -15,7 +15,7 @@ export const revalidate = 3600 // revalidate every hour
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<TributeParams> }): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data?.thisTributeData) {
@@ -45,7 +45,7 @@ export async function generateMetadata(props: { params: Promise<TributeParams> }
 
 // Main Page Component
 export default async function Tribute(props: { params: Promise<TributeParams> }) {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data) {
@@ -72,8 +72,6 @@ async function getData(params: TributeParams): Promise<TributePageProps | undefi
       return undefined
     }
 
-    const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/tribute/${tributeSlug}/`
-
     const permalink = getPermalink({
       tributeSlug,
       type: PageType.Tribute,
@@ -84,7 +82,6 @@ async function getData(params: TributeParams): Promise<TributePageProps | undefi
       thisTributeData,
       articleData,
       permalink,
-      previewURL,
     }
   } catch (error) {
     console.error("Error fetching tribute data:", error)

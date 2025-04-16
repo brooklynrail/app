@@ -353,7 +353,7 @@ export const getArticle = unstable_cache(
   },
   ["sections_articles"], // cache key
   {
-    tags: ["sections"], // same tags as fetch
+    tags: ["articles"], // same tags as fetch
     revalidate: 86400,
   },
 )
