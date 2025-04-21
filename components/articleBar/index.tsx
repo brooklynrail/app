@@ -1,15 +1,12 @@
 import Link from "next/link"
-import { CoverImages } from "../banner/coverImages"
-import { Issues } from "@/lib/types"
 interface ArticleBarProps {
   goToNextArticle: () => void
   goToPrevArticle: () => void
   collectionPermalink: string
-  currentIssue: Issues
 }
 
 const ArticleBar = (props: ArticleBarProps) => {
-  const { goToNextArticle, goToPrevArticle, currentIssue } = props
+  const { goToNextArticle, goToPrevArticle } = props
 
   return (
     <div
@@ -33,9 +30,6 @@ const ArticleBar = (props: ArticleBarProps) => {
         >
           <Link href={`/subscribe`} prefetch={false}>
             <div className={`flex items-center space-x-6`}>
-              <div className={`h-10 w-20 relative top-1.5`}>
-                <CoverImages tiny={true} currentIssue={currentIssue} clickToIssue={false} priority={true} />
-              </div>
               <p className="font-medium">
                 Get notified when our next issue drops <span>&#10140;</span>
               </p>

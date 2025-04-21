@@ -9,7 +9,7 @@ const PopupFrameCenter = ({ children }: { children: React.ReactNode }) => {
       onClick={() => setShowPopup(false)}
     >
       <div
-        className="bg-gradient-to-b from-[#f7b6b6] to-[#CFCFE0] dark:from-indigo-700 dark:to-zinc-800 p-6 py-12 tablet:py-6 absolute w-[86%] h-[86%] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-default"
+        className="bg-gradient-to-b from-[#f7b6b6] to-[#CFCFE0] dark:from-indigo-700 dark:to-zinc-800 p-6 py-12 tablet:py-6 absolute w-[86%] min-h-[50%] h-[60vh] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-default flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -18,7 +18,7 @@ const PopupFrameCenter = ({ children }: { children: React.ReactNode }) => {
         >
           <span className="text-lg tablet:text-xl font-bold">&#x2715;</span>
         </button>
-        {children}
+        <div className="h-full w-full flex flex-col justify-center items-center">{children}</div>
       </div>
     </div>
   )

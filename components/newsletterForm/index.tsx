@@ -112,8 +112,8 @@ export default function NewsLetterSignUpForm({
 
   return (
     <div className="w-full max-w-screen-mobile-lg mx-auto flex flex-col items-center space-y-3">
-      <form onSubmit={subscribeUser} className="w-full flex items-start gap-2">
-        <div className="flex-grow">
+      <form onSubmit={subscribeUser} className="w-full flex flex-col tablet-lg:flex-row items-start gap-2">
+        <div className="flex-grow w-full">
           <label htmlFor="email-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Your Email
           </label>
@@ -140,7 +140,7 @@ export default function NewsLetterSignUpForm({
           value=""
           name="subscribe"
           disabled={status === "loading"}
-          className={`self-end py-2 px-3 border border-blue-600 rounded text-white font-medium transition-colors ${
+          className={`w-full tablet-lg:w-auto self-end py-2 px-3 border border-blue-600 rounded text-white font-medium transition-colors ${
             status === "loading" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
           }`}
         >
