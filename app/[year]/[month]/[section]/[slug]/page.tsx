@@ -7,6 +7,8 @@ import { stripHtml } from "string-strip-html"
 import { getArticle, getIssueData, getOGImage, getPermalink, PageType } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
+import { Suspense } from "react"
+import AppLoader from "@/components/appLoader"
 
 export const revalidate = 86400 // 1 day
 interface ArticleParams {
@@ -163,5 +165,9 @@ export default async function ArticlePageController(props: { params: Promise<Art
     return notFound()
   }
 
-  return <Article {...data.props} />
+  return (
+    <Suspense fallback={<AppLoader />}>
+      <Article {...data.props} />
+    </Suspense>
+  )
 }

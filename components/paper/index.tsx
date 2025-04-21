@@ -31,6 +31,7 @@ export interface PaperProps {
 export enum PaperType {
   Default = "default",
   Homepage = "homepage",
+  Article = "article",
   Events = "events",
   Preview = "preview",
   People = "people",
@@ -52,6 +53,8 @@ const Paper = (props: PaperProps) => {
   } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
+
+  console.log("type", type)
 
   return (
     <AdVisibilityProvider>
@@ -97,7 +100,7 @@ const Paper = (props: PaperProps) => {
         </div>
         <Menu collections={navData.collections} />
         {/* {!previewURL && <PopupDonate />} */}
-        {!previewURL && <PopupNewsletter />}
+        {!previewURL && type !== PaperType.Article && <PopupNewsletter />}
       </MenuProvider>
     </AdVisibilityProvider>
   )

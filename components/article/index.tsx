@@ -4,7 +4,7 @@ import { ArticleProps } from "@/lib/railTypes"
 import { getPermalink, PageType } from "@/lib/utils"
 import dynamic from "next/dynamic"
 import { useEffect } from "react"
-import Paper from "../paper"
+import Paper, { PaperType } from "../paper"
 import ArticlePage from "./page/article"
 import ArticleCriticsPage from "./page/criticsPage"
 import ArticleBar from "../articleBar"
@@ -34,7 +34,7 @@ const Article = (props: ArticleProps) => {
   }, [currentArticle])
 
   return (
-    <Paper pageClass={`theme-${currentArticle.section.slug}`} navData={navData}>
+    <Paper pageClass={`theme-${currentArticle.section.slug}`} navData={navData} type={PaperType.Article}>
       <SlideShow article={articleData} />
       <div className="flex w-screen h-full overflow-hidden">
         {/* Current article */}

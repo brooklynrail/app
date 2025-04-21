@@ -72,17 +72,17 @@ export const PopupProvider = ({ children, hidePopup }: PopupProviderProps) => {
     }
   }, [])
 
-  useEffect(() => {
-    setPopupType(PopupType.Newsletter)
-    setShowPopup(true)
-    if (viewedDonateCount !== null && viewedDonateCount < 2) {
-      const newCount = viewedDonateCount + 1
-      const currentTime = Date.now()
-      setViewedDonateCount(newCount)
-      setLocalStorageItem("donatePopup", newCount.toString())
-      setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
-    }
-  }, [viewedDonateCount])
+  // useEffect(() => {
+  //   setPopupType(PopupType.Newsletter)
+  //   setShowPopup(true)
+  //   if (viewedDonateCount !== null && viewedDonateCount < 2) {
+  //     const newCount = viewedDonateCount + 1
+  //     const currentTime = Date.now()
+  //     setViewedDonateCount(newCount)
+  //     setLocalStorageItem("donatePopup", newCount.toString())
+  //     setLocalStorageItem("donatePopupTimestamp", currentTime.toString())
+  //   }
+  // }, [viewedDonateCount])
 
   const togglePopup = (type: PopupType) => {
     setPopupType(type)
