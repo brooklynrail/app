@@ -100,7 +100,7 @@ const Paper = (props: PaperProps) => {
         </div>
         <Menu collections={navData.collections} />
         {/* {!previewURL && <PopupDonate />} */}
-        {!previewURL && type !== PaperType.Article && <PopupNewsletter />}
+        {!previewURL && type == PaperType.Article && <PopupNewsletter />}
       </MenuProvider>
     </AdVisibilityProvider>
   )
