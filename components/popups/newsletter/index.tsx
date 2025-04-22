@@ -132,17 +132,13 @@ const PopupNewsletter = () => {
       // Set cookie to prevent showing popup again
       setCookie(NEWSLETTER_COOKIE_NAME, "true", NEWSLETTER_COOKIE_EXPIRY_DAYS)
 
-      // Hide the popup
-      setIsVisible(false)
-      setShowPopup(false)
-
       trackNewsletterEvent("form_success", {
         email: data.email,
         success: data.success,
         message: data.message,
       })
     },
-    [trackNewsletterEvent, setShowPopup],
+    [trackNewsletterEvent],
   )
 
   // Handle form error
