@@ -175,7 +175,7 @@ const PopupNewsletter = () => {
       <div ref={popupRef} className="h-full w-full flex flex-col justify-center items-center">
         <div className="space-y-3 tablet:space-y-6">
           <h2 className="text-3xl tablet-lg:text-5xl desktop-lg:text-6xl text-center font-light text-zinc-800 dark:text-slate-100">
-            Get The Brooklyn Rail in your inbox
+            Get the Brooklyn Rail in your inbox
           </h2>
           <p className="text-center text-sm tablet-lg:text-lg text-zinc-800 dark:text-slate-100 tablet-lg:w-2/3 mx-auto">
             Subscribe to our newsletter to get the latest articles from the Rail, weekly guest schedules for the New
