@@ -26,6 +26,7 @@ if (!apiKey || !serverPrefix || !listId) {
   console.error("Missing required Mailchimp environment variables")
 }
 
+// Simple Mailchimp configuration
 mailchimp.setConfig({
   apiKey: apiKey || "",
   server: serverPrefix || "",
