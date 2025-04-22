@@ -7,6 +7,8 @@ import { sendGAEvent } from "@next/third-parties/google"
 
 const NEWSLETTER_COOKIE_NAME = "newsletter_subscribed"
 const NEWSLETTER_COOKIE_EXPIRY_DAYS = 365 // Cookie expires in 1 year
+const NEWSLETTER_DISMISSED_COOKIE_NAME = "newsletter_dismissed"
+const NEWSLETTER_DISMISSED_COOKIE_EXPIRY_DAYS = 1 // Cookie expires in 1 day
 
 // Helper function to set a cookie
 const setCookie = (name: string, value: string, days: number) => {
@@ -46,7 +48,8 @@ const PopupNewsletter = () => {
   // Check for newsletter cookie on mount
   useEffect(() => {
     const hasSubscribed = getCookie(NEWSLETTER_COOKIE_NAME)
-    if (hasSubscribed) {
+    const wasDismissed = getCookie(NEWSLETTER_DISMISSED_COOKIE_NAME)
+    if (hasSubscribed || wasDismissed) {
       setIsVisible(false)
       setShowPopup(false)
       return
@@ -153,6 +156,14 @@ const PopupNewsletter = () => {
     [trackNewsletterEvent],
   )
 
+  // Handle popup close
+  const handleClose = useCallback(() => {
+    setCookie(NEWSLETTER_DISMISSED_COOKIE_NAME, "true", NEWSLETTER_DISMISSED_COOKIE_EXPIRY_DAYS)
+    setIsVisible(false)
+    setShowPopup(false)
+    trackNewsletterEvent("close", { timestamp: new Date().toISOString() })
+  }, [setShowPopup, trackNewsletterEvent])
+
   // If the popup is not visible, don't render anything
   if (!isVisible) {
     return null
@@ -160,7 +171,7 @@ const PopupNewsletter = () => {
 
   // Render the popup
   return (
-    <PopupFrameCenter>
+    <PopupFrameCenter onClose={handleClose}>
       <div ref={popupRef} className="h-full w-full flex flex-col justify-center items-center">
         <div className="space-y-3 tablet:space-y-6">
           <h2 className="text-3xl tablet-lg:text-5xl desktop-lg:text-6xl text-center font-light text-zinc-800 dark:text-slate-100">
