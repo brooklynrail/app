@@ -54,8 +54,6 @@ const Paper = (props: PaperProps) => {
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
-  console.log("type", type)
-
   return (
     <AdVisibilityProvider>
       <MenuProvider>

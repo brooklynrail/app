@@ -5,25 +5,52 @@ import { useCallback, useState, useEffect, useRef } from "react"
 import { usePostHog } from "posthog-js/react"
 import { sendGAEvent } from "@next/third-parties/google"
 
+const NEWSLETTER_COOKIE_NAME = "newsletter_subscribed"
+const NEWSLETTER_COOKIE_EXPIRY_DAYS = 365 // Cookie expires in 1 year
+
+// Helper function to set a cookie
+const setCookie = (name: string, value: string, days: number) => {
+  if (typeof document === "undefined") {
+    return
+  }
+  const date = new Date()
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
+  const expires = `expires=${date.toUTCString()}`
+  document.cookie = `${name}=${value};${expires};path=/;secure;SameSite=Strict`
+}
+
+// Helper function to get a cookie
+const getCookie = (name: string) => {
+  if (typeof document === "undefined") {
+    return null
+  }
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) {
+    return parts.pop()?.split(";").shift()
+  }
+  return null
+}
+
 const PopupNewsletter = () => {
   // Get the context values but don't rely on them for visibility control
   const { setShowPopup, setPopupType, showPopup } = usePopup()
   const posthog = usePostHog()
 
   // Use local state for everything
-  const [isVisible, setIsVisible] = useState(showPopup)
+  const [isVisible, setIsVisible] = useState(false)
   const [formInteracted, setFormInteracted] = useState(false)
   const [impressionTracked, setImpressionTracked] = useState(false)
   const popupRef = useRef<HTMLDivElement>(null)
 
-  // Update isVisible when showPopup changes
+  // Check for newsletter cookie on mount
   useEffect(() => {
-    setIsVisible(showPopup)
-  }, [showPopup])
-
-  // Set up the popup type and start the timer when the component mounts
-  useEffect(() => {
-    console.log("Newsletter popup mounted")
+    const hasSubscribed = getCookie(NEWSLETTER_COOKIE_NAME)
+    if (hasSubscribed) {
+      setIsVisible(false)
+      setShowPopup(false)
+      return
+    }
 
     // Set the popup type to newsletter
     setPopupType(PopupType.Newsletter)
@@ -44,6 +71,11 @@ const PopupNewsletter = () => {
       clearTimeout(timer)
     }
   }, [setPopupType, setShowPopup])
+
+  // Update isVisible when showPopup changes
+  useEffect(() => {
+    setIsVisible(showPopup)
+  }, [showPopup])
 
   // Track impression when popup becomes visible
   useEffect(() => {
@@ -82,27 +114,41 @@ const PopupNewsletter = () => {
   const handleFormInteraction = useCallback(() => {
     if (!formInteracted) {
       setFormInteracted(true)
-      trackNewsletterEvent("form_interaction")
+      trackNewsletterEvent("form_interaction", { timestamp: new Date().toISOString() })
     }
   }, [formInteracted, trackNewsletterEvent])
 
   // Handle form submission
   const handleFormSubmit = useCallback(() => {
-    trackNewsletterEvent("form_submit")
+    trackNewsletterEvent("form_submit", { timestamp: new Date().toISOString() })
   }, [trackNewsletterEvent])
 
   // Handle form success
   const handleFormSuccess = useCallback(
-    (data: any) => {
-      trackNewsletterEvent("form_success", { email: data.email })
+    (data: { email: string; success: boolean; message: string }) => {
+      // Set cookie to prevent showing popup again
+      setCookie(NEWSLETTER_COOKIE_NAME, "true", NEWSLETTER_COOKIE_EXPIRY_DAYS)
+
+      // Hide the popup
+      setIsVisible(false)
+      setShowPopup(false)
+
+      trackNewsletterEvent("form_success", {
+        email: data.email,
+        success: data.success,
+        message: data.message,
+      })
     },
-    [trackNewsletterEvent],
+    [trackNewsletterEvent, setShowPopup],
   )
 
   // Handle form error
   const handleFormError = useCallback(
-    (error: any) => {
-      trackNewsletterEvent("form_error", { error: error.message || "Unknown error" })
+    (error: { message: string; email?: string }) => {
+      trackNewsletterEvent("form_error", {
+        error: error.message || "Unknown error",
+        email: error.email,
+      })
     },
     [trackNewsletterEvent],
   )
@@ -115,20 +161,22 @@ const PopupNewsletter = () => {
   // Render the popup
   return (
     <PopupFrameCenter>
-      <div ref={popupRef} className="space-y-3 tablet:space-y-6">
-        <h2 className="text-3xl tablet-lg:text-5xl desktop-lg:text-6xl text-center font-light text-zinc-800 dark:text-slate-100">
-          Get The Brooklyn Rail in your inbox
-        </h2>
-        <p className="text-center text-sm tablet-lg:text-lg text-zinc-800 dark:text-slate-100 tablet-lg:w-2/3 desktop:w-1/2 mx-auto">
-          Subscribe to our newsletter to get the latest articles from the Rail, weekly guest schedules for the New
-          Social Environment, and invitations to our exhibitions and events.
-        </p>
-        <NewsLetterSignUpForm
-          onInteraction={handleFormInteraction}
-          onSubmit={handleFormSubmit}
-          onSuccess={handleFormSuccess}
-          onError={handleFormError}
-        />
+      <div ref={popupRef} className="h-full w-full flex flex-col justify-center items-center">
+        <div className="space-y-3 tablet:space-y-6">
+          <h2 className="text-3xl tablet-lg:text-5xl desktop-lg:text-6xl text-center font-light text-zinc-800 dark:text-slate-100">
+            Get The Brooklyn Rail in your inbox
+          </h2>
+          <p className="text-center text-sm tablet-lg:text-lg text-zinc-800 dark:text-slate-100 tablet-lg:w-2/3 mx-auto">
+            Subscribe to our newsletter to get the latest articles from the Rail, weekly guest schedules for the New
+            Social Environment, and invitations to our exhibitions and events.
+          </p>
+          <NewsLetterSignUpForm
+            onInteraction={handleFormInteraction}
+            onSubmit={handleFormSubmit}
+            onSuccess={handleFormSuccess}
+            onError={handleFormError}
+          />
+        </div>
       </div>
     </PopupFrameCenter>
   )
