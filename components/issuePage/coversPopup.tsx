@@ -1,7 +1,7 @@
 import parse from "html-react-parser"
 import { stripHtml } from "string-strip-html"
 import Image from "next/image"
-import { usePopup } from "../popupProvider"
+import { PopupType, usePopup } from "../popupProvider"
 
 const CoversPopup = () => {
   const { showPopup, popupType, images, setShowPopup } = usePopup()
@@ -10,10 +10,10 @@ const CoversPopup = () => {
 
   const handleClick = () => {
     setImages(images)
-    togglePopup("covers")
+    togglePopup(PopupType.Covers)
   }
 
-  if (!showPopup || popupType !== "covers") {
+  if (!showPopup || popupType !== PopupType.Covers) {
     return null
   }
 

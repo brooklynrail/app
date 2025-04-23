@@ -53,7 +53,7 @@ export const getNavData = unstable_cache(
       return null
     }
   },
-  ["homepage"],
+  ["homepage-nav"],
   { revalidate: 86400, tags: ["homepage"] },
 )
 

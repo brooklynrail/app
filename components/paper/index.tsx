@@ -12,6 +12,8 @@ import Menu from "../menu/menu"
 import NavBar from "../navBar"
 import PreviewHeader from "../preview/previewHead"
 import ScreenIndicator from "../screenIndicator"
+import PopupDonate from "../popups/donate"
+import PopupNewsletter from "../popups/newsletter"
 
 export interface PaperProps {
   pageClass: string
@@ -29,6 +31,7 @@ export interface PaperProps {
 export enum PaperType {
   Default = "default",
   Homepage = "homepage",
+  Article = "article",
   Events = "events",
   Preview = "preview",
   People = "people",
@@ -95,6 +98,7 @@ const Paper = (props: PaperProps) => {
         </div>
         <Menu collections={navData.collections} />
         {/* {!previewURL && <PopupDonate />} */}
+        {!previewURL && type == PaperType.Article && <PopupNewsletter />}
       </MenuProvider>
     </AdVisibilityProvider>
   )

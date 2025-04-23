@@ -270,7 +270,18 @@ body * {
   color: var(--text-color);
 }
 
-.article-bar,
+.article-bar {
+  color: var(--navbar-text-color);
+  @apply bg-opacity-60 backdrop-blur-md;
+  background-color: var(--background-color);
+
+  .message-bar,
+  .next,
+  .prev {
+    @apply bg-opacity-100;
+    background-color: var(--background-color);
+  }
+}
 .navbar {
   background-color: var(--navbar-background-color);
   color: var(--navbar-text-color);

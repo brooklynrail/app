@@ -21,7 +21,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
   const [_animationState, _setAnimationState] = useState<string>("active")
   const [preloadedArticles, setPreloadedArticles] = useState<PreloadedArticles>({})
   const posthog = usePostHog()
-  const { showArticleSlideShow } = usePopup()
+  const { showArticleSlideShow, showPopup } = usePopup()
 
   const currentIndex = useMemo(
     () => articles.findIndex((article) => article.slug === articleSlug),
@@ -135,7 +135,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (showArticleSlideShow) {
+      if (showArticleSlideShow || showPopup) {
         return
       }
 
@@ -145,7 +145,7 @@ export const useArticleSwitcher = (initialArticle: Articles, articles: Articles[
         void navigateTo(prevArticle?.slug || null, "keyboard")
       }
     },
-    [nextArticle, prevArticle, navigateTo, showArticleSlideShow],
+    [nextArticle, prevArticle, navigateTo, showArticleSlideShow, showPopup],
   )
 
   useEffect(() => {
