@@ -169,14 +169,16 @@ const PopupNewsletter = () => {
   return (
     <PopupFrameCenter onClose={handleClose}>
       <div ref={popupRef} className="h-full w-full flex flex-col justify-center items-center">
-        <div className="space-y-3 tablet:space-y-6">
-          <h2 className="text-3xl tablet-lg:text-5xl desktop-lg:text-6xl text-center font-light text-zinc-800 dark:text-slate-100">
-            Get the Brooklyn Rail in your inbox
-          </h2>
-          <p className="text-center text-sm tablet-lg:text-lg text-zinc-800 dark:text-slate-100 tablet-lg:w-2/3 mx-auto">
-            Subscribe to our newsletter to get the latest articles from the Rail, weekly guest schedules for the New
-            Social Environment, and invitations to our exhibitions and events.
-          </p>
+        <div className="space-y-6 tablet:space-y-12">
+          <div className="space-y-3 tablet:space-y-6">
+            <h2 className="text-3xl tablet-lg:text-5xl desktop-lg:text-6xl text-center font-light text-zinc-800 dark:text-slate-100">
+              Get the Brooklyn Rail in your inbox
+            </h2>
+            <p className="text-center text-sm tablet-lg:text-xl text-zinc-800 dark:text-slate-100 tablet-lg:w-[80%] mx-auto">
+              Subscribe to our newsletter to get the latest articles from the Rail, weekly guest schedules for the New
+              Social Environment, and invitations to our exhibitions and events.
+            </p>
+          </div>
           <NewsLetterSignUpForm
             onInteraction={handleFormInteraction}
             onSubmit={handleFormSubmit}

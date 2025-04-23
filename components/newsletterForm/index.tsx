@@ -140,7 +140,7 @@ export default function NewsLetterSignUpForm({
           value=""
           name="subscribe"
           disabled={status === "loading"}
-          className={`w-full tablet-lg:w-auto self-end py-2 px-3 border border-blue-600 rounded text-white font-medium transition-colors ${
+          className={`w-full tablet-lg:w-auto self-end py-2 px-3 border border-blue-600 rounded-sm text-white font-medium transition-colors uppercase ${
             status === "loading" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
           }`}
         >
