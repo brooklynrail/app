@@ -38,7 +38,12 @@
     p {
       @apply max-w-full text-nowrap;
     }
+    .poem.justified p {
+      @apply text-justify text-wrap;
+      max-width: 86ex;
+    }
   }
+
   .poetry-indented {
     p {
       @apply ml-7 -indent-7;

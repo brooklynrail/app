@@ -112,10 +112,11 @@ const replaceRule = (html: string) => {
 
 // [poetry] ... [/poetry]
 const replacePoetry = (html: string) => {
-  const regex = /\[poetry]([\s\S]*?)\[\/poetry\]/g
+  const regex = /\[poetry(?:\s+justified)?\]([\s\S]*?)\[\/poetry\]/g
   // Replace the poetry shortcode with a custom HTML structure
   return html.replace(regex, (match, content) => {
-    return `<div class="poetry"><div class="poem">${content}</div></div>`
+    const hasJustified = match.includes("justified")
+    return `<div class="poetry"><div class="poem${hasJustified ? " justified" : ""}">${content}</div></div>`
   })
 }
 
