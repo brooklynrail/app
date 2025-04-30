@@ -36,7 +36,7 @@ const Banners = ({ currentIssue, homepageHeaderData }: BannerProps) => {
   // or if validBanners does not contain Current Issue
   // or if validBanners does not contain New Social Environment
   // then return null
-  if (validBanners.length === 0 || !currentIssueBanner || !newSocialEnvironmentBanner || !exhibitionBanner) {
+  if (validBanners.length === 0 || !currentIssueBanner || !newSocialEnvironmentBanner) {
     return <></>
   }
 
