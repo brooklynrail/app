@@ -95,7 +95,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
 
   return (
     <div className={`flex space-y-3 flex-col`}>
-      <div className="w-full px-6">
+      <div className="w-full px-3 tablet-lg:px-6">
         <h3 className="text-sm tablet-lg:text-lg font-medium space-x-1.5">
           <Link href="/events">{collections_id.title}</Link>
           {events && events.length > 0 && <LiveIndicator event={events[0]} />}
@@ -103,7 +103,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
         {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
       </div>
       <div className="flex space-x-6">
-        <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pl-6 pr-3">
+        <div className="bg-opacity-60 flex divide-x rail-divide overflow-x-auto overflow-y-hidden no-scrollbar pl-3 tablet-lg:pl-6 pr-3">
           {loading || !events ? (
             <Loading />
           ) : (
@@ -113,7 +113,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
           )}
         </div>
       </div>
-      <div className="hidden tablet:flex flex-wrap gap-x-3 gap-y-1.5 w-full pt-3 pl-6">
+      <div className="hidden tablet:flex flex-wrap gap-x-3 gap-y-1.5 w-full pt-3 pl-3 tablet-lg:pl-6">
         <Link
           href={`/events`}
           className={`p-1.5 rounded-sm text-center uppercase font-medium text-xs border rail-border`}
