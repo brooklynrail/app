@@ -231,3 +231,11 @@ export interface TributePageProps {
   permalink: string
   previewURL?: string
 }
+
+export interface TributesPageProps {
+  navData: Homepage
+  tributesData: Tributes[]
+  inMemoriamData: Sections
+  inMemoriamArticles: Articles[]
+  permalink: string
+}

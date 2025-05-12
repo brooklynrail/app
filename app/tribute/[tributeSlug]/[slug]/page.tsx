@@ -1,7 +1,8 @@
 import TributePage from "@/components/tributePage"
 import { TributeArticleProps } from "@/lib/railTypes"
-import { PageType, getArticle, getOGImage, getPermalink, getTributeData } from "@/lib/utils"
+import { PageType, getArticle, getOGImage, getPermalink } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
+import { getTributeData } from "@/lib/utils/tributes"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
@@ -16,7 +17,7 @@ export const revalidate = 3600 // revalidate every hour
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<TributeParams> }): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data?.thisTributeData) {
@@ -46,7 +47,7 @@ export async function generateMetadata(props: { params: Promise<TributeParams> }
 
 // Main Page Component
 export default async function TributeArticle(props: { params: Promise<TributeParams> }) {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data) {

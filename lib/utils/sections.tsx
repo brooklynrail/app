@@ -89,6 +89,10 @@ export const getSectionData = unstable_cache(
         }),
       )
 
+      if (!sections || sections.length === 0) {
+        return null
+      }
+
       return sections[0] as Sections
     } catch (error) {
       console.error("Error fetching section data:", error)

@@ -1,5 +1,4 @@
 import Section from "@/components/section"
-import { SectionPageProps } from "@/lib/railTypes"
 import { Sections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
@@ -21,12 +20,12 @@ export async function generateStaticParams() {
 }
 
 // Metadata Generation
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const slug = (await params).slug
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const slug = (await props.params).slug
   const data = await getData(slug)
 
   if (!data?.sectionData) {
-    return {}
+    notFound()
   }
 
   const { name, description } = data.sectionData
@@ -59,7 +58,7 @@ export default async function SectionPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params
   const data = await getData(slug)
 
-  if (!data) {
+  if (!data || !data.sectionData) {
     notFound()
   }
 
@@ -77,7 +76,7 @@ async function getData(slug: string) {
     ])
 
     if (!navData || !sectionData || !articlesData) {
-      return notFound()
+      return null
     }
 
     const permalink = getPermalink({
@@ -93,6 +92,6 @@ async function getData(slug: string) {
     }
   } catch (error) {
     console.error("Error fetching section data:", error)
-    return undefined
+    return null
   }
 }

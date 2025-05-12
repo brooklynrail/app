@@ -856,8 +856,8 @@ export type Sections = {
 export type Tributes = {
   id: string
   articles: Articles[]
-  date_created?: string | null
-  date_updated?: string | null
+  date_created: string
+  date_updated: string
   title: string
   deck: string
   title_tag?: string | null

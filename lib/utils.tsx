@@ -418,6 +418,7 @@ export enum PageType {
   Issue = "issue",
   Event = "event",
   Tribute = "tribute",
+  Tributes = "tributes",
   TributeArticle = "tribute_article",
   Home = "home",
   Contributor = "contributor",
@@ -525,6 +526,8 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/preview/issue/${issueId}/`
     case PageType.PreviewTribute:
       return `${baseURL}/preview/tribute/${tributeId}/`
+    case PageType.Tributes:
+      return `${baseURL}/tributes/`
     case PageType.Archive:
       return `${baseURL}/archive/`
     case PageType.Search:
@@ -537,132 +540,6 @@ export function getPermalink(props: PermalinkProps) {
       return `${baseURL}/`
   }
 }
-
-interface TributesParams {
-  thisIssueData: Issues
-}
-
-export const getTributes = cache(async (props: TributesParams) => {
-  const { thisIssueData } = props
-
-  // filter out the articles where tribute is not null
-  const tributeArticles = thisIssueData.articles.filter((article) => article.tribute !== null)
-  // make an array of the tribute slugs in the tributeArticles and remove all duplicates
-  const currentTributes: Array<string> = Array.from(
-    new Set(tributeArticles.map((article: Articles) => article.tribute?.slug).filter((slug): slug is string => !!slug)),
-  )
-
-  const tributes = await directus.request(
-    readItems("tributes", {
-      fields: [
-        "id",
-        "title",
-        "slug",
-        "excerpt",
-        "title_tag",
-        {
-          editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-        },
-        {
-          featured_image: ["id", "width", "height", "filename_disk", "caption"],
-        },
-        {
-          articles: [
-            "slug",
-            "title",
-            "excerpt",
-            "status",
-            {
-              tribute: ["slug"],
-            },
-            "hide_title",
-            "hide_in_article_ad",
-            {
-              contributors: [{ contributors_id: ["id", "slug", "first_name", "last_name"] }],
-            },
-          ],
-        },
-      ],
-      filter: {
-        slug: {
-          _in: currentTributes.length > 0 ? currentTributes : ["none"],
-        },
-      },
-    }),
-  )
-  return tributes as Tributes[]
-})
-
-interface TributeDataParams {
-  tributeSlug: string
-  slug: string
-}
-
-export const getTributeData = unstable_cache(
-  async ({ tributeSlug }: TributeDataParams) => {
-    const tribute = await directus.request(
-      readItems("tributes", {
-        fields: [
-          "title",
-          "deck",
-          "slug",
-          "blurb",
-          "summary",
-          "excerpt",
-          "published",
-          "title_tag",
-          {
-            editors: [{ contributors_id: ["id", "bio", "first_name", "last_name"] }],
-          },
-          {
-            featured_image: ["id", "width", "height", "filename_disk", "caption"],
-          },
-          {
-            articles: [
-              "slug",
-              "title",
-              "excerpt",
-              "body_text",
-              "sort",
-              "hide_title",
-              "hide_in_article_ad",
-              "status",
-              {
-                tribute: ["slug"],
-              },
-              {
-                images: [{ directus_files_id: ["id", "width", "height", "filename_disk", "shortcode_key", "caption"] }],
-              },
-              {
-                section: ["name", "slug"],
-              },
-              {
-                issue: ["id", "title", "slug", "year", "month", "issue_number", "cover_1"],
-              },
-              {
-                contributors: [{ contributors_id: ["id", "slug", "bio", "first_name", "last_name"] }],
-              },
-              {
-                featured_image: ["id", "width", "height", "filename_disk", "caption"],
-              },
-            ],
-          },
-        ],
-        filter: {
-          slug: {
-            _eq: tributeSlug,
-          },
-        },
-      }),
-    )
-    return tribute[0] as Tributes
-  },
-  ["tributes"],
-  {
-    tags: ["tributes"],
-    revalidate: 86400,
-  },
-)
 
 export const getNavigation = cache(async () => {
   const global_settings = await directus.request(
