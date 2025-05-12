@@ -15,6 +15,7 @@ const TributesPage = (props: TributesPageProps) => {
   const [hasMore, setHasMore] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [articles, setArticles] = useState(inMemoriamArticles)
+
   const tributes = tributesData.map((tribute) => {
     return <Tribute key={tribute.id} {...tribute} />
   })
@@ -81,7 +82,7 @@ const TributesPage = (props: TributesPageProps) => {
 const Tribute = (props: Tributes) => {
   const { id, title, deck, featured_image, blurb, slug, articles } = props
   const permalink = getPermalink({
-    slug: slug,
+    tributeSlug: slug,
     type: PageType.Tribute,
   })
 
@@ -91,7 +92,7 @@ const Tribute = (props: Tributes) => {
         <div className="grid grid-cols-4 tablet:grid-cols-12 gap-3 gap-y-6">
           <div className="col-span-4 tablet:col-span-12 tablet-lg:col-span-9">
             <div className="flex flex-col space-y-1 px-0 py-0 tablet-lg:py-0 tablet-lg:px-0">
-              <Title title={title} type={TitleType.CollectionTribute} permalink={permalink ? permalink : ""} />
+              <Title title={title} type={TitleType.CollectionTribute} permalink={permalink} />
               {deck && (
                 <p className={`text-center tablet-lg:text-left font-thin text-3xl tablet-lg:text-4xl`}>{deck}</p>
               )}
