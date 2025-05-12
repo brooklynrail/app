@@ -13,7 +13,7 @@ interface ContributorParams {
 }
 
 export async function generateMetadata(props: { params: Promise<ContributorParams> }): Promise<Metadata> {
-  const data = await getData({ params: (await props.params) })
+  const data = await getData({ params: await props.params })
 
   if (!data.contributorData || !data.permalink) {
     return {}
@@ -51,7 +51,7 @@ export async function generateMetadata(props: { params: Promise<ContributorParam
 }
 
 export default async function Contributor(props: { params: Promise<ContributorParams> }) {
-  const data = await getData({ params: (await props.params) })
+  const data = await getData({ params: await props.params })
   const contributorData = data.contributorData
   const currentArticles = data.articles
 
