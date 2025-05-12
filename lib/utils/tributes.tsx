@@ -106,6 +106,11 @@ export const getAllTributes = cache(async () => {
           ],
         },
       ],
+      filter: {
+        articles: {
+          status: { _eq: `published` },
+        },
+      },
     }),
   )
   return tributes as Tributes[]
