@@ -63,14 +63,12 @@ const PopupNewsletter = () => {
 
     // Set a timer to show the popup after 5 seconds
     const timer = setTimeout(() => {
-      console.log("Timer completed, showing newsletter popup")
       setIsVisible(true)
       setShowPopup(true)
     }, 2500)
 
     // Clean up the timer when the component unmounts
     return () => {
-      console.log("Cleaning up newsletter popup timer")
       clearTimeout(timer)
     }
   }, [setPopupType, setShowPopup])
@@ -83,7 +81,6 @@ const PopupNewsletter = () => {
   // Track impression when popup becomes visible
   useEffect(() => {
     if (isVisible && !impressionTracked) {
-      console.log("Tracking newsletter popup impression")
       trackNewsletterEvent("impression")
       setImpressionTracked(true)
     }
@@ -95,8 +92,6 @@ const PopupNewsletter = () => {
       action: "impression" | "close" | "form_interaction" | "form_submit" | "form_success" | "form_error",
       details?: any,
     ) => {
-      console.log("Newsletter event:", action, details)
-
       // Send PostHog event
       if (posthog) {
         posthog.capture(`${action}_newsletter_popup`, {
