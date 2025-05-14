@@ -68,11 +68,12 @@ export default async function SectionPage({ params }: { params: Promise<{ slug: 
 // Data Fetching
 async function getData(slug: string) {
   try {
+    const numArticles = slug === "criticspage" ? 50 : 32
     // Parallel fetch of initial data
     const [navData, sectionData, articlesData] = await Promise.all([
       getNavData(),
       getSectionData({ slug }),
-      getArticlesBySection({ slug, limit: 32, offset: 0 }),
+      getArticlesBySection({ slug, limit: numArticles, offset: 0 }),
     ])
 
     if (!navData || !sectionData || !articlesData) {
