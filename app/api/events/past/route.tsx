@@ -1,5 +1,3 @@
-// File: /pages/api/events/past.ts
-
 import { getPastEvents } from "@/lib/utils/events"
 
 export async function GET(request: Request) {

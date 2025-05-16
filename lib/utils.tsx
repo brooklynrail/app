@@ -1,9 +1,9 @@
 /* eslint max-lines: 0 */
-import { readItems, readSingleton } from "@directus/sdk"
+import { readItem, readItems, readSingleton } from "@directus/sdk"
 import { cache } from "react"
 import { stripHtml } from "string-strip-html"
 import directus from "./directus"
-import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Sections, Tributes } from "./types"
+import { Articles, DirectusFiles, Events, GlobalSettings, Issues, Pages, Sections, Tributes } from "./types"
 import { unstable_cache } from "next/cache"
 
 // Used in
@@ -117,6 +117,77 @@ export const getIssues = cache(async () => {
     return null
   }
 })
+
+export const getGlobalNavigation = unstable_cache(
+  async () => {
+    // Fetch global settings using Directus SDK
+    const globalSettings = await directus.request(
+      readSingleton("global_settings", {
+        fields: [
+          "navigation",
+          {
+            navigation: ["id", "collection", "item", "sort"],
+          },
+          "preview_password",
+        ],
+      }),
+    )
+    return globalSettings as GlobalSettings
+  },
+  ["homepage"],
+  {
+    tags: ["homepage"],
+    revalidate: 86400, // cache for 1 day
+  },
+)
+
+export const getGlobalNavPage = unstable_cache(
+  async (item: string | number) => {
+    const data = await directus.request(
+      readItem("pages", item, {
+        fields: ["id", "title", "slug"],
+      }),
+    )
+    return data as Pages
+  },
+  ["homepage"],
+  {
+    tags: ["homepage"],
+    revalidate: 86400, // cache for 1 day
+  },
+)
+
+export const getGlobalNavSection = unstable_cache(
+  async (item: string | number) => {
+    const data = await directus.request(
+      readItem("sections", item, {
+        fields: ["id", "name", "slug"],
+      }),
+    )
+    return data as Sections
+  },
+  ["homepage"],
+  {
+    tags: ["homepage"],
+    revalidate: 86400, // cache for 1 day
+  },
+)
+
+export const getGlobalNavTribute = unstable_cache(
+  async (item: string | number) => {
+    const data = await directus.request(
+      readItem("tributes", item, {
+        fields: ["id", "title", "slug"],
+      }),
+    )
+    return data as Tributes
+  },
+  ["homepage"],
+  {
+    tags: ["homepage"],
+    revalidate: 86400, // cache for 1 day
+  },
+)
 
 export const getGlobalSettings = async () => {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password`

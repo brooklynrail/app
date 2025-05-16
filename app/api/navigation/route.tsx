@@ -1,53 +1,28 @@
 import { notFound } from "next/navigation"
 import { GlobalSettingsNavigation } from "@/lib/types"
-import directus from "@/lib/directus"
-import { readSingleton, readItem } from "@directus/sdk"
+import { getGlobalNavigation, getGlobalNavPage, getGlobalNavSection, getGlobalNavTribute } from "@/lib/utils"
 
 export const revalidate = 3600 // 1 hour cache
 
 export async function GET() {
   try {
     // Fetch global settings using Directus SDK
-    const globalSettings = await directus.request(
-      readSingleton("global_settings", {
-        fields: [
-          "navigation",
-          {
-            navigation: ["id", "collection", "item", "sort"],
-          },
-          "preview_password",
-        ],
-      }),
-    )
-
+    const globalSettings = await getGlobalNavigation()
     if (!globalSettings) {
       return notFound()
     }
 
-    // Keep existing fetch logic for navigation items
     const navigationPromises = globalSettings.navigation.map(async (item: GlobalSettingsNavigation) => {
       if (item.collection === "sections" && item.item) {
-        const data = await directus.request(
-          readItem("sections", item.item, {
-            fields: ["id", "name", "slug"],
-          }),
-        )
+        const data = await getGlobalNavSection(item.item)
         return { ...data, type: "section" }
       }
       if (item.collection === "tributes" && item.item) {
-        const data = await directus.request(
-          readItem("tributes", item.item, {
-            fields: ["id", "title", "slug"],
-          }),
-        )
+        const data = await getGlobalNavTribute(item.item)
         return { ...data, name: data.title, type: "tribute" }
       }
       if (item.collection === "pages" && item.item) {
-        const data = await directus.request(
-          readItem("pages", item.item, {
-            fields: ["id", "title", "slug"],
-          }),
-        )
+        const data = await getGlobalNavPage(item.item)
         return { ...data, name: data.title, type: "page" }
       }
     })

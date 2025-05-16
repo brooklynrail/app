@@ -47,7 +47,6 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
 
   const { collections_id } = banner
   if (!collections_id) {
-    console.log("⚠️ No collections_id in banner")
     return <></>
   }
 
