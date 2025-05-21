@@ -106,11 +106,14 @@ const PublishInfo = (props: PublishInfoProps) => {
     if (thisTributeData.editors.length === 1) {
       return editorName
     } else if (index === thisTributeData.editors.length - 1) {
-      return `${acc}, and ${editorName}`
-    } else if (index === thisTributeData.editors.length - 2) {
-      return `${acc}${editorName}`
-    } else {
+      // Last editor
+      return `${acc} and ${editorName}`
+    } else if (thisTributeData.editors.length >= 3) {
+      // 3 or more editors, use commas
       return `${acc}${editorName}, `
+    } else {
+      // 2 editors, no comma
+      return `${acc}${editorName} `
     }
   }, "")
 
@@ -146,9 +149,8 @@ const PublishInfo = (props: PublishInfoProps) => {
         {isInPrint &&
           `and printed in the ${parse(issueTitles)} ${issueCount > 1 ? "issues" : "issue"} of The
         Brooklyn Rail`}
-        .
       </p>
-      {editedBy && <p>Edited by {editedBy}.</p>}
+      {editedBy && <p>Edited by {editedBy}</p>}
     </div>
   )
 }
