@@ -653,6 +653,10 @@ export type GlobalSettings = {
   user_created?: string | DirectusUsers | null
   user_updated?: string | DirectusUsers | null
   navigation: any[] | GlobalSettingsNavigation[]
+  events_break_start: string | null
+  events_break_end: string | null
+  events_on_break: boolean
+  events_break_text: string | null
 }
 
 export type GlobalSettingsNavigation = {

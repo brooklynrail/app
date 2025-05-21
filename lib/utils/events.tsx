@@ -1,4 +1,4 @@
-import { readField, readItems } from "@directus/sdk"
+import { readField, readItems, readSingleton } from "@directus/sdk"
 import { DateTime } from "luxon"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
@@ -56,6 +56,19 @@ export const getEventTypeText = (typeValue: string, eventTypes: EventsTypes[]) =
   const type = eventTypes.find((eventType) => eventType.value === typeValue)
   return type ? type.text : typeValue // Return readable text or fallback to value
 }
+
+export const getEventsBreakDetails = unstable_cache(
+  async () => {
+    const data = await directus.request(
+      readSingleton("global_settings", {
+        fields: ["events_break_start", "events_break_end", "events_on_break", "events_break_text"],
+      }),
+    )
+    return data
+  },
+  ["eventsBreakDetails"],
+  { revalidate: 86400, tags: ["events"] },
+)
 
 export const getUpcomingEvents = unstable_cache(
   async () => {

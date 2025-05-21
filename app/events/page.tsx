@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { getPermalink, PageType } from "@/lib/utils"
-import { getEventTypes, getPastEvents, getUpcomingEvents } from "@/lib/utils/events"
+import { getEventsBreakDetails, getEventTypes, getPastEvents, getUpcomingEvents } from "@/lib/utils/events"
 import EventsPage from "@/components/events"
 import { Metadata } from "next"
 import { getNavData } from "@/lib/utils/homepage"
@@ -41,7 +41,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function EventsController() {
-  console.log("🔄 Starting EventsController render")
   const data = await getData()
   if (!data) {
     console.error("❌ Events page render failed: No data returned from getData()")
@@ -54,31 +53,21 @@ export default async function EventsController() {
     )
   }
 
-  console.log("✅ EventsController render successful")
   return <EventsPage {...data} />
 }
 
 async function getData(): Promise<EventsProps | undefined> {
-  console.log("🔄 Starting getData for events page")
   try {
     // Fetch each data source individually to identify which one fails
-    console.log("📡 Fetching navData...")
     const navData = await getNavData()
-    console.log(`📊 getNavData result: ${navData ? "✅ Success" : "❌ Failed"}`)
 
-    console.log("📡 Fetching allEvents...")
     const allEvents = await getUpcomingEvents()
-    console.log(`📊 getUpcomingEvents result: ${allEvents ? `✅ Success (${allEvents.length} events)` : "❌ Failed"}`)
 
-    console.log("📡 Fetching initialEvents...")
     const initialEvents = await getPastEvents({ limit: 32, offset: 0 })
-    console.log(
-      `📊 getPastEvents result: ${initialEvents ? `✅ Success (${initialEvents.length} events)` : "❌ Failed"}`,
-    )
 
-    console.log("📡 Fetching eventTypes...")
     const eventTypes = await getEventTypes()
-    console.log(`📊 getEventTypes result: ${eventTypes ? `✅ Success (${eventTypes.length} types)` : "❌ Failed"}`)
+
+    const eventsBreakDetails = await getEventsBreakDetails()
 
     if (!navData || !allEvents || !initialEvents || !eventTypes) {
       console.error("❌ One or more required data fetches failed:")
@@ -101,12 +90,12 @@ async function getData(): Promise<EventsProps | undefined> {
       type: PageType.Events,
     })
 
-    console.log("✅ getData completed successfully")
     return {
       navData,
       allEvents,
       initialEvents,
       eventTypes,
+      eventsBreakDetails,
       permalink,
     }
   } catch (error) {

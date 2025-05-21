@@ -5,6 +5,7 @@ import {
   Events,
   EventsTypes,
   Exhibitions,
+  GlobalSettings,
   Homepage,
   HomepageBanners,
   Issues,
@@ -62,7 +63,15 @@ export interface EventsProps {
   allEvents: Events[]
   initialEvents: Events[]
   eventTypes: EventsTypes[]
+  eventsBreakDetails: EventsBreakDetails
   permalink: string
+}
+
+export interface EventsBreakDetails {
+  events_break_start: string | null
+  events_break_end: string | null
+  events_on_break: boolean
+  events_break_text: string | null
 }
 
 export interface PastEventsProps {

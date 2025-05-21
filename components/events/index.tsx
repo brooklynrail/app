@@ -7,6 +7,7 @@ import EventCard from "./eventCard"
 import PastEventsList from "./pastEventsList"
 import Sponsor from "./sponsor"
 import { EventsProps } from "@/lib/railTypes"
+import BreakNotice from "./breakNotice"
 
 const EventsPage = (props: EventsProps) => {
   const { navData } = props
@@ -28,7 +29,7 @@ const EventsPage = (props: EventsProps) => {
           </div>
           <div className="divide-y rail-divide">
             {allEvents}
-            {/* <BreakNotice /> */}
+            <BreakNotice eventsBreakDetails={props.eventsBreakDetails} />
             <div className="py-12">
               <div className="max-w-screen-tablet-lg mx-auto">
                 <Sponsor />
