@@ -1,9 +1,8 @@
 import { usePopup, PopupType } from "@/components/popupProvider"
 import PopupFrameCenter from "../center"
 import NewsLetterSignUpForm from "@/components/newsletterForm"
-import { useCallback, useState, useEffect, useRef } from "react"
-import { usePostHog } from "posthog-js/react"
-import { sendGAEvent } from "@next/third-parties/google"
+import { useState, useEffect, useRef } from "react"
+import { useNewsletterForm } from "@/app/hooks/useNewsletterForm"
 
 const NEWSLETTER_COOKIE_NAME = "newsletter_subscribed"
 const NEWSLETTER_COOKIE_EXPIRY_DAYS = 365 // Cookie expires in 1 year
@@ -37,11 +36,21 @@ const getCookie = (name: string) => {
 const PopupNewsletter = () => {
   // Get the context values but don't rely on them for visibility control
   const { setShowPopup, setPopupType, showPopup } = usePopup()
-  const posthog = usePostHog()
+  const {
+    handleFormInteraction,
+    handleFormSubmit,
+    handleFormSuccess: originalHandleFormSuccess,
+    handleFormError,
+  } = useNewsletterForm()
+
+  // Wrap the success handler to set the cookie
+  const handleFormSuccess = (data: { email: string; success: boolean; message: string }) => {
+    setCookie(NEWSLETTER_COOKIE_NAME, "true", NEWSLETTER_COOKIE_EXPIRY_DAYS)
+    originalHandleFormSuccess(data)
+  }
 
   // Use local state for everything
   const [isVisible, setIsVisible] = useState(false)
-  const [formInteracted, setFormInteracted] = useState(false)
   const [impressionTracked, setImpressionTracked] = useState(false)
   const popupRef = useRef<HTMLDivElement>(null)
 
@@ -81,79 +90,17 @@ const PopupNewsletter = () => {
   // Track impression when popup becomes visible
   useEffect(() => {
     if (isVisible && !impressionTracked) {
-      trackNewsletterEvent("impression")
+      handleFormInteraction()
       setImpressionTracked(true)
     }
-  }, [isVisible, impressionTracked])
-
-  // Function to track newsletter events
-  const trackNewsletterEvent = useCallback(
-    (
-      action: "impression" | "close" | "form_interaction" | "form_submit" | "form_success" | "form_error",
-      details?: any,
-    ) => {
-      // Send PostHog event
-      if (posthog) {
-        posthog.capture(`${action}_newsletter_popup`, {
-          ...details,
-        })
-      }
-
-      // Send GA event
-      sendGAEvent("event", action, {
-        event_category: "newsletter_popup",
-        ...details,
-      })
-    },
-    [posthog],
-  )
-
-  // Handle form interaction
-  const handleFormInteraction = useCallback(() => {
-    if (!formInteracted) {
-      setFormInteracted(true)
-      trackNewsletterEvent("form_interaction", { timestamp: new Date().toISOString() })
-    }
-  }, [formInteracted, trackNewsletterEvent])
-
-  // Handle form submission
-  const handleFormSubmit = useCallback(() => {
-    trackNewsletterEvent("form_submit", { timestamp: new Date().toISOString() })
-  }, [trackNewsletterEvent])
-
-  // Handle form success
-  const handleFormSuccess = useCallback(
-    (data: { email: string; success: boolean; message: string }) => {
-      // Set cookie to prevent showing popup again
-      setCookie(NEWSLETTER_COOKIE_NAME, "true", NEWSLETTER_COOKIE_EXPIRY_DAYS)
-
-      trackNewsletterEvent("form_success", {
-        email: data.email,
-        success: data.success,
-        message: data.message,
-      })
-    },
-    [trackNewsletterEvent],
-  )
-
-  // Handle form error
-  const handleFormError = useCallback(
-    (error: { message: string; email?: string }) => {
-      trackNewsletterEvent("form_error", {
-        error: error.message || "Unknown error",
-        email: error.email,
-      })
-    },
-    [trackNewsletterEvent],
-  )
+  }, [isVisible, impressionTracked, handleFormInteraction])
 
   // Handle popup close
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     setCookie(NEWSLETTER_DISMISSED_COOKIE_NAME, "true", NEWSLETTER_DISMISSED_COOKIE_EXPIRY_DAYS)
     setIsVisible(false)
     setShowPopup(false)
-    trackNewsletterEvent("close", { timestamp: new Date().toISOString() })
-  }, [setShowPopup, trackNewsletterEvent])
+  }
 
   // If the popup is not visible, don't render anything
   if (!isVisible) {

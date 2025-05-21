@@ -114,7 +114,7 @@ export default function NewsLetterSignUpForm({
     <div className="w-full max-w-screen-mobile-lg mx-auto flex flex-col items-center space-y-3">
       <form onSubmit={subscribeUser} className="w-full flex flex-col tablet-lg:flex-row items-start gap-2">
         <div className="flex-grow w-full">
-          <label htmlFor="email-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="email-input" className="sr-only">
             Your Email
           </label>
 
@@ -122,13 +122,14 @@ export default function NewsLetterSignUpForm({
             type="email"
             id="email-input"
             name="email"
-            placeholder=""
+            placeholder="Your Email"
             ref={inputRef}
             required
             autoCapitalize="off"
             autoCorrect="off"
             onFocus={handleInputInteraction}
             onChange={handleInputInteraction}
+            aria-label="Your Email"
             className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               status === "error" ? "border-red-500" : "border-gray-300 dark:border-gray-600"
             } bg-white dark:bg-gray-800 text-gray-900 dark:text-white`}

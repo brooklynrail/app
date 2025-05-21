@@ -2,9 +2,38 @@
 
 import parse from "html-react-parser"
 import { EventsBreakDetails } from "@/lib/railTypes"
+import NewsLetterSignUpForm from "@/components/newsletterForm"
+import { useNewsletterForm } from "@/app/hooks/useNewsletterForm"
+import { useCallback } from "react"
+import { usePostHog } from "posthog-js/react"
+import { sendGAEvent } from "@next/third-parties/google"
 
 const BreakNotice = (props: { eventsBreakDetails: EventsBreakDetails }) => {
   const { eventsBreakDetails } = props
+  const { handleFormInteraction, handleFormSubmit, handleFormSuccess, handleFormError } = useNewsletterForm()
+  const posthog = usePostHog()
+
+  // Track newsletter events
+  const trackNewsletterEvent = useCallback(
+    (
+      action: "impression" | "close" | "form_interaction" | "form_submit" | "form_success" | "form_error",
+      details?: any,
+    ) => {
+      // Send PostHog event
+      if (posthog) {
+        posthog.capture(`${action}_newsletter_popup`, {
+          ...details,
+        })
+      }
+
+      // Send GA event
+      sendGAEvent("event", action, {
+        event_category: "newsletter_popup",
+        ...details,
+      })
+    },
+    [posthog],
+  )
 
   if (
     !eventsBreakDetails.events_break_start ||
@@ -38,10 +67,10 @@ const BreakNotice = (props: { eventsBreakDetails: EventsBreakDetails }) => {
   const text = eventsBreakDetails.events_break_text
     ? parse(
         eventsBreakDetails.events_break_text
-          .replace("{{end_date}}", endDateString)
-          .replace("{{start_date}}", startDateString),
+          .replace("{{end_date}}", `<span class="font-medium">${endDateString}</span>`)
+          .replace("{{start_date}}", `<span class="font-medium">${startDateString}</span>`),
       )
-    : `We look forward to seeing you after ${endDateString} for more live dialogues with artists, filmmakers, writers, and poets. In the meantime, dive into our archive.`
+    : `We look forward to seeing you after <span class="font-medium">${endDateString}</span> for more live dialogues with artists, filmmakers, writers, and poets. In the meantime, dive into our archive.`
 
   return (
     <div className="py-12 space-y-3">
@@ -50,18 +79,16 @@ const BreakNotice = (props: { eventsBreakDetails: EventsBreakDetails }) => {
           <h2 className="text-xl font-medium">{heading}</h2>
         </div>
       </div>
-      <div className="max-w-screen-tablet mx-auto space-y-3">
+      <div className="max-w-screen-tablet mx-auto space-y-6">
         <div className="text-center">{text}</div>
-        <div className="text-center">
-          <a href="https://brooklynrail.org/newsletter" title="Sign up for the newsletter">
-            <button
-              className="bg-zinc-800 dark:bg-slate-100 text-slate-100 dark:text-zinc-800 px-3 py-1 rounded-md"
-              type="button"
-              name="register"
-            >
-              <span>Get notified</span>
-            </button>
-          </a>
+        <div className="space-y-3">
+          <div className="text-center font-medium">Get notified about upcoming events</div>
+          <NewsLetterSignUpForm
+            onInteraction={handleFormInteraction}
+            onSubmit={handleFormSubmit}
+            onSuccess={handleFormSuccess}
+            onError={handleFormError}
+          />
         </div>
       </div>
     </div>
