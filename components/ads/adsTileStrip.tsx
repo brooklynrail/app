@@ -21,7 +21,8 @@ const AdsTileStrip = ({ collection }: { collection: Collections }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adsResponse = await fetch(`/api/ads/?type=${AdTypes.Tile}&t=${Date.now()}`)
+        const today = new Date().toISOString().split("T")[0]
+        const adsResponse = await fetch(`/api/ads/?type=${AdTypes.Tile}&t=${today}`)
         const ads = await adsResponse.json()
 
         if (Array.isArray(ads) && ads.length > 0) {
