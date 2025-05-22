@@ -17,7 +17,7 @@ const AdInArticle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adsResponse = await fetch(`/api/ads/?type=${AdTypes.InArticleStandard}`)
+        const adsResponse = await fetch(`/api/ads/?type=${AdTypes.InArticleStandard}&t=${Date.now()}`)
         const ads = await adsResponse.json()
 
         if (Array.isArray(ads) && ads.length > 0) {

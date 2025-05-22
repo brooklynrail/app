@@ -18,7 +18,7 @@ const AdFixedBanner = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adsResponse = await fetch(`/api/ads/?type=${AdTypes.FixedBanner}`)
+        const adsResponse = await fetch(`/api/ads/?type=${AdTypes.FixedBanner}&t=${Date.now()}`)
         const ads = await adsResponse.json()
 
         // More explicit handling of empty ads
