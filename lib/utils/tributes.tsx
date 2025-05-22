@@ -240,7 +240,7 @@ export const getInMemoriamArticles = unstable_cache(async (props: InMemoriamArti
       `&sort[]=-issue.published` +
       `&sort[]=sort`
 
-    const response = await fetch(articlesAPI, { next: { revalidate: 3600, tags: ["sections"] } })
+    const response = await fetch(articlesAPI, { next: { revalidate: 86400, tags: ["sections"] } })
     const articlesData = await response.json()
 
     return articlesData.data as Articles[]

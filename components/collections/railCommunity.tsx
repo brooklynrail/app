@@ -21,7 +21,7 @@ const CollectionRailCommunity = (collection: Collections) => {
     const fetchData = async () => {
       try {
         const orgsResponse = await fetch(`/api/organizations/?onlySponsors=true`, {
-          next: { revalidate: 36000, tags: ["organizations"] },
+          next: { revalidate: 86400, tags: ["organizations"] },
         })
         const orgs = await orgsResponse.json()
 

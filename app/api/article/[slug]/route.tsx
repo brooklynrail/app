@@ -20,7 +20,7 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
     // Add cache control headers to prevent browser caching
     return Response.json(articleData, {
       headers: {
-        "Cache-Control": "public, s-maxage=86400, stale-while-revalidate",
+        CacheControl: "public, s-maxage=86400, stale-while-revalidate",
       },
     })
   } catch (error) {

@@ -83,7 +83,7 @@ const Section = (props: SectionProps & NavProps) => {
         {
           next: {
             tags: ["sections"],
-            revalidate: 3600,
+            revalidate: 86400,
           },
         },
       )

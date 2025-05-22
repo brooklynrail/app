@@ -28,7 +28,7 @@ const TributesPage = (props: TributesPageProps) => {
         {
           next: {
             tags: ["tributes"],
-            revalidate: 3600,
+            revalidate: 86400,
           },
         },
       )

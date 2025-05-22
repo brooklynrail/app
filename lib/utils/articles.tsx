@@ -48,7 +48,7 @@ export async function getArticleOGData(slug: string, status?: string) {
     `&filter[status][_eq]=${status}`
 
   try {
-    const res = await fetch(articleAPI, { next: { revalidate: 3600, tags: ["articles"] } })
+    const res = await fetch(articleAPI, { next: { revalidate: 86400, tags: ["articles"] } })
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       console.error(`Failed to fetch Article data: ${res.statusText}`)

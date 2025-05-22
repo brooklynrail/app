@@ -7,7 +7,7 @@ export const revalidate = 3600
 export async function GET(request: NextRequest) {
   // Add cache control headers to prevent browser caching
   const headers = {
-    "Cache-Control": "no-store, must-revalidate",
+    CacheControl: "no-store, must-revalidate",
     Pragma: "no-cache",
   }
 

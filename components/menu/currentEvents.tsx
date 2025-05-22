@@ -12,7 +12,7 @@ const CurrentEvents = () => {
     const fetchData = async () => {
       try {
         const upcomingEventsResponse = await fetch(`/api/events/upcoming-nse/`, {
-          next: { revalidate: 3600, tags: ["events"] },
+          next: { revalidate: 86400, tags: ["events"] },
         })
         const upcomingEvents = await upcomingEventsResponse.json()
         if (Array.isArray(upcomingEvents)) {

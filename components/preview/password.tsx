@@ -32,7 +32,7 @@ const Password = ({ previewPassword, cookieSlug, isEnabled = false, children }: 
     if (password === previewPassword) {
       setIsViewable(true)
       // set a cookie
-      document.cookie = `${cookieSlug}=true; path=/; max-age=3600; SameSite=None; Secure`
+      document.cookie = `${cookieSlug}=true; path=/; max-age=86400; SameSite=None; Secure`
     } else {
       setPasswordError("Incorrect password")
     }

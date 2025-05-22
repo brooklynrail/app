@@ -6,7 +6,7 @@ import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData, 
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
-export const revalidate = 3600 // 1 hour
+export const revalidate = 86400 // 1 day
 export interface HomePageProps {
   navData: Homepage
   currentIssue: Issues

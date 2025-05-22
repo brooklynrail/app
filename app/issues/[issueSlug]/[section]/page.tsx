@@ -14,7 +14,7 @@ interface SectionParams {
 }
 
 // Page Configuration
-export const revalidate = 3600 // revalidate every hour
+export const revalidate = 86400 // revalidate every day
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<SectionParams> }): Promise<Metadata> {

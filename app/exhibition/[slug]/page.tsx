@@ -12,11 +12,11 @@ interface ExhibitionParams {
 }
 
 // Page Configuration
-export const revalidate = 3600 // revalidate every hour
+export const revalidate = 86400 // revalidate every day
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<ExhibitionParams> }): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data?.exhibitionData) {
@@ -52,7 +52,7 @@ export async function generateMetadata(props: { params: Promise<ExhibitionParams
 
 // Main Page Component
 export default async function Exhibition(props: { params: Promise<ExhibitionParams> }) {
-  const params = await props.params;
+  const params = await props.params
   const data = await getData(params)
 
   if (!data?.exhibitionData) {

@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
 
     const res = NextResponse.json(data, { status: 200 })
     // Set `Cache-Control` header to prevent caching
-    res.headers.set("Cache-Control", "no-store, max-age=0")
+    res.headers.set("CacheControl", "no-store, max-age=0")
     return res
   } catch (error) {
     console.error("Error fetching data:", error)

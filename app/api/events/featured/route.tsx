@@ -6,7 +6,7 @@ export async function GET(request: Request) {
     // Set cache headers for 30 minutes
     return new Response(JSON.stringify(featured), {
       headers: {
-        "Cache-Control": "public, s-maxage=1800, stale-while-revalidate",
+        CacheControl: "public, s-maxage=1800, stale-while-revalidate",
       },
     })
   } catch (error) {

@@ -109,7 +109,7 @@ export const getAllExhibitions = async (): Promise<Exhibitions[]> => {
       },
       // Add cache and revalidation options
       next: {
-        revalidate: 3600, // Cache for 1 hour
+        revalidate: 86400, // Cache for 1 day
         tags: ["exhibitions"],
       },
     })

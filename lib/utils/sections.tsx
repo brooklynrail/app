@@ -55,7 +55,7 @@ export const getArticlesBySection = cache(async (props: ArticlesBySectionProps) 
       `&sort[]=-issue.published` +
       `&sort[]=sort`
 
-    const response = await fetch(articlesAPI, { next: { revalidate: 3600, tags: ["sections"] } })
+    const response = await fetch(articlesAPI, { next: { revalidate: 86400, tags: ["sections"] } })
     const articlesData = await response.json()
 
     return articlesData.data as Articles[]
@@ -102,7 +102,7 @@ export const getSectionData = unstable_cache(
   ["sections"],
   {
     tags: ["sections"],
-    revalidate: 3600, // 1 hour
+    revalidate: 86400, // 1 day
   },
 )
 
@@ -131,7 +131,7 @@ export const getSections = unstable_cache(
   ["sections"],
   {
     tags: ["sections"],
-    revalidate: 3600, // 1 hour
+    revalidate: 86400, // 1 day
   },
 )
 

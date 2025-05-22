@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import { GlobalSettingsNavigation } from "@/lib/types"
 import { getGlobalNavigation, getGlobalNavPage, getGlobalNavSection, getGlobalNavTribute } from "@/lib/utils"
 
-export const revalidate = 3600 // 1 hour cache
+export const revalidate = 86400 // 1 day
 
 export async function GET() {
   try {
@@ -33,7 +33,7 @@ export async function GET() {
     return Response.json(cleanedData, {
       headers: {
         ContentType: "application/json",
-        "Cache-Control": `public, s-maxage=${revalidate}, stale-while-revalidate=86400`,
+        CacheControl: `public, s-maxage=${revalidate}, stale-while-revalidate=86400`,
       },
     })
   } catch (error) {

@@ -37,7 +37,7 @@ export async function GET() {
     return Response.json(cleanedData, {
       headers: {
         ContentType: "application/json",
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+        CacheControl: "public, s-maxage=86400, stale-while-revalidate=86400",
       },
     })
   } catch (error) {

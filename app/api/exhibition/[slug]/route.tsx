@@ -1,7 +1,7 @@
 import { getExhibition } from "@/lib/utils/exhibitions"
 
 export async function GET(request: Request, props: { params: Promise<{ slug: string }> }) {
-  const params = await props.params;
+  const params = await props.params
   const slug = params.slug
 
   if (!slug) {
@@ -13,7 +13,7 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
   return new Response(JSON.stringify(exhibitionData), {
     headers: {
       ContentType: "application/json",
-      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      CacheControl: "public, s-maxage=86400, stale-while-revalidate=86400",
     },
   })
 }
