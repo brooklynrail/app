@@ -24,7 +24,7 @@ export enum CollectionType {
 }
 
 const HomePage = (props: HomePageProps) => {
-  const { collectionsData, currentIssue, homepageHeaderData, navData, previewURL } = props
+  const { collectionsData, currentIssue, homepageHeaderData, navData, previewURL, eventsBreakDetails } = props
   const { setCurrentContext } = usePageContext()
 
   useEffect(() => {
@@ -63,6 +63,7 @@ const HomePage = (props: HomePageProps) => {
       navData={navData}
       currentIssue={currentIssue}
       homepageHeaderData={homepageHeaderData}
+      eventsBreakDetails={eventsBreakDetails}
       collectionsData={collectionsData}
       previewURL={previewURL}
     >

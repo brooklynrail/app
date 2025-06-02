@@ -288,6 +288,10 @@ export const getCurrentIssueData = unstable_cache(
       const data = await directus.request(
         readSingleton("global_settings", {
           fields: [
+            "events_break_start",
+            "events_break_end",
+            "events_on_break",
+            "events_break_text",
             {
               current_issue: [
                 "id",

@@ -162,6 +162,7 @@ export interface HomePageProps {
   currentIssue: Issues
   collectionsData: Homepage
   homepageHeaderData: Homepage
+  eventsBreakDetails: EventsBreakDetails
   permalink: string
   errorCode?: number
   errorMessage?: string

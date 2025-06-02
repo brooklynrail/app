@@ -14,6 +14,7 @@ import PreviewHeader from "../preview/previewHead"
 import ScreenIndicator from "../screenIndicator"
 import PopupDonate from "../popups/donate"
 import PopupNewsletter from "../popups/newsletter"
+import { EventsBreakDetails } from "@/lib/railTypes"
 
 export interface PaperProps {
   pageClass: string
@@ -26,6 +27,7 @@ export interface PaperProps {
   previewURL?: string
   collectionsData?: Homepage
   pageStyle?: CSSProperties
+  eventsBreakDetails: EventsBreakDetails
 }
 
 export enum PaperType {
@@ -50,6 +52,7 @@ const Paper = (props: PaperProps) => {
     currentIssue,
     previewURL,
     collectionsData,
+    eventsBreakDetails,
   } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
@@ -70,7 +73,11 @@ const Paper = (props: PaperProps) => {
                     homepageHeaderData={homepageHeaderData}
                   />
                   {homepageHeaderData && isHomepage && currentIssue && (
-                    <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
+                    <Banners
+                      currentIssue={currentIssue}
+                      homepageHeaderData={homepageHeaderData}
+                      eventsBreakDetails={eventsBreakDetails}
+                    />
                   )}
                   <NavBar navData={navData} isHomepage={isHomepage} />
                 </>
@@ -85,7 +92,11 @@ const Paper = (props: PaperProps) => {
                 homepageHeaderData={homepageHeaderData}
               />
               {homepageHeaderData && isHomepage && currentIssue && (
-                <Banners currentIssue={currentIssue} homepageHeaderData={homepageHeaderData} />
+                <Banners
+                  currentIssue={currentIssue}
+                  homepageHeaderData={homepageHeaderData}
+                  eventsBreakDetails={eventsBreakDetails}
+                />
               )}
               <NavBar navData={navData} isHomepage={isHomepage} />
             </>

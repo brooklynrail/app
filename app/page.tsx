@@ -5,6 +5,8 @@ import { getPermalink, PageType } from "@/lib/utils"
 import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
+import { getEventsBreakDetails } from "@/lib/utils/events"
+import { EventsBreakDetails } from "@/lib/railTypes"
 
 export const revalidate = 86400 // 1 day
 export interface HomePageProps {
@@ -12,6 +14,7 @@ export interface HomePageProps {
   currentIssue: Issues
   collectionsData: Homepage
   homepageHeaderData: Homepage
+  eventsBreakDetails: EventsBreakDetails
   permalink: string
   errorCode?: number
   errorMessage?: string
@@ -24,6 +27,12 @@ async function getData(): Promise<HomePageProps> {
     if (!currentIssue) {
       console.error("Failed to fetch currentIssue data")
       throw new Error("Failed to fetch currentIssue data")
+    }
+
+    const eventsBreakDetails = await getEventsBreakDetails()
+    if (!eventsBreakDetails) {
+      console.error("Failed to fetch eventsBreakDetails data")
+      throw new Error("Failed to fetch eventsBreakDetails data")
     }
 
     const navData = await getNavData()
@@ -54,6 +63,7 @@ async function getData(): Promise<HomePageProps> {
       homepageHeaderData,
       currentIssue,
       permalink,
+      eventsBreakDetails,
     }
   } catch (error) {
     console.error("❌ getData error:", {

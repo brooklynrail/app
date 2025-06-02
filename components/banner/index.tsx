@@ -3,10 +3,12 @@ import { Homepage, Issues } from "@/lib/types"
 import CurrentIssue from "./currentIssue"
 import NewSocialEnvironment from "./newSocialEnvironment"
 import Exhibition from "./exhibitions"
+import { EventsBreakDetails } from "@/lib/railTypes"
 
 interface BannerProps {
   currentIssue: Issues
   homepageHeaderData: Homepage
+  eventsBreakDetails: EventsBreakDetails
 }
 
 enum BannerType {
@@ -15,7 +17,7 @@ enum BannerType {
   Exhibition = "Exhibition",
 }
 
-const Banners = ({ currentIssue, homepageHeaderData }: BannerProps) => {
+const Banners = ({ currentIssue, homepageHeaderData, eventsBreakDetails }: BannerProps) => {
   // Early return if no banners
   if (!homepageHeaderData.banners?.length) {
     return null
@@ -47,7 +49,11 @@ const Banners = ({ currentIssue, homepageHeaderData }: BannerProps) => {
         {/* Top banner */}
         {exhibitionBanner && newSocialEnvironmentBanner && (
           <div className="col-span-12 h-auto py-1.5">
-            <NewSocialEnvironment banner={newSocialEnvironmentBanner} layout="wide" />
+            <NewSocialEnvironment
+              banner={newSocialEnvironmentBanner}
+              eventsBreakDetails={eventsBreakDetails}
+              layout="wide"
+            />
           </div>
         )}
 
@@ -61,7 +67,11 @@ const Banners = ({ currentIssue, homepageHeaderData }: BannerProps) => {
               {exhibitionBanner ? (
                 <Exhibition />
               ) : (
-                <NewSocialEnvironment banner={newSocialEnvironmentBanner} layout="narrow" />
+                <NewSocialEnvironment
+                  banner={newSocialEnvironmentBanner}
+                  eventsBreakDetails={eventsBreakDetails}
+                  layout="narrow"
+                />
               )}
             </div>
           </div>

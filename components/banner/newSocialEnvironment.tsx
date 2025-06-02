@@ -7,24 +7,27 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import style from "./banner.module.scss"
 import Loading from "./loading"
+import { EventsBreakDetails } from "@/lib/railTypes"
 
 interface NewSocialEnvironmentProps {
   banner: HomepageBanners
   layout: "wide" | "narrow"
+  eventsBreakDetails: EventsBreakDetails
 }
 
 // Content Component
 const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
-  const { banner, layout } = props
+  const { banner, layout, eventsBreakDetails } = props
   const [events, setEvents] = useState<Events[] | null>(null)
   const [loading, setLoading] = useState(true)
-  const now = new Date()
-  const today = now.toISOString().split("T")[0]
+
+  const onBreak = eventsBreakDetails.events_on_break
 
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const eventsData = await fetch(`/api/events/upcoming-nse/?cache=${today}`, {
+        const today = new Date().toISOString().split("T")[0]
+        const eventsData = await fetch(onBreak ? `/api/events/featured/` : `/api/events/upcoming-nse/?cache=${today}`, {
           cache: "no-store",
         })
         const events = await eventsData.json()
@@ -43,7 +46,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
     }
 
     void loadEvents()
-  }, [banner])
+  }, [banner, eventsBreakDetails.events_on_break])
 
   const { collections_id } = banner
   if (!collections_id) {
@@ -52,11 +55,13 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
 
   const allEvents = events && events.length > 0 && (
     <>
-      {events.map((event: Events) => (
-        <EventCard key={event.id} event={event} />
-      ))}
+      {events.map((event: Events) =>
+        onBreak ? <FeaturedEventCard key={event.id} event={event} /> : <EventCard key={event.id} event={event} />,
+      )}
     </>
   )
+
+  const description = onBreak ? eventsBreakDetails.events_break_text : collections_id.description
 
   if (layout === "wide") {
     return (
@@ -66,7 +71,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
             <Link href="/events">{collections_id.title}</Link>
             {events && events.length > 0 && <LiveIndicator event={events[0]} />}
           </h3>
-          {collections_id.description && <div className="text-xs">{parse(collections_id.description)}</div>}
+          {description && <div className="text-xs">{parse(description)}</div>}
           <div className="hidden tablet:flex flex-wrap gap-x-3 gap-y-1.5 w-full pt-3">
             <Link
               href={`/events`}
@@ -84,7 +89,7 @@ const NewSocialEnvironment = (props: NewSocialEnvironmentProps) => {
             <Loading />
           ) : (
             <>
-              {allEvents} <AllEventsCard type="past" />
+              {allEvents} <AllEventsCard type={onBreak ? "current" : "past"} />
             </>
           )}
         </div>
@@ -242,7 +247,7 @@ const AllEventsCard = ({ type = "current" }: AllEventsCardProps) => (
     <div className="bg-zinc-800 bg-opacity-20 rounded-xl w-32 h-24 px-3 flex flex-col justify-center items-center">
       <p className="text-xs uppercase">
         <Link href={type === "current" ? "/events" : "/events"}>
-          {type === "current" ? "Current events" : "More events"} »
+          {type === "current" ? "More events" : "Past events"} »
         </Link>
       </p>
     </div>
