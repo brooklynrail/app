@@ -1,6 +1,7 @@
 import HomepagePreview from "@/components/preview/homepage"
 import { HomepagePreviewProps } from "@/lib/railTypes"
 import { PageType, getPermalink } from "@/lib/utils"
+import { getEventsBreakDetails } from "@/lib/utils/events"
 import { getCurrentIssueData, getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
 import { getPreviewHomepageData, getPreviewPassword } from "@/lib/utils/preview"
 import { Metadata } from "next"
@@ -69,6 +70,11 @@ async function getData(): Promise<HomepagePreviewProps | undefined> {
       return undefined
     }
 
+    const eventsBreakDetails = await getEventsBreakDetails()
+    if (!eventsBreakDetails) {
+      return undefined
+    }
+
     const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
     if (!directusUrl) {
       throw new Error("Missing DIRECTUS_URL environment variable")
@@ -87,6 +93,7 @@ async function getData(): Promise<HomepagePreviewProps | undefined> {
       previewPassword,
       directusUrl,
       isEnabled: true,
+      eventsBreakDetails,
     }
   } catch (error) {
     console.error("Error fetching preview homepage data:", error)

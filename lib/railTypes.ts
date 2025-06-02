@@ -178,6 +178,7 @@ export interface HomepagePreviewProps {
   isEnabled: boolean
   previewPassword: string
   directusUrl: string
+  eventsBreakDetails: EventsBreakDetails
 }
 
 export interface IssuePreviewProps {
