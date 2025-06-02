@@ -12,7 +12,6 @@ import Menu from "../menu/menu"
 import NavBar from "../navBar"
 import PreviewHeader from "../preview/previewHead"
 import ScreenIndicator from "../screenIndicator"
-import PopupDonate from "../popups/donate"
 import PopupNewsletter from "../popups/newsletter"
 import { EventsBreakDetails } from "@/lib/railTypes"
 
@@ -27,7 +26,7 @@ export interface PaperProps {
   previewURL?: string
   collectionsData?: Homepage
   pageStyle?: CSSProperties
-  eventsBreakDetails: EventsBreakDetails
+  eventsBreakDetails?: EventsBreakDetails
 }
 
 export enum PaperType {
@@ -72,7 +71,7 @@ const Paper = (props: PaperProps) => {
                     collectionsData={collectionsData}
                     homepageHeaderData={homepageHeaderData}
                   />
-                  {homepageHeaderData && isHomepage && currentIssue && (
+                  {homepageHeaderData && isHomepage && currentIssue && eventsBreakDetails && (
                     <Banners
                       currentIssue={currentIssue}
                       homepageHeaderData={homepageHeaderData}
@@ -91,7 +90,7 @@ const Paper = (props: PaperProps) => {
                 collectionsData={collectionsData}
                 homepageHeaderData={homepageHeaderData}
               />
-              {homepageHeaderData && isHomepage && currentIssue && (
+              {homepageHeaderData && isHomepage && currentIssue && eventsBreakDetails && (
                 <Banners
                   currentIssue={currentIssue}
                   homepageHeaderData={homepageHeaderData}
