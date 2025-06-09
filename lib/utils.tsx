@@ -137,7 +137,7 @@ export const getGlobalNavigation = unstable_cache(
   ["homepage"],
   {
     tags: ["homepage"],
-    revalidate: 86400, // cache for 1 day
+    revalidate: 604800, // cache for 1 week
   },
 )
 
@@ -153,7 +153,7 @@ export const getGlobalNavPage = unstable_cache(
   ["homepage"],
   {
     tags: ["homepage"],
-    revalidate: 86400, // cache for 1 day
+    revalidate: 604800, // cache for 1 week
   },
 )
 
@@ -169,7 +169,7 @@ export const getGlobalNavSection = unstable_cache(
   ["homepage"],
   {
     tags: ["homepage"],
-    revalidate: 86400, // cache for 1 day
+    revalidate: 604800, // cache for 1 week
   },
 )
 
@@ -185,7 +185,7 @@ export const getGlobalNavTribute = unstable_cache(
   ["homepage"],
   {
     tags: ["homepage"],
-    revalidate: 86400, // cache for 1 day
+    revalidate: 604800, // cache for 1 week
   },
 )
 

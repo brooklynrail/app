@@ -10,7 +10,7 @@ import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 import { Suspense } from "react"
 import AppLoader from "@/components/appLoader"
 
-export const revalidate = 86400 // 1 day
+export const revalidate = 604800 // 1 week
 interface ArticleParams {
   year: string
   month: string

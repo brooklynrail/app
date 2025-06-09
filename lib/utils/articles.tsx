@@ -195,7 +195,7 @@ export const getArticlePages = unstable_cache(
   },
   ["articles_sitemap"],
   {
-    revalidate: 86400,
+    revalidate: 604800,
     tags: ["homepage"],
   },
 )

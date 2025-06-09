@@ -54,7 +54,7 @@ export const getNavData = unstable_cache(
     }
   },
   ["homepage-nav"],
-  { revalidate: 86400, tags: ["homepage"] },
+  { revalidate: 604800, tags: ["homepage"] },
 )
 
 export const getHomepageCollectionData = unstable_cache(
@@ -180,7 +180,7 @@ export const getHomepageCollectionData = unstable_cache(
     }
   },
   ["homepage_cache"],
-  { revalidate: 86400, tags: ["homepage"] },
+  { revalidate: 604800, tags: ["homepage"] },
 )
 
 export const getHomepageHeaderData = unstable_cache(
@@ -249,7 +249,7 @@ export const getHomepageHeaderData = unstable_cache(
     }
   },
   ["homepage"],
-  { revalidate: 86400, tags: ["homepage"] },
+  { revalidate: 604800, tags: ["homepage"] },
 )
 
 export const getCurrentIssueSlug = unstable_cache(
@@ -279,7 +279,7 @@ export const getCurrentIssueSlug = unstable_cache(
     }
   },
   ["homepage"],
-  { revalidate: 86400, tags: ["homepage"] },
+  { revalidate: 604800, tags: ["homepage"] },
 )
 
 export const getCurrentIssueData = unstable_cache(
@@ -324,7 +324,7 @@ export const getCurrentIssueData = unstable_cache(
     }
   },
   ["homepage"],
-  { revalidate: 86400, tags: ["homepage"] },
+  { revalidate: 604800, tags: ["homepage"] }, // cache for 1 week
 )
 
 interface CollectionArticlesProps {
@@ -395,5 +395,5 @@ export const getCollectionArticles = unstable_cache(
     }
   },
   ["homepage"],
-  { revalidate: 86400, tags: ["homepage"] },
+  { revalidate: 604800, tags: ["homepage"] }, // cache for 1 week
 )
