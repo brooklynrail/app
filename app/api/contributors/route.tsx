@@ -16,6 +16,8 @@ export async function GET(request: Request) {
     headers: {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       "Content-Type": "application/json",
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      "Cache-Control": "public, s-maxage=604800, stale-while-revalidate",
     },
   })
 }

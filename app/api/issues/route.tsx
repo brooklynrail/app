@@ -8,5 +8,10 @@ export async function GET() {
     return notFound()
   }
 
-  return Response.json(allIssuesData)
+  return Response.json(allIssuesData, {
+    headers: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      "Cache-Control": "public, s-maxage=604800, stale-while-revalidate",
+    },
+  })
 }

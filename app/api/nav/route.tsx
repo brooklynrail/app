@@ -13,7 +13,7 @@ export async function GET() {
           // eslint-disable-next-line @typescript-eslint/naming-convention
           "Content-Type": "application/json",
           // eslint-disable-next-line @typescript-eslint/naming-convention
-          "Cache-Control": "s-maxage=86400, stale-while-revalidate=86400",
+          "Cache-Control": "s-maxage=604800, stale-while-revalidate=86400",
         },
       })
     } catch (error) {

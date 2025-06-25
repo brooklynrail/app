@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import { GlobalSettingsNavigation } from "@/lib/types"
 import { getGlobalNavigation, getGlobalNavPage, getGlobalNavSection, getGlobalNavTribute } from "@/lib/utils"
 
-export const revalidate = 86400 // 1 day
+export const revalidate = 604800 // 1 week
 
 export async function GET() {
   try {

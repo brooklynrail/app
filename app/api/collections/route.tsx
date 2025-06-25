@@ -15,5 +15,10 @@ export async function GET(request: Request) {
   }
 
   const data = getCollectionArticles({ slug, limit: Number(limit), currentIssueSlug })
-  return Response.json(data)
+  return Response.json(data, {
+    headers: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      "Cache-Control": "public, s-maxage=604800, stale-while-revalidate",
+    },
+  })
 }

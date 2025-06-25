@@ -12,7 +12,12 @@ export async function GET(request: Request) {
 
   try {
     const data = await getInMemoriamArticles({ slug: "in-memoriam", limit, offset })
-    return Response.json(data)
+    return Response.json(data, {
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Cache-Control": "public, s-maxage=604800, stale-while-revalidate",
+      },
+    })
   } catch (error) {
     console.error("Error fetching events:", error)
     return Response.json({ error: error }, { status: 500 })

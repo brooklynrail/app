@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     return Response.json(eventsData, {
       headers: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate",
+        "Cache-Control": "public, s-maxage=604800, stale-while-revalidate",
       },
     })
   } catch (error) {

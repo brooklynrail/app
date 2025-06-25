@@ -14,7 +14,12 @@ export async function GET() {
       )
     }
 
-    return Response.json(homepageCollectionsData, { status: 200 })
+    return Response.json(homepageCollectionsData, {
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Cache-Control": "public, s-maxage=604800, stale-while-revalidate",
+      },
+    })
   } catch (error) {
     console.error("❌ Error in homepage collections API:", {
       error: error instanceof Error ? error.message : "Unknown error",
