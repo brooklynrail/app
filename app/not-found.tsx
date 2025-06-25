@@ -2,9 +2,7 @@ import NotFound from "@/components/notFound"
 import { NotFoundProps } from "@/lib/railTypes"
 import { getNavData } from "@/lib/utils/homepage"
 
-// Force dynamic rendering, no caching
-export const dynamic = "force-dynamic"
-export const revalidate = 0
+export const revalidate = 2592000 // revalidate every month
 
 // Main Page Component
 export default async function NotFoundPage() {
