@@ -1,7 +1,7 @@
 import ExhibitionPage from "@/components/exhibition"
 import { ExhibitionProps } from "@/lib/railTypes"
 import { getOGImage, getPermalink, PageType } from "@/lib/utils"
-import { getExhibition } from "@/lib/utils/exhibitions"
+import { getAllExhibitions, getExhibition } from "@/lib/utils/exhibitions"
 import { getNavData } from "@/lib/utils/homepage"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -90,4 +90,14 @@ async function getData(params: ExhibitionParams): Promise<ExhibitionProps | unde
     console.error("Error fetching exhibition data:", error)
     return undefined
   }
+}
+
+export async function generateStaticParams() {
+  const allExhibitions = await getAllExhibitions()
+  if (!allExhibitions) {
+    return []
+  }
+  return allExhibitions.map((exhibition) => ({
+    slug: exhibition.slug,
+  }))
 }

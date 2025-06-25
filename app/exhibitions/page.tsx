@@ -62,13 +62,3 @@ async function getData() {
     permalink,
   }
 }
-
-export async function generateStaticParams() {
-  const allExhibitions = await getAllExhibitions()
-  if (!allExhibitions) {
-    return []
-  }
-  return allExhibitions.map((exhibition) => ({
-    slug: exhibition.slug,
-  }))
-}

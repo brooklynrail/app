@@ -15,7 +15,7 @@ interface IssueParams {
 }
 
 // Page Configuration
-export const revalidate = 86400 // revalidate every day
+export const revalidate = 604800 // revalidate every week
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<IssueParams> }): Promise<Metadata> {
