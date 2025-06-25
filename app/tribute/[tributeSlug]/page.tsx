@@ -2,7 +2,7 @@ import TributePage from "@/components/tributePage"
 import { TributePageProps } from "@/lib/railTypes"
 import { PageType, getOGImage, getPermalink } from "@/lib/utils"
 import { getNavData } from "@/lib/utils/homepage"
-import { getTributeData } from "@/lib/utils/tributes"
+import { getAllTributes, getTributeData } from "@/lib/utils/tributes"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
@@ -88,4 +88,14 @@ async function getData(params: TributeParams): Promise<TributePageProps | undefi
     console.error("Error fetching tribute data:", error)
     return undefined
   }
+}
+
+export async function generateStaticParams() {
+  const allTributes = await getAllTributes()
+  if (!allTributes) {
+    return []
+  }
+  return allTributes.map((tribute) => ({
+    tributeSlug: tribute.slug,
+  }))
 }

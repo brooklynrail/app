@@ -182,3 +182,7 @@ async function getData({ params }: { params: EventParams }): Promise<EventProps>
     permalink,
   }
 }
+
+export async function generateStaticParams() {
+  return []
+}

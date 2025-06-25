@@ -14,7 +14,7 @@ interface SectionParams {
 }
 
 // Page Configuration
-export const revalidate = 86400 // revalidate every day
+export const revalidate = 604800 // revalidate every week
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<SectionParams> }): Promise<Metadata> {
@@ -109,4 +109,8 @@ async function getData(params: SectionParams): Promise<IssueSectionPageProps | u
     console.error("Error fetching section data:", error)
     return undefined
   }
+}
+
+export async function generateStaticParams() {
+  return []
 }

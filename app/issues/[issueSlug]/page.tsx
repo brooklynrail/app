@@ -111,3 +111,13 @@ async function getData(params: IssueParams): Promise<IssuePageProps | undefined>
     return undefined
   }
 }
+
+export async function generateStaticParams() {
+  const allIssues = await getAllIssues()
+  if (!allIssues) {
+    return []
+  }
+  return allIssues.map((issue) => ({
+    issueSlug: issue.slug,
+  }))
+}
