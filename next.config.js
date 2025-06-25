@@ -238,13 +238,13 @@ const nextConfig = {
       {
         source: "/admin",
         destination: "/",
-        permanent: false,
+        permanent: true,
       },
       // Redirect any paths under /admin/ to the homepage (this is a legacy path)
       {
         source: "/admin/:path*",
         destination: "/",
-        permanent: false,
+        permanent: true,
       },
       // Redirect any paths under /article_image/ to the homepage (this is a legacy path)
       {
