@@ -14,7 +14,7 @@ interface PageParams {
 }
 
 export async function generateMetadata(props: { params: Promise<PageParams> }): Promise<Metadata> {
-  const data = await getData({ params: (await props.params) })
+  const data = await getData({ params: await props.params })
 
   if (!data.pageData || !data.permalink) {
     return {}
@@ -46,7 +46,7 @@ export async function generateMetadata(props: { params: Promise<PageParams> }): 
 }
 
 export default async function ChildPage(props: { params: Promise<PageParams> }) {
-  const data = await getData({ params: (await props.params) })
+  const data = await getData({ params: await props.params })
 
   if (!data.pageData || !data.permalink) {
     return notFound()
@@ -92,4 +92,8 @@ async function getData({ params }: { params: PageParams }): Promise<AboutPagePro
     allPagesData,
     permalink,
   }
+}
+
+export async function generateStaticParams() {
+  return []
 }

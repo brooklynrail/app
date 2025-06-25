@@ -119,13 +119,6 @@ async function getData({ params }: { params: ContributorParams }) {
   }
 }
 
-// export async function generateStaticParams() {
-//   let allContributors = await getAllContributors()
-//   // filter out contributors with no articles
-//   allContributors = allContributors.filter((contributor: Contributors) => contributor.articles.length > 0)
-//   return allContributors.map((contributor: Contributors) => {
-//     return {
-//       slug: contributor.slug,
-//     }
-//   })
-// }
+export async function generateStaticParams() {
+  return []
+}
