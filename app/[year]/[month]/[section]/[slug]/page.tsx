@@ -10,7 +10,10 @@ import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 import { Suspense } from "react"
 import AppLoader from "@/components/appLoader"
 
+// ISR Configuration: Pages will be regenerated every week
+// With generateStaticParams returning [], all dynamic routes use ISR
 export const revalidate = 604800 // 1 week
+
 interface ArticleParams {
   year: string
   month: string
@@ -170,4 +173,8 @@ export default async function ArticlePageController(props: { params: Promise<Art
       <Article {...data.props} />
     </Suspense>
   )
+}
+
+export async function generateStaticParams() {
+  return []
 }
