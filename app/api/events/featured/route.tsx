@@ -6,7 +6,8 @@ export async function GET(request: Request) {
     // Set cache headers for 30 minutes
     return new Response(JSON.stringify(featured), {
       headers: {
-        CacheControl: "public, s-maxage=1800, stale-while-revalidate",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Cache-Control": "public, s-maxage=1800, stale-while-revalidate",
       },
     })
   } catch (error) {

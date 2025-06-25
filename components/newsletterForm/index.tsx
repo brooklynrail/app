@@ -55,7 +55,8 @@ export default function NewsLetterSignUpForm({
       const res = await fetch(`/api/subscribe`, {
         method: "POST",
         headers: {
-          ContentType: "application/json",
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email,

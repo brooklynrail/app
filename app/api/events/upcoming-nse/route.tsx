@@ -19,7 +19,8 @@ export async function GET(request: Request) {
     // Add cache control headers to prevent browser caching
     return Response.json(eventsData, {
       headers: {
-        CacheControl: "public, s-maxage=3600, stale-while-revalidate",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate",
       },
     })
   } catch (error) {

@@ -36,8 +36,10 @@ export async function GET() {
 
     return Response.json(cleanedData, {
       headers: {
-        ContentType: "application/json",
-        CacheControl: "public, s-maxage=86400, stale-while-revalidate=86400",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Content-Type": "application/json",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=86400",
       },
     })
   } catch (error) {

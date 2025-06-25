@@ -15,7 +15,8 @@ export async function GET(req: NextRequest) {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        ContentType: "application/json",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Content-Type": "application/json",
       },
       cache: "no-cache",
     })
@@ -28,7 +29,7 @@ export async function GET(req: NextRequest) {
 
     const res = NextResponse.json(data, { status: 200 })
     // Set `Cache-Control` header to prevent caching
-    res.headers.set("CacheControl", "no-store, max-age=0")
+    res.headers.set("Cache-Control", "no-store, max-age=0")
     return res
   } catch (error) {
     console.error("Error fetching data:", error)

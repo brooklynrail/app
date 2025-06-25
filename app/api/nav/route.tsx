@@ -10,8 +10,10 @@ export async function GET() {
       const cleanedData = JSON.parse(JSON.stringify(navData))
       return Response.json(cleanedData, {
         headers: {
-          ContentType: "application/json",
-          CacheControl: `s-maxage=86400, stale-while-revalidate=86400`,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          "Content-Type": "application/json",
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          "Cache-Control": "s-maxage=86400, stale-while-revalidate=86400",
         },
       })
     } catch (error) {

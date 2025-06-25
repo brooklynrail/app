@@ -12,8 +12,10 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
 
   return new Response(JSON.stringify(exhibitionData), {
     headers: {
-      ContentType: "application/json",
-      CacheControl: "public, s-maxage=86400, stale-while-revalidate=86400",
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      "Content-Type": "application/json",
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=86400",
     },
   })
 }

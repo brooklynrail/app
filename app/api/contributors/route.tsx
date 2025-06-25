@@ -13,6 +13,9 @@ export async function GET(request: Request) {
   }
 
   return new Response(JSON.stringify(allContributors), {
-    headers: { ContentType: "application/json" },
+    headers: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      "Content-Type": "application/json",
+    },
   })
 }

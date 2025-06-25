@@ -75,7 +75,8 @@ export async function GET() {
 
     return Response.json(cleanedData, {
       headers: {
-        ContentType: "application/json",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Content-Type": "application/json",
       },
     })
   } catch (error) {

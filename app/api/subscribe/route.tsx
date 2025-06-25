@@ -86,7 +86,8 @@ export async function POST(request: NextRequest) {
         {
           status: 200,
           headers: {
-            ContentType: "application/json",
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            "Content-Type": "application/json",
           },
         },
       )
