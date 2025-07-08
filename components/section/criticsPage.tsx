@@ -148,7 +148,11 @@ const Promos = (props: PromoProps) => {
             <Link href={permalink}>
               <Bylines article={article} type={BylineType.CriticsPagePromos} hideBy={true} />
             </Link>
-            <Title title={article.title} permalink={permalink} classes="text-sm font-medium pl-3" />
+            <Title
+              title={article.title}
+              permalink={permalink}
+              classes={article.hide_bylines_downstream ? `text-3xl font-normal font-serif` : `text-sm font-medium pl-3`}
+            />
           </div>
         </div>
       </div>

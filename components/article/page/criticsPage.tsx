@@ -106,11 +106,23 @@ const CriticsPageList = (props: GuestCriticProps) => {
           type: PageType.Article,
         })
         const isCurrent = currentSlug === article.slug ? "bg-white dark:bg-zinc-700" : ""
+
+        // If hide_bylines_downstream is true, apply different classes to the Title and Bylines
+
         return (
           <li key={`item-${index}`} className={`${isCurrent} pl-3 py-1 desktop:py-2 space-y-3`}>
             <Link href={permalink} className="flex flex-col space-y-1">
+              {/* <p>{article.title}</p>
+              <p>{article.contributors[0].contributors_id?.first_name}</p> */}
               <Bylines asTitle={true} hideBy={true} article={article} type={BylineType.CriticsPageList} />
-              <Title title={article.title} classes="pl-3 font-medium font-sans text-sm" />
+              <Title
+                title={article.title}
+                classes={
+                  article.hide_bylines_downstream
+                    ? `text-3xl font-normal font-serif`
+                    : `pl-3 font-medium font-sans text-sm`
+                }
+              />
             </Link>
           </li>
         )
