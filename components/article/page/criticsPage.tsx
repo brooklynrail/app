@@ -37,11 +37,9 @@ const ArticleCriticsPage = (props: ArticleProps) => {
     <div className="">
       <div className="grid grid-cols-4 tablet-lg:grid-cols-12 tablet-lg:divide-x tablet-lg:rail-divide">
         <div className="hidden tablet-lg:block col-span-4 tablet-lg:col-span-3 tablet-lg:pr-3">
-          <div className="py-3 divide-y rail-divide sticky top-10 overflow-x-auto h-screen">
-            <div className="pb-60">
-              <GuestCriticPrompt thisSection={thisSection} currentSlug={articleData.slug} />
-              <CriticsPageList thisSection={thisSection} currentSlug={articleData.slug} />
-            </div>
+          <div className="py-3 divide-y rail-divide h-full">
+            <GuestCriticPrompt thisSection={thisSection} currentSlug={articleData.slug} />
+            <CriticsPageList thisSection={thisSection} currentSlug={articleData.slug} />
           </div>
         </div>
         <div className="col-span-4 tablet-lg:col-span-9 tablet-lg:pl-3">
