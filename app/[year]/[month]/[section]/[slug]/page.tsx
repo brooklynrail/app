@@ -12,7 +12,7 @@ import AppLoader from "@/components/appLoader"
 
 // ISR Configuration: Pages will be regenerated every week
 // With generateStaticParams returning [], all dynamic routes use ISR
-export const revalidate = 604800 // 1 week
+export const revalidate = 31536000 // 1 year
 
 interface ArticleParams {
   year: string

@@ -8,6 +8,7 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   trailingSlash: true,
   images: {
+    minimumCacheTTL: 2678400, // 31 days
     domains: ["localhost", "studio.brooklynrail.org", "brooklynrail.org", "storage.googleapis.com", "i.ytimg.com"],
     remotePatterns: [
       {
