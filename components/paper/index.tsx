@@ -106,7 +106,7 @@ const Paper = (props: PaperProps) => {
           <Footer />
           <ScreenIndicator />
         </div>
-        <Menu collections={navData.collections} />
+        <Menu collections={navData.collections} eventsBreakDetails={eventsBreakDetails} />
         {/* {!previewURL && <PopupDonate />} */}
         {!previewURL && type == PaperType.Article && <PopupNewsletter />}
       </MenuProvider>

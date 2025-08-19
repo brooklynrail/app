@@ -41,8 +41,39 @@ const CurrentNavigation = () => {
     void fetchData()
   }, []) // Empty dependency array to ensure the fetch only runs once
 
+  const NavigationSkeleton = () => (
+    <>
+      <ul className="divide-y rail-divide">
+        {/* Main navigation items skeleton */}
+        {[...Array(16)].map((_, i) => (
+          <li key={`skeleton-nav-${i}`} className="text-center">
+            <div className="py-3 block">
+              <div className="h-4 bg-gray-200 dark:bg-zinc-600 animate-pulse rounded mx-auto w-24" />
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className="py-3 bg-slate-100 dark:bg-zinc-700 pb-48">
+        <ul className="py-3 block text-sm font-bold px-9 space-y-3">
+          {/* Page links skeleton */}
+          {[...Array(4)].map((_, i) => (
+            <li key={`skeleton-page-${i}`} className="">
+              <div className="h-4 bg-gray-300 dark:bg-zinc-500 animate-pulse rounded w-32" />
+            </li>
+          ))}
+          {/* Static links skeleton */}
+          {[...Array(3)].map((_, i) => (
+            <li key={`skeleton-static-${i}`} className="">
+              <div className="h-4 bg-gray-300 dark:bg-zinc-500 animate-pulse rounded w-40" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  )
+
   if (loading || !navigation) {
-    return <div>Loading...</div>
+    return <NavigationSkeleton />
   }
 
   const allNav = navigation.map((navItem: NavigationProps) => {

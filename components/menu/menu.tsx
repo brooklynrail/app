@@ -5,9 +5,11 @@ import CurrentEvents from "./currentEvents"
 import Settings from "./settings"
 import { useMenu } from "@/app/hooks/useMenu"
 import CurrentNavigation from "./currentNavigation"
+import { EventsBreakDetails } from "@/lib/railTypes"
 
 interface MenuProps {
   collections: HomepageCollections[]
+  eventsBreakDetails?: EventsBreakDetails
 }
 
 const Menu = (props: MenuProps) => {
@@ -56,7 +58,9 @@ const Menu = (props: MenuProps) => {
               <SearchField />
             </div>
           </div>
-          <CurrentEvents />
+
+          <CurrentEvents eventsBreakDetails={props.eventsBreakDetails} />
+
           <div className="col-span-3">
             <div className="divide-y rail-divide">
               <CurrentNavigation />

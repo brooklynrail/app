@@ -3,8 +3,9 @@ import { useEffect, useState } from "react"
 import { Events } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
 import { formatTime } from "@/lib/utils/events"
+import { EventsBreakDetails } from "@/lib/railTypes"
 
-const CurrentEvents = () => {
+const CurrentEvents = (props: { eventsBreakDetails?: EventsBreakDetails }) => {
   const [currentEvents, setCurrentEvents] = useState<Events[] | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
@@ -34,12 +35,18 @@ const CurrentEvents = () => {
     return null
   }
 
-  const { title, start_date, end_date, slug } = currentEvents[0]
+  const onBreak = props.eventsBreakDetails && props.eventsBreakDetails.events_on_break
+  const { title, start_date, slug } = currentEvents[0]
 
   const startDate = new Date(start_date + "Z")
-  const endDate = new Date(end_date + "Z")
-  const isSameDay = startDate.toDateString() === endDate.toDateString()
-  const dayOfWeek = startDate.toLocaleString("en-US", { weekday: "long" })
+  const today = new Date()
+  const isToday = startDate.toDateString() === today.toDateString()
+  const fullDate = startDate.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })
 
   const startTimeET = formatTime(start_date, "America/New_York")
   const startTimePT = formatTime(start_date, "America/Los_Angeles")
@@ -56,12 +63,16 @@ const CurrentEvents = () => {
     type: PageType.Event,
   })
 
+  if (onBreak) {
+    return null
+  }
+
   return (
     <div className="col-span-3 bg-zinc-800 text-slate-100 py-3">
       <div className="grid grid-cols-3 divide-x divide-white divide-dotted">
         <div className="col-span-2">
           <div className="px-3">
-            <h4 className="font-bold text-sm">{isSameDay ? "Today" : dayOfWeek}</h4>
+            <h4 className="font-bold text-sm">{isToday ? "Today" : fullDate}</h4>
             <p className="text-sm">
               <Link href={permalink}>
                 <span className="block">
