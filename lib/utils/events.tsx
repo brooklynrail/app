@@ -529,7 +529,7 @@ export const generateYouTubeTags = (eventData: Events) => {
     "The New Social Environment",
     "Art",
     "contemporary art",
-    "Terra Foundation for American Art",
+    "Teiger Foundation",
   )
 
   // Return the tags as a comma-separated string (or return the array itself depending on your use case)
@@ -636,9 +636,9 @@ export const generateYouTubeCopy = (eventData: Events) => {
 
   youtubeCopy += `〰️〰️〰️〰️\n\n`
 
-  youtubeCopy += `We'd like to thank the Terra Foundation for American Art for making our daily conversations possible.\n`
-  youtubeCopy += `• Follow @terraamericanart https://www.instagram.com/terraamericanart/\n`
-  youtubeCopy += `• Learn more at https://www.terraamericanart.org/\n\n`
+  youtubeCopy += `We'd like to thank the Teiger Foundation for making our daily conversations possible.\n`
+  youtubeCopy += `• Follow @teigerfoundation https://www.instagram.com/teigerfoundation/\n`
+  youtubeCopy += `• Learn more at https://teigerfoundation.org/\n\n`
 
   youtubeCopy += `This conversation was produced by THE BROOKLYN RAIL:\n`
   youtubeCopy += `• Learn more about our upcoming conversations at: https://brooklynrail.org/events\n`
