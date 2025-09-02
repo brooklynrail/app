@@ -8,7 +8,7 @@ const Sponsor = () => {
       <p className="text-center">
         ❤️ 🌈 We'd like to thank{" "}
         <Link className="text-indigo-500 dark:text-indigo-400" href="https://www.instagram.com/terraamericanart/">
-          the Terra Foundation for American Art
+          The Terra Foundation for American Art
         </Link>{" "}
         and{" "}
         <Link className="text-indigo-500 dark:text-indigo-400" href="https://teigerfoundation.org/">
