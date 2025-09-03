@@ -1,5 +1,3 @@
-import { Ads } from "../types"
-
 export enum AdTypes {
   FixedBanner = "banner",
   Tile = "tile",

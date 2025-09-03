@@ -1,7 +1,7 @@
 import { stripHtml } from "string-strip-html"
 import parse from "html-react-parser"
 import Link from "next/link"
-import { Articles, Issues, Sections } from "@/lib/types"
+import { Articles, Sections } from "@/lib/types"
 import { PageType, getPermalink } from "@/lib/utils"
 import PromoSlim from "./slim"
 

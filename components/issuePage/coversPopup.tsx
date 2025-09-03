@@ -4,7 +4,7 @@ import Image from "next/image"
 import { PopupType, usePopup } from "../popupProvider"
 
 const CoversPopup = () => {
-  const { showPopup, popupType, images, setShowPopup } = usePopup()
+  const { showPopup, popupType, images } = usePopup()
 
   const { setImages, togglePopup } = usePopup()
 
