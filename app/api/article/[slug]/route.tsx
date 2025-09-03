@@ -1,6 +1,6 @@
 import { getArticle } from "@/lib/utils"
 
-export const revalidate = 604800 // 1 week
+export const revalidate = 31536000 // 1 year
 
 export async function GET(request: Request, props: { params: Promise<{ slug: string }> }) {
   const params = await props.params
@@ -21,7 +21,7 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
     return Response.json(articleData, {
       headers: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        "Cache-Control": "public, s-maxage=604800, stale-while-revalidate",
+        "Cache-Control": "public, s-maxage=31536000, stale-while-revalidate",
       },
     })
   } catch (error) {
