@@ -5,6 +5,11 @@
       "headers": [{ "key": "x-vercel-protection-bypass", "value": "true" }]
     }
   ],
+  "functions": {
+    "app/page.tsx": {
+      "maxDuration": 60
+    }
+  },
   "redirects": [
     {
       "source": "/:year/:month(\\d{1})/",
