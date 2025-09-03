@@ -19,10 +19,10 @@ const EventPreview = (props: EventPreviewProps) => {
     }
   }, [])
 
-  // Convert both dates to UTC for consistent timezone comparison
-  const endDateUTC = new Date(eventData.end_date).toISOString()
-  const nowUTC = new Date().toISOString()
-  const isFutureEvent = endDateUTC > nowUTC
+  // Compare dates in the user's local timezone for accurate future event detection
+  const endDateLocal = new Date(eventData.end_date)
+  const now = new Date()
+  const isFutureEvent = endDateLocal > now
 
   const previewURL = `${process.env.NEXT_PUBLIC_BASE_URL}/preview/event/${eventData.id}/`
   return (

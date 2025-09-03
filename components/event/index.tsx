@@ -12,10 +12,10 @@ const EventPage = (props: EventProps) => {
   const { end_date, airtable_id } = eventData
   const [showRegistration, setShowRegistration] = useState(false)
 
-  // Convert both dates to UTC for consistent timezone comparison
-  const endDateUTC = new Date(end_date).toISOString()
-  const nowUTC = new Date().toISOString()
-  const isFutureEvent = endDateUTC > nowUTC
+  // Compare dates in the user's local timezone for accurate future event detection
+  const endDateLocal = new Date(end_date)
+  const now = new Date()
+  const isFutureEvent = endDateLocal > now
 
   return (
     <Paper pageClass="theme-events" navData={navData}>

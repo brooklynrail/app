@@ -683,10 +683,11 @@ export const generateSingleEventNewsletter = ({ eventTypes, event }: SingleNewsl
     const endDate = new Date(event.end_date)
     const isSameDay = startDate.toDateString() === endDate.toDateString()
     const dateString = formatEventDate(startDate, endDate, isSameDay)
-    // Convert both dates to UTC for consistent timezone comparison
-    const endDateUTC = new Date(event.end_date).toISOString()
-    const nowUTC = new Date().toISOString()
-    const isFutureEvent = endDateUTC > nowUTC
+
+    // Compare dates in the user's local timezone for accurate future event detection
+    const endDateLocal = new Date(event.end_date)
+    const now = new Date()
+    const isFutureEvent = endDateLocal > now
 
     // Get the time in both Eastern and Pacific time
     const startTimeET = formatTime(event.start_date, "America/New_York")
