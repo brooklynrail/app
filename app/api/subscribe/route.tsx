@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from "next/server"
 import mailchimp from "@mailchimp/mailchimp_marketing"
 
 // Debug logging
-console.log("Environment Variables Check:", {
-  MAILCHIMP_API_KEY: process.env.MAILCHIMP_API_KEY ? "Present" : "Missing",
-  MAILCHIMP_API_SERVER: process.env.MAILCHIMP_API_SERVER,
-  MAILCHIMP_AUDIENCE_ID: process.env.MAILCHIMP_AUDIENCE_ID,
-})
+// console.log("Environment Variables Check:", {
+//   MAILCHIMP_API_KEY: process.env.MAILCHIMP_API_KEY ? "Present" : "Missing",
+//   MAILCHIMP_API_SERVER: process.env.MAILCHIMP_API_SERVER,
+//   MAILCHIMP_AUDIENCE_ID: process.env.MAILCHIMP_AUDIENCE_ID,
+// })
 
 // Initialize Mailchimp
 const apiKey = process.env.MAILCHIMP_API_KEY
@@ -14,13 +14,13 @@ const serverPrefix = process.env.MAILCHIMP_API_SERVER
 const listId = process.env.MAILCHIMP_AUDIENCE_ID
 
 // Log configuration (without sensitive data)
-console.log("Mailchimp Configuration:", {
-  hasApiKey: !!apiKey,
-  serverPrefix,
-  hasListId: !!listId,
-  apiKeyLength: apiKey?.length,
-  listIdLength: listId?.length,
-})
+// console.log("Mailchimp Configuration:", {
+//   hasApiKey: !!apiKey,
+//   serverPrefix,
+//   hasListId: !!listId,
+//   apiKeyLength: apiKey?.length,
+//   listIdLength: listId?.length,
+// })
 
 if (!apiKey || !serverPrefix || !listId) {
   console.error("Missing required Mailchimp environment variables")
