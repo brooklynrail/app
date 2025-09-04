@@ -8,6 +8,10 @@ import { getContributor } from "@/lib/utils/people"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 import { AddRedirect } from "@/app/actions/redirect"
 
+// ISR Configuration: Pages will be regenerated every year
+// With generateStaticParams returning [], all dynamic routes use ISR
+export const revalidate = 31536000 // 1 year
+
 interface ContributorParams {
   slug: string
 }
@@ -85,7 +89,14 @@ async function getData({ params }: { params: ContributorParams }) {
     return notFound()
   }
 
-  // This gets the contributor with the greatest `old_id`, which assumes that this is the most recent version of this person's name and bio
+  // NOTE: Contributors data is tricky
+  // There are multiple contributors with the same slug, but their specific name and bio information may be different
+  // We are attempting to get all of their articles in one query.
+  // And yes there is an initiative to fix this, but it is not complete yet.
+  // See: http://brooklynrail.org/contributors/merge
+  // ===============================================================
+
+  // Gets the contributor with the greatest `old_id`, which assumes that this is the most recent version of this person's name and bio
   const contributorData = allContributors.reduce((prev, current) => {
     return prev.old_id > current.old_id ? prev : current
   })

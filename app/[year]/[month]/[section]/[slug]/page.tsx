@@ -10,7 +10,7 @@ import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 import { Suspense } from "react"
 import AppLoader from "@/components/appLoader"
 
-// ISR Configuration: Pages will be regenerated every week
+// ISR Configuration: Pages will be regenerated every year
 // With generateStaticParams returning [], all dynamic routes use ISR
 export const revalidate = 31536000 // 1 year
 
