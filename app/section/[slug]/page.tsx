@@ -7,7 +7,9 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 
-export const dynamicParams = true
+// ISR Configuration: Pages will be regenerated every year
+// With generateStaticParams returning [], all dynamic routes use ISR
+export const revalidate = 31536000 // 1 year
 
 export async function generateStaticParams() {
   const sections: Sections[] | null = await getSections()
@@ -95,4 +97,8 @@ async function getData(slug: string) {
     console.error("Error fetching section data:", error)
     return null
   }
+}
+
+export async function generateStaticParam() {
+  return []
 }
