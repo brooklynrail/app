@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
     revalidatePath(path)
 
-    return new Response(`${process.env.NEXT_PUBLIC_BASE_URL}${path}`, { status: 200 })
+    return new Response(`Revalidated path: ${process.env.NEXT_PUBLIC_BASE_URL}${path}`, { status: 200 })
   } catch (err) {
     // Log the error for debugging purposes
     console.error("Revalidation error:", err)
