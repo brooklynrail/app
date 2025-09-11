@@ -6,6 +6,9 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const secret = searchParams.get("secret")
     const path = searchParams.get("path")
+    const type = searchParams.get("type")
+    const issuePath = searchParams.get("issuePath")
+    const sectionPath = searchParams.get("sectionPath")
 
     // Check if the secret matches the expected secret
     if (secret !== process.env.NEXT_PUBLIC_REVALIDATION_SECRET) {
@@ -17,9 +20,31 @@ export async function GET(request: Request) {
       return new Response("path is required", { status: 400 })
     }
 
-    revalidatePath(path)
+    const revalidatedPaths: string[] = []
 
-    return new Response(`Revalidated path: ${process.env.NEXT_PUBLIC_BASE_URL}${path}`, { status: 200 })
+    // Revalidate the main path
+    revalidatePath(path)
+    revalidatedPaths.push(path)
+
+    // For article types, also revalidate related issue and section pages if provided
+    if (type === "article") {
+      // Revalidate issue page if issuePath is provided
+      if (issuePath) {
+        revalidatePath(issuePath)
+        revalidatedPaths.push(issuePath)
+      }
+
+      // Revalidate section page if sectionPath is provided
+      if (sectionPath) {
+        revalidatePath(sectionPath)
+        revalidatedPaths.push(sectionPath)
+      }
+    }
+
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ""
+    const responseMessage = revalidatedPaths.map((p) => `Revalidated path: ${baseUrl}${p}`).join("\n")
+
+    return new Response(responseMessage, { status: 200 })
   } catch (err) {
     // Log the error for debugging purposes
     console.error("Revalidation error:", err)
