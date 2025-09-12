@@ -9,6 +9,7 @@ export async function GET(request: Request) {
     const type = searchParams.get("type")
     const issuePath = searchParams.get("issuePath")
     const sectionPath = searchParams.get("sectionPath")
+    const tributePath = searchParams.get("tributePath")
 
     // Check if the secret matches the expected secret
     if (secret !== process.env.NEXT_PUBLIC_REVALIDATION_SECRET) {
@@ -38,6 +39,14 @@ export async function GET(request: Request) {
       if (sectionPath) {
         revalidatePath(sectionPath)
         revalidatedPaths.push(sectionPath)
+      }
+    }
+
+    // For tribute types, also revalidate related tribute page if provided
+    if (type === "tribute") {
+      if (tributePath) {
+        revalidatePath(tributePath)
+        revalidatedPaths.push(tributePath)
       }
     }
 
