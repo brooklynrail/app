@@ -44,16 +44,16 @@ export async function GET(request: Request) {
 
     // For event types, also revalidate main events page
     if (type === "event") {
-      revalidatePath(`https://brooklynrail.org/event`)
-      revalidatedPaths.push(`https://brooklynrail.org/event`)
+      revalidatePath(`/events`)
+      revalidatedPaths.push(`/events`)
     }
 
     // For contributors types, also revalidate main contributors page and sitemap
     if (type === "contributor") {
-      revalidatePath(`https://brooklynrail.org/contributors`)
-      revalidatedPaths.push(`https://brooklynrail.org/contributors`)
-      revalidatePath(`https://brooklynrail.org/contributors/sitemap.xml`)
-      revalidatedPaths.push(`https://brooklynrail.org/contributors/sitemap.xml`)
+      revalidatePath(`/contributors`)
+      revalidatedPaths.push(`/contributors`)
+      revalidatePath(`/contributors/sitemap.xml`)
+      revalidatedPaths.push(`/contributors/sitemap.xml`)
     }
 
     // For tribute types, also revalidate related tribute page if provided
@@ -65,10 +65,10 @@ export async function GET(request: Request) {
     }
     // for Issue types, also revalidate main issues page and sitemap
     if (type === "issue") {
-      revalidatePath(`https://brooklynrail.org/archive/`)
-      revalidatedPaths.push(`https://brooklynrail.org/archive/`)
-      revalidatePath(`https://brooklynrail.org/issues/sitemap.xml`)
-      revalidatedPaths.push(`https://brooklynrail.org/issues/sitemap.xml`)
+      revalidatePath(`/archive/`)
+      revalidatedPaths.push(`/archive/`)
+      revalidatePath(`/issues/sitemap.xml`)
+      revalidatedPaths.push(`/issues/sitemap.xml`)
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ""
