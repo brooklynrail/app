@@ -48,6 +48,14 @@ export async function GET(request: Request) {
       revalidatedPaths.push(`https://brooklynrail.org/event`)
     }
 
+    // For contributors types, also revalidate main contributors page and sitemap
+    if (type === "contributor") {
+      revalidatePath(`https://brooklynrail.org/contributors`)
+      revalidatedPaths.push(`https://brooklynrail.org/contributors`)
+      revalidatePath(`https://brooklynrail.org/contributors/sitemap.xml`)
+      revalidatedPaths.push(`https://brooklynrail.org/contributors/sitemap.xml`)
+    }
+
     // For tribute types, also revalidate related tribute page if provided
     if (type === "tribute") {
       if (tributePath) {
