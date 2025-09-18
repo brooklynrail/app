@@ -65,8 +65,8 @@ export async function GET(request: Request) {
     }
     // for Issue types, also revalidate main issues page and sitemap
     if (type === "issue") {
-      revalidatePath(`https://brooklynrail.org/archive`)
-      revalidatedPaths.push(`https://brooklynrail.org/archive`)
+      revalidatePath(`https://brooklynrail.org/archive/`)
+      revalidatedPaths.push(`https://brooklynrail.org/archive/`)
       revalidatePath(`https://brooklynrail.org/issues/sitemap.xml`)
       revalidatedPaths.push(`https://brooklynrail.org/issues/sitemap.xml`)
     }

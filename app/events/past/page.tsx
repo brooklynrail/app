@@ -5,6 +5,8 @@ import { getNavData } from "@/lib/utils/homepage"
 import { notFound } from "next/navigation"
 import { Metadata } from "next/types"
 
+export const revalidate = 2592000 // 30 days
+
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()
 

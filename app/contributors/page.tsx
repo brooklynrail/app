@@ -7,6 +7,8 @@ import { getAllContributors } from "@/lib/utils/people"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+export const revalidate = 2592000 // 30 days
+
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()
   if (!data) {

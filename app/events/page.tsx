@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getEventsBreakDetails, getEventTypes, getPastEvents, getUpcomingEvents } from "@/lib/utils/events"
 import EventsPage from "@/components/events"
@@ -6,7 +5,7 @@ import { Metadata } from "next"
 import { getNavData } from "@/lib/utils/homepage"
 import { EventsProps } from "@/lib/railTypes"
 
-export const revalidate = 3600 // revalidate every hour
+export const revalidate = 2592000 // 30 days
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()
