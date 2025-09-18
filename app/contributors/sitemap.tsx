@@ -3,6 +3,8 @@ import { getAllContributors } from "@/lib/utils/people"
 import { Contributors } from "@/lib/types"
 import { notFound } from "next/navigation"
 
+export const revalidate = 31536000 // revalidate every year (365 days)
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let allContributors = await getAllContributors()
   if (!allContributors || allContributors.length == 0) {
