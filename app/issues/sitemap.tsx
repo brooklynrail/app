@@ -2,6 +2,9 @@ import { Issues } from "@/lib/types"
 import { getIssues, getPermalink, PageType } from "@/lib/utils"
 import { MetadataRoute } from "next"
 
+// revalidate every 30 days
+export const revalidate = 2592000 // 30 days
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allIssues = await getIssues()
 
