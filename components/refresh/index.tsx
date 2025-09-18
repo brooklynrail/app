@@ -195,53 +195,11 @@ const Refresh = () => {
             {isLoading ? "Revalidating..." : "Revalidate Sections"}
           </button>
           <button
-            onClick={() => handleRevalidate(RevalidateType.Issues)}
-            disabled={isLoading}
-            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Revalidating..." : "Revalidate Issues"}
-          </button>
-          <button
-            onClick={() => handleRevalidate(RevalidateType.Events)}
-            disabled={isLoading}
-            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Revalidating..." : "Revalidate Events"}
-          </button>
-          <button
-            onClick={() => handleRevalidate(RevalidateType.Articles)}
-            disabled={isLoading}
-            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Revalidating..." : "Revalidate Articles"}
-          </button>
-          <button
-            onClick={() => handleRevalidate(RevalidateType.Contributors)}
-            disabled={isLoading}
-            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Revalidating..." : "Revalidate Contributors"}
-          </button>
-          <button
-            onClick={() => handleRevalidate(RevalidateType.Tributes)}
-            disabled={isLoading}
-            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Revalidating..." : "Revalidate Tributes"}
-          </button>
-          <button
             onClick={() => handleRevalidate(RevalidateType.Ads)}
             disabled={isLoading}
             className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Revalidating..." : "Revalidate Ads"}
-          </button>
-          <button
-            onClick={() => handleRevalidate(RevalidateType.Pages)}
-            disabled={isLoading}
-            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Revalidating..." : "Revalidate Pages"}
           </button>
           <button
             onClick={() => handleRevalidate(RevalidateType.GlobalSettings)}
