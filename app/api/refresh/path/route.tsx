@@ -42,6 +42,12 @@ export async function GET(request: Request) {
       }
     }
 
+    // For event types, also revalidate main events page
+    if (type === "event") {
+      revalidatePath(`https://brooklynrail.org/event`)
+      revalidatedPaths.push(`https://brooklynrail.org/event`)
+    }
+
     // For tribute types, also revalidate related tribute page if provided
     if (type === "tribute") {
       if (tributePath) {
