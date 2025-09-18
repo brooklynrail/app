@@ -252,33 +252,6 @@ const Refresh = () => {
           </button>
         </div>
       </div>
-
-      <div className="flex flex-col space-y-3 w-2/3">
-        <h2 className="text-lg font-normal text-white">Revalidate API routes</h2>
-        <div className="grid grid-cols-1 tablet-lg:grid-cols-2 gap-3">
-          <button
-            onClick={() =>
-              handleRevalidateAPIRoutes(
-                ["/api/events/past", "/api/events/upcoming-nse", "/api/events/featured"],
-                "Events",
-              )
-            }
-            disabled={isLoading}
-            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Revalidating..." : "Revalidate Events API Routes"}
-          </button>
-          <button
-            onClick={() =>
-              handleRevalidateAPIRoutes(["/api/article", "/api/article/[slug]", "/api/article/id/[id]"], "Article")
-            }
-            disabled={isLoading}
-            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Revalidating..." : "Revalidate Article API Routes"}
-          </button>
-        </div>
-      </div>
     </div>
   )
 }
