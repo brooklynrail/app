@@ -10,7 +10,7 @@ const SearchField = () => {
     e.preventDefault()
     if (query.trim()) {
       const encodedQuery = encodeURIComponent(query)
-      router.push(`/search/?archive%5Bquery%5D=${encodedQuery}`)
+      router.push(`/search/?brooklynrail%5Bquery%5D=${encodedQuery}`)
     }
   }
 

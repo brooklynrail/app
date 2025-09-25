@@ -32,7 +32,7 @@ const searchClient = {
   },
 }
 
-const index = "archive"
+const index = "brooklynrail"
 
 const SearchField = () => {
   return (
