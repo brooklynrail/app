@@ -12,7 +12,7 @@ interface ExhibitionParams {
 }
 
 // Page Configuration
-export const revalidate = 86400 // revalidate every day
+export const revalidate = 31536000 // revalidate every year (365 days)
 
 // Metadata Generation
 export async function generateMetadata(props: { params: Promise<ExhibitionParams> }): Promise<Metadata> {

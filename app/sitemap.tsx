@@ -3,7 +3,7 @@ import { getPermalink, PageType } from "@/lib/utils"
 import { getArticlePages } from "@/lib/utils/articles"
 import { MetadataRoute } from "next"
 
-export const revalidate = 86400 // revalidate every day
+export const revalidate = 31536000 // revalidate every year (365 days)
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articlePages = await getArticlePages()
