@@ -54,7 +54,7 @@ export const getNavData = unstable_cache(
     }
   },
   ["homepage-nav"],
-  { revalidate: 604800, tags: ["homepage"] },
+  { revalidate: 31536000, tags: ["homepage"] },
 )
 
 export const getHomepageCollectionData = unstable_cache(
