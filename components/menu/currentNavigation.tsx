@@ -146,6 +146,36 @@ const CurrentNavigation = () => {
   return (
     <>
       <ul className="divide-y rail-divide">
+        <li className="text-center">
+          <Link
+            href={`https://brooklynrail.org/archive`}
+            className="py-3 block text-sm font-bold uppercase text-center"
+          >
+            Issues
+          </Link>
+        </li>
+        <li className="text-center">
+          <Link href={`https://brooklynrail.org/events`} className="py-3 block text-sm font-bold uppercase text-center">
+            Events
+          </Link>
+        </li>
+        <li className="text-center">
+          <Link
+            href={`https://brooklynrail.org/exhibitions`}
+            className="py-3 block text-sm font-bold uppercase text-center"
+          >
+            Exhibitions
+          </Link>
+        </li>
+        <li className="text-center">
+          <Link
+            href={`https://brooklynrail.org/tributes`}
+            className="py-3 block text-sm font-bold uppercase text-center"
+          >
+            Tributes
+          </Link>
+        </li>
+
         {allNav}
         <li className="text-center">
           <Link
