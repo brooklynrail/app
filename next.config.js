@@ -76,7 +76,7 @@ const nextConfig = {
       // Redirect the root Tributes page to the Tributes home page
       {
         source: "/tribute",
-        destination: "/tributes",
+        destination: "/",
         permanent: false,
       },
       // // Redirect the In Memoriam Section page to the Tributes home page
