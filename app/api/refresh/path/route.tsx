@@ -9,6 +9,7 @@ export async function GET(request: Request) {
     const type = searchParams.get("type")
     const issuePath = searchParams.get("issuePath")
     const sectionPath = searchParams.get("sectionPath")
+    const issueSectionPath = searchParams.get("issueSectionPath")
     const tributePath = searchParams.get("tributePath")
 
     // Check if the secret matches the expected secret
@@ -45,6 +46,11 @@ export async function GET(request: Request) {
       if (sectionPath) {
         revalidatePath(sectionPath)
         revalidatedPaths.push(sectionPath)
+      }
+      // Revalidate Issue Section page if issueSectionPath is provided
+      if (issueSectionPath) {
+        revalidatePath(issueSectionPath)
+        revalidatedPaths.push(issueSectionPath)
       }
     }
 
