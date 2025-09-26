@@ -73,10 +73,23 @@ const nextConfig = {
       },
       // ===================================
       // TRIBUTES REDIRECT
-      // Redirect the root Tributes page to the homepage for now
+      // Redirect the root Tributes page to the Tributes home page
       {
         source: "/tribute",
-        destination: "/",
+        destination: "/tributes",
+        permanent: false,
+      },
+      // Redirect the In Memoriam Section page to the Tributes home page
+      {
+        source: "/section/in-memoriam/",
+        destination: "/tributes",
+        permanent: false,
+      },
+      // Redirect the Tributes Section path to the Tributes home page
+      // This was never a section but it was used in the past
+      {
+        source: "/section/tributes/",
+        destination: "/tributes",
         permanent: false,
       },
       // ===================================
