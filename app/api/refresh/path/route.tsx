@@ -29,6 +29,12 @@ export async function GET(request: Request) {
 
     // For article types, also revalidate related issue and section pages if provided
     if (type === "article") {
+      // get the slug from the path
+      const slug = path.split("/").pop()
+      if (slug) {
+        revalidatePath(`/api/article/${slug}`)
+        revalidatedPaths.push(`/api/article/${slug}`)
+      }
       // Revalidate issue page if issuePath is provided
       if (issuePath) {
         revalidatePath(issuePath)

@@ -407,7 +407,7 @@ export const getArticle = unstable_cache(
       `&filter[status][_eq]=${status}`
 
     try {
-      const res = await fetch(articleAPI)
+      const res = await fetch(articleAPI, { next: { revalidate: 31536000, tags: ["articles"] } })
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         console.error(`Failed to fetch Article data: ${res.statusText}`)
@@ -425,7 +425,7 @@ export const getArticle = unstable_cache(
   ["sections_articles"], // cache key
   {
     tags: ["articles"], // same tags as fetch
-    revalidate: 86400,
+    revalidate: 31536000,
   },
 )
 
