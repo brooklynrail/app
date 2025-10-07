@@ -1,6 +1,6 @@
 import { getArticle } from "@/lib/utils"
 
-export const revalidate = 31536000 // 1 year
+export const revalidate = 86400 // 1 day - shorter than page cache
 
 export async function GET(request: Request, props: { params: Promise<{ slug: string }> }) {
   const params = await props.params
@@ -17,11 +17,11 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
       return new Response("Article not found", { status: 404 })
     }
 
-    // Add cache control headers to prevent browser caching
+    // Add cache control headers - shorter cache time for API
     return Response.json(articleData, {
       headers: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        "Cache-Control": "public, s-maxage=31536000, stale-while-revalidate",
+        "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600",
       },
     })
   } catch (error) {

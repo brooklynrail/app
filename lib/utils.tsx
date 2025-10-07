@@ -346,88 +346,88 @@ export const getSectionsByIssueId = cache(async (issueId: string, status: string
   }
 })
 
-export const getArticle = unstable_cache(
-  async (slug: string, status?: string) => {
-    const articleAPI =
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
-      `?fields[]=slug` +
-      `&fields[]=byline_override` +
-      `&fields[]=title` +
-      `&fields[]=deck` +
-      `&fields[]=excerpt` +
-      `&fields[]=kicker` +
-      `&fields[]=featured` +
-      `&fields[]=sort` +
-      `&fields[]=body_text` +
-      `&fields[]=body_type` +
-      `&fields[]=header_type` +
-      `&fields[]=in_print` +
-      `&fields[]=status` +
-      `&fields[]=isbn` +
-      `&fields[]=date_created` +
-      `&fields[]=date_updated` +
-      `&fields[]=title_tag` +
-      `&fields[]=user_updated` +
-      `&fields[]=date_updated` +
-      `&fields[]=hide_bylines` +
-      `&fields[]=hide_bylines_downstream` +
-      `&fields[]=tags` +
-      `&fields[]=endnote` +
-      `&fields[]=featured_image.id` +
-      `&fields[]=featured_image.caption` +
-      `&fields[]=featured_image.filename_disk` +
-      `&fields[]=featured_image.width` +
-      `&fields[]=featured_image.height` +
-      `&fields[]=featured_image.type` +
-      `&fields[]=contributors.contributors_id.first_name` +
-      `&fields[]=contributors.contributors_id.last_name` +
-      `&fields[]=contributors.contributors_id.slug` +
-      `&fields[]=contributors.contributors_id.bio` +
-      `&fields[]=issue.title` +
-      `&fields[]=issue.slug` +
-      `&fields[]=issue.year` +
-      `&fields[]=issue.month` +
-      `&fields[]=section.slug` +
-      `&fields[]=section.name` +
-      `&fields[]=section.featured` +
-      `&fields[]=images.sort` +
-      `&fields[]=images.directus_files_id.id` +
-      `&fields[]=images.directus_files_id.caption` +
-      `&fields[]=images.directus_files_id.filename_disk` +
-      `&fields[]=images.directus_files_id.width` +
-      `&fields[]=images.directus_files_id.height` +
-      `&fields[]=images.directus_files_id.type` +
-      `&fields[]=images.directus_files_id.shortcode_key` +
-      `&fields[]=tribute` +
-      `&fields[]=tribute.title` +
-      `&fields[]=tribute.slug` +
-      `&fields[]=hide_title` +
-      `&fields[]=hide_in_article_ad` +
-      `&filter[slug][_eq]=${slug}` +
-      `&filter[status][_eq]=${status}`
+export const getArticle = async (slug: string, status?: string) => {
+  const articleAPI =
+    `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/articles` +
+    `?fields[]=slug` +
+    `&fields[]=byline_override` +
+    `&fields[]=title` +
+    `&fields[]=deck` +
+    `&fields[]=excerpt` +
+    `&fields[]=kicker` +
+    `&fields[]=featured` +
+    `&fields[]=sort` +
+    `&fields[]=body_text` +
+    `&fields[]=body_type` +
+    `&fields[]=header_type` +
+    `&fields[]=in_print` +
+    `&fields[]=status` +
+    `&fields[]=isbn` +
+    `&fields[]=date_created` +
+    `&fields[]=date_updated` +
+    `&fields[]=title_tag` +
+    `&fields[]=user_updated` +
+    `&fields[]=date_updated` +
+    `&fields[]=hide_bylines` +
+    `&fields[]=hide_bylines_downstream` +
+    `&fields[]=tags` +
+    `&fields[]=endnote` +
+    `&fields[]=featured_image.id` +
+    `&fields[]=featured_image.caption` +
+    `&fields[]=featured_image.filename_disk` +
+    `&fields[]=featured_image.width` +
+    `&fields[]=featured_image.height` +
+    `&fields[]=featured_image.type` +
+    `&fields[]=contributors.contributors_id.first_name` +
+    `&fields[]=contributors.contributors_id.last_name` +
+    `&fields[]=contributors.contributors_id.slug` +
+    `&fields[]=contributors.contributors_id.bio` +
+    `&fields[]=issue.title` +
+    `&fields[]=issue.slug` +
+    `&fields[]=issue.year` +
+    `&fields[]=issue.month` +
+    `&fields[]=section.slug` +
+    `&fields[]=section.name` +
+    `&fields[]=section.featured` +
+    `&fields[]=images.sort` +
+    `&fields[]=images.directus_files_id.id` +
+    `&fields[]=images.directus_files_id.caption` +
+    `&fields[]=images.directus_files_id.filename_disk` +
+    `&fields[]=images.directus_files_id.width` +
+    `&fields[]=images.directus_files_id.height` +
+    `&fields[]=images.directus_files_id.type` +
+    `&fields[]=images.directus_files_id.shortcode_key` +
+    `&fields[]=tribute` +
+    `&fields[]=tribute.title` +
+    `&fields[]=tribute.slug` +
+    `&fields[]=hide_title` +
+    `&fields[]=hide_in_article_ad` +
+    `&filter[slug][_eq]=${slug}` +
+    `&filter[status][_eq]=${status}`
 
-    try {
-      const res = await fetch(articleAPI, { next: { revalidate: 31536000, tags: ["articles"] } })
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        console.error(`Failed to fetch Article data: ${res.statusText}`)
-        return null
-      }
+  try {
+    // Use fetch with appropriate caching strategy
+    // Since the page route is already cached for 1 year, we don't need function-level caching
+    // This ensures fresh data when the function is called
+    const res = await fetch(articleAPI, {
+      next: {
+        revalidate: 86400, // 1 day - much shorter than page cache
+        tags: ["articles"],
+      },
+    })
 
-      const { data } = await res.json()
-
-      return data[0] as Articles
-    } catch (error) {
-      console.error(error)
+    if (!res.ok) {
+      console.error(`Failed to fetch Article data: ${res.statusText}`)
       return null
     }
-  },
-  ["sections_articles"], // cache key
-  {
-    tags: ["articles"], // same tags as fetch
-    revalidate: 31536000,
-  },
-)
+
+    const { data } = await res.json()
+    return data[0] as Articles
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
 
 export const getEvent = cache(async (slug: string) => {
   const events = await directus.request(
