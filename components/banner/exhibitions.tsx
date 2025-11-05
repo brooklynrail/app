@@ -34,34 +34,54 @@ const ExhibitionSkeleton = () => {
 }
 
 const Exhibition = () => {
-  const [exhibition, setExhibition] = useState<Exhibitions | null>(null)
+  const [exhibitions, setExhibitions] = useState<Exhibitions[]>([])
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
-    const fetchExhibition = async () => {
+    const fetchExhibitions = async () => {
       const response = await fetch(`/api/exhibitions`)
       const data = await response.json()
       if (!data || !Array.isArray(data)) {
-        setExhibition(null)
+        setExhibitions([])
         return
       }
-      setExhibition(data[0])
+
+      // Filter exhibitions where end_date >= today
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      const activeExhibitions = data.filter((exhibition: Exhibitions) => {
+        if (!exhibition.end_date) {
+          return false
+        }
+        const endDate = new Date(exhibition.end_date)
+        endDate.setHours(0, 0, 0, 0)
+        return endDate >= today
+      })
+
+      setExhibitions(activeExhibitions)
     }
-    void fetchExhibition()
+    void fetchExhibitions()
   }, [])
 
-  if (!exhibition) {
+  // Auto advance exhibitions
+  useEffect(() => {
+    if (exhibitions.length <= 1) {
+      return
+    }
+
+    const timer = setInterval(() => {
+      setCurrentIndex((current) => (current === exhibitions.length - 1 ? 0 : current + 1))
+    }, 5000) // Change exhibition every 5 seconds
+
+    return () => clearInterval(timer)
+  }, [exhibitions.length])
+
+  if (!exhibitions || exhibitions.length === 0) {
     return <ExhibitionSkeleton />
   }
 
-  const title = exhibition.title
-  const kicker = exhibition.kicker
-  const exhibition_images = exhibition.exhibition_images
-  const opening_details = exhibition.opening_details
-  const opening_date = exhibition.opening_date
-  const location = exhibition.location
-  const curatorString = formatCurators(exhibition.curators)
-  const startDate = exhibition.start_date
-  const endDate = exhibition.end_date
+  const exhibition = exhibitions[currentIndex]
 
   const formatExhibitionDate = (startDate: string, endDate: string) => {
     const start = new Date(startDate)
@@ -82,8 +102,6 @@ const Exhibition = () => {
     return `${startStr}–${endStr}`
   }
 
-  const exhibitionDate = formatExhibitionDate(startDate, endDate)
-
   const permalink = getPermalink({
     type: PageType.Exhibition,
     slug: exhibition.slug,
@@ -99,88 +117,130 @@ const Exhibition = () => {
 
     return openingDate >= today
   }
-  const curators = curatorString ? `Curated by ${curatorString}` : ""
 
   return (
     <div className="">
+      {/* Mobile view */}
       <div className="pl-3 tablet-lg:px-6 flex space-x-3 tablet-lg:hidden overflow-x-hidden">
         <h3 className="text-sm tablet-lg:text-lg font-medium text-nowrap">
-          <Link href={permalink}>Current Exhibition:</Link>
+          <Link href={permalink}>{exhibitions.length > 1 ? "Current Exhibitions:" : "Current Exhibition:"}</Link>
         </h3>
-        <Link href={permalink} className="block">
-          <div className="relative flex overflow-x-hidden">
-            <div
-              className="whitespace-nowrap text-sm tablet-lg:text-lg font-light"
-              style={{
-                animation: "marquee 15s linear infinite",
-              }}
-            >
-              <span className="px-3 italic">{title}</span>
-              <span className="px-3">{curators}</span>
-              <span className="px-3">{exhibitionDate}</span>
-              {location && <span className="px-1.5">{location}</span>}
-            </div>
+        <div className="flex-1 overflow-hidden">
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{
+              transform: `translateX(-${currentIndex * 100}%)`,
+            }}
+          >
+            {exhibitions.map((ex) => {
+              const exCuratorString = formatCurators(ex.curators)
+              const exCurators = exCuratorString ? `Curated by ${exCuratorString}` : ""
+              const exStartDate = ex.start_date
+              const exEndDate = ex.end_date
+              const exDate = formatExhibitionDate(exStartDate, exEndDate)
+              const exLocation = ex.location
+              const exPermalink = getPermalink({
+                type: PageType.Exhibition,
+                slug: ex.slug,
+              })
 
-            <div
-              className="absolute top-0 whitespace-nowrap text-sm tablet-lg:text-lg font-light"
-              style={{
-                animation: "marquee2 15s linear infinite",
-              }}
-            >
-              <span className="px-3 italic">{title}</span>
-              <span className="px-3">{curators}</span>
-              <span className="px-3">{exhibitionDate}</span>
-              {location && <span className="px-1.5">{location}</span>}
-            </div>
-
-            <style>{`
-              @keyframes marquee {
-                0% { transform: translateX(0%); }
-                100% { transform: translateX(-100%); }
-              }
-              @keyframes marquee2 {
-                0% { transform: translateX(100%); }
-                100% { transform: translateX(0%); }
-              }
-            `}</style>
+              return (
+                <Link
+                  key={ex.id}
+                  href={exPermalink}
+                  className="flex-none w-full whitespace-nowrap text-sm tablet-lg:text-lg font-light"
+                >
+                  <span className="px-3 italic">{ex.title}</span>
+                  <span className="px-3">{exCurators}</span>
+                  <span className="px-3">{exDate}</span>
+                  {exLocation && <span className="px-1.5">{exLocation}</span>}
+                </Link>
+              )
+            })}
           </div>
-        </Link>
+        </div>
       </div>
 
+      {/* Desktop view */}
       <div className="hidden tablet-lg:flex flex-col space-y-3 px-3 tablet-lg:px-6 z-10">
         <div className="flex flex-col space-y-3 h-full">
           <h3 className="w-full text-sm tablet-lg:text-lg font-medium">
-            <Link href={permalink}>Current Exhibition: {kicker}</Link>
+            <Link href={permalink}>
+              {exhibitions.length > 1 ? "Current Exhibitions:" : "Current Exhibition:"} {exhibition.kicker}
+            </Link>
           </h3>
 
-          <div className="flex space-x-6">
-            <div className={`w-full h-full flex flex-col space-y-3`}>
-              <h3 className={`text-xl tablet-lg:text-4xl font-light italic hover:underline`}>
-                <Link href={permalink}>{title}</Link>
-              </h3>
-              {curatorString && <p className="text-sm tablet-lg:text-lg font-normal">Curated by {curatorString}</p>}
-              <div className="text-xs tablet-lg:text-sm font-normal">
-                {exhibitionDate}
-                <br />
-                {location && location}
-              </div>
-              {opening_date && isOpeningDateTodayOrFuture(opening_date) && (
-                <div className="text-xs tablet-lg:text-sm font-normal">{parse(opening_details)}</div>
-              )}
-              <div className="flex flex-wrap gap-x-3 w-full pt-3">
-                <Link
-                  href={`/exhibitions`}
-                  className={`p-1.5 rounded-sm text-center uppercase font-medium text-xs border rail-border`}
-                >
-                  All Exhibitions
-                </Link>
-              </div>
-            </div>
+          <div className="relative overflow-hidden">
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{
+                transform: `translateX(-${currentIndex * 100}%)`,
+              }}
+            >
+              {exhibitions.map((ex) => {
+                const exCuratorString = formatCurators(ex.curators)
+                const exStartDate = ex.start_date
+                const exEndDate = ex.end_date
+                const exDate = formatExhibitionDate(exStartDate, exEndDate)
+                const exLocation = ex.location
+                const exOpeningDate = ex.opening_date
+                const exOpeningDetails = ex.opening_details
+                const exPermalink = getPermalink({
+                  type: PageType.Exhibition,
+                  slug: ex.slug,
+                })
 
-            <div className="w-36 h-24 tablet-lg:w-60 tablet-lg:h-40 flex-shrink-0 overflow-hidden flex items-center justify-center">
-              {exhibition_images && <ExhibitionSlideshow exhibition_images={exhibition_images} />}
+                return (
+                  <div key={ex.id} className="flex space-x-6 flex-none w-full">
+                    <div className={`w-full h-full flex flex-col space-y-3`}>
+                      <h3 className={`text-xl tablet-lg:text-4xl font-light italic hover:underline`}>
+                        <Link href={exPermalink}>{ex.title}</Link>
+                      </h3>
+                      {exCuratorString && (
+                        <p className="text-sm tablet-lg:text-lg font-normal">Curated by {exCuratorString}</p>
+                      )}
+                      <div className="text-xs tablet-lg:text-sm font-normal">
+                        {exDate}
+                        <br />
+                        {exLocation && exLocation}
+                      </div>
+                      {exOpeningDate && isOpeningDateTodayOrFuture(exOpeningDate) && (
+                        <div className="text-xs tablet-lg:text-sm font-normal">{parse(exOpeningDetails)}</div>
+                      )}
+                      <div className="flex flex-wrap gap-x-3 w-full pt-3">
+                        <Link
+                          href={`/exhibitions`}
+                          className={`p-1.5 rounded-sm text-center uppercase font-medium text-xs border rail-border`}
+                        >
+                          All Exhibitions
+                        </Link>
+                      </div>
+                    </div>
+
+                    <div className="w-36 h-24 tablet-lg:w-60 tablet-lg:h-40 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                      {ex.exhibition_images && <ExhibitionSlideshow exhibition_images={ex.exhibition_images} />}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
+
+          {/* Navigation dots - only show when more than one exhibition */}
+          {exhibitions.length > 1 && (
+            <div className="flex justify-center gap-3 pt-3">
+              {exhibitions.map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    index === currentIndex ? "bg-slate-900 dark:bg-slate-50" : "bg-slate-400"
+                  }`}
+                  onClick={() => setCurrentIndex(index)}
+                  aria-label={`Go to exhibition ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
