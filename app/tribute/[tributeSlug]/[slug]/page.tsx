@@ -1,7 +1,7 @@
 import TributePage from "@/components/tributePage"
 import { TributeArticleProps } from "@/lib/railTypes"
 import { PageType, getArticle, getOGImage, getPermalink } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getAllTributes, getTributeData } from "@/lib/utils/tributes"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -64,7 +64,7 @@ async function getData(params: TributeParams): Promise<TributeArticleProps | und
 
     // Parallel fetch of initial data
     const [navData, thisTributeData, articleData] = await Promise.all([
-      getNavData(),
+      getNavDataFromAPI(),
       getTributeData({ tributeSlug, slug }),
       getArticle(slug, "published"),
     ])

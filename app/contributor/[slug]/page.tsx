@@ -3,7 +3,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { getPermalink, PageType } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getContributor } from "@/lib/utils/people"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 import { AddRedirect } from "@/app/actions/redirect"
@@ -69,7 +69,7 @@ export default async function Contributor(props: { params: Promise<ContributorPa
 async function getData({ params }: { params: ContributorParams }) {
   const slug = params.slug
 
-  const navData = await getNavData()
+  const navData = await getNavDataFromAPI()
   if (!navData) {
     return notFound()
   }

@@ -1,7 +1,7 @@
 import Section from "@/components/section"
 import { Sections } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getArticlesBySection, getSectionData, getSections } from "@/lib/utils/sections"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -73,7 +73,7 @@ async function getData(slug: string) {
     const numArticles = slug === "criticspage" ? 50 : 32
     // Parallel fetch of initial data
     const [navData, sectionData, articlesData] = await Promise.all([
-      getNavData(),
+      getNavDataFromAPI(),
       getSectionData({ slug }),
       getArticlesBySection({ slug, limit: numArticles, offset: 0 }),
     ])

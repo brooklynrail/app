@@ -3,7 +3,7 @@ import EventPage from "@/components/event"
 import { EventProps } from "@/lib/railTypes"
 import { getOGImage, getPermalink, PageType, share_card } from "@/lib/utils"
 import { checkYearMonthDay, getEvent, getEventTypes } from "@/lib/utils/events"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -127,7 +127,7 @@ async function getData({ params }: { params: EventParams }): Promise<EventProps>
     return notFound()
   }
 
-  const navData = await getNavData()
+  const navData = await getNavDataFromAPI()
   if (!navData) {
     return notFound()
   }

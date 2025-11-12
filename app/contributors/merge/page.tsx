@@ -1,7 +1,7 @@
 import ProtectedContributorsMerge from "@/components/contributors/merge"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getPreviewPassword } from "@/lib/utils/preview"
 import { MergePageProps } from "@/lib/railTypes"
 
@@ -27,7 +27,7 @@ export default async function ContributorsMergePage() {
 }
 
 async function getData(): Promise<MergePageProps> {
-  const [navData, previewPassword] = await Promise.all([getNavData(), getPreviewPassword()])
+  const [navData, previewPassword] = await Promise.all([getNavDataFromAPI(), getPreviewPassword()])
 
   if (!navData || !previewPassword) {
     return notFound()

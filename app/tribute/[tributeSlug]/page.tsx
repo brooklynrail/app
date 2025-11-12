@@ -1,7 +1,7 @@
 import TributePage from "@/components/tributePage"
 import { TributePageProps } from "@/lib/railTypes"
 import { PageType, getOGImage, getPermalink } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getAllTributes, getTributeData } from "@/lib/utils/tributes"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -62,7 +62,7 @@ async function getData(params: TributeParams): Promise<TributePageProps | undefi
     const { tributeSlug } = params
 
     // Parallel fetch of initial data
-    const [navData, thisTributeData] = await Promise.all([getNavData(), getTributeData({ tributeSlug, slug: "" })])
+    const [navData, thisTributeData] = await Promise.all([getNavDataFromAPI(), getTributeData({ tributeSlug, slug: "" })])
 
     if (!navData || !thisTributeData) {
       return undefined

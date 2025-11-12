@@ -1,7 +1,7 @@
 import ExhibitionPreview from "@/components/preview/exhibition"
 import { ExhibitionPreviewProps } from "@/lib/railTypes"
 import { PageType, getPermalink } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getPreviewExhibition, getPreviewPassword } from "@/lib/utils/preview"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -77,7 +77,7 @@ async function getData(params: PreviewParams): Promise<ExhibitionPreviewProps | 
 
     // Parallel fetch of initial data
     const [navData, exhibitionData, previewPassword] = await Promise.all([
-      getNavData(),
+      getNavDataFromAPI(),
       getPreviewExhibition(id),
       getPreviewPassword(),
     ])

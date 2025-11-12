@@ -2,7 +2,7 @@ import ExhibitionPage from "@/components/exhibition"
 import { ExhibitionProps } from "@/lib/railTypes"
 import { getOGImage, getPermalink, PageType } from "@/lib/utils"
 import { getAllExhibitions, getExhibition } from "@/lib/utils/exhibitions"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { stripHtml } from "string-strip-html"
@@ -67,7 +67,7 @@ async function getData(params: ExhibitionParams): Promise<ExhibitionProps | unde
   try {
     const slug = params.slug.toString()
 
-    const [navData, exhibitionData] = await Promise.all([getNavData(), getExhibition(slug)])
+    const [navData, exhibitionData] = await Promise.all([getNavDataFromAPI(), getExhibition(slug)])
 
     if (!navData || !exhibitionData) {
       return undefined

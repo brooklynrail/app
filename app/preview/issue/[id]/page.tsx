@@ -1,7 +1,7 @@
 import IssuePreview from "@/components/preview/issue"
 import { IssuePreviewProps } from "@/lib/railTypes"
 import { PageType, getAllIssues, getPermalink } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getPreviewIssue, getPreviewPassword } from "@/lib/utils/preview"
 import { getTributes } from "@/lib/utils/tributes"
 import { Metadata } from "next"
@@ -75,7 +75,7 @@ async function getData(params: PreviewParams): Promise<IssuePreviewProps | undef
 
     // Parallel fetch of initial data
     const [navData, thisIssueData, allIssues, previewPassword] = await Promise.all([
-      getNavData(),
+      getNavDataFromAPI(),
       getPreviewIssue(id),
       getAllIssues(),
       getPreviewPassword(),

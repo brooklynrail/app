@@ -2,7 +2,8 @@ import HomepagePreview from "@/components/preview/homepage"
 import { HomepagePreviewProps } from "@/lib/railTypes"
 import { PageType, getPermalink } from "@/lib/utils"
 import { getEventsBreakDetails } from "@/lib/utils/events"
-import { getCurrentIssueData, getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
+import { getCurrentIssueData, getHomepageHeaderData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getPreviewHomepageData, getPreviewPassword } from "@/lib/utils/preview"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -52,7 +53,7 @@ async function getData(): Promise<HomepagePreviewProps | undefined> {
     // Parallel fetch of initial data
     const [currentIssue, navData, previewPassword] = await Promise.all([
       getCurrentIssueData(),
-      getNavData(),
+      getNavDataFromAPI(),
       getPreviewPassword(),
     ])
 

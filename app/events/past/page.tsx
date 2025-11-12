@@ -1,7 +1,7 @@
 import PastEventsPage from "@/components/events/past"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getEventTypes, getPastEvents } from "@/lib/utils/events"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { notFound } from "next/navigation"
 import { Metadata } from "next/types"
 
@@ -43,7 +43,7 @@ export default async function EventsController() {
 }
 
 async function getData() {
-  const navData = await getNavData()
+  const navData = await getNavDataFromAPI()
   if (!navData) {
     return notFound()
   }

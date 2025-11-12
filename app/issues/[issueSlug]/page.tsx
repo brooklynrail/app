@@ -4,7 +4,7 @@ import { IssuePageProps } from "@/lib/railTypes"
 import { PageType, getAllIssues, getIssueData, getOGImage, getPermalink } from "@/lib/utils"
 import { getTributes } from "@/lib/utils/tributes"
 import { getRedirect } from "@/lib/utils/redirects"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { RedirectTypes } from "@/lib/utils/redirects"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -75,7 +75,7 @@ async function getData(params: IssueParams): Promise<IssuePageProps | undefined>
 
     // Parallel fetch of initial data
     const [navData, thisIssueData, allIssues] = await Promise.all([
-      getNavData(),
+      getNavDataFromAPI(),
       getIssueData({ slug: issueSlug }),
       getAllIssues(),
     ])

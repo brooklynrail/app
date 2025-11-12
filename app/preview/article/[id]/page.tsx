@@ -1,7 +1,7 @@
 import ArticlePreview from "@/components/preview/article"
 import { ArticlePreviewProps } from "@/lib/railTypes"
 import { PageType, getOGImage, getPermalink } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getPreviewArticle, getPreviewPassword } from "@/lib/utils/preview"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -84,7 +84,7 @@ async function getData(params: PreviewParams): Promise<ArticlePreviewProps | und
 
     // Parallel fetch of initial data
     const [navData, articleData, previewPassword] = await Promise.all([
-      getNavData(),
+      getNavDataFromAPI(),
       getPreviewArticle(id),
       getPreviewPassword(),
     ])

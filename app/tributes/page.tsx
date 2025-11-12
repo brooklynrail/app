@@ -54,7 +54,7 @@ async function getData(): Promise<TributesPageProps | undefined> {
   try {
     // Parallel fetch of initial data
     const [navData, tributesData, inMemoriamData, inMemoriamArticles] = await Promise.all([
-      getNavData(),
+      getNavDataFromAPI(),
       getAllTributes(),
       getSectionData({ slug: "in-memoriam" }),
       getInMemoriamArticles({ slug: "in-memoriam", limit: 32, offset: 0 }),

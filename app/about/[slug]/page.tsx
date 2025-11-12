@@ -1,7 +1,7 @@
 import Page from "@/components/page"
 import { AboutPageProps } from "@/lib/railTypes"
 import { getPermalink, PageType } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getAllPages, getPageData } from "@/lib/utils/pages"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -58,7 +58,7 @@ export default async function ChildPage(props: { params: Promise<PageParams> }) 
 async function getData({ params }: { params: PageParams }): Promise<AboutPageProps> {
   const { slug } = params
 
-  const navData = await getNavData()
+  const navData = await getNavDataFromAPI()
   if (!navData) {
     return notFound()
   }

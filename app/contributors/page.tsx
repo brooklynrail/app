@@ -41,7 +41,7 @@ export default async function ContributorsController() {
 }
 
 async function getData(): Promise<ContributorsPageProps> {
-  const [navData, allContributors] = await Promise.all([getNavData(), getAllContributors()])
+  const [navData, allContributors] = await Promise.all([getNavDataFromAPI(), getAllContributors()])
 
   if (!navData || !allContributors) {
     return notFound()
