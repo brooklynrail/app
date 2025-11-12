@@ -2,7 +2,8 @@ import HomePage from "@/components/homepage"
 import AppLoader from "@/components/appLoader"
 import { Homepage, Issues } from "@/lib/types"
 import { getPermalink, PageType } from "@/lib/utils"
-import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData, getNavData } from "@/lib/utils/homepage"
+import { getCurrentIssueData, getHomepageCollectionData, getHomepageHeaderData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { getEventsBreakDetails } from "@/lib/utils/events"
@@ -35,9 +36,9 @@ async function getData(): Promise<HomePageProps> {
       throw new Error("Failed to fetch eventsBreakDetails data")
     }
 
-    const navData = await getNavData()
+    const navData = await getNavDataFromAPI()
     if (!navData) {
-      console.error("Failed to fetch navData")
+      console.error("Failed to fetch navData from API")
       throw new Error("Failed to fetch navData")
     }
 

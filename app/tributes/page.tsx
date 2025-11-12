@@ -1,7 +1,7 @@
 import TributesPage from "@/components/tributes"
 import { TributesPageProps } from "@/lib/railTypes"
 import { PageType, getPermalink, share_card } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getSectionData } from "@/lib/utils/sections"
 import { getAllTributes, getInMemoriamArticles } from "@/lib/utils/tributes"
 import { Metadata } from "next"

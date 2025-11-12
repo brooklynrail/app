@@ -1,7 +1,7 @@
 import ArchivePage from "@/components/archive"
 import { ArchivePageProps } from "@/lib/railTypes"
 import { getAllIssues, getPermalink, PageType } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
@@ -44,7 +44,7 @@ export default async function Archive() {
 }
 
 async function getData(): Promise<ArchivePageProps> {
-  const navData = await getNavData()
+  const navData = await getNavDataFromAPI()
   if (!navData) {
     return notFound()
   }

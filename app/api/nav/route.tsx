@@ -1,27 +1,42 @@
 import { getNavData } from "@/lib/utils/homepage"
 
+export const dynamic = "force-dynamic"
+export const revalidate = 31536000 // 1 year
+
 export async function GET() {
   try {
-    try {
-      const navData = await getNavData()
-      if (!navData) {
-        return Response.json({ error: "Navigation data not found" }, { status: 404 })
-      }
-      const cleanedData = JSON.parse(JSON.stringify(navData))
-      return Response.json(cleanedData, {
-        headers: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          "Content-Type": "application/json",
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          "Cache-Control": "s-maxage=604800, stale-while-revalidate=86400",
+    // This awaits the Directus call - even if it's slow, it completes
+    const navData = await getNavData()
+
+    if (!navData) {
+      return Response.json(
+        {
+          error: "Navigation data not found",
+          details: "Unable to fetch navigation data from Directus",
         },
-      })
-    } catch (error) {
-      console.error("Error fetching Nav data:", error)
-      return Response.json({ error: "Navigation data not found" }, { status: 404 })
+        { status: 404 },
+      )
     }
+
+    return Response.json(navData, {
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Cache-Control": "public, s-maxage=31536000, stale-while-revalidate=86400",
+      },
+    })
   } catch (error) {
-    console.error("Error fetching navigation data:", error)
-    return Response.json({ error: "Failed to fetch navigation data" }, { status: 500 })
+    console.error("❌ Error in nav API:", {
+      error: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+    })
+
+    return Response.json(
+      {
+        error: "Failed to fetch navigation data",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    )
   }
 }

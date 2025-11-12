@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { getAllIssues, getPermalink, PageType } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { SearchProps } from "@/lib/railTypes"
 import SearchPage from "@/components/search"
 
@@ -15,7 +15,7 @@ export default async function SearchController() {
 }
 
 async function getData(): Promise<SearchProps> {
-  const navData = await getNavData()
+  const navData = await getNavDataFromAPI()
   if (!navData) {
     return notFound()
   }

@@ -9,6 +9,7 @@ interface NotFoundProps {
 }
 
 const NotFound = (props: NotFoundProps) => {
+  // Paper wrapper is essential for the whole site
   return (
     <Paper pageClass="paper-404" navData={props.navData}>
       <main className="">

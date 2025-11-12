@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { getPermalink, PageType } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getAllPages, getPageData } from "@/lib/utils/pages"
 import Page from "@/components/page"
 import { Metadata } from "next"
@@ -53,7 +53,7 @@ export default async function AboutPage() {
 }
 
 async function getData(): Promise<AboutPageProps> {
-  const navData = await getNavData()
+  const navData = await getNavDataFromAPI()
   if (!navData) {
     return notFound()
   }

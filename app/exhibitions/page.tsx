@@ -1,7 +1,7 @@
 import ExhibitionsPage from "@/components/exhibitions"
 import { getPermalink, PageType } from "@/lib/utils"
 import { getAllExhibitions } from "@/lib/utils/exhibitions"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
@@ -42,7 +42,7 @@ export default async function ExhibitionsController() {
 }
 
 async function getData() {
-  const navData = await getNavData()
+  const navData = await getNavDataFromAPI()
   if (!navData) {
     return notFound()
   }

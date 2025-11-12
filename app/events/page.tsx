@@ -2,7 +2,7 @@ import { getPermalink, PageType } from "@/lib/utils"
 import { getEventsBreakDetails, getEventTypes, getPastEvents, getUpcomingEvents } from "@/lib/utils/events"
 import EventsPage from "@/components/events"
 import { Metadata } from "next"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { EventsProps } from "@/lib/railTypes"
 
 export const revalidate = 2592000 // 30 days
@@ -58,7 +58,7 @@ export default async function EventsController() {
 async function getData(): Promise<EventsProps | undefined> {
   try {
     // Fetch each data source individually to identify which one fails
-    const navData = await getNavData()
+    const navData = await getNavDataFromAPI()
 
     const allEvents = await getUpcomingEvents()
 

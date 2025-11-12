@@ -215,6 +215,13 @@ const Refresh = () => {
           >
             {isLoading ? "Revalidating..." : "Revalidate Articles"}
           </button>
+          <button
+            onClick={() => handleRevalidate(RevalidateType.Navigation)}
+            disabled={isLoading}
+            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? "Revalidating..." : "Revalidate Navigation"}
+          </button>
         </div>
       </div>
     </div>

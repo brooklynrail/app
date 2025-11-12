@@ -5,7 +5,7 @@ import { Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 import { stripHtml } from "string-strip-html"
 import { getArticle, getIssueData, getOGImage, getPermalink, PageType } from "@/lib/utils"
-import { getNavData } from "@/lib/utils/homepage"
+import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 import { Suspense } from "react"
 import AppLoader from "@/components/appLoader"
@@ -81,12 +81,12 @@ async function getData({ params }: { params: ArticleParams }) {
     return notFound()
   }
 
-  const navData = await getNavData()
+  const navData = await getNavDataFromAPI()
   if (!navData) {
     console.error(
-      `[404] Navigation data not found for article: year=${year}, month=${month}, section=${section}, slug=${slug}`,
+      `[DATA FETCH FAILED] Navigation data unavailable for article: year=${year}, month=${month}, section=${section}, slug=${slug}`,
     )
-    return notFound()
+    throw new Error("Failed to fetch navigation data")
   }
 
   // Get the article data based on slug
