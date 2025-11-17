@@ -1,10 +1,8 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { usePopup } from "@/components/popupProvider"
 import PopupFrameBottom from "../bottom"
 
 const PopupDonate = () => {
-  const { showPopup, popupType, setShowPopup } = usePopup()
 
   const [donateAmt, setDonateAmt] = useState<number | null>(null) // State to hold fetched donation data
   const [donateCount, setDonateCount] = useState<number | null>(null) // State to hold fetched donation data
@@ -27,25 +25,19 @@ const PopupDonate = () => {
       }
     }
 
-    if (showPopup && popupType === "donate") {
-      void fetchDonateData()
-    }
-  }, [showPopup, popupType]) // Dependencies: re-fetch data if showPopup or popupType changes
+    void fetchDonateData()
+  }, []) // Fetch on mount
 
   // Calculate the progress based on fetched data
   const targetAmount = 200000 // Set your fundraising goal
   const currentAmount = donateAmt || null
   const progressPercent = currentAmount && (currentAmount / targetAmount) * 100
 
-  if (!showPopup || popupType !== "donate") {
-    return null
-  }
-
   return (
     <PopupFrameBottom>
       <div className="space-y-3 tablet:space-y-6">
         <h2 className="text-4xl tablet-lg:text-6xl text-center font-light uppercase text-zinc-800 dark:text-slate-100">
-          Celebrating 24 Years
+          Celebrating 25 Years
         </h2>
         <div className="space-y-3">
           <p className="hidden uppercase text-md tablet-lg:text-2xl text-center text-zinc-800 dark:text-slate-100">

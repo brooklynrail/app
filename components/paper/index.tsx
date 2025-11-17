@@ -3,7 +3,7 @@ import { AdVisibilityProvider } from "@/app/hooks/adVisibilityContext"
 import { MenuProvider } from "@/app/hooks/useMenu"
 import { Homepage, Issues } from "@/lib/types"
 import { usePathname } from "next/navigation"
-import { CSSProperties } from "react"
+import { CSSProperties, useEffect, useState } from "react"
 import AdFixedBanner from "../ads/adFixedBanner"
 import Banners from "../banner"
 import Footer from "../footer"
@@ -13,6 +13,7 @@ import NavBar from "../navBar"
 import PreviewHeader from "../preview/previewHead"
 import ScreenIndicator from "../screenIndicator"
 import PopupNewsletter from "../popups/newsletter"
+import PopupDonate from "../popups/donate"
 import { EventsBreakDetails } from "@/lib/railTypes"
 
 export interface PaperProps {
@@ -55,6 +56,26 @@ const Paper = (props: PaperProps) => {
   } = props
   const pathname = usePathname()
   const isHomepage = pathname === "/"
+  const [activePopup, setActivePopup] = useState<"none" | "newsletter" | "donate">("none")
+
+  useEffect(() => {
+    // Fetch popup settings on mount
+    const fetchPopupSettings = async () => {
+      try {
+        const response = await fetch("/api/settings")
+        if (response.ok) {
+          const data = await response.json()
+          setActivePopup(data.activePopup || "none")
+        }
+      } catch (error) {
+        console.error("Failed to fetch popup settings:", error)
+      }
+    }
+
+    if (!previewURL && type === PaperType.Article) {
+      void fetchPopupSettings()
+    }
+  }, [previewURL, type])
 
   return (
     <AdVisibilityProvider>
@@ -107,8 +128,8 @@ const Paper = (props: PaperProps) => {
           <ScreenIndicator />
         </div>
         <Menu collections={navData.collections} eventsBreakDetails={eventsBreakDetails} />
-        {/* {!previewURL && <PopupDonate />} */}
-        {!previewURL && type == PaperType.Article && <PopupNewsletter />}
+        {!previewURL && type == PaperType.Article && activePopup === "newsletter" && <PopupNewsletter />}
+        {!previewURL && type == PaperType.Article && activePopup === "donate" && <PopupDonate />}
       </MenuProvider>
     </AdVisibilityProvider>
   )
