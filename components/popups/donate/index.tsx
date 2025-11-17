@@ -13,7 +13,7 @@ const PopupDonate = () => {
   useEffect(() => {
     const fetchDonateData = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/airtable/`)
+        const response = await fetch("/api/airtable/")
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`)
         }
