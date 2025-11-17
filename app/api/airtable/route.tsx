@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Missing required environment variables" }, { status: 400 })
   }
 
-  const url = `https://api.airtable.com/v0/${baseID}/${tableName}?view=2024`
+  const url = `https://api.airtable.com/v0/${baseID}/${tableName}?view=2025`
 
   try {
     const response = await fetch(url, {
