@@ -1,23 +1,26 @@
 import { getGlobalSettings } from "@/lib/utils"
+import { unstable_cache } from "next/cache"
 
 export const dynamic = "force-dynamic"
-export const revalidate = 3600 // 1 hour
+
+const getCachedSettings = unstable_cache(
+  async () => {
+    const settings = await getGlobalSettings()
+    return settings?.active_popup || "none"
+  },
+  ["settings-api"],
+  {
+    revalidate: 3600,
+    tags: ["settings"],
+  },
+)
 
 export async function GET() {
   try {
-    const settings = await getGlobalSettings()
-
-    if (!settings) {
-      return Response.json(
-        { error: "Settings not found" },
-        { status: 404 },
-      )
-    }
+    const activePopup = await getCachedSettings()
 
     return Response.json(
-      {
-        activePopup: settings.active_popup || "none",
-      },
+      { activePopup },
       {
         headers: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
