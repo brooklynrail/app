@@ -62,7 +62,9 @@ const Paper = (props: PaperProps) => {
     // Fetch popup settings on mount
     const fetchPopupSettings = async () => {
       try {
-        const response = await fetch("/api/settings")
+        const response = await fetch("/api/settings", {
+          cache: "no-store", // Don't cache in browser
+        })
         if (response.ok) {
           const data = await response.json()
           setActivePopup(data.activePopup || "none")

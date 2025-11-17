@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic"
+export const revalidate = 0 // Don't cache at route level
 
 export async function GET() {
   try {
@@ -7,7 +8,7 @@ export async function GET() {
     
     const res = await fetch(globalSettingsAPI, { 
       next: { 
-        revalidate: 3600, // 1 hour
+        revalidate: 60, // 1 minute cache
         tags: ["settings"] 
       } 
     })
@@ -28,7 +29,7 @@ export async function GET() {
       {
         headers: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
-          "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=600",
+          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=30, must-revalidate",
         },
       },
     )
