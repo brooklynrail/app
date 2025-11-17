@@ -191,7 +191,7 @@ export const getGlobalNavTribute = unstable_cache(
 
 export const getGlobalSettings = async () => {
   const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=current_issue.month&fields[]=current_issue.year&fields[]=current_issue.special_issue&fields[]=current_issue.slug&fields[]=preview_password&fields[]=active_popup`
-  const res = await fetch(globalSettingsAPI, { next: { revalidate: 86400, tags: ["homepage"] } })
+  const res = await fetch(globalSettingsAPI, { next: { revalidate: 86400, tags: ["homepage", "settings"] } })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch getGlobalSettings data")
