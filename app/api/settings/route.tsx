@@ -18,15 +18,8 @@ export async function GET() {
       )
     }
 
-    return Response.json(
-      { activePopup },
-      {
-        headers: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          "Cache-Control": "public, s-maxage=31536000, stale-while-revalidate=86400",
-        },
-      },
-    )
+    // No Cache-Control header - rely only on Next.js data cache with tag revalidation
+    return Response.json({ activePopup })
   } catch (error) {
     console.error("❌ Error in settings API:", {
       error: error instanceof Error ? error.message : "Unknown error",
