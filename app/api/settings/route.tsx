@@ -1,23 +1,27 @@
-import { getGlobalSettings } from "@/lib/utils"
-import { unstable_cache } from "next/cache"
-
 export const dynamic = "force-dynamic"
-
-const getCachedSettings = unstable_cache(
-  async () => {
-    const settings = await getGlobalSettings()
-    return settings?.active_popup || "none"
-  },
-  ["settings-api"],
-  {
-    revalidate: 3600,
-    tags: ["settings"],
-  },
-)
 
 export async function GET() {
   try {
-    const activePopup = await getCachedSettings()
+    // Fetch directly from Directus to avoid double caching
+    const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=active_popup`
+    
+    const res = await fetch(globalSettingsAPI, { 
+      next: { 
+        revalidate: 3600, // 1 hour
+        tags: ["settings"] 
+      } 
+    })
+    
+    if (!res.ok) {
+      console.error("❌ Settings API: Failed to fetch from Directus")
+      return Response.json(
+        { error: "Failed to fetch settings" },
+        { status: 500 },
+      )
+    }
+
+    const { data } = await res.json()
+    const activePopup = data?.active_popup || "none"
 
     return Response.json(
       { activePopup },
