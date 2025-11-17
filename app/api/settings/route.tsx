@@ -1,42 +1,45 @@
-import { unstable_cache } from "next/cache"
+import { getActivePopupSetting } from "@/lib/utils"
 
-const getCachedSettings = unstable_cache(
-  async () => {
-    const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=active_popup`
-
-    const res = await fetch(globalSettingsAPI, {
-      cache: "no-store", // Don't cache the fetch itself, let unstable_cache handle it
-    })
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch from Directus")
-    }
-
-    const { data } = await res.json()
-    return data?.active_popup || "none"
-  },
-  ["active-popup-setting"], // Cache key
-  {
-    revalidate: false, // Never auto-revalidate
-    tags: ["settings"], // Only revalidate when tag is cleared
-  },
-)
+export const dynamic = "force-dynamic"
+export const revalidate = 31536000 // 1 year
 
 export async function GET() {
   try {
-    const activePopup = await getCachedSettings()
+    // This awaits the Directus call - even if it's slow, it completes
+    const activePopup = await getActivePopupSetting()
+
+    if (!activePopup) {
+      return Response.json(
+        {
+          error: "Settings not found",
+          details: "Unable to fetch settings from Directus",
+        },
+        { status: 404 },
+      )
+    }
 
     return Response.json(
       { activePopup },
       {
         headers: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
-          "Cache-Control": "public, s-maxage=31536000, immutable", // Cache for 1 year at CDN
+          "Cache-Control": "public, s-maxage=31536000, stale-while-revalidate=86400",
         },
       },
     )
   } catch (error) {
-    console.error("❌ Error in settings API:", error)
-    return Response.json({ error: "Failed to fetch settings" }, { status: 500 })
+    console.error("❌ Error in settings API:", {
+      error: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+    })
+
+    return Response.json(
+      {
+        error: "Failed to fetch settings",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    )
   }
 }

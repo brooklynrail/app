@@ -200,6 +200,28 @@ export const getGlobalSettings = async () => {
   return data as GlobalSettings
 }
 
+export const getActivePopupSetting = unstable_cache(
+  async (): Promise<"none" | "newsletter" | "donate"> => {
+    try {
+      const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=active_popup`
+      const res = await fetch(globalSettingsAPI, { cache: "no-store" })
+      
+      if (!res.ok) {
+        console.error("Failed to fetch active popup setting from Directus")
+        return "none"
+      }
+
+      const { data } = await res.json()
+      return data?.active_popup || "none"
+    } catch (error) {
+      console.error("Error fetching active popup setting:", error)
+      return "none"
+    }
+  },
+  ["active-popup-setting"],
+  { revalidate: 31536000, tags: ["settings"] }, // 1 year cache, revalidate via tag
+)
+
 // Explore making this get IssueData by ID
 // NOTE: we need to use `readItems` instead of `readItem` because we are querying the `issues` collection
 // instead of a single issue by ID
