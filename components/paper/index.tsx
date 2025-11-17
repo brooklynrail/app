@@ -74,7 +74,14 @@ const Paper = (props: PaperProps) => {
       }
     }
 
-    if (!previewURL && type === PaperType.Article) {
+    // Show popups on: Articles, Events, Contributors (People), and Exhibition pages (Default)
+    const showPopupOnPageType =
+      type === PaperType.Article ||
+      type === PaperType.Events ||
+      type === PaperType.People ||
+      type === PaperType.Default
+
+    if (!previewURL && showPopupOnPageType) {
       void fetchPopupSettings()
     }
   }, [previewURL, type])
@@ -130,8 +137,18 @@ const Paper = (props: PaperProps) => {
           <ScreenIndicator />
         </div>
         <Menu collections={navData.collections} eventsBreakDetails={eventsBreakDetails} />
-        {!previewURL && type == PaperType.Article && activePopup === "newsletter" && <PopupNewsletter />}
-        {!previewURL && type == PaperType.Article && activePopup === "donate" && <PopupDonate />}
+        {!previewURL &&
+          (type === PaperType.Article ||
+            type === PaperType.Events ||
+            type === PaperType.People ||
+            type === PaperType.Default) &&
+          activePopup === "newsletter" && <PopupNewsletter />}
+        {!previewURL &&
+          (type === PaperType.Article ||
+            type === PaperType.Events ||
+            type === PaperType.People ||
+            type === PaperType.Default) &&
+          activePopup === "donate" && <PopupDonate />}
       </MenuProvider>
     </AdVisibilityProvider>
   )

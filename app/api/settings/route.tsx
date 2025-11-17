@@ -1,27 +1,40 @@
-export const dynamic = "force-dynamic"
+import { unstable_cache } from "next/cache"
 
-export async function GET() {
-  try {
-    // Fetch directly from Directus with indefinite cache until manually revalidated
+const getCachedSettings = unstable_cache(
+  async () => {
     const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=active_popup`
-
-    const res = await fetch(globalSettingsAPI, {
-      next: {
-        revalidate: false, // Cache indefinitely
-        tags: ["settings"], // Revalidate via tag only
-      },
+    
+    const res = await fetch(globalSettingsAPI, { 
+      cache: "no-store" // Don't cache the fetch itself, let unstable_cache handle it
     })
 
     if (!res.ok) {
-      console.error("❌ Settings API: Failed to fetch from Directus")
-      return Response.json({ error: "Failed to fetch settings" }, { status: 500 })
+      throw new Error("Failed to fetch from Directus")
     }
 
     const { data } = await res.json()
-    const activePopup = data?.active_popup || "none"
+    return data?.active_popup || "none"
+  },
+  ["active-popup-setting"], // Cache key
+  {
+    revalidate: false, // Never auto-revalidate
+    tags: ["settings"], // Only revalidate when tag is cleared
+  },
+)
 
-    // Return without CDN caching - let Next.js data cache handle it
-    return Response.json({ activePopup })
+export async function GET() {
+  try {
+    const activePopup = await getCachedSettings()
+
+    return Response.json(
+      { activePopup },
+      {
+        headers: {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          "Cache-Control": "public, s-maxage=31536000, immutable", // Cache for 1 year at CDN
+        },
+      },
+    )
   } catch (error) {
     console.error("❌ Error in settings API:", error)
     return Response.json({ error: "Failed to fetch settings" }, { status: 500 })
