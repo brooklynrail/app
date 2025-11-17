@@ -16,6 +16,7 @@ export enum RevalidateType {
   Pages = "pages",
   GlobalSettings = "global_settings",
   Navigation = "navigation",
+  Settings = "settings",
 }
 
 async function revalidatePages(paths: string[]) {

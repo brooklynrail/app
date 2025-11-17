@@ -657,6 +657,7 @@ export type GlobalSettings = {
   events_break_end: string | null
   events_on_break: boolean
   events_break_text: string | null
+  active_popup?: "none" | "newsletter" | "donate"
 }
 
 export type GlobalSettingsNavigation = {
