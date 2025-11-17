@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import PopupFrameBottom from "../bottom"
 
 const PopupDonate = () => {
-
+  const [isOpen, setIsOpen] = useState(true) // State to track if popup is open
   const [donateAmt, setDonateAmt] = useState<number | null>(null) // State to hold fetched donation data
   const [donateCount, setDonateCount] = useState<number | null>(null) // State to hold fetched donation data
   const [email, setEmail] = useState("") // State to capture email
@@ -33,8 +33,12 @@ const PopupDonate = () => {
   const currentAmount = donateAmt || null
   const progressPercent = currentAmount && (currentAmount / targetAmount) * 100
 
+  if (!isOpen) {
+    return null
+  }
+
   return (
-    <PopupFrameBottom>
+    <PopupFrameBottom onClose={() => setIsOpen(false)}>
       <div className="space-y-3 tablet:space-y-6">
         <h2 className="text-4xl tablet-lg:text-6xl text-center font-light uppercase text-zinc-800 dark:text-slate-100">
           Celebrating 25 Years

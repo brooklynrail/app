@@ -1,19 +1,11 @@
-import { usePopup } from "@/components/popupProvider"
-
 interface PopupFrameCenterProps {
   children: React.ReactNode
-  onClose?: () => void
+  onClose: () => void
 }
 
 const PopupFrameCenter = ({ children, onClose }: PopupFrameCenterProps) => {
-  const { setShowPopup } = usePopup()
-
   const handleClose = () => {
-    if (onClose) {
-      onClose()
-    } else {
-      setShowPopup(false)
-    }
+    onClose()
   }
 
   return (

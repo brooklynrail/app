@@ -76,10 +76,7 @@ const Paper = (props: PaperProps) => {
 
     // Show popups on: Articles, Events, Contributors (People), and Exhibition pages (Default)
     const showPopupOnPageType =
-      type === PaperType.Article ||
-      type === PaperType.Events ||
-      type === PaperType.People ||
-      type === PaperType.Default
+      type === PaperType.Article || type === PaperType.Events || type === PaperType.People || type === PaperType.Default
 
     if (!previewURL && showPopupOnPageType) {
       void fetchPopupSettings()

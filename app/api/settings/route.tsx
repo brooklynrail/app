@@ -3,9 +3,9 @@ import { unstable_cache } from "next/cache"
 const getCachedSettings = unstable_cache(
   async () => {
     const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=active_popup`
-    
-    const res = await fetch(globalSettingsAPI, { 
-      cache: "no-store" // Don't cache the fetch itself, let unstable_cache handle it
+
+    const res = await fetch(globalSettingsAPI, {
+      cache: "no-store", // Don't cache the fetch itself, let unstable_cache handle it
     })
 
     if (!res.ok) {
