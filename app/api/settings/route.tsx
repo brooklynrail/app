@@ -1,44 +1,29 @@
 export const dynamic = "force-dynamic"
-export const revalidate = 0 // Don't cache at route level
 
 export async function GET() {
   try {
-    // Fetch directly from Directus to avoid double caching
+    // Fetch directly from Directus with indefinite cache until manually revalidated
     const globalSettingsAPI = `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/global_settings?fields[]=active_popup`
-    
-    const res = await fetch(globalSettingsAPI, { 
-      next: { 
-        revalidate: 60, // 1 minute cache
-        tags: ["settings"] 
-      } 
+
+    const res = await fetch(globalSettingsAPI, {
+      next: {
+        revalidate: false, // Cache indefinitely
+        tags: ["settings"], // Revalidate via tag only
+      },
     })
-    
+
     if (!res.ok) {
       console.error("❌ Settings API: Failed to fetch from Directus")
-      return Response.json(
-        { error: "Failed to fetch settings" },
-        { status: 500 },
-      )
+      return Response.json({ error: "Failed to fetch settings" }, { status: 500 })
     }
 
     const { data } = await res.json()
     const activePopup = data?.active_popup || "none"
 
-    return Response.json(
-      { activePopup },
-      {
-        headers: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=30, must-revalidate",
-        },
-      },
-    )
+    // Return without CDN caching - let Next.js data cache handle it
+    return Response.json({ activePopup })
   } catch (error) {
     console.error("❌ Error in settings API:", error)
-    return Response.json(
-      { error: "Failed to fetch settings" },
-      { status: 500 },
-    )
+    return Response.json({ error: "Failed to fetch settings" }, { status: 500 })
   }
 }
-
