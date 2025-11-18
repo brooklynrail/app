@@ -192,22 +192,6 @@ const Refresh = () => {
         </Link>
       </div>
 
-      {/* Rebuild Site Button */}
-      <div className="flex flex-col space-y-3 p-6 bg-red-900/20 border border-red-500/30 rounded">
-        <h2 className="text-lg font-normal text-white">⚠️ Rebuild Entire Site</h2>
-        <p className="text-sm text-gray-300">
-          This will trigger a complete rebuild and deployment on Vercel. Use this when caches are stale or after a
-          service outage.
-        </p>
-        <button
-          onClick={handleRebuildSite}
-          disabled={isLoading}
-          className="p-4 bg-red-600 hover:bg-red-700 active:bg-red-800 focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white font-medium rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full tablet-lg:w-auto"
-        >
-          {isLoading ? "Processing..." : "🚀 Rebuild Site"}
-        </button>
-      </div>
-
       <div className="flex flex-col space-y-3">
         <h2 className="text-lg font-normal text-white">Revalidate a single path</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -306,6 +290,21 @@ const Refresh = () => {
             {isLoading ? "Revalidating..." : "Revalidate Events"}
           </button>
         </div>
+      </div>
+      {/* Rebuild Site Button */}
+      <div className="flex flex-col space-y-3 w-2/3">
+        <h2 className="text-lg font-normal text-white">Rebuild Entire Site</h2>
+        <p className="text-sm text-gray-300">
+          This will trigger a complete rebuild and deployment on Vercel. Use this when caches are stale or after a
+          service outage.
+        </p>
+        <button
+          onClick={handleRebuildSite}
+          disabled={isLoading}
+          className="p-4 bg-red-600 hover:bg-red-700 active:bg-red-800 focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white font-medium rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full tablet-lg:w-auto"
+        >
+          {isLoading ? "Processing..." : "🚀 Rebuild Site"}
+        </button>
       </div>
     </div>
   )
