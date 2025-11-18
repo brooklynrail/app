@@ -129,6 +129,58 @@ const Refresh = () => {
     }
   }
 
+  const handleRebuildSite = async () => {
+    if (isLoading) {
+      return
+    }
+
+    const confirmed = window.confirm(
+      "Are you sure you want to rebuild the entire site? This will trigger a new deployment on Vercel and may take several minutes.",
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    setIsLoading(true)
+    setMessage("🚀 Triggering site rebuild... This may take a few minutes.")
+
+    try {
+      const rebuildAPIUrl = `/api/refresh/rebuild?secret=${process.env.NEXT_PUBLIC_REVALIDATION_SECRET}`
+
+      const response = await fetch(rebuildAPIUrl, {
+        cache: "no-store",
+        method: "GET",
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setMessage(
+          <p className="text-green-400">
+            ✅ Site rebuild triggered successfully! Check{" "}
+            <a
+              href="https://vercel.com/dashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-blue-400"
+            >
+              Vercel Dashboard
+            </a>{" "}
+            for deployment progress.
+          </p>,
+        )
+      } else {
+        const errorData = await response.json()
+        setMessage(<p className="text-red-400">❌ Error: {errorData.error || "Failed to trigger rebuild"}</p>)
+      }
+    } catch (error) {
+      console.error("Failed to rebuild site:", error)
+      setMessage(<p className="text-red-400">❌ An error occurred while triggering the rebuild. Please try again.</p>)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="w-full h-full space-y-6 min-h-screen bg-zinc-800 p-6">
       <div className="flex items-center space-x-3">
@@ -139,6 +191,23 @@ const Refresh = () => {
           <span className="text-white">←</span> Home
         </Link>
       </div>
+
+      {/* Rebuild Site Button */}
+      <div className="flex flex-col space-y-3 p-6 bg-red-900/20 border border-red-500/30 rounded">
+        <h2 className="text-lg font-normal text-white">⚠️ Rebuild Entire Site</h2>
+        <p className="text-sm text-gray-300">
+          This will trigger a complete rebuild and deployment on Vercel. Use this when caches are stale or after a
+          service outage.
+        </p>
+        <button
+          onClick={handleRebuildSite}
+          disabled={isLoading}
+          className="p-4 bg-red-600 hover:bg-red-700 active:bg-red-800 focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white font-medium rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full tablet-lg:w-auto"
+        >
+          {isLoading ? "Processing..." : "🚀 Rebuild Site"}
+        </button>
+      </div>
+
       <div className="flex flex-col space-y-3">
         <h2 className="text-lg font-normal text-white">Revalidate a single path</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -228,6 +297,13 @@ const Refresh = () => {
             className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Revalidating..." : "Revalidate Settings"}
+          </button>
+          <button
+            onClick={() => handleRevalidate("events")}
+            disabled={isLoading}
+            className="p-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-800 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? "Revalidating..." : "Revalidate Events"}
           </button>
         </div>
       </div>
