@@ -5,7 +5,7 @@ import { Metadata } from "next"
 import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { EventsProps } from "@/lib/railTypes"
 
-export const revalidate = 2592000 // 30 days
+export const revalidate = 3600 // 1 hour
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getData()
