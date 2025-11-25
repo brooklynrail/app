@@ -1,7 +1,7 @@
 import EventPreview from "@/components/preview/event"
 import { EventPreviewProps } from "@/lib/railTypes"
 import { PageType, getPermalink } from "@/lib/utils"
-import { getEventTypes } from "@/lib/utils/events"
+import { getEventTypes, getEventsBreakDetails } from "@/lib/utils/events"
 import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getPreviewEvent, getPreviewPassword } from "@/lib/utils/preview"
 import { Metadata } from "next"
@@ -80,14 +80,15 @@ async function getData(params: PreviewParams): Promise<EventPreviewProps | undef
     const id = String(params.id)
 
     // Parallel fetch of initial data
-    const [navData, eventData, eventTypes, previewPassword] = await Promise.all([
+    const [navData, eventData, eventTypes, eventsBreakDetails, previewPassword] = await Promise.all([
       getNavDataFromAPI(),
       getPreviewEvent(id),
       getEventTypes(),
+      getEventsBreakDetails(),
       getPreviewPassword(),
     ])
 
-    if (!navData || !eventData || !eventTypes || !previewPassword) {
+    if (!navData || !eventData || !eventTypes || !eventsBreakDetails || !previewPassword) {
       return undefined
     }
 
@@ -105,6 +106,7 @@ async function getData(params: PreviewParams): Promise<EventPreviewProps | undef
       navData,
       eventData,
       eventTypes,
+      eventsBreakDetails,
       permalink,
       previewPassword,
       directusUrl,

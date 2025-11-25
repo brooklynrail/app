@@ -61,7 +61,7 @@ export const getEventsBreakDetails = unstable_cache(
   async () => {
     const data = await directus.request(
       readSingleton("global_settings", {
-        fields: ["events_break_start", "events_break_end", "events_on_break", "events_break_text"],
+        fields: ["events_break_start", "events_break_end", "events_on_break", "events_break_text", "events_sponsorship_text"],
       }),
     )
     return data

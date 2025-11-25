@@ -53,6 +53,7 @@ export interface EventProps {
   navData: Homepage
   eventData: Events
   eventTypes: EventsTypes[]
+  eventsBreakDetails: EventsBreakDetails
   permalink: string
 }
 
@@ -70,6 +71,7 @@ export interface EventsBreakDetails {
   events_break_end: string | null
   events_on_break: boolean
   events_break_text: string | null
+  events_sponsorship_text: string | null
 }
 
 export interface PastEventsProps {
@@ -137,6 +139,7 @@ export interface EventPreviewProps {
   navData: Homepage
   eventData: Events
   eventTypes: EventsTypes[]
+  eventsBreakDetails: EventsBreakDetails
   permalink: string
   isEnabled: boolean
   previewPassword: string

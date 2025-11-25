@@ -2,7 +2,7 @@ import { AddRedirect } from "@/app/actions/redirect"
 import EventPage from "@/components/event"
 import { EventProps } from "@/lib/railTypes"
 import { getOGImage, getPermalink, PageType, share_card } from "@/lib/utils"
-import { checkYearMonthDay, getEvent, getEventTypes } from "@/lib/utils/events"
+import { checkYearMonthDay, getEvent, getEventTypes, getEventsBreakDetails } from "@/lib/utils/events"
 import { getNavDataFromAPI } from "@/lib/utils/navData"
 import { getRedirect, RedirectTypes } from "@/lib/utils/redirects"
 import { Metadata } from "next"
@@ -162,6 +162,11 @@ async function getData({ params }: { params: EventParams }): Promise<EventProps>
     return notFound()
   }
 
+  const eventsBreakDetails = await getEventsBreakDetails()
+  if (!eventsBreakDetails) {
+    return notFound()
+  }
+
   const startDate = new Date(eventData.start_date)
   const eventYear = startDate.getFullYear()
   const eventMonth = startDate.getMonth() + 1
@@ -179,6 +184,7 @@ async function getData({ params }: { params: EventParams }): Promise<EventProps>
     navData,
     eventData,
     eventTypes,
+    eventsBreakDetails,
     permalink,
   }
 }

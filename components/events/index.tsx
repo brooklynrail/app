@@ -32,7 +32,7 @@ const EventsPage = (props: EventsProps) => {
             <BreakNotice eventsBreakDetails={props.eventsBreakDetails} />
             <div className="py-12">
               <div className="max-w-screen-tablet-lg mx-auto">
-                <Sponsor />
+                <Sponsor events_sponsorship_text={props.eventsBreakDetails.events_sponsorship_text} />
               </div>
             </div>
           </div>

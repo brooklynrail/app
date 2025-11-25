@@ -13,7 +13,7 @@ import { EventProps } from "@/lib/railTypes"
 import { RegisterProps } from "./register"
 
 const EventPageBody = (props: EventProps & RegisterProps) => {
-  const { eventData, eventTypes, setShowRegistration } = props
+  const { eventData, eventTypes, eventsBreakDetails, setShowRegistration } = props
   const {
     title,
     deck,
@@ -168,7 +168,7 @@ const EventPageBody = (props: EventProps & RegisterProps) => {
             <div className="flex justify-center">
               <SoundWaves />
             </div>
-            <Sponsor />
+            <Sponsor events_sponsorship_text={eventsBreakDetails.events_sponsorship_text} />
           </div>
         </div>
       </div>
