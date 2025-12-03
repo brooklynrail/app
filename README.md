@@ -4,7 +4,7 @@ https://brooklynrail.org/
 
 ---
 
-A modern, performant, and accessible website for The Brooklyn Rail, built with Next.js and Directus Cloud.
+The Brooklyn Rail, built with Next.js and Directus Cloud.
 
 ## Technology Stack
 
