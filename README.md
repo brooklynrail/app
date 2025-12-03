@@ -71,36 +71,6 @@ Set in [Untitled Sans](https://klim.co.nz/retail-fonts/untitled-sans/) and [Unti
 
 ## Architecture Overview
 
-### System Diagram
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         CLOUDFLARE                                   │
-│                    (DNS + Workers + CDN)                            │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
-│  │   VERCEL     │  │   NETLIFY    │  │   GODADDY    │              │
-│  │              │  │              │  │              │              │
-│  │ brooklynrail │  │   /donate    │  │  old.        │              │
-│  │ .org (Next)  │  │   (Hugo)     │  │  intrans.    │              │
-│  └──────┬───────┘  └──────────────┘  └──────────────┘              │
-│         │                                                           │
-│         ▼                                                           │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
-│  │  DIRECTUS    │  │   ALGOLIA    │  │  MAILCHIMP   │              │
-│  │   CLOUD      │  │   (Search)   │  │ (Newsletter) │              │
-│  │   (CMS)      │  │              │  │              │              │
-│  └──────────────┘  └──────────────┘  └──────────────┘              │
-│                                                                      │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
-│  │   SHOPIFY    │  │   STRIPE     │  │   POSTHOG    │              │
-│  │   (Store)    │  │  (Payments)  │  │  (Analytics) │              │
-│  └──────────────┘  └──────────────┘  └──────────────┘              │
-│                                                                      │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
 ### Key Integration Points
 
 - **Directus Cloud** (`studio.brooklynrail.org`) — Primary content management system. All articles, issues, events, contributors, and media are managed here.
